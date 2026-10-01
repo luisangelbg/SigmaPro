@@ -1,0 +1,38 @@
+{
+  "esquema": 1,
+  "id": "sup.shapiro/shapiro-n5",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+  },
+  "titulo": "Cinco valores",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [10.199999999999999, 9.8000000000000007, 11.5, 10.1, 13.9]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    }
+  ],
+  "esperado": {
+    "W": 0.81578342846149643,
+    "p": 0.10829176220077771
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+  }
+}

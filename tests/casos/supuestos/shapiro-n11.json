@@ -1,0 +1,38 @@
+{
+  "esquema": 1,
+  "id": "sup.shapiro/shapiro-n11",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+  },
+  "titulo": "Once valores (último tamaño con la primera transformación)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [21.960000000000001, 20.059999999999999, 14.449999999999999, 19.600000000000001, 16.399999999999999, 16.010000000000002, 22.75, 19.510000000000002, 15.19, 17.489999999999998, 21.09]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    }
+  ],
+  "esperado": {
+    "W": 0.94522093571889743,
+    "p": 0.58366683965881161
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+  }
+}

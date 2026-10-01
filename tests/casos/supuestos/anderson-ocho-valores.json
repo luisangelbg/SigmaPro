@@ -1,0 +1,38 @@
+{
+  "esquema": 1,
+  "id": "sup.andersonDarling/anderson-ocho-valores",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.andersonDarling"
+  },
+  "titulo": "Anderson-Darling: ocho-valores",
+  "fuente": "Conjuntos de R y datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [3.1000000000000001, 2.7000000000000002, 3.5, 2.8999999999999999, 3.7999999999999998, 3, 2.6000000000000001, 4.9000000000000004]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    }
+  ],
+  "esperado": {
+    "A": 0.49975245084921127,
+    "p": 0.14433158263020016
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "nortest": "1.0.4"
+    },
+    "codigo": "nortest::ad.test(x)"
+  }
+}

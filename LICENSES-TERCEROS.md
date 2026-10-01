@@ -68,6 +68,21 @@ of transformations*, J. R. Stat. Soc. B 26: 211–252 (el script los coteja celd
 paquete boot de R), y los conteos de la F2 dihíbrida del chícharo de Mendel, G. (1866), *Versuche über
 Pflanzen-Hybriden*. Son datos de publicaciones científicas, citados en el archivo y en la app.
 
+### Algoritmos traducidos de código publicado
+
+Para dar exactamente los mismos números que R, algunos algoritmos se tradujeron a JavaScript de su código
+fuente público. La traducción es obra derivada bajo la misma licencia (GPL), compatible con la de SigmaPro:
+
+| Algoritmo | Publicación | Código de origen | Licencia |
+|---|---|---|---|
+| Shapiro-Wilk (`js/metodos/supuestos.js`) | Royston (1995), algoritmo AS R94, *Applied Statistics* 44: 547–551 | `src/library/stats/src/swilk.c` de R 4.4.2 | GPL-2 o GPL-3 |
+| Distribución exacta de Kolmogorov | Marsaglia, Tsang y Wang (2003), *J. Stat. Softw.* 8(18) | `src/library/stats/src/ks.c` de R 4.4.2 | GPL-2 o GPL-3 |
+| P exacto de Durbin-Watson | Farebrother (1980, 1984), algoritmo AS 153 / AS R52, con la corrección de C. Cummins (1996) | `src/pan.f` del paquete lmtest | GPL-2 o GPL-3 |
+
+Las fórmulas de Lilliefors (Dallal y Wilkinson, 1986) y Anderson-Darling (Stephens, 1986) siguen al paquete
+nortest; la no aditividad de Tukey, a agricolae; Grubbs, a outliers, y las rachas, a randtests (todos GPL). El
+código de R se consultó en su copia pública (github.com/wch/r-source, etiqueta R-4-4-2).
+
 ## Que viajan con las pruebas (no los carga la app)
 
 ### Libros de ejemplo del paquete readxl

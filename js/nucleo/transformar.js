@@ -86,26 +86,13 @@ SP.definir('transformar', function (SP) {
    * la segunda con la QR de √n_g · x_g (G celdas en vez de n filas): mismo resultado, sin restas
    * que pierdan cifras, y con 100 000 filas pasa de segundos a milésimas por cada λ.
    */
-  function residualRapido(X, n, p) {
-    /* agrupar filas idénticas: dos combinaciones lineales al azar como clave; luego se comprueba */
-    const r1 = Array.from({ length: p }, (_, j) => Math.sin(j + 1) * 1e3), r2 = Array.from({ length: p }, (_, j) => Math.cos(3 * j + 2) * 1e3);
-    const g = new Int32Array(n), mapa = new Map(), rep = [];
-    for (let i = 0; i < n; i++) {
-      let a = 0, b = 0;
-      for (let j = 0; j < p; j++) { const v = X[j * n + i]; a += v * r1[j]; b += v * r2[j]; }
-      const k = a + '|' + b;
-      let q = mapa.get(k);
-      if (q === undefined) { q = rep.length; mapa.set(k, q); rep.push(i); }
-      g[i] = q;
-      if (rep.length > n / 2) break;
-    }
-    const G = rep.length;
-    let agrupado = G <= n / 2;
-    for (let i = 0; agrupado && i < n; i++) for (let j = 0; j < p; j++) if (X[j * n + i] !== X[j * n + rep[g[i]]]) { agrupado = false; break; }
-    if (!agrupado) {
+  function residualRapido(X, n, p, grupos) {
+    const gr = grupos || SP.algebra.agruparFilas(X, n, p, 0.5);
+    if (!gr) {
       const d = SP.algebra.qr(X, n, p);
       return z => { const e = SP.algebra.qty(d, z); let s = 0; for (let i = d.rango; i < n; i++) s += e[i] * e[i]; return s; };
     }
+    const { g, rep, G } = gr;
     const cuenta = new Float64Array(G);
     for (let i = 0; i < n; i++) cuenta[g[i]]++;
     const Xg = new Float64Array(G * p);
@@ -129,7 +116,8 @@ SP.definir('transformar', function (SP) {
   function boxcox(tabla, respuesta, formula, op) {
     op = op || {};
     const f = formula ? (formula.indexOf('~') >= 0 ? formula : respuesta + ' ~ ' + formula) : respuesta + ' ~ 1';
-    const mm = SP.formula.matrizModelo(tabla, f);
+    /* op.modelo: la matriz del modelo ya armada (y op.grupos, su agrupamiento por celdas) para no repetirla */
+    const mm = op.modelo || SP.formula.matrizModelo(tabla, f);
     const y = mm.y, n = mm.n;
     for (let i = 0; i < n; i++) {
       if (!(y[i] > 0)) {
@@ -141,7 +129,7 @@ SP.definir('transformar', function (SP) {
     const lgm = SP.num.media(logy);          // log de la media geométrica
     const gm = exp(lgm);
     const z = new Float64Array(n);
-    const sc = residualRapido(mm.X, n, mm.p);
+    const sc = residualRapido(mm.X, n, mm.p, op.grupos);
     function L(la) {
       if (Math.abs(la) < 1e-300) for (let i = 0; i < n; i++) z[i] = gm * logy[i];
       else {

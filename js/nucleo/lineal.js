@@ -30,10 +30,12 @@ SP.definir('lineal', function (SP) {
     const mm = SP.formula.matrizModelo(tabla, formula, op);
     if (!mm.respuesta) throw new SP.ErrorSP(T('El modelo necesita una respuesta a la izquierda de «~».'));
     for (let i = 0; i < mm.X.length; i++) {
-      if (!Number.isFinite(mm.X[i])) throw new SP.ErrorSP(T('Hay valores infinitos en las variables del modelo.'), T('Revisa las transformaciones (por ejemplo, logaritmo de cero).'));
+      const v = mm.X[i];
+      if (v - v !== 0) throw new SP.ErrorSP(T('Hay valores infinitos en las variables del modelo.'), T('Revisa las transformaciones (por ejemplo, logaritmo de cero).'));
     }
     for (let i = 0; i < mm.n; i++) {
-      if (!Number.isFinite(mm.y[i])) throw new SP.ErrorSP(T('Hay valores infinitos en la respuesta.'), T('Revisa las transformaciones (por ejemplo, logaritmo de cero).'));
+      const v = mm.y[i];
+      if (v - v !== 0) throw new SP.ErrorSP(T('Hay valores infinitos en la respuesta.'), T('Revisa las transformaciones (por ejemplo, logaritmo de cero).'));
     }
     const mc = SP.algebra.minimosCuadrados(mm.X, mm.n, mm.p, mm.y, TOL);
     return Object.assign({ modelo: mm, glResidual: mm.n - mc.qr.rango, rango: mc.qr.rango }, mc);

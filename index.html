@@ -33,7 +33,7 @@
       <button type="button" class="step-btn" data-step="1"><span class="step-num">1</span>Inicio</button>
       <button type="button" class="step-btn" data-step="2"><span class="step-num">2</span>Datos</button>
       <button type="button" class="step-btn" data-step="3"><span class="step-num">3</span>Explorar</button>
-      <button type="button" class="step-btn soon" data-step="4" data-soon="pronto"><span class="step-num">4</span>Análisis</button>
+      <button type="button" class="step-btn" data-step="4"><span class="step-num">4</span>Análisis</button>
       <button type="button" class="step-btn soon" data-step="5" data-soon="pronto"><span class="step-num">5</span>Resultados</button>
       <button type="button" class="step-btn soon" data-step="6" data-soon="pronto"><span class="step-num">6</span>Figuras</button>
       <button type="button" class="step-btn soon" data-step="7" data-soon="pronto"><span class="step-num">7</span>Exportar</button>
@@ -82,7 +82,7 @@
 
   <div class="card" style="margin-top:var(--sp-5)">
     <h3>Estado del desarrollo</h3>
-    <p class="small muted" style="margin-top:0">SigmaPro se construye por hitos y cada uno se cierra con su validación contra R. Esta versión contiene los cimientos, el núcleo numérico, el bloque de datos y la exploración (descriptivos, frecuencias, proporciones y bondad de ajuste).</p>
+    <p class="small muted" style="margin-top:0">SigmaPro se construye por hitos y cada uno se cierra con su validación contra R. Esta versión contiene los cimientos, el núcleo numérico, el bloque de datos, la exploración (descriptivos, frecuencias, proporciones y bondad de ajuste) y la revisión de los supuestos del modelo con su semáforo.</p>
     <ul class="hitos" id="hitos"></ul>
   </div>
 </section>
@@ -168,11 +168,26 @@
   </div>
 </section>
 
-<!-- ======================= 4–7 · PRÓXIMAMENTE ======================= -->
+<!-- ======================= 4 · ANÁLISIS ======================= -->
 <section class="step-panel" id="panel-4" aria-labelledby="t4">
-  <div class="panel-title"><div><h2 id="t4">Análisis</h2><p>Asistente, catálogo y constructor de modelos.</p></div></div>
-  <div class="soon-box"><h3>En construcción · Hitos 1.4 a 1.10</h3><p>Supuestos, pruebas t y no paramétricas, ANOVA de diseños experimentales, comparaciones de medias, ANCOVA, regresión, correlación y contingencia. Al final, el asistente que propone el análisis y el constructor visual del modelo.</p></div>
+  <div class="panel-title"><div><h2 id="t4">Análisis</h2><p>Elige el análisis en el catálogo. Cada uno trae su conclusión en palabras, sus cuadros, el semáforo de los supuestos y el código R que da lo mismo.</p></div></div>
+
+  <div class="dat-inicio" id="anaVacio">
+    <h3>Aún no hay datos</h3>
+    <p>Carga o pega tu tabla en el bloque Datos, o prueba con uno de los ejemplos agronómicos.</p>
+    <button type="button" class="btn btn-primary" data-ir="2">Ir a Datos</button>
+  </div>
+
+  <div id="anaTrabajo" hidden>
+    <nav class="ana-catalogo" aria-label="Catálogo de análisis" data-lnav-skip><ul id="anaCatalogo"></ul></nav>
+    <div class="exp-grid ana-espacio">
+      <form class="exp-opciones" id="anaOpciones" aria-label="Modelo del experimento"></form>
+      <div class="exp-resultado" id="anaResultado" aria-live="polite"></div>
+    </div>
+  </div>
 </section>
+
+<!-- ======================= 5–7 · PRÓXIMAMENTE ======================= -->
 <section class="step-panel" id="panel-5" aria-labelledby="t5">
   <div class="panel-title"><div><h2 id="t5">Resultados</h2><p>Conclusión en lenguaje claro, cuadros, supuestos y código R.</p></div></div>
   <div class="soon-box"><h3>En construcción · Hito 1.11</h3><p>Primero la conclusión en lenguaje sencillo, luego los cuadros estilo revista, los supuestos con semáforo, el párrafo para tu tesis, los detalles técnicos y el código R equivalente.</p></div>
@@ -265,6 +280,7 @@
 <script src="js/nucleo/hilos.js"></script>
 <script src="js/metodos/descriptiva.js"></script>
 <script src="js/metodos/frecuencias.js"></script>
+<script src="js/metodos/supuestos.js"></script>
 <!-- generado por tests/correr.mjs -->
 <script src="js/generado/validacion.js"></script>
 <!-- interfaz -->
@@ -277,6 +293,8 @@
 <script src="js/interfaz/datos-dialogos.js"></script>
 <script src="js/interfaz/cuadros.js"></script>
 <script src="js/interfaz/explorar.js"></script>
+<script src="js/interfaz/graficas.js"></script>
+<script src="js/interfaz/analisis.js"></script>
 <script src="js/labg-figure-studio.js" defer></script>
 <script src="js/labg-navigator.js" defer></script>
 </body>

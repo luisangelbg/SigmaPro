@@ -1,0 +1,38 @@
+{
+  "esquema": 1,
+  "id": "sup.lilliefors/lilliefors-seis-valores",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.lilliefors"
+  },
+  "titulo": "Lilliefors: seis-valores",
+  "fuente": "Conjuntos de R y datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [5.5, 6.0999999999999996, 4.9000000000000004, 5.7999999999999998, 7.2000000000000002, 5]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    }
+  ],
+  "esperado": {
+    "D": 0.17280016585013469,
+    "p": 0.83103291744760455
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "nortest": "1.0.4"
+    },
+    "codigo": "nortest::lillie.test(x)"
+  }
+}

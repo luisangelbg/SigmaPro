@@ -1,0 +1,38 @@
+{
+  "esquema": 1,
+  "id": "sup.shapiro/shapiro-rango-diminuto",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+  },
+  "titulo": "Rango menor que 1e-10 (R reescala)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [3.0000000000000001e-12, 9.9999999999999998e-13, 3.9999999999999999e-12, 1.5000000000000001e-12, 8.9999999999999996e-12, 2.6000000000000002e-12, 5.2999999999999996e-12, 5.7999999999999995e-12]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    }
+  ],
+  "esperado": {
+    "W": 0.94091916221061545,
+    "p": 0.62014639003441052
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+  }
+}

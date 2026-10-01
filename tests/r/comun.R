@@ -53,11 +53,16 @@ sp_paquetes <- function(paquetes) {
 # sp_arg() envuelve una columna para que siga siendo arreglo aunque mida 1.
 sp_rejilla <- function(...) expand.grid(..., KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
 sp_arg <- function(x) I(unname(x))
+.sp_escritos <- new.env()
 sp_caso <- function(nombre, objetivo, tipo = c("funcion", "metodo"), titulo, fuente,
                     clase = "A", datos = NULL, argumentos = NULL, entradas = NULL, opciones = NULL,
                     esperado, comparacion = NULL, paquetes = "stats", codigo = NULL,
                     vectorizar = FALSE) {
   tipo <- match.arg(tipo)
+  # dos casos con el mismo nombre en una carpeta se pisarían el archivo: se detiene
+  clave <- file.path(getwd(), nombre)
+  if (!is.null(.sp_escritos[[clave]])) stop("sp_caso: el nombre «", nombre, "» ya se usó en esta carpeta")
+  .sp_escritos[[clave]] <- TRUE
   stopifnot(grepl("^[a-z0-9][a-z0-9-]*$", nombre), clase %in% c("A", "B", "C", "D", "E"))
   if (is.null(codigo)) codigo <- paste(deparse(substitute(esperado), width.cutoff = 90L), collapse = "\n")
   caso <- list(

@@ -5,7 +5,7 @@
      { id, titulo, columnas: [{ clave, titulo, formato }], columnasExtra?, filas: [{ … }], notas: [texto] }
    Formatos: texto · entero · escala (decimales de la fila, _dec) · dato (los de los datos: _dec − 1) · escala2 · pct (1 decimal) ·
    pct100 y pctp (proporción × 100) · intervalo, intervalo2 e intervalo100 ([a, b]) · forma (3) ·
-   forma2 (2) · num · num2 · prop (4).
+   forma2 (2) · num · num2 · prop (4) · pvalor (< 0.001 o 3 decimales) · auto4 (entero o 4 decimales).
 
      SP.cuadros.html(cuadro, { numero, visibles })   → HTML de la tabla con su título y notas
      SP.cuadros.tsv(cuadro, visibles)                → texto separado por tabuladores (para pegar en una hoja)
@@ -36,6 +36,8 @@
       case 'forma2': s = fijo(v, 2); break;
       case 'num2': s = fijo(v, 2); break;
       case 'prop': s = fijo(v, 4); break;
+      case 'pvalor': s = !Number.isFinite(v) ? '—' : v < 0.001 ? '< 0.001' : fijo(v, 3); break;
+      case 'auto4': s = Number.isFinite(v) ? (Number.isInteger(v) ? String(v) : fijo(v, 4)) : '—'; break;
       case 'num': s = Number.isFinite(v) ? (Number.isInteger(v) ? String(v) : fijo(v, 2)) : '—'; break;
       case 'intervalo': case 'intervalo2': case 'intervalo100': case 'intervaloDato': {
         const g = { intervalo: 'escala', intervalo2: 'escala2', intervalo100: 'pct100', intervaloDato: 'dato' }[f];

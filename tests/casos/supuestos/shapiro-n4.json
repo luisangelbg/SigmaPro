@@ -1,0 +1,38 @@
+{
+  "esquema": 1,
+  "id": "sup.shapiro/shapiro-n4",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+  },
+  "titulo": "Cuatro valores",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [1, 3.2000000000000002, 2.5, 9]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    }
+  ],
+  "esperado": {
+    "W": 0.85503951090457531,
+    "p": 0.24290252048714586
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+  }
+}

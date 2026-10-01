@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-01T15:09:55.632Z",
+ "generado": "2026-10-01T16:11:14.541Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 153,
-  "aprobados": 153,
+  "casos": 257,
+  "aprobados": 257,
   "fallidos": 0,
-  "valores": 19076,
+  "valores": 23021,
   "difEscaladaMax": 7.533201041296815e-8,
-  "objetivos": 40
+  "objetivos": 56
  },
  "casos": [
   {
@@ -2392,32 +2392,6 @@ window.SP_VALIDACION = {
    }
   },
   {
-   "id": "transformar.aplicar/estandarizar",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "transformar.aplicar"
-   },
-   "titulo": "Estandarizar (media 0, DE 1)",
-   "fuente": "Datos sintéticos",
-   "clase": "A",
-   "valores": 12,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "as.vector(scale(y))"
-   }
-  },
-  {
    "id": "transformar.aplicar/log-mas-c",
    "objetivo": {
     "tipo": "funcion",
@@ -2522,6 +2496,32 @@ window.SP_VALIDACION = {
    }
   },
   {
+   "id": "transformar.aplicar/transformar-estandarizar",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "Estandarizar (media 0, DE 1)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "as.vector(scale(y))"
+   }
+  },
+  {
    "id": "expresiones.enTabla/arcoseno",
    "objetivo": {
     "tipo": "funcion",
@@ -2623,6 +2623,32 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "with(datos, ifelse(rend > mean(rend, na.rm = TRUE), \"alto\", \"bajo\"))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/estandarizar",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "(rend - mean(rend, na.rm = TRUE)) / sd(rend, na.rm = TRUE)",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, (rend - mean(rend, na.rm = TRUE)) / sd(rend, na.rm = TRUE))"
    }
   },
   {
@@ -4060,6 +4086,2730 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "prop.test(x, n, conf.level = nivel, correct = FALSE)$conf.int"
+   }
+  },
+  {
+   "id": "sup.andersonDarling/anderson-atipico-extremo",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.andersonDarling"
+   },
+   "titulo": "Anderson-Darling: atipico-extremo",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::ad.test(x)"
+   }
+  },
+  {
+   "id": "sup.andersonDarling/anderson-erupciones",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.andersonDarling"
+   },
+   "titulo": "Anderson-Darling: erupciones",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::ad.test(x)"
+   }
+  },
+  {
+   "id": "sup.andersonDarling/anderson-normal-200",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.andersonDarling"
+   },
+   "titulo": "Anderson-Darling: normal-200",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 3.186340080674199e-14,
+   "difEscaladaMax": 3.186340080674199e-14,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::ad.test(x)"
+   }
+  },
+  {
+   "id": "sup.andersonDarling/anderson-ocho-valores",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.andersonDarling"
+   },
+   "titulo": "Anderson-Darling: ocho-valores",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::ad.test(x)"
+   }
+  },
+  {
+   "id": "sup.andersonDarling/anderson-ozono",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.andersonDarling"
+   },
+   "titulo": "Anderson-Darling: ozono",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 5.684341886080802e-14,
+   "difEscaladaMax": 3.161428591075238e-13,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::ad.test(x)"
+   }
+  },
+  {
+   "id": "sup.andersonDarling/anderson-plantas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.andersonDarling"
+   },
+   "titulo": "Anderson-Darling: plantas",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 1.0103029524088925e-14,
+   "difEscaladaMax": 1.0103029524088925e-14,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::ad.test(x)"
+   }
+  },
+  {
+   "id": "sup.andersonDarling/anderson-precipitacion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.andersonDarling"
+   },
+   "titulo": "Anderson-Darling: precipitacion",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 1.4210854715202004e-14,
+   "peor": "A",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::ad.test(x)"
+   }
+  },
+  {
+   "id": "sup.andersonDarling/anderson-uniforme-50",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.andersonDarling"
+   },
+   "titulo": "Anderson-Darling: uniforme-50",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 1.0547118733938987e-14,
+   "difEscaladaMax": 1.0547118733938987e-14,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::ad.test(x)"
+   }
+  },
+  {
+   "id": "sup.bandaQQ/banda-qq-n10-90",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bandaQQ"
+   },
+   "titulo": "n = 10, banda al 90 %",
+   "fuente": "Fórmulas",
+   "clase": "A",
+   "valores": 30,
+   "difMax": 7.993605777301127e-15,
+   "difEscaladaMax": 3.1129259134108044e-15,
+   "peor": "sup[9]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qnorm(ppoints(n)); qnorm(qbeta(c(a/2, 1 - a/2), i, n - i + 1))"
+   }
+  },
+  {
+   "id": "sup.bandaQQ/banda-qq-n10-95",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bandaQQ"
+   },
+   "titulo": "n = 10, banda al 95 %",
+   "fuente": "Fórmulas",
+   "clase": "A",
+   "valores": 30,
+   "difMax": 1.3766765505351941e-14,
+   "difEscaladaMax": 4.910790981397757e-15,
+   "peor": "sup[9]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qnorm(ppoints(n)); qnorm(qbeta(c(a/2, 1 - a/2), i, n - i + 1))"
+   }
+  },
+  {
+   "id": "sup.bandaQQ/banda-qq-n11-90",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bandaQQ"
+   },
+   "titulo": "n = 11, banda al 90 %",
+   "fuente": "Fórmulas",
+   "clase": "A",
+   "valores": 33,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 1.7763568394002505e-15,
+   "peor": "sup[6]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qnorm(ppoints(n)); qnorm(qbeta(c(a/2, 1 - a/2), i, n - i + 1))"
+   }
+  },
+  {
+   "id": "sup.bandaQQ/banda-qq-n11-95",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bandaQQ"
+   },
+   "titulo": "n = 11, banda al 95 %",
+   "fuente": "Fórmulas",
+   "clase": "A",
+   "valores": 33,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 1.2212453270876722e-15,
+   "peor": "sup[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qnorm(ppoints(n)); qnorm(qbeta(c(a/2, 1 - a/2), i, n - i + 1))"
+   }
+  },
+  {
+   "id": "sup.bandaQQ/banda-qq-n300-90",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bandaQQ"
+   },
+   "titulo": "n = 300, banda al 90 %",
+   "fuente": "Fórmulas",
+   "clase": "A",
+   "valores": 900,
+   "difMax": 1.7008616737257398e-13,
+   "difEscaladaMax": 4.7493234131591604e-14,
+   "peor": "sup[299]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qnorm(ppoints(n)); qnorm(qbeta(c(a/2, 1 - a/2), i, n - i + 1))"
+   }
+  },
+  {
+   "id": "sup.bandaQQ/banda-qq-n300-95",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bandaQQ"
+   },
+   "titulo": "n = 300, banda al 95 %",
+   "fuente": "Fórmulas",
+   "clase": "A",
+   "valores": 900,
+   "difMax": 3.2862601528904634e-13,
+   "difEscaladaMax": 8.736158369801618e-14,
+   "peor": "sup[299]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qnorm(ppoints(n)); qnorm(qbeta(c(a/2, 1 - a/2), i, n - i + 1))"
+   }
+  },
+  {
+   "id": "sup.bandaQQ/banda-qq-n5-90",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bandaQQ"
+   },
+   "titulo": "n = 5, banda al 90 %",
+   "fuente": "Fórmulas",
+   "clase": "A",
+   "valores": 15,
+   "difMax": 1.3322676295501878e-15,
+   "difEscaladaMax": 5.745804007316434e-16,
+   "peor": "inf[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qnorm(ppoints(n)); qnorm(qbeta(c(a/2, 1 - a/2), i, n - i + 1))"
+   }
+  },
+  {
+   "id": "sup.bandaQQ/banda-qq-n5-95",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bandaQQ"
+   },
+   "titulo": "n = 5, banda al 95 %",
+   "fuente": "Fórmulas",
+   "clase": "A",
+   "valores": 15,
+   "difMax": 8.43769498715119e-15,
+   "difEscaladaMax": 3.2801703271027874e-15,
+   "peor": "sup[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qnorm(ppoints(n)); qnorm(qbeta(c(a/2, 1 - a/2), i, n - i + 1))"
+   }
+  },
+  {
+   "id": "sup.bandaQQ/banda-qq-n50-90",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bandaQQ"
+   },
+   "titulo": "n = 50, banda al 90 %",
+   "fuente": "Fórmulas",
+   "clase": "A",
+   "valores": 150,
+   "difMax": 3.1530333899354446e-14,
+   "difEscaladaMax": 1.022784769958908e-14,
+   "peor": "sup[49]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qnorm(ppoints(n)); qnorm(qbeta(c(a/2, 1 - a/2), i, n - i + 1))"
+   }
+  },
+  {
+   "id": "sup.bandaQQ/banda-qq-n50-95",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bandaQQ"
+   },
+   "titulo": "n = 50, banda al 95 %",
+   "fuente": "Fórmulas",
+   "clase": "A",
+   "valores": 150,
+   "difMax": 4.884981308350689e-15,
+   "difEscaladaMax": 3.3288059582065236e-15,
+   "peor": "sup[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qnorm(ppoints(n)); qnorm(qbeta(c(a/2, 1 - a/2), i, n - i + 1))"
+   }
+  },
+  {
+   "id": "sup.noAditividadTabla/bloques-aditivo",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.noAditividadTabla"
+   },
+   "titulo": "Bloques × tratamientos aditivo (5 × 6, sin interacción)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.3533175408374518e-11,
+   "difEscaladaMax": 5.150925545832111e-13,
+   "peor": "P",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "agricolae": "1.3.7"
+    },
+    "codigo": "m <- aov(y ~ f1 + f2); agricolae::nonadditivity(y, f1, f2, df.residual(m), deviance(m) / df.residual(m))\np <- pf(F, 1, gl_residual, lower.tail = FALSE)   # agricolae da 0.9515949248 con 1 - pf()"
+   }
+  },
+  {
+   "id": "sup.noAditividadTabla/bloques-multiplicativo",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.noAditividadTabla"
+   },
+   "titulo": "Efectos multiplicativos (la no aditividad debe salir significativa)",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 7,
+   "difMax": 1.2369127944111824e-10,
+   "difEscaladaMax": 3.2198468432238364e-13,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "agricolae": "1.3.7"
+    },
+    "codigo": "m <- aov(y ~ f1 + f2); agricolae::nonadditivity(y, f1, f2, df.residual(m), deviance(m) / df.residual(m))\np <- pf(F, 1, gl_residual, lower.tail = FALSE)   # agricolae da 6.858957846e-13 con 1 - pf()"
+   }
+  },
+  {
+   "id": "sup.noAditividadTabla/maiz-bloques-tratamientos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.noAditividadTabla"
+   },
+   "titulo": "Maíz: bloque × (híbrido · dosis), 4 × 12",
+   "fuente": "Datos sintéticos del ejemplo de la app",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.149391775674303e-13,
+   "difEscaladaMax": 4.3520742565306136e-14,
+   "peor": "F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "agricolae": "1.3.7"
+    },
+    "codigo": "m <- aov(y ~ f1 + f2); agricolae::nonadditivity(y, f1, f2, df.residual(m), deviance(m) / df.residual(m))\np <- pf(F, 1, gl_residual, lower.tail = FALSE)   # agricolae da 0.6709818055 con 1 - pf()"
+   }
+  },
+  {
+   "id": "sup.noAditividadTabla/roturas-replicado",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.noAditividadTabla"
+   },
+   "titulo": "Lana × tensión con 9 repeticiones por celda (r = 9: el residual no se corrige)",
+   "fuente": "Tippett (1950); conjunto warpbreaks de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.0186340659856796e-9,
+   "difEscaladaMax": 1.4999964329455993e-14,
+   "peor": "Q",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "agricolae": "1.3.7"
+    },
+    "codigo": "m <- aov(y ~ f1 + f2); agricolae::nonadditivity(y, f1, f2, df.residual(m), deviance(m) / df.residual(m))\np <- pf(F, 1, gl_residual, lower.tail = FALSE)   # agricolae da 0.07582146416 con 1 - pf()"
+   }
+  },
+  {
+   "id": "sup.cercasTukey/cercas-erupciones",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.cercasTukey"
+   },
+   "titulo": "Cercas de Tukey: erupciones",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 5,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "boxplot.stats(x)"
+   }
+  },
+  {
+   "id": "sup.cercasTukey/cercas-insectos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.cercasTukey"
+   },
+   "titulo": "Cercas de Tukey: insectos",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 5,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "boxplot.stats(x)"
+   }
+  },
+  {
+   "id": "sup.cercasTukey/cercas-ozono",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.cercasTukey"
+   },
+   "titulo": "Cercas de Tukey: ozono",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "boxplot.stats(x)"
+   }
+  },
+  {
+   "id": "sup.cercasTukey/cercas-pares-de-bisagras",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.cercasTukey"
+   },
+   "titulo": "Cercas de Tukey: pares-de-bisagras",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "boxplot.stats(x)"
+   }
+  },
+  {
+   "id": "sup.cercasTukey/cercas-precipitacion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.cercasTukey"
+   },
+   "titulo": "Cercas de Tukey: precipitacion",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 10,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "boxplot.stats(x)"
+   }
+  },
+  {
+   "id": "sup.rachas/doce-exacta",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.rachas"
+   },
+   "titulo": "Doce valores alternados, exacta",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.4432899320127035e-15,
+   "difEscaladaMax": 1.4432899320127035e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "randtests": "1.0.2"
+    },
+    "codigo": "randtests::runs.test(x, alternative = \"two.sided\", pvalue = \"exact\")   # p recortado a 1"
+   }
+  },
+  {
+   "id": "sup.rachas/doce-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.rachas"
+   },
+   "titulo": "Doce valores, cola de muchas rachas, exacta",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 7.216449660063518e-16,
+   "difEscaladaMax": 7.216449660063518e-16,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "randtests": "1.0.2"
+    },
+    "codigo": "randtests::runs.test(x, alternative = \"right.sided\", pvalue = \"exact\")   # p recortado a 1"
+   }
+  },
+  {
+   "id": "sup.rachas/lago-exacta",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.rachas"
+   },
+   "titulo": "Lo mismo con la distribución exacta",
+   "fuente": "Brockwell y Davis (1991); conjunto LakeHuron de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 4.9217246446905147e-23,
+   "difEscaladaMax": 2.1483760399147398e-14,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "randtests": "1.0.2"
+    },
+    "codigo": "randtests::runs.test(x, alternative = \"two.sided\", pvalue = \"exact\")   # p recortado a 1"
+   }
+  },
+  {
+   "id": "sup.rachas/lago-menor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.rachas"
+   },
+   "titulo": "Lago Hurón, cola de pocas rachas, normal",
+   "fuente": "Brockwell y Davis (1991); conjunto LakeHuron de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "randtests": "1.0.2"
+    },
+    "codigo": "randtests::runs.test(x, alternative = \"left.sided\", pvalue = \"normal\")   # p recortado a 1"
+   }
+  },
+  {
+   "id": "sup.rachas/lago",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.rachas"
+   },
+   "titulo": "Nivel del lago Hurón (98 años): muy pocas rachas",
+   "fuente": "Brockwell y Davis (1991); conjunto LakeHuron de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "randtests": "1.0.2"
+    },
+    "codigo": "randtests::runs.test(x, alternative = \"two.sided\", pvalue = \"normal\")   # p recortado a 1"
+   }
+  },
+  {
+   "id": "sup.rachas/precipitacion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.rachas"
+   },
+   "titulo": "Precipitación de 70 ciudades en el orden de la tabla",
+   "fuente": "McNeil (1977); conjunto precip de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "randtests": "1.0.2"
+    },
+    "codigo": "randtests::runs.test(x, alternative = \"two.sided\", pvalue = \"normal\")   # p recortado a 1"
+   }
+  },
+  {
+   "id": "sup.durbinWatsonModelo/dw-arboles-bilateral",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.durbinWatsonModelo"
+   },
+   "titulo": "Lo mismo, bilateral",
+   "fuente": "Ryan, Joiner y Ryan (1976); conjunto trees de R",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 1.0269562977782698e-15,
+   "difEscaladaMax": 1.0269562977782698e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lmtest": "0.9.40"
+    },
+    "codigo": "lmtest::dwtest(Volume ~ Girth + Height, alternative = \"two.sided\")"
+   }
+  },
+  {
+   "id": "sup.durbinWatsonModelo/dw-arboles-menor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.durbinWatsonModelo"
+   },
+   "titulo": "Lo mismo, autocorrelación negativa",
+   "fuente": "Ryan, Joiner y Ryan (1976); conjunto trees de R",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 7.01308899268815e-16,
+   "peor": "DW",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lmtest": "0.9.40"
+    },
+    "codigo": "lmtest::dwtest(Volume ~ Girth + Height, alternative = \"less\")"
+   }
+  },
+  {
+   "id": "sup.durbinWatsonModelo/dw-arboles",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.durbinWatsonModelo"
+   },
+   "titulo": "Volumen contra diámetro y altura (n = 31, exacto)",
+   "fuente": "Ryan, Joiner y Ryan (1976); conjunto trees de R",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 7.01308899268815e-16,
+   "peor": "DW",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lmtest": "0.9.40"
+    },
+    "codigo": "lmtest::dwtest(Volume ~ Girth + Height, alternative = \"greater\")"
+   }
+  },
+  {
+   "id": "sup.durbinWatsonModelo/dw-frenado-normal-forzada",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.durbinWatsonModelo"
+   },
+   "titulo": "Frenado con exact = FALSE",
+   "fuente": "Ezekiel (1930); conjunto cars de R",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lmtest": "0.9.40"
+    },
+    "codigo": "lmtest::dwtest(dist ~ speed, alternative = \"greater\", exact = FALSE)"
+   }
+  },
+  {
+   "id": "sup.durbinWatsonModelo/dw-frenado",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.durbinWatsonModelo"
+   },
+   "titulo": "Distancia de frenado contra velocidad (n = 50, exacto)",
+   "fuente": "Ezekiel (1930); conjunto cars de R",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 2.0372592501871623e-14,
+   "difEscaladaMax": 2.0372592501871623e-14,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lmtest": "0.9.40"
+    },
+    "codigo": "lmtest::dwtest(dist ~ speed, alternative = \"greater\")"
+   }
+  },
+  {
+   "id": "sup.durbinWatsonModelo/dw-lago-huron",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.durbinWatsonModelo"
+   },
+   "titulo": "Nivel del lago Hurón contra el año (n = 98, autocorrelación fuerte)",
+   "fuente": "Brockwell y Davis (1991); conjunto LakeHuron de R",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 2.7922109069322687e-14,
+   "difEscaladaMax": 1.9082337075263184e-12,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lmtest": "0.9.40"
+    },
+    "codigo": "lmtest::dwtest(nivel ~ anio, alternative = \"greater\")"
+   }
+  },
+  {
+   "id": "sup.durbinWatsonModelo/dw-ozono-normal",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.durbinWatsonModelo"
+   },
+   "titulo": "Ozono contra radiación, viento y temperatura (n = 111: aproximación normal)",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 4.440892098500626e-16,
+   "difEscaladaMax": 2.2944702765180633e-16,
+   "peor": "DW",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lmtest": "0.9.40"
+    },
+    "codigo": "lmtest::dwtest(Ozone ~ Solar.R + Wind + Temp, alternative = \"greater\")"
+   }
+  },
+  {
+   "id": "sup.durbinWatsonModelo/dw-plantas-factor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.durbinWatsonModelo"
+   },
+   "titulo": "Peso seco contra tratamiento, en el orden de las filas",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 6.661338147750939e-15,
+   "difEscaladaMax": 6.661338147750939e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lmtest": "0.9.40"
+    },
+    "codigo": "lmtest::dwtest(weight ~ group, alternative = \"two.sided\")"
+   }
+  },
+  {
+   "id": "sup.grubbs/grubbs-atipico-alto",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.grubbs"
+   },
+   "titulo": "Grubbs: atipico-alto",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 5.008755691834118e-16,
+   "difEscaladaMax": 6.962761979821282e-10,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "outliers": "0.15"
+    },
+    "codigo": "outliers::grubbs.test(x)"
+   }
+  },
+  {
+   "id": "sup.grubbs/grubbs-atipico-bajo",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.grubbs"
+   },
+   "titulo": "Grubbs: atipico-bajo",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 4.440892098500626e-16,
+   "difEscaladaMax": 1.5989333932235195e-16,
+   "peor": "G",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "outliers": "0.15"
+    },
+    "codigo": "outliers::grubbs.test(x)"
+   }
+  },
+  {
+   "id": "sup.grubbs/grubbs-plantas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.grubbs"
+   },
+   "titulo": "Grubbs: plantas",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 2.7755575615628914e-15,
+   "difEscaladaMax": 2.7755575615628914e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "outliers": "0.15"
+    },
+    "codigo": "outliers::grubbs.test(x)"
+   }
+  },
+  {
+   "id": "sup.grubbs/grubbs-precipitacion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.grubbs"
+   },
+   "titulo": "Grubbs: precipitacion",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 2.7200464103316335e-14,
+   "difEscaladaMax": 2.7200464103316335e-14,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "outliers": "0.15"
+    },
+    "codigo": "outliers::grubbs.test(x)"
+   }
+  },
+  {
+   "id": "sup.atipicoModelo/influencia-arboles-atipico",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.atipicoModelo"
+   },
+   "titulo": "Volumen ~ diámetro + altura · mayor residuo estudentizado",
+   "fuente": "Ryan, Joiner y Ryan (1976); conjunto trees de R",
+   "clase": "A",
+   "valores": 5,
+   "difMax": 2.220446049250313e-15,
+   "difEscaladaMax": 1.609823385706477e-15,
+   "peor": "bonferroni",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "car::outlierTest(lm(Volume ~ Girth + Height))"
+   }
+  },
+  {
+   "id": "sup.atipicoModelo/influencia-frenado-atipico",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.atipicoModelo"
+   },
+   "titulo": "Distancia ~ velocidad · mayor residuo estudentizado",
+   "fuente": "Ezekiel (1930); conjunto cars de R",
+   "clase": "A",
+   "valores": 5,
+   "difMax": 4.440892098500626e-16,
+   "difEscaladaMax": 2.7755575615628914e-16,
+   "peor": "bonferroni",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "car::outlierTest(lm(dist ~ speed))"
+   }
+  },
+  {
+   "id": "sup.atipicoModelo/influencia-npk-factorial-atipico",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.atipicoModelo"
+   },
+   "titulo": "Chícharo: bloque + N × P × K · mayor residuo estudentizado",
+   "fuente": "Yates (1935); conjunto npk de R",
+   "clase": "A",
+   "valores": 5,
+   "difMax": 2.220446049250313e-15,
+   "difEscaladaMax": 1.0149095747287977e-15,
+   "peor": "rstudent",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "car::outlierTest(lm(yield ~ block + N * P * K))"
+   }
+  },
+  {
+   "id": "sup.atipicoModelo/influencia-ozono-faltantes-atipico",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.atipicoModelo"
+   },
+   "titulo": "Ozono ~ temperatura + viento, con filas faltantes (los números de fila son los de la tabla) · mayor residuo estudentizado",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 5,
+   "difMax": 1.7618285302889447e-19,
+   "difEscaladaMax": 1.655403616789474e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "car::outlierTest(lm(Ozone ~ Temp + Wind))"
+   }
+  },
+  {
+   "id": "sup.influenciaModelo/influencia-arboles",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.influenciaModelo"
+   },
+   "titulo": "Volumen ~ diámetro + altura",
+   "fuente": "Ryan, Joiner y Ryan (1976); conjunto trees de R",
+   "clase": "A",
+   "valores": 124,
+   "difMax": 1.6209256159527285e-14,
+   "difEscaladaMax": 1.057997531707756e-14,
+   "peor": "rstudent[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "m <- lm(Volume ~ Girth + Height); hatvalues(m); rstandard(m); rstudent(m); cooks.distance(m)"
+   }
+  },
+  {
+   "id": "sup.influenciaModelo/influencia-frenado",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.influenciaModelo"
+   },
+   "titulo": "Distancia ~ velocidad",
+   "fuente": "Ezekiel (1930); conjunto cars de R",
+   "clase": "A",
+   "valores": 200,
+   "difMax": 9.769962616701378e-15,
+   "difEscaladaMax": 9.769962616701378e-15,
+   "peor": "rstandard[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "m <- lm(dist ~ speed); hatvalues(m); rstandard(m); rstudent(m); cooks.distance(m)"
+   }
+  },
+  {
+   "id": "sup.influenciaModelo/influencia-npk-factorial",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.influenciaModelo"
+   },
+   "titulo": "Chícharo: bloque + N × P × K",
+   "fuente": "Yates (1935); conjunto npk de R",
+   "clase": "A",
+   "valores": 96,
+   "difMax": 3.774758283725532e-15,
+   "difEscaladaMax": 3.6637359812630166e-15,
+   "peor": "rstudent[6]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "m <- lm(yield ~ block + N * P * K); hatvalues(m); rstandard(m); rstudent(m); cooks.distance(m)"
+   }
+  },
+  {
+   "id": "sup.influenciaModelo/influencia-ozono-faltantes",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.influenciaModelo"
+   },
+   "titulo": "Ozono ~ temperatura + viento, con filas faltantes (los números de fila son los de la tabla)",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 464,
+   "difMax": 1.1102230246251565e-14,
+   "difEscaladaMax": 1.1102230246251565e-14,
+   "peor": "rstandard[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "m <- lm(Ozone ~ Temp + Wind); hatvalues(m); rstandard(m); rstudent(m); cooks.distance(m)"
+   }
+  },
+  {
+   "id": "sup.bartlett/insectos-bartlett",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bartlett"
+   },
+   "titulo": "Conteos por insecticida (varianzas muy distintas)",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 1.36854298322761e-16,
+   "peor": "K2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "bartlett.test(y ~ g)"
+   }
+  },
+  {
+   "id": "sup.bartlett/ozono-por-mes-bartlett",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bartlett"
+   },
+   "titulo": "Ozono por mes, con faltantes",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 1.1191048088221578e-13,
+   "difEscaladaMax": 8.319908201098211e-15,
+   "peor": "K2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "bartlett.test(y ~ g)"
+   }
+  },
+  {
+   "id": "sup.bartlett/plantas-bartlett",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bartlett"
+   },
+   "titulo": "Peso seco por tratamiento",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "bartlett.test(y ~ g)"
+   }
+  },
+  {
+   "id": "sup.bartlett/roturas-lana-tension-bartlett",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.bartlett"
+   },
+   "titulo": "Roturas por lana × tensión (seis grupos)",
+   "fuente": "Tippett (1950); conjunto warpbreaks de R",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 3.469446951953614e-18,
+   "difEscaladaMax": 3.469446951953614e-18,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "bartlett.test(y ~ g)"
+   }
+  },
+  {
+   "id": "sup.levene/insectos-brown-forsythe",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.levene"
+   },
+   "titulo": "Conteos por insecticida (varianzas muy distintas) · mediana",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 3.1086244689504383e-15,
+   "difEscaladaMax": 8.134872056267871e-16,
+   "peor": "F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "car": "3.1.3"
+    },
+    "codigo": "car::leveneTest(y ~ g, center = median)"
+   }
+  },
+  {
+   "id": "sup.levene/insectos-levene",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.levene"
+   },
+   "titulo": "Conteos por insecticida (varianzas muy distintas) · media",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 1.3758789946710705e-16,
+   "peor": "F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "car": "3.1.3"
+    },
+    "codigo": "car::leveneTest(y ~ g, center = mean)"
+   }
+  },
+  {
+   "id": "sup.levene/ozono-por-mes-brown-forsythe",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.levene"
+   },
+   "titulo": "Ozono por mes, con faltantes · mediana",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 2.245268031111492e-16,
+   "peor": "F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "car": "3.1.3"
+    },
+    "codigo": "car::leveneTest(y ~ g, center = median)"
+   }
+  },
+  {
+   "id": "sup.levene/ozono-por-mes-levene",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.levene"
+   },
+   "titulo": "Ozono por mes, con faltantes · media",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 2.165305729380999e-16,
+   "peor": "F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "car": "3.1.3"
+    },
+    "codigo": "car::leveneTest(y ~ g, center = mean)"
+   }
+  },
+  {
+   "id": "sup.levene/plantas-brown-forsythe",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.levene"
+   },
+   "titulo": "Peso seco por tratamiento · mediana",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 6.661338147750939e-16,
+   "difEscaladaMax": 5.951950760523589e-16,
+   "peor": "F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "car": "3.1.3"
+    },
+    "codigo": "car::leveneTest(y ~ g, center = median)"
+   }
+  },
+  {
+   "id": "sup.levene/plantas-levene",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.levene"
+   },
+   "titulo": "Peso seco por tratamiento · media",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 2.220446049250313e-16,
+   "difEscaladaMax": 1.795078859255e-16,
+   "peor": "F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "car": "3.1.3"
+    },
+    "codigo": "car::leveneTest(y ~ g, center = mean)"
+   }
+  },
+  {
+   "id": "sup.levene/roturas-lana-tension-brown-forsythe",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.levene"
+   },
+   "titulo": "Roturas por lana × tensión (seis grupos) · mediana",
+   "fuente": "Tippett (1950); conjunto warpbreaks de R",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 1.3322676295501878e-15,
+   "difEscaladaMax": 4.608359006407247e-16,
+   "peor": "F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "car": "3.1.3"
+    },
+    "codigo": "car::leveneTest(y ~ g, center = median)"
+   }
+  },
+  {
+   "id": "sup.levene/roturas-lana-tension-levene",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.levene"
+   },
+   "titulo": "Roturas por lana × tensión (seis grupos) · media",
+   "fuente": "Tippett (1950); conjunto warpbreaks de R",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 3.450379137824433e-16,
+   "peor": "F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "car": "3.1.3"
+    },
+    "codigo": "car::leveneTest(y ~ g, center = mean)"
+   }
+  },
+  {
+   "id": "sup.fligner/insectos-fligner",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.fligner"
+   },
+   "titulo": "Conteos por insecticida (varianzas muy distintas)",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 3.469446951953614e-18,
+   "difEscaladaMax": 3.469446951953614e-18,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "fórmula de fligner.test con rank(round(abs(x - mediana), 12 cifras de la escala)); fligner.test tal cual da X2 = 14.48278104"
+   }
+  },
+  {
+   "id": "sup.fligner/ozono-por-mes-fligner",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.fligner"
+   },
+   "titulo": "Ozono por mes, con faltantes",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 1.8369098865770722e-16,
+   "peor": "X2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "fórmula de fligner.test con rank(round(abs(x - mediana), 12 cifras de la escala)); fligner.test tal cual da X2 = 19.34070748"
+   }
+  },
+  {
+   "id": "sup.fligner/plantas-fligner",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.fligner"
+   },
+   "titulo": "Peso seco por tratamiento",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "B",
+   "valores": 3,
+   "difMax": 1.2434497875801753e-14,
+   "difEscaladaMax": 5.29025016562201e-15,
+   "peor": "X2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "fórmula de fligner.test con rank(round(abs(x - mediana), 12 cifras de la escala)); fligner.test tal cual da X2 = 2.349937131"
+   }
+  },
+  {
+   "id": "sup.fligner/roturas-lana-tension-fligner",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.fligner"
+   },
+   "titulo": "Roturas por lana × tensión (seis grupos)",
+   "fuente": "Tippett (1950); conjunto warpbreaks de R",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 1.9539925233402755e-14,
+   "difEscaladaMax": 1.6341272390534907e-15,
+   "peor": "X2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "fórmula de fligner.test con rank(round(abs(x - mediana), 12 cifras de la escala)); fligner.test tal cual da X2 = 11.95740746"
+   }
+  },
+  {
+   "id": "sup.kolmogorov/ks-asintotica-bilateral",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.kolmogorov"
+   },
+   "titulo": "n = 150: distribución límite de Kolmogorov",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ks.test(x, \"pnorm\", 0, 1, alternative = \"two.sided\")"
+   }
+  },
+  {
+   "id": "sup.kolmogorov/ks-asintotica-forzada",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.kolmogorov"
+   },
+   "titulo": "n = 20 con exact = FALSE",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 2.7755575615628914e-17,
+   "difEscaladaMax": 2.7755575615628914e-17,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ks.test(x, \"pnorm\", 9, 2, alternative = \"two.sided\", exact = FALSE)"
+   }
+  },
+  {
+   "id": "sup.kolmogorov/ks-asintotica-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.kolmogorov"
+   },
+   "titulo": "n = 150, cola superior asintótica",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ks.test(x, \"pnorm\", -0.2, 1, alternative = \"greater\")"
+   }
+  },
+  {
+   "id": "sup.kolmogorov/ks-exacta-bilateral",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.kolmogorov"
+   },
+   "titulo": "n = 20, bilateral exacta (Marsaglia, Tsang y Wang)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ks.test(x, \"pnorm\", 10, 2, alternative = \"two.sided\")"
+   }
+  },
+  {
+   "id": "sup.kolmogorov/ks-exacta-desplazada",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.kolmogorov"
+   },
+   "titulo": "n = 60 con la media corrida, bilateral exacta",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ks.test(x, \"pnorm\", 0, 1, alternative = \"two.sided\")"
+   }
+  },
+  {
+   "id": "sup.kolmogorov/ks-exacta-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.kolmogorov"
+   },
+   "titulo": "n = 20, cola superior exacta (Birnbaum y Tingey)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ks.test(x, \"pnorm\", 11, 2, alternative = \"greater\")"
+   }
+  },
+  {
+   "id": "sup.kolmogorov/ks-exacta-menor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.kolmogorov"
+   },
+   "titulo": "n = 60, cola inferior exacta",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 1.3877787807814457e-17,
+   "difEscaladaMax": 1.3877787807814457e-17,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ks.test(x, \"pnorm\", 0, 1, alternative = \"less\")"
+   }
+  },
+  {
+   "id": "sup.lilliefors/lilliefors-erupciones",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.lilliefors"
+   },
+   "titulo": "Lilliefors: erupciones",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::lillie.test(x)"
+   }
+  },
+  {
+   "id": "sup.lilliefors/lilliefors-normal-200-p-grande",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.lilliefors"
+   },
+   "titulo": "Lilliefors: normal-200-p-grande",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::lillie.test(x)"
+   }
+  },
+  {
+   "id": "sup.lilliefors/lilliefors-ozono-n-mayor-100",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.lilliefors"
+   },
+   "titulo": "Lilliefors: ozono-n-mayor-100",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::lillie.test(x)"
+   }
+  },
+  {
+   "id": "sup.lilliefors/lilliefors-plantas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.lilliefors"
+   },
+   "titulo": "Lilliefors: plantas",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::lillie.test(x)"
+   }
+  },
+  {
+   "id": "sup.lilliefors/lilliefors-precipitacion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.lilliefors"
+   },
+   "titulo": "Lilliefors: precipitacion",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::lillie.test(x)"
+   }
+  },
+  {
+   "id": "sup.lilliefors/lilliefors-seis-valores",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.lilliefors"
+   },
+   "titulo": "Lilliefors: seis-valores",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::lillie.test(x)"
+   }
+  },
+  {
+   "id": "sup.lilliefors/lilliefors-uniforme-50",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.lilliefors"
+   },
+   "titulo": "Lilliefors: uniforme-50",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nortest": "1.0.4"
+    },
+    "codigo": "nortest::lillie.test(x)"
+   }
+  },
+  {
+   "id": "supuestos/metodo-insectos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "supuestos"
+   },
+   "titulo": "Conteos por insecticida: varianzas muy distintas (rojo)",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "A",
+   "valores": 70,
+   "difMax": 1.2079226507921703e-13,
+   "difEscaladaMax": 1.2079226507921703e-13,
+   "peor": "atipicos.bonferroni",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "nortest": "1.0.4",
+     "car": "3.1.3",
+     "lmtest": "0.9.40",
+     "agricolae": "1.3.7",
+     "randtests": "1.0.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "m <- lm(count ~ spray); e <- residuals(m); shapiro.test(e); nortest::lillie.test(e); nortest::ad.test(e); car::leveneTest(e ~ g, center = median); bartlett.test(e ~ g); fligner.test(e ~ g); agricolae::nonadditivity(...); lmtest::dwtest(m); randtests::runs.test(e); car::outlierTest(m); cooks.distance(m); semáforo con alfa = 0.05"
+   }
+  },
+  {
+   "id": "supuestos/metodo-maiz",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "supuestos"
+   },
+   "titulo": "Maíz: bloques + híbrido × dosis (dosis numérica)",
+   "fuente": "Datos sintéticos del ejemplo de la app",
+   "clase": "A",
+   "valores": 90,
+   "difMax": 4.296563105299356e-14,
+   "difEscaladaMax": 4.296563105299356e-14,
+   "peor": "aditividad.F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "nortest": "1.0.4",
+     "car": "3.1.3",
+     "lmtest": "0.9.40",
+     "agricolae": "1.3.7",
+     "randtests": "1.0.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "m <- lm(rend ~ bloque + hibrido * dosis); e <- residuals(m); shapiro.test(e); nortest::lillie.test(e); nortest::ad.test(e); car::leveneTest(e ~ g, center = median); bartlett.test(e ~ g); fligner.test(e ~ g); agricolae::nonadditivity(...); lmtest::dwtest(m); randtests::runs.test(e); car::outlierTest(m); cooks.distance(m); semáforo con alfa = 0.05"
+   }
+  },
+  {
+   "id": "supuestos/metodo-ozono-ordenado",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "supuestos"
+   },
+   "titulo": "Ozono por mes en el orden del día del mes, con faltantes",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "D",
+   "valores": 70,
+   "difMax": 5.684341886080801e-13,
+   "difEscaladaMax": 2.471148285998481e-13,
+   "peor": "boxcox.ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "nortest": "1.0.4",
+     "car": "3.1.3",
+     "lmtest": "0.9.40",
+     "agricolae": "1.3.7",
+     "randtests": "1.0.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "m <- lm(Ozone ~ Month); e <- residuals(m); shapiro.test(e); nortest::lillie.test(e); nortest::ad.test(e); car::leveneTest(e ~ g, center = median); bartlett.test(e ~ g); fligner.test(e ~ g); agricolae::nonadditivity(...); lmtest::dwtest(m); randtests::runs.test(e); car::outlierTest(m); cooks.distance(m); semáforo con alfa = 0.05"
+   }
+  },
+  {
+   "id": "supuestos/metodo-plantas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "supuestos"
+   },
+   "titulo": "Peso seco por tratamiento (un factor, sin bloques)",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 61,
+   "difMax": 1.2434497875801753e-14,
+   "difEscaladaMax": 7.93809462606987e-15,
+   "peor": "normalidad.shapiro.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "nortest": "1.0.4",
+     "car": "3.1.3",
+     "lmtest": "0.9.40",
+     "agricolae": "1.3.7",
+     "randtests": "1.0.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "m <- lm(weight ~ group); e <- residuals(m); shapiro.test(e); nortest::lillie.test(e); nortest::ad.test(e); car::leveneTest(e ~ g, center = median); bartlett.test(e ~ g); fligner.test(e ~ g); agricolae::nonadditivity(...); lmtest::dwtest(m); randtests::runs.test(e); car::outlierTest(m); cooks.distance(m); semáforo con alfa = 0.05"
+   }
+  },
+  {
+   "id": "supuestos/metodo-roturas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "supuestos"
+   },
+   "titulo": "Roturas por lana × tensión",
+   "fuente": "Tippett (1950); conjunto warpbreaks de R",
+   "clase": "D",
+   "valores": 73,
+   "difMax": 3.622300416561419e-8,
+   "difEscaladaMax": 3.622300416561419e-8,
+   "peor": "boxcox.lambda",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "nortest": "1.0.4",
+     "car": "3.1.3",
+     "lmtest": "0.9.40",
+     "agricolae": "1.3.7",
+     "randtests": "1.0.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "m <- lm(breaks ~ wool * tension); e <- residuals(m); shapiro.test(e); nortest::lillie.test(e); nortest::ad.test(e); car::leveneTest(e ~ g, center = median); bartlett.test(e ~ g); fligner.test(e ~ g); agricolae::nonadditivity(...); lmtest::dwtest(m); randtests::runs.test(e); car::outlierTest(m); cooks.distance(m); semáforo con alfa = 0.05"
+   }
+  },
+  {
+   "id": "supuestos/metodo-una-muestra",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "supuestos"
+   },
+   "titulo": "Tiempo de espera entre erupciones, sin tratamientos",
+   "fuente": "Azzalini y Bowman (1990); conjunto faithful de R",
+   "clase": "D",
+   "valores": 41,
+   "difMax": 7.089966835849282e-8,
+   "difEscaladaMax": 3.406733270475484e-8,
+   "peor": "boxcox.lambda",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "nortest": "1.0.4",
+     "car": "3.1.3",
+     "lmtest": "0.9.40",
+     "agricolae": "1.3.7",
+     "randtests": "1.0.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "m <- lm(waiting ~ 1); e <- residuals(m); shapiro.test(e); nortest::lillie.test(e); nortest::ad.test(e); car::leveneTest(e ~ g, center = median); bartlett.test(e ~ g); fligner.test(e ~ g); agricolae::nonadditivity(...); lmtest::dwtest(m); randtests::runs.test(e); car::outlierTest(m); cooks.distance(m); semáforo con alfa = 0.05"
+   }
+  },
+  {
+   "id": "supuestos/metodo-venenos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "supuestos"
+   },
+   "titulo": "Venenos × tratamientos: varianzas desiguales, con Box-Cox",
+   "fuente": "Box y Cox (1964); conjunto poisons del paquete boot",
+   "clase": "D",
+   "valores": 91,
+   "difMax": 1.8061151685344612e-8,
+   "difEscaladaMax": 1.8061151685344612e-8,
+   "peor": "boxcox.lambda",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "nortest": "1.0.4",
+     "car": "3.1.3",
+     "lmtest": "0.9.40",
+     "agricolae": "1.3.7",
+     "randtests": "1.0.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "m <- lm(time ~ poison * treat); e <- residuals(m); shapiro.test(e); nortest::lillie.test(e); nortest::ad.test(e); car::leveneTest(e ~ g, center = median); bartlett.test(e ~ g); fligner.test(e ~ g); agricolae::nonadditivity(...); lmtest::dwtest(m); randtests::runs.test(e); car::outlierTest(m); cooks.distance(m); semáforo con alfa = 0.05"
+   }
+  },
+  {
+   "id": "sup.shapiro/shapiro-erupciones",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+   },
+   "titulo": "272 erupciones bimodales (p muy pequeño)",
+   "fuente": "Azzalini y Bowman (1990); conjunto faithful de R",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+   }
+  },
+  {
+   "id": "sup.shapiro/shapiro-n11",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+   },
+   "titulo": "Once valores (último tamaño con la primera transformación)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 7.771561172376096e-16,
+   "difEscaladaMax": 7.771561172376096e-16,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+   }
+  },
+  {
+   "id": "sup.shapiro/shapiro-n12",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+   },
+   "titulo": "Doce valores exponenciales (primer tamaño de la segunda)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 3.3306690738754696e-16,
+   "difEscaladaMax": 3.3306690738754696e-16,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+   }
+  },
+  {
+   "id": "sup.shapiro/shapiro-n3",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+   },
+   "titulo": "Tres valores (p exacto)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+   }
+  },
+  {
+   "id": "sup.shapiro/shapiro-n4",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+   },
+   "titulo": "Cuatro valores",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+   }
+  },
+  {
+   "id": "sup.shapiro/shapiro-n5",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+   },
+   "titulo": "Cinco valores",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+   }
+  },
+  {
+   "id": "sup.shapiro/shapiro-n6",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+   },
+   "titulo": "Seis valores (segunda fórmula de los coeficientes)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 3.885780586188048e-15,
+   "difEscaladaMax": 3.885780586188048e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+   }
+  },
+  {
+   "id": "sup.shapiro/shapiro-normal-5000",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+   },
+   "titulo": "5000 valores normales (el máximo permitido)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+   }
+  },
+  {
+   "id": "sup.shapiro/shapiro-ozono",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+   },
+   "titulo": "Ozono con 37 faltantes, sesgado (p diminuto)",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 3.3306690738754696e-16,
+   "difEscaladaMax": 2.47893103973102e-14,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+   }
+  },
+  {
+   "id": "sup.shapiro/shapiro-p-obvio",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+   },
+   "titulo": "Nueve ceros y un uno: R da p = 1e-99",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 4.764560328305439e-22,
+   "difEscaladaMax": 4.747030428407585e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+   }
+  },
+  {
+   "id": "sup.shapiro/shapiro-plantas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+   },
+   "titulo": "Peso seco de 30 plantas",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 7.216449660063518e-15,
+   "difEscaladaMax": 7.216449660063518e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+   }
+  },
+  {
+   "id": "sup.shapiro/shapiro-rango-diminuto",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+   },
+   "titulo": "Rango menor que 1e-10 (R reescala)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 1.1102230246251565e-16,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+   }
+  },
+  {
+   "id": "sup.shapiro/shapiro-uniforme-5000",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+   },
+   "titulo": "5000 valores uniformes (p del orden de 1e-30)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 2,
+   "difMax": 3.3306690738754696e-16,
+   "difEscaladaMax": 2.7102264393502315e-13,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
    }
   }
  ]

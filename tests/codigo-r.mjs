@@ -61,6 +61,14 @@ const ESCENARIOS = [
     r: 'c(prueba$statistic, prueba$p.value, prueba$stdres)', js: res => [res.chi2, res.p, ...res.residuo_estandarizado] },
   { ej: 'frijol', id: 'bondad-ajuste', e: { categoria: 'tratamiento', conteo: 'germinadas' }, op: { proporciones: [1, 1, 2, 2, 3] },
     r: 'c(prueba$statistic, prueba$p.value, prueba$expected)', js: res => [res.chi2, res.p, ...res.esperado] },
+  { ej: 'maiz', id: 'supuestos', e: { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, op: {}, ctx: { factoresNumericos: ['dosis'] },
+    r: 'c(sw$statistic, sw$p.value, li$statistic, ad$statistic, bf[1, "F value"], bf[1, "Pr(>F)"], lv[1, "F value"], ba$statistic, dw$statistic, dw$p.value)',
+    js: res => [res.normalidad.shapiro.W, res.normalidad.shapiro.p, res.normalidad.lilliefors.D, res.normalidad.anderson.A, res.varianzas.brown_forsythe.F,
+      res.varianzas.brown_forsythe.p, res.varianzas.levene.F, res.varianzas.bartlett.K2, res.independencia.durbin_watson.DW, res.independencia.durbin_watson.p] },
+  { ej: 'venenos', id: 'supuestos', e: { respuesta: 'tiempo', tratamientos: ['veneno', 'tratamiento'] }, op: {},
+    r: 'c(sw$statistic, sw$p.value, bf[1, "F value"], ba$statistic, dw$statistic, dw$p.value, ot$rstudent)',
+    js: res => [res.normalidad.shapiro.W, res.normalidad.shapiro.p, res.varianzas.brown_forsythe.F, res.varianzas.bartlett.K2,
+      res.independencia.durbin_watson.DW, res.independencia.durbin_watson.p, res.atipicos.rstudent] },
 ];
 /* aggregate() de R deja el primer factor cambiando más rápido; la app, el último */
 function ordenR(res, k) {

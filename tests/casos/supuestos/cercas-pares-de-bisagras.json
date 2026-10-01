@@ -1,0 +1,38 @@
+{
+  "esquema": 1,
+  "id": "sup.cercasTukey/cercas-pares-de-bisagras",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.cercasTukey"
+  },
+  "titulo": "Cercas de Tukey: pares-de-bisagras",
+  "fuente": "Conjuntos de R y datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [1, 2, 3, 4, 5, 6, 7, 8, 30, -12]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    }
+  ],
+  "esperado": {
+    "estadisticos": [1, 2, 4.5, 7, 8],
+    "fuera": [30, -12]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "boxplot.stats(x)"
+  }
+}

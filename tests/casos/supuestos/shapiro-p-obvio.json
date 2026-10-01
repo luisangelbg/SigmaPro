@@ -1,0 +1,38 @@
+{
+  "esquema": 1,
+  "id": "sup.shapiro/shapiro-p-obvio",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.shapiro"
+  },
+  "titulo": "Nueve ceros y un uno: R da p = 1e-99",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    }
+  ],
+  "esperado": {
+    "W": 0.36572062741426348,
+    "p": 1.0036928138890686e-07
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "shapiro.test(x)"
+  }
+}

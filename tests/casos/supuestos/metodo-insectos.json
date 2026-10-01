@@ -1,0 +1,142 @@
+{
+  "esquema": 1,
+  "id": "supuestos/metodo-insectos",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "supuestos"
+  },
+  "titulo": "Conteos por insecticida: varianzas muy distintas (rojo)",
+  "fuente": "Beall (1942); conjunto InsectSprays de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "count": [10, 7, 20, 14, 14, 12, 10, 23, 17, 20, 14, 13, 11, 17, 21, 11, 16, 14, 17, 17, 19, 21, 7, 13, 0, 1, 7, 2, 3, 1, 2, 1, 3, 0, 1, 4, 3, 5, 12, 6, 4, 3, 5, 5, 5, 5, 2, 4, 3, 5, 3, 5, 3, 6, 1, 1, 3, 2, 6, 4, 11, 9, 15, 22, 15, 16, 13, 10, 26, 26, 24, 13],
+      "spray": ["A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "D", "D", "D", "D", "D", "D", "D", "D", "D", "D", "D", "D", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"]
+    },
+    "tipos": {
+      "count": {
+        "tipo": "numerica"
+      },
+      "spray": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C", "D", "E", "F"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "count",
+    "tratamientos": ["spray"]
+  },
+  "opciones": {
+    "alfa": 0.050000000000000003
+  },
+  "esperado": {
+    "n": 72,
+    "excluidas": 0,
+    "gl_residual": 66,
+    "cm_error": 15.381313131313153,
+    "normalidad": {
+      "shapiro": {
+        "W": 0.96005854280937664,
+        "p": 0.022259886782489212
+      },
+      "lilliefors": {
+        "D": 0.13009756733243416,
+        "p": 0.0041312506473287457
+      },
+      "anderson": {
+        "A": 1.2015303750173558,
+        "p": 0.0036507253850793157
+      },
+      "asimetria": 0.42028329663335534,
+      "curtosis": 0.47463307751836048
+    },
+    "varianzas": {
+      "grupos": ["A", "B", "C", "D", "E", "F"],
+      "n_grupo": [12, 12, 12, 12, 12, 12],
+      "varianza_grupo": [22.272727272727394, 18.242424242424246, 3.9015151515151492, 6.2651515151515156, 3, 38.606060606060609],
+      "razon_max_min": 12.86868686868687,
+      "levene": {
+        "F": 6.455352710086709,
+        "gl1": 5,
+        "gl2": 66,
+        "p": 6.1036338344819653e-05
+      },
+      "brown_forsythe": {
+        "F": 3.8213563132259285,
+        "gl1": 5,
+        "gl2": 66,
+        "p": 0.0042227911389921095
+      },
+      "bartlett": {
+        "K2": 25.959825320368715,
+        "gl": 5,
+        "p": 9.0851223329451979e-05
+      },
+      "fligner": {
+        "X2": 14.482781038458608,
+        "gl": 5,
+        "p": 0.012816779189709193
+      }
+    },
+    "aditividad": null,
+    "independencia": {
+      "durbin_watson": {
+        "DW": 1.7533929841843192,
+        "p": 0.048053309616576716
+      },
+      "rachas": {
+        "rachas": 31,
+        "p": 0.53308551530562687
+      }
+    },
+    "atipicos": {
+      "fila": 69,
+      "rstudent": 2.5909655481376581,
+      "bonferroni": 0.84989783435901067,
+      "gl": 65,
+      "cook_max": 0.093610543126221843,
+      "cook_fila": 69,
+      "cook_mayores": 7,
+      "palanca_max": 0.083333333333333676,
+      "fuera_cercas": 6
+    },
+    "semaforo": [
+      {
+        "clave": "normalidad",
+        "color": "ambar"
+      },
+      {
+        "clave": "varianzas",
+        "color": "rojo"
+      },
+      {
+        "clave": "aditividad",
+        "color": "gris"
+      },
+      {
+        "clave": "independencia",
+        "color": "ambar"
+      },
+      {
+        "clave": "atipicos",
+        "color": "verde"
+      }
+    ],
+    "global": "rojo"
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "nortest": "1.0.4",
+      "car": "3.1.3",
+      "lmtest": "0.9.40",
+      "agricolae": "1.3.7",
+      "randtests": "1.0.2",
+      "e1071": "1.7.16"
+    },
+    "codigo": "m <- lm(count ~ spray); e <- residuals(m); shapiro.test(e); nortest::lillie.test(e); nortest::ad.test(e); car::leveneTest(e ~ g, center = median); bartlett.test(e ~ g); fligner.test(e ~ g); agricolae::nonadditivity(...); lmtest::dwtest(m); randtests::runs.test(e); car::outlierTest(m); cooks.distance(m); semáforo con alfa = 0.05"
+  }
+}

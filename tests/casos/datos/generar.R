@@ -61,7 +61,7 @@ sp_caso("arcoseno-grados", objetivo = "transformar.aplicar", titulo = "Arcoseno 
 sp_caso("boxcox-lambda-dado", objetivo = "transformar.aplicar", titulo = "Box-Cox con λ = 0.37", fuente = "Datos sintéticos",
   datos = x, argumentos = list("boxcox", list(columna = "y"), list(lambda = 0.37)), esperado = I((x$y^0.37 - 1) / 0.37),
   codigo = "(y^0.37 - 1) / 0.37")
-sp_caso("estandarizar", objetivo = "transformar.aplicar", titulo = "Estandarizar (media 0, DE 1)", fuente = "Datos sintéticos",
+sp_caso("transformar-estandarizar", objetivo = "transformar.aplicar", titulo = "Estandarizar (media 0, DE 1)", fuente = "Datos sintéticos",
   datos = x, argumentos = list("estandarizar", list(columna = "y"), list()), esperado = I(as.vector(scale(x$y))),
   codigo = "as.vector(scale(y))")
 

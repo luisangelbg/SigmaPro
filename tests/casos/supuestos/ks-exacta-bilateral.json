@@ -1,0 +1,43 @@
+{
+  "esquema": 1,
+  "id": "sup.kolmogorov/ks-exacta-bilateral",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.kolmogorov"
+  },
+  "titulo": "n = 20, bilateral exacta (Marsaglia, Tsang y Wang)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [15.27896, 10.59872, 7.8788900000000002, 8.9655799999999992, 8.5970499999999994, 9.0405899999999999, 9.4851600000000005, 9.8543500000000002, 7.2606999999999999, 8.3676999999999992, 10.37233, 15.978529999999999, 9.5945499999999999, 9.1417199999999994, 7.87479, 12.81596, 11.443669999999999, 9.1322500000000009, 8.1633499999999994, 8.3161100000000001]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    10,
+    2,
+    "bilateral",
+    null
+  ],
+  "esperado": {
+    "D": 0.23032500914104981,
+    "p": 0.20467510368415942,
+    "exacta": true
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "ks.test(x, \"pnorm\", 10, 2, alternative = \"two.sided\")"
+  }
+}

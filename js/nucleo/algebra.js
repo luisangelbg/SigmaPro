@@ -227,5 +227,58 @@ SP.definir('algebra', function (SP) {
     return L;
   }
 
-  SP.algebra = { norma, qr, qty, qz, resolverR, rtrInversa, minimosCuadrados, comprimir, scResidualSub, cholesky, elemR };
+  /**
+   * Agrupa las filas idénticas de X (n × p, por columnas): en un diseño solo con factores hay una por celda.
+   * Clave: dos combinaciones lineales «al azar»; luego se comprueba fila por fila que el grupo sea idéntico.
+   * Devuelve { g, rep, cuenta, G } o null si hay más de tope·n grupos distintos.
+   */
+  function agruparFilas(X, n, p, tope) {
+    tope = tope === undefined ? 0.5 : tope;
+    const r1 = new Float64Array(p), r2 = new Float64Array(p);
+    for (let j = 0; j < p; j++) { r1[j] = Math.sin(j + 1) * 1e3; r2[j] = Math.cos(3 * j + 2) * 1e3; }
+    const g = new Int32Array(n), mapa = new Map(), rep = [];
+    for (let i = 0; i < n; i++) {
+      let a = 0, b = 0;
+      for (let j = 0; j < p; j++) { const v = X[j * n + i]; a += v * r1[j]; b += v * r2[j]; }
+      const k = a + '|' + b;
+      let q = mapa.get(k);
+      if (q === undefined) { q = rep.length; mapa.set(k, q); rep.push(i); if (rep.length > tope * n) return null; }
+      g[i] = q;
+    }
+    for (let i = 0; i < n; i++) { const r = rep[g[i]]; for (let j = 0; j < p; j++) if (X[j * n + i] !== X[j * n + r]) return null; }
+    const cuenta = new Float64Array(rep.length);
+    for (let i = 0; i < n; i++) cuenta[g[i]]++;
+    return { g, rep: Int32Array.from(rep), cuenta, G: rep.length };
+  }
+
+  /**
+   * Mínimos cuadrados con las filas agrupadas: la QR de √nᵍ·xᵍ (G × p) en vez de la de X (n × p). Los
+   * coeficientes resuelven las mismas ecuaciones normales (XᵀX = Σ nᵍ xᵍxᵍᵀ, Xᵀy = Σ nᵍ xᵍ ȳᵍ); R es la de X
+   * salvo el signo de sus filas, así que palancas y (XᵀX)⁻¹ salen iguales. Los residuos se calculan fila por
+   * fila. Para tablas grandes con pocas celdas: O(n·p + G·p²) en vez de O(n·p²).
+   */
+  function minimosCuadradosAgrupados(X, n, p, y, gr, tol) {
+    const { g, rep, cuenta, G } = gr;
+    const Xg = new Float64Array(G * p), media = new Float64Array(G);
+    for (let i = 0; i < n; i++) media[g[i]] += y[i];
+    for (let q = 0; q < G; q++) media[q] /= cuenta[q];
+    /* segunda pasada de la media por grupo (como la media en dos pasadas) */
+    const corr = new Float64Array(G);
+    for (let i = 0; i < n; i++) corr[g[i]] += y[i] - media[g[i]];
+    for (let q = 0; q < G; q++) media[q] += corr[q] / cuenta[q];
+    for (let q = 0; q < G; q++) { const w = Math.sqrt(cuenta[q]); for (let j = 0; j < p; j++) Xg[j * G + q] = w * X[j * n + rep[q]]; }
+    const d = qr(Xg, G, p, tol);
+    const u = Float64Array.from(media, (m, q) => Math.sqrt(cuenta[q]) * m);
+    const b = resolverR(d, qty(d, u));
+    const coef = new Float64Array(p).fill(NaN);
+    for (let j = 0; j < d.rango; j++) coef[d.pivote[j]] = b[j];
+    const ajg = new Float64Array(G);
+    for (let q = 0; q < G; q++) { let s = 0; for (let j = 0; j < d.rango; j++) s += X[d.pivote[j] * n + rep[q]] * b[j]; ajg[q] = s; }
+    const ajustados = new Float64Array(n), residuales = new Float64Array(n);
+    let sc = 0;
+    for (let i = 0; i < n; i++) { ajustados[i] = ajg[g[i]]; residuales[i] = y[i] - ajg[g[i]]; sc += residuales[i] * residuales[i]; }
+    return { qr: d, coeficientes: coef, residuales, ajustados, scResidual: sc, agrupado: true, grupos: gr };
+  }
+
+  SP.algebra = { norma, qr, qty, qz, resolverR, rtrInversa, minimosCuadrados, comprimir, scResidualSub, cholesky, elemR, agruparFilas, minimosCuadradosAgrupados };
 });

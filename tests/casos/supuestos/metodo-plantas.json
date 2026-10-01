@@ -1,0 +1,142 @@
+{
+  "esquema": 1,
+  "id": "supuestos/metodo-plantas",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "supuestos"
+  },
+  "titulo": "Peso seco por tratamiento (un factor, sin bloques)",
+  "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "weight": [4.1699999999999999, 5.5800000000000001, 5.1799999999999997, 6.1100000000000003, 4.5, 4.6100000000000003, 5.1699999999999999, 4.5300000000000002, 5.3300000000000001, 5.1399999999999997, 4.8099999999999996, 4.1699999999999999, 4.4100000000000001, 3.5899999999999999, 5.8700000000000001, 3.8300000000000001, 6.0300000000000002, 4.8899999999999997, 4.3200000000000003, 4.6900000000000004, 6.3099999999999996, 5.1200000000000001, 5.54, 5.5, 5.3700000000000001, 5.29, 4.9199999999999999, 6.1500000000000004, 5.7999999999999998, 5.2599999999999998],
+      "group": ["ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2"]
+    },
+    "tipos": {
+      "weight": {
+        "tipo": "numerica"
+      },
+      "group": {
+        "tipo": "factor",
+        "niveles": ["ctrl", "trt1", "trt2"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "weight",
+    "tratamientos": ["group"]
+  },
+  "opciones": {
+    "alfa": 0.050000000000000003
+  },
+  "esperado": {
+    "n": 30,
+    "excluidas": 0,
+    "gl_residual": 27,
+    "cm_error": 0.38859592592592584,
+    "normalidad": {
+      "shapiro": {
+        "W": 0.96606811887418476,
+        "p": 0.43789859550620958
+      },
+      "lilliefors": {
+        "D": 0.11014752297124253,
+        "p": 0.46526233336938105
+      },
+      "anderson": {
+        "A": 0.35819587153684296,
+        "p": 0.42994325492985974
+      },
+      "asimetria": 0.55183260462476924,
+      "curtosis": 0.034012789280222631
+    },
+    "varianzas": {
+      "grupos": ["ctrl", "trt1", "trt2"],
+      "n_grupo": [10, 10, 10],
+      "varianza_grupo": [0.33999555555555511, 0.62992111111111126, 0.19587111111111108],
+      "razon_max_min": 3.2159980486033914,
+      "levene": {
+        "F": 1.2369629544697835,
+        "gl1": 2,
+        "gl2": 27,
+        "p": 0.30619492299144735
+      },
+      "brown_forsythe": {
+        "F": 1.1191856948703907,
+        "gl1": 2,
+        "gl2": 27,
+        "p": 0.34122662412547367
+      },
+      "bartlett": {
+        "K2": 2.878573787236097,
+        "gl": 2,
+        "p": 0.23709677363455775
+      },
+      "fligner": {
+        "X2": 2.3504555524813724,
+        "gl": 2,
+        "p": 0.30874864607224134
+      }
+    },
+    "aditividad": null,
+    "independencia": {
+      "durbin_watson": {
+        "DW": 2.7039899581494256,
+        "p": 0.9501837650844247
+      },
+      "rachas": {
+        "rachas": 17,
+        "p": 0.7101819941675358
+      }
+    },
+    "atipicos": {
+      "fila": 17,
+      "rstudent": 2.5373413823478508,
+      "bonferroni": 0.52525613402979987,
+      "gl": 26,
+      "cook_max": 0.19847343199601916,
+      "cook_fila": 17,
+      "cook_mayores": 2,
+      "palanca_max": 0.10000000000000001,
+      "fuera_cercas": 1
+    },
+    "semaforo": [
+      {
+        "clave": "normalidad",
+        "color": "verde"
+      },
+      {
+        "clave": "varianzas",
+        "color": "verde"
+      },
+      {
+        "clave": "aditividad",
+        "color": "gris"
+      },
+      {
+        "clave": "independencia",
+        "color": "verde"
+      },
+      {
+        "clave": "atipicos",
+        "color": "verde"
+      }
+    ],
+    "global": "verde"
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "nortest": "1.0.4",
+      "car": "3.1.3",
+      "lmtest": "0.9.40",
+      "agricolae": "1.3.7",
+      "randtests": "1.0.2",
+      "e1071": "1.7.16"
+    },
+    "codigo": "m <- lm(weight ~ group); e <- residuals(m); shapiro.test(e); nortest::lillie.test(e); nortest::ad.test(e); car::leveneTest(e ~ g, center = median); bartlett.test(e ~ g); fligner.test(e ~ g); agricolae::nonadditivity(...); lmtest::dwtest(m); randtests::runs.test(e); car::outlierTest(m); cooks.distance(m); semáforo con alfa = 0.05"
+  }
+}

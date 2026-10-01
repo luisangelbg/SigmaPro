@@ -1,0 +1,151 @@
+{
+  "esquema": 1,
+  "id": "supuestos/metodo-roturas",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "supuestos"
+  },
+  "titulo": "Roturas por lana × tensión",
+  "fuente": "Tippett (1950); conjunto warpbreaks de R",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "breaks": [26, 30, 54, 25, 70, 52, 51, 26, 67, 18, 21, 29, 17, 12, 18, 35, 30, 36, 36, 21, 24, 18, 10, 43, 28, 15, 26, 27, 14, 29, 19, 29, 31, 41, 20, 44, 42, 26, 19, 16, 39, 28, 21, 39, 29, 20, 21, 24, 17, 13, 15, 15, 16, 28],
+      "wool": ["A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B"],
+      "tension": ["L", "L", "L", "L", "L", "L", "L", "L", "L", "M", "M", "M", "M", "M", "M", "M", "M", "M", "H", "H", "H", "H", "H", "H", "H", "H", "H", "L", "L", "L", "L", "L", "L", "L", "L", "L", "M", "M", "M", "M", "M", "M", "M", "M", "M", "H", "H", "H", "H", "H", "H", "H", "H", "H"]
+    },
+    "tipos": {
+      "breaks": {
+        "tipo": "numerica"
+      },
+      "wool": {
+        "tipo": "factor",
+        "niveles": ["A", "B"]
+      },
+      "tension": {
+        "tipo": "factor",
+        "niveles": ["L", "M", "H"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "breaks",
+    "tratamientos": ["wool", "tension"]
+  },
+  "opciones": {
+    "alfa": 0.050000000000000003
+  },
+  "esperado": {
+    "n": 54,
+    "excluidas": 0,
+    "gl_residual": 48,
+    "cm_error": 119.68981481481485,
+    "normalidad": {
+      "shapiro": {
+        "W": 0.9868607601019066,
+        "p": 0.81619289645385518
+      },
+      "lilliefors": {
+        "D": 0.055940446204636007,
+        "p": 0.94307030489175725
+      },
+      "anderson": {
+        "A": 0.16420929146165975,
+        "p": 0.93890858357524354
+      },
+      "asimetria": 0.23838094961279846,
+      "curtosis": -0.28558542147683619
+    },
+    "varianzas": {
+      "grupos": ["A · L", "A · M", "A · H", "B · L", "B · M", "B · H"],
+      "n_grupo": [9, 9, 9, 9, 9, 9],
+      "varianza_grupo": [327.527777777778, 75.000000000000014, 105.52777777777779, 97.194444444444429, 88.944444444444443, 23.944444444444443],
+      "razon_max_min": 13.678654292343397,
+      "levene": {
+        "F": 5.1482946321090326,
+        "gl1": 5,
+        "gl2": 48,
+        "p": 0.00073513127149850009
+      },
+      "brown_forsythe": {
+        "F": 2.8909805588016688,
+        "gl1": 5,
+        "gl2": 48,
+        "p": 0.023217582429069825
+      },
+      "bartlett": {
+        "K2": 12.976586354520892,
+        "gl": 5,
+        "p": 0.023599169998597833
+      },
+      "fligner": {
+        "X2": 11.957407456668156,
+        "gl": 5,
+        "p": 0.035376080607709873
+      }
+    },
+    "aditividad": null,
+    "independencia": {
+      "durbin_watson": {
+        "DW": 2.2375610825307191,
+        "p": 0.57503781306167823
+      },
+      "rachas": {
+        "rachas": 28,
+        "p": 1
+      }
+    },
+    "atipicos": {
+      "fila": 5,
+      "rstudent": 2.6121994413991541,
+      "bonferroni": 0.65019878403357012,
+      "gl": 47,
+      "cook_max": 0.12677687309016369,
+      "cook_fila": 5,
+      "cook_mayores": 3,
+      "palanca_max": 0.11111111111111167,
+      "fuera_cercas": 0
+    },
+    "semaforo": [
+      {
+        "clave": "normalidad",
+        "color": "verde"
+      },
+      {
+        "clave": "varianzas",
+        "color": "ambar"
+      },
+      {
+        "clave": "aditividad",
+        "color": "gris"
+      },
+      {
+        "clave": "independencia",
+        "color": "verde"
+      },
+      {
+        "clave": "atipicos",
+        "color": "verde"
+      }
+    ],
+    "global": "ambar",
+    "boxcox": {
+      "lambda": -0.033347303984172259,
+      "ic": [-0.5744378074884714, 0.49822099199152386]
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "nortest": "1.0.4",
+      "car": "3.1.3",
+      "lmtest": "0.9.40",
+      "agricolae": "1.3.7",
+      "randtests": "1.0.2",
+      "e1071": "1.7.16"
+    },
+    "codigo": "m <- lm(breaks ~ wool * tension); e <- residuals(m); shapiro.test(e); nortest::lillie.test(e); nortest::ad.test(e); car::leveneTest(e ~ g, center = median); bartlett.test(e ~ g); fligner.test(e ~ g); agricolae::nonadditivity(...); lmtest::dwtest(m); randtests::runs.test(e); car::outlierTest(m); cooks.distance(m); semáforo con alfa = 0.05"
+  }
+}

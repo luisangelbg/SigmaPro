@@ -96,7 +96,7 @@ try {
 } finally {
   try { ws && ws.close(); } catch { /* nada */ }
   nav.kill();
-  await dormir(700);
-  try { rmSync(perfil, { recursive: true, force: true }); } catch { /* el navegador aún lo suelta */ }
+  /* el navegador tarda en soltar su perfil temporal: se reintenta unos segundos para no dejarlo en %TEMP% */
+  for (let k = 0; k < 15 && existsSync(perfil); k++) { await dormir(400); try { rmSync(perfil, { recursive: true, force: true }); } catch { /* aún en uso */ } }
   process.exit(codigo);
 }

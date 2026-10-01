@@ -1,0 +1,56 @@
+{
+  "esquema": 1,
+  "id": "sup.noAditividadTabla/roturas-replicado",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.noAditividadTabla"
+  },
+  "titulo": "Lana × tensión con 9 repeticiones por celda (r = 9: el residual no se corrige)",
+  "fuente": "Tippett (1950); conjunto warpbreaks de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [26, 30, 54, 25, 70, 52, 51, 26, 67, 18, 21, 29, 17, 12, 18, 35, 30, 36, 36, 21, 24, 18, 10, 43, 28, 15, 26, 27, 14, 29, 19, 29, 31, 41, 20, 44, 42, 26, 19, 16, 39, 28, 21, 39, 29, 20, 21, 24, 17, 13, 15, 15, 16, 28],
+      "f1": ["A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B"],
+      "f2": ["L", "L", "L", "L", "L", "L", "L", "L", "L", "M", "M", "M", "M", "M", "M", "M", "M", "M", "H", "H", "H", "H", "H", "H", "H", "H", "H", "L", "L", "L", "L", "L", "L", "L", "L", "L", "M", "M", "M", "M", "M", "M", "M", "M", "M", "H", "H", "H", "H", "H", "H", "H", "H", "H"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "f1": {
+        "tipo": "factor",
+        "niveles": ["A", "B"]
+      },
+      "f2": {
+        "tipo": "factor",
+        "niveles": ["L", "M", "H"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    "y",
+    "f1",
+    "f2"
+  ],
+  "esperado": {
+    "P": 5488.8888888888951,
+    "Q": 67909.099222679462,
+    "sc_no_aditividad": 443.65043240782995,
+    "sc_residual": 6747.8888888888878,
+    "gl_residual": 50,
+    "F": 3.2873276347091851,
+    "p": 0.075821464157074886
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "agricolae": "1.3.7"
+    },
+    "codigo": "m <- aov(y ~ f1 + f2); agricolae::nonadditivity(y, f1, f2, df.residual(m), deviance(m) / df.residual(m))\np <- pf(F, 1, gl_residual, lower.tail = FALSE)   # agricolae da 0.07582146416 con 1 - pf()"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "esquema": 1,
+  "id": "sup.grubbs/grubbs-atipico-bajo",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.grubbs"
+  },
+  "titulo": "Grubbs: atipico-bajo",
+  "fuente": "Conjuntos de R y datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [12.1, 12.5, 11.9, 12.300000000000001, 12.800000000000001, 12, 12.6, 8.4000000000000004, 12.199999999999999, 12.4]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    }
+  ],
+  "esperado": {
+    "G": 2.7774090636431037,
+    "U": 0.047654184344831874,
+    "p": 7.1892425401731685e-06
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "outliers": "0.15"
+    },
+    "codigo": "outliers::grubbs.test(x)"
+  }
+}

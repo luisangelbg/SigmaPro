@@ -98,5 +98,24 @@ SP.definir('tabla', function (SP) {
     };
   }
 
-  SP.tabla = { crear, numerica, factor, aNumero, esFaltante, FALTANTE };
+  /**
+   * La tabla (o solo las columnas dadas) en una forma que se puede copiar a un hilo de trabajo:
+   * { columnas, tipos, fechas }. Las numéricas viajan como Float64Array; los factores, como etiquetas.
+   */
+  function aPlano(tabla, nombres) {
+    const columnas = {}, tipos = {}, fechas = [];
+    for (const nom of nombres || tabla.nombres) {
+      const c = tabla.col(nom);
+      if (c.tipo === 'numerica') { columnas[nom] = c.valores; tipos[nom] = { tipo: 'numerica' }; if (c.fecha) fechas.push(nom); }
+      else { columnas[nom] = Array.from(c.codigos, k => (k < 0 ? null : c.niveles[k])); tipos[nom] = { tipo: 'factor', niveles: c.niveles }; }
+    }
+    return { columnas, tipos, fechas };
+  }
+  function dePlano(p) {
+    const t = crear(p.columnas, p.tipos);
+    for (const nom of p.fechas || []) t.col(nom).fecha = true;
+    return t;
+  }
+
+  SP.tabla = { crear, numerica, factor, aNumero, esFaltante, FALTANTE, aPlano, dePlano };
 });

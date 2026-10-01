@@ -124,6 +124,11 @@ SP.definir('registro', function (SP) {
     return { resultado, ms: (typeof performance !== 'undefined' ? performance : Date).now() - t0 };
   };
 
+  /** Lo mismo con la tabla en forma plana (SP.tabla.aPlano): es la entrada de los hilos de trabajo. */
+  SP.ejecutarPlano = function (id, plano, entradas, opciones) {
+    return SP.ejecutar(id, SP.tabla.dePlano(plano), entradas, opciones).resultado;
+  };
+
   /**
    * ¿El método tiene casos de validación y aprobaron todos?
    * @param {string} id

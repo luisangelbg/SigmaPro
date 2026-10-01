@@ -2,6 +2,31 @@
 
 ## Sin publicar
 
+### Hito 1.4 · supuestos y semáforo (1 oct 2026)
+
+- `js/metodos/supuestos.js`: normalidad (Shapiro-Wilk con el algoritmo AS R94 de R, Lilliefors, Anderson-Darling,
+  Kolmogorov-Smirnov contra una normal dada, exacta de Marsaglia-Tsang-Wang y de Birnbaum-Tingey o asintótica),
+  varianzas (Levene, Brown-Forsythe, Bartlett, Fligner-Killeen), no aditividad de Tukey, independencia
+  (Durbin-Watson con p exacto por el algoritmo AS 153 de Farebrother o con media y varianza exactas; rachas exactas
+  o normales), atípicos e influencia (palancas, residuos estandarizados y estudentizados con Bonferroni, distancia de
+  Cook, Grubbs, cercas de Tukey) y la banda del gráfico Q-Q por estadísticos de orden.
+- Método «Revisar los supuestos del modelo»: ajusta el modelo del experimento (bloques + tratamientos cruzados),
+  prueba sus residuos y arma un semáforo de cinco renglones con reglas documentadas, más recomendaciones (Box-Cox
+  con el mismo modelo, conteos, porcentajes, Welch o Kruskal-Wallis, revisar una fila atípica, el orden en campo).
+- Bloque 4 de la app: catálogo de análisis por familias (los que faltan muestran su hito), formulario del modelo,
+  semáforo (el color siempre con su palabra), gráficas Q-Q con banda, residuos contra ajustados y en orden
+  (`js/interfaz/graficas.js`, SVG propio que sigue al tema), cuadro de pruebas y código R.
+- Validación: 103 casos nuevos contra R (3 921 valores) y dos hallazgos de clase B documentados (`fligner.test` rompe
+  empates exactos por el redondeo de la resta; agricolae calcula p = 1 − pf y pierde cifras con p diminuto). El
+  AS 153 reproduce la tabla publicada por Farebrother (1984). `tests/codigo-r.mjs` corre también el código R de
+  los supuestos (10 escenarios).
+- Rendimiento: el ajuste por celdas (`SP.algebra.minimosCuadradosAgrupados`) evita la QR completa en tablas grandes
+  de solo factores; Durbin-Watson normal por diferencias dispersas; palancas por celda. Con 100 000 filas: 1.1 s con
+  un factor y 2.5 s con bloques × factorial de 109 columnas (antes 7.3 s), con aviso «Calculando…».
+- La prueba del código R encontró y corrigió un `$` perdido en la línea de no aditividad. `sp_caso` ahora se detiene
+  si dos casos de una carpeta comparten nombre: así apareció un caso de expresión del Hito 1.2 («estandarizar») que
+  otro del mismo nombre había pisado; se restauró.
+
 ### Hito 1.3 · explorar (1 oct 2026)
 
 - Métodos registrados (`js/metodos/`), los primeros que ofrece la app bajo la regla de liberación:

@@ -33,14 +33,16 @@ Reglas adicionales (las aplica `tests/lib/comparar.js`):
 
 ## Hallazgos documentados (clase B)
 
-Casos en que la referencia no es la función de R tal cual, porque R mismo es menos preciso por diseño
-o por redondeo. En los tres, el valor de SigmaPro se comprobó con la propia función de distribución de R o
+Casos en que la referencia no es la función de R (o de su paquete) tal cual, porque es menos precisa por
+diseño o por redondeo. En todos, el valor de SigmaPro se comprobó con la propia función de distribución de R o
 con una identidad exacta.
 
 | Función | Qué pasa en R | Cómo se valida |
 |---|---|---|
 | Cuantil del rango estudentizado (`qtukey`) | Su iteración se detiene con tolerancia 1e-4; se desvía hasta 2.7e-7 de su propio `ptukey`. | Referencia = inversión exacta de `ptukey` con `uniroot` a 1e-14 (dif. 6e-12). Un caso aparte contra `qtukey` tal cual: dif. 7.5e-8, dentro del criterio. |
 | Cuantil de la binomial justo en un salto (`qbinom`) | Con n impar y prob = ½, P(X ≤ (n − 1)/2) = ½ exactamente; el `pbinom` de R da 0.5 − 2.2e-15 con n = 51 y su `qbinom(0.5, 51, 0.5)` responde 26 en vez de 25. | Referencia = (n − 1)/2 exacto por simetría; la rejilla general (378 valores) se compara contra `qbinom` tal cual. SigmaPro tolera 1e-12 relativo en el salto, que cubre el redondeo de su propia binomial con n de miles. |
+| Fligner-Killeen (`fligner.test`) | Centra con la mediana y ordena \|x − mediana\|; la resta binaria deja casi-empates como 0.0049999999999999888 y 0.0050000000000000001 (los dos son 0.005) y R los ordena como distintos: su estadístico depende del ruido del punto flotante. | Referencia = la misma fórmula en R con \|x − mediana\| redondeado a 12 cifras de la escala antes de los rangos; SigmaPro conserva así los empates. Con datos sin casi-empates (conteos, enteros) coincide con `fligner.test` tal cual. |
+| No aditividad de Tukey (`agricolae::nonadditivity`) | Calcula p = 1 − pf(F, 1, gl): con p ≈ 7e-13 pierde cifras (error relativo 7.9e-5). | Referencia = `pf(F, 1, gl, lower.tail = FALSE)` con el F de agricolae, que coincide en todo lo demás. |
 | Cuantil de t con menos de 1 gl y colas diminutas (`qt`) | `pt(qt(1e-8, 0.5, lower.tail = FALSE), 0.5, lower.tail = FALSE)` da 9.99999986e-9: error relativo 2.9e-8. | Referencia = inversión exacta de `pt` en escala logarítmica (dif. 2.8e-14). |
 
 Nota: para la t con más de 4 × 10⁵ grados de libertad, R usa una aproximación normal corregida; SigmaPro usa la
@@ -79,6 +81,27 @@ suma (a 1e-9 relativo) y los casos contra R pasan por la ruta rápida.
 Además, `tests/codigo-r.mjs` toma el **código R equivalente** que la app muestra en cada resumen, lo ejecuta
 con Rscript sobre los ejemplos y compara sus números con los de la app (1e-6): 8 escenarios, 209 valores.
 Así el código que alguien copia para su tesis o para la revisión por pares da exactamente lo mismo.
+
+## Supuestos (Hito 1.4)
+
+| Qué | Contra qué | Casos |
+|---|---|---|
+| Shapiro-Wilk en todas las ramas de AS R94 (n = 3, 4–5, 6–11, ≥ 12, p «obvio», rango diminuto, n = 5000) | `shapiro.test` | 13 |
+| Lilliefors (incluida la corrección para n > 100) y Anderson-Darling (incluido un atípico con z ≈ −60) | `nortest::lillie.test`, `ad.test` | 15 |
+| Kolmogorov-Smirnov contra una normal dada: exacta bilateral y de una cola, asintótica | `ks.test` | 7 |
+| Levene, Brown-Forsythe, Bartlett y Fligner-Killeen | `car::leveneTest`, `bartlett.test`, `fligner.test` | 16 |
+| No aditividad de Tukey (aditivo, multiplicativo, el maíz del ejemplo, celdas con repeticiones) | `agricolae::nonadditivity` | 4 |
+| Durbin-Watson: p exacto (AS 153) con n < 100 y aproximación normal con n ≥ 100, tres alternativas | `lmtest::dwtest` | 8 |
+| Rachas arriba y abajo de la mediana, exacta y normal | `randtests::runs.test` | 6 |
+| Palancas, residuos estandarizados y estudentizados, Cook, y el mayor residuo con Bonferroni | `hatvalues`, `rstandard`, `rstudent`, `cooks.distance`, `car::outlierTest` | 8 |
+| Grubbs y cercas de Tukey | `outliers::grubbs.test`, `boxplot.stats` | 9 |
+| Banda del gráfico Q-Q por estadísticos de orden | `qnorm(ppoints(n))`, `qbeta` | 10 |
+| El método completo: modelo, pruebas de los residuos, semáforo y Box-Cox (siete experimentos) | todo lo anterior en R, con las mismas reglas del semáforo | 7 |
+
+Las pruebas que dependen de empates exactos entre residuos (Fligner, rachas, cercas) usan los residuos redondeados a
+12 cifras de su escala: R y SigmaPro calculan los residuos con un ruido de ~1e-15 distinto, y sin ese redondeo un
+empate de los datos se rompería al azar de un modo distinto en cada programa. Una prueba unitaria comprueba que el
+ajuste por celdas (tablas grandes) da los mismos residuos, palancas y Durbin-Watson que la QR completa (1e-10).
 
 Dos convenciones de R que la app sigue a propósito: los números se muestran y se copian con 15 cifras
 significativas, como `as.character()` (0.1 + 0.2 se ve «0.3»), y los niveles sin observaciones (por un filtro

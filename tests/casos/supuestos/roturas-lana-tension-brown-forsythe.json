@@ -1,0 +1,49 @@
+{
+  "esquema": 1,
+  "id": "sup.levene/roturas-lana-tension-brown-forsythe",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "sup.levene"
+  },
+  "titulo": "Roturas por lana × tensión (seis grupos) · mediana",
+  "fuente": "Tippett (1950); conjunto warpbreaks de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [26, 30, 54, 25, 70, 52, 51, 26, 67, 18, 21, 29, 17, 12, 18, 35, 30, 36, 36, 21, 24, 18, 10, 43, 28, 15, 26, 27, 14, 29, 19, 29, 31, 41, 20, 44, 42, 26, 19, 16, 39, 28, 21, 39, 29, 20, 21, 24, 17, 13, 15, 15, 16, 28],
+      "g": ["A.L", "A.L", "A.L", "A.L", "A.L", "A.L", "A.L", "A.L", "A.L", "A.M", "A.M", "A.M", "A.M", "A.M", "A.M", "A.M", "A.M", "A.M", "A.H", "A.H", "A.H", "A.H", "A.H", "A.H", "A.H", "A.H", "A.H", "B.L", "B.L", "B.L", "B.L", "B.L", "B.L", "B.L", "B.L", "B.L", "B.M", "B.M", "B.M", "B.M", "B.M", "B.M", "B.M", "B.M", "B.M", "B.H", "B.H", "B.H", "B.H", "B.H", "B.H", "B.H", "B.H", "B.H"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "g": {
+        "tipo": "factor",
+        "niveles": ["A.L", "B.L", "A.M", "B.M", "A.H", "B.H"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "g"
+    },
+    "mediana"
+  ],
+  "esperado": {
+    "F": 2.8909805588016586,
+    "gl1": 5,
+    "gl2": 48,
+    "p": 0.023217582429070165
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "car": "3.1.3"
+    },
+    "codigo": "car::leveneTest(y ~ g, center = median)"
+  }
+}
