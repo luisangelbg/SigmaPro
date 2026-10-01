@@ -103,11 +103,26 @@ agregar("mendel", "Chícharo: segregación de Mendel",
         list(fenotipo = list(tipo = "factor", niveles = d$fenotipo), forma = list(tipo = "factor", niveles = c("redonda", "rugosa")),
              color = list(tipo = "factor", niveles = c("amarilla", "verde"))))
 
+## 8. Avena en parcelas divididas: los datos publicados por Yates (1935)
+rend <- c(111, 130, 157, 174, 117, 114, 161, 141, 105, 140, 118, 156, 61, 91, 97, 100, 70, 108, 126, 149, 96, 124, 121, 144,
+          68, 64, 112, 86, 60, 102, 89, 96, 89, 129, 132, 124, 74, 89, 81, 122, 64, 103, 132, 133, 70, 89, 104, 117,
+          62, 90, 100, 116, 80, 82, 94, 126, 63, 70, 109, 99, 53, 74, 118, 113, 89, 82, 86, 104, 97, 99, 119, 121)
+d <- expand.grid(nitrogeno = c(0, 0.2, 0.4, 0.6), variedad = c("Victory", "Golden rain", "Marvellous"), bloque = c("I", "II", "III", "IV", "V", "VI"),
+                 stringsAsFactors = FALSE)[, 3:1]
+d$rendimiento <- rend
+o <- MASS::oats                                                              # cotejo parcela por parcela con la copia de R
+k <- match(paste(d$bloque, d$variedad, d$nitrogeno), paste(o$B, sub("Golden.rain", "Golden rain", o$V), as.numeric(sub("cwt", "", o$N))))
+stopifnot(!anyNA(k), identical(as.numeric(d$rendimiento), as.numeric(o$Y[k])))
+agregar("avena", "Avena en parcelas divididas (Yates, 1935)",
+        "Datos publicados: 3 variedades en parcelas grandes y 4 dosis de nitrógeno (quintales por acre) en subparcelas, en 6 bloques; rendimiento en cuartos de libra por subparcela.", d,
+        list(variedad = list(tipo = "factor", niveles = c("Victory", "Golden rain", "Marvellous")), bloque = list(tipo = "factor", niveles = c("I", "II", "III", "IV", "V", "VI"))))
+
 ## escribir datos/ejemplos.js
 js <- paste0(
   "/* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.\n",
   "   Ficticios y reproducibles, salvo «venenos»: Box, G. E. P. y Cox, D. R. (1964). An analysis of transformations.\n",
-  "   J. R. Stat. Soc. B 26: 211-252, cuadro 1; y «mendel»: Mendel, G. (1866), Versuche über Pflanzen-Hybriden. */\n",
+  "   J. R. Stat. Soc. B 26: 211-252, cuadro 1; «mendel»: Mendel, G. (1866), Versuche über Pflanzen-Hybriden;\n",
+  "   y «avena»: Yates, F. (1935). Complex experiments. Suppl. J. R. Stat. Soc. 2: 181-247. */\n",
   "window.SP_EJEMPLOS = ",
   jsonlite::toJSON(ejemplos, auto_unbox = TRUE, pretty = TRUE, null = "null"), ";\n")
 salida <- file("datos/ejemplos.js", open = "w", encoding = "UTF-8")

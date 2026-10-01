@@ -15,7 +15,7 @@ medias, regresión y, más adelante, modelos mixtos y ensayos multiambiente. For
 
 ## Estado
 
-En construcción, por hitos. **Hitos 1.0 a 1.5 terminados:** cimientos (registro de métodos, cálculos en
+En construcción, por hitos. **Hitos 1.0 a 1.6 terminados:** cimientos (registro de métodos, cálculos en
 hilos de trabajo, pruebas automáticas en node y en el navegador, generador de referencias con R y reporte
 de validación), núcleo numérico (distribuciones, álgebra, fórmulas y modelo lineal con sumas de cuadrados
 tipo I, II y III) y el bloque de **Datos**: hoja de cálculo para 100 000 filas con deshacer, importación de
@@ -27,8 +27,12 @@ código R que reproduce sus números; y la **revisión de los supuestos** del mo
 independencia y atípicos) con semáforo, recomendaciones y gráficas de diagnóstico; y las **pruebas t** (una muestra,
 Student, Welch y pareada, con la F de varianzas y la d de Cohen y la g de Hedges con su intervalo) y **no
 paramétricas** (Wilcoxon y Mann-Whitney con Hodges-Lehmann, Kruskal-Wallis y Friedman con Dunn, Conover-Iman,
-Nemenyi o Wilcoxon pareada, ajustes de Holm, Bonferroni y BH, y letras de agrupación). Validado contra R en 372
-casos y 30 492 valores. El plan completo está en
+Nemenyi o Wilcoxon pareada, ajustes de Holm, Bonferroni y BH, y letras de agrupación); y el **ANOVA de los diseños
+experimentales** (completamente al azar, bloques completos —también generalizados y con parcelas perdidas—, cuadro
+latino, factoriales de hasta tres factores, parcelas divididas, subdivididas y en franjas con un error por estrato,
+bloques incompletos balanceados, látice y alfa-látice), con sumas de cuadrados tipo I, II y III, CV, R², eficiencia
+relativa, medias marginales estimadas y efectos simples. Validado contra R en 417 casos y 32 397 valores. El plan
+completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
 [`propuesta/maqueta.html`](propuesta/maqueta.html).
 

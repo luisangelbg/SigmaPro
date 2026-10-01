@@ -277,7 +277,7 @@ SP.definir('algebra', function (SP) {
     const ajustados = new Float64Array(n), residuales = new Float64Array(n);
     let sc = 0;
     for (let i = 0; i < n; i++) { ajustados[i] = ajg[g[i]]; residuales[i] = y[i] - ajg[g[i]]; sc += residuales[i] * residuales[i]; }
-    return { qr: d, coeficientes: coef, residuales, ajustados, scResidual: sc, agrupado: true, grupos: gr };
+    return { qr: d, efectos: qty(d, u), coeficientes: coef, residuales, ajustados, scResidual: sc, agrupado: true, grupos: gr };
   }
 
   SP.algebra = { norma, qr, qty, qz, resolverR, rtrInversa, minimosCuadrados, comprimir, scResidualSub, cholesky, elemR, agruparFilas, minimosCuadradosAgrupados };

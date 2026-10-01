@@ -141,5 +141,52 @@
       `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
   }
 
-  SP.graficas = { dispersion, grupos, adelgazar, marcas };
+  /**
+   * Gráfica de interacción: medias de las combinaciones, los niveles de un factor en el eje x y una línea por
+   * nivel del otro, cada una con su marcador y su trazo (se distinguen sin color):
+   *   SP.graficas.lineas({ titulo, descripcion, x: { titulo, niveles }, y: { titulo }, leyenda, series: [{ nombre, valores }] })
+   */
+  const MARCAS = [
+    (x, y) => `<circle cx="${x}" cy="${y}" r="4.2"/>`,
+    (x, y) => `<rect x="${x - 3.8}" y="${y - 3.8}" width="7.6" height="7.6"/>`,
+    (x, y) => `<path d="M${x} ${y - 5} L${x + 4.6} ${y + 3.6} L${x - 4.6} ${y + 3.6} Z"/>`,
+    (x, y) => `<path d="M${x} ${y - 5} L${x + 5} ${y} L${x} ${y + 5} L${x - 5} ${y} Z"/>`,
+    (x, y) => `<path d="M${x} ${y + 5} L${x + 4.6} ${y - 3.6} L${x - 4.6} ${y - 3.6} Z"/>`,
+  ];
+  const TRAZOS = ['', '7 4', '2 3', '9 3 2 3', '4 2'];
+  function lineas(op) {
+    const k = op.x.niveles.length, S = op.series;
+    let y0 = Infinity, y1 = -Infinity;
+    for (const s of S) for (const v of s.valores) if (Number.isFinite(v)) { y0 = Math.min(y0, v); y1 = Math.max(y1, v); }
+    const hy = (y1 - y0) * 0.08 || 1;
+    y0 -= hy; y1 += hy;
+    const filasLey = Math.ceil(S.length / 3), mb = M.b + 20 + filasLey * 18, alto = H + filasLey * 18 + 20;
+    const ancho = (W - M.l - M.r) / k, cx = j => M.l + ancho * (j + 0.5);
+    const Y = v => M.t + (y1 - v) / (y1 - y0) * (alto - M.t - mb), my = marcas(y0, y1, 5), partes = [];
+    partes.push(`<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${alto - M.t - mb}" class="gr-fondo"/>`);
+    for (const v of my.lista) partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="gr-rejilla"/><text x="${M.l - 6}" y="${(Y(v) + 4).toFixed(1)}" text-anchor="end" class="gr-etq">${texto(v, my.paso)}</text>`);
+    S.forEach((s, i) => {
+      let tramo = [];
+      const cierra = () => { if (tramo.length > 1) partes.push(`<polyline points="${tramo.join(' ')}" class="gr-serie gr-s${i % 5}"${TRAZOS[i % 5] ? ` stroke-dasharray="${TRAZOS[i % 5]}"` : ''}/>`); tramo = []; };
+      s.valores.forEach((v, j) => { if (Number.isFinite(v)) tramo.push(`${cx(j).toFixed(1)},${Y(v).toFixed(1)}`); else cierra(); });
+      cierra();
+      partes.push(`<g class="gr-marca gr-s${i % 5}">${s.valores.map((v, j) => (Number.isFinite(v) ? MARCAS[i % 5](+cx(j).toFixed(1), +Y(v).toFixed(1)) : '')).join('')}</g>`);
+    });
+    op.x.niveles.forEach((l, j) => partes.push(`<text x="${cx(j)}" y="${alto - mb + 16}" text-anchor="middle" class="gr-etq">${esc(l)}</text>`));
+    partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${alto - mb}" y2="${alto - mb}" class="gr-eje"/><line x1="${M.l}" x2="${M.l}" y1="${M.t}" y2="${alto - mb}" class="gr-eje"/>`);
+    partes.push(`<text x="${(M.l + W - M.r) / 2}" y="${alto - mb + 34}" text-anchor="middle" class="gr-titulo-eje">${esc(op.x.titulo)}</text>`);
+    partes.push(`<text transform="translate(16 ${(M.t + alto - mb) / 2}) rotate(-90)" text-anchor="middle" class="gr-titulo-eje">${esc(op.y.titulo)}</text>`);
+    /* leyenda debajo, en filas de tres */
+    const y0l = alto - mb + 52, colW = (W - M.l - M.r) / 3;
+    if (op.leyenda) partes.push(`<text x="${M.l}" y="${y0l - 4}" class="gr-etq">${esc(op.leyenda)}:</text>`);
+    S.forEach((s, i) => {
+      const x = M.l + (i % 3) * colW + (op.leyenda ? 0 : 0), y = y0l + 14 + Math.floor(i / 3) * 18;
+      partes.push(`<line x1="${x}" x2="${x + 26}" y1="${y - 4}" y2="${y - 4}" class="gr-serie gr-s${i % 5}"${TRAZOS[i % 5] ? ` stroke-dasharray="${TRAZOS[i % 5]}"` : ''}/>`);
+      partes.push(`<g class="gr-marca gr-s${i % 5}">${MARCAS[i % 5](x + 13, y - 4)}</g><text x="${x + 32}" y="${y}" class="gr-etq gr-ley">${esc(s.nombre)}</text>`);
+    });
+    return `<figure class="sp-grafica"><svg viewBox="0 0 ${W} ${alto + 6}" role="img" aria-label="${esc(op.descripcion || op.titulo)}" data-sigmapro-figura="${esc(op.titulo)}">` +
+      `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
+  }
+
+  SP.graficas = { dispersion, grupos, lineas, adelgazar, marcas };
 })();

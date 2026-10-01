@@ -63,10 +63,12 @@ carpeta.
 ### Datos publicados en los ejemplos
 
 `datos/ejemplos.js` trae cinco conjuntos ficticios generados por `datos/generar-ejemplos.R` (obra propia) y
-dos publicados: los tiempos de supervivencia del cuadro 1 de Box, G. E. P. y Cox, D. R. (1964), *An analysis
+tres publicados: los tiempos de supervivencia del cuadro 1 de Box, G. E. P. y Cox, D. R. (1964), *An analysis
 of transformations*, J. R. Stat. Soc. B 26: 211–252 (el script los coteja celda por celda con la copia del
-paquete boot de R), y los conteos de la F2 dihíbrida del chícharo de Mendel, G. (1866), *Versuche über
-Pflanzen-Hybriden*. Son datos de publicaciones científicas, citados en el archivo y en la app.
+paquete boot de R); los conteos de la F2 dihíbrida del chícharo de Mendel, G. (1866), *Versuche über
+Pflanzen-Hybriden*; y los rendimientos de avena en parcelas divididas de Yates, F. (1935), *Complex experiments*,
+Suppl. J. R. Stat. Soc. 2: 181–247 (cotejados parcela por parcela con la copia del paquete MASS de R). Son datos de
+publicaciones científicas, citados en el archivo y en la app.
 
 ### Algoritmos traducidos de código publicado
 
@@ -81,6 +83,12 @@ fuente público. La traducción es obra derivada bajo la misma licencia (GPL), c
 | Distribuciones exactas del rango con signo y de la suma de rangos de Wilcoxon (`js/nucleo/dist.js`) | conteos de Wilcoxon (1945) y Mann y Whitney (1947) | `src/nmath/signrank.c` y `src/nmath/wilcox.c` de R 4.4.2 | GPL-2 o GPL-3 |
 | t no central | Lenth (1989), algoritmo AS 243, con la serie de Guenther (1978) | `src/nmath/pnt.c` de R 4.4.2 | GPL-2 o GPL-3 |
 | Raíz de una función por el método de Brent como `uniroot()` (`js/nucleo/numerico.js`) | Brent (1973) | `R_zeroin2` de `src/library/stats/src/zeroin.c` de R 4.4.2 | GPL-2 o GPL-3 |
+| Detección de factores anidados en la rejilla de referencia (`js/nucleo/medias.js`) | — | `.find_nests` del paquete emmeans | GPL-2 o GPL-3 |
+
+El análisis con estratos de error sigue el procedimiento público de Yates (1937) tal como lo aplica `aov` con
+`Error()` en R (incluido su umbral de 1e-5 para las columnas que se anulan en un estrato); las medias marginales y la
+estimabilidad, a Searle, Speed y Milliken (1980) y al paquete estimability (GPL); los efectos simples, a
+`joint_tests` de emmeans (GPL); y la eficiencia relativa, a las fórmulas publicadas de Gomez y Gomez (1984).
 
 Las letras de agrupación siguen el algoritmo de inserción y absorción de Piepho (2004) tal como lo programa
 `multcompLetters` de multcompView (GPL); el ajuste de los valores p, a `p.adjust` de R; y las comparaciones tras

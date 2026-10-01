@@ -1,0 +1,97 @@
+{
+  "esquema": 1,
+  "id": "dbca/dbca-variedades",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dbca"
+  },
+  "titulo": "Bloques completos al azar: 5 variedades en 4 bloques, con eficiencia relativa",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "rend": [53.600000000000001, 55.100000000000001, 60.700000000000003, 61.399999999999999, 64.5, 54.100000000000001, 57.799999999999997, 60.799999999999997, 58.5, 61.5, 54.399999999999999, 57.799999999999997, 60.799999999999997, 60.399999999999999, 62.5, 56.200000000000003, 59.899999999999999, 63.700000000000003, 64.099999999999994, 64.200000000000003],
+      "bloque": ["B1", "B1", "B1", "B1", "B1", "B2", "B2", "B2", "B2", "B2", "B3", "B3", "B3", "B3", "B3", "B4", "B4", "B4", "B4", "B4"],
+      "variedad": ["V1", "V2", "V3", "V4", "V5", "V1", "V2", "V3", "V4", "V5", "V1", "V2", "V3", "V4", "V5", "V1", "V2", "V3", "V4", "V5"]
+    },
+    "tipos": {
+      "rend": {
+        "tipo": "numerica"
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["B1", "B2", "B3", "B4"]
+      },
+      "variedad": {
+        "tipo": "factor",
+        "niveles": ["V1", "V2", "V3", "V4", "V5"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "rend",
+    "tratamientos": ["variedad"],
+    "bloque": "bloque"
+  },
+  "opciones": {
+    "tipoSC": 3
+  },
+  "esperado": {
+    "anova": {
+      "fuente": ["bloque", "variedad", "Residuales"],
+      "gl": [3, 4, 12],
+      "sc": [28.359999999999978, 190.77499999999978, 15.964999999999927],
+      "F": [7.1055433761353228, 35.848731600375942, "NA"],
+      "p": [0.0053208866806393048, 1.3861896587615859e-06, "NA"]
+    },
+    "tipoSC": 3,
+    "resumen": {
+      "media": 59.600000000000001,
+      "cv": 1.9352968007233569,
+      "r2": 0.93209272649936226,
+      "n": 20
+    },
+    "medias": [
+      {
+        "filas": [
+          {
+            "emm": 54.575000000000024,
+            "ee": 0.57671844661556027
+          },
+          {
+            "emm": 57.650000000000013,
+            "ee": 0.5767184466155606
+          },
+          {
+            "emm": 61.500000000000014,
+            "ee": 0.5767184466155606
+          },
+          {
+            "emm": 61.100000000000016,
+            "ee": 0.57671844661556015
+          },
+          {
+            "emm": 63.175000000000018,
+            "ee": 0.57671844661556049
+          }
+        ]
+      }
+    ],
+    "eficiencia": [
+      {
+        "relativa": 1.9640331646529461,
+        "ajustada": 1.9149323355366223
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(rend ~ bloque + variedad), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+  }
+}

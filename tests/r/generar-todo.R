@@ -25,6 +25,9 @@ errores <- 0L
 for (g in generadores) {
   cat(sprintf("%s\n", basename(dirname(g))))
   ok <- tryCatch({
+    # cada carpeta empieza con el generador aleatorio por omisión: algunas funciones de diseño (agricolae) lo
+    # cambian a «Super-Duper» y el cambio pasaría a las carpetas siguientes
+    RNGkind("default", "default", "default")
     source(g, chdir = TRUE, local = new.env(parent = globalenv()), encoding = "UTF-8")
     TRUE
   }, error = function(e) { cat("  ERROR: ", conditionMessage(e), "\n", sep = ""); FALSE })

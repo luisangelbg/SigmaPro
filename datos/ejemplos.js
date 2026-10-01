@@ -1,6 +1,7 @@
 /* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.
    Ficticios y reproducibles, salvo «venenos»: Box, G. E. P. y Cox, D. R. (1964). An analysis of transformations.
-   J. R. Stat. Soc. B 26: 211-252, cuadro 1; y «mendel»: Mendel, G. (1866), Versuche über Pflanzen-Hybriden. */
+   J. R. Stat. Soc. B 26: 211-252, cuadro 1; «mendel»: Mendel, G. (1866), Versuche über Pflanzen-Hybriden;
+   y «avena»: Yates, F. (1935). Complex experiments. Suppl. J. R. Stat. Soc. 2: 181-247. */
 window.SP_EJEMPLOS = [
   {
     "id": "maiz",
@@ -74,6 +75,22 @@ window.SP_EJEMPLOS = [
       "color": {
         "tipo": "factor",
         "niveles": ["amarilla", "verde"]
+      }
+    }
+  },
+  {
+    "id": "avena",
+    "nombre": "Avena en parcelas divididas (Yates, 1935)",
+    "descripcion": "Datos publicados: 3 variedades en parcelas grandes y 4 dosis de nitrógeno (quintales por acre) en subparcelas, en 6 bloques; rendimiento en cuartos de libra por subparcela.",
+    "csv": "\"bloque\",\"variedad\",\"nitrogeno\",\"rendimiento\"\n\"I\",\"Victory\",0,111\n\"I\",\"Victory\",0.2,130\n\"I\",\"Victory\",0.4,157\n\"I\",\"Victory\",0.6,174\n\"I\",\"Golden rain\",0,117\n\"I\",\"Golden rain\",0.2,114\n\"I\",\"Golden rain\",0.4,161\n\"I\",\"Golden rain\",0.6,141\n\"I\",\"Marvellous\",0,105\n\"I\",\"Marvellous\",0.2,140\n\"I\",\"Marvellous\",0.4,118\n\"I\",\"Marvellous\",0.6,156\n\"II\",\"Victory\",0,61\n\"II\",\"Victory\",0.2,91\n\"II\",\"Victory\",0.4,97\n\"II\",\"Victory\",0.6,100\n\"II\",\"Golden rain\",0,70\n\"II\",\"Golden rain\",0.2,108\n\"II\",\"Golden rain\",0.4,126\n\"II\",\"Golden rain\",0.6,149\n\"II\",\"Marvellous\",0,96\n\"II\",\"Marvellous\",0.2,124\n\"II\",\"Marvellous\",0.4,121\n\"II\",\"Marvellous\",0.6,144\n\"III\",\"Victory\",0,68\n\"III\",\"Victory\",0.2,64\n\"III\",\"Victory\",0.4,112\n\"III\",\"Victory\",0.6,86\n\"III\",\"Golden rain\",0,60\n\"III\",\"Golden rain\",0.2,102\n\"III\",\"Golden rain\",0.4,89\n\"III\",\"Golden rain\",0.6,96\n\"III\",\"Marvellous\",0,89\n\"III\",\"Marvellous\",0.2,129\n\"III\",\"Marvellous\",0.4,132\n\"III\",\"Marvellous\",0.6,124\n\"IV\",\"Victory\",0,74\n\"IV\",\"Victory\",0.2,89\n\"IV\",\"Victory\",0.4,81\n\"IV\",\"Victory\",0.6,122\n\"IV\",\"Golden rain\",0,64\n\"IV\",\"Golden rain\",0.2,103\n\"IV\",\"Golden rain\",0.4,132\n\"IV\",\"Golden rain\",0.6,133\n\"IV\",\"Marvellous\",0,70\n\"IV\",\"Marvellous\",0.2,89\n\"IV\",\"Marvellous\",0.4,104\n\"IV\",\"Marvellous\",0.6,117\n\"V\",\"Victory\",0,62\n\"V\",\"Victory\",0.2,90\n\"V\",\"Victory\",0.4,100\n\"V\",\"Victory\",0.6,116\n\"V\",\"Golden rain\",0,80\n\"V\",\"Golden rain\",0.2,82\n\"V\",\"Golden rain\",0.4,94\n\"V\",\"Golden rain\",0.6,126\n\"V\",\"Marvellous\",0,63\n\"V\",\"Marvellous\",0.2,70\n\"V\",\"Marvellous\",0.4,109\n\"V\",\"Marvellous\",0.6,99\n\"VI\",\"Victory\",0,53\n\"VI\",\"Victory\",0.2,74\n\"VI\",\"Victory\",0.4,118\n\"VI\",\"Victory\",0.6,113\n\"VI\",\"Golden rain\",0,89\n\"VI\",\"Golden rain\",0.2,82\n\"VI\",\"Golden rain\",0.4,86\n\"VI\",\"Golden rain\",0.6,104\n\"VI\",\"Marvellous\",0,97\n\"VI\",\"Marvellous\",0.2,99\n\"VI\",\"Marvellous\",0.4,119\n\"VI\",\"Marvellous\",0.6,121",
+    "tipos": {
+      "variedad": {
+        "tipo": "factor",
+        "niveles": ["Victory", "Golden rain", "Marvellous"]
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["I", "II", "III", "IV", "V", "VI"]
       }
     }
   }

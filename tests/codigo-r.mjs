@@ -89,6 +89,22 @@ const ESCENARIOS = [
     r: 'c(prueba$statistic, prueba$p.value, W, pc$p.value[lower.tri(pc$p.value, TRUE)])', js: res => [res.prueba.Q, res.prueba.p, res.prueba.W, ...res.comparaciones.pares.map(p => p.p_ajustado)] },
   { ej: 'aguacate', id: 'friedman', e: { respuesta: 'trips', tratamiento: 'tratamiento', bloque: 'bloque' }, op: { posthoc: 'wilcoxon', ajuste: 'bonferroni' },
     r: 'c(prueba$statistic, pc$p.value[lower.tri(pc$p.value, TRUE)])', js: res => [res.prueba.Q, ...res.comparaciones.pares.map(p => p.p_ajustado)] },
+  /* Hito 1.6: diseños experimentales */
+  { ej: 'maiz', id: 'dbca', e: { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, op: { tipoSC: 3 },
+    r: 'c(car::Anova(modelo, type = 3)[c("bloque", "hibrido", "dosis", "hibrido:dosis"), "F value"], 100 * sigma(modelo) / media, summary(modelo)$r.squared)',
+    js: res => [...['bloque', 'hibrido', 'dosis', 'hibrido:dosis'].map(f => res.anova.F[res.anova.fuente.indexOf(f)]), res.resumen.cv, res.resumen.r2] },
+  { ej: 'aguacate', id: 'dbca', e: { respuesta: 'trips', tratamientos: ['tratamiento'], bloque: 'bloque' }, op: { tipoSC: 3 },
+    r: 'c(car::Anova(modelo, type = 3)[c("bloque", "tratamiento"), "F value"], 100 * sigma(modelo) / media)',
+    js: res => [res.anova.F[0], res.anova.F[1], res.resumen.cv] },
+  { ej: 'trigo', id: 'cuadro-latino', e: { respuesta: 'rend', tratamientos: ['variedad'], fila: 'hilera', columna: 'columna' }, op: { tipoSC: 2 },
+    r: 'c(car::Anova(modelo, type = 2)[c("hilera", "columna", "variedad"), "F value"], 100 * sigma(modelo) / media)',
+    js: res => [res.anova.F[0], res.anova.F[1], res.anova.F[2], res.resumen.cv] },
+  { ej: 'venenos', id: 'dca', e: { respuesta: 'tiempo', tratamientos: ['veneno', 'tratamiento'] }, op: { tipoSC: 1 },
+    r: 'c(anova(modelo)[c("veneno", "tratamiento", "veneno:tratamiento"), "F value"], summary(modelo)$r.squared)',
+    js: res => [res.anova.F[0], res.anova.F[1], res.anova.F[2], res.resumen.r2] },
+  { ej: 'avena', id: 'parcelas-divididas', e: { respuesta: 'rendimiento', parcelaGrande: 'variedad', subparcela: 'nitrogeno', bloque: 'bloque', principal: 'dbca' }, op: {},
+    r: 'unlist(lapply(summary(modelo), function(s) { d <- s[[1]]; d[!is.na(d[["F value"]]), "F value"] }))',
+    js: res => res.estratos.flatMap(s => s.filas.filter(f => Number.isFinite(f.F)).map(f => f.F)) },
 ];
 const efectoDe = res => [res.efecto.d, ...res.efecto.ic_d, res.efecto.g, ...res.efecto.ic_g];
 /* aggregate() de R deja el primer factor cambiando más rápido; la app, el último */
@@ -106,7 +122,7 @@ try {
     const { csv, hoja } = hojaDe(s.ej);
     const ficha = SP.metodos[s.id];
     const { resultado } = SP.ejecutar(s.id, hoja.aTabla(), s.e, s.op);
-    const codigo = ficha.codigoR(s.e, s.op, s.ctx || {});
+    const codigo = ficha.codigoR(s.e, SP.opcionesCon(ficha, s.op), Object.assign({ resultado }, s.ctx || {}));
     const archivo = join(dir, 'datos.csv').replace(/\\/g, '/');
     writeFileSync(archivo, csv);
     const guion = `datos <- read.csv("${archivo}", stringsAsFactors = TRUE)\n` +

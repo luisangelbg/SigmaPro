@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-01T18:04:24.267Z",
+ "generado": "2026-10-01T19:15:22.720Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 372,
-  "aprobados": 372,
+  "casos": 417,
+  "aprobados": 417,
   "fallidos": 0,
-  "valores": 30492,
+  "valores": 32397,
   "difEscaladaMax": 2.0258232202030768e-7,
-  "objetivos": 78
+  "objetivos": 89
  },
  "casos": [
   {
@@ -9914,6 +9914,1232 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "wilcox.test(x, y, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95, correct = FALSE)"
+   }
+  },
+  {
+   "id": "bib/bib-siete",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "bib"
+   },
+   "titulo": "Bloques incompletos balanceados (t = 7, k = 3, λ = 1): medias ajustadas = BIB.test",
+   "fuente": "Datos sintéticos; referencia también con agricolae::BIB.test",
+   "clase": "A",
+   "valores": 40,
+   "difMax": 1.7763568394002505e-13,
+   "difEscaladaMax": 3.685392312426733e-15,
+   "peor": "anova.F[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "anova(lm(y ~ bloque + trat)); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "dbca/dbca-factorial-maiz",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dbca"
+   },
+   "titulo": "Factorial híbrido × dosis de N en bloques",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 88,
+   "difMax": 7.815970093361102e-14,
+   "difEscaladaMax": 1.7338331901756685e-14,
+   "peor": "anova.p[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(rend ~ bloque + hibrido * dosis), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "dbca/dbca-generalizado",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dbca"
+   },
+   "titulo": "Bloques generalizados: dos parcelas por tratamiento en cada bloque",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 31,
+   "difMax": 1.7763568394002505e-14,
+   "difEscaladaMax": 1.0903168729581242e-15,
+   "peor": "resumen.cv",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(y ~ bloque * trat), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "dbca/dbca-npk-tipo2",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dbca"
+   },
+   "titulo": "Factorial 2³ en bloques con N:P:K confundida (tipo II)",
+   "fuente": "Yates (1935), factorial 2³ en bloques con N:P:K confundida; conjunto npk de R",
+   "clase": "B",
+   "valores": 129,
+   "difMax": 6.821210263296962e-13,
+   "difEscaladaMax": 8.021361352916756e-14,
+   "peor": "anova.sc[6]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(yield ~ block + N * P * K), type = 2); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "dbca/dbca-parcelas-perdidas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dbca"
+   },
+   "titulo": "Bloques con dos parcelas perdidas (tipo III, medias ajustadas)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 30,
+   "difMax": 7.389644451905042e-13,
+   "difEscaladaMax": 5.389147145918701e-15,
+   "peor": "anova.sc[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(rend ~ bloque + variedad), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "dbca/dbca-variedades",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dbca"
+   },
+   "titulo": "Bloques completos al azar: 5 variedades en 4 bloques, con eficiencia relativa",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 32,
+   "difMax": 7.958078640513122e-13,
+   "difEscaladaMax": 4.171447328273165e-15,
+   "peor": "anova.sc[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(rend ~ bloque + variedad), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "dca/dca-celda-vacia",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dca"
+   },
+   "titulo": "Factorial 3 × 3 con una celda vacía: el tipo III no existe y se usa el II",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 73,
+   "difMax": 2.6645352591003757e-14,
+   "difEscaladaMax": 2.527846219608008e-15,
+   "peor": "simples[4].F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(y ~ A * B), type = 2); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "dca/dca-factorial-desbalanceado-tipo1",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dca"
+   },
+   "titulo": "Factorial 2 × 3 desbalanceado, sumas de cuadrados tipo 1",
+   "fuente": "Tippett (1950); conjunto warpbreaks de R sin cinco filas",
+   "clase": "B",
+   "valores": 65,
+   "difMax": 3.637978807091713e-12,
+   "difEscaladaMax": 5.4239850690280115e-15,
+   "peor": "simples[4].F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "anova(lm(roturas ~ lana * tension)); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "dca/dca-factorial-desbalanceado-tipo2",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dca"
+   },
+   "titulo": "Factorial 2 × 3 desbalanceado, sumas de cuadrados tipo 2",
+   "fuente": "Tippett (1950); conjunto warpbreaks de R sin cinco filas",
+   "clase": "B",
+   "valores": 65,
+   "difMax": 3.865352482534945e-12,
+   "difEscaladaMax": 5.4239850690280115e-15,
+   "peor": "simples[4].F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(roturas ~ lana * tension), type = 2); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "dca/dca-factorial-desbalanceado-tipo3",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dca"
+   },
+   "titulo": "Factorial 2 × 3 desbalanceado, sumas de cuadrados tipo 3",
+   "fuente": "Tippett (1950); conjunto warpbreaks de R sin cinco filas",
+   "clase": "B",
+   "valores": 65,
+   "difMax": 7.275957614183426e-12,
+   "difEscaladaMax": 5.4239850690280115e-15,
+   "peor": "simples[4].F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(roturas ~ lana * tension), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "dca/dca-factorial-dientes",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dca"
+   },
+   "titulo": "Factorial 2 × 3 completamente al azar, con efectos simples",
+   "fuente": "Crampton (1947); conjunto ToothGrowth de R",
+   "clase": "B",
+   "valores": 65,
+   "difMax": 1.3642420526593924e-12,
+   "difEscaladaMax": 3.028274291685521e-14,
+   "peor": "simples[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(len ~ supp * dosis), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "dca/dca-plantas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dca"
+   },
+   "titulo": "Completamente al azar, un factor balanceado",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 21,
+   "difMax": 1.0658141036401503e-14,
+   "difEscaladaMax": 1.0158263069037251e-15,
+   "peor": "anova.sc[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(peso ~ grupo), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "dca/dca-pollos-desbalanceado",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dca"
+   },
+   "titulo": "Completamente al azar desbalanceado (6 alimentos)",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "A",
+   "valores": 27,
+   "difMax": 1.4551915228366852e-10,
+   "difEscaladaMax": 2.7867995625995013e-15,
+   "peor": "anova.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(peso ~ alimento), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "dca/dca-tres-factores",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dca"
+   },
+   "titulo": "Factorial 2 × 2 × 3 completamente al azar",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 185,
+   "difMax": 3.694822225952521e-13,
+   "difEscaladaMax": 4.3185519691507085e-14,
+   "peor": "simples[9].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(y ~ A * B * C), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "parcelas-divididas/divididas-avena",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "parcelas-divididas"
+   },
+   "titulo": "Parcelas divididas en bloques: avena de Yates (= agricolae::sp.plot)",
+   "fuente": "Yates (1935), avena en parcelas divididas; conjunto oats del paquete MASS",
+   "clase": "A",
+   "valores": 27,
+   "difMax": 4.547473508864641e-11,
+   "difEscaladaMax": 7.559580018428565e-15,
+   "peor": "estratos[2].filas[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7"
+    },
+    "codigo": "summary(aov(Y ~ B + V * N + Error(B/V))); CV = 100 * sqrt(CM error) / media"
+   }
+  },
+  {
+   "id": "parcelas-divididas/divididas-dca",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "parcelas-divididas"
+   },
+   "titulo": "Parcelas divididas con las parcelas grandes completamente al azar",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 22,
+   "difMax": 1.4210854715202004e-13,
+   "difEscaladaMax": 7.003786766124034e-15,
+   "peor": "estratos[1].filas[1].F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7"
+    },
+    "codigo": "summary(aov(y ~ A * B + Error(A:rep))); CV = 100 * sqrt(CM error) / media"
+   }
+  },
+  {
+   "id": "parcelas-divididas/divididas-latino",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "parcelas-divididas"
+   },
+   "titulo": "Parcelas divididas con las parcelas grandes en cuadro latino",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 32,
+   "difMax": 9.237055564881302e-14,
+   "difEscaladaMax": 6.4413247584016395e-15,
+   "peor": "estratos[1].filas[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7"
+    },
+    "codigo": "summary(aov(y ~ fila + columna + A * B + Error(fila:columna))); CV = 100 * sqrt(CM error) / media"
+   }
+  },
+  {
+   "id": "medias.emmDe/emm-aditivo-celda-vacia",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.emmDe"
+   },
+   "titulo": "Modelo aditivo con una celda vacía: todas estimables",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 1.2604234905867434e-16,
+   "peor": "emm[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans(lm(y ~ A + B), \"A\")"
+   }
+  },
+  {
+   "id": "medias.emmDe/emm-celda-vacia-a",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.emmDe"
+   },
+   "titulo": "Medias de A con una celda vacía (a3:b3): la de a3 no es estimable",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 2.1367564226947677e-16,
+   "peor": "emm[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans(lm(y ~ A * B), \"A\")"
+   }
+  },
+  {
+   "id": "medias.emmDe/emm-celda-vacia-celdas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.emmDe"
+   },
+   "titulo": "Medias de celdas con una vacía",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 45,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 5.551115123125783e-16,
+   "peor": "ee[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans(lm(y ~ A * B), c(\"A\", \"B\"))"
+   }
+  },
+  {
+   "id": "medias.emmDe/emm-dientes-celdas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.emmDe"
+   },
+   "titulo": "Medias de suplemento dentro de cada dosis",
+   "fuente": "Crampton (1947); conjunto ToothGrowth de R",
+   "clase": "A",
+   "valores": 30,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 3.561617723108275e-15,
+   "peor": "emm[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans(lm(len ~ supp * dosis), \"supp\", by = \"dosis\")"
+   }
+  },
+  {
+   "id": "medias.emmDe/emm-dientes-dosis",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.emmDe"
+   },
+   "titulo": "Medias de dosis promediadas sobre el suplemento",
+   "fuente": "Crampton (1947); conjunto ToothGrowth de R",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 1.7763568394002505e-14,
+   "difEscaladaMax": 1.6750182361152768e-15,
+   "peor": "emm[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans(lm(len ~ supp * dosis), \"dosis\")"
+   }
+  },
+  {
+   "id": "medias.emmDe/emm-npk-confundido",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.emmDe"
+   },
+   "titulo": "Factorial 2³ con la interacción triple confundida con los bloques",
+   "fuente": "Yates (1935), factorial 2³ en bloques con N:P:K confundida; conjunto npk de R",
+   "clase": "A",
+   "valores": 48,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans(lm(yield ~ block + N * P * K), c(\"N\", \"P\", \"K\"))"
+   }
+  },
+  {
+   "id": "medias.emmDe/emm-npk-n",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.emmDe"
+   },
+   "titulo": "Medias de N en el factorial confundido",
+   "fuente": "Yates (1935), factorial 2³ en bloques con N:P:K confundida; conjunto npk de R",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 3.131982811741982e-15,
+   "peor": "ee[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans(lm(yield ~ block + N * P * K), \"N\")"
+   }
+  },
+  {
+   "id": "medias.emmDe/emm-roturas-bloques",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.emmDe"
+   },
+   "titulo": "Covariable numérica en su media y un factor",
+   "fuente": "Tippett (1950); conjunto warpbreaks de R",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 7.105427357601002e-14,
+   "difEscaladaMax": 6.4808107578212636e-15,
+   "peor": "ee[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans(lm(roturas ~ x + lana * tension), \"tension\")"
+   }
+  },
+  {
+   "id": "estratos.anovaTabla/estratos-avena-desbalanceada",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "estratos.anovaTabla"
+   },
+   "titulo": "Avena sin tres subparcelas (desbalance: estratos no ortogonales)",
+   "fuente": "Yates (1935), avena en parcelas divididas; conjunto oats del paquete MASS",
+   "clase": "A",
+   "valores": 45,
+   "difMax": 5.638867150992155e-11,
+   "difEscaladaMax": 2.1875815670556256e-14,
+   "peor": "[2].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "summary(aov(Y ~ B + V * N + Error(B/V)))"
+   }
+  },
+  {
+   "id": "estratos.anovaTabla/estratos-avena-sin-bloque",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "estratos.anovaTabla"
+   },
+   "titulo": "Avena: los bloques solo en el error",
+   "fuente": "Yates (1935), avena en parcelas divididas; conjunto oats del paquete MASS",
+   "clase": "A",
+   "valores": 39,
+   "difMax": 3.456079866737127e-11,
+   "difEscaladaMax": 7.559580018428565e-15,
+   "peor": "[2].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "summary(aov(Y ~ V * N + Error(B/V)))"
+   }
+  },
+  {
+   "id": "estratos.anovaTabla/estratos-avena",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "estratos.anovaTabla"
+   },
+   "titulo": "Avena: variedad en parcela grande, nitrógeno en subparcela, con bloques en el modelo",
+   "fuente": "Yates (1935), avena en parcelas divididas; conjunto oats del paquete MASS",
+   "clase": "A",
+   "valores": 39,
+   "difMax": 4.547473508864641e-11,
+   "difEscaladaMax": 7.559580018428565e-15,
+   "peor": "[2].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "summary(aov(Y ~ B + V * N + Error(B/V)))"
+   }
+  },
+  {
+   "id": "estratos.anovaTabla/estratos-divididas-dca",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "estratos.anovaTabla"
+   },
+   "titulo": "Parcelas divididas en completamente al azar (error a = repetición dentro de A)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 32,
+   "difMax": 1.4210854715202004e-13,
+   "difEscaladaMax": 7.003786766124034e-15,
+   "peor": "[1].F[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "summary(aov(y ~ A * B + Error(A:rep)))"
+   }
+  },
+  {
+   "id": "estratos.anovaTabla/estratos-divididas-latino",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "estratos.anovaTabla"
+   },
+   "titulo": "Parcelas divididas en cuadro latino",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 44,
+   "difMax": 9.237055564881302e-14,
+   "difEscaladaMax": 6.4413247584016395e-15,
+   "peor": "[1].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "summary(aov(y ~ fila + columna + A * B + Error(fila:columna)))"
+   }
+  },
+  {
+   "id": "estratos.anovaTabla/estratos-franjas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "estratos.anovaTabla"
+   },
+   "titulo": "Parcelas en franjas (error a, error b y error c)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 46,
+   "difMax": 1.1084466677857563e-12,
+   "difEscaladaMax": 1.1520949500826219e-14,
+   "peor": "[3].sc[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "summary(aov(y ~ bloque + A * B + Error(bloque/(A + B))))"
+   }
+  },
+  {
+   "id": "estratos.anovaTabla/estratos-subdivididas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "estratos.anovaTabla"
+   },
+   "titulo": "Parcelas subdivididas en bloques (tres estratos de error)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 70,
+   "difMax": 1.3145040611561853e-13,
+   "difEscaladaMax": 3.0403360476682666e-14,
+   "peor": "[3].F[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "summary(aov(y ~ bloque + A * B * C + Error(bloque/A/B)))"
+   }
+  },
+  {
+   "id": "franjas/franjas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "franjas"
+   },
+   "titulo": "Parcelas en franjas (= agricolae::strip.plot)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 30,
+   "difMax": 1.1084466677857563e-12,
+   "difEscaladaMax": 1.1520949500826219e-14,
+   "peor": "estratos[3].filas[0].sc",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7"
+    },
+    "codigo": "summary(aov(y ~ bloque + A * B + Error(bloque/(A + B)))); CV = 100 * sqrt(CM error) / media"
+   }
+  },
+  {
+   "id": "latice/latice-alfa",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "latice"
+   },
+   "titulo": "Alfa-látice: 12 tratamientos, bloques de 3, tres repeticiones",
+   "fuente": "Datos sintéticos con agricolae::design.alpha",
+   "clase": "A",
+   "valores": 49,
+   "difMax": 5.861977570020827e-14,
+   "difEscaladaMax": 3.940252458075553e-15,
+   "peor": "anova.F[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "anova(lm(y ~ rep/bloque + trat)); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "latice/latice-simple",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "latice"
+   },
+   "titulo": "Látice simple 3 × 3 con dos repeticiones (intrabloque)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 43,
+   "difMax": 1.5987211554602254e-14,
+   "difEscaladaMax": 1.6568537100797907e-15,
+   "peor": "anova.F[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "anova(lm(y ~ rep/bloque + trat)); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "cuadro-latino/latino-cinco",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "cuadro-latino"
+   },
+   "titulo": "Cuadro latino 5 × 5 (error con 12 gl: eficiencia ajustada)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 41,
+   "difMax": 4.547473508864641e-13,
+   "difEscaladaMax": 1.3255915368356495e-14,
+   "peor": "anova.F[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(y ~ fila + columna + trat), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "cuadro-latino/latino-huertos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "cuadro-latino"
+   },
+   "titulo": "Cuadro latino 8 × 8 con eficiencia relativa (error con 42 gl: sin ajuste)",
+   "fuente": "Finney (1955); conjunto OrchardSprays de R",
+   "clase": "A",
+   "valores": 47,
+   "difMax": 5.093170329928398e-11,
+   "difEscaladaMax": 3.2646558129518272e-15,
+   "peor": "medias[0].filas[0].emm",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(decremento ~ fila + columna + tratamiento), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+   }
+  },
+  {
+   "id": "medias.pruebasConjuntasDe/simples-celda-vacia",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.pruebasConjuntasDe"
+   },
+   "titulo": "B dentro de cada A con una celda vacía (se pierde un grado de libertad)",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 18,
+   "difMax": 4.440892098500626e-15,
+   "difEscaladaMax": 2.110171150352292e-15,
+   "peor": "F[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans::joint_tests(lm(y ~ A * B), by = \"A\")"
+   }
+  },
+  {
+   "id": "medias.pruebasConjuntasDe/simples-con-bloques",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.pruebasConjuntasDe"
+   },
+   "titulo": "Factorial en bloques: efectos simples con el error del modelo",
+   "fuente": "Yates (1935), factorial 2³ en bloques con N:P:K confundida; conjunto npk de R",
+   "clase": "B",
+   "valores": 24,
+   "difMax": 2.275957200481571e-15,
+   "difEscaladaMax": 2.275957200481571e-15,
+   "peor": "p[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans::joint_tests(lm(yield ~ block + N * P), by = \"N\")"
+   }
+  },
+  {
+   "id": "medias.pruebasConjuntasDe/simples-dientes-por-dosis",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.pruebasConjuntasDe"
+   },
+   "titulo": "Efecto del suplemento dentro de cada dosis",
+   "fuente": "Crampton (1947); conjunto ToothGrowth de R",
+   "clase": "B",
+   "valores": 18,
+   "difMax": 3.197442310920451e-14,
+   "difEscaladaMax": 3.885780586188048e-15,
+   "peor": "p[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans::joint_tests(lm(len ~ supp * dosis), by = \"dosis\")"
+   }
+  },
+  {
+   "id": "medias.pruebasConjuntasDe/simples-dientes-por-suplemento",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.pruebasConjuntasDe"
+   },
+   "titulo": "Efecto de la dosis dentro de cada suplemento",
+   "fuente": "Crampton (1947); conjunto ToothGrowth de R",
+   "clase": "B",
+   "valores": 12,
+   "difMax": 6.394884621840902e-14,
+   "difEscaladaMax": 3.028274291685521e-14,
+   "peor": "p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans::joint_tests(lm(len ~ supp * dosis), by = \"supp\")"
+   }
+  },
+  {
+   "id": "medias.pruebasConjuntasDe/simples-roturas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.pruebasConjuntasDe"
+   },
+   "titulo": "Lana dentro de cada tensión",
+   "fuente": "Tippett (1950); conjunto warpbreaks de R",
+   "clase": "B",
+   "valores": 18,
+   "difMax": 7.549516567451064e-15,
+   "difEscaladaMax": 6.0150903543611596e-15,
+   "peor": "F[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans::joint_tests(lm(roturas ~ lana * tension), by = \"tension\")"
+   }
+  },
+  {
+   "id": "medias.pruebasConjuntasDe/simples-tres-factores-dos-por",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.pruebasConjuntasDe"
+   },
+   "titulo": "C dentro de cada combinación de A y B",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 28,
+   "difMax": 1.2434497875801753e-14,
+   "difEscaladaMax": 2.409797852025772e-15,
+   "peor": "F[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans::joint_tests(lm(y ~ A * B * C), by = c(\"A\", \"B\"))"
+   }
+  },
+  {
+   "id": "medias.pruebasConjuntasDe/simples-tres-factores",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.pruebasConjuntasDe"
+   },
+   "titulo": "Factorial 2 × 2 × 3: B, C y B:C dentro de cada A",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 36,
+   "difMax": 1.1368683772161603e-13,
+   "difEscaladaMax": 7.547769787664887e-15,
+   "peor": "F[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans::joint_tests(lm(y ~ A * B * C), by = \"A\")"
+   }
+  },
+  {
+   "id": "parcelas-subdivididas/subdivididas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "parcelas-subdivididas"
+   },
+   "titulo": "Parcelas subdivididas en bloques (= agricolae::ssp.plot)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 50,
+   "difMax": 1.3145040611561853e-13,
+   "difEscaladaMax": 3.0403360476682666e-14,
+   "peor": "estratos[3].filas[0].F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7"
+    },
+    "codigo": "summary(aov(y ~ bloque + A * B * C + Error(bloque/A/B))); CV = 100 * sqrt(CM error) / media"
    }
   }
  ]

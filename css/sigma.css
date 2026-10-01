@@ -392,3 +392,11 @@ button.ana-item:hover { border-color: var(--primary); }
 .gr-bigote { stroke: var(--text-muted); stroke-width: 1.2; }
 .gr-media { fill: var(--card-bg); stroke: var(--text); stroke-width: 1.5; }
 .gr-letra { fill: var(--text); font-size: 13px; font-weight: 700; font-family: inherit; }
+.gr-serie { fill: none; stroke-width: 2; stroke-linejoin: round; }
+.gr-marca { stroke: var(--card-bg); stroke-width: 1; }
+.gr-serie.gr-s0 { stroke: var(--text); } .gr-marca.gr-s0 { fill: var(--text); }
+.gr-serie.gr-s1 { stroke: var(--btn-oro-texto); } .gr-marca.gr-s1 { fill: var(--btn-oro-texto); }
+.gr-serie.gr-s2 { stroke: var(--text-muted); } .gr-marca.gr-s2 { fill: var(--text-muted); }
+.gr-serie.gr-s3 { stroke: var(--text); } .gr-marca.gr-s3 { fill: var(--card-bg); stroke: var(--text); stroke-width: 1.6; }
+.gr-serie.gr-s4 { stroke: var(--btn-oro-texto); } .gr-marca.gr-s4 { fill: var(--card-bg); stroke: var(--btn-oro-texto); stroke-width: 1.6; }
+.gr-ley { fill: var(--text); }

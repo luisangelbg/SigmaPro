@@ -1,0 +1,55 @@
+{
+  "esquema": 1,
+  "id": "medias.pruebasConjuntasDe/simples-roturas",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "medias.pruebasConjuntasDe"
+  },
+  "titulo": "Lana dentro de cada tensión",
+  "fuente": "Tippett (1950); conjunto warpbreaks de R",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "roturas": [26, 30, 54, 25, 70, 52, 51, 26, 67, 18, 21, 29, 17, 12, 18, 35, 30, 36, 36, 21, 24, 18, 10, 43, 28, 15, 26, 27, 14, 29, 19, 29, 31, 41, 20, 44, 42, 26, 19, 16, 39, 28, 21, 39, 29, 20, 21, 24, 17, 13, 15, 15, 16, 28],
+      "lana": ["A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B"],
+      "tension": ["L", "L", "L", "L", "L", "L", "L", "L", "L", "M", "M", "M", "M", "M", "M", "M", "M", "M", "H", "H", "H", "H", "H", "H", "H", "H", "H", "L", "L", "L", "L", "L", "L", "L", "L", "L", "M", "M", "M", "M", "M", "M", "M", "M", "M", "H", "H", "H", "H", "H", "H", "H", "H", "H"]
+    },
+    "tipos": {
+      "roturas": {
+        "tipo": "numerica"
+      },
+      "lana": {
+        "tipo": "factor",
+        "niveles": ["A", "B"]
+      },
+      "tension": {
+        "tipo": "factor",
+        "niveles": ["L", "M", "H"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    "roturas ~ lana * tension",
+    ["tension"]
+  ],
+  "esperado": {
+    "termino": ["lana", "lana", "lana"],
+    "gl1": [1, 1, 1],
+    "gl2": [48, 48, 48],
+    "F": [10.030093219355575, 0.85823695509225573, 1.2550961203728868],
+    "p": [0.0026768025165729266, 0.35886725920610285, 0.26815563736828729],
+    "tension": ["L", "M", "H"]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans::joint_tests(lm(roturas ~ lana * tension), by = \"tension\")"
+  }
+}

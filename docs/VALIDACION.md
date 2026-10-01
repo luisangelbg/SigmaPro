@@ -46,6 +46,7 @@ con una identidad exacta.
 | No aditividad de Tukey (`agricolae::nonadditivity`) | Calcula p = 1 − pf(F, 1, gl): con p ≈ 7e-13 pierde cifras (error relativo 7.9e-5). | Referencia = `pf(F, 1, gl, lower.tail = FALSE)` con el F de agricolae, que coincide en todo lo demás. |
 | Cuantil de t con menos de 1 gl y colas diminutas (`qt`) | `pt(qt(1e-8, 0.5, lower.tail = FALSE), 0.5, lower.tail = FALSE)` da 9.99999986e-9: error relativo 2.9e-8. | Referencia = inversión exacta de `pt` en escala logarítmica (dif. 2.8e-14). |
 | Cuantil exacto de la suma de rangos en la mediana (`qwilcox`) | Con m · n impar, P(W ≤ (mn − 1)/2) = ½ exactamente. Con m = n = 49, `choose(98, 49)` de R (exp de lbeta) trae un error relativo de 4e-15, la suma queda 2.3e-15 debajo de ½ —más allá de su margen de 10ε— y `qwilcox(0.5, 49, 49)` da 1201 en vez de 1200. | Referencia = (mn − 1)/2 exacto por simetría, en los 8 pares con m · n impar; la rejilla general se compara contra `qwilcox` tal cual. |
+| F de los efectos simples (`emmeans::joint_tests`, `test(joint = TRUE)`) | emmeans redondea a propósito la F a 3 decimales (y los gl a 2) al guardarla, aunque calcula el p con la F exacta. | Referencia = la F exacta que corresponde a su p (`qf(p, gl1, gl2, lower.tail = FALSE)`); el generador comprueba que redondeada a 3 decimales es la de emmeans. |
 | p de Nemenyi y de Conover con ajuste de Tukey (PMCMRplus) | El p es 1 − `ptukey()`, una integral numérica (AS 190): por debajo de 1e-6 solo tiene cifras absolutas, en R y en cualquier programa (con p ≈ 3e-11, R y SigmaPro difieren 1.4e-14, un 5e-4 relativo). | Mismo algoritmo; en esas rutas el límite tiene un piso absoluto de 1e-12 (regla `absoluto`, con su motivo en el reporte). Los p mayores siguen con 1e-6. |
 
 Nota: para la t con más de 4 × 10⁵ grados de libertad, R usa una aproximación normal corregida; SigmaPro usa la
@@ -149,6 +150,40 @@ Tres notas sobre los paquetes de referencia:
 
 `tests/codigo-r.mjs` corre también el código R de los cuatro métodos nuevos (9 escenarios más): el tamaño del
 efecto se escribe con la t no central en R base, sin paquetes, para que dé exactamente lo mismo que la app.
+
+## Diseños experimentales (Hito 1.6)
+
+| Qué | Contra qué | Casos |
+|---|---|---|
+| Estratos de error: parcelas divididas en bloques (avena de Yates, también sin tres subparcelas), al azar y en cuadro latino; subdivididas; franjas | `summary(aov(… + Error(…)))` | 7 |
+| Medias marginales estimadas con EE (por factor, por celdas, dentro de otro factor, con covariable en su media, con celdas vacías y con la interacción confundida con los bloques: no estimables) | `emmeans` | 8 |
+| Efectos simples: un factor dentro de cada nivel de otro, dos factores «por», tres factores y una celda vacía (pierde un grado de libertad) | `emmeans::joint_tests` (clase B por el redondeo de F) | 7 |
+| Completamente al azar: un factor balanceado y desbalanceado, factorial 2 × 3 con tipos I, II y III, factorial de tres factores, celda vacía (el tipo III no existe y se usa el II) | `anova`, `car::Anova(type = 2 y 3)`, CV, R², `emmeans`, `joint_tests` | 8 |
+| Bloques completos al azar: simple con eficiencia relativa, con parcelas perdidas, generalizado, factorial con dosis numérica, factorial 2³ con N:P:K confundida | lo mismo, y la eficiencia relativa de Gomez y Gomez (1984) | 5 |
+| Cuadro latino 8 × 8 (sin ajuste por gl) y 5 × 5 (con ajuste) | lo mismo, con la eficiencia frente a completamente al azar y a bloques por filas y por columnas | 2 |
+| Bloques incompletos balanceados (t = 7, k = 3, λ = 1) | `anova` intrabloque, `emmeans`, y `agricolae::BIB.test` (medias ajustadas, su EE, CV y factor de eficiencia coinciden) | 1 |
+| Látice simple 3 × 3 y alfa-látice (12 tratamientos, bloques de 3) | `anova` de `y ~ rep/bloque + trat` y `emmeans` | 2 |
+| Parcelas divididas, subdivididas y franjas como métodos completos, con CV de cada error | `aov` con estratos y `agricolae::sp.plot`, `ssp.plot`, `strip.plot` (sus errores coinciden) | 5 |
+
+Notas sobre las referencias:
+
+- **Estratos de error.** SigmaPro sigue el mismo procedimiento público que `aov` con `Error()`: Qᵀ de la QR del
+  modelo de error reparte las filas en estratos y en cada uno se ajustan las columnas que no se anulan (umbral absoluto
+  de 1e-5, el de R). Coincide hasta con datos desbalanceados (a 3e-14), donde la app además avisa que las pruebas por
+  estratos ya no son exactas y que corresponde un modelo mixto (Fase 2).
+- **Bloques en parcelas divididas.** `agricolae::sp.plot` y `ssp.plot` prueban los bloques contra el error del último
+  estrato, y `strip.plot` les copia la F de la interacción; SigmaPro sigue la estructura de estratos de `aov`, donde los
+  bloques no tienen error propio y no se prueban. Los errores a, b y c y sus CV coinciden con los de agricolae.
+- **Términos confundidos.** `car::Anova` lista con 0 gl un término confundido (N:P:K con los bloques en npk); SigmaPro
+  no lo lista y lo explica en un aviso. La referencia quita esas filas de 0 gl.
+- **Anidamiento.** emmeans detecta los factores anidados (bloques con etiquetas únicas dentro de repeticiones, o un
+  factor que solo entra en interacciones como en `rep/bloque`) y promedia solo sobre las combinaciones que existen;
+  SigmaPro replica esa detección (el alfa-látice lo prueba: sin ella, las medias saldrían no estimables).
+- **Tablas grandes.** Con 2 000 filas o más y pocas celdas (submuestras, repeticiones), el modelo lineal y los
+  estratos se ajustan por celdas ponderadas por √n: las mismas ecuaciones normales y la misma geometría, así que
+  las mismas sumas de cuadrados. Una prueba unitaria compara las dos rutas (tipos I, II y III y estratos) a 1e-9.
+
+`tests/codigo-r.mjs` corre también el código R de cinco diseños (24 escenarios en total).
 
 ## Dónde está cada cosa
 

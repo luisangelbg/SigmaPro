@@ -37,8 +37,12 @@ SP.definir('lineal', function (SP) {
       const v = mm.y[i];
       if (v - v !== 0) throw new SP.ErrorSP(T('Hay valores infinitos en la respuesta.'), T('Revisa las transformaciones (por ejemplo, logaritmo de cero).'));
     }
-    const mc = SP.algebra.minimosCuadrados(mm.X, mm.n, mm.p, mm.y, TOL);
-    return Object.assign({ modelo: mm, glResidual: mm.n - mc.qr.rango, rango: mc.qr.rango }, mc);
+    /* tablas grandes con pocas celdas (solo factores, con submuestras o repeticiones): mínimos cuadrados por celdas,
+       que tienen las mismas ecuaciones normales, la misma R (salvo signos) y por eso las mismas sumas de cuadrados */
+    const agrupar = op.agrupar !== undefined ? op.agrupar : mm.n >= 2000;
+    const gr = agrupar ? SP.algebra.agruparFilas(mm.X, mm.n, mm.p, 0.25) : null;
+    const mc = gr ? SP.algebra.minimosCuadradosAgrupados(mm.X, mm.n, mm.p, mm.y, gr, TOL) : SP.algebra.minimosCuadrados(mm.X, mm.n, mm.p, mm.y, TOL);
+    return Object.assign({ modelo: mm, opciones: op, glResidual: mm.n - mc.qr.rango, rango: mc.qr.rango }, mc);
   }
 
   /** Coeficientes con error estándar, t y p (como el resumen de un modelo lineal). */

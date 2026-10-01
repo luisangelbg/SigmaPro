@@ -65,6 +65,9 @@ SP.definir('registro', function (SP) {
     'expresiones.enTabla': 'Variables calculadas y filtros (expresiones)',
     'transformar.aplicar': 'Transformaciones (logaritmos, raíces, arcoseno, Box-Cox)',
     'transformar.boxcoxResumen': 'Box-Cox: λ estimada, intervalo y verosimilitud perfilada',
+    'estratos.anovaTabla': 'Análisis de varianza con estratos de error (parcelas divididas, subdivididas y en franjas)',
+    'medias.emmDe': 'Medias marginales estimadas (rejilla de referencia) con su error estándar',
+    'medias.pruebasConjuntasDe': 'Efectos simples: pruebas F conjuntas dentro de cada nivel de un factor',
   };
 
   const TIPOS_ENTRADA = new Set(['numerica', 'numerica+', 'factor', 'factor+', 'cualquiera']);
@@ -102,7 +105,7 @@ SP.definir('registro', function (SP) {
     const orden = new Map(SP.familias.map((x, i) => [x.id, i]));
     return Object.values(SP.metodos)
       .filter(m => !familia || m.familia === familia)
-      .sort((a, b) => (orden.get(a.familia) - orden.get(b.familia)) || a.nombre.localeCompare(b.nombre, 'es'));
+      .sort((a, b) => (orden.get(a.familia) - orden.get(b.familia)) || ((a.orden ?? 99) - (b.orden ?? 99)) || a.nombre.localeCompare(b.nombre, 'es'));
   };
 
   /** Valor de cada opción: el dado o el de omisión. */

@@ -1,0 +1,83 @@
+{
+  "esquema": 1,
+  "id": "dbca/dbca-generalizado",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dbca"
+  },
+  "titulo": "Bloques generalizados: dos parcelas por tratamiento en cada bloque",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [22.309999999999999, 23.170000000000002, 22.57, 24.289999999999999, 25.350000000000001, 25.309999999999999, 23.579999999999998, 22.68, 25.440000000000001, 24.91, 26.379999999999999, 25.800000000000001, 24.5, 24.210000000000001, 25.699999999999999, 25.329999999999998, 28.25, 26.75, 25.350000000000001, 26.129999999999999, 26.309999999999999, 25.52, 28.84, 28.260000000000002],
+      "bloque": ["I", "I", "I", "I", "I", "I", "II", "II", "II", "II", "II", "II", "III", "III", "III", "III", "III", "III", "IV", "IV", "IV", "IV", "IV", "IV"],
+      "trat": ["T1", "T1", "T2", "T2", "T3", "T3", "T1", "T1", "T2", "T2", "T3", "T3", "T1", "T1", "T2", "T2", "T3", "T3", "T1", "T1", "T2", "T2", "T3", "T3"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["I", "II", "III", "IV"]
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["T1", "T2", "T3"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "y",
+    "tratamientos": ["trat"],
+    "bloque": "bloque"
+  },
+  "opciones": {
+    "tipoSC": 3
+  },
+  "esperado": {
+    "anova": {
+      "fuente": ["bloque", "trat", "bloque:trat", "Residuales"],
+      "gl": [3, 2, 6, 12],
+      "sc": [28.209816666666605, 34.034858333333254, 2.3797083333333502, 4.5833999999999753],
+      "F": [24.619118267370734, 44.554075577082649, 1.038403077773427, "NA"],
+      "p": [2.0509156622827307e-05, 2.7949269547613249e-06, 0.44764586756257418, "NA"]
+    },
+    "tipoSC": 3,
+    "resumen": {
+      "media": 25.289166666666667,
+      "cv": 2.4438173206209868,
+      "r2": 0.93377334485740693,
+      "n": 24
+    },
+    "medias": [
+      {
+        "filas": [
+          {
+            "emm": 23.991250000000001,
+            "ee": 0.21850343246731804
+          },
+          {
+            "emm": 25.008749999999999,
+            "ee": 0.21850343246731804
+          },
+          {
+            "emm": 26.8675,
+            "ee": 0.21850343246731782
+          }
+        ]
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(y ~ bloque * trat), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+  }
+}

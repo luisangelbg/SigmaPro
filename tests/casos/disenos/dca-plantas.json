@@ -1,0 +1,77 @@
+{
+  "esquema": 1,
+  "id": "dca/dca-plantas",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dca"
+  },
+  "titulo": "Completamente al azar, un factor balanceado",
+  "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "peso": [4.1699999999999999, 5.5800000000000001, 5.1799999999999997, 6.1100000000000003, 4.5, 4.6100000000000003, 5.1699999999999999, 4.5300000000000002, 5.3300000000000001, 5.1399999999999997, 4.8099999999999996, 4.1699999999999999, 4.4100000000000001, 3.5899999999999999, 5.8700000000000001, 3.8300000000000001, 6.0300000000000002, 4.8899999999999997, 4.3200000000000003, 4.6900000000000004, 6.3099999999999996, 5.1200000000000001, 5.54, 5.5, 5.3700000000000001, 5.29, 4.9199999999999999, 6.1500000000000004, 5.7999999999999998, 5.2599999999999998],
+      "grupo": ["ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2"]
+    },
+    "tipos": {
+      "peso": {
+        "tipo": "numerica"
+      },
+      "grupo": {
+        "tipo": "factor",
+        "niveles": ["ctrl", "trt1", "trt2"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "peso",
+    "tratamientos": ["grupo"]
+  },
+  "opciones": {
+    "tipoSC": 3
+  },
+  "esperado": {
+    "anova": {
+      "fuente": ["grupo", "Residuales"],
+      "gl": [2, 27],
+      "sc": [3.7663399999999996, 10.492089999999997],
+      "F": [4.846087862380136, "NA"],
+      "p": [0.015909958325622937, "NA"]
+    },
+    "tipoSC": 3,
+    "resumen": {
+      "media": 5.0730000000000004,
+      "cv": 12.28808648278209,
+      "r2": 0.26414829683211977,
+      "n": 30
+    },
+    "medias": [
+      {
+        "filas": [
+          {
+            "emm": 5.032,
+            "ee": 0.19712836577365664
+          },
+          {
+            "emm": 4.6609999999999996,
+            "ee": 0.19712836577365669
+          },
+          {
+            "emm": 5.5259999999999998,
+            "ee": 0.19712836577365669
+          }
+        ]
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(peso ~ grupo), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+  }
+}

@@ -239,9 +239,11 @@ SP.definir('formula', function (SP) {
     const usadas = form.respuesta ? [form.respuesta, ...form.variables] : form.variables;
     for (const v of usadas) tabla.col(v);   // lanza si no existe
 
-    /* filas completas (como na.omit) */
+    /* filas completas (como na.omit); op.filas restringe a esas filas (otro modelo sobre los mismos datos) */
     const filas = [];
-    for (let i = 0; i < tabla.n; i++) {
+    const candidatas = op.filas || null;
+    for (let r = 0, total = candidatas ? candidatas.length : tabla.n; r < total; r++) {
+      const i = candidatas ? candidatas[r] : r;
       let ok = true;
       for (const v of usadas) {
         const c = tabla.col(v);
@@ -336,7 +338,7 @@ SP.definir('formula', function (SP) {
       filas.forEach((fi, r) => { y[r] = c.valores[fi]; });
     }
     return { X, n, p, columnas, asignacion: Int32Array.from(asignacion), terminos: form.terminos, intercepto: form.intercepto,
-      respuesta: form.respuesta, y, filas: Int32Array.from(filas), niveles, formula: form };
+      respuesta: form.respuesta, y, filas: Int32Array.from(filas), niveles, formula: form, codificacion: codigos };
   }
 
   /** Versión para las pruebas y la interfaz: la matriz como columnas de números. */

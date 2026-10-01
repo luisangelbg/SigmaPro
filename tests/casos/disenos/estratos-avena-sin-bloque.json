@@ -1,0 +1,80 @@
+{
+  "esquema": 1,
+  "id": "estratos.anovaTabla/estratos-avena-sin-bloque",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "estratos.anovaTabla"
+  },
+  "titulo": "Avena: los bloques solo en el error",
+  "fuente": "Yates (1935), avena en parcelas divididas; conjunto oats del paquete MASS",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "Y": [111, 130, 157, 174, 117, 114, 161, 141, 105, 140, 118, 156, 61, 91, 97, 100, 70, 108, 126, 149, 96, 124, 121, 144, 68, 64, 112, 86, 60, 102, 89, 96, 89, 129, 132, 124, 74, 89, 81, 122, 64, 103, 132, 133, 70, 89, 104, 117, 62, 90, 100, 116, 80, 82, 94, 126, 63, 70, 109, 99, 53, 74, 118, 113, 89, 82, 86, 104, 97, 99, 119, 121],
+      "B": ["I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI"],
+      "V": ["Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous"],
+      "N": ["0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt"]
+    },
+    "tipos": {
+      "Y": {
+        "tipo": "numerica"
+      },
+      "B": {
+        "tipo": "factor",
+        "niveles": ["I", "II", "III", "IV", "V", "VI"]
+      },
+      "V": {
+        "tipo": "factor",
+        "niveles": ["Golden.rain", "Marvellous", "Victory"]
+      },
+      "N": {
+        "tipo": "factor",
+        "niveles": ["0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    "Y ~ V * N",
+    "B/V"
+  ],
+  "esperado": [
+    {
+      "estrato": "B",
+      "fuente": ["Residuals"],
+      "gl": [5],
+      "sc": [15875.27777777781],
+      "cm": [3175.055555555562],
+      "F": ["NA"],
+      "p": ["NA"]
+    },
+    {
+      "estrato": "B:V",
+      "fuente": ["V", "Residuals"],
+      "gl": [2, 10],
+      "sc": [1786.3611111111052, 6013.3055555555729],
+      "cm": [893.18055555555259, 601.33055555555734],
+      "F": [1.4853403794363331, "NA"],
+      "p": [0.27238685673520763, "NA"]
+    },
+    {
+      "estrato": "Within",
+      "fuente": ["N", "V:N", "Residuals"],
+      "gl": [3, 6, 45],
+      "sc": [20020.499999999993, 321.75000000000102, 7968.7499999999973],
+      "cm": [6673.4999999999973, 53.625000000000171, 177.08333333333329],
+      "F": [37.685647058823527, 0.30282352941176577, "NA"],
+      "p": [2.4577095545616569e-12, 0.93219875899922444, "NA"]
+    }
+  ],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "summary(aov(Y ~ V * N + Error(B/V)))"
+  }
+}

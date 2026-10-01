@@ -2,6 +2,29 @@
 
 ## Sin publicar
 
+### Hito 1.6 · ANOVA de diseños experimentales (1 oct 2026)
+
+- Núcleo: `js/nucleo/estratos.js`, análisis de varianza con estratos de error como `aov(… + Error())` (parcelas
+  divididas, subdivididas y en franjas); `js/nucleo/medias.js`, rejilla de referencia con medias marginales estimadas,
+  su EE, estimabilidad con celdas vacías o términos confundidos, detección de factores anidados como emmeans, y efectos
+  simples por pruebas F conjuntas (como `joint_tests`). El modelo de la fórmula acepta `filas` para ajustar dos
+  modelos sobre las mismas filas.
+- `js/metodos/disenos.js`: un método por diseño (completamente al azar, bloques completos al azar, cuadro latino,
+  parcelas divididas con las grandes en bloques, al azar o en cuadro latino, subdivididas, franjas, bloques incompletos
+  balanceados, látice y alfa-látice), factoriales de hasta tres factores, bloques generalizados y parcelas perdidas
+  detectados solos, SC tipo I, II y III con la explicación de cada una (tipo II automático si el III no existe),
+  avisos de términos confundidos y de desbalance en estratos, media, CV (uno por error), R², eficiencia relativa de los
+  bloques y del cuadro latino (Gomez y Gomez, 1984) y efectos simples.
+- Bloque 4: formularios por diseño con los papeles propuestos a partir de la tabla (bloques, filas, columnas,
+  repeticiones), gráfica de interacción con marcadores y trazos distintos (`SP.graficas.lineas`) y cuadros de ANOVA
+  con el total, resumen, medias y efectos simples. El catálogo ordena los diseños de lo simple a lo complejo.
+- Ejemplo nuevo: la avena en parcelas divididas de Yates (1935), cotejada con la copia de R.
+- Validación: 45 casos nuevos contra R (1 905 valores), con agricolae (sp.plot, ssp.plot, strip.plot, BIB.test) además de
+  aov, car y emmeans; clase B nueva: emmeans redondea la F de las pruebas conjuntas. 7 pruebas unitarias nuevas y 5
+  escenarios más del código R (24 en total).
+- Rendimiento: con 2 000 filas o más y pocas celdas, el modelo lineal y los estratos se ajustan por celdas ponderadas
+  (mismas sumas de cuadrados): un bloque generalizado de 100 000 filas pasó de 23 s a 2 s, unas subdivididas de 16 s a 1 s.
+
 ### Hito 1.5 · pruebas t y no paramétricas (1 oct 2026)
 
 - Núcleo: distribuciones exactas del rango con signo y de la suma de rangos de Wilcoxon (`psignrank`, `qsignrank`,

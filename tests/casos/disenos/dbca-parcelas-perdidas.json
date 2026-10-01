@@ -1,0 +1,91 @@
+{
+  "esquema": 1,
+  "id": "dbca/dbca-parcelas-perdidas",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dbca"
+  },
+  "titulo": "Bloques con dos parcelas perdidas (tipo III, medias ajustadas)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "rend": [53.600000000000001, 55.100000000000001, 60.700000000000003, 61.399999999999999, 64.5, 54.100000000000001, 60.799999999999997, 58.5, 61.5, 54.399999999999999, 57.799999999999997, 60.799999999999997, 60.399999999999999, 62.5, 56.200000000000003, 59.899999999999999, 64.099999999999994, 64.200000000000003],
+      "bloque": ["B1", "B1", "B1", "B1", "B1", "B2", "B2", "B2", "B2", "B3", "B3", "B3", "B3", "B3", "B4", "B4", "B4", "B4"],
+      "variedad": ["V1", "V2", "V3", "V4", "V5", "V1", "V3", "V4", "V5", "V1", "V2", "V3", "V4", "V5", "V1", "V2", "V4", "V5"]
+    },
+    "tipos": {
+      "rend": {
+        "tipo": "numerica"
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["B1", "B2", "B3", "B4"]
+      },
+      "variedad": {
+        "tipo": "factor",
+        "niveles": ["V1", "V2", "V3", "V4", "V5"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "rend",
+    "tratamientos": ["variedad"],
+    "bloque": "bloque"
+  },
+  "opciones": {
+    "tipoSC": 3
+  },
+  "esperado": {
+    "anova": {
+      "fuente": ["bloque", "variedad", "Residuales"],
+      "gl": [3, 4, 10],
+      "sc": [24.327351981351931, 187.13318531468457, 13.514314685314581],
+      "F": [6.0003910786013703, 34.61758692026649, "NA"],
+      "p": [0.013171460918105992, 7.8499295227614913e-06, "NA"]
+    },
+    "tipoSC": 3,
+    "resumen": {
+      "media": 59.472222222222221,
+      "cv": 1.9547123063365428,
+      "r2": 0.93707133820130273,
+      "n": 18
+    },
+    "medias": [
+      {
+        "filas": [
+          {
+            "emm": 54.575000000000024,
+            "ee": 0.58125542331479718
+          },
+          {
+            "emm": 57.148601398601407,
+            "ee": 0.69254343747018265
+          },
+          {
+            "emm": 61.46678321678322,
+            "ee": 0.69254343747018243
+          },
+          {
+            "emm": 61.100000000000009,
+            "ee": 0.58125542331479696
+          },
+          {
+            "emm": 63.175000000000004,
+            "ee": 0.58125542331479696
+          }
+        ]
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "car::Anova(lm(rend ~ bloque + variedad), type = 3); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+  }
+}
