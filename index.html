@@ -31,7 +31,7 @@
     </div>
     <nav class="stepper" id="stepper" aria-label="Bloques">
       <button type="button" class="step-btn" data-step="1"><span class="step-num">1</span>Inicio</button>
-      <button type="button" class="step-btn soon" data-step="2" data-soon="pronto"><span class="step-num">2</span>Datos</button>
+      <button type="button" class="step-btn" data-step="2"><span class="step-num">2</span>Datos</button>
       <button type="button" class="step-btn soon" data-step="3" data-soon="pronto"><span class="step-num">3</span>Explorar</button>
       <button type="button" class="step-btn soon" data-step="4" data-soon="pronto"><span class="step-num">4</span>Análisis</button>
       <button type="button" class="step-btn soon" data-step="5" data-soon="pronto"><span class="step-num">5</span>Resultados</button>
@@ -52,8 +52,9 @@
       <h1 id="t1">Del experimento a la conclusión, <em>con cifras que se pueden comprobar</em></h1>
       <p class="lead">Diseños experimentales, comparaciones de medias, regresión y modelos mixtos, con un asistente que entiende tu ensayo, reportes listos para publicar y el código R de cada análisis.</p>
       <div class="btn-row">
-        <button type="button" class="btn btn-primary btn-lg" data-ir="8">Ver la validación</button>
-        <a class="btn btn-secondary btn-lg" href="propuesta/maqueta.html">Ver la maqueta del flujo</a>
+        <button type="button" class="btn btn-primary btn-lg" data-ir="2">Empezar con tus datos</button>
+        <button type="button" class="btn btn-secondary btn-lg" data-ir="8">Ver la validación</button>
+        <a class="btn btn-ghost btn-lg" href="propuesta/maqueta.html">Ver la maqueta del flujo</a>
       </div>
       <p class="privacidad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Tus datos nunca salen de este navegador.</p>
     </div>
@@ -81,17 +82,68 @@
 
   <div class="card" style="margin-top:var(--sp-5)">
     <h3>Estado del desarrollo</h3>
-    <p class="small muted" style="margin-top:0">SigmaPro se construye por hitos y cada uno se cierra con su validación contra R. Esta versión contiene los cimientos y el núcleo numérico.</p>
+    <p class="small muted" style="margin-top:0">SigmaPro se construye por hitos y cada uno se cierra con su validación contra R. Esta versión contiene los cimientos, el núcleo numérico y el bloque de datos.</p>
     <ul class="hitos" id="hitos"></ul>
   </div>
 </section>
 
-<!-- ======================= 2–7 · PRÓXIMAMENTE ======================= -->
+<!-- ======================= 2 · DATOS ======================= -->
 <section class="step-panel" id="panel-2" aria-labelledby="t2">
-  <div class="panel-title"><div><h2 id="t2">Datos</h2><p>Hoja de datos, importación y transformaciones.</p></div></div>
-  <div class="soon-box"><h3>En construcción · Hito 1.2</h3><p>Lo que traerá este bloque:</p>
-    <ul><li>Rejilla tipo hoja de cálculo para 100 000 filas, con deshacer.</li><li>Pegar desde una hoja de cálculo e importar CSV y XLSX.</li><li>Tipos de variable, valores faltantes, filtros y variables calculadas.</li><li>Transformaciones log, raíz, arcoseno y Box-Cox, siempre en columna nueva.</li><li>Detección de la estructura del ensayo (bloques completos, balance, cuadro latino).</li></ul></div>
+  <div class="panel-title"><div><h2 id="t2">Datos</h2><p>Importa o pega la tabla del ensayo, revisa el tipo de cada variable y prepara las que vas a analizar. Los cambios nunca tocan tu archivo original.</p></div></div>
+
+  <div class="dat-barra" role="toolbar" aria-label="Herramientas de datos">
+    <div class="btn-row">
+      <button type="button" class="btn btn-primary btn-sm" id="datImportar">Importar archivo…</button>
+      <button type="button" class="btn btn-secondary btn-sm" id="datPegar">Pegar tabla…</button>
+      <button type="button" class="btn btn-secondary btn-sm" id="datEjemplos" aria-haspopup="menu">Ejemplos ▾</button>
+      <button type="button" class="btn btn-secondary btn-sm" id="datNueva">Hoja vacía…</button>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary btn-sm" id="datCalcular" disabled>ƒ Variable calculada…</button>
+      <button type="button" class="btn btn-secondary btn-sm" id="datTransformar" disabled>↻ Transformar…</button>
+      <button type="button" class="btn btn-secondary btn-sm" id="datFiltrar" disabled>Filtrar filas…</button>
+      <button type="button" class="btn btn-secondary btn-sm" id="datReformar" disabled>Ancha ⇄ larga…</button>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-ghost btn-sm" id="datDeshacer" disabled aria-label="Deshacer">↶ Deshacer</button>
+      <button type="button" class="btn btn-ghost btn-sm" id="datRehacer" disabled aria-label="Rehacer">↷ Rehacer</button>
+      <button type="button" class="btn btn-ghost btn-sm" id="datVolver" hidden>Volver a la tabla anterior</button>
+    </div>
+    <input type="file" id="datArchivo" accept=".csv,.tsv,.txt,.xlsx,.xlsm,.ods" hidden>
+  </div>
+
+  <div class="dat-inicio" id="datInicio">
+    <h3>Empieza con tus datos</h3>
+    <p>Una fila por unidad experimental (parcela, maceta, planta) y una columna por variable: los factores del diseño (bloque, tratamiento) y las respuestas medidas.</p>
+    <div class="dat-opciones">
+      <button type="button" class="dat-opcion" id="datInicioImportar"><b>Importar un archivo</b><span>CSV, TSV o texto; libros .xlsx y .ods. Se leen aquí mismo, sin subirse a ningún lado.</span></button>
+      <button type="button" class="dat-opcion" id="datInicioPegar"><b>Pegar desde una hoja de cálculo</b><span>Copia el rango con la fila de nombres y pégalo. También puedes pegar directo en la rejilla con Ctrl+V.</span></button>
+      <button type="button" class="dat-opcion" id="datInicioEjemplo" aria-haspopup="menu"><b>Probar con un ejemplo</b><span>Ensayos agronómicos con su diseño: bloques, factorial, cuadro latino, porcentajes y fechas.</span></button>
+    </div>
+  </div>
+
+  <div class="dat-trabajo" id="datTrabajo" hidden>
+    <aside class="dat-lateral" aria-label="Variables">
+      <h3 class="dat-titulo">Variables</h3>
+      <ul class="dat-lista" id="datLista"></ul>
+      <div class="dat-detalle" id="datDetalle" aria-live="polite"></div>
+    </aside>
+    <div class="dat-centro">
+      <div class="msg msg-warning dat-filtro" id="datFiltroAviso" hidden></div>
+      <div class="dat-rejilla" id="datRejilla"></div>
+      <p class="dat-estado small" id="datEstado" aria-live="polite"></p>
+      <p class="small muted dat-ayuda">Doble clic, Intro o empezar a escribir para editar · Ctrl+C / Ctrl+V copia y pega con tu hoja de cálculo · Supr vacía · Ctrl+Z deshace · ⋮ en cada columna para su tipo y opciones.</p>
+    </div>
+  </div>
+
+  <div class="card dat-estructura" id="datEstructura">
+    <h3>Lo que SigmaPro ve en tu ensayo</h3>
+    <ul class="dat-hallazgos" id="datHallazgos"><li class="info"><span class="ico" aria-hidden="true">i</span><span>Cuando cargues datos, aquí aparecerá la estructura del ensayo: tratamientos, bloques completos o incompletos, balance, faltantes y si parece un cuadro latino.</span></li></ul>
+  </div>
+
 </section>
+
+<!-- ======================= 3–7 · PRÓXIMAMENTE ======================= -->
 <section class="step-panel" id="panel-3" aria-labelledby="t3">
   <div class="panel-title"><div><h2 id="t3">Explorar</h2><p>Descriptivos, frecuencias e intervalos de confianza.</p></div></div>
   <div class="soon-box"><h3>En construcción · Hito 1.3</h3><p>Descriptivos por grupos, cuantiles con las nueve definiciones, tablas de frecuencia e intervalos de confianza de media, mediana, varianza y proporciones.</p></div>
@@ -178,6 +230,16 @@
 <script src="js/nucleo/algebra.js"></script>
 <script src="js/nucleo/formula.js"></script>
 <script src="js/nucleo/lineal.js"></script>
+<script src="js/nucleo/zip.js"></script>
+<script src="js/nucleo/xml.js"></script>
+<script src="js/nucleo/hojas.js"></script>
+<script src="js/nucleo/csv.js"></script>
+<script src="js/nucleo/tipos.js"></script>
+<script src="js/nucleo/hoja.js"></script>
+<script src="js/nucleo/expresiones.js"></script>
+<script src="js/nucleo/transformar.js"></script>
+<script src="js/nucleo/estructura.js"></script>
+<script src="js/nucleo/reformar.js"></script>
 <script src="js/nucleo/registro.js"></script>
 <script src="js/nucleo/hilos.js"></script>
 <!-- generado por tests/correr.mjs -->
@@ -185,6 +247,11 @@
 <!-- interfaz -->
 <script src="js/interfaz/app.js"></script>
 <script src="js/interfaz/validacion.js"></script>
+<script src="js/interfaz/ui.js"></script>
+<script src="js/interfaz/rejilla.js"></script>
+<script src="datos/ejemplos.js"></script>
+<script src="js/interfaz/datos.js"></script>
+<script src="js/interfaz/datos-dialogos.js"></script>
 <script src="js/labg-figure-studio.js" defer></script>
 <script src="js/labg-navigator.js" defer></script>
 </body>

@@ -44,6 +44,27 @@ En los dos, el valor de SigmaPro se comprobó con la propia función de distribu
 Nota: para la t con más de 4 × 10⁵ grados de libertad, R usa una aproximación normal corregida; SigmaPro usa la
 beta incompleta exacta. Coinciden a 4.5e-11.
 
+## Datos (Hito 1.2)
+
+Lo que entra a los análisis también se valida: si una celda se lee distinto, todo lo demás sale distinto.
+
+| Qué | Contra qué | Casos |
+|---|---|---|
+| Lector de CSV (separador y decimal detectados, comillas, saltos de línea dentro de celdas, códigos de faltante) | `read.csv` / `read.csv2` / `read.delim` | 3 |
+| Lector propio de .xlsx (cadenas compartidas, fechas, base 1904, errores, filas y columnas vacías) | readxl 1.4.3, con sus cinco libros de ejemplo: 6 610 celdas | 5 |
+| Expresiones de las variables calculadas y los filtros (aritmética, `%%` y `round` de R, lógica de tres valores con NA, `ifelse`, agregados, textos) | la misma expresión evaluada en R | 16 |
+| Transformaciones (logaritmos, raíces, arcoseno, recíproco, Box-Cox con λ dada, estandarizar) | sus fórmulas en R | 8 |
+| Box-Cox: λ̂, intervalo al 95 % y log-verosimilitud perfilada | la verosimilitud perfilada de Box y Cox con los residuales de `lm`, maximizada en R con `optimize` a 1e-12 y el intervalo con `uniroot` (clase D); con venenos × tratamientos de Box y Cox (1964), cerezos de Ryan, Joiner y Ryan (1976) y ozono de Chambers y col. (1983) | 3 |
+
+Para 100 000 filas, Box-Cox no recorre la QR completa en cada λ: en un diseño con solo factores las filas de
+X se repiten por celda y la suma de cuadrados residual se descompone exactamente en la variación dentro de
+celdas más un ajuste ponderado sobre las celdas. Una prueba unitaria comprueba que las dos rutas dan la misma
+suma (a 1e-9 relativo) y los casos contra R pasan por la ruta rápida.
+
+Dos convenciones de R que la app sigue a propósito: los números se muestran y se copian con 15 cifras
+significativas, como `as.character()` (0.1 + 0.2 se ve «0.3»), y los niveles sin observaciones (por un filtro
+o por la edición) se quitan antes del análisis, como `droplevels()`.
+
 ## Dónde está cada cosa
 
 ```

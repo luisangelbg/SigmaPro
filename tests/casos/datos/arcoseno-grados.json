@@ -1,0 +1,40 @@
+{
+  "esquema": 1,
+  "id": "transformar.aplicar/arcoseno-grados",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+  },
+  "titulo": "Arcoseno de la raíz de un porcentaje (grados)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "pct": [0, 3.5, 12, 50, 77.700000000000003, 99, 100, "NA", 41.200000000000003]
+    },
+    "tipos": {
+      "pct": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    "arcoseno",
+    {
+      "columna": "pct"
+    },
+    {
+      "porcentaje": true,
+      "grados": true
+    }
+  ],
+  "esperado": [0, 10.78259250762134, 20.267901055658282, 45.000000000000007, 61.820932427859354, 84.260829522733218, 90, "NA", 39.93157141369911],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "asin(sqrt(pct / 100)) * 180 / pi"
+  }
+}

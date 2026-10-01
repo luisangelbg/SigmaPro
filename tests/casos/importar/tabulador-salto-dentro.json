@@ -1,0 +1,37 @@
+{
+  "esquema": 1,
+  "id": "csv.leerColumnas/tabulador-salto-dentro",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "csv.leerColumnas"
+  },
+  "titulo": "Tabulador con un salto de línea dentro de un texto entre comillas",
+  "fuente": "Texto sintético con casos difíciles",
+  "clase": "A",
+  "argumentos": [
+    "id\tnota\tvalor\n1\t\"línea uno\nlínea dos\"\t3.5\n2\tsimple\t-2\n3\t\t1e3\n",
+    {
+      "delimitador": "\t",
+      "decimal": "."
+    }
+  ],
+  "esperado": {
+    "nombres": ["id", "nota", "valor"],
+    "columnas": {
+      "id": [1, 2, 3],
+      "nota": ["línea uno\nlínea dos", "simple", "NA"],
+      "valor": [3.5, -2, 1000]
+    },
+    "delimitador": "\t",
+    "decimal": ".",
+    "filas": 3
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "utils": "4.4.2"
+    },
+    "codigo": "read.csv(text = texto, sep = \"\t\", dec = \".\", na.strings = c(\"\", \"NA\"), strip.white = TRUE)"
+  }
+}

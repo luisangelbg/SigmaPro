@@ -1,0 +1,39 @@
+{
+  "esquema": 1,
+  "id": "transformar.aplicar/log-mas-c",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+  },
+  "titulo": "ln(x + 1), para conteos con ceros",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [0, 1, 3, 0, 12, 7, 0, 25]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    "logc",
+    {
+      "columna": "y"
+    },
+    {
+      "c": 1
+    }
+  ],
+  "esperado": [0, 0.69314718055994529, 1.3862943611198906, 0, 2.5649493574615367, 2.0794415416798357, 0, 3.2580965380214821],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "log(y + 1)"
+  }
+}

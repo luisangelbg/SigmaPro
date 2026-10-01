@@ -1,0 +1,39 @@
+{
+  "esquema": 1,
+  "id": "csv.leerColumnas/comas-y-comillas",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "csv.leerColumnas"
+  },
+  "titulo": "Coma, fin de línea CRLF, comillas con comas y comillas dobles, notación científica y faltantes",
+  "fuente": "Texto sintético con casos difíciles",
+  "clase": "A",
+  "argumentos": [
+    "parcela,tratamiento,rend,altura,obs\r\n1,\"Testigo, sin N\",4.21,1.85,\r\n2,\"Urea \"\"granulada\"\"\",5.9,-0.5,\"dañada por granizo\"\r\n3,Sulfato,NA,2.1e-1,ok\r\n4, Testigo ,6.03,1.92,\"\"\r\n",
+    {
+      "delimitador": ",",
+      "decimal": "."
+    }
+  ],
+  "esperado": {
+    "nombres": ["parcela", "tratamiento", "rend", "altura", "obs"],
+    "columnas": {
+      "parcela": [1, 2, 3, 4],
+      "tratamiento": ["Testigo, sin N", "Urea \"granulada\"", "Sulfato", "Testigo"],
+      "rend": [4.21, 5.9000000000000004, "NA", 6.0300000000000002],
+      "altura": [1.8500000000000001, -0.5, 0.20999999999999999, 1.9199999999999999],
+      "obs": ["NA", "dañada por granizo", "ok", "NA"]
+    },
+    "delimitador": ",",
+    "decimal": ".",
+    "filas": 4
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "utils": "4.4.2"
+    },
+    "codigo": "read.csv(text = texto, sep = \",\", dec = \".\", na.strings = c(\"\", \"NA\"), strip.white = TRUE)"
+  }
+}

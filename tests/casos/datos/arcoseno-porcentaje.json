@@ -1,0 +1,39 @@
+{
+  "esquema": 1,
+  "id": "transformar.aplicar/arcoseno-porcentaje",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+  },
+  "titulo": "Arcoseno de la raíz de un porcentaje (radianes)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "pct": [0, 3.5, 12, 50, 77.700000000000003, 99, 100, "NA", 41.200000000000003]
+    },
+    "tipos": {
+      "pct": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    "arcoseno",
+    {
+      "columna": "pct"
+    },
+    {
+      "porcentaje": true
+    }
+  ],
+  "esperado": [0, 0.18819174115886414, 0.35374160588967146, 0.78539816339744839, 1.0789788175190775, 1.4706289056333368, 1.5707963267948966, "NA", 0.69693739666429622],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "asin(sqrt(pct / 100))"
+  }
+}

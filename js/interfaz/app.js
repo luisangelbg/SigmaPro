@@ -49,8 +49,8 @@
   const HITOS = [
     ['hecho', '1.0', 'Cimientos: registro de métodos, pruebas automáticas contra R y reporte de validación'],
     ['hecho', '1.1', 'Núcleo numérico: distribuciones, álgebra y modelo lineal con sumas de cuadrados I, II y III'],
-    ['actual', '1.2', 'Datos: hoja de cálculo, importación, tipos, faltantes y transformaciones'],
-    ['', '1.3', 'Descriptivos, frecuencias e intervalos de confianza'],
+    ['hecho', '1.2', 'Datos: hoja de cálculo, importación, tipos, faltantes y transformaciones'],
+    ['actual', '1.3', 'Descriptivos, frecuencias e intervalos de confianza'],
     ['', '1.4', 'Supuestos con semáforo y recomendaciones'],
     ['', '1.5', 'Pruebas t y no paramétricas (con las distribuciones exactas de rangos)'],
     ['', '1.6', 'ANOVA de diseños experimentales'],

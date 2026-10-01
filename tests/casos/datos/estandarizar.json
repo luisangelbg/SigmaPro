@@ -1,0 +1,37 @@
+{
+  "esquema": 1,
+  "id": "transformar.aplicar/estandarizar",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+  },
+  "titulo": "Estandarizar (media 0, DE 1)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [0.80000000000000004, 2.5, 4.0999999999999996, 7.9000000000000004, 12.4, 0.34999999999999998, 19.600000000000001, 3.2999999999999998, 5.5, "NA", 9.0999999999999996, 1.7]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    "estandarizar",
+    {
+      "columna": "y"
+    },
+    []
+  ],
+  "esperado": [-0.9114815932090522, -0.61986986022343582, -0.34541175858991457, 0.3064262327896986, 1.0783396436339772, -0.98867293429348013, 2.3134011009848234, -0.4826408094066752, -0.1052609196605834, "NA", 0.51226980901483943, -0.75709891104019644],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "as.vector(scale(y))"
+  }
+}

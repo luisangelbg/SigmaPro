@@ -1,0 +1,41 @@
+{
+  "esquema": 1,
+  "id": "transformar.boxcoxResumen/ozono-sin-modelo",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.boxcoxResumen"
+  },
+  "titulo": "Ozono diario, solo la media (116 observaciones; los faltantes se omiten)",
+  "fuente": "Chambers y col. (1983); conjunto airquality de R",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "Ozone": [41, 36, 12, 18, "NA", 28, 23, 19, 8, "NA", 7, 16, 11, 14, 18, 14, 34, 6, 30, 11, 1, 11, 4, 32, "NA", "NA", "NA", 23, 45, 115, 37, "NA", "NA", "NA", "NA", "NA", "NA", 29, "NA", 71, 39, "NA", "NA", 23, "NA", "NA", 21, 37, 20, 12, 13, "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", 135, 49, 32, "NA", 64, 40, 77, 97, 97, 85, "NA", 10, 27, "NA", 7, 48, 35, 61, 79, 63, 16, "NA", "NA", 80, 108, 20, 52, 82, 50, 64, 59, 39, 9, 16, 78, 35, 66, 122, 89, 110, "NA", "NA", 44, 28, 65, "NA", 22, 59, 23, 31, 44, 21, 9, "NA", 45, 168, 73, "NA", 76, 118, 84, 85, 96, 78, 73, 91, 47, 32, 20, 23, 21, 24, 44, 21, 28, 9, 13, 46, 18, 13, 24, 16, 13, 23, 36, 7, 14, 30, "NA", 14, 18, 20]
+    },
+    "tipos": {
+      "Ozone": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    "Ozone"
+  ],
+  "esperado": {
+    "lambda": 0.2033898648929798,
+    "ic": [0.029909852782476612, 0.3914631702938276],
+    "loglik": -652.31372042819976,
+    "n": 116
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "ll <- function(la) -n/2 * log(sum(qr.resid(qr(X), (y^la - 1) / (la * gm^(la - 1)))^2))   # gm = media geométrica\noptimize(ll, c(-5, 5), maximum = TRUE, tol = 1e-12); IC: uniroot de ll(la) = máx − qchisq(0.95, 1)/2"
+  }
+}

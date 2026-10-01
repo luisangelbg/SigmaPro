@@ -2,6 +2,30 @@
 
 ## Sin publicar
 
+### Hito 1.2 · datos (1 oct 2026)
+
+- Lectores propios, sin bibliotecas: CSV y texto (RFC 4180, separador y decimal detectados, UTF-8, Latin-1 y
+  UTF-16), .xlsx y .ods (descompresor DEFLATE, lector ZIP y XML propios; fechas, base 1904, errores de celda).
+  Libros grandes se leen en un hilo de trabajo.
+- Tipos de variable inferidos con su explicación (numérica, factor, fecha, texto, identificador), con
+  números con textos sueltos tomados como faltantes y códigos con cero inicial respetados; el usuario decide.
+- Hoja editable (`js/nucleo/hoja.js`) con deshacer y rehacer de 200 pasos, pegar desde hojas de cálculo,
+  variables calculadas y filtros con expresiones de semántica de R (`js/nucleo/expresiones.js`),
+  transformaciones siempre en columna nueva (`js/nucleo/transformar.js`) y Box-Cox con λ̂, intervalo,
+  sugerencia de potencia sencilla y perfil, estimado en un hilo con el modelo del experimento.
+- Cambio de forma ancha ⇄ larga (`js/nucleo/reformar.js`) y diagnóstico del ensayo
+  (`js/nucleo/estructura.js`): tratamientos y factorial, balance, celdas vacías, bloques completos o no,
+  cuadro latino, dosis numéricas tomadas como factor del diseño, identificadores y fechas fuera del diseño.
+- Bloque 2 de la app: rejilla virtualizada con teclado de hoja de cálculo (accesible como `grid`), lista de
+  variables con resumen, menú por columna, ventanas de importar, pegar, calcular, transformar, filtrar,
+  cambiar la forma, renombrar y ordenar niveles; seis ejemplos agronómicos (`datos/ejemplos.js`, generados
+  por `datos/generar-ejemplos.R`), entre ellos los venenos de Box y Cox (1964).
+- Validación: 35 casos nuevos contra R (7 156 valores): CSV contra `read.csv`, .xlsx contra readxl en
+  6 610 celdas, 16 expresiones, 8 transformaciones y 3 estimaciones de Box-Cox (clase D).
+- Rendimiento con 100 000 filas: crear la hoja 0.4 s, pintar 0.4 s, desplazar 3 a 10 ms, filtrar 0.1 s,
+  Box-Cox 0.6 s con la descomposición exacta por celdas (antes 3.9 s).
+- Correcciones al Navegador LABG compartido: ya no falla si la página se desplaza antes de arrancar.
+
 ### Hito 1.1 · núcleo numérico (1 oct 2026)
 
 - Distribuciones (`js/nucleo/dist.js`): log Γ (Lanczos), log B sin cancelación (Stirling reordenado), normal

@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-01T13:26:40.890Z",
+ "generado": "2026-10-01T14:20:47.067Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,14 +11,717 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 72,
-  "aprobados": 72,
+  "casos": 107,
+  "aprobados": 107,
   "fallidos": 0,
-  "valores": 6841,
+  "valores": 13997,
   "difEscaladaMax": 7.533201041296815e-8,
-  "objetivos": 26
+  "objetivos": 31
  },
  "casos": [
+  {
+   "id": "transformar.boxcoxResumen/arboles-regresion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.boxcoxResumen"
+   },
+   "titulo": "Volumen de 31 cerezos contra altura y diámetro",
+   "fuente": "Ryan, Joiner y Ryan (1976); conjunto trees de R",
+   "clase": "D",
+   "valores": 5,
+   "difMax": 5.356890042662599e-9,
+   "difEscaladaMax": 5.356890042662599e-9,
+   "peor": "lambda",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ll <- function(la) -n/2 * log(sum(qr.resid(qr(X), (y^la - 1) / (la * gm^(la - 1)))^2))   # gm = media geométrica\noptimize(ll, c(-5, 5), maximum = TRUE, tol = 1e-12); IC: uniroot de ll(la) = máx − qchisq(0.95, 1)/2"
+   }
+  },
+  {
+   "id": "transformar.boxcoxResumen/ozono-sin-modelo",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.boxcoxResumen"
+   },
+   "titulo": "Ozono diario, solo la media (116 observaciones; los faltantes se omiten)",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "D",
+   "valores": 5,
+   "difMax": 8.306202947672148e-14,
+   "difEscaladaMax": 8.306202947672148e-14,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ll <- function(la) -n/2 * log(sum(qr.resid(qr(X), (y^la - 1) / (la * gm^(la - 1)))^2))   # gm = media geométrica\noptimize(ll, c(-5, 5), maximum = TRUE, tol = 1e-12); IC: uniroot de ll(la) = máx − qchisq(0.95, 1)/2"
+   }
+  },
+  {
+   "id": "transformar.boxcoxResumen/venenos-box-cox-1964",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.boxcoxResumen"
+   },
+   "titulo": "Tiempos de supervivencia, 3 venenos × 4 tratamientos (ejemplo original de Box y Cox; publicaron λ ≈ −0.75)",
+   "fuente": "Box y Cox (1964); conjunto poisons del paquete boot",
+   "clase": "D",
+   "valores": 5,
+   "difMax": 8.264861017792668e-10,
+   "difEscaladaMax": 8.264861017792668e-10,
+   "peor": "lambda",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "boot": "1.3.31"
+    },
+    "codigo": "ll <- function(la) -n/2 * log(sum(qr.resid(qr(X), (y^la - 1) / (la * gm^(la - 1)))^2))   # gm = media geométrica\noptimize(ll, c(-5, 5), maximum = TRUE, tol = 1e-12); IC: uniroot de ll(la) = máx − qchisq(0.95, 1)/2"
+   }
+  },
+  {
+   "id": "transformar.aplicar/arcoseno-grados",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "Arcoseno de la raíz de un porcentaje (grados)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 9,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 1.7528769599991083e-16,
+   "peor": "[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "asin(sqrt(pct / 100)) * 180 / pi"
+   }
+  },
+  {
+   "id": "transformar.aplicar/arcoseno-porcentaje",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "Arcoseno de la raíz de un porcentaje (radianes)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 9,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "asin(sqrt(pct / 100))"
+   }
+  },
+  {
+   "id": "transformar.aplicar/boxcox-lambda-dado",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "Box-Cox con λ = 0.37",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 2.8615140725306077e-16,
+   "peor": "[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "(y^0.37 - 1) / 0.37"
+   }
+  },
+  {
+   "id": "transformar.aplicar/estandarizar",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "Estandarizar (media 0, DE 1)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "as.vector(scale(y))"
+   }
+  },
+  {
+   "id": "transformar.aplicar/log-mas-c",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "ln(x + 1), para conteos con ceros",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "log(y + 1)"
+   }
+  },
+  {
+   "id": "transformar.aplicar/log",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "Logaritmo natural",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "log(y)"
+   }
+  },
+  {
+   "id": "transformar.aplicar/log10",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "Logaritmo base 10",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 1.1102230246251565e-16,
+   "peor": "[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "log10(y)"
+   }
+  },
+  {
+   "id": "transformar.aplicar/raiz-mas-medio",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "√(x + 0.5)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "sqrt(y + 0.5)"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/arcoseno",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "asin(sqrt(germ / 100))",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 2.220446049250313e-16,
+   "difEscaladaMax": 1.5963604011212555e-16,
+   "peor": "[19]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, asin(sqrt(germ / 100)))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/aritmetica",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "log(rend) + 2 * altura",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 1.2912943399396733e-16,
+   "peor": "[21]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, log(rend) + 2 * altura)"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/condicion-numerica",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "ifelse(dosis > 60, rend - 1, NA)",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, ifelse(dosis > 60, rend - 1, NA))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/condicion-texto",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "ifelse(rend > mean(rend, na.rm = TRUE), \"alto\", \"bajo\")",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, ifelse(rend > mean(rend, na.rm = TRUE), \"alto\", \"bajo\"))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/filtro-y",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "dosis >= 60 & hibrido != \"H-40\"",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, dosis >= 60 & hibrido != \"H-40\")"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/logaritmos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "log(altura, 2) + log10(dosis + 1)",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 4.440892098500626e-16,
+   "difEscaladaMax": 2.220446049250313e-16,
+   "peor": "[7]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, log(altura, 2) + log10(dosis + 1))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/logica-con-faltantes",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "!is.na(rend) | altura > 2",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, !is.na(rend) | altura > 2)"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/logico-por-numero",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "is.na(rend) * 1",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, is.na(rend) * 1)"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/maximo-paralelo",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "pmax(rend, 5)",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, pmax(rend, 5))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/pegar",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "paste(hibrido, dosis, sep = \"-\")",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, paste(hibrido, dosis, sep = \"-\"))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/pertenencia",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "hibrido %in% c(\"H-52\", \"H-66\")",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, hibrido %in% c(\"H-52\", \"H-66\"))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/precedencia",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "-2^2 + rend^2",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, -2^2 + rend^2)"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/raiz",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "sqrt(altura + 0.5)",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, sqrt(altura + 0.5))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/redondeo-con-empates",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "round(altura, 1)",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, round(altura, 1))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/redondeo-entero",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "round(altura * 2)",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, round(altura * 2))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/resto",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "rend %% 2",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, rend %% 2)"
+   }
+  },
   {
    "id": "dist.qbeta/beta-cuantil",
    "objetivo": {
@@ -1051,6 +1754,214 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "ptukey(q, k, gl)"
+   }
+  },
+  {
+   "id": "hojas.leerLibroBase64/clippy",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "hojas.leerLibroBase64"
+   },
+   "titulo": "Encabezado de dos filas y celdas combinadas",
+   "fuente": "Libro de ejemplo «clippy.xlsx» del paquete readxl",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "readxl": "1.4.3"
+    },
+    "codigo": "read_excel(readxl_example(\"clippy.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
+   }
+  },
+  {
+   "id": "hojas.leerLibroBase64/datasets",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "hojas.leerLibroBase64"
+   },
+   "titulo": "Cuatro hojas de datos clásicos (1 263 filas en total)",
+   "fuente": "Libro de ejemplo «datasets.xlsx» del paquete readxl",
+   "clase": "A",
+   "valores": 6271,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "readxl": "1.4.3"
+    },
+    "codigo": "read_excel(readxl_example(\"datasets.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
+   }
+  },
+  {
+   "id": "hojas.leerLibroBase64/deaths",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "hojas.leerLibroBase64"
+   },
+   "titulo": "Hojas con notas arriba y abajo, fechas y celdas vacías",
+   "fuente": "Libro de ejemplo «deaths.xlsx» del paquete readxl",
+   "clase": "A",
+   "valores": 230,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "readxl": "1.4.3"
+    },
+    "codigo": "read_excel(readxl_example(\"deaths.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
+   }
+  },
+  {
+   "id": "hojas.leerLibroBase64/geometry",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "hojas.leerLibroBase64"
+   },
+   "titulo": "Datos que no empiezan en la celda A1",
+   "fuente": "Libro de ejemplo «geometry.xlsx» del paquete readxl",
+   "clase": "A",
+   "valores": 13,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "readxl": "1.4.3"
+    },
+    "codigo": "read_excel(readxl_example(\"geometry.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
+   }
+  },
+  {
+   "id": "hojas.leerLibroBase64/type-me",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "hojas.leerLibroBase64"
+   },
+   "titulo": "Lógicos, números guardados como texto, fechas y textos mezclados",
+   "fuente": "Libro de ejemplo «type-me.xlsx» del paquete readxl",
+   "clase": "A",
+   "valores": 72,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "readxl": "1.4.3"
+    },
+    "codigo": "read_excel(readxl_example(\"type-me.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
+   }
+  },
+  {
+   "id": "csv.leerColumnas/comas-y-comillas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "csv.leerColumnas"
+   },
+   "titulo": "Coma, fin de línea CRLF, comillas con comas y comillas dobles, notación científica y faltantes",
+   "fuente": "Texto sintético con casos difíciles",
+   "clase": "A",
+   "valores": 28,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "utils": "4.4.2"
+    },
+    "codigo": "read.csv(text = texto, sep = \",\", dec = \".\", na.strings = c(\"\", \"NA\"), strip.white = TRUE)"
+   }
+  },
+  {
+   "id": "csv.leerColumnas/punto-y-coma-coma-decimal",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "csv.leerColumnas"
+   },
+   "titulo": "Punto y coma con coma decimal y un faltante al final",
+   "fuente": "Texto sintético con casos difíciles",
+   "clase": "A",
+   "valores": 18,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "utils": "4.4.2"
+    },
+    "codigo": "read.csv(text = texto, sep = \";\", dec = \",\", na.strings = c(\"\", \"NA\"), strip.white = TRUE)"
+   }
+  },
+  {
+   "id": "csv.leerColumnas/tabulador-salto-dentro",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "csv.leerColumnas"
+   },
+   "titulo": "Tabulador con un salto de línea dentro de un texto entre comillas",
+   "fuente": "Texto sintético con casos difíciles",
+   "clase": "A",
+   "valores": 15,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "utils": "4.4.2"
+    },
+    "codigo": "read.csv(text = texto, sep = \"\t\", dec = \".\", na.strings = c(\"\", \"NA\"), strip.white = TRUE)"
    }
   },
   {

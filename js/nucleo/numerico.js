@@ -98,5 +98,49 @@ SP.definir('numerico', function (SP) {
     };
   }
 
-  SP.num = { suma, sinFaltantes, media, varianza, resumen };
+  /**
+   * Mínimo de una función de una variable en [a, b] por el método de Brent (1973):
+   * sección dorada con interpolación parabólica. Es el método de optimize() en R.
+   * tol: tolerancia relativa en x (por omisión, la raíz de la precisión de la máquina,
+   * que es lo más fino que permite un mínimo, donde la función es plana).
+   */
+  function minimizar(f, a, b, tol) {
+    const c = (3 - Math.sqrt(5)) / 2;
+    const eps = Math.sqrt(2.220446049250313e-16);
+    tol = tol || 1e-12;
+    let v = a + c * (b - a), w = v, x = v, d = 0, e = 0;
+    let fx = f(x), fv = fx, fw = fx;
+    for (let iter = 0; iter < 500; iter++) {
+      const xm = 0.5 * (a + b);
+      const tol1 = eps * Math.abs(x) + tol / 3, tol2 = 2 * tol1;
+      if (Math.abs(x - xm) <= tol2 - 0.5 * (b - a)) break;
+      let usarDorada = true;
+      if (Math.abs(e) > tol1) {
+        let r = (x - w) * (fx - fv), q = (x - v) * (fx - fw), p = (x - v) * q - (x - w) * r;
+        q = 2 * (q - r);
+        if (q > 0) p = -p; else q = -q;
+        const eAnt = e; e = d;
+        if (Math.abs(p) < Math.abs(0.5 * q * eAnt) && p > q * (a - x) && p < q * (b - x)) {
+          d = p / q;
+          const u = x + d;
+          if (u - a < tol2 || b - u < tol2) d = xm >= x ? tol1 : -tol1;
+          usarDorada = false;
+        }
+      }
+      if (usarDorada) { e = (x >= xm ? a : b) - x; d = c * e; }
+      const u = Math.abs(d) >= tol1 ? x + d : x + (d > 0 ? tol1 : -tol1);
+      const fu = f(u);
+      if (fu <= fx) {
+        if (u >= x) a = x; else b = x;
+        v = w; fv = fw; w = x; fw = fx; x = u; fx = fu;
+      } else {
+        if (u < x) a = u; else b = u;
+        if (fu <= fw || w === x) { v = w; fv = fw; w = u; fw = fu; }
+        else if (fu <= fv || v === x || v === w) { v = u; fv = fu; }
+      }
+    }
+    return { x, valor: fx };
+  }
+
+  SP.num = { suma, sinFaltantes, media, varianza, resumen, minimizar };
 });

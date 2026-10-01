@@ -3,3 +3,6 @@ tests/salida/
 *.log
 # notas privadas de trabajo
 CLAUDE.md
+
+# configuración local de las herramientas de desarrollo
+.claude/
