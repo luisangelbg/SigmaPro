@@ -71,10 +71,12 @@
         const args = (caso.argumentos || []).map(a => argumento(a, tabla));
         const fn = resolver(SP, caso.objetivo.nombre);
         if (caso.vectorizar) {
-          /* rejilla: los argumentos que son arreglos se recorren juntos; los escalares se repiten */
-          const largo = Math.max(0, ...args.map(a => (Array.isArray(a) || ArrayBuffer.isView(a) ? a.length : 0)));
+          /* rejilla: los argumentos que son arreglos en el caso se recorren juntos; los escalares y las
+             columnas de datos ({ columna }) se pasan enteros en cada llamada */
+          const recorre = (caso.argumentos || []).map(a => Array.isArray(a));
+          const largo = Math.max(0, ...args.map((a, k) => (recorre[k] ? a.length : 0)));
           obtenido = [];
-          for (let i = 0; i < largo; i++) obtenido.push(fn.apply(null, args.map(a => (Array.isArray(a) || ArrayBuffer.isView(a) ? a[i] : a))));
+          for (let i = 0; i < largo; i++) obtenido.push(fn.apply(null, args.map((a, k) => (recorre[k] ? a[i] : a))));
         } else {
           obtenido = fn.apply(null, args);
         }

@@ -64,10 +64,14 @@ const unidad = await ctx.SPT.correr();
 
 // ---------------------------------------------------------------- 4. casos contra R
 const dirCasos = join(TESTS, 'casos');
+/* las carpetas en el orden en que avanza la app (las nuevas, al final en orden alfabético) */
+const ORDEN_CARPETAS = ['num-resumen', 'dist-normal', 'dist-t-f-chisq', 'dist-gamma-beta', 'dist-tukey', 'lineal',
+  'importar', 'datos', 'descriptiva', 'frecuencias'];
+const posicion = d => { const k = ORDEN_CARPETAS.indexOf(d); return k < 0 ? ORDEN_CARPETAS.length : k; };
 const archivosCaso = existsSync(dirCasos)
-  ? readdirSync(dirCasos, { withFileTypes: true }).filter(d => d.isDirectory())
-    .flatMap(d => readdirSync(join(dirCasos, d.name)).filter(f => f.endsWith('.json')).map(f => join(dirCasos, d.name, f)))
-    .sort()
+  ? readdirSync(dirCasos, { withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name)
+    .sort((a, b) => posicion(a) - posicion(b) || a.localeCompare(b))
+    .flatMap(d => readdirSync(join(dirCasos, d)).filter(f => f.endsWith('.json')).sort().map(f => join(dirCasos, d, f)))
   : [];
 const textos = archivosCaso.map(leer);
 const casos = textos.map((t, i) => {

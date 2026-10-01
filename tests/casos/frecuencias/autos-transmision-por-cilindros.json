@@ -1,0 +1,65 @@
+{
+  "esquema": 1,
+  "id": "proporciones/autos-transmision-por-cilindros",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "proporciones"
+  },
+  "titulo": "Transmisión manual o automática dentro de cada número de cilindros (90 %)",
+  "fuente": "Henderson y Velleman (1981); conjunto mtcars de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "transmision": ["manual", "manual", "manual", "automática", "automática", "automática", "automática", "automática", "automática", "automática", "automática", "automática", "automática", "automática", "automática", "automática", "automática", "manual", "manual", "manual", "automática", "automática", "automática", "automática", "automática", "manual", "manual", "manual", "manual", "manual", "manual", "manual"],
+      "cilindros": [6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4, 4, 8, 6, 8, 4]
+    },
+    "tipos": {
+      "transmision": {
+        "tipo": "factor",
+        "niveles": ["automática", "manual"]
+      },
+      "cilindros": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "categoria": "transmision",
+    "grupo": "cilindros"
+  },
+  "opciones": {
+    "nivel": 0.90000000000000002,
+    "metodos": ["wilson", "wilson_cc", "clopper_pearson", "agresti_coull", "jeffreys", "wald"]
+  },
+  "esperado": {
+    "modo": "categoria",
+    "excluidas": 0,
+    "tabla": {
+      "grupo": ["4", "4", "6", "6", "8", "8"],
+      "categoria": ["automática", "manual", "automática", "manual", "automática", "manual"],
+      "x": [3, 8, 4, 3, 12, 2],
+      "n": [11, 11, 7, 7, 14, 14],
+      "p": [0.27272727272727271, 0.72727272727272729, 0.5714285714285714, 0.42857142857142855, 0.8571428571428571, 0.14285714285714285],
+      "wilson_inf": [0.11469412885053902, 0.4795100164325764, 0.28947709101359292, 0.18644319036395615, 0.64706260622413758, 0.048458913535021762],
+      "wilson_sup": [0.5204899835674236, 0.88530587114946102, 0.81355680963604393, 0.71052290898640702, 0.95154108646497815, 0.35293739377586236],
+      "wilson_cc_inf": [0.087289044360347443, 0.43589374239463047, 0.23601008757315087, 0.14086547482558595, 0.60668776181692696, 0.030977830764004691],
+      "wilson_cc_sup": [0.56410625760536959, 0.91271095563965254, 0.85913452517441402, 0.7639899124268491, 0.96902216923599527, 0.39331223818307287],
+      "clopper_pearson_inf": [0.078820045666028946, 0.43562581171076969, 0.22532158403244765, 0.1287563928042427, 0.61461031763611795, 0.025999332600867814],
+      "clopper_pearson_sup": [0.56437418828923014, 0.92117995433397104, 0.87124360719575722, 0.77467841596755216, 0.97400066739913216, 0.38538968236388194],
+      "agresti_coull_inf": [0.1107513657943025, 0.47556725337633998, 0.28893203313258714, 0.18589813248295023, 0.63811705949449427, 0.039513366805378369],
+      "agresti_coull_sup": [0.52443274662366002, 0.88924863420569755, 0.81410186751704972, 0.71106796686741292, 0.96048663319462158, 0.36188294050550573],
+      "jeffreys_inf": [0.10580746458334689, 0.48158512919077173, 0.28081805906692109, 0.1746068190968694, 0.65763623364246593, 0.042364781584678803],
+      "jeffreys_sup": [0.51841487080922821, 0.89419253541665311, 0.82539318090313052, 0.71918194093307886, 0.95763521841532118, 0.34236376635753396],
+      "wald_inf": [0.05185365230812386, 0.50639910685357847, 0.26376872438253984, 0.12091158152539699, 0.70331293361984126, 0],
+      "wald_sup": [0.49360089314642153, 0.94814634769187611, 0.87908841847460295, 0.73623127561746005, 1, 0.29668706638015863]
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "x y n por grupo con table() o tapply(); intervalos con prop.test, binom.test y las fórmulas de Agresti-Coull, Jeffreys y Wald"
+  }
+}

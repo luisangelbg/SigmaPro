@@ -1,4 +1,4 @@
-Generado: 2026-10-01 07:46:37 CST
+Generado: 2026-10-01 08:57:10 CST
 
 R version 4.4.2 (2024-10-31 ucrt)
 Platform: x86_64-w64-mingw32/x64
@@ -22,4 +22,4 @@ other attached packages:
 [1] jsonlite_2.0.0
 
 loaded via a namespace (and not attached):
-[1] compiler_4.4.2 boot_1.3-31   
+[1] compiler_4.4.2

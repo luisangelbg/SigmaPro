@@ -1,0 +1,69 @@
+{
+  "esquema": 1,
+  "id": "frecuencias/autos-cilindros-cambios",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+  },
+  "titulo": "Cilindros × velocidades, con una celda vacía",
+  "fuente": "Henderson y Velleman (1981); conjunto mtcars de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "cyl": [6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 8, 8, 8, 8, 4, 4, 4, 8, 6, 8, 4],
+      "gear": [4, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 3, 4, 5, 5, 5, 5, 5, 4]
+    },
+    "tipos": {
+      "cyl": {
+        "tipo": "numerica"
+      },
+      "gear": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "fila": "cyl",
+    "columna": "gear"
+  },
+  "opciones": {
+    "faltantes": false
+  },
+  "esperado": {
+    "vias": 2,
+    "niveles_fila": ["4", "6", "8"],
+    "niveles_columna": ["3", "4", "5"],
+    "conteos": [
+      [1, 8, 2],
+      [2, 4, 1],
+      [12, 0, 2]
+    ],
+    "total_fila": [11, 7, 14],
+    "total_columna": [15, 12, 5],
+    "total": 32,
+    "excluidas": 0,
+    "pct_total": [
+      [3.125, 25, 6.25],
+      [6.25, 12.5, 3.125],
+      [37.5, 0, 6.25]
+    ],
+    "pct_fila": [
+      [9.0909090909090917, 72.727272727272734, 18.181818181818183],
+      [28.571428571428569, 57.142857142857139, 14.285714285714285],
+      [85.714285714285708, 0, 14.285714285714285]
+    ],
+    "pct_columna": [
+      [6.666666666666667, 66.666666666666657, 40],
+      [13.333333333333334, 33.333333333333329, 20],
+      [80, 0, 40]
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(cyl), factor(gear), useNA = \"no\"); 100 * prop.table(tab); 100 * prop.table(tab, 1); 100 * prop.table(tab, 2)"
+  }
+}

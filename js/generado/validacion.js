@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-01T14:20:47.067Z",
+ "generado": "2026-10-01T15:09:55.632Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,27 +11,27 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 107,
-  "aprobados": 107,
+  "casos": 153,
+  "aprobados": 153,
   "fallidos": 0,
-  "valores": 13997,
+  "valores": 19076,
   "difEscaladaMax": 7.533201041296815e-8,
-  "objetivos": 31
+  "objetivos": 40
  },
  "casos": [
   {
-   "id": "transformar.boxcoxResumen/arboles-regresion",
+   "id": "num.resumen/desplazamiento-grande",
    "objetivo": {
     "tipo": "funcion",
-    "nombre": "transformar.boxcoxResumen"
+    "nombre": "num.resumen"
    },
-   "titulo": "Volumen de 31 cerezos contra altura y diámetro",
-   "fuente": "Ryan, Joiner y Ryan (1976); conjunto trees de R",
-   "clase": "D",
-   "valores": 5,
-   "difMax": 5.356890042662599e-9,
-   "difEscaladaMax": 5.356890042662599e-9,
-   "peor": "lambda",
+   "titulo": "Cuatro valores alrededor de mil millones (varianza exacta = 30)",
+   "fuente": "Datos sintéticos (ejemplo clásico de cancelación numérica)",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -42,98 +42,47 @@ window.SP_VALIDACION = {
     "paquetes": {
      "stats": "4.4.2"
     },
-    "codigo": "ll <- function(la) -n/2 * log(sum(qr.resid(qr(X), (y^la - 1) / (la * gm^(la - 1)))^2))   # gm = media geométrica\noptimize(ll, c(-5, 5), maximum = TRUE, tol = 1e-12); IC: uniroot de ll(la) = máx − qchisq(0.95, 1)/2"
+    "codigo": "n = sum(!is.na(x)); faltantes = sum(is.na(x))\nmedia = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)\nmin = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)"
    }
   },
   {
-   "id": "transformar.boxcoxResumen/ozono-sin-modelo",
+   "id": "num.resumen/magnitudes-pequenas",
    "objetivo": {
     "tipo": "funcion",
-    "nombre": "transformar.boxcoxResumen"
+    "nombre": "num.resumen"
    },
-   "titulo": "Ozono diario, solo la media (116 observaciones; los faltantes se omiten)",
+   "titulo": "Seis concentraciones del orden de 1e-9 (comparación relativa)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 9.62964972193618e-35,
+   "difEscaladaMax": 1.4731743582768251e-16,
+   "peor": "varianza",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "n = sum(!is.na(x)); faltantes = sum(is.na(x))\nmedia = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)\nmin = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)"
+   }
+  },
+  {
+   "id": "num.resumen/ozono-con-faltantes",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "num.resumen"
+   },
+   "titulo": "Ozono diario con 37 faltantes de 153",
    "fuente": "Chambers y col. (1983); conjunto airquality de R",
-   "clase": "D",
-   "valores": 5,
-   "difMax": 8.306202947672148e-14,
-   "difEscaladaMax": 8.306202947672148e-14,
-   "peor": "ic[0]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "ll <- function(la) -n/2 * log(sum(qr.resid(qr(X), (y^la - 1) / (la * gm^(la - 1)))^2))   # gm = media geométrica\noptimize(ll, c(-5, 5), maximum = TRUE, tol = 1e-12); IC: uniroot de ll(la) = máx − qchisq(0.95, 1)/2"
-   }
-  },
-  {
-   "id": "transformar.boxcoxResumen/venenos-box-cox-1964",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "transformar.boxcoxResumen"
-   },
-   "titulo": "Tiempos de supervivencia, 3 venenos × 4 tratamientos (ejemplo original de Box y Cox; publicaron λ ≈ −0.75)",
-   "fuente": "Box y Cox (1964); conjunto poisons del paquete boot",
-   "clase": "D",
-   "valores": 5,
-   "difMax": 8.264861017792668e-10,
-   "difEscaladaMax": 8.264861017792668e-10,
-   "peor": "lambda",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2",
-     "boot": "1.3.31"
-    },
-    "codigo": "ll <- function(la) -n/2 * log(sum(qr.resid(qr(X), (y^la - 1) / (la * gm^(la - 1)))^2))   # gm = media geométrica\noptimize(ll, c(-5, 5), maximum = TRUE, tol = 1e-12); IC: uniroot de ll(la) = máx − qchisq(0.95, 1)/2"
-   }
-  },
-  {
-   "id": "transformar.aplicar/arcoseno-grados",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "transformar.aplicar"
-   },
-   "titulo": "Arcoseno de la raíz de un porcentaje (grados)",
-   "fuente": "Datos sintéticos",
    "clase": "A",
-   "valores": 9,
-   "difMax": 3.552713678800501e-15,
-   "difEscaladaMax": 1.7528769599991083e-16,
-   "peor": "[2]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "asin(sqrt(pct / 100)) * 180 / pi"
-   }
-  },
-  {
-   "id": "transformar.aplicar/arcoseno-porcentaje",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "transformar.aplicar"
-   },
-   "titulo": "Arcoseno de la raíz de un porcentaje (radianes)",
-   "fuente": "Datos sintéticos",
-   "clase": "A",
-   "valores": 9,
+   "valores": 7,
    "difMax": 0,
    "difEscaladaMax": 0,
    "peor": null,
@@ -147,45 +96,19 @@ window.SP_VALIDACION = {
     "paquetes": {
      "stats": "4.4.2"
     },
-    "codigo": "asin(sqrt(pct / 100))"
+    "codigo": "n = sum(!is.na(x)); faltantes = sum(is.na(x))\nmedia = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)\nmin = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)"
    }
   },
   {
-   "id": "transformar.aplicar/boxcox-lambda-dado",
+   "id": "num.resumen/plantgrowth",
    "objetivo": {
     "tipo": "funcion",
-    "nombre": "transformar.aplicar"
+    "nombre": "num.resumen"
    },
-   "titulo": "Box-Cox con λ = 0.37",
-   "fuente": "Datos sintéticos",
+   "titulo": "Peso seco de 30 plantas (tres tratamientos juntos)",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
    "clase": "A",
-   "valores": 12,
-   "difMax": 8.881784197001252e-16,
-   "difEscaladaMax": 2.8615140725306077e-16,
-   "peor": "[3]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "(y^0.37 - 1) / 0.37"
-   }
-  },
-  {
-   "id": "transformar.aplicar/estandarizar",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "transformar.aplicar"
-   },
-   "titulo": "Estandarizar (media 0, DE 1)",
-   "fuente": "Datos sintéticos",
-   "clase": "A",
-   "valores": 12,
+   "valores": 7,
    "difMax": 0,
    "difEscaladaMax": 0,
    "peor": null,
@@ -199,887 +122,7 @@ window.SP_VALIDACION = {
     "paquetes": {
      "stats": "4.4.2"
     },
-    "codigo": "as.vector(scale(y))"
-   }
-  },
-  {
-   "id": "transformar.aplicar/log-mas-c",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "transformar.aplicar"
-   },
-   "titulo": "ln(x + 1), para conteos con ceros",
-   "fuente": "Datos sintéticos",
-   "clase": "A",
-   "valores": 8,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "log(y + 1)"
-   }
-  },
-  {
-   "id": "transformar.aplicar/log",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "transformar.aplicar"
-   },
-   "titulo": "Logaritmo natural",
-   "fuente": "Datos sintéticos",
-   "clase": "A",
-   "valores": 12,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "log(y)"
-   }
-  },
-  {
-   "id": "transformar.aplicar/log10",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "transformar.aplicar"
-   },
-   "titulo": "Logaritmo base 10",
-   "fuente": "Datos sintéticos",
-   "clase": "A",
-   "valores": 12,
-   "difMax": 1.1102230246251565e-16,
-   "difEscaladaMax": 1.1102230246251565e-16,
-   "peor": "[3]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "log10(y)"
-   }
-  },
-  {
-   "id": "transformar.aplicar/raiz-mas-medio",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "transformar.aplicar"
-   },
-   "titulo": "√(x + 0.5)",
-   "fuente": "Datos sintéticos",
-   "clase": "A",
-   "valores": 12,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "sqrt(y + 0.5)"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/arcoseno",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "asin(sqrt(germ / 100))",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 2.220446049250313e-16,
-   "difEscaladaMax": 1.5963604011212555e-16,
-   "peor": "[19]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, asin(sqrt(germ / 100)))"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/aritmetica",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "log(rend) + 2 * altura",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 8.881784197001252e-16,
-   "difEscaladaMax": 1.2912943399396733e-16,
-   "peor": "[21]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, log(rend) + 2 * altura)"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/condicion-numerica",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "ifelse(dosis > 60, rend - 1, NA)",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, ifelse(dosis > 60, rend - 1, NA))"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/condicion-texto",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "ifelse(rend > mean(rend, na.rm = TRUE), \"alto\", \"bajo\")",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, ifelse(rend > mean(rend, na.rm = TRUE), \"alto\", \"bajo\"))"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/filtro-y",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "dosis >= 60 & hibrido != \"H-40\"",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, dosis >= 60 & hibrido != \"H-40\")"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/logaritmos",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "log(altura, 2) + log10(dosis + 1)",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 4.440892098500626e-16,
-   "difEscaladaMax": 2.220446049250313e-16,
-   "peor": "[7]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, log(altura, 2) + log10(dosis + 1))"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/logica-con-faltantes",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "!is.na(rend) | altura > 2",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, !is.na(rend) | altura > 2)"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/logico-por-numero",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "is.na(rend) * 1",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, is.na(rend) * 1)"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/maximo-paralelo",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "pmax(rend, 5)",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, pmax(rend, 5))"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/pegar",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "paste(hibrido, dosis, sep = \"-\")",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, paste(hibrido, dosis, sep = \"-\"))"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/pertenencia",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "hibrido %in% c(\"H-52\", \"H-66\")",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, hibrido %in% c(\"H-52\", \"H-66\"))"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/precedencia",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "-2^2 + rend^2",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, -2^2 + rend^2)"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/raiz",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "sqrt(altura + 0.5)",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, sqrt(altura + 0.5))"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/redondeo-con-empates",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "round(altura, 1)",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, round(altura, 1))"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/redondeo-entero",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "round(altura * 2)",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, round(altura * 2))"
-   }
-  },
-  {
-   "id": "expresiones.enTabla/resto",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "expresiones.enTabla"
-   },
-   "titulo": "rend %% 2",
-   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "with(datos, rend %% 2)"
-   }
-  },
-  {
-   "id": "dist.qbeta/beta-cuantil",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "dist.qbeta"
-   },
-   "titulo": "Cuantiles de la beta en 80 combinaciones",
-   "fuente": "Rejilla sintética con colas extremas",
-   "clase": "A",
-   "valores": 80,
-   "difMax": 4.840230438674098e-10,
-   "difEscaladaMax": 4.840230438674098e-10,
-   "peor": "[39]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "qbeta(p, a, b)"
-   }
-  },
-  {
-   "id": "dist.pbeta/beta-inferior",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "dist.pbeta"
-   },
-   "titulo": "I_x(a, b) en 115 combinaciones de x, a y b",
-   "fuente": "Rejilla sintética con colas extremas",
-   "clase": "A",
-   "valores": 115,
-   "difMax": 4.304334666471732e-13,
-   "difEscaladaMax": 8.608669332943464e-13,
-   "peor": "[96]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {
-    "modo": "relativo"
-   },
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "pbeta(x, a, b)"
-   }
-  },
-  {
-   "id": "dist.pbeta/beta-superior",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "dist.pbeta"
-   },
-   "titulo": "1 − I_x(a, b) en 122 combinaciones de x, a y b",
-   "fuente": "Rejilla sintética con colas extremas",
-   "clase": "A",
-   "valores": 122,
-   "difMax": 4.304334666471732e-13,
-   "difEscaladaMax": 8.608669332943464e-13,
-   "peor": "[98]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {
-    "modo": "relativo"
-   },
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "pbeta(x, a, b, lower.tail = FALSE)"
-   }
-  },
-  {
-   "id": "dist.pbinom/binomial-inferior",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "dist.pbinom"
-   },
-   "titulo": "P(X ≤ k) binomial en 97 combinaciones",
-   "fuente": "Rejilla sintética con colas extremas",
-   "clase": "A",
-   "valores": 97,
-   "difMax": 1.8318679906315083e-14,
-   "difEscaladaMax": 7.192391451266529e-14,
-   "peor": "[87]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {
-    "modo": "relativo"
-   },
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "pbinom(k, n, p)"
-   }
-  },
-  {
-   "id": "dist.pbinom/binomial-superior",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "dist.pbinom"
-   },
-   "titulo": "P(X > k) binomial en 81 combinaciones",
-   "fuente": "Rejilla sintética con colas extremas",
-   "clase": "A",
-   "valores": 81,
-   "difMax": 1.8318679906315083e-14,
-   "difEscaladaMax": 5.347067463250035e-14,
-   "peor": "[65]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {
-    "modo": "relativo"
-   },
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "pbinom(k, n, p, lower.tail = FALSE)"
-   }
-  },
-  {
-   "id": "dist.dbinom/binomial-masa",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "dist.dbinom"
-   },
-   "titulo": "P(X = k) binomial en 93 combinaciones de k, n y p",
-   "fuente": "Rejilla sintética con colas extremas",
-   "clase": "A",
-   "valores": 93,
-   "difMax": 1.2219392164780629e-14,
-   "difEscaladaMax": 3.693465058522996e-13,
-   "peor": "[73]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {
-    "modo": "relativo"
-   },
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "dbinom(k, n, p)"
-   }
-  },
-  {
-   "id": "dist.qgamma/gamma-cuantil",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "dist.qgamma"
-   },
-   "titulo": "Cuantiles de la gamma en 35 combinaciones",
-   "fuente": "Rejilla sintética con colas extremas",
-   "clase": "A",
-   "valores": 35,
-   "difMax": 2.7193891583010554e-10,
-   "difEscaladaMax": 5.4391409216989843e-14,
-   "peor": "[32]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "qgamma(p, forma)"
-   }
-  },
-  {
-   "id": "dist.pgamma/gamma-escala",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "dist.pgamma"
-   },
-   "titulo": "Gamma con escala 2.5 en 15 puntos",
-   "fuente": "Rejilla sintética con colas extremas",
-   "clase": "A",
-   "valores": 15,
-   "difMax": 4.440892098500626e-16,
-   "difEscaladaMax": 2.3849812135385176e-14,
-   "peor": "[10]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {
-    "modo": "relativo"
-   },
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "pgamma(q, forma, scale = 2.5)"
-   }
-  },
-  {
-   "id": "dist.pgamma/gamma-inferior",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "dist.pgamma"
-   },
-   "titulo": "P(X ≤ q) gamma en 60 combinaciones de q y forma",
-   "fuente": "Rejilla sintética con colas extremas",
-   "clase": "A",
-   "valores": 60,
-   "difMax": 6.661338147750939e-16,
-   "difEscaladaMax": 7.396028685446777e-14,
-   "peor": "[53]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {
-    "modo": "relativo"
-   },
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "pgamma(q, forma)"
-   }
-  },
-  {
-   "id": "dist.pgamma/gamma-superior",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "dist.pgamma"
-   },
-   "titulo": "P(X > q) gamma en 57 combinaciones de q y forma",
-   "fuente": "Rejilla sintética con colas extremas",
-   "clase": "A",
-   "valores": 57,
-   "difMax": 6.661338147750939e-16,
-   "difEscaladaMax": 2.4147361778843374e-13,
-   "peor": "[3]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {
-    "modo": "relativo"
-   },
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "pgamma(q, forma, lower.tail = FALSE)"
-   }
-  },
-  {
-   "id": "dist.ppois/poisson-inferior",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "dist.ppois"
-   },
-   "titulo": "P(X ≤ k) Poisson en 45 combinaciones",
-   "fuente": "Rejilla sintética con colas extremas",
-   "clase": "A",
-   "valores": 45,
-   "difMax": 8.220854552654089e-15,
-   "difEscaladaMax": 6.62525975293704e-13,
-   "peor": "[43]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {
-    "modo": "relativo"
-   },
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "ppois(k, lambda)"
-   }
-  },
-  {
-   "id": "dist.ppois/poisson-superior",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "dist.ppois"
-   },
-   "titulo": "P(X > k) Poisson en 37 combinaciones",
-   "fuente": "Rejilla sintética con colas extremas",
-   "clase": "A",
-   "valores": 37,
-   "difMax": 8.215650382226158e-15,
-   "difEscaladaMax": 3.40805863267544e-13,
-   "peor": "[36]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {
-    "modo": "relativo"
-   },
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "ppois(k, lambda, lower.tail = FALSE)"
-   }
-  },
-  {
-   "id": "dist.dpois/poisson-masa",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "dist.dpois"
-   },
-   "titulo": "P(X = k) Poisson en 37 combinaciones",
-   "fuente": "Rejilla sintética con colas extremas",
-   "clase": "A",
-   "valores": 37,
-   "difMax": 8.140189911021167e-16,
-   "difEscaladaMax": 5.757905010379102e-13,
-   "peor": "[35]",
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {
-    "modo": "relativo"
-   },
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "stats": "4.4.2"
-    },
-    "codigo": "dpois(k, lambda)"
+    "codigo": "n = sum(!is.na(x)); faltantes = sum(is.na(x))\nmedia = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)\nmin = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)"
    }
   },
   {
@@ -1679,6 +722,444 @@ window.SP_VALIDACION = {
    }
   },
   {
+   "id": "dist.qbeta/beta-cuantil",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qbeta"
+   },
+   "titulo": "Cuantiles de la beta en 80 combinaciones",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 80,
+   "difMax": 4.840230438674098e-10,
+   "difEscaladaMax": 4.840230438674098e-10,
+   "peor": "[39]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qbeta(p, a, b)"
+   }
+  },
+  {
+   "id": "dist.pbeta/beta-inferior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.pbeta"
+   },
+   "titulo": "I_x(a, b) en 115 combinaciones de x, a y b",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 115,
+   "difMax": 4.304334666471732e-13,
+   "difEscaladaMax": 8.608669332943464e-13,
+   "peor": "[96]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pbeta(x, a, b)"
+   }
+  },
+  {
+   "id": "dist.pbeta/beta-superior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.pbeta"
+   },
+   "titulo": "1 − I_x(a, b) en 122 combinaciones de x, a y b",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 122,
+   "difMax": 4.304334666471732e-13,
+   "difEscaladaMax": 8.608669332943464e-13,
+   "peor": "[98]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pbeta(x, a, b, lower.tail = FALSE)"
+   }
+  },
+  {
+   "id": "dist.qbinom/binomial-cuantil-mediana-simetrica",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qbinom"
+   },
+   "titulo": "Cuantil 0.5 de la binomial simétrica con n impar: (n − 1)/2 exacto (R da n = 51 → 26)",
+   "fuente": "Identidad exacta por simetría: P(X ≤ (n − 1)/2) = 1/2",
+   "clase": "B",
+   "valores": 6,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "(n - 1) / 2   # referencia exacta; qbinom(0.5, n, 0.5) de R da 0, 3, 26, 50, 499, 2500 porque su pbinom redondea por debajo de 1/2"
+   }
+  },
+  {
+   "id": "dist.qbinom/binomial-cuantil-superior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qbinom"
+   },
+   "titulo": "Cuantiles de la binomial, cola superior, en 189 combinaciones",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 189,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qbinom(p, n, prob, lower.tail = FALSE)"
+   }
+  },
+  {
+   "id": "dist.qbinom/binomial-cuantil",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qbinom"
+   },
+   "titulo": "Cuantiles de la binomial en 189 combinaciones (con p justo en un salto)",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 189,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qbinom(p, n, prob)"
+   }
+  },
+  {
+   "id": "dist.pbinom/binomial-inferior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.pbinom"
+   },
+   "titulo": "P(X ≤ k) binomial en 97 combinaciones",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 97,
+   "difMax": 1.8318679906315083e-14,
+   "difEscaladaMax": 7.192391451266529e-14,
+   "peor": "[87]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pbinom(k, n, p)"
+   }
+  },
+  {
+   "id": "dist.pbinom/binomial-superior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.pbinom"
+   },
+   "titulo": "P(X > k) binomial en 81 combinaciones",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 81,
+   "difMax": 1.8318679906315083e-14,
+   "difEscaladaMax": 5.347067463250035e-14,
+   "peor": "[65]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pbinom(k, n, p, lower.tail = FALSE)"
+   }
+  },
+  {
+   "id": "dist.dbinom/binomial-masa",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.dbinom"
+   },
+   "titulo": "P(X = k) binomial en 93 combinaciones de k, n y p",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 93,
+   "difMax": 1.2219392164780629e-14,
+   "difEscaladaMax": 3.693465058522996e-13,
+   "peor": "[73]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "dbinom(k, n, p)"
+   }
+  },
+  {
+   "id": "dist.qgamma/gamma-cuantil",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qgamma"
+   },
+   "titulo": "Cuantiles de la gamma en 35 combinaciones",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 35,
+   "difMax": 2.7193891583010554e-10,
+   "difEscaladaMax": 5.4391409216989843e-14,
+   "peor": "[32]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qgamma(p, forma)"
+   }
+  },
+  {
+   "id": "dist.pgamma/gamma-escala",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.pgamma"
+   },
+   "titulo": "Gamma con escala 2.5 en 15 puntos",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 15,
+   "difMax": 4.440892098500626e-16,
+   "difEscaladaMax": 2.3849812135385176e-14,
+   "peor": "[10]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pgamma(q, forma, scale = 2.5)"
+   }
+  },
+  {
+   "id": "dist.pgamma/gamma-inferior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.pgamma"
+   },
+   "titulo": "P(X ≤ q) gamma en 60 combinaciones de q y forma",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 60,
+   "difMax": 6.661338147750939e-16,
+   "difEscaladaMax": 7.396028685446777e-14,
+   "peor": "[53]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pgamma(q, forma)"
+   }
+  },
+  {
+   "id": "dist.pgamma/gamma-superior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.pgamma"
+   },
+   "titulo": "P(X > q) gamma en 57 combinaciones de q y forma",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 57,
+   "difMax": 6.661338147750939e-16,
+   "difEscaladaMax": 2.4147361778843374e-13,
+   "peor": "[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pgamma(q, forma, lower.tail = FALSE)"
+   }
+  },
+  {
+   "id": "dist.ppois/poisson-inferior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.ppois"
+   },
+   "titulo": "P(X ≤ k) Poisson en 45 combinaciones",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 45,
+   "difMax": 8.220854552654089e-15,
+   "difEscaladaMax": 6.62525975293704e-13,
+   "peor": "[43]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ppois(k, lambda)"
+   }
+  },
+  {
+   "id": "dist.ppois/poisson-superior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.ppois"
+   },
+   "titulo": "P(X > k) Poisson en 37 combinaciones",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 37,
+   "difMax": 8.215650382226158e-15,
+   "difEscaladaMax": 3.40805863267544e-13,
+   "peor": "[36]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ppois(k, lambda, lower.tail = FALSE)"
+   }
+  },
+  {
+   "id": "dist.dpois/poisson-masa",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.dpois"
+   },
+   "titulo": "P(X = k) Poisson en 37 combinaciones",
+   "fuente": "Rejilla sintética con colas extremas",
+   "clase": "A",
+   "valores": 37,
+   "difMax": 8.140189911021167e-16,
+   "difEscaladaMax": 5.757905010379102e-13,
+   "peor": "[35]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "dpois(k, lambda)"
+   }
+  },
+  {
    "id": "dist.qtukey/inversion-exacta",
    "objetivo": {
     "tipo": "funcion",
@@ -1754,214 +1235,6 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "ptukey(q, k, gl)"
-   }
-  },
-  {
-   "id": "hojas.leerLibroBase64/clippy",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "hojas.leerLibroBase64"
-   },
-   "titulo": "Encabezado de dos filas y celdas combinadas",
-   "fuente": "Libro de ejemplo «clippy.xlsx» del paquete readxl",
-   "clase": "A",
-   "valores": 24,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "readxl": "1.4.3"
-    },
-    "codigo": "read_excel(readxl_example(\"clippy.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
-   }
-  },
-  {
-   "id": "hojas.leerLibroBase64/datasets",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "hojas.leerLibroBase64"
-   },
-   "titulo": "Cuatro hojas de datos clásicos (1 263 filas en total)",
-   "fuente": "Libro de ejemplo «datasets.xlsx» del paquete readxl",
-   "clase": "A",
-   "valores": 6271,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "readxl": "1.4.3"
-    },
-    "codigo": "read_excel(readxl_example(\"datasets.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
-   }
-  },
-  {
-   "id": "hojas.leerLibroBase64/deaths",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "hojas.leerLibroBase64"
-   },
-   "titulo": "Hojas con notas arriba y abajo, fechas y celdas vacías",
-   "fuente": "Libro de ejemplo «deaths.xlsx» del paquete readxl",
-   "clase": "A",
-   "valores": 230,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "readxl": "1.4.3"
-    },
-    "codigo": "read_excel(readxl_example(\"deaths.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
-   }
-  },
-  {
-   "id": "hojas.leerLibroBase64/geometry",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "hojas.leerLibroBase64"
-   },
-   "titulo": "Datos que no empiezan en la celda A1",
-   "fuente": "Libro de ejemplo «geometry.xlsx» del paquete readxl",
-   "clase": "A",
-   "valores": 13,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "readxl": "1.4.3"
-    },
-    "codigo": "read_excel(readxl_example(\"geometry.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
-   }
-  },
-  {
-   "id": "hojas.leerLibroBase64/type-me",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "hojas.leerLibroBase64"
-   },
-   "titulo": "Lógicos, números guardados como texto, fechas y textos mezclados",
-   "fuente": "Libro de ejemplo «type-me.xlsx» del paquete readxl",
-   "clase": "A",
-   "valores": 72,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "readxl": "1.4.3"
-    },
-    "codigo": "read_excel(readxl_example(\"type-me.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
-   }
-  },
-  {
-   "id": "csv.leerColumnas/comas-y-comillas",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "csv.leerColumnas"
-   },
-   "titulo": "Coma, fin de línea CRLF, comillas con comas y comillas dobles, notación científica y faltantes",
-   "fuente": "Texto sintético con casos difíciles",
-   "clase": "A",
-   "valores": 28,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "utils": "4.4.2"
-    },
-    "codigo": "read.csv(text = texto, sep = \",\", dec = \".\", na.strings = c(\"\", \"NA\"), strip.white = TRUE)"
-   }
-  },
-  {
-   "id": "csv.leerColumnas/punto-y-coma-coma-decimal",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "csv.leerColumnas"
-   },
-   "titulo": "Punto y coma con coma decimal y un faltante al final",
-   "fuente": "Texto sintético con casos difíciles",
-   "clase": "A",
-   "valores": 18,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "utils": "4.4.2"
-    },
-    "codigo": "read.csv(text = texto, sep = \";\", dec = \",\", na.strings = c(\"\", \"NA\"), strip.white = TRUE)"
-   }
-  },
-  {
-   "id": "csv.leerColumnas/tabulador-salto-dentro",
-   "objetivo": {
-    "tipo": "funcion",
-    "nombre": "csv.leerColumnas"
-   },
-   "titulo": "Tabulador con un salto de línea dentro de un texto entre comillas",
-   "fuente": "Texto sintético con casos difíciles",
-   "clase": "A",
-   "valores": 15,
-   "difMax": 0,
-   "difEscaladaMax": 0,
-   "peor": null,
-   "aprobado": true,
-   "error": "",
-   "fallas": [],
-   "comparacion": {},
-   "referencia": {
-    "r": "R version 4.4.2 (2024-10-31 ucrt)",
-    "plataforma": "x86_64-w64-mingw32",
-    "paquetes": {
-     "utils": "4.4.2"
-    },
-    "codigo": "read.csv(text = texto, sep = \"\t\", dec = \".\", na.strings = c(\"\", \"NA\"), strip.white = TRUE)"
    }
   },
   {
@@ -2754,15 +2027,15 @@ window.SP_VALIDACION = {
    }
   },
   {
-   "id": "num.resumen/desplazamiento-grande",
+   "id": "hojas.leerLibroBase64/clippy",
    "objetivo": {
     "tipo": "funcion",
-    "nombre": "num.resumen"
+    "nombre": "hojas.leerLibroBase64"
    },
-   "titulo": "Cuatro valores alrededor de mil millones (varianza exacta = 30)",
-   "fuente": "Datos sintéticos (ejemplo clásico de cancelación numérica)",
+   "titulo": "Encabezado de dos filas y celdas combinadas",
+   "fuente": "Libro de ejemplo «clippy.xlsx» del paquete readxl",
    "clase": "A",
-   "valores": 7,
+   "valores": 24,
    "difMax": 0,
    "difEscaladaMax": 0,
    "peor": null,
@@ -2774,49 +2047,958 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "readxl": "1.4.3"
     },
-    "codigo": "n = sum(!is.na(x)); faltantes = sum(is.na(x))\nmedia = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)\nmin = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)"
+    "codigo": "read_excel(readxl_example(\"clippy.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
    }
   },
   {
-   "id": "num.resumen/magnitudes-pequenas",
+   "id": "hojas.leerLibroBase64/datasets",
    "objetivo": {
     "tipo": "funcion",
-    "nombre": "num.resumen"
+    "nombre": "hojas.leerLibroBase64"
    },
-   "titulo": "Seis concentraciones del orden de 1e-9 (comparación relativa)",
+   "titulo": "Cuatro hojas de datos clásicos (1 263 filas en total)",
+   "fuente": "Libro de ejemplo «datasets.xlsx» del paquete readxl",
+   "clase": "A",
+   "valores": 6271,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "readxl": "1.4.3"
+    },
+    "codigo": "read_excel(readxl_example(\"datasets.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
+   }
+  },
+  {
+   "id": "hojas.leerLibroBase64/deaths",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "hojas.leerLibroBase64"
+   },
+   "titulo": "Hojas con notas arriba y abajo, fechas y celdas vacías",
+   "fuente": "Libro de ejemplo «deaths.xlsx» del paquete readxl",
+   "clase": "A",
+   "valores": 230,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "readxl": "1.4.3"
+    },
+    "codigo": "read_excel(readxl_example(\"deaths.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
+   }
+  },
+  {
+   "id": "hojas.leerLibroBase64/geometry",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "hojas.leerLibroBase64"
+   },
+   "titulo": "Datos que no empiezan en la celda A1",
+   "fuente": "Libro de ejemplo «geometry.xlsx» del paquete readxl",
+   "clase": "A",
+   "valores": 13,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "readxl": "1.4.3"
+    },
+    "codigo": "read_excel(readxl_example(\"geometry.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
+   }
+  },
+  {
+   "id": "hojas.leerLibroBase64/type-me",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "hojas.leerLibroBase64"
+   },
+   "titulo": "Lógicos, números guardados como texto, fechas y textos mezclados",
+   "fuente": "Libro de ejemplo «type-me.xlsx» del paquete readxl",
+   "clase": "A",
+   "valores": 72,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "readxl": "1.4.3"
+    },
+    "codigo": "read_excel(readxl_example(\"type-me.xlsx\"), sheet, col_names = FALSE, col_types = \"list\")"
+   }
+  },
+  {
+   "id": "csv.leerColumnas/comas-y-comillas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "csv.leerColumnas"
+   },
+   "titulo": "Coma, fin de línea CRLF, comillas con comas y comillas dobles, notación científica y faltantes",
+   "fuente": "Texto sintético con casos difíciles",
+   "clase": "A",
+   "valores": 28,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "utils": "4.4.2"
+    },
+    "codigo": "read.csv(text = texto, sep = \",\", dec = \".\", na.strings = c(\"\", \"NA\"), strip.white = TRUE)"
+   }
+  },
+  {
+   "id": "csv.leerColumnas/punto-y-coma-coma-decimal",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "csv.leerColumnas"
+   },
+   "titulo": "Punto y coma con coma decimal y un faltante al final",
+   "fuente": "Texto sintético con casos difíciles",
+   "clase": "A",
+   "valores": 18,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "utils": "4.4.2"
+    },
+    "codigo": "read.csv(text = texto, sep = \";\", dec = \",\", na.strings = c(\"\", \"NA\"), strip.white = TRUE)"
+   }
+  },
+  {
+   "id": "csv.leerColumnas/tabulador-salto-dentro",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "csv.leerColumnas"
+   },
+   "titulo": "Tabulador con un salto de línea dentro de un texto entre comillas",
+   "fuente": "Texto sintético con casos difíciles",
+   "clase": "A",
+   "valores": 15,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "utils": "4.4.2"
+    },
+    "codigo": "read.csv(text = texto, sep = \"\t\", dec = \".\", na.strings = c(\"\", \"NA\"), strip.white = TRUE)"
+   }
+  },
+  {
+   "id": "transformar.boxcoxResumen/arboles-regresion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.boxcoxResumen"
+   },
+   "titulo": "Volumen de 31 cerezos contra altura y diámetro",
+   "fuente": "Ryan, Joiner y Ryan (1976); conjunto trees de R",
+   "clase": "D",
+   "valores": 5,
+   "difMax": 5.356890042662599e-9,
+   "difEscaladaMax": 5.356890042662599e-9,
+   "peor": "lambda",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ll <- function(la) -n/2 * log(sum(qr.resid(qr(X), (y^la - 1) / (la * gm^(la - 1)))^2))   # gm = media geométrica\noptimize(ll, c(-5, 5), maximum = TRUE, tol = 1e-12); IC: uniroot de ll(la) = máx − qchisq(0.95, 1)/2"
+   }
+  },
+  {
+   "id": "transformar.boxcoxResumen/ozono-sin-modelo",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.boxcoxResumen"
+   },
+   "titulo": "Ozono diario, solo la media (116 observaciones; los faltantes se omiten)",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "D",
+   "valores": 5,
+   "difMax": 8.306202947672148e-14,
+   "difEscaladaMax": 8.306202947672148e-14,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ll <- function(la) -n/2 * log(sum(qr.resid(qr(X), (y^la - 1) / (la * gm^(la - 1)))^2))   # gm = media geométrica\noptimize(ll, c(-5, 5), maximum = TRUE, tol = 1e-12); IC: uniroot de ll(la) = máx − qchisq(0.95, 1)/2"
+   }
+  },
+  {
+   "id": "transformar.boxcoxResumen/venenos-box-cox-1964",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.boxcoxResumen"
+   },
+   "titulo": "Tiempos de supervivencia, 3 venenos × 4 tratamientos (ejemplo original de Box y Cox; publicaron λ ≈ −0.75)",
+   "fuente": "Box y Cox (1964); conjunto poisons del paquete boot",
+   "clase": "D",
+   "valores": 5,
+   "difMax": 8.264861017792668e-10,
+   "difEscaladaMax": 8.264861017792668e-10,
+   "peor": "lambda",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "boot": "1.3.31"
+    },
+    "codigo": "ll <- function(la) -n/2 * log(sum(qr.resid(qr(X), (y^la - 1) / (la * gm^(la - 1)))^2))   # gm = media geométrica\noptimize(ll, c(-5, 5), maximum = TRUE, tol = 1e-12); IC: uniroot de ll(la) = máx − qchisq(0.95, 1)/2"
+   }
+  },
+  {
+   "id": "transformar.aplicar/arcoseno-grados",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "Arcoseno de la raíz de un porcentaje (grados)",
    "fuente": "Datos sintéticos",
    "clase": "A",
-   "valores": 7,
-   "difMax": 9.62964972193618e-35,
-   "difEscaladaMax": 1.4731743582768251e-16,
-   "peor": "varianza",
+   "valores": 9,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 1.7528769599991083e-16,
+   "peor": "[2]",
    "aprobado": true,
    "error": "",
    "fallas": [],
-   "comparacion": {
-    "modo": "relativo"
-   },
+   "comparacion": {},
    "referencia": {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
      "stats": "4.4.2"
     },
-    "codigo": "n = sum(!is.na(x)); faltantes = sum(is.na(x))\nmedia = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)\nmin = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)"
+    "codigo": "asin(sqrt(pct / 100)) * 180 / pi"
    }
   },
   {
-   "id": "num.resumen/ozono-con-faltantes",
+   "id": "transformar.aplicar/arcoseno-porcentaje",
    "objetivo": {
     "tipo": "funcion",
-    "nombre": "num.resumen"
+    "nombre": "transformar.aplicar"
    },
-   "titulo": "Ozono diario con 37 faltantes de 153",
+   "titulo": "Arcoseno de la raíz de un porcentaje (radianes)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 9,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "asin(sqrt(pct / 100))"
+   }
+  },
+  {
+   "id": "transformar.aplicar/boxcox-lambda-dado",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "Box-Cox con λ = 0.37",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 2.8615140725306077e-16,
+   "peor": "[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "(y^0.37 - 1) / 0.37"
+   }
+  },
+  {
+   "id": "transformar.aplicar/estandarizar",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "Estandarizar (media 0, DE 1)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "as.vector(scale(y))"
+   }
+  },
+  {
+   "id": "transformar.aplicar/log-mas-c",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "ln(x + 1), para conteos con ceros",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "log(y + 1)"
+   }
+  },
+  {
+   "id": "transformar.aplicar/log",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "Logaritmo natural",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "log(y)"
+   }
+  },
+  {
+   "id": "transformar.aplicar/log10",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "Logaritmo base 10",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 1.1102230246251565e-16,
+   "peor": "[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "log10(y)"
+   }
+  },
+  {
+   "id": "transformar.aplicar/raiz-mas-medio",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "transformar.aplicar"
+   },
+   "titulo": "√(x + 0.5)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "sqrt(y + 0.5)"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/arcoseno",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "asin(sqrt(germ / 100))",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 2.220446049250313e-16,
+   "difEscaladaMax": 1.5963604011212555e-16,
+   "peor": "[19]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, asin(sqrt(germ / 100)))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/aritmetica",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "log(rend) + 2 * altura",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 1.2912943399396733e-16,
+   "peor": "[21]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, log(rend) + 2 * altura)"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/condicion-numerica",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "ifelse(dosis > 60, rend - 1, NA)",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, ifelse(dosis > 60, rend - 1, NA))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/condicion-texto",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "ifelse(rend > mean(rend, na.rm = TRUE), \"alto\", \"bajo\")",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, ifelse(rend > mean(rend, na.rm = TRUE), \"alto\", \"bajo\"))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/filtro-y",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "dosis >= 60 & hibrido != \"H-40\"",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, dosis >= 60 & hibrido != \"H-40\")"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/logaritmos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "log(altura, 2) + log10(dosis + 1)",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 4.440892098500626e-16,
+   "difEscaladaMax": 2.220446049250313e-16,
+   "peor": "[7]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, log(altura, 2) + log10(dosis + 1))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/logica-con-faltantes",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "!is.na(rend) | altura > 2",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, !is.na(rend) | altura > 2)"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/logico-por-numero",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "is.na(rend) * 1",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, is.na(rend) * 1)"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/maximo-paralelo",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "pmax(rend, 5)",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, pmax(rend, 5))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/pegar",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "paste(hibrido, dosis, sep = \"-\")",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, paste(hibrido, dosis, sep = \"-\"))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/pertenencia",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "hibrido %in% c(\"H-52\", \"H-66\")",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, hibrido %in% c(\"H-52\", \"H-66\"))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/precedencia",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "-2^2 + rend^2",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, -2^2 + rend^2)"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/raiz",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "sqrt(altura + 0.5)",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, sqrt(altura + 0.5))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/redondeo-con-empates",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "round(altura, 1)",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, round(altura, 1))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/redondeo-entero",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "round(altura * 2)",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, round(altura * 2))"
+   }
+  },
+  {
+   "id": "expresiones.enTabla/resto",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "expresiones.enTabla"
+   },
+   "titulo": "rend %% 2",
+   "fuente": "Datos sintéticos con faltantes, factores y empates para el redondeo",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "with(datos, rend %% 2)"
+   }
+  },
+  {
+   "id": "desc.asimetria/desplazado-asimetria",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.asimetria"
+   },
+   "titulo": "Cinco valores alrededor de mil millones (tipos 1, 2 y 3)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 2.220446049250313e-16,
+   "difEscaladaMax": 2.220446049250313e-16,
+   "peor": "[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "e1071": "1.7.16"
+    },
+    "codigo": "sapply(1:3, function(t) e1071::skewness(x, na.rm = TRUE, type = t))"
+   }
+  },
+  {
+   "id": "desc.asimetria/insectos-asimetria",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.asimetria"
+   },
+   "titulo": "Conteos de insectos con muchos ceros (tipos 1, 2 y 3)",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "e1071": "1.7.16"
+    },
+    "codigo": "sapply(1:3, function(t) e1071::skewness(x, na.rm = TRUE, type = t))"
+   }
+  },
+  {
+   "id": "desc.asimetria/ozono-asimetria",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.asimetria"
+   },
+   "titulo": "Ozono con faltantes, sesgado a la derecha (tipos 1, 2 y 3)",
    "fuente": "Chambers y col. (1983); conjunto airquality de R",
    "clase": "A",
-   "valores": 7,
+   "valores": 3,
    "difMax": 0,
    "difEscaladaMax": 0,
    "peor": null,
@@ -2828,21 +3010,340 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "e1071": "1.7.16"
     },
-    "codigo": "n = sum(!is.na(x)); faltantes = sum(is.na(x))\nmedia = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)\nmin = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)"
+    "codigo": "sapply(1:3, function(t) e1071::skewness(x, na.rm = TRUE, type = t))"
    }
   },
   {
-   "id": "num.resumen/plantgrowth",
+   "id": "desc.asimetria/precipitacion-asimetria",
    "objetivo": {
     "tipo": "funcion",
-    "nombre": "num.resumen"
+    "nombre": "desc.asimetria"
    },
-   "titulo": "Peso seco de 30 plantas (tres tratamientos juntos)",
+   "titulo": "Precipitación de 70 ciudades (tipos 1, 2 y 3)",
+   "fuente": "McNeil (1977); conjunto precip de R",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 3.3306690738754696e-16,
+   "difEscaladaMax": 3.3306690738754696e-16,
+   "peor": "[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "e1071": "1.7.16"
+    },
+    "codigo": "sapply(1:3, function(t) e1071::skewness(x, na.rm = TRUE, type = t))"
+   }
+  },
+  {
+   "id": "desc.curtosis/desplazado-curtosis",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.curtosis"
+   },
+   "titulo": "Cinco valores alrededor de mil millones (tipos 1, 2 y 3)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 6.135350829429478e-16,
+   "peor": "[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "e1071": "1.7.16"
+    },
+    "codigo": "sapply(1:3, function(t) e1071::kurtosis(x, na.rm = TRUE, type = t))"
+   }
+  },
+  {
+   "id": "desc.curtosis/insectos-curtosis",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.curtosis"
+   },
+   "titulo": "Conteos de insectos con muchos ceros (tipos 1, 2 y 3)",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 4.440892098500626e-16,
+   "difEscaladaMax": 4.440892098500626e-16,
+   "peor": "[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "e1071": "1.7.16"
+    },
+    "codigo": "sapply(1:3, function(t) e1071::kurtosis(x, na.rm = TRUE, type = t))"
+   }
+  },
+  {
+   "id": "desc.curtosis/ozono-curtosis",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.curtosis"
+   },
+   "titulo": "Ozono con faltantes, sesgado a la derecha (tipos 1, 2 y 3)",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 2.886579864025407e-15,
+   "difEscaladaMax": 2.2503165972789936e-15,
+   "peor": "[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "e1071": "1.7.16"
+    },
+    "codigo": "sapply(1:3, function(t) e1071::kurtosis(x, na.rm = TRUE, type = t))"
+   }
+  },
+  {
+   "id": "desc.curtosis/precipitacion-curtosis",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.curtosis"
+   },
+   "titulo": "Precipitación de 70 ciudades (tipos 1, 2 y 3)",
+   "fuente": "McNeil (1977); conjunto precip de R",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 1.3322676295501878e-15,
+   "difEscaladaMax": 1.3322676295501878e-15,
+   "peor": "[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "e1071": "1.7.16"
+    },
+    "codigo": "sapply(1:3, function(t) e1071::kurtosis(x, na.rm = TRUE, type = t))"
+   }
+  },
+  {
+   "id": "descriptivos/dientes-dosis-numerica",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "descriptivos"
+   },
+   "titulo": "Longitud de odontoblastos por suplemento × dosis (dosis numérica); 99 %, cuantil tipo 9",
+   "fuente": "Crampton (1947); conjunto ToothGrowth de R",
+   "clase": "A",
+   "valores": 220,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 9.350339414245024e-16,
+   "peor": "tabla.curtosis[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "Por grupo: n, media, mediana, moda (rle), sd, var, cuantiles type = 9, mean(trim = 0.1), media geométrica y armónica, e1071::skewness/kurtosis(type = 2), IC de la media (qt), de la mediana (qbinom) y de la varianza (qchisq) al 0.99; grupos = interaction(supp, dose, lex.order = TRUE, drop = TRUE)"
+   }
+  },
+  {
+   "id": "descriptivos/erupciones-sin-grupos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "descriptivos"
+   },
+   "titulo": "Duración y espera de 272 erupciones, sin agrupar, con percentiles 2.5, 10, 90 y 97.5",
+   "fuente": "Azzalini y Bowman (1990); conjunto faithful de R",
+   "clase": "A",
+   "valores": 79,
+   "difMax": 3.979039320256561e-13,
+   "difEscaladaMax": 2.5062015285037716e-15,
+   "peor": "tabla.curtosis[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "Por grupo: n, media, mediana, moda (rle), sd, var, cuantiles type = 7, mean(trim = 0.1), media geométrica y armónica, e1071::skewness/kurtosis(type = 2), IC de la media (qt), de la mediana (qbinom) y de la varianza (qchisq) al 0.95; grupos = interaction(, lex.order = TRUE, drop = TRUE)"
+   }
+  },
+  {
+   "id": "descriptivos/insectos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "descriptivos"
+   },
+   "titulo": "Conteos de insectos por insecticida: empates, varias modas y ceros; cuantil tipo 2, forma tipo 3",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "A",
+   "valores": 213,
+   "difMax": 2.1316282072803006e-14,
+   "difEscaladaMax": 9.702116966313643e-16,
+   "peor": "tabla.ic_varianza_inf[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "Por grupo: n, media, mediana, moda (rle), sd, var, cuantiles type = 2, mean(trim = 0.1), media geométrica y armónica, e1071::skewness/kurtosis(type = 3), IC de la media (qt), de la mediana (qbinom) y de la varianza (qchisq) al 0.95; grupos = interaction(spray, lex.order = TRUE, drop = TRUE)"
+   }
+  },
+  {
+   "id": "descriptivos/npk-tres-factores",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "descriptivos"
+   },
+   "titulo": "Rendimiento de chícharo por N × P × K: grupos de 3 (sin IC de la mediana ni curtosis tipo 2)",
+   "fuente": "Yates (1935); conjunto npk de R",
+   "clase": "A",
+   "valores": 301,
+   "difMax": 1.8189894035458565e-12,
+   "difEscaladaMax": 6.890467814867133e-16,
+   "peor": "tabla.ic_varianza_sup[7]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "Por grupo: n, media, mediana, moda (rle), sd, var, cuantiles type = 7, mean(trim = 0.1), media geométrica y armónica, e1071::skewness/kurtosis(type = 2), IC de la media (qt), de la mediana (qbinom) y de la varianza (qchisq) al 0.95; grupos = interaction(N, P, K, lex.order = TRUE, drop = TRUE)"
+   }
+  },
+  {
+   "id": "descriptivos/ozono-por-mes",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "descriptivos"
+   },
+   "titulo": "Ozono, radiación y temperatura por mes, con faltantes; 90 %, cuantil tipo 6, recorte 20 %, forma tipo 1",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 530,
+   "difMax": 1.2732925824820995e-11,
+   "difEscaladaMax": 1.3322676295501878e-15,
+   "peor": "tabla.curtosis[13]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "Por grupo: n, media, mediana, moda (rle), sd, var, cuantiles type = 6, mean(trim = 0.2), media geométrica y armónica, e1071::skewness/kurtosis(type = 1), IC de la media (qt), de la mediana (qbinom) y de la varianza (qchisq) al 0.9; grupos = interaction(Month, lex.order = TRUE, drop = TRUE)"
+   }
+  },
+  {
+   "id": "descriptivos/plantas-factor-faltante",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "descriptivos"
+   },
+   "titulo": "Peso seco con tres filas sin tratamiento: quedan fuera y se cuentan",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R, con tres tratamientos borrados",
+   "clase": "A",
+   "valores": 108,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 5.270450579692402e-16,
+   "peor": "tabla.curtosis[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "Por grupo: n, media, mediana, moda (rle), sd, var, cuantiles type = 7, mean(trim = 0.1), media geométrica y armónica, e1071::skewness/kurtosis(type = 2), IC de la media (qt), de la mediana (qbinom) y de la varianza (qchisq) al 0.95; grupos = interaction(group, lex.order = TRUE, drop = TRUE)"
+   }
+  },
+  {
+   "id": "descriptivos/plantas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "descriptivos"
+   },
+   "titulo": "Peso seco de plantas por tratamiento, con percentiles 5 y 95",
    "fuente": "Dobson (1983); conjunto PlantGrowth de R",
    "clase": "A",
-   "valores": 7,
+   "valores": 114,
+   "difMax": 2.3869795029440866e-15,
+   "difEscaladaMax": 2.3869795029440866e-15,
+   "peor": "tabla.curtosis[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "e1071": "1.7.16"
+    },
+    "codigo": "Por grupo: n, media, mediana, moda (rle), sd, var, cuantiles type = 7, mean(trim = 0.1), media geométrica y armónica, e1071::skewness/kurtosis(type = 2), IC de la media (qt), de la mediana (qbinom) y de la varianza (qchisq) al 0.95; grupos = interaction(group, lex.order = TRUE, drop = TRUE)"
+   }
+  },
+  {
+   "id": "desc.cuantil/erupciones",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.cuantil"
+   },
+   "titulo": "Duración de 272 erupciones (bimodal): 171 combinaciones",
+   "fuente": "Azzalini y Bowman (1990); conjunto faithful de R",
+   "clase": "A",
+   "valores": 171,
    "difMax": 0,
    "difEscaladaMax": 0,
    "peor": null,
@@ -2856,7 +3357,709 @@ window.SP_VALIDACION = {
     "paquetes": {
      "stats": "4.4.2"
     },
-    "codigo": "n = sum(!is.na(x)); faltantes = sum(is.na(x))\nmedia = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)\nmin = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)"
+    "codigo": "mapply(function(p, t) quantile(x, p, type = t, na.rm = TRUE), p, tipo)"
+   }
+  },
+  {
+   "id": "desc.cuantil/n-dos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.cuantil"
+   },
+   "titulo": "Dos valores: 171 combinaciones",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 171,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mapply(function(p, t) quantile(x, p, type = t, na.rm = TRUE), p, tipo)"
+   }
+  },
+  {
+   "id": "desc.cuantil/n-tres-negativos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.cuantil"
+   },
+   "titulo": "Tres valores con negativos: 171 combinaciones",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 171,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mapply(function(p, t) quantile(x, p, type = t, na.rm = TRUE), p, tipo)"
+   }
+  },
+  {
+   "id": "desc.cuantil/n-uno",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.cuantil"
+   },
+   "titulo": "Un solo valor: 171 combinaciones",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 171,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mapply(function(p, t) quantile(x, p, type = t, na.rm = TRUE), p, tipo)"
+   }
+  },
+  {
+   "id": "desc.cuantil/ozono-con-faltantes",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.cuantil"
+   },
+   "titulo": "Ozono con 37 faltantes y empates: 171 combinaciones",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 171,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mapply(function(p, t) quantile(x, p, type = t, na.rm = TRUE), p, tipo)"
+   }
+  },
+  {
+   "id": "desc.cuantil/precipitacion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.cuantil"
+   },
+   "titulo": "Precipitación anual de 70 ciudades: 171 combinaciones de probabilidad y tipo",
+   "fuente": "McNeil (1977); conjunto precip de R",
+   "clase": "A",
+   "valores": 171,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mapply(function(p, t) quantile(x, p, type = t, na.rm = TRUE), p, tipo)"
+   }
+  },
+  {
+   "id": "desc.cuantil/uno-a-diez-rejilla-fina",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.cuantil"
+   },
+   "titulo": "1, 2, …, 10 con probabilidades en múltiplos de 1/20 (prueba el margen de 4ε): 189 combinaciones",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 189,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mapply(function(p, t) quantile(x, p, type = t, na.rm = TRUE), p, tipo)"
+   }
+  },
+  {
+   "id": "frecuencias/autos-cambios-numerico",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+   },
+   "titulo": "Número de velocidades (columna numérica tomada como factor)",
+   "fuente": "Henderson y Velleman (1981); conjunto mtcars de R",
+   "clase": "A",
+   "valores": 18,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(gear), useNA = \"no\"); prop.table(tab); cumsum(tab)"
+   }
+  },
+  {
+   "id": "frecuencias/autos-cilindros-cambios",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+   },
+   "titulo": "Cilindros × velocidades, con una celda vacía",
+   "fuente": "Henderson y Velleman (1981); conjunto mtcars de R",
+   "clase": "A",
+   "valores": 51,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 2.131628207280301e-16,
+   "peor": "pct_columna[0][1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(cyl), factor(gear), useNA = \"no\"); 100 * prop.table(tab); 100 * prop.table(tab, 1); 100 * prop.table(tab, 2)"
+   }
+  },
+  {
+   "id": "frecuencias/ozono-por-mes-con-faltantes",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+   },
+   "titulo": "Mes × nivel de ozono, con la categoría de faltantes",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 101,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 2.131628207280301e-16,
+   "peor": "pct_fila[4][0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(mes), factor(ozono), useNA = \"ifany\"); 100 * prop.table(tab); 100 * prop.table(tab, 1); 100 * prop.table(tab, 2)"
+   }
+  },
+  {
+   "id": "frecuencias/ozono-por-mes",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+   },
+   "titulo": "Mes × nivel de ozono, 37 faltantes fuera",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 79,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 2.131628207280301e-16,
+   "peor": "pct_fila[1][0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(mes), factor(ozono), useNA = \"no\"); 100 * prop.table(tab); 100 * prop.table(tab, 1); 100 * prop.table(tab, 2)"
+   }
+  },
+  {
+   "id": "frecuencias/pollos-con-faltantes-dentro",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+   },
+   "titulo": "Seis alimentos con 4 faltantes como categoría",
+   "fuente": "chickwts de R con cuatro valores borrados",
+   "clase": "A",
+   "valores": 38,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(feed), useNA = \"ifany\"); prop.table(tab); cumsum(tab)"
+   }
+  },
+  {
+   "id": "frecuencias/pollos-con-faltantes-fuera",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+   },
+   "titulo": "Seis alimentos con 4 faltantes que no entran",
+   "fuente": "chickwts de R con cuatro valores borrados",
+   "clase": "A",
+   "valores": 33,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(feed), useNA = \"no\"); prop.table(tab); cumsum(tab)"
+   }
+  },
+  {
+   "id": "frecuencias/pollos-una-via",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+   },
+   "titulo": "Seis alimentos para pollos, grupos de 10 a 14",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "A",
+   "valores": 33,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(feed), useNA = \"no\"); prop.table(tab); cumsum(tab)"
+   }
+  },
+  {
+   "id": "proporciones/autos-transmision-por-cilindros",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "proporciones"
+   },
+   "titulo": "Transmisión manual o automática dentro de cada número de cilindros (90 %)",
+   "fuente": "Henderson y Velleman (1981); conjunto mtcars de R",
+   "clase": "A",
+   "valores": 104,
+   "difMax": 3.3306690738754696e-16,
+   "difEscaladaMax": 3.3306690738754696e-16,
+   "peor": "tabla.agresti_coull_inf[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "x y n por grupo con table() o tapply(); intervalos con prop.test, binom.test y las fórmulas de Agresti-Coull, Jeffreys y Wald"
+   }
+  },
+  {
+   "id": "proporciones/germinacion-por-tratamiento",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "proporciones"
+   },
+   "titulo": "Germinación por tratamiento sumando cajas de 50 semillas (una caja sin dato)",
+   "fuente": "Datos sintéticos de germinación",
+   "clase": "A",
+   "valores": 53,
+   "difMax": 3.885780586188048e-16,
+   "difEscaladaMax": 3.885780586188048e-16,
+   "peor": "tabla.clopper_pearson_inf[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "x y n por grupo con table() o tapply(); intervalos con prop.test, binom.test y las fórmulas de Agresti-Coull, Jeffreys y Wald"
+   }
+  },
+  {
+   "id": "proporciones/germinacion-total-99",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "proporciones"
+   },
+   "titulo": "Germinación total al 99 % con Wilson y Jeffreys",
+   "fuente": "Datos sintéticos de germinación",
+   "clase": "A",
+   "valores": 11,
+   "difMax": 5.551115123125783e-16,
+   "difEscaladaMax": 5.551115123125783e-16,
+   "peor": "tabla.jeffreys_inf[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "x y n por grupo con table() o tapply(); intervalos con prop.test, binom.test y las fórmulas de Agresti-Coull, Jeffreys y Wald"
+   }
+  },
+  {
+   "id": "proporciones/pollos-categorias",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "proporciones"
+   },
+   "titulo": "Proporción de cada alimento entre 71 pollos",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "A",
+   "valores": 104,
+   "difMax": 3.885780586188048e-16,
+   "difEscaladaMax": 3.885780586188048e-16,
+   "peor": "tabla.clopper_pearson_sup[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "x y n por grupo con table() o tapply(); intervalos con prop.test, binom.test y las fórmulas de Agresti-Coull, Jeffreys y Wald"
+   }
+  },
+  {
+   "id": "bondad-ajuste/dado-pocos-esperados",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "bondad-ajuste"
+   },
+   "titulo": "Veinte tiradas de un dado: todas las categorías esperan menos de 5",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 48,
+   "difMax": 4.440892098500626e-16,
+   "difEscaladaMax": 2.0816681711721678e-16,
+   "peor": "contribucion[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(observado)"
+   }
+  },
+  {
+   "id": "bondad-ajuste/mendel-dihibrido",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "bondad-ajuste"
+   },
+   "titulo": "Cruza dihíbrida de chícharo de Mendel contra 9:3:3:1",
+   "fuente": "Mendel (1866), semillas de la F2",
+   "clase": "A",
+   "valores": 34,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 1.1102230246251565e-16,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(observado, p = c(9, 3, 3, 1), rescale.p = TRUE)"
+   }
+  },
+  {
+   "id": "bondad-ajuste/mendel-monohibrido",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "bondad-ajuste"
+   },
+   "titulo": "Forma de la semilla de chícharo contra 3:1 (7 324 semillas)",
+   "fuente": "Mendel (1866), forma de la semilla en la F2",
+   "clase": "A",
+   "valores": 20,
+   "difMax": 1.3877787807814457e-17,
+   "difEscaladaMax": 1.3877787807814457e-17,
+   "peor": "contribucion[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(observado, p = c(3, 1), rescale.p = TRUE)"
+   }
+  },
+  {
+   "id": "bondad-ajuste/pollos-iguales",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "bondad-ajuste"
+   },
+   "titulo": "¿Los seis alimentos tienen el mismo número de pollos? (datos sin agregar)",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "A",
+   "valores": 48,
+   "difMax": 5.551115123125783e-17,
+   "difEscaladaMax": 5.551115123125783e-17,
+   "peor": "contribucion[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(observado)"
+   }
+  },
+  {
+   "id": "prop.ic/ic-agresti-coull",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "prop.ic"
+   },
+   "titulo": "Intervalo de agresti_coull en 93 combinaciones de x, n y nivel (incluye x = 0, x = n y x = n/2)",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 186,
+   "difMax": 4.440892098500626e-16,
+   "difEscaladaMax": 4.440892098500626e-16,
+   "peor": "[28][0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "z <- qnorm(1 - (1 - nivel) / 2); nt <- n + z^2; pt <- (x + z^2 / 2) / nt; pmin(1, pmax(0, pt + c(-1, 1) * z * sqrt(pt * (1 - pt) / nt)))"
+   }
+  },
+  {
+   "id": "prop.ic/ic-clopper-pearson",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "prop.ic"
+   },
+   "titulo": "Intervalo de clopper_pearson en 93 combinaciones de x, n y nivel (incluye x = 0, x = n y x = n/2)",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 186,
+   "difMax": 1.3777173846207802e-14,
+   "difEscaladaMax": 1.3777173846207802e-14,
+   "peor": "[87][1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "binom.test(x, n, conf.level = nivel)$conf.int"
+   }
+  },
+  {
+   "id": "prop.ic/ic-jeffreys",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "prop.ic"
+   },
+   "titulo": "Intervalo de jeffreys en 93 combinaciones de x, n y nivel (incluye x = 0, x = n y x = n/2)",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 186,
+   "difMax": 2.6201263381153694e-14,
+   "difEscaladaMax": 2.6201263381153694e-14,
+   "peor": "[69][1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "c(if (x == 0) 0 else qbeta(a, x + 0.5, n - x + 0.5), if (x == n) 1 else qbeta(1 - a, x + 0.5, n - x + 0.5))"
+   }
+  },
+  {
+   "id": "prop.ic/ic-wald",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "prop.ic"
+   },
+   "titulo": "Intervalo de wald en 93 combinaciones de x, n y nivel (incluye x = 0, x = n y x = n/2)",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 186,
+   "difMax": 2.220446049250313e-16,
+   "difEscaladaMax": 2.220446049250313e-16,
+   "peor": "[8][0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pmin(1, pmax(0, x / n + c(-1, 1) * z * sqrt(x / n * (1 - x / n) / n)))"
+   }
+  },
+  {
+   "id": "prop.ic/ic-wilson-cc",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "prop.ic"
+   },
+   "titulo": "Intervalo de wilson_cc en 93 combinaciones de x, n y nivel (incluye x = 0, x = n y x = n/2)",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 186,
+   "difMax": 3.3306690738754696e-16,
+   "difEscaladaMax": 3.3306690738754696e-16,
+   "peor": "[50][0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "prop.test(x, n, conf.level = nivel)$conf.int   # la corrección se limita a |x − n/2|"
+   }
+  },
+  {
+   "id": "prop.ic/ic-wilson",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "prop.ic"
+   },
+   "titulo": "Intervalo de wilson en 93 combinaciones de x, n y nivel (incluye x = 0, x = n y x = n/2)",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 186,
+   "difMax": 2.7755575615628914e-16,
+   "difEscaladaMax": 2.7755575615628914e-16,
+   "peor": "[6][1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "prop.test(x, n, conf.level = nivel, correct = FALSE)$conf.int"
    }
   }
  ]

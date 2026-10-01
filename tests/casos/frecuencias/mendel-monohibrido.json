@@ -1,0 +1,56 @@
+{
+  "esquema": 1,
+  "id": "bondad-ajuste/mendel-monohibrido",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "bondad-ajuste"
+  },
+  "titulo": "Forma de la semilla de chícharo contra 3:1 (7 324 semillas)",
+  "fuente": "Mendel (1866), forma de la semilla en la F2",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "forma": ["redonda", "rugosa"],
+      "semillas": [5474, 1850]
+    },
+    "tipos": {
+      "forma": {
+        "tipo": "factor",
+        "niveles": ["redonda", "rugosa"]
+      },
+      "semillas": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "categoria": "forma",
+    "conteo": "semillas"
+  },
+  "opciones": {
+    "proporciones": [3, 1]
+  },
+  "esperado": {
+    "categoria": ["redonda", "rugosa"],
+    "observado": [5474, 1850],
+    "proporcion": [0.75, 0.25],
+    "esperado": [5493, 1831],
+    "residuo": [-0.25635913730935217, 0.44402705080432409],
+    "residuo_estandarizado": [-0.51271827461870434, 0.51271827461870434],
+    "contribucion": [0.065720007281995285, 0.1971600218459858],
+    "chi2": 0.26288002912798109,
+    "gl": 1,
+    "p": 0.60814840452207419,
+    "n": 7324,
+    "min_esperado": 1831,
+    "celdas_bajas": 0
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(observado, p = c(3, 1), rescale.p = TRUE)"
+  }
+}

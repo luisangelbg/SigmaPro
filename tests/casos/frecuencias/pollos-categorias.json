@@ -1,0 +1,60 @@
+{
+  "esquema": 1,
+  "id": "proporciones/pollos-categorias",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "proporciones"
+  },
+  "titulo": "Proporción de cada alimento entre 71 pollos",
+  "fuente": "Anónimo (1948); conjunto chickwts de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "feed": ["horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein"]
+    },
+    "tipos": {
+      "feed": {
+        "tipo": "factor",
+        "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"]
+      }
+    }
+  },
+  "entradas": {
+    "categoria": "feed"
+  },
+  "opciones": {
+    "nivel": 0.94999999999999996,
+    "metodos": ["wilson", "wilson_cc", "clopper_pearson", "agresti_coull", "jeffreys", "wald"]
+  },
+  "esperado": {
+    "modo": "categoria",
+    "excluidas": 0,
+    "tabla": {
+      "grupo": ["", "", "", "", "", ""],
+      "categoria": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"],
+      "x": [12, 10, 12, 11, 14, 12],
+      "n": [71, 71, 71, 71, 71, 71],
+      "p": [0.16901408450704225, 0.14084507042253522, 0.16901408450704225, 0.15492957746478872, 0.19718309859154928, 0.16901408450704225],
+      "wilson_inf": [0.099414547524282623, 0.078342022123571678, 0.099414547524282623, 0.08877304270169771, 0.12125532301202227, 0.099414547524282623],
+      "wilson_sup": [0.27259127998633487, 0.24021749283475796, 0.27259127998633487, 0.25650962853277581, 0.30419681705088308, 0.27259127998633487],
+      "wilson_cc_inf": [0.094068780298367044, 0.07321266212766224, 0.094068780298367044, 0.083529856582086115, 0.11573025416653863, 0.094068780298367044],
+      "wilson_cc_sup": [0.28055934147507089, 0.24839123651431549, 0.28055934147507089, 0.26457546907417845, 0.31199282628733804, 0.28055934147507089],
+      "clopper_pearson_inf": [0.090499946475670792, 0.0696625860550317, 0.090499946475670792, 0.079960847596969351, 0.11220782084556176, 0.090499946475670792],
+      "clopper_pearson_sup": [0.27662635661668311, 0.24380471549716154, 0.27662635661668311, 0.26032497793886444, 0.30864995715648336, 0.27662635661668311],
+      "agresti_coull_inf": [0.097847646210840716, 0.076374320270129872, 0.097847646210840716, 0.087017185825822116, 0.12001101455790392, 0.097847646210840716],
+      "agresti_coull_sup": [0.27415818129977676, 0.24218519468819977, 0.27415818129977676, 0.25826548540865141, 0.30544112550500141, 0.27415818129977676],
+      "jeffreys_inf": [0.095852001716901586, 0.074779869547688241, 0.095852001716901586, 0.0852019390462702, 0.11775254976632059, 0.095852001716901586],
+      "jeffreys_sup": [0.26850166287065946, 0.23545488594831776, 0.26850166287065946, 0.25209364650319543, 0.30071136806042387, 0.26850166287065946],
+      "wald_inf": [0.081842047051632491, 0.059930732395643629, 0.081842047051632491, 0.070764382126157696, 0.10463616926034414, 0.081842047051632491],
+      "wald_sup": [0.256186121962452, 0.22175940844942682, 0.256186121962452, 0.23909477280341973, 0.28973002792275443, 0.256186121962452]
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "x y n por grupo con table() o tapply(); intervalos con prop.test, binom.test y las fórmulas de Agresti-Coull, Jeffreys y Wald"
+  }
+}

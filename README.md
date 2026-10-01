@@ -15,13 +15,15 @@ medias, regresión y, más adelante, modelos mixtos y ensayos multiambiente. For
 
 ## Estado
 
-En construcción, por hitos. **Hitos 1.0 a 1.2 terminados:** cimientos (registro de métodos, cálculos en
+En construcción, por hitos. **Hitos 1.0 a 1.3 terminados:** cimientos (registro de métodos, cálculos en
 hilos de trabajo, pruebas automáticas en node y en el navegador, generador de referencias con R y reporte
 de validación), núcleo numérico (distribuciones, álgebra, fórmulas y modelo lineal con sumas de cuadrados
 tipo I, II y III) y el bloque de **Datos**: hoja de cálculo para 100 000 filas con deshacer, importación de
 CSV, .xlsx y .ods con lectores propios, tipos de variable explicados, faltantes, filtros, variables
 calculadas, transformaciones con Box-Cox, cambio de forma ancha ⇄ larga, diagnóstico del diseño del ensayo
-y seis conjuntos de ejemplo. Validado contra R en 107 casos y 13 997 valores. El plan completo está en
+y siete conjuntos de ejemplo; y el bloque **Explorar**: descriptivos por hasta tres factores con sus
+intervalos, frecuencias, proporciones con seis intervalos y bondad de ajuste ji cuadrada, cada uno con el
+código R que reproduce sus números. Validado contra R en 153 casos y 19 076 valores. El plan completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
 [`propuesta/maqueta.html`](propuesta/maqueta.html).
 
@@ -31,6 +33,7 @@ y seis conjuntos de ejemplo. Validado contra R en 107 casos y 13 997 valores. El
 Rscript tests/r/generar-todo.R    # referencias con R
 node tests/correr.mjs             # pruebas y reporte
 node tests/navegador.mjs          # las mismas pruebas en el navegador
+node tests/codigo-r.mjs           # el código R que muestra la app corre en R y da lo mismo
 ```
 
 O abre `tests/index.html` con doble clic. Detalles en [`docs/VALIDACION.md`](docs/VALIDACION.md).

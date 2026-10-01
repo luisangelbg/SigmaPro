@@ -1,0 +1,56 @@
+{
+  "esquema": 1,
+  "id": "proporciones/germinacion-total-99",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "proporciones"
+  },
+  "titulo": "Germinación total al 99 % con Wilson y Jeffreys",
+  "fuente": "Datos sintéticos de germinación",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "germinadas": [17, 8, 19, 12, 36, 33, 38, "NA", 47, 50, 46, 48],
+      "sembradas": [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
+    },
+    "tipos": {
+      "germinadas": {
+        "tipo": "numerica"
+      },
+      "sembradas": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "exitos": "germinadas",
+    "ensayos": "sembradas"
+  },
+  "opciones": {
+    "nivel": 0.98999999999999999,
+    "metodos": ["wilson", "jeffreys"]
+  },
+  "esperado": {
+    "modo": "conteos",
+    "excluidas": 1,
+    "tabla": {
+      "grupo": [""],
+      "categoria": ["germinadas"],
+      "x": [354],
+      "n": [550],
+      "p": [0.64363636363636367],
+      "wilson_inf": [0.58960862868841413],
+      "wilson_sup": [0.69423990643720446],
+      "jeffreys_inf": [0.58997148428834678],
+      "jeffreys_sup": [0.69482814805264992]
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "x y n por grupo con table() o tapply(); intervalos con prop.test, binom.test y las fórmulas de Agresti-Coull, Jeffreys y Wald"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "esquema": 1,
+  "id": "frecuencias/ozono-por-mes-con-faltantes",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+  },
+  "titulo": "Mes × nivel de ozono, con la categoría de faltantes",
+  "fuente": "Chambers y col. (1983); conjunto airquality de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "mes": [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+      "ozono": ["medio", "medio", "bajo", "bajo", "NA", "bajo", "bajo", "bajo", "bajo", "NA", "bajo", "bajo", "bajo", "bajo", "bajo", "bajo", "medio", "bajo", "bajo", "bajo", "bajo", "bajo", "bajo", "medio", "NA", "NA", "NA", "bajo", "medio", "alto", "medio", "NA", "NA", "NA", "NA", "NA", "NA", "bajo", "NA", "alto", "medio", "NA", "NA", "bajo", "NA", "NA", "bajo", "medio", "bajo", "bajo", "bajo", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "alto", "medio", "medio", "NA", "alto", "medio", "alto", "alto", "alto", "alto", "NA", "bajo", "bajo", "NA", "bajo", "medio", "medio", "alto", "alto", "alto", "bajo", "NA", "NA", "alto", "alto", "bajo", "medio", "alto", "medio", "alto", "medio", "medio", "bajo", "bajo", "alto", "medio", "alto", "alto", "alto", "alto", "NA", "NA", "medio", "bajo", "alto", "NA", "bajo", "medio", "bajo", "bajo", "medio", "bajo", "bajo", "NA", "medio", "alto", "alto", "NA", "alto", "alto", "alto", "alto", "alto", "alto", "alto", "alto", "medio", "medio", "bajo", "bajo", "bajo", "bajo", "medio", "bajo", "bajo", "bajo", "bajo", "medio", "bajo", "bajo", "bajo", "bajo", "bajo", "bajo", "medio", "bajo", "bajo", "bajo", "NA", "bajo", "bajo", "bajo"]
+    },
+    "tipos": {
+      "mes": {
+        "tipo": "numerica"
+      },
+      "ozono": {
+        "tipo": "factor",
+        "niveles": ["bajo", "medio", "alto"]
+      }
+    }
+  },
+  "entradas": {
+    "fila": "mes",
+    "columna": "ozono"
+  },
+  "opciones": {
+    "faltantes": true
+  },
+  "esperado": {
+    "vias": 2,
+    "niveles_fila": ["5", "6", "7", "8", "9"],
+    "niveles_columna": ["bajo", "medio", "alto", "(faltante)"],
+    "conteos": [
+      [19, 6, 1, 5],
+      [6, 2, 1, 21],
+      [5, 8, 13, 5],
+      [8, 6, 12, 5],
+      [20, 5, 4, 1]
+    ],
+    "total_fila": [31, 30, 31, 31, 30],
+    "total_columna": [58, 27, 31, 37],
+    "total": 153,
+    "excluidas": 0,
+    "pct_total": [
+      [12.418300653594772, 3.9215686274509802, 0.65359477124183007, 3.2679738562091507],
+      [3.9215686274509802, 1.3071895424836601, 0.65359477124183007, 13.725490196078432],
+      [3.2679738562091507, 5.2287581699346406, 8.4967320261437909, 3.2679738562091507],
+      [5.2287581699346406, 3.9215686274509802, 7.8431372549019605, 3.2679738562091507],
+      [13.071895424836603, 3.2679738562091507, 2.6143790849673203, 0.65359477124183007]
+    ],
+    "pct_fila": [
+      [61.29032258064516, 19.35483870967742, 3.225806451612903, 16.129032258064516],
+      [20, 6.666666666666667, 3.3333333333333335, 70],
+      [16.129032258064516, 25.806451612903224, 41.935483870967744, 16.129032258064516],
+      [25.806451612903224, 19.35483870967742, 38.70967741935484, 16.129032258064516],
+      [66.666666666666657, 16.666666666666664, 13.333333333333334, 3.3333333333333335]
+    ],
+    "pct_columna": [
+      [32.758620689655174, 22.222222222222221, 3.225806451612903, 13.513513513513514],
+      [10.344827586206897, 7.4074074074074066, 3.225806451612903, 56.756756756756758],
+      [8.6206896551724146, 29.629629629629626, 41.935483870967744, 13.513513513513514],
+      [13.793103448275861, 22.222222222222221, 38.70967741935484, 13.513513513513514],
+      [34.482758620689658, 18.518518518518519, 12.903225806451612, 2.7027027027027026]
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(mes), factor(ozono), useNA = \"ifany\"); 100 * prop.table(tab); 100 * prop.table(tab, 1); 100 * prop.table(tab, 2)"
+  }
+}

@@ -158,9 +158,14 @@ SPT.describir('Datos · estructura del ensayo y formas de tabla', () => {
     SPT.igual(SP.estructura.pareceFactorNumerico({ valores: Float64Array.from([0, 0, 1, 2, 2, 2, 2, 2, 3, 0]) }, 10), false);
   });
   SPT.caso('las fechas y los identificadores no se toman como factores del diseño', () => {
-    const h = SP.hoja.crear({ nombres: ['trat', 'unidad', 'siembra', 'y'], columnas: { trat: ['A', 'A', 'B', 'B'], unidad: ['u1', 'x', 'u3', 'zz'], siembra: ['2026-05-01', '2026-05-01', '2026-05-02', '2026-05-02'], y: [1.5, 2.25, 3.5, 4.75] }, tipos: { unidad: 'texto' } });
+    const k = 10, rep = (a, b) => Array.from({ length: k }, (_, i) => (i < k / 2 ? a : b));
+    const h = SP.hoja.crear({ nombres: ['trat', 'unidad', 'siembra', 'y'], tipos: { unidad: 'texto' }, columnas: {
+      trat: rep('A', 'B'), unidad: Array.from({ length: k }, (_, i) => 'u' + 'x'.repeat(i)), siembra: rep('2026-05-01', '2026-05-02'), y: Array.from({ length: k }, (_, i) => 1.5 + i * 0.75) } });
     const p = SP.estructura.adivinarPapeles(h.aTabla());
     SPT.igualJSON(p.factores, ['trat']); SPT.igualJSON(p.identificadores, ['unidad']); SPT.igualJSON(p.respuestas, ['y']);
+    /* en una tabla corta ya agregada (una fila por categoría) los valores distintos son categorías, no identificadores */
+    const m = SP.hoja.crear({ nombres: ['fenotipo', 'semillas'], columnas: { fenotipo: ['RA', 'Ra', 'rA', 'ra'], semillas: [315, 108, 101, 32] }, tipos: { fenotipo: 'factor' } });
+    SPT.igualJSON(SP.estructura.adivinarPapeles(m.aTabla()).identificadores, []);
   });
   SPT.caso('reconoce un cuadro latino 4 × 4', () => {
     const c = { fila: [], columna: [], trat: [], y: [] };

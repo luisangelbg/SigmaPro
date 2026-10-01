@@ -1,0 +1,27 @@
+{
+  "esquema": 1,
+  "id": "dist.qbinom/binomial-cuantil-mediana-simetrica",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qbinom"
+  },
+  "titulo": "Cuantil 0.5 de la binomial simétrica con n impar: (n − 1)/2 exacto (R da n = 51 → 26)",
+  "fuente": "Identidad exacta por simetría: P(X ≤ (n − 1)/2) = 1/2",
+  "clase": "B",
+  "vectorizar": true,
+  "argumentos": [
+    0.5,
+    [1, 7, 51, 101, 999, 5001],
+    0.5,
+    true
+  ],
+  "esperado": [0, 3, 25, 50, 499, 2500],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "(n - 1) / 2   # referencia exacta; qbinom(0.5, n, 0.5) de R da 0, 3, 26, 50, 499, 2500 porque su pbinom redondea por debajo de 1/2"
+  }
+}

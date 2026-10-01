@@ -1,8 +1,8 @@
 # SigmaPro — genera datos/ejemplos.js con los conjuntos de ejemplo del bloque Datos.
 # Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
 #
-# Todos son ficticios y reproducibles (semilla fija), salvo el de venenos, que son los
-# datos publicados por Box y Cox (1964, J. R. Stat. Soc. B 26: 211–252), cuadro 1.
+# Todos son ficticios y reproducibles (semilla fija), salvo dos publicados: los venenos de
+# Box y Cox (1964, J. R. Stat. Soc. B 26: 211–252), cuadro 1, y los chícharos de Mendel (1866).
 # Cada ejemplo muestra algo del bloque: diseño en bloques, porcentajes para el arcoseno,
 # cuadro latino, forma ancha con fechas, conteos con ceros y faltantes, y Box-Cox.
 #
@@ -38,10 +38,11 @@ set.seed(11)
 trat <- c("Testigo", "Remojo 24 h", "GA3 100 ppm", "GA3 250 ppm", "Escarificación")
 p <- c(0.38, 0.55, 0.71, 0.83, 0.93)
 d <- data.frame(caja = sprintf("C%02d", 1:20), tratamiento = rep(trat, each = 4))   # caja: identificador de la unidad
+d$sembradas <- 50
 d$germinadas <- rbinom(nrow(d), 50, rep(p, each = 4))
 d$germinacion <- 100 * d$germinadas / 50
 agregar("frijol", "Frijol: germinación (%)",
-        "Cinco tratamientos pregerminativos, 4 cajas de 50 semillas; el porcentaje pide el arcoseno o un modelo binomial.", d,
+        "Cinco tratamientos pregerminativos, 4 cajas de 50 semillas sembradas; el porcentaje pide el arcoseno o un modelo binomial.", d,
         list(tratamiento = list(tipo = "factor", niveles = trat)))
 
 ## 3. Trigo: cuadro latino 5 × 5 (hileras y columnas del terreno)
@@ -92,11 +93,21 @@ stopifnot(identical(d$tiempo, p$time), identical(d$veneno, c("I", "II", "III")[p
 agregar("venenos", "Venenos × tratamientos (Box y Cox, 1964)",
         "Datos publicados: tiempo de supervivencia (unidades de 10 h) de 48 animales; el ejemplo clásico de Box-Cox (λ cercana a −1).", d)
 
+## 7. Chícharo: segregación dihíbrida de la F2 (Mendel, 1866), ya agregada por fenotipo
+d <- data.frame(forma = c("redonda", "redonda", "rugosa", "rugosa"), color = c("amarilla", "verde", "amarilla", "verde"),
+                semillas = c(315, 108, 101, 32))
+d$fenotipo <- paste(d$forma, d$color)
+d <- d[c("fenotipo", "forma", "color", "semillas")]
+agregar("mendel", "Chícharo: segregación de Mendel",
+        "Datos publicados de la F2 dihíbrida (Mendel, 1866): fenotipo (forma × color) de 556 semillas, ya contadas; para la bondad de ajuste 9:3:3:1 o 3:1 por carácter.", d,
+        list(fenotipo = list(tipo = "factor", niveles = d$fenotipo), forma = list(tipo = "factor", niveles = c("redonda", "rugosa")),
+             color = list(tipo = "factor", niveles = c("amarilla", "verde"))))
+
 ## escribir datos/ejemplos.js
 js <- paste0(
   "/* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.\n",
   "   Ficticios y reproducibles, salvo «venenos»: Box, G. E. P. y Cox, D. R. (1964). An analysis of transformations.\n",
-  "   J. R. Stat. Soc. B 26: 211-252, cuadro 1. */\n",
+  "   J. R. Stat. Soc. B 26: 211-252, cuadro 1; y «mendel»: Mendel, G. (1866), Versuche über Pflanzen-Hybriden. */\n",
   "window.SP_EJEMPLOS = ",
   jsonlite::toJSON(ejemplos, auto_unbox = TRUE, pretty = TRUE, null = "null"), ";\n")
 salida <- file("datos/ejemplos.js", open = "w", encoding = "UTF-8")

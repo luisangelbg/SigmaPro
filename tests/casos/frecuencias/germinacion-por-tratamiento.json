@@ -1,0 +1,70 @@
+{
+  "esquema": 1,
+  "id": "proporciones/germinacion-por-tratamiento",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "proporciones"
+  },
+  "titulo": "Germinación por tratamiento sumando cajas de 50 semillas (una caja sin dato)",
+  "fuente": "Datos sintéticos de germinación",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "germinadas": [17, 8, 19, 12, 36, 33, 38, "NA", 47, 50, 46, 48],
+      "sembradas": [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
+      "tratamiento": ["Testigo", "Testigo", "Testigo", "Testigo", "GA3 100 ppm", "GA3 100 ppm", "GA3 100 ppm", "GA3 100 ppm", "Escarificación", "Escarificación", "Escarificación", "Escarificación"]
+    },
+    "tipos": {
+      "germinadas": {
+        "tipo": "numerica"
+      },
+      "sembradas": {
+        "tipo": "numerica"
+      },
+      "tratamiento": {
+        "tipo": "factor",
+        "niveles": ["Testigo", "GA3 100 ppm", "Escarificación"]
+      }
+    }
+  },
+  "entradas": {
+    "exitos": "germinadas",
+    "ensayos": "sembradas",
+    "grupo": "tratamiento"
+  },
+  "opciones": {
+    "nivel": 0.94999999999999996,
+    "metodos": ["wilson", "wilson_cc", "clopper_pearson", "agresti_coull", "jeffreys", "wald"]
+  },
+  "esperado": {
+    "modo": "conteos",
+    "excluidas": 1,
+    "tabla": {
+      "grupo": ["Testigo", "GA3 100 ppm", "Escarificación"],
+      "categoria": ["germinadas", "germinadas", "germinadas"],
+      "x": [56, 107, 191],
+      "n": [200, 150, 200],
+      "p": [0.28000000000000003, 0.71333333333333337, 0.95499999999999996],
+      "wilson_inf": [0.22236889773949031, 0.63635082260833997, 0.91670329599818035],
+      "wilson_sup": [0.34592304586650707, 0.77966187312794744, 0.97614745699850702],
+      "wilson_cc_inf": [0.22008178649468965, 0.6328613932112267, 0.91355289637109804],
+      "wilson_cc_sup": [0.34853939863871208, 0.78266805198429168, 0.97788207924196136],
+      "clopper_pearson_inf": [0.21896115567003244, 0.63389113567471589, 0.91629731192414599],
+      "clopper_pearson_sup": [0.34768873720460824, 0.78413872915028171, 0.97921957777299562],
+      "agresti_coull_inf": [0.22223254815210178, 0.63615801803773009, 0.91551355593553807],
+      "agresti_coull_sup": [0.34605939545389558, 0.77985467769855721, 0.9773371970611493],
+      "jeffreys_inf": [0.22125659883580462, 0.63740578466392639, 0.91949112975702363],
+      "jeffreys_sup": [0.34505825682202862, 0.78111856207832275, 0.97750402654433211],
+      "wald_inf": [0.21777307261916531, 0.64096687489867998, 0.92626964211680174],
+      "wald_sup": [0.34222692738083471, 0.78569979176798677, 0.98373035788319818]
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "x y n por grupo con table() o tapply(); intervalos con prop.test, binom.test y las fórmulas de Agresti-Coull, Jeffreys y Wald"
+  }
+}

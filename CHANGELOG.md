@@ -2,6 +2,28 @@
 
 ## Sin publicar
 
+### Hito 1.3 · explorar (1 oct 2026)
+
+- Métodos registrados (`js/metodos/`), los primeros que ofrece la app bajo la regla de liberación:
+  **descriptivos** (n, faltantes, media, mediana, moda, DE, varianza, EE, CV, extremos, cuartiles con las nueve
+  definiciones de Hyndman y Fan, RIC, media recortada, geométrica y armónica, asimetría y curtosis en las tres
+  definiciones de Joanes y Gill con sus errores estándar, percentiles a elegir, e intervalos de la media por t,
+  de la mediana por estadísticos de orden y de la varianza y la DE por ji cuadrada) por hasta tres factores;
+  **frecuencias** de una y dos vías con porcentajes y acumulados; **proporciones** de categorías o de éxitos
+  sobre ensayos con seis intervalos (Wilson, Wilson con corrección, Clopper-Pearson, Agresti-Coull, Jeffreys
+  y Wald); y **bondad de ajuste ji cuadrada** con proporciones como «9:3:3:1».
+- Bloque 3 de la app: formulario por resumen, cálculo inmediato, conclusión en palabras, cuadro de revista
+  (con el factor repetido escrito una vez), columnas adicionales a elegir, copia a hoja de cálculo y código R.
+- `tests/codigo-r.mjs`: el código R que muestra la app se ejecuta en R y reproduce sus números
+  (8 escenarios, 209 valores).
+- Núcleo: cuantil de la binomial (`SP.dist.qbinom`), validado; en los empates exactos (p justo en un salto)
+  da el valor exacto, donde R se equivoca por redondeo (clase B documentada).
+- Validación: 46 casos nuevos contra R (5 079 valores); los cuantiles coinciden con `quantile()` sin ninguna
+  diferencia. 10 pruebas unitarias nuevas.
+- Un séptimo ejemplo: la F2 dihíbrida del chícharo de Mendel (1866); el frijol trae ahora las semillas
+  sembradas.
+- Con 100 000 filas, cada resumen tarda menos de 0.1 s (200 grupos con dos variables, interfaz incluida).
+
 ### Hito 1.2 · datos (1 oct 2026)
 
 - Lectores propios, sin bibliotecas: CSV y texto (RFC 4180, separador y decimal detectados, UTF-8, Latin-1 y

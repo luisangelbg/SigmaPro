@@ -1,0 +1,45 @@
+{
+  "esquema": 1,
+  "id": "frecuencias/autos-cambios-numerico",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+  },
+  "titulo": "Número de velocidades (columna numérica tomada como factor)",
+  "fuente": "Henderson y Velleman (1981); conjunto mtcars de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "gear": [4, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 3, 4, 5, 5, 5, 5, 5, 4]
+    },
+    "tipos": {
+      "gear": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "fila": "gear"
+  },
+  "opciones": {
+    "faltantes": false
+  },
+  "esperado": {
+    "vias": 1,
+    "niveles": ["3", "4", "5"],
+    "frecuencia": [15, 12, 5],
+    "total": 32,
+    "faltantes": 0,
+    "porcentaje": [46.875, 37.5, 15.625],
+    "acumulada": [15, 27, 32],
+    "porcentaje_acumulado": [46.875, 84.375, 100]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(gear), useNA = \"no\"); prop.table(tab); cumsum(tab)"
+  }
+}

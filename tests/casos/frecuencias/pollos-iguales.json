@@ -1,0 +1,51 @@
+{
+  "esquema": 1,
+  "id": "bondad-ajuste/pollos-iguales",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "bondad-ajuste"
+  },
+  "titulo": "¿Los seis alimentos tienen el mismo número de pollos? (datos sin agregar)",
+  "fuente": "Anónimo (1948); conjunto chickwts de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "feed": ["horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein"]
+    },
+    "tipos": {
+      "feed": {
+        "tipo": "factor",
+        "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"]
+      }
+    }
+  },
+  "entradas": {
+    "categoria": "feed"
+  },
+  "opciones": {
+    "proporciones": []
+  },
+  "esperado": {
+    "categoria": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"],
+    "observado": [12, 10, 12, 11, 14, 12],
+    "proporcion": [0.16666666666666666, 0.16666666666666666, 0.16666666666666666, 0.16666666666666666, 0.16666666666666666, 0.16666666666666666],
+    "esperado": [11.833333333333332, 11.833333333333332, 11.833333333333332, 11.833333333333332, 11.833333333333332, 11.833333333333332],
+    "residuo": [0.048450158311151272, -0.53295174142265989, 0.048450158311151272, -0.2422507915557543, 0.62985205804496236, 0.048450158311151272],
+    "residuo_estandarizado": [0.053074489243427905, -0.58381938167770242, 0.053074489243427905, -0.26537244621713729, 0.68996836016455831, 0.053074489243427905],
+    "contribucion": [0.0023474178403756207, 0.28403755868544572, 0.0023474178403756207, 0.058685446009389519, 0.39671361502347463, 0.0023474178403756207],
+    "chi2": 0.74647887323943674,
+    "gl": 5,
+    "p": 0.9803207674085358,
+    "n": 71,
+    "min_esperado": 11.833333333333332,
+    "celdas_bajas": 0
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(observado)"
+  }
+}

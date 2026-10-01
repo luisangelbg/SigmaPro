@@ -61,6 +61,10 @@ SP.definir('registro', function (SP) {
     'formula.matrizComoColumnas': 'Matriz de diseño (codificación de factores)',
     'lineal.resumenDe': 'Modelo lineal: coeficientes, errores estándar, R² y F',
     'lineal.anova': 'Análisis de varianza: sumas de cuadrados tipo I, II y III',
+    'csv.leerColumnas': 'Lector de CSV y texto separado', 'hojas.leerLibroBase64': 'Lector de libros .xlsx',
+    'expresiones.enTabla': 'Variables calculadas y filtros (expresiones)',
+    'transformar.aplicar': 'Transformaciones (logaritmos, raíces, arcoseno, Box-Cox)',
+    'transformar.boxcoxResumen': 'Box-Cox: λ estimada, intervalo y verosimilitud perfilada',
   };
 
   const TIPOS_ENTRADA = new Set(['numerica', 'numerica+', 'factor', 'factor+', 'cualquiera']);

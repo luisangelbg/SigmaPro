@@ -34,7 +34,8 @@ SP.definir('estructura', function (SP) {
       if (c.fecha) continue;
       const numerica = c.tipo === 'numerica', comoDiseno = numerica && pareceFactorNumerico(c, tabla.n);
       if (numerica && !comoDiseno) { p.respuestas.push(nom); continue; }
-      if (!numerica && tabla.n > 2 && c.niveles.length === tabla.n) { p.identificadores.push(nom); continue; }
+      /* todos distintos en una tabla de al menos 10 filas: identificador (en una tabla corta ya agregada, son categorías) */
+      if (!numerica && tabla.n >= 10 && c.niveles.length === tabla.n) { p.identificadores.push(nom); continue; }
       if (!p.bloque && PAT.bloque.test(nom)) p.bloque = nom;
       else if (!p.fila && PAT.fila.test(nom)) p.fila = nom;
       else if (!p.columna && PAT.columna.test(nom)) p.columna = nom;
@@ -47,13 +48,14 @@ SP.definir('estructura', function (SP) {
     return p;
   }
 
-  /** Vista de factor de una columna (las numéricas se codifican por sus valores, en orden). */
+  /** Vista de factor de una columna: las numéricas se codifican por sus valores en orden, con las etiquetas
+      de factor() en R (15 cifras). */
   function comoFactor(tabla, nom) {
     const c = tabla.col(nom);
     if (c.tipo !== 'numerica') return c;
     const valores = [...new Set(Array.from(c.valores).filter(v => !Number.isNaN(v)))].sort((a, b) => a - b);
     const idx = new Map(valores.map((v, k) => [v, k]));
-    return { nombre: nom, tipo: 'factor', niveles: valores.map(String), codigos: Int32Array.from(c.valores, v => (Number.isNaN(v) ? -1 : idx.get(v))) };
+    return { nombre: nom, tipo: 'factor', niveles: valores.map(SP.tipos.numeroATexto), codigos: Int32Array.from(c.valores, v => (Number.isNaN(v) ? -1 : idx.get(v))) };
   }
 
   /** Clave de la combinación de factores de la fila i (null si falta alguno). */
@@ -162,5 +164,5 @@ SP.definir('estructura', function (SP) {
     return { hallazgos: h, datos };
   }
 
-  SP.estructura = { adivinarPapeles, analizar, pareceFactorNumerico };
+  SP.estructura = { adivinarPapeles, analizar, pareceFactorNumerico, comoFactor };
 });

@@ -1,0 +1,46 @@
+{
+  "esquema": 1,
+  "id": "frecuencias/pollos-una-via",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+  },
+  "titulo": "Seis alimentos para pollos, grupos de 10 a 14",
+  "fuente": "Anónimo (1948); conjunto chickwts de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "feed": ["horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein"]
+    },
+    "tipos": {
+      "feed": {
+        "tipo": "factor",
+        "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"]
+      }
+    }
+  },
+  "entradas": {
+    "fila": "feed"
+  },
+  "opciones": {
+    "faltantes": false
+  },
+  "esperado": {
+    "vias": 1,
+    "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"],
+    "frecuencia": [12, 10, 12, 11, 14, 12],
+    "total": 71,
+    "faltantes": 0,
+    "porcentaje": [16.901408450704224, 14.084507042253522, 16.901408450704224, 15.492957746478874, 19.718309859154928, 16.901408450704224],
+    "acumulada": [12, 22, 34, 45, 59, 71],
+    "porcentaje_acumulado": [16.901408450704224, 30.985915492957748, 47.887323943661968, 63.380281690140848, 83.098591549295776, 100]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(feed), useNA = \"no\"); prop.table(tab); cumsum(tab)"
+  }
+}

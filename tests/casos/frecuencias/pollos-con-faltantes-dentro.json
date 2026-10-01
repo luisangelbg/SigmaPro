@@ -1,0 +1,46 @@
+{
+  "esquema": 1,
+  "id": "frecuencias/pollos-con-faltantes-dentro",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+  },
+  "titulo": "Seis alimentos con 4 faltantes como categoría",
+  "fuente": "chickwts de R con cuatro valores borrados",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "feed": ["horsebean", "horsebean", "NA", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "NA", "linseed", "linseed", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "sunflower", "sunflower", "sunflower", "sunflower", "NA", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "casein", "casein", "casein", "casein", "casein", "casein", "NA", "casein", "casein", "casein", "casein", "casein"]
+    },
+    "tipos": {
+      "feed": {
+        "tipo": "factor",
+        "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"]
+      }
+    }
+  },
+  "entradas": {
+    "fila": "feed"
+  },
+  "opciones": {
+    "faltantes": true
+  },
+  "esperado": {
+    "vias": 1,
+    "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower", "(faltante)"],
+    "frecuencia": [11, 9, 11, 11, 14, 11, 4],
+    "total": 71,
+    "faltantes": 0,
+    "porcentaje": [15.492957746478874, 12.67605633802817, 15.492957746478874, 15.492957746478874, 19.718309859154928, 15.492957746478874, 5.6338028169014081],
+    "acumulada": [11, 20, 31, 42, 56, 67, 71],
+    "porcentaje_acumulado": [15.492957746478874, 28.169014084507044, 43.661971830985912, 59.154929577464792, 78.873239436619713, 94.366197183098592, 100]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(feed), useNA = \"ifany\"); prop.table(tab); cumsum(tab)"
+  }
+}

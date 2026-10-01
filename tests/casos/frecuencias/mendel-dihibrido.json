@@ -1,0 +1,56 @@
+{
+  "esquema": 1,
+  "id": "bondad-ajuste/mendel-dihibrido",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "bondad-ajuste"
+  },
+  "titulo": "Cruza dihíbrida de chícharo de Mendel contra 9:3:3:1",
+  "fuente": "Mendel (1866), semillas de la F2",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "fenotipo": ["redonda amarilla", "redonda verde", "rugosa amarilla", "rugosa verde"],
+      "semillas": [315, 108, 101, 32]
+    },
+    "tipos": {
+      "fenotipo": {
+        "tipo": "factor",
+        "niveles": ["redonda amarilla", "redonda verde", "rugosa amarilla", "rugosa verde"]
+      },
+      "semillas": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "categoria": "fenotipo",
+    "conteo": "semillas"
+  },
+  "opciones": {
+    "proporciones": [9, 3, 3, 1]
+  },
+  "esperado": {
+    "categoria": ["redonda amarilla", "redonda verde", "rugosa amarilla", "rugosa verde"],
+    "observado": [315, 108, 101, 32],
+    "proporcion": [0.5625, 0.1875, 0.1875, 0.0625],
+    "esperado": [312.75, 104.25, 104.25, 34.75],
+    "residuo": [0.12722833945199566, 0.36727658015579379, -0.31830636946835461, -0.46650391132398406],
+    "residuo_estandarizado": [0.19235116909125044, 0.40745678216269987, -0.35312921120767321, -0.48180316786624311],
+    "contribucion": [0.016187050359712234, 0.13489208633093522, 0.10131894484412467, 0.21762589928057557],
+    "chi2": 0.47002398081534774,
+    "gl": 3,
+    "p": 0.92542589510361584,
+    "n": 556,
+    "min_esperado": 34.75,
+    "celdas_bajas": 0
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(observado, p = c(9, 3, 3, 1), rescale.p = TRUE)"
+  }
+}

@@ -292,3 +292,39 @@ table.imp-tabla thead th { vertical-align: top; position: sticky; top: 0; backgr
 .nv-lista { margin: var(--sp-3) 0 0; padding: 0; list-style: none; max-height: 50vh; overflow: auto; }
 .nv-lista li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 3px 4px; border-bottom: 1px solid var(--border); font-size: var(--fs-sm); }
 .nv-lista .btn-row { flex-wrap: nowrap; gap: 2px; }
+
+/* ================= bloque 3 · Explorar ================= */
+.seg.exp-tipos, .seg.exp-modo, .seg.exp-vistas { flex-wrap: wrap; border-radius: var(--r-md); max-width: 100%; }
+.seg.exp-tipos button, .seg.exp-modo button, .seg.exp-vistas button { font-size: var(--fs-sm); letter-spacing: 0; padding: 7px 14px; border-radius: 8px; min-height: 34px; }
+.seg.exp-tipos { margin-bottom: var(--sp-4); }
+.seg.exp-tipos button { font-size: var(--fs-md); padding: 8px 18px; }
+.exp-filtro { margin: 0 0 var(--sp-4); }
+.exp-filtro[hidden] { display: none; }
+.exp-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: var(--sp-5); align-items: start; }
+@media (max-width: 960px) { .exp-grid { grid-template-columns: minmax(0, 1fr); } .exp-resultado { order: -1; } }
+.exp-a-opciones { display: none; color: var(--btn-oro-texto); font-weight: 600; }
+@media (max-width: 960px) { .exp-a-opciones { display: inline; } }
+.exp-opciones { border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--card-bg); padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-3); min-width: 0; }
+.exp-opciones .field select, .exp-opciones .field input { font-size: var(--fs-sm); padding-block: 6px; min-width: 0; width: 100%; }
+.exp-opciones .field > span:first-child { font-size: var(--fs-sm); font-weight: 600; }
+.exp-fila { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--sp-3); }
+.exp-casillas { border: 0; padding: 0; margin: 0; min-width: 0; display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.exp-casillas legend { font-weight: 600; font-size: var(--fs-sm); padding: 0; margin-bottom: 6px; width: 100%; }
+.exp-casillas .imp-check { min-height: 28px; }
+.exp-casillas .field-help, .exp-casillas p { width: 100%; margin: 2px 0 0; }
+.exp-resultado { min-width: 0; }
+.exp-resultado:empty { display: none; }
+.exp-cabeza { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-2); }
+.exp-cabeza h3 { margin: 0; font-size: var(--fs-lg); }
+.exp-conclusion { margin-bottom: var(--sp-4); }
+.exp-conclusion p { margin: 0 0 6px; } .exp-conclusion p:last-child { margin-bottom: 0; }
+.exp-vistas { margin-bottom: var(--sp-3); }
+.exp-acciones { margin: var(--sp-3) 0; }
+.exp-extras, .exp-codigo { margin-top: var(--sp-3); border-top: 1px solid var(--border); padding-top: var(--sp-2); }
+.exp-extras summary, .exp-codigo summary { cursor: pointer; font-weight: 600; font-size: var(--fs-sm); color: var(--btn-oro-texto); padding: 4px 0; }
+.exp-extras .chips { margin-top: var(--sp-2); gap: 4px 14px; }
+.exp-codigo pre { margin: var(--sp-2) 0; padding: 12px 14px; border-radius: var(--r-md); background: #111; color: #EEE9DF; overflow: auto; font-size: var(--fs-xs); line-height: 1.55; white-space: pre; }
+table.revista.sp-cuadro caption b { font-weight: 800; }
+table.revista.sp-cuadro tbody th { font-weight: 600; padding: 6px 10px; text-align: left; vertical-align: top; }
+table.revista.sp-cuadro tr.total th, table.revista.sp-cuadro tr.total td { border-top: 1px solid var(--text); font-weight: 700; }
+.pie-cuadro p { margin: 3px 0; }

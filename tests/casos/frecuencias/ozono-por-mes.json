@@ -1,0 +1,78 @@
+{
+  "esquema": 1,
+  "id": "frecuencias/ozono-por-mes",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+  },
+  "titulo": "Mes × nivel de ozono, 37 faltantes fuera",
+  "fuente": "Chambers y col. (1983); conjunto airquality de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "mes": [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+      "ozono": ["medio", "medio", "bajo", "bajo", "NA", "bajo", "bajo", "bajo", "bajo", "NA", "bajo", "bajo", "bajo", "bajo", "bajo", "bajo", "medio", "bajo", "bajo", "bajo", "bajo", "bajo", "bajo", "medio", "NA", "NA", "NA", "bajo", "medio", "alto", "medio", "NA", "NA", "NA", "NA", "NA", "NA", "bajo", "NA", "alto", "medio", "NA", "NA", "bajo", "NA", "NA", "bajo", "medio", "bajo", "bajo", "bajo", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "alto", "medio", "medio", "NA", "alto", "medio", "alto", "alto", "alto", "alto", "NA", "bajo", "bajo", "NA", "bajo", "medio", "medio", "alto", "alto", "alto", "bajo", "NA", "NA", "alto", "alto", "bajo", "medio", "alto", "medio", "alto", "medio", "medio", "bajo", "bajo", "alto", "medio", "alto", "alto", "alto", "alto", "NA", "NA", "medio", "bajo", "alto", "NA", "bajo", "medio", "bajo", "bajo", "medio", "bajo", "bajo", "NA", "medio", "alto", "alto", "NA", "alto", "alto", "alto", "alto", "alto", "alto", "alto", "alto", "medio", "medio", "bajo", "bajo", "bajo", "bajo", "medio", "bajo", "bajo", "bajo", "bajo", "medio", "bajo", "bajo", "bajo", "bajo", "bajo", "bajo", "medio", "bajo", "bajo", "bajo", "NA", "bajo", "bajo", "bajo"]
+    },
+    "tipos": {
+      "mes": {
+        "tipo": "numerica"
+      },
+      "ozono": {
+        "tipo": "factor",
+        "niveles": ["bajo", "medio", "alto"]
+      }
+    }
+  },
+  "entradas": {
+    "fila": "mes",
+    "columna": "ozono"
+  },
+  "opciones": {
+    "faltantes": false
+  },
+  "esperado": {
+    "vias": 2,
+    "niveles_fila": ["5", "6", "7", "8", "9"],
+    "niveles_columna": ["bajo", "medio", "alto"],
+    "conteos": [
+      [19, 6, 1],
+      [6, 2, 1],
+      [5, 8, 13],
+      [8, 6, 12],
+      [20, 5, 4]
+    ],
+    "total_fila": [26, 9, 26, 26, 29],
+    "total_columna": [58, 27, 31],
+    "total": 116,
+    "excluidas": 37,
+    "pct_total": [
+      [16.379310344827587, 5.1724137931034484, 0.86206896551724133],
+      [5.1724137931034484, 1.7241379310344827, 0.86206896551724133],
+      [4.3103448275862073, 6.8965517241379306, 11.206896551724139],
+      [6.8965517241379306, 5.1724137931034484, 10.344827586206897],
+      [17.241379310344829, 4.3103448275862073, 3.4482758620689653]
+    ],
+    "pct_fila": [
+      [73.076923076923066, 23.076923076923077, 3.8461538461538463],
+      [66.666666666666657, 22.222222222222221, 11.111111111111111],
+      [19.230769230769234, 30.76923076923077, 50],
+      [30.76923076923077, 23.076923076923077, 46.153846153846153],
+      [68.965517241379317, 17.241379310344829, 13.793103448275861]
+    ],
+    "pct_columna": [
+      [32.758620689655174, 22.222222222222221, 3.225806451612903],
+      [10.344827586206897, 7.4074074074074066, 3.225806451612903],
+      [8.6206896551724146, 29.629629629629626, 41.935483870967744],
+      [13.793103448275861, 22.222222222222221, 38.70967741935484],
+      [34.482758620689658, 18.518518518518519, 12.903225806451612]
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(mes), factor(ozono), useNA = \"no\"); 100 * prop.table(tab); 100 * prop.table(tab, 1); 100 * prop.table(tab, 2)"
+  }
+}

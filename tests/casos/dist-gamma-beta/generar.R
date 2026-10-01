@@ -53,3 +53,21 @@ caso("poisson-inferior", "dist.ppois", "P(X ≤ k) Poisson en %d combinaciones",
   ppois(g$k, g$lambda), "ppois(k, lambda)")
 caso("poisson-superior", "dist.ppois", "P(X > k) Poisson en %d combinaciones", list(g$k, g$lambda, FALSE),
   ppois(g$k, g$lambda, lower.tail = FALSE), "ppois(k, lambda, lower.tail = FALSE)")
+# cuantil de la binomial (lo usa el intervalo exacto de la mediana): incluye p que caen justo en un salto de F
+g <- sp_rejilla(p = c(1e-12, 0.001, 0.025, 0.05, 0.3, 0.5, 0.7, 0.975, 0.999), n = c(1, 7, 20, 51, 300, 5000, 1e5),
+                prob = c(0.02, 0.5, 0.93))
+g <- rbind(g, data.frame(p = pbinom(c(3, 10, 2), c(20, 40, 9), 0.5), n = c(20, 40, 9), prob = 0.5))
+# Con n impar y prob = 0.5, P(X ≤ (n − 1)/2) = 1/2 exactamente (simetría): el cuantil 0.5 es (n − 1)/2.
+# El pbinom de R da 0.5 − 2.2e-15 con n = 51 y su qbinom responde 26: esos empates van en un caso de clase B aparte.
+g <- g[!(g$p == 0.5 & g$prob == 0.5 & g$n %% 2 == 1), ]
+caso("binomial-cuantil", "dist.qbinom", "Cuantiles de la binomial en %d combinaciones (con p justo en un salto)",
+  list(g$p, g$n, g$prob, TRUE), qbinom(g$p, g$n, g$prob), "qbinom(p, n, prob)", relativo = FALSE)
+caso("binomial-cuantil-superior", "dist.qbinom", "Cuantiles de la binomial, cola superior, en %d combinaciones",
+  list(g$p, g$n, g$prob, FALSE), qbinom(g$p, g$n, g$prob, lower.tail = FALSE), "qbinom(p, n, prob, lower.tail = FALSE)", relativo = FALSE)
+n <- c(1, 7, 51, 101, 999, 5001)
+sp_caso("binomial-cuantil-mediana-simetrica", objetivo = "dist.qbinom", clase = "B",
+  titulo = "Cuantil 0.5 de la binomial simétrica con n impar: (n − 1)/2 exacto (R da n = 51 → 26)",
+  fuente = "Identidad exacta por simetría: P(X ≤ (n − 1)/2) = 1/2", vectorizar = TRUE,
+  argumentos = list(0.5, sp_arg(n), 0.5, TRUE), esperado = sp_arg((n - 1) / 2),
+  codigo = paste("(n - 1) / 2   # referencia exacta; qbinom(0.5, n, 0.5) de R da",
+                 paste(qbinom(0.5, n, 0.5), collapse = ", "), "porque su pbinom redondea por debajo de 1/2"))

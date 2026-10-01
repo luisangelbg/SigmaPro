@@ -374,6 +374,29 @@ SP.definir('dist', function (SP) {
     const r = betaInc(1 - p, n - k, k + 1, p, log1p(-p), log(p));
     return inferior ? r.inferior : r.superior;
   }
+  /**
+   * Cuantil de la binomial: el menor k con P(X ≤ k) ≥ p (cola inferior) o con P(X > k) ≤ p (cola
+   * superior, buscada con la cola superior misma para no perder las colas diminutas en 1 − p).
+   */
+  function qbinom(p, n, prob, inferior) {
+    inferior = inferior !== false;
+    if (!pValido(p) || !(n >= 0) || n !== floor(n) || !(prob >= 0 && prob <= 1)) return NaN;
+    if (prob === 0 || n === 0) return 0;
+    if (prob === 1) return n;
+    if (inferior ? p === 0 : p === 1) return 0;
+    if (inferior ? p === 1 : p === 0) return n;
+    /* tolerancia relativa de 1e-12: si p cae justo en un salto de F (p. ej. 1/2 con n impar y prob = 1/2),
+       el redondeo de P no debe mover el cuantil al siguiente entero. Cubre el error de pbinom con n de
+       miles (≈ 1e-13: su factor exp(a log x + b log(1 − x) − log B) se calcula con exponentes de miles) */
+    const e = 1e-12;
+    const cumple = inferior ? k => pbinom(k, n, prob, true) >= p * (1 - e) : k => pbinom(k, n, prob, false) <= p * (1 + e);
+    /* arranque normal con corrección de Cornish-Fisher; después, a pasos hasta el menor k que cumple */
+    const mu = n * prob, s = sqrt(n * prob * (1 - prob)), g = (1 - 2 * prob) / s, z = qnorm(p, 0, 1, inferior);
+    let k = max(0, min(n, floor(mu + s * (z + g * (z * z - 1) / 6) + 0.5)));
+    if (cumple(k)) { while (k > 0 && cumple(k - 1)) k--; }
+    else { while (k < n && !cumple(k)) k++; }
+    return k;
+  }
   function dpois(k, lambda) {
     if (k < 0 || k !== floor(k)) return 0;
     if (lambda === 0) return k === 0 ? 1 : 0;
@@ -606,7 +629,7 @@ SP.definir('dist', function (SP) {
     pf, qf, df,
     pchisq, qchisq, dchisq,
     pgamma, qgamma, pbeta, qbeta,
-    dbinom, pbinom, dpois, ppois,
+    dbinom, pbinom, qbinom, dpois, ppois,
     ptukey, qtukey,
     _interno: { betaInc, gammaInc, brent, encerrar, erfcPositivo, pnormSerie, colaNormal, probRango },
   };

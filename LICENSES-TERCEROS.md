@@ -63,9 +63,10 @@ carpeta.
 ### Datos publicados en los ejemplos
 
 `datos/ejemplos.js` trae cinco conjuntos ficticios generados por `datos/generar-ejemplos.R` (obra propia) y
-uno publicado: los tiempos de supervivencia del cuadro 1 de Box, G. E. P. y Cox, D. R. (1964), *An analysis
-of transformations*, J. R. Stat. Soc. B 26: 211–252. Son datos de un artículo científico, citados en el
-archivo y en la app; el script los coteja celda por celda con la copia del paquete boot de R.
+dos publicados: los tiempos de supervivencia del cuadro 1 de Box, G. E. P. y Cox, D. R. (1964), *An analysis
+of transformations*, J. R. Stat. Soc. B 26: 211–252 (el script los coteja celda por celda con la copia del
+paquete boot de R), y los conteos de la F2 dihíbrida del chícharo de Mendel, G. (1866), *Versuche über
+Pflanzen-Hybriden*. Son datos de publicaciones científicas, citados en el archivo y en la app.
 
 ## Que viajan con las pruebas (no los carga la app)
 

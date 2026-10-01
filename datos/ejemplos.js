@@ -1,6 +1,6 @@
 /* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.
    Ficticios y reproducibles, salvo «venenos»: Box, G. E. P. y Cox, D. R. (1964). An analysis of transformations.
-   J. R. Stat. Soc. B 26: 211-252, cuadro 1. */
+   J. R. Stat. Soc. B 26: 211-252, cuadro 1; y «mendel»: Mendel, G. (1866), Versuche über Pflanzen-Hybriden. */
 window.SP_EJEMPLOS = [
   {
     "id": "maiz",
@@ -12,8 +12,8 @@ window.SP_EJEMPLOS = [
   {
     "id": "frijol",
     "nombre": "Frijol: germinación (%)",
-    "descripcion": "Cinco tratamientos pregerminativos, 4 cajas de 50 semillas; el porcentaje pide el arcoseno o un modelo binomial.",
-    "csv": "\"caja\",\"tratamiento\",\"germinadas\",\"germinacion\"\n\"C01\",\"Testigo\",17,34\n\"C02\",\"Testigo\",8,16\n\"C03\",\"Testigo\",19,38\n\"C04\",\"Testigo\",12,24\n\"C05\",\"Remojo 24 h\",33,66\n\"C06\",\"Remojo 24 h\",22,44\n\"C07\",\"Remojo 24 h\",32,64\n\"C08\",\"Remojo 24 h\",29,58\n\"C09\",\"GA3 100 ppm\",32,64\n\"C10\",\"GA3 100 ppm\",39,78\n\"C11\",\"GA3 100 ppm\",39,78\n\"C12\",\"GA3 100 ppm\",36,72\n\"C13\",\"GA3 250 ppm\",38,76\n\"C14\",\"GA3 250 ppm\",39,78\n\"C15\",\"GA3 250 ppm\",40,80\n\"C16\",\"GA3 250 ppm\",41,82\n\"C17\",\"Escarificación\",47,94\n\"C18\",\"Escarificación\",47,94\n\"C19\",\"Escarificación\",48,96\n\"C20\",\"Escarificación\",47,94",
+    "descripcion": "Cinco tratamientos pregerminativos, 4 cajas de 50 semillas sembradas; el porcentaje pide el arcoseno o un modelo binomial.",
+    "csv": "\"caja\",\"tratamiento\",\"sembradas\",\"germinadas\",\"germinacion\"\n\"C01\",\"Testigo\",50,17,34\n\"C02\",\"Testigo\",50,8,16\n\"C03\",\"Testigo\",50,19,38\n\"C04\",\"Testigo\",50,12,24\n\"C05\",\"Remojo 24 h\",50,33,66\n\"C06\",\"Remojo 24 h\",50,22,44\n\"C07\",\"Remojo 24 h\",50,32,64\n\"C08\",\"Remojo 24 h\",50,29,58\n\"C09\",\"GA3 100 ppm\",50,32,64\n\"C10\",\"GA3 100 ppm\",50,39,78\n\"C11\",\"GA3 100 ppm\",50,39,78\n\"C12\",\"GA3 100 ppm\",50,36,72\n\"C13\",\"GA3 250 ppm\",50,38,76\n\"C14\",\"GA3 250 ppm\",50,39,78\n\"C15\",\"GA3 250 ppm\",50,40,80\n\"C16\",\"GA3 250 ppm\",50,41,82\n\"C17\",\"Escarificación\",50,47,94\n\"C18\",\"Escarificación\",50,47,94\n\"C19\",\"Escarificación\",50,48,96\n\"C20\",\"Escarificación\",50,47,94",
     "tipos": {
       "tratamiento": {
         "tipo": "factor",
@@ -56,5 +56,25 @@ window.SP_EJEMPLOS = [
     "descripcion": "Datos publicados: tiempo de supervivencia (unidades de 10 h) de 48 animales; el ejemplo clásico de Box-Cox (λ cercana a −1).",
     "csv": "\"veneno\",\"tratamiento\",\"tiempo\"\n\"I\",\"A\",0.31\n\"I\",\"A\",0.45\n\"I\",\"A\",0.46\n\"I\",\"A\",0.43\n\"I\",\"B\",0.82\n\"I\",\"B\",1.1\n\"I\",\"B\",0.88\n\"I\",\"B\",0.72\n\"I\",\"C\",0.43\n\"I\",\"C\",0.45\n\"I\",\"C\",0.63\n\"I\",\"C\",0.76\n\"I\",\"D\",0.45\n\"I\",\"D\",0.71\n\"I\",\"D\",0.66\n\"I\",\"D\",0.62\n\"II\",\"A\",0.36\n\"II\",\"A\",0.29\n\"II\",\"A\",0.4\n\"II\",\"A\",0.23\n\"II\",\"B\",0.92\n\"II\",\"B\",0.61\n\"II\",\"B\",0.49\n\"II\",\"B\",1.24\n\"II\",\"C\",0.44\n\"II\",\"C\",0.35\n\"II\",\"C\",0.31\n\"II\",\"C\",0.4\n\"II\",\"D\",0.56\n\"II\",\"D\",1.02\n\"II\",\"D\",0.71\n\"II\",\"D\",0.38\n\"III\",\"A\",0.22\n\"III\",\"A\",0.21\n\"III\",\"A\",0.18\n\"III\",\"A\",0.23\n\"III\",\"B\",0.3\n\"III\",\"B\",0.37\n\"III\",\"B\",0.38\n\"III\",\"B\",0.29\n\"III\",\"C\",0.23\n\"III\",\"C\",0.25\n\"III\",\"C\",0.24\n\"III\",\"C\",0.22\n\"III\",\"D\",0.3\n\"III\",\"D\",0.36\n\"III\",\"D\",0.31\n\"III\",\"D\",0.33",
     "tipos": null
+  },
+  {
+    "id": "mendel",
+    "nombre": "Chícharo: segregación de Mendel",
+    "descripcion": "Datos publicados de la F2 dihíbrida (Mendel, 1866): fenotipo (forma × color) de 556 semillas, ya contadas; para la bondad de ajuste 9:3:3:1 o 3:1 por carácter.",
+    "csv": "\"fenotipo\",\"forma\",\"color\",\"semillas\"\n\"redonda amarilla\",\"redonda\",\"amarilla\",315\n\"redonda verde\",\"redonda\",\"verde\",108\n\"rugosa amarilla\",\"rugosa\",\"amarilla\",101\n\"rugosa verde\",\"rugosa\",\"verde\",32",
+    "tipos": {
+      "fenotipo": {
+        "tipo": "factor",
+        "niveles": ["redonda amarilla", "redonda verde", "rugosa amarilla", "rugosa verde"]
+      },
+      "forma": {
+        "tipo": "factor",
+        "niveles": ["redonda", "rugosa"]
+      },
+      "color": {
+        "tipo": "factor",
+        "niveles": ["amarilla", "verde"]
+      }
+    }
   }
 ];

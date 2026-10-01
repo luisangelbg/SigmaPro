@@ -33,12 +33,14 @@ Reglas adicionales (las aplica `tests/lib/comparar.js`):
 
 ## Hallazgos documentados (clase B)
 
-Casos en que la referencia no es la función de R tal cual, porque R mismo es menos preciso por diseño.
-En los dos, el valor de SigmaPro se comprobó con la propia función de distribución de R.
+Casos en que la referencia no es la función de R tal cual, porque R mismo es menos preciso por diseño
+o por redondeo. En los tres, el valor de SigmaPro se comprobó con la propia función de distribución de R o
+con una identidad exacta.
 
 | Función | Qué pasa en R | Cómo se valida |
 |---|---|---|
 | Cuantil del rango estudentizado (`qtukey`) | Su iteración se detiene con tolerancia 1e-4; se desvía hasta 2.7e-7 de su propio `ptukey`. | Referencia = inversión exacta de `ptukey` con `uniroot` a 1e-14 (dif. 6e-12). Un caso aparte contra `qtukey` tal cual: dif. 7.5e-8, dentro del criterio. |
+| Cuantil de la binomial justo en un salto (`qbinom`) | Con n impar y prob = ½, P(X ≤ (n − 1)/2) = ½ exactamente; el `pbinom` de R da 0.5 − 2.2e-15 con n = 51 y su `qbinom(0.5, 51, 0.5)` responde 26 en vez de 25. | Referencia = (n − 1)/2 exacto por simetría; la rejilla general (378 valores) se compara contra `qbinom` tal cual. SigmaPro tolera 1e-12 relativo en el salto, que cubre el redondeo de su propia binomial con n de miles. |
 | Cuantil de t con menos de 1 gl y colas diminutas (`qt`) | `pt(qt(1e-8, 0.5, lower.tail = FALSE), 0.5, lower.tail = FALSE)` da 9.99999986e-9: error relativo 2.9e-8. | Referencia = inversión exacta de `pt` en escala logarítmica (dif. 2.8e-14). |
 
 Nota: para la t con más de 4 × 10⁵ grados de libertad, R usa una aproximación normal corregida; SigmaPro usa la
@@ -60,6 +62,23 @@ Para 100 000 filas, Box-Cox no recorre la QR completa en cada λ: en un diseño 
 X se repiten por celda y la suma de cuadrados residual se descompone exactamente en la variación dentro de
 celdas más un ajuste ponderado sobre las celdas. Una prueba unitaria comprueba que las dos rutas dan la misma
 suma (a 1e-9 relativo) y los casos contra R pasan por la ruta rápida.
+
+## Explorar (Hito 1.3)
+
+| Qué | Contra qué | Casos |
+|---|---|---|
+| Cuantiles, nueve definiciones × 19 probabilidades (con n = 1, 2 y 3, faltantes, empates y múltiplos de 1/20 que prueban el margen de 4ε) | `quantile(type = 1:9)`: diferencia 0 en los 1 215 valores | 7 |
+| Asimetría y curtosis, tipos 1, 2 y 3 (también alrededor de 10⁹) | `e1071::skewness` y `kurtosis` | 8 |
+| Descriptivos completos por grupo (33 estadísticos y percentiles) | base R y e1071 con PlantGrowth, npk (tres factores), airquality (faltantes), InsectSprays (empates), ToothGrowth (dosis numérica), faithful (sin grupos) y factores faltantes | 7 |
+| Intervalos de una proporción: Wilson, Wilson con corrección, Clopper-Pearson, Agresti-Coull, Jeffreys y Wald en 93 combinaciones de x, n y nivel | `prop.test`, `binom.test` y sus fórmulas | 6 |
+| Frecuencias de una y dos vías, con y sin la categoría de faltantes | `table`, `prop.table` | 7 |
+| Proporciones por categoría o por éxitos sobre ensayos, con grupos | lo mismo por grupo | 4 |
+| Bondad de ajuste ji cuadrada (Mendel 9:3:3:1 y 3:1, proporciones iguales, esperados menores que 5) | `chisq.test(p = , rescale.p = TRUE)` | 4 |
+| Cuantil de la binomial (lo usa el intervalo de la mediana) | `qbinom` (y un caso de clase B) | 3 |
+
+Además, `tests/codigo-r.mjs` toma el **código R equivalente** que la app muestra en cada resumen, lo ejecuta
+con Rscript sobre los ejemplos y compara sus números con los de la app (1e-6): 8 escenarios, 209 valores.
+Así el código que alguien copia para su tesis o para la revisión por pares da exactamente lo mismo.
 
 Dos convenciones de R que la app sigue a propósito: los números se muestran y se copian con 15 cifras
 significativas, como `as.character()` (0.1 + 0.2 se ve «0.3»), y los niveles sin observaciones (por un filtro

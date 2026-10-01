@@ -1,0 +1,37 @@
+{
+  "esquema": 1,
+  "id": "desc.asimetria/insectos-asimetria",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "desc.asimetria"
+  },
+  "titulo": "Conteos de insectos con muchos ceros (tipos 1, 2 y 3)",
+  "fuente": "Beall (1942); conjunto InsectSprays de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [10, 7, 20, 14, 14, 12, 10, 23, 17, 20, 14, 13, 11, 17, 21, 11, 16, 14, 17, 17, 19, 21, 7, 13, 0, 1, 7, 2, 3, 1, 2, 1, 3, 0, 1, 4, 3, 5, 12, 6, 4, 3, 5, 5, 5, 5, 2, 4, 3, 5, 3, 5, 3, 6, 1, 1, 3, 2, 6, 4, 11, 9, 15, 22, 15, 16, 13, 10, 26, 26, 24, 13]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "vectorizar": true,
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    [1, 2, 3]
+  ],
+  "esperado": [0.57092493090315433, 0.58314477752663008, 0.55907205715805397],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "e1071": "1.7.16"
+    },
+    "codigo": "sapply(1:3, function(t) e1071::skewness(x, na.rm = TRUE, type = t))"
+  }
+}

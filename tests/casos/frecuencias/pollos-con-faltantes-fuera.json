@@ -1,0 +1,46 @@
+{
+  "esquema": 1,
+  "id": "frecuencias/pollos-con-faltantes-fuera",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "frecuencias"
+  },
+  "titulo": "Seis alimentos con 4 faltantes que no entran",
+  "fuente": "chickwts de R con cuatro valores borrados",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "feed": ["horsebean", "horsebean", "NA", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "NA", "linseed", "linseed", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "sunflower", "sunflower", "sunflower", "sunflower", "NA", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "casein", "casein", "casein", "casein", "casein", "casein", "NA", "casein", "casein", "casein", "casein", "casein"]
+    },
+    "tipos": {
+      "feed": {
+        "tipo": "factor",
+        "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"]
+      }
+    }
+  },
+  "entradas": {
+    "fila": "feed"
+  },
+  "opciones": {
+    "faltantes": false
+  },
+  "esperado": {
+    "vias": 1,
+    "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"],
+    "frecuencia": [11, 9, 11, 11, 14, 11],
+    "total": 67,
+    "faltantes": 4,
+    "porcentaje": [16.417910447761194, 13.432835820895523, 16.417910447761194, 16.417910447761194, 20.895522388059703, 16.417910447761194],
+    "acumulada": [11, 20, 31, 42, 56, 67],
+    "porcentaje_acumulado": [16.417910447761194, 29.850746268656717, 46.268656716417908, 62.686567164179102, 83.582089552238813, 100]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "tab <- table(factor(feed), useNA = \"no\"); prop.table(tab); cumsum(tab)"
+  }
+}
