@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SigmaPro — pruebas</title>
+<style>
+  :root { color-scheme: light dark; --ok: #1d6b34; --mal: #a82c22; --tenue: #5B5750; --borde: #E2DDD2; --fondo: #F7F6F3; --tarjeta: #fff; --texto: #17150F; }
+  @media (prefers-color-scheme: dark) { :root { --ok: #7fd497; --mal: #f59189; --tenue: #A8A196; --borde: #2B2925; --fondo: #0C0C0D; --tarjeta: #1A1917; --texto: #EEE9DF; } }
+  body { margin: 0; font: 15px/1.5 system-ui, sans-serif; background: var(--fondo); color: var(--texto); }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 20px 48px; }
+  h1 { margin: 0 0 4px; font-size: 24px; } h2 { font-size: 18px; margin: 28px 0 8px; }
+  #estado { font-weight: 700; padding: 10px 14px; border-radius: 10px; background: var(--tarjeta); border: 1px solid var(--borde); }
+  #estado.ok { color: var(--ok); } #estado.mal { color: var(--mal); }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; background: var(--tarjeta); }
+  th, td { text-align: left; padding: 5px 10px; border-bottom: 1px solid var(--borde); vertical-align: top; }
+  th { font-weight: 700; } td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  .ok { color: var(--ok); font-weight: 700; } .mal { color: var(--mal); font-weight: 700; } .tenue { color: var(--tenue); }
+  tr.suite td { font-weight: 800; padding-top: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>SigmaPro · pruebas</h1>
+  <p class="tenue">Las mismas pruebas que corre <code>node tests/correr.mjs</code>, aquí en el navegador. Abre este archivo con doble clic.</p>
+  <p id="estado">Corriendo…</p>
+  <h2>Casos de validación contra R</h2>
+  <table id="tCasos"><thead><tr><th>Caso</th><th>Clase</th><th>Valores</th><th>Dif. máx.</th><th>Resultado</th></tr></thead><tbody></tbody></table>
+  <h2>Pruebas unitarias</h2>
+  <table id="tUnidad"><thead><tr><th>Prueba</th><th>Resultado</th></tr></thead><tbody></tbody></table>
+</main>
+
+<!-- núcleo: la misma lista y el mismo orden que en ../index.html (correr.mjs lo comprueba) -->
+<script src="../js/nucleo/sp.js"></script>
+<script src="../js/nucleo/numerico.js"></script>
+<script src="../js/nucleo/tabla.js"></script>
+<script src="../js/nucleo/registro.js"></script>
+<script src="../js/nucleo/hilos.js"></script>
+<!-- arnés -->
+<script src="lib/arnes.js"></script>
+<script src="lib/comparar.js"></script>
+<script src="lib/validar.js"></script>
+<script src="generado/casos.js"></script>
+<!-- pruebas unitarias -->
+<script src="unidad/sp.test.js"></script>
+<script src="unidad/numerico.test.js"></script>
+<script src="unidad/tabla.test.js"></script>
+<script src="unidad/registro.test.js"></script>
+<script src="unidad/comparar.test.js"></script>
+<script src="unidad/validar.test.js"></script>
+<script src="unidad/hilos.test.js"></script>
+<script src="lib/pagina.js"></script>
+</body>
+</html>

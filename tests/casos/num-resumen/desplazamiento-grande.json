@@ -1,0 +1,43 @@
+{
+  "esquema": 1,
+  "id": "num.resumen/desplazamiento-grande",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "num.resumen"
+  },
+  "titulo": "Cuatro valores alrededor de mil millones (varianza exacta = 30)",
+  "fuente": "Datos sintéticos (ejemplo clásico de cancelación numérica)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [1000000004, 1000000007, 1000000013, 1000000016]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    }
+  ],
+  "esperado": {
+    "n": 4,
+    "faltantes": 0,
+    "media": 1000000010,
+    "varianza": 30,
+    "de": 5.4772255750516612,
+    "min": 1000000004,
+    "max": 1000000016
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "n = sum(!is.na(x)); faltantes = sum(is.na(x))\nmedia = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)\nmin = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)"
+  }
+}

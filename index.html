@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SigmaPro — Estadística para la investigación agronómica y biológica</title>
+<meta name="description" content="Diseños experimentales, comparaciones de medias, regresión y modelos mixtos con resultados comprobados contra R. Los datos no salen del navegador.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ctext x='16' y='24' font-family='system-ui,sans-serif' font-size='22' font-weight='800' text-anchor='middle' fill='%23D4A848'%3E%CE%A3%3C/text%3E%3C/svg%3E">
+<script>/* tema antes de pintar, para que no parpadee */ try { var t = localStorage.getItem('sigmapro.theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
+<link rel="stylesheet" href="css/labg-base.css">
+<link rel="stylesheet" href="css/sigma.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-row">
+      <a class="brand" href="#b1" data-ir="1" title="Inicio de SigmaPro"><span class="brand-mark" aria-hidden="true">Σ</span><span>Sigma<span class="brand-pro">Pro</span></span>
+        <span class="brand-sub">· estadística para la investigación agronómica y biológica</span></a>
+      <div class="top-tools">
+        <a class="suite-link" id="suiteLink" href="https://luisangelbg.github.io/" title="Volver al portal de la LABG Suite"><span class="suite-text">LABG Suite</span></a>
+        <button type="button" class="icon-btn theme-btn" id="themeBtn" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar entre tema claro y oscuro">
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="helpBtn" aria-label="Atajos de teclado" title="Atajos de teclado (?)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="stepper" id="stepper" aria-label="Bloques">
+      <button type="button" class="step-btn" data-step="1"><span class="step-num">1</span>Inicio</button>
+      <button type="button" class="step-btn soon" data-step="2" data-soon="pronto"><span class="step-num">2</span>Datos</button>
+      <button type="button" class="step-btn soon" data-step="3" data-soon="pronto"><span class="step-num">3</span>Explorar</button>
+      <button type="button" class="step-btn soon" data-step="4" data-soon="pronto"><span class="step-num">4</span>Análisis</button>
+      <button type="button" class="step-btn soon" data-step="5" data-soon="pronto"><span class="step-num">5</span>Resultados</button>
+      <button type="button" class="step-btn soon" data-step="6" data-soon="pronto"><span class="step-num">6</span>Figuras</button>
+      <button type="button" class="step-btn soon" data-step="7" data-soon="pronto"><span class="step-num">7</span>Exportar</button>
+      <button type="button" class="step-btn" data-step="8"><span class="step-num">8</span>Validación</button>
+    </nav>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<!-- ======================= 1 · INICIO ======================= -->
+<section class="step-panel" id="panel-1" aria-labelledby="t1">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Investigación agronómica y biológica</div>
+      <h1 id="t1">Del experimento a la conclusión, <em>con cifras que se pueden comprobar</em></h1>
+      <p class="lead">Diseños experimentales, comparaciones de medias, regresión y modelos mixtos, con un asistente que entiende tu ensayo, reportes listos para publicar y el código R de cada análisis.</p>
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary btn-lg" data-ir="8">Ver la validación</button>
+        <a class="btn btn-secondary btn-lg" href="propuesta/maqueta.html">Ver la maqueta del flujo</a>
+      </div>
+      <p class="privacidad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Tus datos nunca salen de este navegador.</p>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 400 300">
+        <defs><linearGradient id="spOro" x1="0" x2="1"><stop offset="0" stop-color="#BF8B3C"/><stop offset="1" stop-color="#F6D985"/></linearGradient></defs>
+        <path d="M40 250H370M40 200H370M40 150H370M40 100H370M40 50H370" stroke="#2B2925" stroke-width="1"/>
+        <path d="M60 232 C 120 150, 180 92, 250 70 S 340 72, 360 80" fill="none" stroke="url(#spOro)" stroke-width="3"/>
+        <g fill="#E6C470"><circle cx="60" cy="236" r="5"/><circle cx="150" cy="128" r="5"/><circle cx="250" cy="74" r="5"/><circle cx="350" cy="80" r="5"/></g>
+        <path d="M60 226V246M150 118V138M250 64V84M350 70V90" stroke="#E6C470" stroke-width="1.5"/>
+        <g font-family="system-ui, sans-serif" font-size="18" fill="#F1DDA8" font-weight="800" text-anchor="middle">
+          <text x="60" y="214">c</text><text x="150" y="106">b</text><text x="250" y="52">a</text><text x="350" y="58">a</text>
+        </g>
+        <text x="40" y="285" font-family="ui-monospace, monospace" font-size="11" fill="#A8A196">rend ~ bloque + híbrido × N</text>
+        <text x="330" y="44" font-family="system-ui, sans-serif" font-size="64" font-weight="800" fill="#D4A848" opacity=".16" text-anchor="middle">Σ</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="valores" data-lnav-skip>
+    <div class="card"><div class="num">1 × 10⁻⁶</div><h3>Exactitud verificada</h3><p>Cada método se compara contra R con datos de la literatura; nada se libera sin su prueba. El reporte está en el bloque 8.</p></div>
+    <div class="card"><div class="num">R</div><h3>Reproducible</h3><p>Cada resultado trae el código R equivalente, para la revisión por pares o para tu tesis.</p></div>
+    <div class="card"><div class="num">0 bytes</div><h3>Privado</h3><p>Todo se calcula en tu navegador. Ningún dato se envía a ningún servidor.</p></div>
+  </div>
+
+  <div class="card" style="margin-top:var(--sp-5)">
+    <h3>Estado del desarrollo</h3>
+    <p class="small muted" style="margin-top:0">SigmaPro se construye por hitos y cada uno se cierra con su validación contra R. Esta versión contiene los cimientos.</p>
+    <ul class="hitos" id="hitos"></ul>
+  </div>
+</section>
+
+<!-- ======================= 2–7 · PRÓXIMAMENTE ======================= -->
+<section class="step-panel" id="panel-2" aria-labelledby="t2">
+  <div class="panel-title"><div><h2 id="t2">Datos</h2><p>Hoja de datos, importación y transformaciones.</p></div></div>
+  <div class="soon-box"><h3>En construcción · Hito 1.2</h3><p>Lo que traerá este bloque:</p>
+    <ul><li>Rejilla tipo hoja de cálculo para 100 000 filas, con deshacer.</li><li>Pegar desde una hoja de cálculo e importar CSV y XLSX.</li><li>Tipos de variable, valores faltantes, filtros y variables calculadas.</li><li>Transformaciones log, raíz, arcoseno y Box-Cox, siempre en columna nueva.</li><li>Detección de la estructura del ensayo (bloques completos, balance, cuadro latino).</li></ul></div>
+</section>
+<section class="step-panel" id="panel-3" aria-labelledby="t3">
+  <div class="panel-title"><div><h2 id="t3">Explorar</h2><p>Descriptivos, frecuencias e intervalos de confianza.</p></div></div>
+  <div class="soon-box"><h3>En construcción · Hito 1.3</h3><p>Descriptivos por grupos, cuantiles con las nueve definiciones, tablas de frecuencia e intervalos de confianza de media, mediana, varianza y proporciones.</p></div>
+</section>
+<section class="step-panel" id="panel-4" aria-labelledby="t4">
+  <div class="panel-title"><div><h2 id="t4">Análisis</h2><p>Asistente, catálogo y constructor de modelos.</p></div></div>
+  <div class="soon-box"><h3>En construcción · Hitos 1.4 a 1.10</h3><p>Supuestos, pruebas t y no paramétricas, ANOVA de diseños experimentales, comparaciones de medias, ANCOVA, regresión, correlación y contingencia. Al final, el asistente que propone el análisis y el constructor visual del modelo.</p></div>
+</section>
+<section class="step-panel" id="panel-5" aria-labelledby="t5">
+  <div class="panel-title"><div><h2 id="t5">Resultados</h2><p>Conclusión en lenguaje claro, cuadros, supuestos y código R.</p></div></div>
+  <div class="soon-box"><h3>En construcción · Hito 1.11</h3><p>Primero la conclusión en lenguaje sencillo, luego los cuadros estilo revista, los supuestos con semáforo, el párrafo para tu tesis, los detalles técnicos y el código R equivalente.</p></div>
+</section>
+<section class="step-panel" id="panel-6" aria-labelledby="t6">
+  <div class="panel-title"><div><h2 id="t6">Figuras</h2><p>Figuras de calidad de publicación.</p></div></div>
+  <div class="soon-box"><h3>En construcción · Hito 1.11</h3><p>Medias con barras de error y letras, interacciones, diagnósticos de residuos y gráficos Q-Q, editables con el Estudio de figuras LABG y exportables a PNG, SVG, PDF y TIFF a 600 ppp.</p></div>
+</section>
+<section class="step-panel" id="panel-7" aria-labelledby="t7">
+  <div class="panel-title"><div><h2 id="t7">Exportar</h2><p>Reporte, cuadros, figuras y proyecto.</p></div></div>
+  <div class="soon-box"><h3>En construcción · Hito 1.11</h3><p>Reporte en .docx, PDF y HTML; cuadros en .xlsx y LaTeX; figuras; y el proyecto completo en un archivo .labg para reabrirlo después.</p></div>
+</section>
+
+<!-- ======================= 8 · VALIDACIÓN ======================= -->
+<section class="step-panel" id="panel-8" aria-labelledby="t8">
+  <div class="panel-title">
+    <div><h2 id="t8">Validación</h2>
+      <p>Cada resultado del programa se compara contra R con datos publicados o clásicos. Un caso aprueba si |SigmaPro − R| ≤ 10⁻⁶ · máx(1, |R|) en cada número.</p></div>
+    <span class="pill gris" id="valFecha"></span>
+  </div>
+  <div id="valVacio" class="soon-box" hidden>
+    <h3>Aún no hay reporte de validación</h3>
+    <p>Se genera al correr las pruebas: <code>tests/pruebas.ps1</code> (o <code>node tests/correr.mjs</code>).</p>
+  </div>
+  <div id="valContenido" hidden>
+    <div class="card">
+      <h3>Resumen</h3>
+      <div class="tejas" id="valTejas"></div>
+    </div>
+    <div class="card">
+      <h3>Casos</h3>
+      <div class="val-filtros">
+        <div class="seg" role="group" aria-label="Mostrar casos">
+          <button type="button" data-filtro="todos" aria-pressed="true">Todos</button>
+          <button type="button" data-filtro="aprobados" aria-pressed="false">Aprobados</button>
+          <button type="button" data-filtro="fallidos" aria-pressed="false">Con fallas</button>
+        </div>
+        <input type="search" id="valBuscar" placeholder="Buscar por función, método o fuente" aria-label="Buscar casos">
+      </div>
+      <div class="tabla-wrap">
+        <table class="revista" id="valTabla">
+          <caption><b>Cuadro V1.</b> Comparación de SigmaPro contra R, caso por caso.</caption>
+          <thead><tr><th class="izq">Caso</th><th class="izq">Fuente de los datos</th><th>Clase</th><th>Valores</th><th>Dif. máx.</th><th>Resultado</th><th><span class="sr-only">Detalles</span></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="pie-cuadro">Dif. máx.: la mayor diferencia escalada, |SigmaPro − R| / máx(1, |R|), entre todos los números del caso. «0» quiere decir que coinciden en todas las cifras.</p>
+    </div>
+    <div class="card">
+      <h3>Cómo se valida</h3>
+      <p class="small" style="margin-top:0">Para cada método hay una carpeta en <code>tests/casos/</code> con los datos, el script de R que calcula la referencia y la referencia misma. Las pruebas automáticas corren la app con esos datos y comparan número por número. Cualquiera puede repetirlo con R.</p>
+      <ol class="clases">
+        <li><b>A · Fórmula cerrada o algoritmo exacto</b> (sumas de cuadrados, F, t, valores p de t, F y χ²): tolerancia 10⁻⁶.</li>
+        <li><b>B · R usa una aproximación publicada</b> (p de Shapiro-Wilk, rango estudentizado): se implementa el mismo algoritmo; si R mismo es menos preciso, la referencia se afina en R y se documenta.</li>
+        <li><b>C · R usa azar</b> (Dunnett por omisión, remuestreo): la referencia se calcula por integración determinista de alta precisión.</li>
+        <li><b>D · Optimización iterativa</b> (Box-Cox, modelos mixtos): criterios de convergencia ajustados en ambos lados.</li>
+        <li><b>E · Libros y artículos</b>: tolerancia de media unidad en el último decimal impreso.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="pie-app">
+  <span>SigmaPro <span id="spVersion"></span> · software libre (GPL-3.0) · parte de la <a href="https://luisangelbg.github.io/">LABG Suite</a></span>
+  <span>Todo se calcula en tu navegador.</span>
+</footer>
+
+<script src="js/labg-core.js"></script>
+<!-- núcleo (sin DOM; lo mismo corre en hilos de trabajo y en las pruebas de node) -->
+<script src="js/nucleo/sp.js"></script>
+<script src="js/nucleo/numerico.js"></script>
+<script src="js/nucleo/tabla.js"></script>
+<script src="js/nucleo/registro.js"></script>
+<script src="js/nucleo/hilos.js"></script>
+<!-- generado por tests/correr.mjs -->
+<script src="js/generado/validacion.js"></script>
+<!-- interfaz -->
+<script src="js/interfaz/app.js"></script>
+<script src="js/interfaz/validacion.js"></script>
+<script src="js/labg-figure-studio.js" defer></script>
+<script src="js/labg-navigator.js" defer></script>
+</body>
+</html>

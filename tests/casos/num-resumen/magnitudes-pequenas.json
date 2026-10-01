@@ -1,0 +1,46 @@
+{
+  "esquema": 1,
+  "id": "num.resumen/magnitudes-pequenas",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "num.resumen"
+  },
+  "titulo": "Seis concentraciones del orden de 1e-9 (comparación relativa)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [3.1e-09, 2.7000000000000002e-09, 4.3999999999999997e-09, 3.9000000000000002e-09, 2.1999999999999998e-09, 3.6e-09]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    }
+  ],
+  "esperado": {
+    "n": 6,
+    "faltantes": 0,
+    "media": 3.3166666666666666e-09,
+    "varianza": 6.5366666666666664e-19,
+    "de": 8.0849654709631666e-10,
+    "min": 2.1999999999999998e-09,
+    "max": 4.3999999999999997e-09
+  },
+  "comparacion": {
+    "modo": "relativo"
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "n = sum(!is.na(x)); faltantes = sum(is.na(x))\nmedia = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)\nmin = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)"
+  }
+}

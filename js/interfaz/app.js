@@ -1,0 +1,105 @@
+/* SigmaPro — arranque de la interfaz y navegación entre bloques.
+   Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
+
+   La barra de bloques es la común de la suite (labg-core.js); el Navegador LABG la
+   lee y la presenta como barra lateral, índice de secciones y paleta Ctrl+K. Aquí
+   solo se decide qué bloque se ve. Todo va protegido con window.LABG, porque la
+   página de pruebas carga la interfaz sin la base común. */
+(function () {
+  'use strict';
+  const T = SP.T;
+  const L = () => window.LABG;
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+  const app = SP.app = {};
+
+  /* ---------------- bloques ---------------- */
+  const botones = () => $$('.stepper .step-btn[data-step]');
+  const nombreBloque = n => { const b = $('.step-btn[data-step="' + n + '"]'); return b ? b.textContent.replace(/^\s*\d+\s*/, '').trim() : ''; };
+
+  app.ir = function (n) {
+    n = String(n);
+    const panel = document.getElementById('panel-' + n);
+    if (!panel) return;
+    $$('.step-panel').forEach(p => p.classList.toggle('active', p === panel));
+    if (L()) L().setCurrentStep(n);
+    else botones().forEach(b => b.classList.toggle('active', b.dataset.step === n));
+    app.actual = n;
+    window.scrollTo(0, 0);
+    document.dispatchEvent(new CustomEvent('sp:bloque', { detail: { bloque: Number(n) } }));
+  };
+
+  /* pie «Anterior / Siguiente» al final de cada bloque */
+  function pies() {
+    const orden = botones().map(b => b.dataset.step);
+    orden.forEach((n, i) => {
+      const panel = document.getElementById('panel-' + n);
+      if (!panel || $('.step-footer', panel)) return;
+      const pie = document.createElement('div');
+      pie.className = 'step-footer';
+      const ant = orden[i - 1], sig = orden[i + 1];
+      if (ant) pie.insertAdjacentHTML('beforeend', '<button type="button" class="btn btn-ghost prev" data-nav="' + ant + '">← ' + T('Anterior') + '<small>' + nombreBloque(ant) + '</small></button>');
+      if (sig) pie.insertAdjacentHTML('beforeend', '<button type="button" class="btn btn-secondary next" data-nav="' + sig + '">' + T('Siguiente') + ' →<small>' + nombreBloque(sig) + '</small></button>');
+      panel.appendChild(pie);
+    });
+  }
+
+  /* ---------------- portada: estado de los hitos ---------------- */
+  const HITOS = [
+    ['hecho', '1.0', 'Cimientos: registro de métodos, pruebas automáticas contra R y reporte de validación'],
+    ['actual', '1.1', 'Núcleo numérico: distribuciones, álgebra y modelo lineal con sumas de cuadrados I, II y III'],
+    ['', '1.2', 'Datos: hoja de cálculo, importación, tipos, faltantes y transformaciones'],
+    ['', '1.3', 'Descriptivos, frecuencias e intervalos de confianza'],
+    ['', '1.4', 'Supuestos con semáforo y recomendaciones'],
+    ['', '1.5', 'Pruebas t y no paramétricas'],
+    ['', '1.6', 'ANOVA de diseños experimentales'],
+    ['', '1.7', 'Comparaciones de medias, letras, contrastes y medias ajustadas'],
+    ['', '1.8', 'ANCOVA y regresión con diagnóstico'],
+    ['', '1.9', 'Correlación y tablas de contingencia'],
+    ['', '1.10', 'Asistente de análisis y constructor visual de modelos'],
+    ['', '1.11', 'Reporte, figuras, exportaciones y proyecto .labg'],
+    ['', '1.12', 'Uso sin conexión, rendimiento, accesibilidad y cierre de la Fase 1'],
+  ];
+  function hitos() {
+    const ul = $('#hitos');
+    if (!ul) return;
+    const marca = { hecho: '✓', actual: '●', '': '○' };
+    const estado = { hecho: T('terminado'), actual: T('el siguiente'), '': T('pendiente') };
+    ul.innerHTML = HITOS.map(([e, id, txt]) =>
+      '<li class="' + (e || 'pendiente') + '"><span class="marca" aria-hidden="true">' + marca[e] + '</span>' +
+      '<span class="id">' + id + '</span><span>' + txt + ' <span class="sr-only">(' + estado[e] + ')</span></span></li>').join('');
+  }
+
+  /* ---------------- arranque ---------------- */
+  function iniciar() {
+    const v = $('#spVersion'); if (v) v.textContent = 'v' + SP.VERSION;
+    hitos();
+    pies();
+
+    if (L()) {
+      L().theme.init('sigmapro.theme');
+      L().shortcuts([]);
+      L().bindStepKeys(app.ir);
+      const s = $('#suiteLink');
+      if (s && !$('.labg-iso', s)) s.insertAdjacentHTML('afterbegin', L().isotipo('labg-iso'));
+    }
+    const tb = $('#themeBtn'); if (tb) tb.addEventListener('click', () => L() && L().theme.toggle());
+    const hb = $('#helpBtn'); if (hb) hb.addEventListener('click', () => L() && L().showShortcuts());
+
+    botones().forEach(b => b.addEventListener('click', () => app.ir(b.dataset.step)));
+    document.addEventListener('click', e => {
+      const t = e.target.closest('[data-ir], [data-nav]');
+      if (!t) return;
+      e.preventDefault();
+      app.ir(t.dataset.ir || t.dataset.nav);
+    });
+
+    const m = /^#b(\d+)/.exec(location.hash);
+    app.ir(m && document.getElementById('panel-' + m[1]) ? m[1] : '1');
+    document.dispatchEvent(new CustomEvent('sp:listo'));
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
+  else iniciar();
+})();

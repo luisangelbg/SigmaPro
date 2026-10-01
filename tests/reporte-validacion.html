@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SigmaPro — reporte de validación</title>
+<style>
+:root { color-scheme: light dark; --oro: #7D5B14; --fondo: #F7F6F3; --tarjeta: #fff; --texto: #17150F; --tenue: #5B5750; --borde: #E2DDD2; --ok: #1d6b34; --okf: #e7f5eb; --mal: #a82c22; --malf: #fbe9e7; }
+@media (prefers-color-scheme: dark) { :root { --oro: #E6C470; --fondo: #0C0C0D; --tarjeta: #1A1917; --texto: #EEE9DF; --tenue: #A8A196; --borde: #2B2925; --ok: #7fd497; --okf: rgba(92,194,122,.13); --mal: #f59189; --malf: rgba(240,113,102,.13); } }
+* { box-sizing: border-box; } body { margin: 0; font: 15px/1.55 system-ui, sans-serif; background: var(--fondo); color: var(--texto); font-feature-settings: "tnum" 1; }
+main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 56px; }
+.marca { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: #111; color: #D4A848; font-weight: 800; font-size: 22px; border: 1px solid rgba(212,168,72,.55); vertical-align: middle; margin-right: 10px; }
+h1 { font-size: 28px; margin: 0 0 6px; } h2 { font-size: 19px; margin: 32px 0 10px; } p { max-width: 75ch; }
+.tenue { color: var(--tenue); } .mal { color: var(--mal); }
+.tejas { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin: 20px 0; }
+@media (max-width: 760px) { .tejas { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.teja { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 10px; padding: 10px 14px; }
+.teja .k { font-size: 12px; color: var(--tenue); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; } .teja .x { font-size: 26px; font-weight: 800; }
+.envoltura { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th { border-top: 1.5px solid var(--texto); border-bottom: 1px solid var(--texto); padding: 6px 10px; text-align: right; }
+td { padding: 6px 10px; text-align: right; vertical-align: top; } .izq, th.izq { text-align: left; }
+tbody tr:last-child td { border-bottom: 1.5px solid var(--texto); }
+tr.grupo td { text-align: left; font-weight: 800; padding-top: 16px; border-bottom: 1px solid var(--borde); }
+tr.det td { text-align: left; padding-top: 0; } details summary { cursor: pointer; color: var(--oro); font-size: 13px; font-weight: 700; }
+pre { background: #111; color: #EEE9DF; padding: 10px 12px; border-radius: 6px; overflow: auto; font-size: 12px; }
+.v { font-size: 12px; font-weight: 800; padding: 2px 9px; border-radius: 999px; white-space: nowrap; } .v.ok { background: var(--okf); color: var(--ok); } .v.mal { background: var(--malf); color: var(--mal); }
+ol li { margin: 4px 0; }
+</style></head>
+<body><main>
+<h1><span class="marca" aria-hidden="true">Σ</span>SigmaPro · reporte de validación</h1>
+<p class="tenue">Versión 0.1.0 · Generado el 1 de octubre de 2026 · pruebas en node v24.19.0 · referencias: R version 4.4.2 (2024-10-31 ucrt)</p>
+<p>Cada resultado del programa se compara contra R con datos publicados o clásicos. Un caso aprueba si en <b>cada</b> número |SigmaPro − R| ≤ 10⁻⁶ · máx(1, |R|). Los valores p menores que 10⁻⁶ se comparan además con error relativo. Los datos, el script de R y la referencia de cada caso están en <code>tests/casos/</code>; cualquiera puede repetirlo.</p>
+<div class="tejas">
+<div class="teja"><div class="k">Casos aprobados</div><div class="x">4 <span class="tenue" style="font-size:15px">de 4</span></div></div>
+<div class="teja"><div class="k">Valores comparados</div><div class="x">28</div></div>
+<div class="teja"><div class="k">Mayor diferencia</div><div class="x">1.5 × 10⁻¹⁶</div></div>
+<div class="teja"><div class="k">Funciones y métodos</div><div class="x">1</div></div>
+</div>
+<h2>Caso por caso</h2>
+<div class="envoltura"><table>
+<thead><tr><th class="izq">Caso</th><th class="izq">Fuente de los datos</th><th>Clase</th><th>Valores</th><th>Dif. máx.</th><th>Resultado</th></tr></thead>
+<tbody><tr class="grupo"><td colspan="6">Función del núcleo · SP.num.resumen</td></tr><tr><td class="izq"><b>desplazamiento-grande</b><br><span class="tenue">Cuatro valores alrededor de mil millones (varianza exacta = 30)</span></td><td class="izq">Datos sintéticos (ejemplo clásico de cancelación numérica)</td><td>A</td><td>7</td><td>0</td><td><span class="v ok">Aprobado</span></td></tr><tr class="det"><td colspan="6"><details><summary>Referencia de R</summary><p>R version 4.4.2 (2024-10-31 ucrt) · stats 4.4.2</p><pre>n = sum(!is.na(x)); faltantes = sum(is.na(x))
+media = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)
+min = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)</pre></details></td></tr><tr><td class="izq"><b>magnitudes-pequenas</b><br><span class="tenue">Seis concentraciones del orden de 1e-9 (comparación relativa)</span></td><td class="izq">Datos sintéticos</td><td>A</td><td>7</td><td>1.5 × 10⁻¹⁶</td><td><span class="v ok">Aprobado</span></td></tr><tr class="det"><td colspan="6"><details><summary>Referencia de R</summary><p>R version 4.4.2 (2024-10-31 ucrt) · stats 4.4.2</p><pre>n = sum(!is.na(x)); faltantes = sum(is.na(x))
+media = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)
+min = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)</pre></details></td></tr><tr><td class="izq"><b>ozono-con-faltantes</b><br><span class="tenue">Ozono diario con 37 faltantes de 153</span></td><td class="izq">Chambers y col. (1983); conjunto airquality de R</td><td>A</td><td>7</td><td>0</td><td><span class="v ok">Aprobado</span></td></tr><tr class="det"><td colspan="6"><details><summary>Referencia de R</summary><p>R version 4.4.2 (2024-10-31 ucrt) · stats 4.4.2</p><pre>n = sum(!is.na(x)); faltantes = sum(is.na(x))
+media = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)
+min = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)</pre></details></td></tr><tr><td class="izq"><b>plantgrowth</b><br><span class="tenue">Peso seco de 30 plantas (tres tratamientos juntos)</span></td><td class="izq">Dobson (1983); conjunto PlantGrowth de R</td><td>A</td><td>7</td><td>0</td><td><span class="v ok">Aprobado</span></td></tr><tr class="det"><td colspan="6"><details><summary>Referencia de R</summary><p>R version 4.4.2 (2024-10-31 ucrt) · stats 4.4.2</p><pre>n = sum(!is.na(x)); faltantes = sum(is.na(x))
+media = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)
+min = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)</pre></details></td></tr></tbody></table></div>
+<p class="tenue" style="font-size:13px">Dif. máx.: la mayor diferencia escalada, |SigmaPro − R| / máx(1, |R|), entre todos los números del caso; «0» = coinciden en todas las cifras.</p>
+<h2>Clases de resultados</h2>
+<ol>
+<li><b>A · Fórmula cerrada o algoritmo exacto</b>: tolerancia 10⁻⁶.</li>
+<li><b>B · R usa una aproximación publicada</b>: se implementa el mismo algoritmo; si R es menos preciso por diseño, la referencia se afina en R y se documenta.</li>
+<li><b>C · R usa azar</b>: referencia determinista de alta precisión.</li>
+<li><b>D · Optimización iterativa</b>: criterios de convergencia ajustados en ambos lados.</li>
+<li><b>E · Libros y artículos</b>: media unidad en el último decimal impreso.</li>
+</ol>
+</main></body></html>

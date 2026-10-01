@@ -1,0 +1,6 @@
+# generado,2026-10-01T12:23:02.495Z
+id,tipo,objetivo,titulo,fuente,clase,valores,dif_max,dif_escalada_max,aprobado,error,r,paquetes
+"num.resumen/desplazamiento-grande","funcion","num.resumen","Cuatro valores alrededor de mil millones (varianza exacta = 30)","Datos sintéticos (ejemplo clásico de cancelación numérica)","A",7,0,0,si,"","R version 4.4.2 (2024-10-31 ucrt)","stats 4.4.2"
+"num.resumen/magnitudes-pequenas","funcion","num.resumen","Seis concentraciones del orden de 1e-9 (comparación relativa)","Datos sintéticos","A",7,9.62964972193618e-35,1.4731743582768251e-16,si,"","R version 4.4.2 (2024-10-31 ucrt)","stats 4.4.2"
+"num.resumen/ozono-con-faltantes","funcion","num.resumen","Ozono diario con 37 faltantes de 153","Chambers y col. (1983); conjunto airquality de R","A",7,0,0,si,"","R version 4.4.2 (2024-10-31 ucrt)","stats 4.4.2"
+"num.resumen/plantgrowth","funcion","num.resumen","Peso seco de 30 plantas (tres tratamientos juntos)","Dobson (1983); conjunto PlantGrowth de R","A",7,0,0,si,"","R version 4.4.2 (2024-10-31 ucrt)","stats 4.4.2"

@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SigmaPro — maqueta del flujo principal</title>
+<script>/* tema antes de pintar */ try { const t = localStorage.getItem('sigmapro.theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<link rel="stylesheet" href="labg-base.css">
+<style>
+/* ===== Identidad SigmaPro: solo oro y negro de la marca LABG, letras del sistema ===== */
+:root {
+  --primary-rgb: 125, 91, 20; --primary: #7D5B14; --primary-dark: #5E4410;   /* oro oscuro: 6:1 sobre blanco */
+  --accent-rgb: 156, 113, 40; --accent: #9C7128;                               /* bronce */
+  --bg: #F7F6F3; --bg-soft: #EEEBE4; --border: #E2DDD2; --border-strong: #C3BBAA; --text: #17150F; --text-muted: #5B5750;
+  --tl-ok: var(--success); --tl-warn: var(--warning); --tl-bad: var(--danger);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C0C0D; --bg-soft: #161514; --card-bg: #1A1917; --text: #EEE9DF; --text-muted: #A8A196;
+    --border: #2B2925; --border-strong: #423E37; --field-border: #77705F;
+    --primary-rgb: 212, 168, 72; --primary: #D4A848; --primary-dark: #E6C470; --on-primary: #111111;
+    --accent-rgb: 241, 221, 168; --accent: #F1DDA8;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0C0C0D; --bg-soft: #161514; --card-bg: #1A1917; --text: #EEE9DF; --text-muted: #A8A196;
+  --border: #2B2925; --border-strong: #423E37; --field-border: #77705F;
+  --primary-rgb: 212, 168, 72; --primary: #D4A848; --primary-dark: #E6C470; --on-primary: #111111;
+  --accent-rgb: 241, 221, 168; --accent: #F1DDA8;
+}
+
+h1, h2, h3, .serif { font-weight: 700; letter-spacing: -0.015em; }
+body { font-feature-settings: "tnum" 1, "lnum" 1; }
+main { max-width: var(--content-max); margin: 0 auto; padding: var(--sp-5) var(--sp-5) var(--sp-12); }
+.mock-flag { background: var(--btn-negro); color: var(--btn-negro-texto);
+  font-size: var(--fs-xs); font-weight: 700; padding: 6px 12px; border-radius: var(--r-pill); border: 1px solid rgba(212,168,72,.5); }
+.brand-mark { width: 28px; height: 28px; display: inline-grid; place-items: center; border-radius: 8px; background: var(--btn-negro);
+  color: #D4A848; font-weight: 800; font-size: 19px; line-height: 1; margin-right: 8px; border: 1px solid rgba(212, 168, 72, .55); }
+.brand { font-size: var(--fs-lg); font-weight: 800; }
+.brand .brand-sub { font-weight: 500; }
+.step-panel { display: none; }
+.step-panel.active { display: block; }
+.panel-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--sp-4); flex-wrap: wrap; margin: var(--sp-2) 0 var(--sp-5); }
+.panel-head h2 { margin: 0; font-size: var(--fs-2xl); }
+.panel-head p { margin: 4px 0 0; color: var(--text-muted); max-width: 70ch; }
+.grid-2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--sp-5); }
+.grid-side { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: var(--sp-5); align-items: start; }
+.grid-left { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: var(--sp-5); align-items: start; }
+@media (max-width: 960px) { .grid-2, .grid-side, .grid-left { grid-template-columns: minmax(0, 1fr); } }
+.card h3 { margin: 0 0 var(--sp-3); font-size: var(--fs-lg); }
+.muted { color: var(--text-muted); }
+.small { font-size: var(--fs-sm); }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-xs); font-weight: 700; padding: 3px 10px; border-radius: var(--r-pill);
+  background: var(--primary-soft); color: var(--primary-text); border: 1px solid rgba(var(--primary-rgb), .25); }
+.pill.gold { background: var(--btn-oro-suave); color: var(--btn-oro-texto); border-color: rgba(212,168,72,.4); }
+.pill.gray { background: var(--bg-soft); color: var(--text-muted); border-color: var(--border); }
+.lock { display: inline-flex; gap: 6px; align-items: center; font-size: var(--fs-sm); color: var(--text-muted); }
+.lock svg { width: 14px; height: 14px; }
+
+/* ===== Inicio ===== */
+.hero { padding: var(--sp-10) 0 var(--sp-6); display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--sp-8); align-items: center; }
+@media (max-width: 960px) { .hero { grid-template-columns: minmax(0, 1fr); } }
+.hero h1 { font-size: var(--fs-3xl); line-height: 1.08; margin: var(--sp-2) 0 var(--sp-4); }
+.hero h1 em { color: var(--primary-text); font-style: italic; }
+.hero p.lead { font-size: var(--fs-lg); color: var(--text-muted); max-width: 52ch; margin: 0 0 var(--sp-5); }
+.hero-art { aspect-ratio: 4 / 3; border-radius: var(--r-lg); background: #0E0D0B; position: relative; overflow: hidden; border: 1px solid rgba(212, 168, 72, .45); }
+.hero-art svg { width: 100%; height: 100%; display: block; }
+.values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-4); margin-top: var(--sp-4); }
+@media (max-width: 760px) { .values { grid-template-columns: minmax(0, 1fr); } }
+.values .card h3 { font-size: var(--fs-md); font-weight: 800; }
+.values .num { font-size: var(--fs-2xl); font-weight: 800; color: var(--primary-text); }
+
+/* ===== Datos ===== */
+.toolbar { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; margin-bottom: var(--sp-3); }
+.toolbar .sep { width: 1px; align-self: stretch; background: var(--border); margin: 0 4px; }
+.sheet { border: 1px solid var(--border); border-radius: var(--r-md); overflow: auto; max-height: 470px; background: var(--card-bg); }
+.sheet table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: var(--fs-sm); }
+.sheet th, .sheet td { padding: 6px 12px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); white-space: nowrap; }
+.sheet thead th { position: sticky; top: 0; background: var(--bg-soft); z-index: 1; text-align: left; vertical-align: bottom; }
+.sheet td.rn, .sheet th.rn { position: sticky; left: 0; background: var(--bg-soft); color: var(--text-muted); text-align: right; width: 44px; font-size: var(--fs-xs); }
+.sheet thead th.rn { z-index: 2; }
+.sheet td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.sheet tr.flag td { background: var(--warning-soft); }
+.sheet .col-name { font-weight: 800; display: block; }
+.type { display: inline-block; margin-top: 3px; font-size: var(--fs-2xs); font-weight: 700; padding: 1px 7px; border-radius: var(--r-pill); }
+.type.fac { background: var(--btn-oro-suave); color: var(--btn-oro-texto); }
+.type.num { background: var(--bg-soft); color: var(--text); box-shadow: inset 0 0 0 1px var(--border-strong); }
+.type.blk { background: var(--info-soft); color: var(--info-text); }
+.varlist { list-style: none; padding: 0; margin: 0; }
+.varlist li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 10px; border-radius: var(--r-sm); }
+.varlist li.sel { background: var(--primary-soft); outline: 1px solid rgba(var(--primary-rgb), .3); }
+.varlist b { font-weight: 800; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: var(--fs-sm); margin: 0; }
+.kv dt { color: var(--text-muted); } .kv dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.detect { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-size: var(--fs-sm); }
+.detect li { display: flex; gap: 8px; align-items: flex-start; }
+.ok-dot { width: 18px; height: 18px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--success-soft); color: var(--success-text); font-size: 11px; font-weight: 800; }
+.statusbar { display: flex; gap: var(--sp-4); flex-wrap: wrap; justify-content: space-between; margin-top: var(--sp-2); font-size: var(--fs-sm); color: var(--text-muted); }
+
+/* ===== Análisis ===== */
+.tabs { display: inline-flex; gap: 4px; padding: 4px; background: var(--bg-soft); border-radius: var(--r-pill); border: 1px solid var(--border); margin-bottom: var(--sp-4); }
+.tabs button { border: 0; background: transparent; font: inherit; font-weight: 700; font-size: var(--fs-sm); color: var(--text-muted); padding: 7px 16px; border-radius: var(--r-pill); cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--card-bg); color: var(--text); box-shadow: var(--shadow-sm); }
+.qa { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--sp-3); counter-reset: q; }
+.qa li { border: 1px solid var(--border); border-radius: var(--r-md); padding: var(--sp-3) var(--sp-4); background: var(--card-bg); counter-increment: q; }
+.qa .q { font-weight: 700; display: flex; gap: 10px; align-items: baseline; }
+.qa .q::before { content: counter(q); flex: none; width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; font-size: var(--fs-2xs);
+  background: var(--btn-oro-suave); color: var(--btn-oro-texto); font-weight: 800; }
+.qa .opts { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0 32px; }
+.opt { font: inherit; font-size: var(--fs-sm); padding: 5px 12px; border-radius: var(--r-pill); border: 1px solid var(--border-strong); background: transparent; color: var(--text); }
+.opt.on { background: var(--primary-soft); border-color: rgba(var(--primary-rgb), .55); color: var(--primary-text); font-weight: 700; }
+.qa .why { margin: 6px 0 0 32px; font-size: var(--fs-sm); color: var(--text-muted); }
+.reco { border: 1px solid rgba(var(--primary-rgb), .45); background: linear-gradient(180deg, rgba(var(--primary-rgb), .08), transparent 60%), var(--card-bg); }
+.reco h3 { font-size: var(--fs-xl); margin-bottom: 6px; }
+.reco ul { margin: var(--sp-2) 0 var(--sp-3); padding-left: 1.1em; font-size: var(--fs-sm); }
+.reco li { margin: 4px 0; }
+.builder { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: var(--sp-4); }
+@media (max-width: 760px) { .builder { grid-template-columns: minmax(0, 1fr); } }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--card-bg); font-size: var(--fs-sm); font-weight: 700; cursor: grab; }
+.chip .type { margin: 0; }
+.pool { display: flex; flex-direction: column; gap: 6px; }
+.zones { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); }
+@media (max-width: 760px) { .zones { grid-template-columns: minmax(0, 1fr); } }
+.zone { border: 1.5px dashed var(--border-strong); border-radius: var(--r-md); padding: 10px; min-height: 64px; }
+.zone .zt { font-size: var(--fs-xs); font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; display: flex; justify-content: space-between; gap: 8px; }
+.zone.filled { border-style: solid; border-color: rgba(var(--primary-rgb), .45); background: rgba(var(--primary-rgb), .04); }
+.zone .chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.zone .x { font-weight: 800; color: var(--text-muted); }
+.formula { display: flex; gap: var(--sp-2); align-items: center; margin-top: var(--sp-4); padding: 10px 12px; border-radius: var(--r-md); background: #111111; color: #EEE9DF; font-family: var(--font-mono); font-size: var(--fs-md); }
+.formula .lbl { font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: 800; color: var(--btn-negro-texto); text-transform: uppercase; letter-spacing: .06em; }
+.formula code { flex: 1; color: #EEE9DF; background: none; }
+.formula .t { color: #E6C470; }
+.cat { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-3); }
+@media (max-width: 960px) { .cat { grid-template-columns: minmax(0, 1fr); } }
+.cat .card { padding: var(--sp-4); }
+.cat h4 { margin: 0 0 6px; font-size: var(--fs-md); }
+.cat p { margin: 0; font-size: var(--fs-sm); color: var(--text-muted); }
+.cat .soon { opacity: 1; border-style: dashed; }
+
+/* ===== Resultados ===== */
+.conclusion { border-left: 4px solid var(--primary); }
+.conclusion .big { font-weight: 700; font-size: var(--fs-xl); line-height: 1.35; margin: 0 0 var(--sp-3); }
+.conclusion ul { margin: 0; padding-left: 1.1em; }
+.conclusion li { margin: 6px 0; }
+.stats-line { font-size: var(--fs-sm); color: var(--text-muted); margin-top: var(--sp-3); }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-3); margin: var(--sp-4) 0; }
+@media (max-width: 760px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tile { border: 1px solid var(--border); border-radius: var(--r-md); padding: 10px 14px; background: var(--card-bg); }
+.tile .k { font-size: var(--fs-xs); color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.tile .v { font-weight: 800; font-size: var(--fs-2xl); }
+.tile .v small { font-weight: 500; font-size: var(--fs-sm); color: var(--text-muted); }
+table.journal { border-collapse: collapse; width: 100%; font-size: var(--fs-sm); font-variant-numeric: tabular-nums; }
+table.journal caption { text-align: left; font-size: var(--fs-sm); margin-bottom: 8px; color: var(--text); }
+table.journal caption b { font-weight: 800; }
+table.journal thead th { border-top: 1.5px solid var(--text); border-bottom: 1px solid var(--text); padding: 6px 10px; text-align: right; font-weight: 700; }
+table.journal thead th:first-child, table.journal td:first-child { text-align: left; }
+table.journal td { padding: 5px 10px; text-align: right; }
+table.journal tbody tr:last-child td { border-bottom: 1.5px solid var(--text); }
+table.journal td.sub { padding-left: 26px; color: var(--text-muted); font-style: italic; }
+table.journal tr.sub td { color: var(--text-muted); }
+table.journal .let { font-weight: 800; color: var(--primary-text); text-align: left; padding-left: 4px; }
+.tblwrap { overflow-x: auto; }
+@media (max-width: 700px) { .mock-flag { display: none; } .tree, pre.rcode { font-size: var(--fs-xs); } }
+.tfoot-note { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 6px; }
+.lights { list-style: none; padding: 0; margin: 0; display: grid; gap: 2px; }
+.lights li { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 10px 6px; border-bottom: 1px solid var(--border); }
+.lights li:last-child { border-bottom: 0; }
+.light { width: 14px; height: 14px; border-radius: 50%; margin-top: 4px; box-shadow: 0 0 0 3px rgba(0,0,0,0.04); }
+.light.ok { background: var(--tl-ok); } .light.warn { background: var(--tl-warn); } .light.bad { background: var(--tl-bad); }
+.lights b { display: block; font-size: var(--fs-md); }
+.lights .st { display: block; font-size: var(--fs-sm); color: var(--text-muted); }
+.lights .verdict { font-size: var(--fs-xs); font-weight: 800; padding: 2px 9px; border-radius: var(--r-pill); white-space: nowrap; }
+.verdict.ok { background: var(--success-soft); color: var(--success-text); } .verdict.warn { background: var(--warning-soft); color: var(--warning-text); }
+.lights .fix { margin-top: 4px; font-size: var(--fs-sm); color: var(--warning-text); }
+details.fold { border: 1px solid var(--border); border-radius: var(--r-md); background: var(--card-bg); margin-top: var(--sp-3); }
+details.fold > summary { cursor: pointer; padding: 12px 16px; font-weight: 800; list-style: none; display: flex; justify-content: space-between; gap: 8px; }
+details.fold > summary::after { content: "＋"; color: var(--text-muted); }
+details.fold[open] > summary::after { content: "－"; }
+details.fold > div { padding: 0 16px 16px; }
+pre.rcode { margin: 0; padding: 14px 16px; border-radius: var(--r-md); background: #111111; color: #EEE9DF; overflow: auto; font-size: var(--fs-sm); line-height: 1.5; }
+pre.rcode .c { color: #8F8A80; } pre.rcode .f { color: #E6C470; } pre.rcode .s { color: #F1DDA8; }
+.code-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px; flex-wrap: wrap; }
+.section-title { font-size: var(--fs-xl); margin: var(--sp-8) 0 var(--sp-3); }
+
+/* ===== Figuras ===== */
+.figwrap { background: #fff; border-radius: var(--r-md); border: 1px solid var(--border); padding: var(--sp-3); }
+.figwrap svg { width: 100%; height: auto; display: block; }
+.studio .field { margin-bottom: var(--sp-3); }
+.studio .field > label:not(:has(input)), .studio .lab { font-size: var(--fs-xs); font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
+.studio select, .studio input[type="number"] { font: inherit; font-size: var(--fs-sm); padding: 6px 8px; border-radius: var(--r-sm); border: 1px solid var(--field-border); background: var(--card-bg); color: var(--text); }
+.studio .seg { width: 100%; }
+.studio .seg button { flex: 1; }
+.swatches { display: flex; gap: 6px; }
+.swatches button { width: 30px; height: 30px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; padding: 0; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.swatches button[aria-pressed="true"] { border-color: var(--btn-oro); }
+.swatches span { display: block; height: 100%; }
+.caption { font-size: var(--fs-sm); color: var(--text-muted); margin: var(--sp-3) 2px 0; }
+.caption b { color: var(--text); }
+
+/* ===== Exportar ===== */
+.exp { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-4); }
+@media (max-width: 960px) { .exp { grid-template-columns: minmax(0, 1fr); } }
+.exp .card h3 { display: flex; gap: 10px; align-items: center; }
+.exp .ico { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; background: var(--btn-oro-suave); color: var(--btn-oro-texto); flex: none; }
+.exp .ico svg { width: 18px; height: 18px; }
+.checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 14px; margin: var(--sp-2) 0 var(--sp-4); font-size: var(--fs-sm); }
+.checks label { display: flex; gap: 8px; align-items: center; }
+.formats { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: var(--sp-3); }
+.fmt { font-size: var(--fs-xs); font-weight: 800; padding: 4px 10px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); }
+.fmt.on { background: var(--primary-soft); color: var(--primary-text); border-color: rgba(var(--primary-rgb), .5); }
+.tree { font-family: var(--font-mono); font-size: var(--fs-sm); background: var(--bg-soft); border-radius: var(--r-sm); padding: 10px 12px; margin: 0 0 var(--sp-3); white-space: pre; overflow: auto; }
+
+.flowbar { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: var(--fs-xs); color: var(--text-muted); margin-bottom: var(--sp-2); }
+.flowbar b { color: var(--text); }
+.nextrow { display: flex; justify-content: space-between; margin-top: var(--sp-8); padding-top: var(--sp-4); border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-row">
+      <a class="brand" href="#" data-go="1"><span class="brand-mark" aria-hidden="true">Σ</span><span>Sigma<span class="brand-pro">Pro</span></span>
+        <span class="brand-sub">· estadística para la investigación agronómica y biológica</span></a>
+      <div class="top-tools"><span class="mock-flag">Maqueta · no funcional</span>
+        <a class="suite-link" href="https://luisangelbg.github.io/" title="Volver al portal de la LABG Suite"><span class="suite-text">LABG Suite</span></a>
+        <button type="button" class="icon-btn theme-btn" id="themeBtn" title="Cambiar a tema claro u oscuro" aria-label="Cambiar a tema claro u oscuro">
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+        </button>
+        <button type="button" class="icon-btn" title="Atajos de teclado (?)" aria-label="Atajos de teclado">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="stepper" id="stepper" aria-label="Bloques">
+      <button class="step-btn done" data-step="1"><span class="step-num">1</span>Inicio</button>
+      <button class="step-btn done" data-step="2"><span class="step-num">2</span>Datos</button>
+      <button class="step-btn done" data-step="3"><span class="step-num">3</span>Explorar</button>
+      <button class="step-btn done" data-step="4"><span class="step-num">4</span>Análisis</button>
+      <button class="step-btn" data-step="5"><span class="step-num">5</span>Resultados</button>
+      <button class="step-btn" data-step="6"><span class="step-num">6</span>Figuras</button>
+      <button class="step-btn" data-step="7"><span class="step-num">7</span>Exportar</button>
+      <button class="step-btn" data-step="8"><span class="step-num">8</span>Validación</button>
+    </nav>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<!-- ===================== 1 · INICIO ===================== -->
+<section class="step-panel" id="panel-1">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Investigación agronómica y biológica</div>
+      <h1>Del experimento a la conclusión, <em>con cifras que se pueden comprobar</em></h1>
+      <p class="lead">Diseños experimentales, comparaciones de medias, regresión y modelos mixtos con un asistente que entiende tu ensayo, reportes listos para publicar y el código R de cada análisis.</p>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-lg" data-go="2">Empezar con mis datos</button>
+        <button class="btn btn-secondary btn-lg" data-go="5">Ver un ejemplo resuelto</button>
+      </div>
+      <p class="lock" style="margin-top:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Tus datos nunca salen de este navegador.</p>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 400 300">
+        <defs><linearGradient id="hg" x1="0" x2="1"><stop offset="0" stop-color="#BF8B3C"/><stop offset="1" stop-color="#F6D985"/></linearGradient></defs>
+        <g stroke="#2B2925" stroke-width="1">
+          <path d="M40 250H370M40 200H370M40 150H370M40 100H370M40 50H370"/>
+        </g>
+        <path d="M60 232 C 120 150, 180 92, 250 70 S 340 72, 360 80" fill="none" stroke="url(#hg)" stroke-width="3"/>
+        <g fill="#E6C470"><circle cx="60" cy="236" r="5"/><circle cx="150" cy="128" r="5"/><circle cx="250" cy="74" r="5"/><circle cx="350" cy="80" r="5"/></g>
+        <g stroke="#E6C470" stroke-width="1.5"><path d="M60 226V246M150 118V138M250 64V84M350 70V90"/></g>
+        <g font-family="system-ui, sans-serif" font-size="18" fill="#F1DDA8" font-weight="800" text-anchor="middle">
+          <text x="60" y="214">c</text><text x="150" y="106">b</text><text x="250" y="52">a</text><text x="350" y="58">a</text>
+        </g>
+        <text x="40" y="285" font-family="ui-monospace, monospace" font-size="11" fill="#A8A196">rend ~ bloque + híbrido × N</text>
+        <text x="330" y="44" font-family="system-ui, sans-serif" font-size="64" font-weight="800" fill="#D4A848" opacity=".16" text-anchor="middle">Σ</text>
+      </svg>
+    </div>
+  </div>
+  <div class="values">
+    <div class="card"><div class="num">1 × 10⁻⁶</div><h3>Exactitud verificada</h3><p class="small muted">Cada método se compara contra R con datos clásicos de la literatura. El reporte de validación es público.</p></div>
+    <div class="card"><div class="num">5 pasos</div><h3>Datos → conclusión</h3><p class="small muted">El asistente pregunta cómo hiciste el experimento y propone el análisis correcto, con su porqué.</p></div>
+    <div class="card"><div class="num">R</div><h3>Reproducible</h3><p class="small muted">Cada resultado trae el código R equivalente, para revisión por pares o para tu tesis.</p></div>
+  </div>
+  <div class="nextrow"><span></span><button class="btn btn-primary" data-go="2">Siguiente: Datos →</button></div>
+</section>
+
+<!-- ===================== 2 · DATOS ===================== -->
+<section class="step-panel" id="panel-2">
+  <div class="panel-head">
+    <div><h2>Datos</h2><p>Pega desde una hoja de cálculo, importa CSV o XLSX, o escribe directo. SigmaPro reconoce el tipo de cada columna y la estructura del ensayo.</p></div>
+    <span class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Los datos no salen de tu equipo</span>
+  </div>
+  <div class="toolbar">
+    <button class="btn btn-primary btn-sm">Importar CSV / XLSX</button>
+    <button class="btn btn-secondary btn-sm">Pegar</button>
+    <button class="btn btn-secondary btn-sm">Ejemplos</button>
+    <span class="sep"></span>
+    <button class="btn btn-ghost btn-sm">＋ Variable calculada</button>
+    <button class="btn btn-ghost btn-sm">Transformar…</button>
+    <button class="btn btn-ghost btn-sm">Filtrar</button>
+    <button class="btn btn-ghost btn-sm">Ancha ⇄ larga</button>
+    <span class="sep"></span>
+    <button class="btn btn-ghost btn-sm" title="Deshacer (Ctrl+Z)">↶ Deshacer</button>
+  </div>
+  <div class="grid-left">
+    <div class="card" style="padding:var(--sp-3)">
+      <h3 style="font-size:var(--fs-md);font-family:var(--font-sans);font-weight:800;margin:4px 6px 8px">Variables</h3>
+      <ul class="varlist">
+        <li><b>bloque</b><span class="type blk">bloque · 4</span></li>
+        <li><b>hibrido</b><span class="type fac">factor · 3</span></li>
+        <li><b>dosis</b><span class="type num">numérica</span></li>
+        <li><b>N</b><span class="type fac">factor · 4</span></li>
+        <li class="sel"><b>rend</b><span class="type num">respuesta</span></li>
+      </ul>
+      <hr style="border:0;border-top:1px solid var(--border);margin:12px 0">
+      <div style="padding:0 6px">
+        <div class="small" style="font-weight:800;margin-bottom:6px">rend · rendimiento de grano (t ha⁻¹)</div>
+        <dl class="kv">
+          <dt>n</dt><dd>48</dd><dt>Faltantes</dt><dd>0</dd>
+          <dt>Media</dt><dd>5.938</dd><dt>Mín. – máx.</dt><dd>4.03 – 7.53</dd>
+        </dl>
+        <div class="small muted" style="margin-top:10px">Transformar (crea columna nueva):</div>
+        <div class="btn-row" style="margin-top:6px">
+          <button class="btn btn-secondary btn-sm">log</button><button class="btn btn-secondary btn-sm">√</button>
+          <button class="btn btn-secondary btn-sm">arcoseno √p</button><button class="btn btn-secondary btn-sm">Box-Cox</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sheet" id="sheet" role="region" aria-label="Hoja de datos" tabindex="0"></div>
+      <div class="statusbar"><span>48 filas · 4 columnas originales + 1 derivada (N = dosis como factor)</span><span>Fila 26 marcada desde Resultados: residuo más alejado (no es atípico)</span></div>
+      <div class="card" style="margin-top:var(--sp-4)">
+        <h3>Estructura detectada</h3>
+        <ul class="detect">
+          <li><span class="ok-dot">✓</span><span><b>4 bloques completos</b>: cada bloque tiene los 12 tratamientos una vez.</span></li>
+          <li><span class="ok-dot">✓</span><span><b>Factorial 3 × 4</b> (hibrido × dosis), <b>balanceado</b>: 4 observaciones por combinación.</span></li>
+          <li><span class="ok-dot">✓</span><span><b>dosis</b> es cuantitativa con niveles igualmente espaciados (0, 60, 120, 180): se puede estudiar la tendencia.</span></li>
+          <li><span class="ok-dot" style="background:var(--warning-soft);color:var(--warning-text)">!</span><span>No hay columnas de <b>fila y columna de campo</b>: sin ellas no se puede revisar si quedó un gradiente espacial.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="nextrow"><button class="btn btn-ghost" data-go="1">← Inicio</button><button class="btn btn-primary" data-go="4">Siguiente: Análisis →</button></div>
+</section>
+
+<!-- ===================== 3 · EXPLORAR ===================== -->
+<section class="step-panel" id="panel-3">
+  <div class="panel-head"><div><h2>Explorar</h2><p>Descriptivos por grupo, tablas de frecuencia, intervalos de confianza y gráficas exploratorias. (Fuera del recorrido de esta maqueta.)</p></div></div>
+  <div class="card"><p class="muted" style="margin:0">En la app: tabla descriptiva por hasta tres factores, cuantiles con los nueve tipos de definición, IC de media, mediana y varianza, y gráficas de cajas, violín, histograma y puntos.</p></div>
+</section>
+
+<!-- ===================== 4 · ANÁLISIS ===================== -->
+<section class="step-panel" id="panel-4">
+  <div class="panel-head">
+    <div><h2>Análisis</h2><p>Describe tu experimento con palabras y el asistente propone el análisis; o elige directo del catálogo, o arma el modelo arrastrando variables.</p></div>
+  </div>
+  <div class="tabs" role="tablist" aria-label="Forma de elegir el análisis">
+    <button role="tab" aria-selected="true" data-tab="asis">Asistente</button>
+    <button role="tab" aria-selected="false" data-tab="cata">Catálogo (experto)</button>
+    <button role="tab" aria-selected="false" data-tab="cons">Constructor de modelo</button>
+  </div>
+
+  <div data-tabpanel="asis">
+    <div class="grid-side">
+      <ol class="qa">
+        <li><div class="q">¿Qué quieres saber?</div>
+          <div class="opts"><span class="opt on">Comparar tratamientos</span><span class="opt">Relación entre variables</span><span class="opt">Asociación entre categorías</span><span class="opt">Solo describir</span></div></li>
+        <li><div class="q">¿Qué mediste? (respuesta)</div>
+          <div class="opts"><span class="opt on">rend — continua</span><span class="opt">Conteo</span><span class="opt">Proporción</span><span class="opt">Escala ordinal</span></div></li>
+        <li><div class="q">¿Qué factores aplicaste?</div>
+          <div class="opts"><span class="opt on">hibrido</span><span class="opt on">dosis de N</span><span class="opt">ninguno más</span></div>
+          <p class="why">Dos factores cruzados: todas las combinaciones (3 × 4 = 12 tratamientos).</p></li>
+        <li><div class="q">¿Agrupaste las parcelas en bloques?</div>
+          <div class="opts"><span class="opt on">Sí, en una dirección (bloque)</span><span class="opt">En dos direcciones (filas y columnas)</span><span class="opt">No</span></div></li>
+        <li><div class="q">¿Algún factor se aplicó a parcelas grandes, difícil de aleatorizar por parcela chica (riego, labranza, fecha de siembra)?</div>
+          <div class="opts"><span class="opt">Sí</span><span class="opt on">No, todo se aleatorizó por parcela</span></div>
+          <p class="why">Si la respuesta fuera «sí», el diseño sería de parcelas divididas y cada factor tendría su propio error.</p></li>
+        <li><div class="q">¿Mediste la misma parcela varias veces en el tiempo?</div>
+          <div class="opts"><span class="opt">Sí</span><span class="opt on">No</span></div></li>
+        <li><div class="q">La dosis es numérica: ¿qué te interesa?</div>
+          <div class="opts"><span class="opt on">La forma de la respuesta y la dosis óptima</span><span class="opt">Solo comparar las dosis entre sí</span><span class="opt">Comparar contra el testigo sin N</span></div></li>
+      </ol>
+      <div>
+        <div class="card reco">
+          <span class="pill">Recomendación</span>
+          <h3 style="margin-top:10px">Factorial 3 × 4 en bloques completos al azar</h3>
+          <p class="small muted" style="margin:0">ANOVA con interacción híbrido × N, comparación de medias de Tukey y tendencia polinomial de la dosis.</p>
+          <ul>
+            <li><b>Por qué:</b> dos factores cruzados, aleatorizados por parcela dentro de cuatro bloques completos.</li>
+            <li><b>Primero</b> se mira la interacción: si es significativa, se comparan las dosis dentro de cada híbrido; si no, los efectos principales.</li>
+            <li><b>Dosis numérica:</b> se descompone en lineal, cuadrática y cúbica para hallar la dosis de máximo rendimiento.</li>
+            <li><b>Se revisará:</b> normalidad de residuos, homogeneidad de varianzas, aditividad bloque × tratamiento y valores atípicos.</li>
+          </ul>
+          <div class="small" style="padding:10px 12px;border-radius:var(--r-sm);background:var(--bg-soft);margin-bottom:var(--sp-3)"><b>Si los supuestos fallan:</b> transformación sugerida por Box-Cox o un modelo lineal generalizado (Fase 2).</div>
+          <div class="btn-row"><button class="btn btn-primary" data-go="5">Usar y calcular</button><button class="btn btn-secondary" data-tab-go="cons">Ajustar en el constructor</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-tabpanel="cons" hidden>
+    <div class="card">
+      <div class="builder">
+        <div>
+          <div class="small" style="font-weight:800;margin-bottom:8px">Variables</div>
+          <div class="pool">
+            <span class="chip" draggable="true">bloque <span class="type blk">bloque</span></span>
+            <span class="chip" draggable="true">hibrido <span class="type fac">factor</span></span>
+            <span class="chip" draggable="true">dosis <span class="type num">num.</span></span>
+            <span class="chip" draggable="true">N <span class="type fac">factor</span></span>
+            <span class="chip" draggable="true">rend <span class="type num">num.</span></span>
+          </div>
+          <p class="small muted" style="margin-top:12px">Arrastra a las zonas o usa el teclado: elige la variable y pulsa <kbd>R</kbd>, <kbd>F</kbd>, <kbd>B</kbd>, <kbd>C</kbd>.</p>
+        </div>
+        <div>
+          <div class="zones">
+            <div class="zone filled"><div class="zt">Respuesta</div><div class="chips"><span class="chip">rend</span></div></div>
+            <div class="zone filled"><div class="zt">Bloques / repeticiones</div><div class="chips"><span class="chip">bloque</span></div></div>
+            <div class="zone filled"><div class="zt"><span>Factores fijos</span><span class="pill gray">cruzados ×</span></div><div class="chips"><span class="chip">hibrido</span><span class="x">×</span><span class="chip">N</span></div></div>
+            <div class="zone"><div class="zt">Estructura de parcelas</div><div class="small muted">Sin parcelas divididas · <a href="#">definir parcela grande</a></div></div>
+            <div class="zone"><div class="zt">Covariables</div><div class="small muted">Suelta aquí una variable numérica medida antes del tratamiento</div></div>
+            <div class="zone"><div class="zt"><span>Efectos aleatorios</span><span class="pill gold">Fase 2 · motor R</span></div><div class="small muted">Modelos mixtos con REML</div></div>
+          </div>
+          <div class="formula"><span class="lbl">Fórmula</span><code>rend <span class="t">~</span> bloque <span class="t">+</span> hibrido <span class="t">*</span> N</code><button class="btn btn-accent btn-sm">Editar</button></div>
+          <div class="btn-row" style="margin-top:var(--sp-4)">
+            <span class="small muted">Comparaciones:</span><span class="pill">Tukey · α 0.05</span>
+            <span class="small muted">Tendencia:</span><span class="pill">polinomios en dosis</span>
+            <span class="small muted">Sumas de cuadrados:</span><span class="pill gray">tipo I = II = III (balanceado)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-tabpanel="cata" hidden>
+    <div class="cat">
+      <div class="card"><h4>Descriptivos e intervalos</h4><p>Por grupos, frecuencias, IC de media, mediana, varianza y proporciones.</p></div>
+      <div class="card"><h4>Supuestos</h4><p>Normalidad, homogeneidad de varianzas, aditividad, independencia y atípicos.</p></div>
+      <div class="card"><h4>Pruebas t y no paramétricas</h4><p>t de una y dos muestras, pareada; Wilcoxon, Mann-Whitney, Kruskal-Wallis, Friedman.</p></div>
+      <div class="card"><h4>Diseños experimentales</h4><p>DCA, DBCA, cuadro latino, factoriales, parcelas divididas y subdivididas, franjas, bloques incompletos.</p></div>
+      <div class="card"><h4>Comparaciones de medias</h4><p>Tukey, DMS, Duncan, SNK, Scheffé, Bonferroni, Šidák, Dunnett; contrastes y polinomios.</p></div>
+      <div class="card"><h4>ANCOVA y regresión</h4><p>Medias ajustadas, regresión simple y múltiple con diagnóstico, VIF y selección de variables.</p></div>
+      <div class="card"><h4>Correlación</h4><p>Pearson, Spearman, Kendall y parcial, con IC y matrices.</p></div>
+      <div class="card"><h4>Tablas de contingencia</h4><p>Ji-cuadrada, Fisher exacta, McNemar, Mantel-Haenszel y medidas de asociación.</p></div>
+      <div class="card soon"><h4>Modelos mixtos y generalizados <span class="pill gold">Fase 2</span></h4><p>REML, BLUE/BLUP, medidas repetidas, logístico, Poisson, no lineal, AMMI y GGE.</p></div>
+    </div>
+  </div>
+  <div class="nextrow"><button class="btn btn-ghost" data-go="2">← Datos</button><button class="btn btn-primary" data-go="5">Siguiente: Resultados →</button></div>
+</section>
+
+<!-- ===================== 5 · RESULTADOS ===================== -->
+<section class="step-panel" id="panel-5">
+  <div class="panel-head">
+    <div><div class="flowbar"><span>Análisis 1 de 1</span>·<b>Factorial 3 × 4 en DBCA</b>·<span>rend ~ bloque + hibrido * N</span></div><h2>Resultados</h2></div>
+    <div class="btn-row"><button class="btn btn-secondary btn-sm">Duplicar y modificar</button><button class="btn btn-primary btn-sm" data-go="7">Agregar al reporte</button></div>
+  </div>
+
+  <div class="card conclusion">
+    <span class="pill">Conclusión</span>
+    <p class="big" style="margin-top:10px">El nitrógeno y el híbrido cambiaron el rendimiento; la respuesta al nitrógeno fue la misma en los tres híbridos.</p>
+    <ul>
+      <li><b>H-66</b> rindió más (6.36 t ha⁻¹), luego H-52 (5.92) y H-40 (5.53); los tres difieren entre sí.</li>
+      <li>Con <b>120 y 180 kg N ha⁻¹</b> se logró el mayor rendimiento (6.74 y 6.64 t ha⁻¹), sin diferencia entre ellas; ambas superan a 60 kg (5.90) y al testigo sin N (4.47).</li>
+      <li>La respuesta es <b>cuadrática</b>: el máximo estimado está cerca de <b>148 kg N ha⁻¹</b>. Es el óptimo biológico; el económico depende del precio del N y del grano.</li>
+    </ul>
+    <p class="stats-line">Híbrido: F(2, 33) = 60.63, p &lt; 0.001 · Nitrógeno: F(3, 33) = 292.15, p &lt; 0.001 · Interacción: F(6, 33) = 1.47, p = 0.220 · CV = 3.57 %</p>
+  </div>
+
+  <div class="tiles">
+    <div class="tile"><div class="k">Media general</div><div class="v">5.94 <small>t ha⁻¹</small></div></div>
+    <div class="tile"><div class="k">Coef. de variación</div><div class="v">3.57 <small>%</small></div></div>
+    <div class="tile"><div class="k">R²</div><div class="v">0.969</div></div>
+    <div class="tile"><div class="k">Parcelas</div><div class="v">48 <small>· 0 faltantes</small></div></div>
+  </div>
+
+  <div class="grid-side">
+    <div class="card">
+      <div class="tblwrap"><table class="journal">
+        <caption><b>Cuadro 1.</b> Análisis de varianza del rendimiento de grano (t ha⁻¹) de tres híbridos de maíz con cuatro dosis de nitrógeno.</caption>
+        <thead><tr><th>Fuente de variación</th><th>gl</th><th>SC</th><th>CM</th><th><i>F</i></th><th><i>p</i></th><th>η²<sub>p</sub></th></tr></thead>
+        <tbody>
+          <tr><td>Bloques</td><td>3</td><td>1.405</td><td>0.468</td><td>10.40</td><td>&lt;0.001</td><td>0.486</td></tr>
+          <tr><td>Híbrido (H)</td><td>2</td><td>5.459</td><td>2.730</td><td>60.63</td><td>&lt;0.001</td><td>0.786</td></tr>
+          <tr><td>Nitrógeno (N)</td><td>3</td><td>39.456</td><td>13.152</td><td>292.15</td><td>&lt;0.001</td><td>0.964</td></tr>
+          <tr class="sub"><td class="sub">lineal</td><td>1</td><td>32.384</td><td>32.384</td><td>719.34</td><td>&lt;0.001</td><td></td></tr>
+          <tr class="sub"><td class="sub">cuadrático</td><td>1</td><td>6.992</td><td>6.992</td><td>155.32</td><td>&lt;0.001</td><td></td></tr>
+          <tr class="sub"><td class="sub">cúbico</td><td>1</td><td>0.080</td><td>0.080</td><td>1.78</td><td>0.192</td><td></td></tr>
+          <tr><td>H × N</td><td>6</td><td>0.396</td><td>0.066</td><td>1.47</td><td>0.220</td><td>0.211</td></tr>
+          <tr><td>Error</td><td>33</td><td>1.486</td><td>0.045</td><td></td><td></td><td></td></tr>
+          <tr><td>Total</td><td>47</td><td>48.203</td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table></div>
+      <p class="tfoot-note">gl: grados de libertad; SC: suma de cuadrados; CM: cuadrado medio; η²<sub>p</sub>: eta cuadrada parcial. Diseño balanceado: las SC de tipo I, II y III coinciden.</p>
+
+      <div class="grid-2" style="margin-top:var(--sp-6)">
+        <table class="journal">
+          <caption><b>Cuadro 2.</b> Rendimiento medio por híbrido.</caption>
+          <thead><tr><th>Híbrido</th><th>Media</th><th></th></tr></thead>
+          <tbody><tr><td>H-66</td><td>6.36</td><td class="let">a</td></tr><tr><td>H-52</td><td>5.92</td><td class="let">b</td></tr><tr><td>H-40</td><td>5.53</td><td class="let">c</td></tr></tbody>
+        </table>
+        <table class="journal">
+          <caption><b>Cuadro 3.</b> Rendimiento medio por dosis de N.</caption>
+          <thead><tr><th>kg N ha⁻¹</th><th>Media</th><th></th></tr></thead>
+          <tbody><tr><td>0</td><td>4.47</td><td class="let">c</td></tr><tr><td>60</td><td>5.90</td><td class="let">b</td></tr><tr><td>120</td><td>6.74</td><td class="let">a</td></tr><tr><td>180</td><td>6.64</td><td class="let">a</td></tr></tbody>
+        </table>
+      </div>
+      <p class="tfoot-note">Medias con la misma letra no difieren (Tukey, α = 0.05). EE: 0.053 (híbridos) y 0.061 (dosis). DMS de Tukey: 0.184 y 0.234 t ha⁻¹.</p>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3>Supuestos del modelo</h3>
+        <ul class="lights">
+          <li><span class="light ok"></span><span><b>Normalidad de residuos</b><span class="st">Shapiro-Wilk W = 0.974, p = 0.366</span></span><span class="verdict ok">Cumple</span></li>
+          <li><span class="light ok"></span><span><b>Homogeneidad de varianzas</b><span class="st">Levene (mediana) F(11, 36) = 0.34, p = 0.971</span></span><span class="verdict ok">Cumple</span></li>
+          <li><span class="light ok"></span><span><b>Aditividad bloque × tratamiento</b><span class="st">Tukey, 1 gl: F(1, 32) = 0.18, p = 0.671</span></span><span class="verdict ok">Cumple</span></li>
+          <li><span class="light ok"></span><span><b>Valores atípicos</b><span class="st">Máx. |residuo estudentizado| = 2.46 (fila 26); p de Bonferroni = 0.937</span></span><span class="verdict ok">Ninguno</span></li>
+          <li><span class="light warn"></span><span><b>Independencia espacial</b><span class="st">No se puede revisar: faltan fila y columna de campo.</span><span class="fix" style="display:block">Agrega las coordenadas de cada parcela en Datos para buscar gradientes.</span></span><span class="verdict warn">Sin revisar</span></li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:var(--sp-4)">
+        <h3>Para tu tesis o artículo</h3>
+        <p class="small" style="margin:0">Se ajustó un ANOVA para un factorial 3 × 4 en bloques completos al azar con cuatro repeticiones. El híbrido (<i>F</i>(2, 33) = 60.63, <i>p</i> &lt; 0.001) y la dosis de N (<i>F</i>(3, 33) = 292.15, <i>p</i> &lt; 0.001) afectaron el rendimiento, pero no su interacción (<i>F</i>(6, 33) = 1.47, <i>p</i> = 0.220)…</p>
+        <div class="btn-row" style="margin-top:10px"><button class="btn btn-ghost btn-sm">Copiar párrafo</button></div>
+      </div>
+    </div>
+  </div>
+
+  <details class="fold">
+    <summary>Detalles técnicos</summary>
+    <div class="small">
+      <p><b>Modelo:</b> y<sub>ijk</sub> = μ + β<sub>k</sub> + H<sub>i</sub> + N<sub>j</sub> + (HN)<sub>ij</sub> + ε<sub>ijk</sub>, con ε ~ N(0, σ²). Bloques como efecto fijo. Contrastes de suma cero.</p>
+      <p><b>Medias:</b> marginales estimadas (promedio de la rejilla de referencia). <b>Letras:</b> camarillas máximas del grafo «no difieren», de modo que todo par sin diferencia comparte letra.</p>
+      <p><b>Tendencia:</b> coeficientes de polinomios ortogonales para dosis equiespaciadas (0, 60, 120, 180); curva cuadrática ŷ = a<sub>H</sub> + 0.03133·x − 0.0001060·x²; máximo en x = 147.7 kg N ha⁻¹.</p>
+      <p><b>Cálculo:</b> núcleo JavaScript de SigmaPro (instantáneo). Validación del método frente a R: ver bloque 8.</p>
+    </div>
+  </details>
+  <details class="fold" open>
+    <summary>Código R equivalente</summary>
+    <div>
+      <div class="code-head"><span class="small muted">Reproduce estas cifras en R 4.4 o posterior.</span><button class="btn btn-secondary btn-sm" id="copyR">Copiar código</button></div>
+<pre class="rcode" id="rcode"><span class="c"># SigmaPro · factorial 3 × 4 en bloques completos al azar</span>
+datos <- <span class="f">read.csv</span>(<span class="s">"maiz.csv"</span>)
+datos$bloque  <- <span class="f">factor</span>(datos$bloque)
+datos$hibrido <- <span class="f">factor</span>(datos$hibrido)
+datos$N       <- <span class="f">factor</span>(datos$dosis)
+
+modelo <- <span class="f">aov</span>(rend ~ bloque + hibrido * N, data = datos)
+<span class="f">summary</span>(modelo)
+
+<span class="c"># Supuestos</span>
+<span class="f">shapiro.test</span>(<span class="f">residuals</span>(modelo))
+car::<span class="f">leveneTest</span>(rend ~ hibrido * N, data = datos, center = median)
+car::<span class="f">outlierTest</span>(<span class="f">lm</span>(rend ~ bloque + hibrido * N, data = datos))
+
+<span class="c"># Medias marginales y letras (Tukey, α = 0.05)</span>
+<span class="f">library</span>(emmeans)
+multcomp::<span class="f">cld</span>(<span class="f">emmeans</span>(modelo, ~ hibrido), Letters = letters, reversed = TRUE)
+multcomp::<span class="f">cld</span>(<span class="f">emmeans</span>(modelo, ~ N), Letters = letters, reversed = TRUE)
+
+<span class="c"># Tendencia de la dosis de N</span>
+<span class="f">contrast</span>(<span class="f">emmeans</span>(modelo, ~ N), <span class="s">"poly"</span>)</pre>
+    </div>
+  </details>
+  <div class="nextrow"><button class="btn btn-ghost" data-go="4">← Análisis</button><button class="btn btn-primary" data-go="6">Siguiente: Figuras →</button></div>
+</section>
+
+<!-- ===================== 6 · FIGURAS ===================== -->
+<section class="step-panel" id="panel-6">
+  <div class="panel-head"><div><h2>Figuras</h2><p>Cada análisis propone sus figuras; el estudio ajusta estilo, tamaño final y tipografía sin recalcular.</p></div></div>
+  <div class="grid-side">
+    <div>
+      <div class="figwrap"><svg id="fig" viewBox="0 0 680 440" role="img" aria-label="Rendimiento de grano según la dosis de nitrógeno para tres híbridos"></svg></div>
+      <p class="caption"><b>Figura 1.</b> Rendimiento de grano de tres híbridos de maíz con cuatro dosis de nitrógeno. Puntos: media ± <span id="capBar">error estándar</span> (n = 4). Curvas: modelo cuadrático aditivo (la interacción no fue significativa, p = 0.220). Letras: dosis con la misma letra no difieren (Tukey, α = 0.05).</p>
+    </div>
+    <div class="card studio">
+      <h3>Estudio de figura</h3>
+      <div class="field"><span class="lab">Barras de error</span>
+        <div class="seg" role="group" aria-label="Barras de error"><button type="button" data-bar="ee" aria-pressed="true">EE</button><button type="button" data-bar="ic" aria-pressed="false">IC 95 %</button><button type="button" data-bar="no" aria-pressed="false">Sin</button></div></div>
+      <div class="field"><span class="lab">Paleta</span>
+        <div class="swatches" role="group" aria-label="Paleta">
+          <button type="button" data-pal="labg" aria-pressed="true" title="LABG: negro, oro y gris cálido"><span style="background:#111111"></span><span style="background:#B8862B"></span><span style="background:#9A9284"></span></button>
+          <button type="button" data-pal="ok" aria-pressed="false" title="Segura para daltonismo"><span style="background:#0072B2"></span><span style="background:#E69F00"></span><span style="background:#009E73"></span></button>
+          <button type="button" data-pal="gris" aria-pressed="false" title="Escala de grises"><span style="background:#222"></span><span style="background:#777"></span><span style="background:#bbb"></span></button>
+        </div></div>
+      <div class="field"><label><input type="checkbox" id="optLetters" checked> Letras de agrupación</label></div>
+      <div class="field"><label><input type="checkbox" id="optCurves" checked> Curvas ajustadas</label></div>
+      <div class="field"><label for="optFont">Tipografía</label><select id="optFont"><option value="system-ui, sans-serif">Sans del sistema</option><option value="Georgia, serif">Serif</option><option value="ui-monospace, monospace">Monoespaciada</option></select></div>
+      <div class="field"><span class="lab">Ancho final</span>
+        <div class="seg" role="group" aria-label="Ancho final"><button type="button" aria-pressed="true">8.5 cm · 1 col.</button><button type="button" aria-pressed="false">17 cm · 2 col.</button></div></div>
+      <hr style="border:0;border-top:1px solid var(--border);margin:var(--sp-4) 0">
+      <div class="lab" style="margin-bottom:8px">Exportar</div>
+      <div class="btn-row"><button class="btn btn-secondary btn-sm">PNG</button><button class="btn btn-secondary btn-sm">SVG</button><button class="btn btn-secondary btn-sm">PDF</button><button class="btn btn-primary btn-sm">TIFF 600 ppp</button></div>
+      <p class="small muted" style="margin:10px 0 0">Editor ✎ completo (ejes, series, leyenda, textos, anotaciones) con el editor común de la suite.</p>
+    </div>
+  </div>
+  <div class="nextrow"><button class="btn btn-ghost" data-go="5">← Resultados</button><button class="btn btn-primary" data-go="7">Siguiente: Exportar →</button></div>
+</section>
+
+<!-- ===================== 7 · EXPORTAR ===================== -->
+<section class="step-panel" id="panel-7">
+  <div class="panel-head"><div><h2>Exportar</h2><p>El reporte reúne los análisis que agregaste; las tablas y figuras salen también por separado.</p></div></div>
+  <div class="exp">
+    <div class="card">
+      <h3><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h6"/></svg></span>Reporte</h3>
+      <div class="formats"><span class="fmt on">.docx</span><span class="fmt on">PDF</span><span class="fmt">HTML</span></div>
+      <div class="checks">
+        <label><input type="checkbox" checked> Conclusión en lenguaje claro</label>
+        <label><input type="checkbox" checked> Métodos redactados</label>
+        <label><input type="checkbox" checked> Cuadros estilo revista</label>
+        <label><input type="checkbox" checked> Supuestos (semáforo)</label>
+        <label><input type="checkbox" checked> Figuras</label>
+        <label><input type="checkbox"> Código R (apéndice)</label>
+        <label><input type="checkbox"> Detalles técnicos</label>
+        <label><input type="checkbox" checked> Datos (apéndice)</label>
+      </div>
+      <div class="btn-row"><button class="btn btn-primary">Generar reporte</button><span class="small muted">Carta o A4 · numeración automática de cuadros y figuras</span></div>
+    </div>
+    <div class="card">
+      <h3><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/></svg></span>Cuadros</h3>
+      <div class="formats"><span class="fmt on">.xlsx</span><span class="fmt on">LaTeX</span><span class="fmt">CSV</span></div>
+<pre class="tree">\begin{table}[ht]\centering
+\caption{Análisis de varianza del rendimiento de grano.}
+\begin{tabular}{lrrrrr}
+\toprule
+Fuente & gl & SC & CM & $F$ & $p$ \\
+\midrule
+Bloques & 3 & 1.405 & 0.468 & 10.40 & $<0.001$ \\
+Híbrido (H) & 2 & 5.459 & 2.730 & 60.63 & $<0.001$ \\
+…
+\bottomrule
+\end{tabular}
+\end{table}</pre>
+      <div class="btn-row"><button class="btn btn-secondary">Copiar LaTeX</button><button class="btn btn-secondary">Descargar .xlsx</button></div>
+    </div>
+    <div class="card">
+      <h3><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 20h18M6 16l4-6 4 3 5-8"/></svg></span>Figuras</h3>
+      <div class="formats"><span class="fmt on">PNG</span><span class="fmt on">SVG</span><span class="fmt on">PDF vectorial</span><span class="fmt on">TIFF</span></div>
+      <div class="checks"><label><input type="radio" name="dpi"> 300 ppp</label><label><input type="radio" name="dpi" checked> 600 ppp</label><label><input type="radio" name="w" checked> 8.5 cm (1 columna)</label><label><input type="radio" name="w"> 17 cm (2 columnas)</label></div>
+      <div class="btn-row"><button class="btn btn-secondary">Exportar las 3 figuras (.zip)</button></div>
+    </div>
+    <div class="card">
+      <h3><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></svg></span>Proyecto .labg</h3>
+      <p class="small muted" style="margin-top:0">Un solo archivo para reabrir todo después, o enviarlo a tu asesor.</p>
+<pre class="tree">maiz-nitrogeno.labg
+├─ manifiesto.json   versión, fecha, huella SHA-256
+├─ datos.csv         48 filas, tipos y transformaciones
+├─ analisis.json     1 análisis con todas sus opciones
+├─ figuras.json      estilos del estudio de figuras
+└─ codigo.R          script reproducible completo</pre>
+      <div class="btn-row"><button class="btn btn-primary">Guardar proyecto</button><button class="btn btn-secondary">Abrir .labg</button></div>
+    </div>
+  </div>
+  <div class="nextrow"><button class="btn btn-ghost" data-go="6">← Figuras</button><button class="btn btn-secondary" data-go="8">Ver validación →</button></div>
+</section>
+
+<!-- ===================== 8 · VALIDACIÓN ===================== -->
+<section class="step-panel" id="panel-8">
+  <div class="panel-head"><div><h2>Validación</h2><p>Cada método se compara contra R con datos publicados. Criterio: |SigmaPro − R| ≤ 10⁻⁶ · máx(1, |R|).</p></div><span class="pill gray">Formato del reporte · aún sin métodos</span></div>
+  <div class="card">
+    <table class="journal">
+      <caption><b>Reporte de validación.</b> Las dos filas son las pruebas de viabilidad reales de esta propuesta (motor R en el navegador frente a R de escritorio 4.4.2).</caption>
+      <thead><tr><th>Método</th><th>Datos</th><th>Referencia</th><th>Valores</th><th>Dif. máx.</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td>ANOVA de dos factores (motor R)</td><td>warpbreaks</td><td>stats::aov</td><td>3</td><td>0</td><td><span class="verdict ok">Aprobado</span></td></tr>
+        <tr><td>Modelo mixto REML (motor R)</td><td>sleepstudy</td><td>lme4::lmer</td><td>6</td><td>0</td><td><span class="verdict ok">Aprobado</span></td></tr>
+        <tr><td colspan="6" class="muted" style="text-align:left">Fase 1: un renglón por método, generado al correr <code>tests/</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="nextrow"><button class="btn btn-ghost" data-go="7">← Exportar</button><span></span></div>
+</section>
+
+</main>
+
+
+<script>
+// Navegación de la maqueta (en la app la hace labg-core.js)
+const steps = [...document.querySelectorAll('.step-btn')];
+function go(n) {
+  n = String(n);
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + n));
+  steps.forEach(b => { const on = b.dataset.step === n; b.classList.toggle('active', on); on ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current'); });
+  try { history.replaceState(null, '', '#b' + n); } catch (e) {}
+  window.scrollTo(0, 0);
+}
+steps.forEach(b => b.addEventListener('click', () => go(b.dataset.step)));
+document.addEventListener('click', e => { const t = e.target.closest('[data-go]'); if (t) { e.preventDefault(); go(t.dataset.go); } });
+go((location.hash.match(/^#b(\d)/) || [])[1] || '1');
+addEventListener('hashchange', () => { const n = (location.hash.match(/^#b(\d)/) || [])[1]; if (n) go(n); });
+
+// Tema
+document.getElementById('themeBtn').addEventListener('click', () => {
+  const dark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.dataset.theme = dark ? 'light' : 'dark';
+  try { localStorage.setItem('sigmapro.theme', document.documentElement.dataset.theme); } catch (e) {}
+});
+
+// Pestañas del bloque Análisis
+function tab(name) {
+  document.querySelectorAll('[role=tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+  document.querySelectorAll('[data-tabpanel]').forEach(p => p.hidden = p.dataset.tabpanel !== name);
+}
+document.querySelectorAll('[role=tab]').forEach(b => b.addEventListener('click', () => tab(b.dataset.tab)));
+document.querySelectorAll('[data-tab-go]').forEach(b => b.addEventListener('click', () => tab(b.dataset.tabGo)));
+const qt = new URLSearchParams(location.search).get('tab'); if (qt) tab(qt);
+
+// Hoja de datos (datos reales del ejemplo)
+const CSV = '1,H-40,0,4.61;1,H-40,60,5.71;1,H-40,120,6.41;1,H-40,180,6.56;1,H-52,0,4.8;1,H-52,60,6.34;1,H-52,120,6.99;1,H-52,180,6.62;1,H-66,0,5.12;1,H-66,60,6.49;1,H-66,120,7.28;1,H-66,180,7.24;2,H-40,0,4.06;2,H-40,60,5.5;2,H-40,120,6.62;2,H-40,180,6.03;2,H-52,0,4.2;2,H-52,60,6.05;2,H-52,120,7.03;2,H-52,180,6.85;2,H-66,0,4.8;2,H-66,60,6.32;2,H-66,120,7.21;2,H-66,180,7.53;3,H-40,0,4.18;3,H-40,60,4.84;3,H-40,120,6.43;3,H-40,180,6.2;3,H-52,0,4.44;3,H-52,60,5.68;3,H-52,120,6.38;3,H-52,180,6.26;3,H-66,0,4.66;3,H-66,60,5.9;3,H-66,120,7.02;3,H-66,180,7.23;4,H-40,0,4.03;4,H-40,60,5.6;4,H-40,120,5.96;4,H-40,180,5.79;4,H-52,0,4.28;4,H-52,60,5.91;4,H-52,120,6.43;4,H-52,180,6.49;4,H-66,0,4.49;4,H-66,60,6.43;4,H-66,120,7.14;4,H-66,180,6.88';
+const rows = CSV.split(';').map(r => r.split(','));
+let h = '<table><thead><tr><th class="rn">#</th>' +
+  [['bloque', 'blk', 'bloque'], ['hibrido', 'fac', 'factor'], ['dosis', 'num', 'numérica'], ['N', 'fac', 'factor · derivada'], ['rend', 'num', 'respuesta']]
+    .map(c => `<th><span class="col-name">${c[0]}</span><span class="type ${c[1]}">${c[2]}</span></th>`).join('') + '</tr></thead><tbody>';
+rows.forEach((r, i) => { h += `<tr${i === 25 ? ' class="flag"' : ''}><td class="rn">${i + 1}</td><td>${r[0]}</td><td>${r[1]}</td><td class="num">${r[2]}</td><td>${r[2]}</td><td class="num">${Number(r[3]).toFixed(2)}</td></tr>`; });
+document.getElementById('sheet').innerHTML = h + '</tbody></table>';
+
+// Copiar código R
+document.getElementById('copyR').addEventListener('click', e => { try { navigator.clipboard.writeText(document.getElementById('rcode').textContent); e.target.textContent = 'Copiado ✓'; } catch (_) {} });
+
+// Figura (cifras de R: medias por celda, EE = 0.10609, t(0.975; 33) = 2.0345; curvas del modelo aditivo cuadrático)
+const M = { 'H-40': [4.22, 5.4125, 6.355, 6.145], 'H-52': [4.43, 5.995, 6.7075, 6.555], 'H-66': [4.7675, 6.285, 7.1625, 7.22] };
+const A = { 'H-40': 4.049458, 'H-52': 4.438208, 'H-66': 4.875083 }, B1 = 0.0313277778, B2 = -0.0001060185;
+const DOS = [0, 60, 120, 180], LET = ['c', 'b', 'a', 'a'], EE = 0.1060883, TQ = 2.034515;
+const PAL = { labg: ['#111111', '#B8862B', '#9A9284'], ok: ['#0072B2', '#E69F00', '#009E73'], gris: ['#222222', '#777777', '#b5b5b5'] };
+const opt = { bar: 'ee', pal: 'labg', letters: true, curves: true, font: 'system-ui, sans-serif' };
+function drawFig() {
+  const W = 680, H = 440, L = 86, R = 150, T = 54, Bm = 64;
+  const x = d => L + (d + 15) * (W - L - R) / 210, y = v => T + (7.8 - v) * (H - T - Bm) / 3.8;
+  const col = PAL[opt.pal], mk = ['circle', 'square', 'triangle'];
+  let s = `<rect width="${W}" height="${H}" fill="#fff"/><g font-family="${opt.font}" fill="#1a1a1a">`;
+  for (let v = 4; v <= 7.5; v += 0.5) s += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#ececec"/><text x="${L - 10}" y="${y(v) + 4}" font-size="13" text-anchor="end">${v.toFixed(1)}</text>`;
+  s += `<line x1="${L}" x2="${L}" y1="${T - 6}" y2="${H - Bm}" stroke="#333"/><line x1="${L}" x2="${W - R}" y1="${H - Bm}" y2="${H - Bm}" stroke="#333"/>`;
+  DOS.forEach(d => s += `<line x1="${x(d)}" x2="${x(d)}" y1="${H - Bm}" y2="${H - Bm + 5}" stroke="#333"/><text x="${x(d)}" y="${H - Bm + 21}" font-size="13" text-anchor="middle">${d}</text>`);
+  s += `<text x="${(L + W - R) / 2}" y="${H - 16}" font-size="14" text-anchor="middle">Dosis de nitrógeno (kg N ha⁻¹)</text>`;
+  s += `<text transform="translate(26 ${(T + H - Bm) / 2}) rotate(-90)" font-size="14" text-anchor="middle">Rendimiento de grano (t ha⁻¹)</text>`;
+  const half = opt.bar === 'ic' ? EE * TQ : EE;
+  Object.keys(M).forEach((k, i) => {
+    const c = col[i], off = (i - 1) * 7;
+    if (opt.curves) { let p = ''; for (let d = 0; d <= 180; d += 5) p += (d ? 'L' : 'M') + (x(d) + off).toFixed(1) + ' ' + y(A[k] + B1 * d + B2 * d * d).toFixed(1); s += `<path d="${p}" fill="none" stroke="${c}" stroke-width="2"/>`; }
+    M[k].forEach((m, j) => {
+      const cx = x(DOS[j]) + off, cy = y(m);
+      if (opt.bar !== 'no') s += `<line x1="${cx}" x2="${cx}" y1="${y(m + half)}" y2="${y(m - half)}" stroke="${c}" stroke-width="1.5"/><line x1="${cx - 4}" x2="${cx + 4}" y1="${y(m + half)}" y2="${y(m + half)}" stroke="${c}" stroke-width="1.5"/><line x1="${cx - 4}" x2="${cx + 4}" y1="${y(m - half)}" y2="${y(m - half)}" stroke="${c}" stroke-width="1.5"/>`;
+      if (mk[i] === 'circle') s += `<circle cx="${cx}" cy="${cy}" r="5" fill="${c}" stroke="#fff" stroke-width="1"/>`;
+      else if (mk[i] === 'square') s += `<rect x="${cx - 4.5}" y="${cy - 4.5}" width="9" height="9" fill="${c}" stroke="#fff" stroke-width="1"/>`;
+      else s += `<path d="M${cx} ${cy - 6}L${cx + 5.5} ${cy + 4}L${cx - 5.5} ${cy + 4}Z" fill="${c}" stroke="#fff" stroke-width="1"/>`;
+    });
+    const ly = T + 14 + i * 24;
+    s += `<line x1="${W - R + 18}" x2="${W - R + 40}" y1="${ly}" y2="${ly}" stroke="${c}" stroke-width="2"/>`;
+    s += mk[i] === 'circle' ? `<circle cx="${W - R + 29}" cy="${ly}" r="5" fill="${c}"/>` : mk[i] === 'square' ? `<rect x="${W - R + 24.5}" y="${ly - 4.5}" width="9" height="9" fill="${c}"/>` : `<path d="M${W - R + 29} ${ly - 6}L${W - R + 34.5} ${ly + 4}L${W - R + 23.5} ${ly + 4}Z" fill="${c}"/>`;
+    s += `<text x="${W - R + 48}" y="${ly + 4.5}" font-size="13">${k}</text>`;
+  });
+  if (opt.letters) DOS.forEach((d, j) => { const top = Math.max(...Object.values(M).map(v => v[j])) + half; s += `<text x="${x(d)}" y="${y(top) - 12}" font-size="15" font-weight="700" text-anchor="middle">${LET[j]}</text>`; });
+  s += `<text x="${W - R + 18}" y="${T - 22}" font-size="12" fill="#555">Híbrido</text></g>`;
+  document.getElementById('fig').innerHTML = s;
+  document.getElementById('capBar').textContent = opt.bar === 'ic' ? 'intervalo de confianza del 95 %' : opt.bar === 'no' ? '(sin barras)' : 'error estándar';
+}
+document.querySelectorAll('[data-bar]').forEach(b => b.addEventListener('click', () => { opt.bar = b.dataset.bar; document.querySelectorAll('[data-bar]').forEach(o => o.setAttribute('aria-pressed', String(o === b))); drawFig(); }));
+document.querySelectorAll('[data-pal]').forEach(b => b.addEventListener('click', () => { opt.pal = b.dataset.pal; document.querySelectorAll('[data-pal]').forEach(o => o.setAttribute('aria-pressed', String(o === b))); drawFig(); }));
+document.getElementById('optLetters').addEventListener('change', e => { opt.letters = e.target.checked; drawFig(); });
+document.getElementById('optCurves').addEventListener('change', e => { opt.curves = e.target.checked; drawFig(); });
+document.getElementById('optFont').addEventListener('change', e => { opt.font = e.target.value; drawFig(); });
+drawFig();
+</script>
+</body>
+</html>

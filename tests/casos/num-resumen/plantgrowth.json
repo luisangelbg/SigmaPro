@@ -1,0 +1,43 @@
+{
+  "esquema": 1,
+  "id": "num.resumen/plantgrowth",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "num.resumen"
+  },
+  "titulo": "Peso seco de 30 plantas (tres tratamientos juntos)",
+  "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "weight": [4.1699999999999999, 5.5800000000000001, 5.1799999999999997, 6.1100000000000003, 4.5, 4.6100000000000003, 5.1699999999999999, 4.5300000000000002, 5.3300000000000001, 5.1399999999999997, 4.8099999999999996, 4.1699999999999999, 4.4100000000000001, 3.5899999999999999, 5.8700000000000001, 3.8300000000000001, 6.0300000000000002, 4.8899999999999997, 4.3200000000000003, 4.6900000000000004, 6.3099999999999996, 5.1200000000000001, 5.54, 5.5, 5.3700000000000001, 5.29, 4.9199999999999999, 6.1500000000000004, 5.7999999999999998, 5.2599999999999998]
+    },
+    "tipos": {
+      "weight": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "weight"
+    }
+  ],
+  "esperado": {
+    "n": 30,
+    "faltantes": 0,
+    "media": 5.0730000000000004,
+    "varianza": 0.49167,
+    "de": 0.70119184250816835,
+    "min": 3.5899999999999999,
+    "max": 6.3099999999999996
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "n = sum(!is.na(x)); faltantes = sum(is.na(x))\nmedia = mean(x, na.rm = TRUE); varianza = var(x, na.rm = TRUE); de = sd(x, na.rm = TRUE)\nmin = min(x, na.rm = TRUE); max = max(x, na.rm = TRUE)"
+  }
+}

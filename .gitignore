@@ -1,0 +1,5 @@
+# perfiles y temporales de las herramientas de prueba
+tests/salida/
+*.log
+# notas privadas de trabajo
+CLAUDE.md
