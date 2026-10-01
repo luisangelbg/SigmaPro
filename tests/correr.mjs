@@ -76,6 +76,13 @@ const casos = textos.map((t, i) => {
 const elegidos = casos.filter(c => !opt.solo || c.id.includes(opt.solo));
 ctx.__casos = elegidos;
 const resultados = vm.runInContext('__casos.map(c => SPT.ejecutarCaso(c, SP))', ctx);
+/* agrupar por función o método, en el orden en que aparece cada uno por primera vez */
+{
+  const clave = r => r.objetivo.tipo + ':' + r.objetivo.nombre;
+  const orden = new Map();
+  resultados.forEach(r => { if (!orden.has(clave(r))) orden.set(clave(r), orden.size); });
+  resultados.sort((a, b) => orden.get(clave(a)) - orden.get(clave(b)));
+}
 const resumen = ctx.SPT.resumirCasos(resultados);
 
 // ---------------------------------------------------------------- 5. salidas
@@ -149,7 +156,11 @@ function sci(x) {
   const sup = { '-': '⁻', 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹' };
   return m + ' × 10' + String(Number(e)).replace(/[-0-9]/g, c => sup[c]);
 }
-function nombreObjetivo(o) { return o.tipo === 'metodo' ? 'Método · ' + o.nombre : 'Función del núcleo · SP.' + o.nombre; }
+function nombreObjetivo(o) {
+  if (o.tipo === 'metodo') return 'Método · ' + o.nombre;
+  const nom = ctx.SP.nombresFunciones && ctx.SP.nombresFunciones[o.nombre];
+  return (nom || 'Función del núcleo') + ' · SP.' + o.nombre;
+}
 
 function reporteHTML(V) {
   const r = V.resumen;

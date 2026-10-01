@@ -31,6 +31,19 @@ Reglas adicionales (las aplica `tests/lib/comparar.js`):
 | **D** · optimización iterativa | Box-Cox λ̂; en la Fase 2, REML y GLM | Criterios de convergencia ajustados en ambos lados; 1e-6 sobre el resultado convergido. |
 | **E** · libros y artículos | cuadros impresos con 2 a 4 decimales | Media unidad del último dígito impreso. Se cita el libro o el artículo, **no el programa** con que se calculó. |
 
+## Hallazgos documentados (clase B)
+
+Casos en que la referencia no es la función de R tal cual, porque R mismo es menos preciso por diseño.
+En los dos, el valor de SigmaPro se comprobó con la propia función de distribución de R.
+
+| Función | Qué pasa en R | Cómo se valida |
+|---|---|---|
+| Cuantil del rango estudentizado (`qtukey`) | Su iteración se detiene con tolerancia 1e-4; se desvía hasta 2.7e-7 de su propio `ptukey`. | Referencia = inversión exacta de `ptukey` con `uniroot` a 1e-14 (dif. 6e-12). Un caso aparte contra `qtukey` tal cual: dif. 7.5e-8, dentro del criterio. |
+| Cuantil de t con menos de 1 gl y colas diminutas (`qt`) | `pt(qt(1e-8, 0.5, lower.tail = FALSE), 0.5, lower.tail = FALSE)` da 9.99999986e-9: error relativo 2.9e-8. | Referencia = inversión exacta de `pt` en escala logarítmica (dif. 2.8e-14). |
+
+Nota: para la t con más de 4 × 10⁵ grados de libertad, R usa una aproximación normal corregida; SigmaPro usa la
+beta incompleta exacta. Coinciden a 4.5e-11.
+
 ## Dónde está cada cosa
 
 ```

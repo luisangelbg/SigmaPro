@@ -1,0 +1,29 @@
+{
+  "esquema": 1,
+  "id": "dist.dnorm/densidad",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.dnorm"
+  },
+  "titulo": "Densidad normal en 7 puntos",
+  "fuente": "Rejilla sintética con colas extremas",
+  "clase": "A",
+  "vectorizar": true,
+  "argumentos": [
+    [-30, -5, -1, 0, 0.5, 2, 8],
+    0,
+    1
+  ],
+  "esperado": [1.4736461348785476e-196, 1.4867195147342977e-06, 0.24197072451914337, 0.3989422804014327, 0.35206532676429952, 0.053990966513188063, 5.0522710835368927e-15],
+  "comparacion": {
+    "modo": "relativo"
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "dnorm(z)"
+  }
+}

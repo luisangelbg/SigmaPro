@@ -1,0 +1,56 @@
+{
+  "esquema": 1,
+  "id": "lineal.anova/anova1-factorial",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "lineal.anova"
+  },
+  "titulo": "Factorial 2 × 3 balanceado, SC tipo 1 (las tres coinciden)",
+  "fuente": "Tippett (1950); conjunto warpbreaks de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "breaks": [26, 30, 54, 25, 70, 52, 51, 26, 67, 18, 21, 29, 17, 12, 18, 35, 30, 36, 36, 21, 24, 18, 10, 43, 28, 15, 26, 27, 14, 29, 19, 29, 31, 41, 20, 44, 42, 26, 19, 16, 39, 28, 21, 39, 29, 20, 21, 24, 17, 13, 15, 15, 16, 28],
+      "wool": ["A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B"],
+      "tension": ["L", "L", "L", "L", "L", "L", "L", "L", "L", "M", "M", "M", "M", "M", "M", "M", "M", "M", "H", "H", "H", "H", "H", "H", "H", "H", "H", "L", "L", "L", "L", "L", "L", "L", "L", "L", "M", "M", "M", "M", "M", "M", "M", "M", "M", "H", "H", "H", "H", "H", "H", "H", "H", "H"]
+    },
+    "tipos": {
+      "breaks": {
+        "tipo": "numerica"
+      },
+      "wool": {
+        "tipo": "factor",
+        "niveles": ["A", "B"]
+      },
+      "tension": {
+        "tipo": "factor",
+        "niveles": ["L", "M", "H"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    "breaks ~ wool * tension",
+    {
+      "tipo": 1
+    }
+  ],
+  "esperado": {
+    "fuente": ["wool", "tension", "wool:tension", "Residuales"],
+    "gl": [1, 2, 2, 48],
+    "sc": [450.66666666666691, 2034.259259259258, 1002.7777777777762, 5745.1111111111131],
+    "cm": [450.66666666666691, 1017.129629629629, 501.38888888888812, 119.68981481481485],
+    "F": [3.7652883611186332, 8.4980466483580166, 4.1890689668510346, "NA"],
+    "p": [0.058212975959559793, 0.00069262093671344511, 0.021044190727863191, "NA"]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "anova(lm(breaks ~ wool * tension))"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "esquema": 1,
+  "id": "lineal.resumenDe/resumen-suma-cero",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "lineal.resumenDe"
+  },
+  "titulo": "Contrastes de suma cero",
+  "fuente": "Fox y Weisberg (2019); conjunto Moore de carData",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "partner.status": ["low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high"],
+      "conformity": [8, 4, 8, 7, 10, 6, 12, 4, 13, 12, 4, 13, 7, 9, 9, 24, 6, 7, 23, 13, 8, 12, 19, 12, 21, 9, 23, 7, 17, 14, 11, 16, 15, 20, 8, 12, 14, 14, 17, 7, 17, 13, 16, 10, 15],
+      "fcategory": ["low", "high", "high", "low", "low", "low", "medium", "medium", "low", "low", "medium", "high", "low", "medium", "high", "high", "low", "high", "high", "high", "low", "low", "high", "medium", "low", "high", "low", "high", "medium", "medium", "high", "medium", "low", "medium", "medium", "low", "high", "medium", "medium", "medium", "medium", "high", "low", "high", "medium"],
+      "fscore": [37, 57, 65, 20, 36, 18, 51, 44, 31, 36, 42, 56, 28, 43, 65, 57, 28, 61, 57, 55, 17, 35, 68, 41, 16, 63, 15, 54, 48, 42, 59, 45, 30, 44, 42, 22, 52, 42, 41, 50, 39, 57, 35, 52, 44]
+    },
+    "tipos": {
+      "partner.status": {
+        "tipo": "factor",
+        "niveles": ["low", "high"]
+      },
+      "conformity": {
+        "tipo": "numerica"
+      },
+      "fcategory": {
+        "tipo": "factor",
+        "niveles": ["low", "medium", "high"]
+      },
+      "fscore": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    "conformity ~ fcategory * partner.status",
+    {
+      "contrastes": {
+        "fcategory": "suma",
+        "partner.status": "suma"
+      }
+    }
+  ],
+  "esperado": {
+    "coeficientes": {
+      "nombre": ["(Intercepto)", "fcategory1", "fcategory2", "partner.status1", "fcategory1:partner.status1", "fcategory2:partner.status1"],
+      "estimado": [12.050811688311692, 1.099188311688313, -1.2894480519480533, -2.4591450216450212, -1.7908549783549756, -1.052218614718617],
+      "ee": [0.72753940523543004, 1.0264118342570832, 1.0606621126589619, 0.72753940523543015, 1.0264118342570829, 1.0606621126589624],
+      "t": [16.563792423603608, 1.0709037785830924, -1.2157010574418941, -3.3800849877667414, -1.7447723404818269, -0.99203940836617754],
+      "p": [3.0473584041618179e-19, 0.29079555218563408, 0.23140667183599528, 0.0016571126800988315, 0.088901134351869443, 0.32729367986464941]
+    },
+    "sigma": 4.5791163659931913,
+    "gl_residual": 39,
+    "n": 45,
+    "rango": 6,
+    "r2": 0.32371488501574508,
+    "r2_ajustada": 0.23701166514596883,
+    "F": {
+      "valor": 3.7335970394403803,
+      "gl1": 5,
+      "gl2": 39,
+      "p": 0.0073967313006033106
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "summary(lm(conformity ~ fcategory * partner.status))"
+  }
+}

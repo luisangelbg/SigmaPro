@@ -10,6 +10,8 @@
    - tipo 'funcion': llama SP.<nombre>(...argumentos). Un argumento
      { columna: 'x' } se convierte en esa columna (Float64Array si es numérica,
      el objeto del factor si es factor); { tabla: true } en la tabla completa.
+   - vectorizar: true (solo funciones): los argumentos que son arreglos se recorren
+     juntos y el resultado es el arreglo de valores (rejillas de distribuciones).
    - tipo 'metodo': arma la tabla y corre SP.ejecutar(nombre, tabla, entradas, opciones). */
 (function (raiz) {
   'use strict';
@@ -22,8 +24,14 @@
     return fn;
   }
 
+  /* R escribe los no finitos como texto: en los argumentos se vuelven números */
+  const ESPECIALES = { Inf: Infinity, '-Inf': -Infinity, NaN: NaN, NA: NaN };
+  const numeroDe = v => (typeof v === 'string' && Object.prototype.hasOwnProperty.call(ESPECIALES, v) ? ESPECIALES[v] : v);
+
   function argumento(a, tabla) {
-    if (a && typeof a === 'object' && !Array.isArray(a)) {
+    if (Array.isArray(a)) return a.map(numeroDe);
+    if (typeof a === 'string') return numeroDe(a);
+    if (a && typeof a === 'object') {
       if (typeof a.columna === 'string') {
         const c = tabla.col(a.columna);
         return c.tipo === 'numerica' ? c.valores : c;
@@ -61,7 +69,15 @@
       let obtenido;
       if (caso.objetivo.tipo === 'funcion') {
         const args = (caso.argumentos || []).map(a => argumento(a, tabla));
-        obtenido = resolver(SP, caso.objetivo.nombre).apply(null, args);
+        const fn = resolver(SP, caso.objetivo.nombre);
+        if (caso.vectorizar) {
+          /* rejilla: los argumentos que son arreglos se recorren juntos; los escalares se repiten */
+          const largo = Math.max(0, ...args.map(a => (Array.isArray(a) || ArrayBuffer.isView(a) ? a.length : 0)));
+          obtenido = [];
+          for (let i = 0; i < largo; i++) obtenido.push(fn.apply(null, args.map(a => (Array.isArray(a) || ArrayBuffer.isView(a) ? a[i] : a))));
+        } else {
+          obtenido = fn.apply(null, args);
+        }
       } else if (caso.objetivo.tipo === 'metodo') {
         obtenido = SP.ejecutar(caso.objetivo.nombre, tabla, caso.entradas || {}, caso.opciones || {}).resultado;
       } else {

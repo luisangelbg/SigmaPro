@@ -46,9 +46,17 @@ sp_paquetes <- function(paquetes) {
 #' @param comparacion list(tol, modo, tolerancias = list(patron = list(tol, motivo)))
 #' @param paquetes    paquetes usados para calcular la referencia
 #' @param codigo      el código de R que produce `esperado` (por omisión, la expresión dada)
+#' @param vectorizar  TRUE para rejillas: la app recorre juntos los argumentos que son
+#'                    vectores (envueltos en I()) y compara el vector de resultados
+#
+# Rejillas: sp_rejilla() devuelve un data.frame con todas las combinaciones, y
+# sp_arg() envuelve una columna para que siga siendo arreglo aunque mida 1.
+sp_rejilla <- function(...) expand.grid(..., KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
+sp_arg <- function(x) I(unname(x))
 sp_caso <- function(nombre, objetivo, tipo = c("funcion", "metodo"), titulo, fuente,
-                    clase = "A", datos, argumentos = NULL, entradas = NULL, opciones = NULL,
-                    esperado, comparacion = NULL, paquetes = "stats", codigo = NULL) {
+                    clase = "A", datos = NULL, argumentos = NULL, entradas = NULL, opciones = NULL,
+                    esperado, comparacion = NULL, paquetes = "stats", codigo = NULL,
+                    vectorizar = FALSE) {
   tipo <- match.arg(tipo)
   stopifnot(grepl("^[a-z0-9][a-z0-9-]*$", nombre), clase %in% c("A", "B", "C", "D", "E"))
   if (is.null(codigo)) codigo <- paste(deparse(substitute(esperado), width.cutoff = 90L), collapse = "\n")
@@ -59,7 +67,8 @@ sp_caso <- function(nombre, objetivo, tipo = c("funcion", "metodo"), titulo, fue
     titulo = titulo,
     fuente = fuente,
     clase = clase,
-    datos = list(columnas = sp_columnas(datos), tipos = sp_tipos(datos)),
+    datos = if (!is.null(datos)) list(columnas = sp_columnas(datos), tipos = sp_tipos(datos)),
+    vectorizar = if (isTRUE(vectorizar)) TRUE,
     argumentos = argumentos,
     entradas = entradas,
     opciones = opciones,
@@ -77,7 +86,7 @@ sp_caso <- function(nombre, objetivo, tipo = c("funcion", "metodo"), titulo, fue
   con <- file(paste0(nombre, ".json"), open = "w", encoding = "UTF-8")
   writeLines(json, con)
   close(con)
-  utils::write.csv(datos, paste0(nombre, ".csv"), row.names = FALSE, na = "", fileEncoding = "UTF-8")
+  if (!is.null(datos)) utils::write.csv(datos, paste0(nombre, ".csv"), row.names = FALSE, na = "", fileEncoding = "UTF-8")
   cat(sprintf("  · %s/%s\n", objetivo, nombre))
   invisible(caso)
 }

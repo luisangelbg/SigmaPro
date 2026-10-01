@@ -45,6 +45,24 @@ SP.definir('registro', function (SP) {
     { id: 'supervivencia', nombre: 'Supervivencia y series de tiempo', fase: 3 },
   ];
 
+  /* Nombres legibles de las funciones del núcleo que se validan por separado (reporte de validación). */
+  SP.nombresFunciones = {
+    'num.resumen': 'Resumen numérico (n, media, varianza, extremos)',
+    'dist.lgamma': 'Logaritmo de la función gamma',
+    'dist.pnorm': 'Normal: probabilidad acumulada', 'dist.qnorm': 'Normal: cuantiles', 'dist.dnorm': 'Normal: densidad',
+    'dist.pt': 't de Student: probabilidad acumulada', 'dist.qt': 't de Student: cuantiles', 'dist.dt': 't de Student: densidad',
+    'dist.pf': 'F: probabilidad acumulada', 'dist.qf': 'F: cuantiles', 'dist.df': 'F: densidad',
+    'dist.pchisq': 'Ji cuadrada: probabilidad acumulada', 'dist.qchisq': 'Ji cuadrada: cuantiles',
+    'dist.pgamma': 'Gamma: probabilidad acumulada', 'dist.qgamma': 'Gamma: cuantiles',
+    'dist.pbeta': 'Beta: probabilidad acumulada', 'dist.qbeta': 'Beta: cuantiles',
+    'dist.dbinom': 'Binomial: probabilidad puntual', 'dist.pbinom': 'Binomial: probabilidad acumulada',
+    'dist.dpois': 'Poisson: probabilidad puntual', 'dist.ppois': 'Poisson: probabilidad acumulada',
+    'dist.ptukey': 'Rango estudentizado: probabilidad acumulada', 'dist.qtukey': 'Rango estudentizado: cuantiles',
+    'formula.matrizComoColumnas': 'Matriz de diseño (codificación de factores)',
+    'lineal.resumenDe': 'Modelo lineal: coeficientes, errores estándar, R² y F',
+    'lineal.anova': 'Análisis de varianza: sumas de cuadrados tipo I, II y III',
+  };
+
   const TIPOS_ENTRADA = new Set(['numerica', 'numerica+', 'factor', 'factor+', 'cualquiera']);
   SP.metodos = {};
 

@@ -27,7 +27,8 @@
       const f = SP.metodos && SP.metodos[o.nombre];
       return T('Método') + ' · ' + (f ? f.nombre : o.nombre);
     }
-    return T('Función del núcleo') + ' · SP.' + o.nombre;
+    const nom = SP.nombresFunciones && SP.nombresFunciones[o.nombre];
+    return (nom || T('Función del núcleo')) + ' · SP.' + o.nombre;
   }
   const nombreCaso = c => (c.id || '').split('/').slice(1).join('/');
 

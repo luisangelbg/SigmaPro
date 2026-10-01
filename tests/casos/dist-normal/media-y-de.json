@@ -1,0 +1,30 @@
+{
+  "esquema": 1,
+  "id": "dist.pnorm/media-y-de",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.pnorm"
+  },
+  "titulo": "Normal con media 10 y desviación estándar 3",
+  "fuente": "Rejilla sintética con colas extremas",
+  "clase": "A",
+  "vectorizar": true,
+  "argumentos": [
+    [-20, 0, 4.2000000000000002, 9.6999999999999993, 10, 13.5, 25, 41],
+    10,
+    3,
+    true
+  ],
+  "esperado": [7.6198530241605269e-24, 0.00042906033319683724, 0.026597574021009637, 0.4601721627229709, 0.5, 0.87832749542561883, 0.99999971334842808, 1],
+  "comparacion": {
+    "modo": "relativo"
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "pnorm(q, 10, 3)"
+  }
+}

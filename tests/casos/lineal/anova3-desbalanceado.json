@@ -1,0 +1,61 @@
+{
+  "esquema": 1,
+  "id": "lineal.anova/anova3-desbalanceado",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "lineal.anova"
+  },
+  "titulo": "Factorial 3 × 2 desbalanceado, SC tipo 3",
+  "fuente": "Fox y Weisberg (2019); conjunto Moore de carData",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "partner.status": ["low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "low", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high", "high"],
+      "conformity": [8, 4, 8, 7, 10, 6, 12, 4, 13, 12, 4, 13, 7, 9, 9, 24, 6, 7, 23, 13, 8, 12, 19, 12, 21, 9, 23, 7, 17, 14, 11, 16, 15, 20, 8, 12, 14, 14, 17, 7, 17, 13, 16, 10, 15],
+      "fcategory": ["low", "high", "high", "low", "low", "low", "medium", "medium", "low", "low", "medium", "high", "low", "medium", "high", "high", "low", "high", "high", "high", "low", "low", "high", "medium", "low", "high", "low", "high", "medium", "medium", "high", "medium", "low", "medium", "medium", "low", "high", "medium", "medium", "medium", "medium", "high", "low", "high", "medium"],
+      "fscore": [37, 57, 65, 20, 36, 18, 51, 44, 31, 36, 42, 56, 28, 43, 65, 57, 28, 61, 57, 55, 17, 35, 68, 41, 16, 63, 15, 54, 48, 42, 59, 45, 30, 44, 42, 22, 52, 42, 41, 50, 39, 57, 35, 52, 44]
+    },
+    "tipos": {
+      "partner.status": {
+        "tipo": "factor",
+        "niveles": ["low", "high"]
+      },
+      "conformity": {
+        "tipo": "numerica"
+      },
+      "fcategory": {
+        "tipo": "factor",
+        "niveles": ["low", "medium", "high"]
+      },
+      "fscore": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    "conformity ~ fcategory * partner.status",
+    {
+      "tipo": 3
+    }
+  ],
+  "esperado": {
+    "fuente": ["(Intercepto)", "fcategory", "partner.status", "fcategory:partner.status", "Residuales"],
+    "gl": [1, 2, 1, 2, 39],
+    "sc": [5752.8482576105598, 36.018705627705685, 239.56236979347887, 175.48892784992779, 817.76396103896104],
+    "cm": [5752.8482576105598, 18.009352813852843, 239.56236979347887, 87.744463924963895, 20.968306693306694],
+    "F": [274.35921945222833, 0.85888446202485291, 11.424974524526089, 4.1846232606361511, "NA"],
+    "p": [3.0473584041618179e-19, 0.4314916102264249, 0.001657112680098835, 0.022572441791678697, "NA"]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "car": "3.1.3"
+    },
+    "codigo": "car::Anova(lm(conformity ~ fcategory * partner.status, contrasts = <contr.sum en todos los factores>), type = 3)"
+  }
+}

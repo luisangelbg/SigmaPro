@@ -1,0 +1,69 @@
+{
+  "esquema": 1,
+  "id": "lineal.resumenDe/resumen-sin-intercepto",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "lineal.resumenDe"
+  },
+  "titulo": "Modelo sin intercepto",
+  "fuente": "Tippett (1950); conjunto warpbreaks de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "breaks": [26, 30, 54, 25, 70, 52, 51, 26, 67, 18, 21, 29, 17, 12, 18, 35, 30, 36, 36, 21, 24, 18, 10, 43, 28, 15, 26, 27, 14, 29, 19, 29, 31, 41, 20, 44, 42, 26, 19, 16, 39, 28, 21, 39, 29, 20, 21, 24, 17, 13, 15, 15, 16, 28],
+      "wool": ["A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B"],
+      "tension": ["L", "L", "L", "L", "L", "L", "L", "L", "L", "M", "M", "M", "M", "M", "M", "M", "M", "M", "H", "H", "H", "H", "H", "H", "H", "H", "H", "L", "L", "L", "L", "L", "L", "L", "L", "L", "M", "M", "M", "M", "M", "M", "M", "M", "M", "H", "H", "H", "H", "H", "H", "H", "H", "H"]
+    },
+    "tipos": {
+      "breaks": {
+        "tipo": "numerica"
+      },
+      "wool": {
+        "tipo": "factor",
+        "niveles": ["A", "B"]
+      },
+      "tension": {
+        "tipo": "factor",
+        "niveles": ["L", "M", "H"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    "breaks ~ 0 + tension",
+    {
+      "contrastes": []
+    }
+  ],
+  "esperado": {
+    "coeficientes": {
+      "nombre": ["tensionL", "tensionM", "tensionH"],
+      "estimado": [36.388888888888879, 26.3888888888889, 21.666666666666668],
+      "ee": [2.8002792335780073, 2.8002792335780073, 2.8002792335780073],
+      "t": [12.994735829395706, 9.4236633877297162, 7.7373236236096599],
+      "p": [8.2993618455396119e-18, 9.3789721841522943e-13, 3.7477267737244107e-10]
+    },
+    "sigma": 11.880578611673263,
+    "gl_residual": 51,
+    "n": 54,
+    "rango": 3,
+    "r2": 0.86161414211320009,
+    "r2_ajustada": 0.85347379753162356,
+    "F": {
+      "valor": 105.84492259249537,
+      "gl1": 3,
+      "gl2": 51,
+      "p": 6.7427163204682673e-22
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "summary(lm(breaks ~ 0 + tension))"
+  }
+}

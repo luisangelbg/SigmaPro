@@ -15,9 +15,10 @@ medias, regresión y, más adelante, modelos mixtos y ensayos multiambiente. For
 
 ## Estado
 
-En construcción, por hitos. **Hito 1.0 (cimientos) terminado:** núcleo con suma compensada, tabla en
-columnas, registro de métodos, cálculos en hilos de trabajo, pruebas automáticas en node y en el
-navegador, generador de referencias con R y reporte de validación. El plan completo está en
+En construcción, por hitos. **Hitos 1.0 y 1.1 terminados:** cimientos (registro de métodos, cálculos en
+hilos de trabajo, pruebas automáticas en node y en el navegador, generador de referencias con R y reporte
+de validación) y núcleo numérico (distribuciones, álgebra, fórmulas y modelo lineal con sumas de cuadrados
+tipo I, II y III), validado contra R en 72 casos y 6 841 valores. El plan completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
 [`propuesta/maqueta.html`](propuesta/maqueta.html).
 
