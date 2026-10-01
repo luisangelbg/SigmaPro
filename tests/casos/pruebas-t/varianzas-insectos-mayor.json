@@ -1,0 +1,53 @@
+{
+  "esquema": 1,
+  "id": "pruebaT.razonVarianzas/varianzas-insectos-mayor",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.razonVarianzas"
+  },
+  "titulo": "Insecticida A contra C, cola superior",
+  "fuente": "Conjuntos de R y datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [10, 7, 20, 14, 14, 12, 10, 23, 17, 20, 14, 13],
+      "y": [0, 1, 7, 2, 3, 1, 2, 1, 3, 0, 1, 4]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      },
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    {
+      "columna": "y"
+    },
+    {
+      "alternativa": "mayor",
+      "nivel": 0.90000000000000002
+    }
+  ],
+  "esperado": {
+    "F": 5.70873786407767,
+    "gl1": 11,
+    "gl2": 11,
+    "p": 0.0037449343743729546,
+    "ic": [2.5635008243187984, "Inf"],
+    "estimado": 5.70873786407767
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "var.test(x, y, ratio = 1, alternative = \"greater\", conf.level = 0.9)"
+  }
+}

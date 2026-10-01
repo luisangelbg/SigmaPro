@@ -1,0 +1,52 @@
+{
+  "esquema": 1,
+  "id": "pruebaT.pareada/pareada-faltante",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.pareada"
+  },
+  "titulo": "Pares con faltantes (se quitan los pares incompletos)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [5.0999999999999996, 4.7999999999999998, "NA", 6.2000000000000002, 5.9000000000000004, 5, 6.5999999999999996],
+      "y": [4.7000000000000002, 4.9000000000000004, 5.5, "NA", 5.2000000000000002, 4.0999999999999996, 6]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      },
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    {
+      "columna": "y"
+    },
+    {
+      "alternativa": "mayor",
+      "mu": 0.10000000000000001
+    }
+  ],
+  "esperado": {
+    "t": 2.3488808780588109,
+    "gl": 4,
+    "p": 0.039305699515619207,
+    "ic": [0.136959574026849, "Inf"],
+    "estimado": 0.49999999999999983
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, paired = TRUE, mu = 0.1, alternative = \"greater\")"
+  }
+}

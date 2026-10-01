@@ -1,0 +1,68 @@
+{
+  "esquema": 1,
+  "id": "np.kruskal/kruskal-plantas",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.kruskal"
+  },
+  "titulo": "Peso seco de plantas, 3 tratamientos",
+  "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [4.1699999999999999, 5.5800000000000001, 5.1799999999999997, 6.1100000000000003, 4.5, 4.6100000000000003, 5.1699999999999999, 4.5300000000000002, 5.3300000000000001, 5.1399999999999997, 4.8099999999999996, 4.1699999999999999, 4.4100000000000001, 3.5899999999999999, 5.8700000000000001, 3.8300000000000001, 6.0300000000000002, 4.8899999999999997, 4.3200000000000003, 4.6900000000000004, 6.3099999999999996, 5.1200000000000001, 5.54, 5.5, 5.3700000000000001, 5.29, 4.9199999999999999, 6.1500000000000004, 5.7999999999999998, 5.2599999999999998],
+      "g": ["ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "g": {
+        "tipo": "factor",
+        "niveles": ["ctrl", "trt1", "trt2"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "g"
+    }
+  ],
+  "esperado": {
+    "H": 7.9882287494437154,
+    "gl": 2,
+    "p": 0.01842375573147197,
+    "eta2": 0.22178624997939686,
+    "grupos": [
+      {
+        "n": 10,
+        "mediana": 5.1549999999999994,
+        "rangoMedio": 14.75,
+        "sumaRangos": 147.5
+      },
+      {
+        "n": 10,
+        "mediana": 4.5500000000000007,
+        "rangoMedio": 10.35,
+        "sumaRangos": 103.5
+      },
+      {
+        "n": 10,
+        "mediana": 5.4350000000000005,
+        "rangoMedio": 21.399999999999999,
+        "sumaRangos": 214
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "kruskal.test(y, g); eta2 = (H - k + 1) / (n - k); tapply(rank(y), g, mean)"
+  }
+}

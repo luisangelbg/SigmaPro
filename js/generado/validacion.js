@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-01T16:11:14.541Z",
+ "generado": "2026-10-01T18:04:24.267Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 257,
-  "aprobados": 257,
+  "casos": 372,
+  "aprobados": 372,
   "fallidos": 0,
-  "valores": 23021,
-  "difEscaladaMax": 7.533201041296815e-8,
-  "objetivos": 56
+  "valores": 30492,
+  "difEscaladaMax": 2.0258232202030768e-7,
+  "objetivos": 78
  },
  "casos": [
   {
@@ -6810,6 +6810,3110 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "shapiro.test(x)"
+   }
+  },
+  {
+   "id": "dist.qsignrank/signrank-cuantil-en-saltos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qsignrank"
+   },
+   "titulo": "Cuantiles del rango con signo justo en los saltos (283 puntos)",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 283,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qsignrank(psignrank(0:M, n), n)"
+   }
+  },
+  {
+   "id": "dist.qsignrank/signrank-cuantil-inferior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qsignrank"
+   },
+   "titulo": "Cuantiles del rango con signo en 162 combinaciones (cola inferior)",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 162,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qsignrank(p, n)"
+   }
+  },
+  {
+   "id": "dist.qsignrank/signrank-cuantil-superior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qsignrank"
+   },
+   "titulo": "Cuantiles del rango con signo en 162 combinaciones (cola superior)",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 162,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qsignrank(p, n, lower.tail = FALSE)"
+   }
+  },
+  {
+   "id": "dist.psignrank/signrank-inferior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.psignrank"
+   },
+   "titulo": "P(V ≤ x) del rango con signo en 186 combinaciones de x y n",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 186,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "psignrank(x, n)"
+   }
+  },
+  {
+   "id": "dist.psignrank/signrank-superior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.psignrank"
+   },
+   "titulo": "P(V > x) del rango con signo en 186 combinaciones de x y n",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 186,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "psignrank(x, n, lower.tail = FALSE)"
+   }
+  },
+  {
+   "id": "dist.ptnc/tnc-inferior-relativa",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.ptnc"
+   },
+   "titulo": "P(T ≤ t) de al menos 1e-6, con error relativo, en 744 combinaciones",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 744,
+   "difMax": 1.7469359292476838e-12,
+   "difEscaladaMax": 4.0772644002140865e-8,
+   "peor": "[589]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pt(t, gl, ncp, lower.tail = TRUE)"
+   }
+  },
+  {
+   "id": "dist.ptnc/tnc-inferior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.ptnc"
+   },
+   "titulo": "P(T ≤ t) de la t no central en 1177 combinaciones de t, gl y ncp",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 1177,
+   "difMax": 1.7469359292476838e-12,
+   "difEscaladaMax": 1.7469359292476838e-12,
+   "peor": "[85]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pt(t, gl, ncp)"
+   }
+  },
+  {
+   "id": "dist.ptnc/tnc-superior-relativa",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.ptnc"
+   },
+   "titulo": "P(T > t) de al menos 1e-6, con error relativo, en 1014 combinaciones",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 1014,
+   "difMax": 1.7468908264373084e-12,
+   "difEscaladaMax": 2.0258232202030768e-7,
+   "peor": "[23]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pt(t, gl, ncp, lower.tail = FALSE)"
+   }
+  },
+  {
+   "id": "dist.ptnc/tnc-superior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.ptnc"
+   },
+   "titulo": "P(T > t) de la t no central en 1188 combinaciones de t, gl y ncp",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 1188,
+   "difMax": 1.7468908264373084e-12,
+   "difEscaladaMax": 1.7468908264373084e-12,
+   "peor": "[85]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pt(t, gl, ncp, lower.tail = FALSE)"
+   }
+  },
+  {
+   "id": "dist.qwilcox/wilcox-cuantil-en-saltos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qwilcox"
+   },
+   "titulo": "Cuantiles de la suma de rangos justo en los saltos (89 puntos)",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 89,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qwilcox(pwilcox(0:mn, m, n), m, n)"
+   }
+  },
+  {
+   "id": "dist.qwilcox/wilcox-cuantil-inferior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qwilcox"
+   },
+   "titulo": "Cuantiles de la suma de rangos en 263 combinaciones (cola inferior)",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 263,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qwilcox(p, m, n)"
+   }
+  },
+  {
+   "id": "dist.qwilcox/wilcox-cuantil-mediana-simetrica",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qwilcox"
+   },
+   "titulo": "Cuantil 0.5 con m·n impar (7 pares): exacto por simetría, (mn − 1)/2",
+   "fuente": "Rejilla sintética",
+   "clase": "B",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "(m * n - 1) / 2; R: qwilcox(0.5, m, n) = 0, 4, 13, 12, 112, 1201, 612"
+   }
+  },
+  {
+   "id": "dist.qwilcox/wilcox-cuantil-superior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qwilcox"
+   },
+   "titulo": "Cuantiles de la suma de rangos en 263 combinaciones (cola superior)",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 263,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "qwilcox(p, m, n, lower.tail = FALSE)"
+   }
+  },
+  {
+   "id": "dist.pwilcox/wilcox-inferior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.pwilcox"
+   },
+   "titulo": "P(W ≤ q) de la suma de rangos en 201 combinaciones de q, m y n",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 201,
+   "difMax": 7.438494264988549e-15,
+   "difEscaladaMax": 1.4876988529977167e-14,
+   "peor": "[181]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pwilcox(q, m, n)"
+   }
+  },
+  {
+   "id": "dist.pwilcox/wilcox-superior",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.pwilcox"
+   },
+   "titulo": "P(W > q) de la suma de rangos en 201 combinaciones de q, m y n",
+   "fuente": "Rejilla sintética",
+   "clase": "A",
+   "valores": 201,
+   "difMax": 7.438494264988549e-15,
+   "difEscaladaMax": 1.4876988529977028e-14,
+   "peor": "[181]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "modo": "relativo"
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "pwilcox(q, m, n, lower.tail = FALSE)"
+   }
+  },
+  {
+   "id": "pruebaT.dosMuestras/dos-desbalance-student",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.dosMuestras"
+   },
+   "titulo": "3 contra 40 observaciones · Student",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.886579864025407e-15,
+   "difEscaladaMax": 1.5286492883626577e-15,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, var.equal = TRUE, mu = 0, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "pruebaT.dosMuestras/dos-desbalance-welch",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.dosMuestras"
+   },
+   "titulo": "3 contra 40 observaciones · Welch",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 8.326672684688674e-16,
+   "difEscaladaMax": 8.326672684688674e-16,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, var.equal = FALSE, mu = 0, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "pruebaT.dosMuestras/dos-insectos-student",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.dosMuestras"
+   },
+   "titulo": "Insecticida C contra A: varianzas muy distintas · Student",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 7.610061635487855e-23,
+   "difEscaladaMax": 5.937795836043712e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, var.equal = TRUE, mu = 0, alternative = \"less\", conf.level = 0.9)"
+   }
+  },
+  {
+   "id": "pruebaT.dosMuestras/dos-insectos-welch",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.dosMuestras"
+   },
+   "titulo": "Insecticida C contra A: varianzas muy distintas · Welch",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 5.329070518200751e-15,
+   "difEscaladaMax": 5.014662731006866e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, var.equal = FALSE, mu = 0, alternative = \"less\", conf.level = 0.9)"
+   }
+  },
+  {
+   "id": "pruebaT.dosMuestras/dos-ozono-meses-student",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.dosMuestras"
+   },
+   "titulo": "Ozono de mayo contra agosto, con faltantes · Student",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.5987211554602254e-14,
+   "difEscaladaMax": 1.2829383485669703e-15,
+   "peor": "ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, var.equal = TRUE, mu = 0, alternative = \"two.sided\", conf.level = 0.99)"
+   }
+  },
+  {
+   "id": "pruebaT.dosMuestras/dos-ozono-meses-welch",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.dosMuestras"
+   },
+   "titulo": "Ozono de mayo contra agosto, con faltantes · Welch",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 8.131516293641283e-20,
+   "difEscaladaMax": 8.131516293641283e-20,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, var.equal = FALSE, mu = 0, alternative = \"two.sided\", conf.level = 0.99)"
+   }
+  },
+  {
+   "id": "pruebaT.dosMuestras/dos-plantas-student",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.dosMuestras"
+   },
+   "titulo": "Testigo contra tratamiento 1 · Student",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 4.996003610813204e-16,
+   "difEscaladaMax": 4.996003610813204e-16,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, var.equal = TRUE, mu = 0, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "pruebaT.dosMuestras/dos-plantas-trt2-student",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.dosMuestras"
+   },
+   "titulo": "Tratamiento 2 contra testigo, diferencia > 0.2 · Student",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.5265566588595902e-16,
+   "difEscaladaMax": 1.5265566588595902e-16,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, var.equal = TRUE, mu = 0.2, alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "pruebaT.dosMuestras/dos-plantas-trt2-welch",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.dosMuestras"
+   },
+   "titulo": "Tratamiento 2 contra testigo, diferencia > 0.2 · Welch",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 4.163336342344337e-17,
+   "difEscaladaMax": 4.163336342344337e-17,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, var.equal = FALSE, mu = 0.2, alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "pruebaT.dosMuestras/dos-plantas-welch",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.dosMuestras"
+   },
+   "titulo": "Testigo contra tratamiento 1 · Welch",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 5.551115123125783e-17,
+   "difEscaladaMax": 5.551115123125783e-17,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, var.equal = FALSE, mu = 0, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "pruebaT.efecto/efecto-dos-desbalance",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.efecto"
+   },
+   "titulo": "3 contra 40, IC 90 %",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 8.881784197001252e-16,
+   "peor": "ic_d[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "d de Cohen; IC: uniroot(function(n) pt(t, gl, n) - c(1 - a/2, a/2), tol = 1e-13); g = d * J(gl)"
+   }
+  },
+  {
+   "id": "pruebaT.efecto/efecto-dos-grande",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.efecto"
+   },
+   "titulo": "300 contra 250, efecto enorme (d ≈ −1.75)",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 1.9406698470447736e-13,
+   "difEscaladaMax": 1.0767708345510728e-13,
+   "peor": "ic_g[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "d de Cohen; IC: uniroot(function(n) pt(t, gl, n) - c(1 - a/2, a/2), tol = 1e-13); g = d * J(gl)"
+   }
+  },
+  {
+   "id": "pruebaT.efecto/efecto-dos-plantas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.efecto"
+   },
+   "titulo": "Testigo contra tratamiento 2 (d ≈ −1.3)",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 1.5987211554602254e-14,
+   "difEscaladaMax": 8.916914411727164e-15,
+   "peor": "ic_g[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "d de Cohen; IC: uniroot(function(n) pt(t, gl, n) - c(1 - a/2, a/2), tol = 1e-13); g = d * J(gl)"
+   }
+  },
+  {
+   "id": "pruebaT.efecto/efecto-nulo",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.efecto"
+   },
+   "titulo": "Efecto casi nulo con 5 por grupo",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 6.661338147750939e-16,
+   "difEscaladaMax": 5.953033783737215e-16,
+   "peor": "ic_g[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "d de Cohen; IC: uniroot(function(n) pt(t, gl, n) - c(1 - a/2, a/2), tol = 1e-13); g = d * J(gl)"
+   }
+  },
+  {
+   "id": "pruebaT.efecto/efecto-pareada",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.efecto"
+   },
+   "titulo": "Pareada: d_z de las diferencias",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 4.440892098500626e-15,
+   "difEscaladaMax": 2.096722130915694e-15,
+   "peor": "ic_d[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "d de Cohen; IC: uniroot(function(n) pt(t, gl, n) - c(1 - a/2, a/2), tol = 1e-13); g = d * J(gl)"
+   }
+  },
+  {
+   "id": "pruebaT.efecto/efecto-una",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.efecto"
+   },
+   "titulo": "Una muestra con faltantes contra 30",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 3.7969627442180354e-14,
+   "difEscaladaMax": 3.7969627442180354e-14,
+   "peor": "ic_g[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "d de Cohen; IC: uniroot(function(n) pt(t, gl, n) - c(1 - a/2, a/2), tol = 1e-13); g = d * J(gl)"
+   }
+  },
+  {
+   "id": "prueba-t/metodo-dos-plantas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "prueba-t"
+   },
+   "titulo": "Peso: testigo contra tratamiento 1 (Welch)",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 20,
+   "difMax": 5.773159728050814e-15,
+   "difEscaladaMax": 4.248217928612404e-15,
+   "peor": "efecto.ic_g[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(...); var.test(x, y); shapiro.test(...); IC del efecto por la t no central"
+   }
+  },
+  {
+   "id": "prueba-t/metodo-niveles-elegidos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "prueba-t"
+   },
+   "titulo": "Peso: tratamiento 2 contra testigo, Student, cola superior",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 20,
+   "difMax": 1.554312234475219e-14,
+   "difEscaladaMax": 8.669222344734742e-15,
+   "peor": "efecto.ic_g[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(...); var.test(x, y); shapiro.test(...); IC del efecto por la t no central"
+   }
+  },
+  {
+   "id": "prueba-t/metodo-pareada",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "prueba-t"
+   },
+   "titulo": "Sueño extra con dos fármacos (pareada)",
+   "fuente": "Cushny y Peebles (1905); conjunto sleep de R",
+   "clase": "A",
+   "valores": 13,
+   "difMax": 4.440892098500626e-15,
+   "difEscaladaMax": 2.096722130915694e-15,
+   "peor": "efecto.ic_d[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(...); var.test(x, y); shapiro.test(...); IC del efecto por la t no central"
+   }
+  },
+  {
+   "id": "prueba-t/metodo-una",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "prueba-t"
+   },
+   "titulo": "Ozono contra 40, IC 90 %",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 13,
+   "difMax": 3.552713678800501e-14,
+   "difEscaladaMax": 2.47893103973102e-14,
+   "peor": "normalidad[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(...); var.test(x, y); shapiro.test(...); IC del efecto por la t no central"
+   }
+  },
+  {
+   "id": "pruebaT.pareada/pareada-faltante",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.pareada"
+   },
+   "titulo": "Pares con faltantes (se quitan los pares incompletos)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 6,
+   "difMax": 3.0531133177191805e-16,
+   "difEscaladaMax": 3.0531133177191805e-16,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, paired = TRUE, mu = 0.1, alternative = \"greater\")"
+   }
+  },
+  {
+   "id": "pruebaT.pareada/pareada-sueno",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.pareada"
+   },
+   "titulo": "Sueño extra con dos fármacos en los mismos 10 pacientes",
+   "fuente": "Cushny y Peebles (1905); conjunto sleep de R",
+   "clase": "A",
+   "valores": 6,
+   "difMax": 6.661338147750939e-16,
+   "difEscaladaMax": 6.661338147750939e-16,
+   "peor": "ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, paired = TRUE, mu = 0, alternative = \"two.sided\")"
+   }
+  },
+  {
+   "id": "pruebaT.unaMuestra/una-dos-datos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.unaMuestra"
+   },
+   "titulo": "Solo dos observaciones (1 gl)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 6,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 8.59059676516831e-16,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, mu = 1, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "pruebaT.unaMuestra/una-grande",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.unaMuestra"
+   },
+   "titulo": "2000 valores",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 6,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 1.425770712205479e-16,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, mu = 100, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "pruebaT.unaMuestra/una-ozono-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.unaMuestra"
+   },
+   "titulo": "Ozono (37 faltantes) contra 40, cola superior, 90 %",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 6,
+   "difMax": 7.105427357601002e-15,
+   "difEscaladaMax": 1.8609640710912266e-16,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, mu = 40, alternative = \"greater\", conf.level = 0.9)"
+   }
+  },
+  {
+   "id": "pruebaT.unaMuestra/una-plantas-menor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.unaMuestra"
+   },
+   "titulo": "Peso del testigo contra 5.3, cola inferior, 99 %",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 6,
+   "difMax": 8.743006318923108e-16,
+   "difEscaladaMax": 8.743006318923108e-16,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, mu = 5.3, alternative = \"less\", conf.level = 0.99)"
+   }
+  },
+  {
+   "id": "pruebaT.unaMuestra/una-sueno",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.unaMuestra"
+   },
+   "titulo": "Horas extra de sueño, grupo 1, contra 0",
+   "fuente": "Cushny y Peebles (1905); conjunto sleep de R",
+   "clase": "A",
+   "valores": 6,
+   "difMax": 1.304512053934559e-15,
+   "difEscaladaMax": 1.304512053934559e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, mu = 0, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "pruebaT.razonVarianzas/varianzas-desbalance-menor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.razonVarianzas"
+   },
+   "titulo": "3 contra 40, razón 0.5, cola inferior",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 5.129230373768223e-14,
+   "difEscaladaMax": 3.686891526592211e-14,
+   "peor": "ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "var.test(x, y, ratio = 0.5, alternative = \"less\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "pruebaT.razonVarianzas/varianzas-insectos-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.razonVarianzas"
+   },
+   "titulo": "Insecticida A contra C, cola superior",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.220446049250313e-15,
+   "difEscaladaMax": 8.661772323948264e-16,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "var.test(x, y, ratio = 1, alternative = \"greater\", conf.level = 0.9)"
+   }
+  },
+  {
+   "id": "pruebaT.razonVarianzas/varianzas-plantas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.razonVarianzas"
+   },
+   "titulo": "Testigo contra tratamiento 1",
+   "fuente": "Conjuntos de R y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 8.174665591479371e-16,
+   "peor": "ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "var.test(x, y, ratio = 1, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.ajustarP/ajuste-bh",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.ajustarP"
+   },
+   "titulo": "p.adjust con BH (empates y un faltante)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 10,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "p.adjust(p, \"BH\")"
+   }
+  },
+  {
+   "id": "np.ajustarP/ajuste-bonferroni",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.ajustarP"
+   },
+   "titulo": "p.adjust con bonferroni (empates y un faltante)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 10,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "p.adjust(p, \"bonferroni\")"
+   }
+  },
+  {
+   "id": "np.ajustarP/ajuste-holm",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.ajustarP"
+   },
+   "titulo": "p.adjust con holm (empates y un faltante)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 10,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "p.adjust(p, \"holm\")"
+   }
+  },
+  {
+   "id": "np.friedman/friedman-campo",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.friedman"
+   },
+   "titulo": "5 variedades en 6 bloques, un faltante (el bloque sale)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 15,
+   "difMax": 6.938893903907228e-18,
+   "difEscaladaMax": 6.938893903907228e-18,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "friedman.test(y, trat, bloque); W = Q / (n * (k - 1))"
+   }
+  },
+  {
+   "id": "np.friedman/friedman-catas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.friedman"
+   },
+   "titulo": "Calificaciones de 8 jueces a 4 muestras (muchos empates)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 13,
+   "difMax": 5.421010862427522e-20,
+   "difEscaladaMax": 5.421010862427522e-20,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "friedman.test(y, trat, bloque); W = Q / (n * (k - 1))"
+   }
+  },
+  {
+   "id": "np.friedman/friedman-redondeo",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.friedman"
+   },
+   "titulo": "Tiempo para rodear la base con tres métodos, 22 jugadores (empates)",
+   "fuente": "Hollander y Wolfe (1973), p. 140; ejemplo de friedman.test",
+   "clase": "A",
+   "valores": 11,
+   "difMax": 8.673617379884035e-19,
+   "difEscaladaMax": 8.673617379884035e-19,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "friedman.test(y, trat, bloque); W = Q / (n * (k - 1))"
+   }
+  },
+  {
+   "id": "np.kruskal/kruskal-insectos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.kruskal"
+   },
+   "titulo": "Conteos por insecticida, 6 grupos con empates",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "A",
+   "valores": 28,
+   "difMax": 1.2924697071141057e-25,
+   "difEscaladaMax": 8.554618022829326e-16,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "kruskal.test(y, g); eta2 = (H - k + 1) / (n - k); tapply(rank(y), g, mean)"
+   }
+  },
+  {
+   "id": "np.kruskal/kruskal-ozono",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.kruskal"
+   },
+   "titulo": "Ozono por mes, con faltantes",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 8.470329472543003e-22,
+   "difEscaladaMax": 8.470329472543003e-22,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "kruskal.test(y, g); eta2 = (H - k + 1) / (n - k); tapply(rank(y), g, mean)"
+   }
+  },
+  {
+   "id": "np.kruskal/kruskal-plantas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.kruskal"
+   },
+   "titulo": "Peso seco de plantas, 3 tratamientos",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 16,
+   "difMax": 3.469446951953614e-18,
+   "difEscaladaMax": 3.469446951953614e-18,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "kruskal.test(y, g); eta2 = (H - k + 1) / (n - k); tapply(rank(y), g, mean)"
+   }
+  },
+  {
+   "id": "np.kruskal/kruskal-pollos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.kruskal"
+   },
+   "titulo": "Peso de pollos por alimento, 6 grupos desbalanceados",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "A",
+   "valores": 28,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 1.346053624587549e-14,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "kruskal.test(y, g); eta2 = (H - k + 1) / (n - k); tapply(rank(y), g, mean)"
+   }
+  },
+  {
+   "id": "np.letras/letras-azar-10",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.letras"
+   },
+   "titulo": "Letras: azar-10 (10 tratamientos)",
+   "fuente": "Patrones sintéticos",
+   "clase": "A",
+   "valores": 10,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "multcompView": "0.1.10"
+    },
+    "codigo": "multcompView::multcompLetters(m) con m[lower.tri(m)] <- sig"
+   }
+  },
+  {
+   "id": "np.letras/letras-azar-13",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.letras"
+   },
+   "titulo": "Letras: azar-13 (13 tratamientos)",
+   "fuente": "Patrones sintéticos",
+   "clase": "A",
+   "valores": 13,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "multcompView": "0.1.10"
+    },
+    "codigo": "multcompView::multcompLetters(m) con m[lower.tri(m)] <- sig"
+   }
+  },
+  {
+   "id": "np.letras/letras-azar-6",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.letras"
+   },
+   "titulo": "Letras: azar-6 (6 tratamientos)",
+   "fuente": "Patrones sintéticos",
+   "clase": "A",
+   "valores": 6,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "multcompView": "0.1.10"
+    },
+    "codigo": "multcompView::multcompLetters(m) con m[lower.tri(m)] <- sig"
+   }
+  },
+  {
+   "id": "np.letras/letras-azar-8",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.letras"
+   },
+   "titulo": "Letras: azar-8 (8 tratamientos)",
+   "fuente": "Patrones sintéticos",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "multcompView": "0.1.10"
+    },
+    "codigo": "multcompView::multcompLetters(m) con m[lower.tri(m)] <- sig"
+   }
+  },
+  {
+   "id": "np.letras/letras-escalera",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.letras"
+   },
+   "titulo": "Letras: escalera (5 tratamientos)",
+   "fuente": "Patrones sintéticos",
+   "clase": "A",
+   "valores": 5,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "multcompView": "0.1.10"
+    },
+    "codigo": "multcompView::multcompLetters(m) con m[lower.tri(m)] <- sig"
+   }
+  },
+  {
+   "id": "np.letras/letras-extremos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.letras"
+   },
+   "titulo": "Letras: extremos (3 tratamientos)",
+   "fuente": "Patrones sintéticos",
+   "clase": "A",
+   "valores": 3,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "multcompView": "0.1.10"
+    },
+    "codigo": "multcompView::multcompLetters(m) con m[lower.tri(m)] <- sig"
+   }
+  },
+  {
+   "id": "np.letras/letras-ninguno",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.letras"
+   },
+   "titulo": "Letras: ninguno (4 tratamientos)",
+   "fuente": "Patrones sintéticos",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "multcompView": "0.1.10"
+    },
+    "codigo": "multcompView::multcompLetters(m) con m[lower.tri(m)] <- sig"
+   }
+  },
+  {
+   "id": "np.letras/letras-sesenta",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.letras"
+   },
+   "titulo": "Letras: sesenta (60 tratamientos)",
+   "fuente": "Patrones sintéticos",
+   "clase": "A",
+   "valores": 60,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "multcompView": "0.1.10"
+    },
+    "codigo": "multcompView::multcompLetters(m) con m[lower.tri(m)] <- sig"
+   }
+  },
+  {
+   "id": "np.letras/letras-todos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.letras"
+   },
+   "titulo": "Letras: todos (4 tratamientos)",
+   "fuente": "Patrones sintéticos",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "multcompView": "0.1.10"
+    },
+    "codigo": "multcompView::multcompLetters(m) con m[lower.tri(m)] <- sig"
+   }
+  },
+  {
+   "id": "friedman/metodo-friedman-campo",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "friedman"
+   },
+   "titulo": "Variedades: Wilcoxon pareada con Bonferroni",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 39,
+   "difMax": 6.938893903907228e-18,
+   "difEscaladaMax": 6.938893903907228e-18,
+   "peor": "prueba.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "friedman.test; PMCMRplus::frdAllPairs*Test o pairwise.wilcox.test(paired = TRUE); multcompLetters"
+   }
+  },
+  {
+   "id": "friedman/metodo-friedman-catas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "friedman"
+   },
+   "titulo": "Catas: Nemenyi",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 20,
+   "difMax": 2.220446049250313e-16,
+   "difEscaladaMax": 2.220446049250313e-16,
+   "peor": "comparaciones.pares[2].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "comparaciones.pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "friedman.test; PMCMRplus::frdAllPairs*Test o pairwise.wilcox.test(paired = TRUE); multcompLetters"
+   }
+  },
+  {
+   "id": "friedman/metodo-friedman-redondeo",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "friedman"
+   },
+   "titulo": "Métodos para rodear la base: Conover con Holm",
+   "fuente": "Hollander y Wolfe (1973), p. 140; ejemplo de friedman.test",
+   "clase": "A",
+   "valores": 16,
+   "difMax": 2.7755575615628914e-16,
+   "difEscaladaMax": 2.7755575615628914e-16,
+   "peor": "comparaciones.pares[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "friedman.test; PMCMRplus::frdAllPairs*Test o pairwise.wilcox.test(paired = TRUE); multcompLetters"
+   }
+  },
+  {
+   "id": "kruskal-wallis/metodo-kruskal-insectos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kruskal-wallis"
+   },
+   "titulo": "Insecticidas: Conover-Iman con Tukey y letras",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "B",
+   "valores": 55,
+   "difMax": 1.432187701766452e-14,
+   "difEscaladaMax": 1.432187701766452e-8,
+   "peor": "comparaciones.pares[3].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "comparaciones.pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "kruskal.test; PMCMRplus::kwAllPairs*Test; multcompView::multcompLetters con los niveles por rango medio decreciente"
+   }
+  },
+  {
+   "id": "kruskal-wallis/metodo-kruskal-plantas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kruskal-wallis"
+   },
+   "titulo": "Plantas: Dunn con Holm y letras",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 16,
+   "difMax": 5.551115123125783e-17,
+   "difEscaladaMax": 5.551115123125783e-17,
+   "peor": "comparaciones.pares[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "kruskal.test; PMCMRplus::kwAllPairs*Test; multcompView::multcompLetters con los niveles por rango medio decreciente"
+   }
+  },
+  {
+   "id": "kruskal-wallis/metodo-kruskal-pollos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kruskal-wallis"
+   },
+   "titulo": "Pollos: Nemenyi y letras con α = 0.01",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "B",
+   "valores": 40,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 1.346053624587549e-14,
+   "peor": "prueba.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "comparaciones.pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "kruskal.test; PMCMRplus::kwAllPairs*Test; multcompView::multcompLetters con los niveles por rango medio decreciente"
+   }
+  },
+  {
+   "id": "wilcoxon/metodo-wilcoxon-dos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "wilcoxon"
+   },
+   "titulo": "Plantas: tratamiento 2 contra testigo",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 5,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "wilcoxon/metodo-wilcoxon-pareada",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "wilcoxon"
+   },
+   "titulo": "Sueño con dos fármacos",
+   "fuente": "Cushny y Peebles (1905); conjunto sleep de R",
+   "clase": "A",
+   "valores": 5,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 7.723509243908497e-16,
+   "peor": "prueba.ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 0, alternative = \"less\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "wilcoxon/metodo-wilcoxon-una",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "wilcoxon"
+   },
+   "titulo": "Ozono contra 40, IC 90 %",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 5,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 4.440887825091331e-16,
+   "peor": "prueba.ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 40, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.9)"
+   }
+  },
+  {
+   "id": "np.signoRango/pareada-exacta",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+   },
+   "titulo": "Pareada exacta",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 6.661338147750939e-16,
+   "difEscaladaMax": 6.661338147750939e-16,
+   "peor": "ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, paired = TRUE, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.signoRango/pareada-faltantes",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+   },
+   "titulo": "Pareada con pares incompletos",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, paired = TRUE, mu = 0, alternative = \"greater\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.signoRango/pareada-sueno",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+   },
+   "titulo": "Sueño con dos fármacos (pareada; empates y un cero)",
+   "fuente": "Cushny y Peebles (1905); conjunto sleep de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 6.021710276685323e-16,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, paired = TRUE, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.signoRango/signo-ceros",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+   },
+   "titulo": "Tres valores iguales a μ (se quitan; normal)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.220446049250313e-15,
+   "difEscaladaMax": 2.1146962127838808e-15,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, mu = 3, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.signoRango/signo-empates-ozono",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+   },
+   "titulo": "Ozono contra 30: empates, normal con corrección e IC por raíz",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, mu = 30, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.signoRango/signo-exacta-forzada-empates",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+   },
+   "titulo": "Exacta pedida con empates: R pasa a la normal",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 7.105427357601002e-15,
+   "difEscaladaMax": 1.4802717993460796e-15,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, mu = 5, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95, exact = TRUE)"
+   }
+  },
+  {
+   "id": "np.signoRango/signo-exacta",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+   },
+   "titulo": "Sueño extra con el fármaco 2: exacta, sin empates ni ceros",
+   "fuente": "Cushny y Peebles (1905); conjunto sleep de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 1.5543122344752192e-15,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.signoRango/signo-mayor-90",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+   },
+   "titulo": "Exacta, cola superior, IC 90 %",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, mu = 1, alternative = \"greater\", conf.int = TRUE, conf.level = 0.9)"
+   }
+  },
+  {
+   "id": "np.signoRango/signo-menor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+   },
+   "titulo": "Con empates, cola inferior",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.6645352591003757e-15,
+   "difEscaladaMax": 1.4071784621115377e-15,
+   "peor": "ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, mu = 1.2, alternative = \"less\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.signoRango/signo-n-80",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+   },
+   "titulo": "80 valores distintos: normal por tamaño (n ≥ 50)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 3.3306690738754696e-16,
+   "difEscaladaMax": 3.3306690738754696e-16,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.signoRango/signo-nivel-inalcanzable",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+   },
+   "titulo": "Tres datos: el IC 95 % no se alcanza (queda en 75 %)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.signoRango/signo-normal-pedida",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+   },
+   "titulo": "Normal pedida aunque podría ser exacta",
+   "fuente": "Cushny y Peebles (1905); conjunto sleep de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 1.5543122344752192e-15,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95, exact = FALSE)"
+   }
+  },
+  {
+   "id": "np.signoRango/signo-sin-correccion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+   },
+   "titulo": "Viento contra 10, sin corrección por continuidad",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 1.716276523907967e-16,
+   "peor": "ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, mu = 10, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95, correct = FALSE)"
+   }
+  },
+  {
+   "id": "np.paresFriedman/pares-friedman-campo-conover-holm",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresFriedman"
+   },
+   "titulo": "5 variedades en 6 bloques, un faltante (el bloque sale): conover con ajuste holm",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 30,
+   "difMax": 7.771561172376096e-16,
+   "difEscaladaMax": 7.771561172376096e-16,
+   "peor": "pares[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::frdAllPairsConoverTest(y, trat, bloque, p.adjust.method = \"holm\")"
+   }
+  },
+  {
+   "id": "np.paresFriedman/pares-friedman-campo-wilcoxon-bh",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresFriedman"
+   },
+   "titulo": "5 variedades en 6 bloques, un faltante (el bloque sale): wilcoxon con ajuste BH",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 30,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "pairwise.wilcox.test(y, trat, paired = TRUE, p.adjust.method = \"BH\")"
+   }
+  },
+  {
+   "id": "np.paresFriedman/pares-friedman-catas-conover-bh",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresFriedman"
+   },
+   "titulo": "Calificaciones de 8 jueces a 4 muestras (muchos empates): conover con ajuste BH",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 18,
+   "difMax": 4.440892098500626e-16,
+   "difEscaladaMax": 6.441245065951524e-15,
+   "peor": "pares[4].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::frdAllPairsConoverTest(y, trat, bloque, p.adjust.method = \"BH\")"
+   }
+  },
+  {
+   "id": "np.paresFriedman/pares-friedman-catas-nemenyi-tukey",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresFriedman"
+   },
+   "titulo": "Calificaciones de 8 jueces a 4 muestras (muchos empates): nemenyi con ajuste tukey",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 12,
+   "difMax": 2.220446049250313e-16,
+   "difEscaladaMax": 2.220446049250313e-16,
+   "peor": "pares[2].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::frdAllPairsNemenyiTest(y, trat, bloque)"
+   }
+  },
+  {
+   "id": "np.paresFriedman/pares-friedman-catas-wilcoxon-holm",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresFriedman"
+   },
+   "titulo": "Calificaciones de 8 jueces a 4 muestras (muchos empates): wilcoxon con ajuste holm",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 18,
+   "difMax": 1.734723475976807e-18,
+   "difEscaladaMax": 1.734723475976807e-18,
+   "peor": "pares[2].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "pairwise.wilcox.test(y, trat, paired = TRUE, p.adjust.method = \"holm\")"
+   }
+  },
+  {
+   "id": "np.paresFriedman/pares-friedman-redondeo-conover-holm",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresFriedman"
+   },
+   "titulo": "Tiempo para rodear la base con tres métodos, 22 jugadores (empates): conover con ajuste holm",
+   "fuente": "Hollander y Wolfe (1973), p. 140; ejemplo de friedman.test",
+   "clase": "A",
+   "valores": 9,
+   "difMax": 2.7755575615628914e-16,
+   "difEscaladaMax": 2.7755575615628914e-16,
+   "peor": "pares[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::frdAllPairsConoverTest(y, trat, bloque, p.adjust.method = \"holm\")"
+   }
+  },
+  {
+   "id": "np.paresFriedman/pares-friedman-redondeo-conover-tukey",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresFriedman"
+   },
+   "titulo": "Tiempo para rodear la base con tres métodos, 22 jugadores (empates): conover con ajuste tukey",
+   "fuente": "Hollander y Wolfe (1973), p. 140; ejemplo de friedman.test",
+   "clase": "B",
+   "valores": 9,
+   "difMax": 2.7755575615628914e-16,
+   "difEscaladaMax": 2.7755575615628914e-16,
+   "peor": "pares[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::frdAllPairsConoverTest(y, trat, bloque, p.adjust.method = \"single-step\")"
+   }
+  },
+  {
+   "id": "np.paresFriedman/pares-friedman-redondeo-nemenyi-tukey",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresFriedman"
+   },
+   "titulo": "Tiempo para rodear la base con tres métodos, 22 jugadores (empates): nemenyi con ajuste tukey",
+   "fuente": "Hollander y Wolfe (1973), p. 140; ejemplo de friedman.test",
+   "clase": "B",
+   "valores": 6,
+   "difMax": 1.1102230246251565e-15,
+   "difEscaladaMax": 8.679012619367775e-16,
+   "peor": "pares[0].estadistico",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::frdAllPairsNemenyiTest(y, trat, bloque)"
+   }
+  },
+  {
+   "id": "np.paresFriedman/pares-friedman-redondeo-wilcoxon-bonferroni",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresFriedman"
+   },
+   "titulo": "Tiempo para rodear la base con tres métodos, 22 jugadores (empates): wilcoxon con ajuste bonferroni",
+   "fuente": "Hollander y Wolfe (1973), p. 140; ejemplo de friedman.test",
+   "clase": "A",
+   "valores": 9,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "pairwise.wilcox.test(y, trat, paired = TRUE, p.adjust.method = \"bonferroni\")"
+   }
+  },
+  {
+   "id": "np.paresKruskal/pares-kruskal-insectos-conover-holm",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+   },
+   "titulo": "Conteos por insecticida, 6 grupos con empates: conover con ajuste holm",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "A",
+   "valores": 45,
+   "difMax": 4.3298697960381105e-15,
+   "difEscaladaMax": 1.3022951323470207e-14,
+   "peor": "pares[7].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsConoverTest(y, g, p.adjust.method = \"holm\")"
+   }
+  },
+  {
+   "id": "np.paresKruskal/pares-kruskal-insectos-dunn-bonferroni",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+   },
+   "titulo": "Conteos por insecticida, 6 grupos con empates: dunn con ajuste bonferroni",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "A",
+   "valores": 45,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsDunnTest(y, g, p.adjust.method = \"bonferroni\")"
+   }
+  },
+  {
+   "id": "np.paresKruskal/pares-kruskal-insectos-nemenyi-tukey",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+   },
+   "titulo": "Conteos por insecticida, 6 grupos con empates: nemenyi con ajuste tukey",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "B",
+   "valores": 30,
+   "difMax": 2.220446049250313e-16,
+   "difEscaladaMax": 2.220446049250313e-16,
+   "peor": "pares[14].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsNemenyiTest(y, g)"
+   }
+  },
+  {
+   "id": "np.paresKruskal/pares-kruskal-ozono-conover-bh",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+   },
+   "titulo": "Ozono por mes, con faltantes: conover con ajuste BH",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 30,
+   "difMax": 4.7878367936959876e-15,
+   "difEscaladaMax": 4.7878367936959876e-15,
+   "peor": "pares[4].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsConoverTest(y, g, p.adjust.method = \"BH\")"
+   }
+  },
+  {
+   "id": "np.paresKruskal/pares-kruskal-ozono-dunn-bh",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+   },
+   "titulo": "Ozono por mes, con faltantes: dunn con ajuste BH",
+   "fuente": "Chambers y col. (1983); conjunto airquality de R",
+   "clase": "A",
+   "valores": 30,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsDunnTest(y, g, p.adjust.method = \"BH\")"
+   }
+  },
+  {
+   "id": "np.paresKruskal/pares-kruskal-plantas-conover-tukey",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+   },
+   "titulo": "Peso seco de plantas, 3 tratamientos: conover con ajuste tukey",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "B",
+   "valores": 9,
+   "difMax": 3.6637359812630166e-15,
+   "difEscaladaMax": 3.6637359812630166e-15,
+   "peor": "pares[2].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsConoverTest(y, g, p.adjust.method = \"single-step\")"
+   }
+  },
+  {
+   "id": "np.paresKruskal/pares-kruskal-plantas-dunn-holm",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+   },
+   "titulo": "Peso seco de plantas, 3 tratamientos: dunn con ajuste holm",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 9,
+   "difMax": 5.551115123125783e-17,
+   "difEscaladaMax": 5.551115123125783e-17,
+   "peor": "pares[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsDunnTest(y, g, p.adjust.method = \"holm\")"
+   }
+  },
+  {
+   "id": "np.paresKruskal/pares-kruskal-plantas-nemenyi-tukey",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+   },
+   "titulo": "Peso seco de plantas, 3 tratamientos: nemenyi con ajuste tukey",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "B",
+   "valores": 6,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsNemenyiTest(y, g)"
+   }
+  },
+  {
+   "id": "np.paresKruskal/pares-kruskal-pollos-conover-bonferroni",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+   },
+   "titulo": "Peso de pollos por alimento, 6 grupos desbalanceados: conover con ajuste bonferroni",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "A",
+   "valores": 45,
+   "difMax": 4.207745263329343e-14,
+   "difEscaladaMax": 4.207745263329343e-14,
+   "peor": "pares[9].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsConoverTest(y, g, p.adjust.method = \"bonferroni\")"
+   }
+  },
+  {
+   "id": "np.paresKruskal/pares-kruskal-pollos-dunn-holm",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+   },
+   "titulo": "Peso de pollos por alimento, 6 grupos desbalanceados: dunn con ajuste holm",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "A",
+   "valores": 45,
+   "difMax": 1.3877787807814457e-17,
+   "difEscaladaMax": 3.4624790270504594e-16,
+   "peor": "pares[8].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsDunnTest(y, g, p.adjust.method = \"holm\")"
+   }
+  },
+  {
+   "id": "np.paresKruskal/pares-kruskal-pollos-nemenyi-tukey",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+   },
+   "titulo": "Peso de pollos por alimento, 6 grupos desbalanceados: nemenyi con ajuste tukey",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "B",
+   "valores": 30,
+   "difMax": 3.3306690738754696e-16,
+   "difEscaladaMax": 3.3306690738754696e-16,
+   "peor": "pares[1].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsNemenyiTest(y, g)"
+   }
+  },
+  {
+   "id": "np.sumaRangos/suma-desbalance-menor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.sumaRangos"
+   },
+   "titulo": "3 contra 12, exacta, cola inferior",
+   "fuente": "Conjuntos de R (PlantGrowth, InsectSprays) y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 0, alternative = \"less\", conf.int = TRUE, conf.level = 0.9)"
+   }
+  },
+  {
+   "id": "np.sumaRangos/suma-empates-plantas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.sumaRangos"
+   },
+   "titulo": "Testigo contra tratamiento 1 (un empate: normal)",
+   "fuente": "Conjuntos de R (PlantGrowth, InsectSprays) y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 1.7586727615611923e-15,
+   "peor": "ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.sumaRangos/suma-exacta",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.sumaRangos"
+   },
+   "titulo": "Exacta, 9 contra 10",
+   "fuente": "Conjuntos de R (PlantGrowth, InsectSprays) y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.sumaRangos/suma-grandes",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.sumaRangos"
+   },
+   "titulo": "60 contra 70 sin empates (normal por tamaño)",
+   "fuente": "Conjuntos de R (PlantGrowth, InsectSprays) y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.6645352591003757e-15,
+   "difEscaladaMax": 2.6645352591003757e-15,
+   "peor": "ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.sumaRangos/suma-insectos-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.sumaRangos"
+   },
+   "titulo": "Insecticida A contra C, cola superior, con empates",
+   "fuente": "Conjuntos de R (PlantGrowth, InsectSprays) y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 3.5527008053183906e-16,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 0, alternative = \"greater\", conf.int = TRUE, conf.level = 0.9)"
+   }
+  },
+  {
+   "id": "np.sumaRangos/suma-menor-normal",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.sumaRangos"
+   },
+   "titulo": "Tratamiento 1 contra 2, cola inferior (normal)",
+   "fuente": "Conjuntos de R (PlantGrowth, InsectSprays) y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 0, alternative = \"less\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.sumaRangos/suma-mu",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.sumaRangos"
+   },
+   "titulo": "Exacta con desplazamiento μ = 0.5",
+   "fuente": "Conjuntos de R (PlantGrowth, InsectSprays) y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 6.661338147750939e-16,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 0.5, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.sumaRangos/suma-nivel-inalcanzable",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.sumaRangos"
+   },
+   "titulo": "2 contra 3: el IC 95 % no se alcanza",
+   "fuente": "Conjuntos de R (PlantGrowth, InsectSprays) y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "np.sumaRangos/suma-sin-correccion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.sumaRangos"
+   },
+   "titulo": "Insecticidas B contra F, sin corrección",
+   "fuente": "Conjuntos de R (PlantGrowth, InsectSprays) y datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 7.105427357601002e-15,
+   "difEscaladaMax": 1.1842366250716381e-15,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95, correct = FALSE)"
    }
   }
  ]

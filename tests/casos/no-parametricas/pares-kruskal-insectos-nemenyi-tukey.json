@@ -1,0 +1,119 @@
+{
+  "esquema": 1,
+  "id": "np.paresKruskal/pares-kruskal-insectos-nemenyi-tukey",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+  },
+  "titulo": "Conteos por insecticida, 6 grupos con empates: nemenyi con ajuste tukey",
+  "fuente": "Beall (1942); conjunto InsectSprays de R",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "y": [10, 7, 20, 14, 14, 12, 10, 23, 17, 20, 14, 13, 11, 17, 21, 11, 16, 14, 17, 17, 19, 21, 7, 13, 0, 1, 7, 2, 3, 1, 2, 1, 3, 0, 1, 4, 3, 5, 12, 6, 4, 3, 5, 5, 5, 5, 2, 4, 3, 5, 3, 5, 3, 6, 1, 1, 3, 2, 6, 4, 11, 9, 15, 22, 15, 16, 13, 10, 26, 26, 24, 13],
+      "g": ["A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "D", "D", "D", "D", "D", "D", "D", "D", "D", "D", "D", "D", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "g": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C", "D", "E", "F"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "g"
+    },
+    {
+      "metodo": "nemenyi",
+      "ajuste": "tukey"
+    }
+  ],
+  "esperado": {
+    "pares": [
+      {
+        "estadistico": 0.44138980725459714,
+        "p_ajustado": 0.99960707127908754
+      },
+      {
+        "estadistico": 6.7380912763709455,
+        "p_ajustado": 2.791371387134145e-05
+      },
+      {
+        "estadistico": 4.400104641069257,
+        "p_ajustado": 0.022927620950231598
+      },
+      {
+        "estadistico": 5.4346120018222157,
+        "p_ajustado": 0.0016949695731159897
+      },
+      {
+        "estadistico": 0.57242740628330502,
+        "p_ajustado": 0.99861029295741288
+      },
+      {
+        "estadistico": 7.1794810836255429,
+        "p_ajustado": 5.706142433115069e-06
+      },
+      {
+        "estadistico": 4.8414944483238536,
+        "p_ajustado": 0.0081290780549180264
+      },
+      {
+        "estadistico": 5.876001809076814,
+        "p_ajustado": 0.00046605819314726737
+      },
+      {
+        "estadistico": 0.1310375990287079,
+        "p_ajustado": 0.99999904822397556
+      },
+      {
+        "estadistico": 2.3379866353016894,
+        "p_ajustado": 0.56300178949808699
+      },
+      {
+        "estadistico": 1.3034792745487294,
+        "p_ajustado": 0.94108651657046638
+      },
+      {
+        "estadistico": 7.3105186826542505,
+        "p_ajustado": 3.4954897468741919e-06
+      },
+      {
+        "estadistico": 1.03450736075296,
+        "p_ajustado": 0.97809293746713688
+      },
+      {
+        "estadistico": 4.972532047352562,
+        "p_ajustado": 0.0058473114948671689
+      },
+      {
+        "estadistico": 6.0070394081055225,
+        "p_ajustado": 0.0003114227393052893
+      }
+    ]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "pares[*].p_ajustado": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsNemenyiTest(y, g)"
+  }
+}

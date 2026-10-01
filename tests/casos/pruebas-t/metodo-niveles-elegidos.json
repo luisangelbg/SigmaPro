@@ -1,0 +1,77 @@
+{
+  "esquema": 1,
+  "id": "prueba-t/metodo-niveles-elegidos",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "prueba-t"
+  },
+  "titulo": "Peso: tratamiento 2 contra testigo, Student, cola superior",
+  "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "weight": [4.1699999999999999, 5.5800000000000001, 5.1799999999999997, 6.1100000000000003, 4.5, 4.6100000000000003, 5.1699999999999999, 4.5300000000000002, 5.3300000000000001, 5.1399999999999997, 4.8099999999999996, 4.1699999999999999, 4.4100000000000001, 3.5899999999999999, 5.8700000000000001, 3.8300000000000001, 6.0300000000000002, 4.8899999999999997, 4.3200000000000003, 4.6900000000000004, 6.3099999999999996, 5.1200000000000001, 5.54, 5.5, 5.3700000000000001, 5.29, 4.9199999999999999, 6.1500000000000004, 5.7999999999999998, 5.2599999999999998],
+      "group": ["ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2"]
+    },
+    "tipos": {
+      "weight": {
+        "tipo": "numerica"
+      },
+      "group": {
+        "tipo": "factor",
+        "niveles": ["ctrl", "trt1", "trt2"]
+      }
+    }
+  },
+  "entradas": {
+    "modo": "independientes",
+    "respuesta": "weight",
+    "grupo": "group",
+    "niveles": ["trt2", "ctrl"]
+  },
+  "opciones": {
+    "varIguales": true,
+    "alternativa": "mayor"
+  },
+  "esperado": {
+    "prueba": {
+      "t": 2.1340204531240614,
+      "gl": 18,
+      "p": 0.023425692455786962,
+      "ic": [0.092585186746912615, "Inf"]
+    },
+    "efecto": {
+      "d": 0.95436295971206087,
+      "g": 0.91394227845203757,
+      "ic_d": [0.013071639864810105, 1.8722029754846619],
+      "ic_g": [0.01251800921187622, 1.7929084901360637]
+    },
+    "normalidad": [
+      {
+        "W": 0.94100519724201981,
+        "p": 0.56425189477199533
+      },
+      {
+        "W": 0.95668149041173489,
+        "p": 0.74747344382962133
+      }
+    ],
+    "otra": {
+      "t": 2.1340204531240614,
+      "gl": 16.785764482605718,
+      "p": 0.023949627800984662
+    },
+    "varianzas": {
+      "F": 0.57609903397430018,
+      "p": 0.42386700943454192
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "t.test(...); var.test(x, y); shapiro.test(...); IC del efecto por la t no central"
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "esquema": 1,
+  "id": "np.kruskal/kruskal-pollos",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.kruskal"
+  },
+  "titulo": "Peso de pollos por alimento, 6 grupos desbalanceados",
+  "fuente": "Anónimo (1948); conjunto chickwts de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [179, 160, 136, 227, 217, 168, 108, 124, 143, 140, 309, 229, 181, 141, 260, 203, 148, 169, 213, 257, 244, 271, 243, 230, 248, 327, 329, 250, 193, 271, 316, 267, 199, 171, 158, 248, 423, 340, 392, 339, 341, 226, 320, 295, 334, 322, 297, 318, 325, 257, 303, 315, 380, 153, 263, 242, 206, 344, 258, 368, 390, 379, 260, 404, 318, 352, 359, 216, 222, 283, 332],
+      "g": ["horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "g": {
+        "tipo": "factor",
+        "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "g"
+    }
+  ],
+  "esperado": {
+    "H": 37.342717694256208,
+    "gl": 5,
+    "p": 5.1128295119371503e-07,
+    "eta2": 0.49758027221932627,
+    "grupos": [
+      {
+        "n": 12,
+        "mediana": 342,
+        "rangoMedio": 52.333333333333336,
+        "sumaRangos": 628
+      },
+      {
+        "n": 10,
+        "mediana": 151.5,
+        "rangoMedio": 9.8000000000000007,
+        "sumaRangos": 98
+      },
+      {
+        "n": 12,
+        "mediana": 221,
+        "rangoMedio": 24.458333333333332,
+        "sumaRangos": 293.5
+      },
+      {
+        "n": 11,
+        "mediana": 263,
+        "rangoMedio": 40.136363636363633,
+        "sumaRangos": 441.5
+      },
+      {
+        "n": 14,
+        "mediana": 248,
+        "rangoMedio": 32.035714285714285,
+        "sumaRangos": 448.5
+      },
+      {
+        "n": 12,
+        "mediana": 328,
+        "rangoMedio": 53.875,
+        "sumaRangos": 646.5
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "kruskal.test(y, g); eta2 = (H - k + 1) / (n - k); tapply(rank(y), g, mean)"
+  }
+}

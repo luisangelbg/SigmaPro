@@ -39,7 +39,7 @@ SPT.describir('Núcleo · registro de métodos', () => {
     try {
       SP.metodo(Object.assign(base(), { id: 'prueba-b', familia: 'disenos', nombre: 'A primero' }));
       SP.metodo(base());
-      const ids = SP.listaMetodos().map(m => m.id).filter(id => id.startsWith('prueba-'));
+      const ids = SP.listaMetodos().map(m => m.id).filter(id => id === 'prueba-registro' || id === 'prueba-b');
       SPT.igualJSON(ids, ['prueba-registro', 'prueba-b'], 'descriptiva va antes que disenos');
     } finally { limpiar(); }
   });

@@ -1,0 +1,53 @@
+{
+  "esquema": 1,
+  "id": "np.sumaRangos/suma-desbalance-menor",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.sumaRangos"
+  },
+  "titulo": "3 contra 12, exacta, cola inferior",
+  "fuente": "Conjuntos de R (PlantGrowth, InsectSprays) y datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [12.1, 13.4, 11.800000000000001, "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"],
+      "y": [15.164, 12.459, 13.616, 12.916, 15.977, 11.395, 12.699999999999999, 15.500999999999999, 13.878, 12.888, 11.628, 13.27]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      },
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    {
+      "columna": "y"
+    },
+    {
+      "alternativa": "menor",
+      "nivel": 0.90000000000000002
+    }
+  ],
+  "esperado": {
+    "estadistico": 11,
+    "p": 0.18241758241758244,
+    "ic": ["-Inf", 0.40500000000000114],
+    "estimado": -0.85799999999999965,
+    "nivelLogrado": 0.90000000000000002,
+    "exacta": true
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 0, alternative = \"less\", conf.int = TRUE, conf.level = 0.9)"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "esquema": 1,
+  "id": "np.paresFriedman/pares-friedman-catas-conover-bh",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresFriedman"
+  },
+  "titulo": "Calificaciones de 8 jueces a 4 muestras (muchos empates): conover con ajuste BH",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [7, 6, 5, 8, 6, 7, 4, 6, 5, 6, 4, 6, 5, 6, 4, 5, 6, 7, 6, 8, 5, 7, 5, 7, 8, 9, 7, 9, 7, 8, 6, 8],
+      "trat": ["A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B", "C", "C", "C", "C", "C", "C", "C", "C", "D", "D", "D", "D", "D", "D", "D", "D"],
+      "bloque": ["juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8", "juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8", "juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8", "juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C", "D"]
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "trat"
+    },
+    {
+      "columna": "bloque"
+    },
+    {
+      "metodo": "conover",
+      "ajuste": "BH"
+    }
+  ],
+  "esperado": {
+    "pares": [
+      {
+        "estadistico": 4.2755257550303352,
+        "p": 0.00033620595379227808,
+        "p_ajustado": 0.00040344714455073366
+      },
+      {
+        "estadistico": -1.257507575008922,
+        "p": 0.22237508111017623,
+        "p_ajustado": 0.22237508111017623
+      },
+      {
+        "estadistico": -7.0420424200499632,
+        "p": 5.9720817155234698e-07,
+        "p_ajustado": 1.791624514657041e-06
+      },
+      {
+        "estadistico": -5.5330333300392569,
+        "p": 1.7223283529553704e-05,
+        "p_ajustado": 2.5834925294330557e-05
+      },
+      {
+        "estadistico": -11.317568175080298,
+        "p": 2.1269457620590751e-10,
+        "p_ajustado": 1.2761674572354449e-09
+      },
+      {
+        "estadistico": -5.7845348450410414,
+        "p": 9.6529774378111551e-06,
+        "p_ajustado": 1.930595487562231e-05
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::frdAllPairsConoverTest(y, trat, bloque, p.adjust.method = \"BH\")"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "esquema": 1,
+  "id": "pruebaT.unaMuestra/una-dos-datos",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.unaMuestra"
+  },
+  "titulo": "Solo dos observaciones (1 gl)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [3.2000000000000002, 4.0999999999999996]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    {
+      "mu": 1
+    }
+  ],
+  "esperado": {
+    "t": 5.8888888888888919,
+    "gl": 1,
+    "p": 0.10708375681034379,
+    "ic": [-2.0677921312786092, 9.367792131278609],
+    "estimado": 3.6499999999999999
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, mu = 1, alternative = \"two.sided\", conf.level = 0.95)"
+  }
+}

@@ -66,7 +66,7 @@ const unidad = await ctx.SPT.correr();
 const dirCasos = join(TESTS, 'casos');
 /* las carpetas en el orden en que avanza la app (las nuevas, al final en orden alfabético) */
 const ORDEN_CARPETAS = ['num-resumen', 'dist-normal', 'dist-t-f-chisq', 'dist-gamma-beta', 'dist-tukey', 'lineal',
-  'importar', 'datos', 'descriptiva', 'frecuencias', 'supuestos'];
+  'importar', 'datos', 'descriptiva', 'frecuencias', 'supuestos', 'dist-rangos', 'pruebas-t', 'no-parametricas'];
 const posicion = d => { const k = ORDEN_CARPETAS.indexOf(d); return k < 0 ? ORDEN_CARPETAS.length : k; };
 const archivosCaso = existsSync(dirCasos)
   ? readdirSync(dirCasos, { withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name)

@@ -1,0 +1,71 @@
+{
+  "esquema": 1,
+  "id": "np.paresKruskal/pares-kruskal-plantas-nemenyi-tukey",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+  },
+  "titulo": "Peso seco de plantas, 3 tratamientos: nemenyi con ajuste tukey",
+  "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "y": [4.1699999999999999, 5.5800000000000001, 5.1799999999999997, 6.1100000000000003, 4.5, 4.6100000000000003, 5.1699999999999999, 4.5300000000000002, 5.3300000000000001, 5.1399999999999997, 4.8099999999999996, 4.1699999999999999, 4.4100000000000001, 3.5899999999999999, 5.8700000000000001, 3.8300000000000001, 6.0300000000000002, 4.8899999999999997, 4.3200000000000003, 4.6900000000000004, 6.3099999999999996, 5.1200000000000001, 5.54, 5.5, 5.3700000000000001, 5.29, 4.9199999999999999, 6.1500000000000004, 5.7999999999999998, 5.2599999999999998],
+      "g": ["ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "g": {
+        "tipo": "factor",
+        "niveles": ["ctrl", "trt1", "trt2"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "g"
+    },
+    {
+      "metodo": "nemenyi",
+      "ajuste": "tukey"
+    }
+  ],
+  "esperado": {
+    "pares": [
+      {
+        "estadistico": 1.5805266578356194,
+        "p_ajustado": 0.50316444054643328
+      },
+      {
+        "estadistico": 2.3887505169561059,
+        "p_ajustado": 0.20933175280691607
+      },
+      {
+        "estadistico": 3.969277174791725,
+        "p_ajustado": 0.013867909348727281
+      }
+    ]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "pares[*].p_ajustado": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsNemenyiTest(y, g)"
+  }
+}

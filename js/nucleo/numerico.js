@@ -142,5 +142,46 @@ SP.definir('numerico', function (SP) {
     return { x, valor: fx };
   }
 
-  SP.num = { suma, sinFaltantes, media, varianza, resumen, minimizar };
+  /**
+   * Raíz de f en [ax, bx] con el algoritmo de Brent tal como lo usa uniroot() de R (R_zeroin2 de zeroin.c):
+   * mismos pasos y mismo criterio de paro, para que una función escalonada (p. ej. la de los intervalos de
+   * Wilcoxon) dé la misma raíz que R. fa y fb son f(ax) y f(bx); tol por omisión ε^¼ y hasta 1000 iteraciones.
+   */
+  function raizR(f, ax, bx, fa, fb, tol, maxit) {
+    const EPS = 2.220446049250313e-16;
+    tol = tol === undefined ? Math.pow(EPS, 0.25) : tol;
+    maxit = maxit === undefined ? 1000 : maxit;
+    if (fa === undefined) fa = f(ax);
+    if (fb === undefined) fb = f(bx);
+    let a = ax, b = bx, c = a, fc = fa;
+    if (fa === 0) return a;
+    if (fb === 0) return b;
+    let vueltas = maxit + 1;
+    while (vueltas--) {
+      const prevStep = b - a;
+      if (Math.abs(fc) < Math.abs(fb)) { a = b; b = c; c = a; fa = fb; fb = fc; fc = fa; }
+      const tolAct = 2 * EPS * Math.abs(b) + tol / 2;
+      let newStep = (c - b) / 2;
+      if (Math.abs(newStep) <= tolAct || fb === 0) return b;
+      if (Math.abs(prevStep) >= tolAct && Math.abs(fa) > Math.abs(fb)) {
+        let p, q, t1;
+        const cb = c - b;
+        if (a === c) { t1 = fb / fa; p = cb * t1; q = 1 - t1; }
+        else {
+          q = fa / fc; t1 = fb / fc; const t2 = fb / fa;
+          p = t2 * (cb * q * (q - t1) - (b - a) * (t1 - 1));
+          q = (q - 1) * (t1 - 1) * (t2 - 1);
+        }
+        if (p > 0) q = -q; else p = -p;
+        if (p < (0.75 * cb * q - Math.abs(tolAct * q) / 2) && p < Math.abs(prevStep * q / 2)) newStep = p / q;
+      }
+      if (Math.abs(newStep) < tolAct) newStep = newStep > 0 ? tolAct : -tolAct;
+      a = b; fa = fb;
+      b += newStep; fb = f(b);
+      if ((fb > 0 && fc > 0) || (fb < 0 && fc < 0)) { c = a; fc = fa; }
+    }
+    return b;
+  }
+
+  SP.num = { suma, sinFaltantes, media, varianza, resumen, minimizar, raizR };
 });

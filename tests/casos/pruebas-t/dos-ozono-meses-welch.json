@@ -1,0 +1,52 @@
+{
+  "esquema": 1,
+  "id": "pruebaT.dosMuestras/dos-ozono-meses-welch",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.dosMuestras"
+  },
+  "titulo": "Ozono de mayo contra agosto, con faltantes · Welch",
+  "fuente": "Chambers y col. (1983); conjunto airquality de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [41, 36, 12, 18, "NA", 28, 23, 19, 8, "NA", 7, 16, 11, 14, 18, 14, 34, 6, 30, 11, 1, 11, 4, 32, "NA", "NA", "NA", 23, 45, 115, 37],
+      "y": [39, 9, 16, 78, 35, 66, 122, 89, 110, "NA", "NA", 44, 28, 65, "NA", 22, 59, 23, 31, 44, 21, 9, "NA", 45, 168, 73, "NA", 76, 118, 84, 85]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      },
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    {
+      "columna": "y"
+    },
+    {
+      "nivel": 0.98999999999999999,
+      "varIguales": false
+    }
+  ],
+  "esperado": {
+    "t": -4.0748796622107628,
+    "gl": 39.279159302765969,
+    "p": 0.0002168565591924231,
+    "ic": [-60.490796067210994, -12.201511625096696],
+    "estimado": [23.615384615384617, 59.96153846153846]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, var.equal = FALSE, mu = 0, alternative = \"two.sided\", conf.level = 0.99)"
+  }
+}

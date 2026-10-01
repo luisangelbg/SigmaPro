@@ -1,0 +1,82 @@
+{
+  "esquema": 1,
+  "id": "np.paresFriedman/pares-friedman-redondeo-conover-tukey",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresFriedman"
+  },
+  "titulo": "Tiempo para rodear la base con tres métodos, 22 jugadores (empates): conover con ajuste tukey",
+  "fuente": "Hollander y Wolfe (1973), p. 140; ejemplo de friedman.test",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "y": [5.4000000000000004, 5.8499999999999996, 5.2000000000000002, 5.5499999999999998, 5.9000000000000004, 5.4500000000000002, 5.4000000000000004, 5.4500000000000002, 5.25, 5.8499999999999996, 5.25, 5.6500000000000004, 5.5999999999999996, 5.0499999999999998, 5.5, 5.4500000000000002, 5.5499999999999998, 5.4500000000000002, 5.5, 5.6500000000000004, 5.7000000000000002, 6.2999999999999998, 5.5, 5.7000000000000002, 5.5999999999999996, 5.5, 5.8499999999999996, 5.5499999999999998, 5.4000000000000004, 5.5, 5.1500000000000004, 5.7999999999999998, 5.2000000000000002, 5.5499999999999998, 5.3499999999999996, 5, 5.5, 5.5499999999999998, 5.5499999999999998, 5.5, 5.4500000000000002, 5.5999999999999996, 5.6500000000000004, 6.2999999999999998, 5.5499999999999998, 5.75, 5.5, 5.4000000000000004, 5.7000000000000002, 5.5999999999999996, 5.3499999999999996, 5.3499999999999996, 5, 5.7000000000000002, 5.0999999999999996, 5.4500000000000002, 5.4500000000000002, 4.9500000000000002, 5.4000000000000004, 5.5, 5.3499999999999996, 5.5499999999999998, 5.25, 5.4000000000000004, 5.5499999999999998, 6.25],
+      "trat": ["redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio"],
+      "bloque": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["redonda", "angulo.estrecho", "angulo.amplio"]
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "trat"
+    },
+    {
+      "columna": "bloque"
+    },
+    {
+      "metodo": "conover",
+      "ajuste": "tukey"
+    }
+  ],
+  "esperado": {
+    "pares": [
+      {
+        "estadistico": 1.0467340511863763,
+        "p": 0.30120902143937028,
+        "p_ajustado": 0.54733997754126595
+      },
+      {
+        "estadistico": 3.6635691791523168,
+        "p": 0.00069145347608536424,
+        "p_ajustado": 0.00072734570015309252
+      },
+      {
+        "estadistico": 2.6168351279659405,
+        "p": 0.01228285734789894,
+        "p_ajustado": 0.024099060342481105
+      }
+    ]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "pares[*].p_ajustado": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::frdAllPairsConoverTest(y, trat, bloque, p.adjust.method = \"single-step\")"
+  }
+}

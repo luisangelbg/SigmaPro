@@ -1,0 +1,46 @@
+{
+  "esquema": 1,
+  "id": "pruebaT.unaMuestra/una-plantas-menor",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.unaMuestra"
+  },
+  "titulo": "Peso del testigo contra 5.3, cola inferior, 99 %",
+  "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [4.1699999999999999, 5.5800000000000001, 5.1799999999999997, 6.1100000000000003, 4.5, 4.6100000000000003, 5.1699999999999999, 4.5300000000000002, 5.3300000000000001, 5.1399999999999997]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    {
+      "mu": 5.2999999999999998,
+      "alternativa": "menor",
+      "nivel": 0.98999999999999999
+    }
+  ],
+  "esperado": {
+    "t": -1.453443567047197,
+    "gl": 9,
+    "p": 0.090031424821705855,
+    "ic": ["-Inf", 5.552244047344125],
+    "estimado": 5.032
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, mu = 5.3, alternative = \"less\", conf.level = 0.99)"
+  }
+}

@@ -78,6 +78,13 @@ fuente público. La traducción es obra derivada bajo la misma licencia (GPL), c
 | Shapiro-Wilk (`js/metodos/supuestos.js`) | Royston (1995), algoritmo AS R94, *Applied Statistics* 44: 547–551 | `src/library/stats/src/swilk.c` de R 4.4.2 | GPL-2 o GPL-3 |
 | Distribución exacta de Kolmogorov | Marsaglia, Tsang y Wang (2003), *J. Stat. Softw.* 8(18) | `src/library/stats/src/ks.c` de R 4.4.2 | GPL-2 o GPL-3 |
 | P exacto de Durbin-Watson | Farebrother (1980, 1984), algoritmo AS 153 / AS R52, con la corrección de C. Cummins (1996) | `src/pan.f` del paquete lmtest | GPL-2 o GPL-3 |
+| Distribuciones exactas del rango con signo y de la suma de rangos de Wilcoxon (`js/nucleo/dist.js`) | conteos de Wilcoxon (1945) y Mann y Whitney (1947) | `src/nmath/signrank.c` y `src/nmath/wilcox.c` de R 4.4.2 | GPL-2 o GPL-3 |
+| t no central | Lenth (1989), algoritmo AS 243, con la serie de Guenther (1978) | `src/nmath/pnt.c` de R 4.4.2 | GPL-2 o GPL-3 |
+| Raíz de una función por el método de Brent como `uniroot()` (`js/nucleo/numerico.js`) | Brent (1973) | `R_zeroin2` de `src/library/stats/src/zeroin.c` de R 4.4.2 | GPL-2 o GPL-3 |
+
+Las letras de agrupación siguen el algoritmo de inserción y absorción de Piepho (2004) tal como lo programa
+`multcompLetters` de multcompView (GPL); el ajuste de los valores p, a `p.adjust` de R; y las comparaciones tras
+Kruskal-Wallis y Friedman, a las fórmulas de PMCMRplus (GPL-3).
 
 Las fórmulas de Lilliefors (Dallal y Wilkinson, 1986) y Anderson-Darling (Stephens, 1986) siguen al paquete
 nortest; la no aditividad de Tukey, a agricolae; Grubbs, a outliers, y las rachas, a randtests (todos GPL). El

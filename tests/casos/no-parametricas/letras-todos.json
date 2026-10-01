@@ -1,0 +1,24 @@
+{
+  "esquema": 1,
+  "id": "np.letras/letras-todos",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.letras"
+  },
+  "titulo": "Letras: todos (4 tratamientos)",
+  "fuente": "Patrones sintéticos",
+  "clase": "A",
+  "argumentos": [
+    ["t1", "t2", "t3", "t4"],
+    [true, true, true, true, true, true]
+  ],
+  "esperado": ["a", "b", "c", "d"],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "multcompView": "0.1.10"
+    },
+    "codigo": "multcompView::multcompLetters(m) con m[lower.tri(m)] <- sig"
+  }
+}

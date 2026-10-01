@@ -1,0 +1,52 @@
+{
+  "esquema": 1,
+  "id": "np.sumaRangos/suma-mu",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.sumaRangos"
+  },
+  "titulo": "Exacta con desplazamiento μ = 0.5",
+  "fuente": "Conjuntos de R (PlantGrowth, InsectSprays) y datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [5.2000000000000002, 6.0999999999999996, 4.7999999999999998, 7.2999999999999998, 6.5999999999999996, 5.9000000000000004, 6.7999999999999998],
+      "y": [4.0999999999999996, 3.8999999999999999, 5, 4.4000000000000004, 4.7000000000000002, 3.6000000000000001, "NA"]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      },
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    {
+      "columna": "y"
+    },
+    {
+      "mu": 0.5
+    }
+  ],
+  "esperado": {
+    "estadistico": 37.5,
+    "p": 0.022087459681077348,
+    "ic": [0.80005852687425172, 2.8999691889150743],
+    "estimado": 1.8654108175954369,
+    "nivelLogrado": 0.94999999999999996,
+    "exacta": false
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, y, mu = 0.5, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+  }
+}

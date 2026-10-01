@@ -1,0 +1,44 @@
+{
+  "esquema": 1,
+  "id": "np.signoRango/signo-nivel-inalcanzable",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+  },
+  "titulo": "Tres datos: el IC 95 % no se alcanza (queda en 75 %)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [1.2, 3.3999999999999999, 2.2000000000000002]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    null,
+    []
+  ],
+  "esperado": {
+    "estadistico": 6,
+    "p": 0.25000000000000006,
+    "ic": [1.2, 3.3999999999999999],
+    "estimado": 2.25,
+    "nivelLogrado": 0.75,
+    "exacta": true
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+  }
+}

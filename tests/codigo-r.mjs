@@ -69,7 +69,28 @@ const ESCENARIOS = [
     r: 'c(sw$statistic, sw$p.value, bf[1, "F value"], ba$statistic, dw$statistic, dw$p.value, ot$rstudent)',
     js: res => [res.normalidad.shapiro.W, res.normalidad.shapiro.p, res.varianzas.brown_forsythe.F, res.varianzas.bartlett.K2,
       res.independencia.durbin_watson.DW, res.independencia.durbin_watson.p, res.atipicos.rstudent] },
+  /* Hito 1.5: pruebas t y no paramétricas */
+  { ej: 'venenos', id: 'prueba-t', e: { modo: 'independientes', respuesta: 'tiempo', grupo: 'tratamiento', niveles: ['A', 'B'] }, op: {},
+    r: 'c(prueba$statistic, prueba$parameter, prueba$p.value, prueba$conf.int, varianzas$statistic, varianzas$p.value, varianzas$conf.int, efecto)',
+    js: res => [res.prueba.t, res.prueba.gl, res.prueba.p, ...res.prueba.ic, res.varianzas.F, res.varianzas.p, ...res.varianzas.ic, ...efectoDe(res)] },
+  { ej: 'jitomate', id: 'prueba-t', e: { modo: 'pareadas', antes: 'altura_30dds', despues: 'altura_15dds' }, op: { nivel: 0.9, mu: 40 },
+    r: 'c(prueba$statistic, prueba$parameter, prueba$p.value, prueba$conf.int, efecto)', js: res => [res.prueba.t, res.prueba.gl, res.prueba.p, ...res.prueba.ic, ...efectoDe(res)] },
+  { ej: 'frijol', id: 'prueba-t', e: { modo: 'una', variable: 'germinacion' }, op: { mu: 50, alternativa: 'menor' },
+    r: 'c(prueba$statistic, prueba$parameter, prueba$p.value, prueba$conf.int, efecto)', js: res => [res.prueba.t, res.prueba.gl, res.prueba.p, ...res.prueba.ic, ...efectoDe(res)] },
+  { ej: 'maiz', id: 'wilcoxon', e: { modo: 'independientes', respuesta: 'rend', grupo: 'hibrido' }, op: {},
+    r: 'c(prueba$statistic, prueba$p.value, prueba$conf.int, prueba$estimate)', js: res => [res.prueba.estadistico, res.prueba.p, ...res.prueba.ic, res.prueba.estimado] },
+  { ej: 'jitomate', id: 'wilcoxon', e: { modo: 'pareadas', antes: 'altura_60dds', despues: 'altura_45dds' }, op: { alternativa: 'mayor', mu: 30 },
+    r: 'c(prueba$statistic, prueba$p.value, prueba$conf.int[1], prueba$estimate)', js: res => [res.prueba.estadistico, res.prueba.p, res.prueba.ic[0], res.prueba.estimado] },
+  { ej: 'venenos', id: 'kruskal-wallis', e: { respuesta: 'tiempo', tratamiento: 'veneno' }, op: { posthoc: 'dunn', ajuste: 'holm' },
+    r: 'c(prueba$statistic, prueba$p.value, pc$p.value[lower.tri(pc$p.value, TRUE)])', js: res => [res.prueba.H, res.prueba.p, ...res.comparaciones.pares.map(p => p.p_ajustado)] },
+  { ej: 'aguacate', id: 'kruskal-wallis', e: { respuesta: 'trips', tratamiento: 'tratamiento' }, op: { posthoc: 'conover', ajuste: 'BH' },
+    r: 'c(prueba$statistic, prueba$p.value, pc$p.value[lower.tri(pc$p.value, TRUE)])', js: res => [res.prueba.H, res.prueba.p, ...res.comparaciones.pares.map(p => p.p_ajustado)] },
+  { ej: 'aguacate', id: 'friedman', e: { respuesta: 'trips', tratamiento: 'tratamiento', bloque: 'bloque' }, op: { posthoc: 'conover', ajuste: 'holm' },
+    r: 'c(prueba$statistic, prueba$p.value, W, pc$p.value[lower.tri(pc$p.value, TRUE)])', js: res => [res.prueba.Q, res.prueba.p, res.prueba.W, ...res.comparaciones.pares.map(p => p.p_ajustado)] },
+  { ej: 'aguacate', id: 'friedman', e: { respuesta: 'trips', tratamiento: 'tratamiento', bloque: 'bloque' }, op: { posthoc: 'wilcoxon', ajuste: 'bonferroni' },
+    r: 'c(prueba$statistic, pc$p.value[lower.tri(pc$p.value, TRUE)])', js: res => [res.prueba.Q, ...res.comparaciones.pares.map(p => p.p_ajustado)] },
 ];
+const efectoDe = res => [res.efecto.d, ...res.efecto.ic_d, res.efecto.g, ...res.efecto.ic_g];
 /* aggregate() de R deja el primer factor cambiando más rápido; la app, el último */
 function ordenR(res, k) {
   const facs = res.factores, t = res.tabla, idx = t[k].map((_, i) => i);
@@ -93,9 +114,9 @@ try {
       `invisible(capture.output({\n${codigo}\n}))\ncat(sprintf("%.17g", ${s.r}), sep = "\\n")\n`;
     writeFileSync(join(dir, 'g.R'), guion);
     let salida;
-    try { salida = execFileSync(R, [join(dir, 'g.R')], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }); }
+    try { salida = execFileSync(R, [join(dir, 'g.R')], { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }); }
     catch (e) { fallas++; console.log(`✗ ${n + 1}. ${s.id} con ${s.ej}: el código R falló\n${(e.stderr || e.message).split('\n').slice(0, 6).join('\n')}`); return; }
-    const deR = salida.trim().split(/\s+/).map(Number), deJS = s.js(resultado).map(Number);
+    const deR = salida.trim().split(/\s+/).map(v => (v === 'Inf' ? Infinity : v === '-Inf' ? -Infinity : Number(v))), deJS = s.js(resultado).map(Number);
     const malos = deR.map((v, i) => [v, deJS[i]]).filter(([a, b]) => !(a === b || (Number.isNaN(a) && Number.isNaN(b)) || Math.abs(a - b) <= 1e-6 * Math.max(1, Math.abs(a))));
     if (deR.length !== deJS.length || malos.length) { fallas++; console.log(`✗ ${n + 1}. ${s.id} con ${s.ej}: ${deR.length} números de R contra ${deJS.length} de la app; ${malos.length} distintos`, malos.slice(0, 4)); }
     else console.log(`✓ ${n + 1}. ${s.id} con ${s.ej}: ${deR.length} números iguales`);

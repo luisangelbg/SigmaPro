@@ -1,0 +1,66 @@
+{
+  "esquema": 1,
+  "id": "np.paresKruskal/pares-kruskal-plantas-dunn-holm",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+  },
+  "titulo": "Peso seco de plantas, 3 tratamientos: dunn con ajuste holm",
+  "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [4.1699999999999999, 5.5800000000000001, 5.1799999999999997, 6.1100000000000003, 4.5, 4.6100000000000003, 5.1699999999999999, 4.5300000000000002, 5.3300000000000001, 5.1399999999999997, 4.8099999999999996, 4.1699999999999999, 4.4100000000000001, 3.5899999999999999, 5.8700000000000001, 3.8300000000000001, 6.0300000000000002, 4.8899999999999997, 4.3200000000000003, 4.6900000000000004, 6.3099999999999996, 5.1200000000000001, 5.54, 5.5, 5.3700000000000001, 5.29, 4.9199999999999999, 6.1500000000000004, 5.7999999999999998, 5.2599999999999998],
+      "g": ["ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "g": {
+        "tipo": "factor",
+        "niveles": ["ctrl", "trt1", "trt2"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "g"
+    },
+    {
+      "metodo": "dunn",
+      "ajuste": "holm"
+    }
+  ],
+  "esperado": {
+    "pares": [
+      {
+        "estadistico": 1.1177254543787873,
+        "p": 0.26368426789138599,
+        "p_ajustado": 0.26368426789138599
+      },
+      {
+        "estadistico": -1.6892896071861212,
+        "p": 0.09116394404849984,
+        "p_ajustado": 0.18232788809699968
+      },
+      {
+        "estadistico": -2.8070150615649085,
+        "p": 0.0050002903702577005,
+        "p_ajustado": 0.015000871110773101
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsDunnTest(y, g, p.adjust.method = \"holm\")"
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "esquema": 1,
+  "id": "kruskal-wallis/metodo-kruskal-insectos",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kruskal-wallis"
+  },
+  "titulo": "Insecticidas: Conover-Iman con Tukey y letras",
+  "fuente": "Beall (1942); conjunto InsectSprays de R",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "y": [10, 7, 20, 14, 14, 12, 10, 23, 17, 20, 14, 13, 11, 17, 21, 11, 16, 14, 17, 17, 19, 21, 7, 13, 0, 1, 7, 2, 3, 1, 2, 1, 3, 0, 1, 4, 3, 5, 12, 6, 4, 3, 5, 5, 5, 5, 2, 4, 3, 5, 3, 5, 3, 6, 1, 1, 3, 2, 6, 4, 11, 9, 15, 22, 15, 16, 13, 10, 26, 26, 24, 13],
+      "g": ["A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "D", "D", "D", "D", "D", "D", "D", "D", "D", "D", "D", "D", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "E", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F", "F"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "g": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C", "D", "E", "F"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "y",
+    "tratamiento": "g"
+  },
+  "opciones": {
+    "posthoc": "conover",
+    "ajuste": "tukey",
+    "alfa": 0.050000000000000003
+  },
+  "esperado": {
+    "prueba": {
+      "H": 54.691344622371446,
+      "gl": 5,
+      "p": 1.5108444394185103e-10,
+      "eta2": 0.75289916094502196
+    },
+    "comparaciones": {
+      "pares": [
+        {
+          "estadistico": -0.62912620432642485,
+          "p": 0.53143804169974929,
+          "p_ajustado": 0.98843272908207669
+        },
+        {
+          "estadistico": 9.6040047129205615,
+          "p": 3.724418259727148e-14,
+          "p_ajustado": 0
+        },
+        {
+          "estadistico": 6.2716018493790369,
+          "p": 3.123271427035685e-08,
+          "p_ajustado": 4.6072234316518745e-07
+        },
+        {
+          "estadistico": 7.7461163907690915,
+          "p": 7.5390581746227241e-11,
+          "p_ajustado": 1.1156042756255147e-09
+        },
+        {
+          "estadistico": -0.8158980462358314,
+          "p": 0.41749337428635869,
+          "p_ajustado": 0.9636027921800806
+        },
+        {
+          "estadistico": 10.233130917246987,
+          "p": 2.9684730782485289e-15,
+          "p_ajustado": 0
+        },
+        {
+          "estadistico": 6.9007280537054614,
+          "p": 2.4313027716709013e-09,
+          "p_ajustado": 3.6082809962145745e-08
+        },
+        {
+          "estadistico": 8.3752425950955161,
+          "p": 5.6445895224713832e-12,
+          "p_ajustado": 7.5689898793029897e-11
+        },
+        {
+          "estadistico": -0.18677184190940649,
+          "p": 0.8524124598579258,
+          "p_ajustado": 0.99996704589069241
+        },
+        {
+          "estadistico": -3.3324028635415255,
+          "p": 0.0014140712891477999,
+          "p_ajustado": 0.017019797624993394
+        },
+        {
+          "estadistico": -1.8578883221514697,
+          "p": 0.067646156243339334,
+          "p_ajustado": 0.43686880665400485
+        },
+        {
+          "estadistico": -10.419902759156393,
+          "p": 1.4107221861108139e-15,
+          "p_ajustado": 0
+        },
+        {
+          "estadistico": 1.4745145413900558,
+          "p": 0.14509742394435876,
+          "p_ajustado": 0.68142341634668224
+        },
+        {
+          "estadistico": -7.0874998956148678,
+          "p": 1.1318364419756689e-09,
+          "p_ajustado": 1.6814723058367065e-08
+        },
+        {
+          "estadistico": -8.5620144370049243,
+          "p": 2.6187216058137203e-12,
+          "p_ajustado": 3.0495050928891487e-11
+        }
+      ]
+    },
+    "letras": ["a", "a", "c", "b", "bc", "a"]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "comparaciones.pares[*].p_ajustado": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "PMCMRplus": "1.9.12",
+      "multcompView": "0.1.10"
+    },
+    "codigo": "kruskal.test; PMCMRplus::kwAllPairs*Test; multcompView::multcompLetters con los niveles por rango medio decreciente"
+  }
+}

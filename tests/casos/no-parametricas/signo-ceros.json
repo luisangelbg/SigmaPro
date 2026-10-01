@@ -1,0 +1,46 @@
+{
+  "esquema": 1,
+  "id": "np.signoRango/signo-ceros",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+  },
+  "titulo": "Tres valores iguales a μ (se quitan; normal)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [2.1000000000000001, 3, 3, 1.7, 3.6000000000000001, 4.2000000000000002, 3, 2.8999999999999999, 5.0999999999999996, 0.40000000000000002]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    null,
+    {
+      "mu": 3
+    }
+  ],
+  "esperado": {
+    "estadistico": 12,
+    "p": 0.79984610566247327,
+    "ic": [1.0500071054306275, 4.6499211797345872],
+    "estimado": 2.8756805724949359,
+    "nivelLogrado": 0.94999999999999996,
+    "exacta": false
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, mu = 3, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+  }
+}

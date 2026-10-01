@@ -1,0 +1,119 @@
+{
+  "esquema": 1,
+  "id": "np.paresKruskal/pares-kruskal-pollos-nemenyi-tukey",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+  },
+  "titulo": "Peso de pollos por alimento, 6 grupos desbalanceados: nemenyi con ajuste tukey",
+  "fuente": "Anónimo (1948); conjunto chickwts de R",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "y": [179, 160, 136, 227, 217, 168, 108, 124, 143, 140, 309, 229, 181, 141, 260, 203, 148, 169, 213, 257, 244, 271, 243, 230, 248, 327, 329, 250, 193, 271, 316, 267, 199, 171, 158, 248, 423, 340, 392, 339, 341, 226, 320, 295, 334, 322, 297, 318, 325, 257, 303, 315, 380, 153, 263, 242, 206, 344, 258, 368, 390, 379, 260, 404, 318, 352, 359, 216, 222, 283, 332],
+      "g": ["horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "g": {
+        "tipo": "factor",
+        "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "g"
+    },
+    {
+      "metodo": "nemenyi",
+      "ajuste": "tukey"
+    }
+  ],
+  "esperado": {
+    "pares": [
+      {
+        "estadistico": 6.8064224480611735,
+        "p_ajustado": 2.1971604627912811e-05
+      },
+      {
+        "estadistico": 4.6784360725040424,
+        "p_ajustado": 0.012082026803635793
+      },
+      {
+        "estadistico": 2.0020973495627516,
+        "p_ajustado": 0.71752557366686043
+      },
+      {
+        "estadistico": 3.5352754910287509,
+        "p_ajustado": 0.12403247649039373
+      },
+      {
+        "estadistico": 0.25874758547481208,
+        "p_ajustado": 0.99997182005360619
+      },
+      {
+        "estadistico": 2.3457086767514896,
+        "p_ajustado": 0.55934894561925663
+      },
+      {
+        "estadistico": 4.7572986380813145,
+        "p_ajustado": 0.0099938963884496079
+      },
+      {
+        "estadistico": 3.679761576576885,
+        "p_ajustado": 0.096696738804110782
+      },
+      {
+        "estadistico": 7.0531285908690338,
+        "p_ajustado": 9.0791420928049149e-06
+      },
+      {
+        "estadistico": 2.5735033943603183,
+        "p_ajustado": 0.45287079286212695
+      },
+      {
+        "estadistico": 1.3197670674720232,
+        "p_ajustado": 0.93800834473304751
+      },
+      {
+        "estadistico": 4.9371836579788546,
+        "p_ajustado": 0.0063969181890951576
+      },
+      {
+        "estadistico": 1.3775912886895194,
+        "p_ajustado": 0.92624039612421027
+      },
+      {
+        "estadistico": 2.2551574803925774,
+        "p_ajustado": 0.60211033885449605
+      },
+      {
+        "estadistico": 3.8037905503180314,
+        "p_ajustado": 0.077248613556860302
+      }
+    ]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "pares[*].p_ajustado": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsNemenyiTest(y, g)"
+  }
+}

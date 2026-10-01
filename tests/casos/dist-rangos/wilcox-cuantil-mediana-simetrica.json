@@ -1,0 +1,27 @@
+{
+  "esquema": 1,
+  "id": "dist.qwilcox/wilcox-cuantil-mediana-simetrica",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "dist.qwilcox"
+  },
+  "titulo": "Cuantil 0.5 con m·n impar (7 pares): exacto por simetría, (mn − 1)/2",
+  "fuente": "Rejilla sintética",
+  "clase": "B",
+  "vectorizar": true,
+  "argumentos": [
+    [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+    [1, 3, 3, 5, 15, 49, 25],
+    [1, 3, 9, 5, 15, 49, 49],
+    true
+  ],
+  "esperado": [0, 4, 13, 12, 112, 1200, 612],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "(m * n - 1) / 2; R: qwilcox(0.5, m, n) = 0, 4, 13, 12, 112, 1201, 612"
+  }
+}

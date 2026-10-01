@@ -1,0 +1,44 @@
+{
+  "esquema": 1,
+  "id": "np.signoRango/signo-exacta",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.signoRango"
+  },
+  "titulo": "Sueño extra con el fármaco 2: exacta, sin empates ni ceros",
+  "fuente": "Cushny y Peebles (1905); conjunto sleep de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [1.8999999999999999, 0.80000000000000004, 1.1000000000000001, 0.10000000000000001, -0.10000000000000001, 4.4000000000000004, 5.5, 1.6000000000000001, 4.5999999999999996, 3.3999999999999999]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    null,
+    []
+  ],
+  "esperado": {
+    "estadistico": 53.5,
+    "p": 0.0092982232082981162,
+    "ic": [0.75002528511524535, 3.9999427050747665],
+    "estimado": 2.250018627159001,
+    "nivelLogrado": 0.94999999999999996,
+    "exacta": false
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "wilcox.test(x, mu = 0, alternative = \"two.sided\", conf.int = TRUE, conf.level = 0.95)"
+  }
+}

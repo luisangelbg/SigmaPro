@@ -1,0 +1,75 @@
+{
+  "esquema": 1,
+  "id": "np.friedman/friedman-catas",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.friedman"
+  },
+  "titulo": "Calificaciones de 8 jueces a 4 muestras (muchos empates)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [7, 6, 5, 8, 6, 7, 4, 6, 5, 6, 4, 6, 5, 6, 4, 5, 6, 7, 6, 8, 5, 7, 5, 7, 8, 9, 7, 9, 7, 8, 6, 8],
+      "trat": ["A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B", "C", "C", "C", "C", "C", "C", "C", "C", "D", "D", "D", "D", "D", "D", "D", "D"],
+      "bloque": ["juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8", "juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8", "juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8", "juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C", "D"]
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "trat"
+    },
+    {
+      "columna": "bloque"
+    }
+  ],
+  "esperado": {
+    "Q": 20.68,
+    "gl": 3,
+    "p": 0.00012267733534817156,
+    "W": 0.86166666666666669,
+    "n": 8,
+    "grupos": [
+      {
+        "mediana": 6,
+        "sumaRangos": 18
+      },
+      {
+        "mediana": 5,
+        "sumaRangos": 9.5
+      },
+      {
+        "mediana": 6.5,
+        "sumaRangos": 20.5
+      },
+      {
+        "mediana": 8,
+        "sumaRangos": 32
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "friedman.test(y, trat, bloque); W = Q / (n * (k - 1))"
+  }
+}

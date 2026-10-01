@@ -2,6 +2,31 @@
 
 ## Sin publicar
 
+### Hito 1.5 · pruebas t y no paramétricas (1 oct 2026)
+
+- Núcleo: distribuciones exactas del rango con signo y de la suma de rangos de Wilcoxon (`psignrank`, `qsignrank`,
+  `pwilcox`, `qwilcox`, con los conteos y el margen de 10ε de R), la t no central (AS 243, como `pnt.c`) y
+  `SP.num.raizR`, traducción paso a paso del `uniroot` de R para llegar a la misma raíz en funciones escalonadas.
+- `js/metodos/pruebas-t.js`: t de una muestra, de dos (Student y Welch) y pareada como `t.test`, F de razón de
+  varianzas como `var.test`, y d de Cohen y g de Hedges (corrección exacta) con su IC por la t no central. Método
+  «Prueba t» con semáforo de normalidad y varianzas (con Welch, varianzas distintas no son un problema).
+- `js/metodos/no-parametricas.js`: Wilcoxon de una muestra y pareada y Mann-Whitney con el estimador e intervalo de
+  Hodges-Lehmann (exacto o por la normal, como `wilcox.test`); Kruskal-Wallis con η² de H y comparaciones de Dunn,
+  Conover-Iman o Nemenyi; Friedman con la W de Kendall y comparaciones de Conover, Nemenyi o Wilcoxon pareada;
+  ajustes de Holm, Bonferroni, Benjamini-Hochberg o Tukey; y letras de agrupación por inserción y absorción (como
+  `multcompLetters`), con la «a» para el tratamiento de mayor rango.
+- Bloque 4 de la app: formularios para la prueba t y Wilcoxon (que comparten lo elegido) y para Kruskal-Wallis y
+  Friedman; gráfica de cajas con los puntos, la media y las letras (`SP.graficas.grupos`); un botón de copiar por
+  cuadro. Las marcas de los ejes usan los decimales que pide el paso (0.25 ya no se muestra como 0.3).
+- Validación: 115 casos nuevos contra R (7 471 valores) y dos hallazgos de clase B: `qwilcox(0.5, 49, 49)` da 1201
+  en vez de 1200 (C(98, 49) con error relativo de 4e-15), y los p de Nemenyi y de Tukey son 1 − `ptukey()`, que
+  debajo de 1e-6 solo tiene cifras absolutas (nueva regla `absoluto` del comparador). Documentado también: dunn.test
+  no hace monótonos sus p de Holm y BH, y PMCMRplus falla con bloques incompletos tras Friedman.
+- `tests/codigo-r.mjs`: 9 escenarios más (19 en total); el tamaño del efecto se escribe en R base. 9 pruebas
+  unitarias nuevas (reportes, errores con su arreglo, letras que respetan cada par, `p.adjust` monótono).
+- Con 100 000 filas: t en 0.03 s, Kruskal-Wallis en 0.11 s, Friedman en 0.18 s y Wilcoxon con su intervalo en
+  menos de 1 s.
+
 ### Hito 1.4 · supuestos y semáforo (1 oct 2026)
 
 - `js/metodos/supuestos.js`: normalidad (Shapiro-Wilk con el algoritmo AS R94 de R, Lilliefors, Anderson-Darling,

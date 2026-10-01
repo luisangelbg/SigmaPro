@@ -1,0 +1,71 @@
+{
+  "esquema": 1,
+  "id": "np.friedman/friedman-redondeo",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.friedman"
+  },
+  "titulo": "Tiempo para rodear la base con tres métodos, 22 jugadores (empates)",
+  "fuente": "Hollander y Wolfe (1973), p. 140; ejemplo de friedman.test",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [5.4000000000000004, 5.8499999999999996, 5.2000000000000002, 5.5499999999999998, 5.9000000000000004, 5.4500000000000002, 5.4000000000000004, 5.4500000000000002, 5.25, 5.8499999999999996, 5.25, 5.6500000000000004, 5.5999999999999996, 5.0499999999999998, 5.5, 5.4500000000000002, 5.5499999999999998, 5.4500000000000002, 5.5, 5.6500000000000004, 5.7000000000000002, 6.2999999999999998, 5.5, 5.7000000000000002, 5.5999999999999996, 5.5, 5.8499999999999996, 5.5499999999999998, 5.4000000000000004, 5.5, 5.1500000000000004, 5.7999999999999998, 5.2000000000000002, 5.5499999999999998, 5.3499999999999996, 5, 5.5, 5.5499999999999998, 5.5499999999999998, 5.5, 5.4500000000000002, 5.5999999999999996, 5.6500000000000004, 6.2999999999999998, 5.5499999999999998, 5.75, 5.5, 5.4000000000000004, 5.7000000000000002, 5.5999999999999996, 5.3499999999999996, 5.3499999999999996, 5, 5.7000000000000002, 5.0999999999999996, 5.4500000000000002, 5.4500000000000002, 4.9500000000000002, 5.4000000000000004, 5.5, 5.3499999999999996, 5.5499999999999998, 5.25, 5.4000000000000004, 5.5499999999999998, 6.25],
+      "trat": ["redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "redonda", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.estrecho", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio", "angulo.amplio"],
+      "bloque": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["redonda", "angulo.estrecho", "angulo.amplio"]
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "trat"
+    },
+    {
+      "columna": "bloque"
+    }
+  ],
+  "esperado": {
+    "Q": 11.142857142857142,
+    "gl": 2,
+    "p": 0.003805040775511363,
+    "W": 0.25324675324675322,
+    "n": 22,
+    "grupos": [
+      {
+        "mediana": 5.5,
+        "sumaRangos": 53
+      },
+      {
+        "mediana": 5.5250000000000004,
+        "sumaRangos": 47
+      },
+      {
+        "mediana": 5.4500000000000002,
+        "sumaRangos": 32
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "friedman.test(y, trat, bloque); W = Q / (n * (k - 1))"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "esquema": 1,
+  "id": "pruebaT.efecto/efecto-nulo",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.efecto"
+  },
+  "titulo": "Efecto casi nulo con 5 por grupo",
+  "fuente": "Conjuntos de R y datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [4.0999999999999996, 5.2000000000000002, 3.8999999999999999, 4.7999999999999998, 5],
+      "y": [4.4000000000000004, 4.5999999999999996, 5.0999999999999996, 4.2000000000000002, 4.7000000000000002]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      },
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    {
+      "columna": "y"
+    },
+    []
+  ],
+  "esperado": {
+    "d": 0,
+    "g": 0,
+    "J": 0.90270333367640987,
+    "gl": 8,
+    "ic_d": [-1.2395900646091227, 1.2395900646091231],
+    "ic_g": [-1.1189820837148114, 1.1189820837148117]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "d de Cohen; IC: uniroot(function(n) pt(t, gl, n) - c(1 - a/2, a/2), tol = 1e-13); g = d * J(gl)"
+  }
+}

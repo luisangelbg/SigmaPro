@@ -1,0 +1,24 @@
+{
+  "esquema": 1,
+  "id": "np.letras/letras-azar-10",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.letras"
+  },
+  "titulo": "Letras: azar-10 (10 tratamientos)",
+  "fuente": "Patrones sintéticos",
+  "clase": "A",
+  "argumentos": [
+    ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10"],
+    [true, false, true, true, false, false, false, false, false, false, false, false, true, true, true, true, true, true, false, false, false, false, false, false, false, true, true, true, false, false, false, true, false, true, true, false, false, false, false, true, false, true, true, true, false]
+  ],
+  "esperado": ["abc", "de", "abcdf", "eg", "def", "abcf", "a", "bf", "acg", "cg"],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "multcompView": "0.1.10"
+    },
+    "codigo": "multcompView::multcompLetters(m) con m[lower.tri(m)] <- sig"
+  }
+}

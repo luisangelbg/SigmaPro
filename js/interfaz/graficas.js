@@ -27,7 +27,12 @@
     for (let v = Math.ceil(a / paso) * paso; v <= b + paso * 1e-9; v += paso) lista.push(Math.abs(v) < paso * 1e-9 ? 0 : v);
     return { lista, paso };
   }
-  const texto = (v, paso) => { const d = Math.max(0, -Math.floor(Math.log10(paso) + 1e-9)); return v.toFixed(Math.min(6, d)).replace(/^-/, '−'); };
+  /* los decimales que necesita el paso (0.25 pide dos, 2.5 pide uno) */
+  const texto = (v, paso) => {
+    let d = Math.max(0, -Math.floor(Math.log10(paso) + 1e-9));
+    while (d < 6 && Math.abs(paso * 10 ** d - Math.round(paso * 10 ** d)) > 1e-6 * paso * 10 ** d) d++;
+    return v.toFixed(d).replace(/^-/, '−');
+  };
 
   function dispersion(op) {
     const xs = [], ys = [];
@@ -78,5 +83,63 @@
     return elegidos.concat(marcados);
   }
 
-  SP.graficas = { dispersion, adelgazar, marcas };
+  /**
+   * Cajas por grupo con los puntos encima (desplazados de lado sin azar), la media opcional, una letra
+   * sobre cada grupo y líneas de referencia:
+   *   SP.graficas.grupos({ titulo, descripcion, y: { titulo }, media: true,
+   *     grupos: [{ nombre, valores, letra }], referencias: [{ y, discontinua }] })
+   * Bigotes hasta el dato más extremo dentro de 1.5 RIC (como boxplot de R); los de más allá se resaltan.
+   */
+  function grupos(op) {
+    const gs = op.grupos.map(g => {
+      const v = Array.from(g.valores).filter(Number.isFinite), s = Float64Array.from(v).sort();
+      const [q1, me, q3] = s.length ? SP.desc.cuantil(s, [0.25, 0.5, 0.75]) : [NaN, NaN, NaN];
+      const ric = q3 - q1, dentro = s.filter(x => x >= q1 - 1.5 * ric && x <= q3 + 1.5 * ric);
+      return { nombre: g.nombre, letra: g.letra, v, max: s.length ? s[s.length - 1] : NaN, q1, me, q3, bajo: dentro.length ? dentro[0] : q1, alto: dentro.length ? dentro[dentro.length - 1] : q3, media: s.length ? SP.num.media(s) : NaN };
+    });
+    const k = gs.length;
+    let y0 = Infinity, y1 = -Infinity;
+    for (const g of gs) for (const v of g.v) { if (v < y0) y0 = v; if (v > y1) y1 = v; }
+    for (const r of op.referencias || []) { y0 = Math.min(y0, r.y); y1 = Math.max(y1, r.y); }
+    const hy = (y1 - y0) * 0.06 || 1;
+    y0 -= hy; y1 += hy * (gs.some(g => g.letra) ? 2.6 : 1);
+    const largo = Math.max(...gs.map(g => String(g.nombre).length));
+    const ancho = (W - M.l - M.r) / k, girar = largo * 6.6 > ancho - 6;
+    const mb = girar ? Math.min(120, 30 + largo * 4.6) : M.b;
+    const alto = H + (girar ? mb - M.b : 0);
+    const Y = v => M.t + (y1 - v) / (y1 - y0) * (alto - M.t - mb), cx = j => M.l + ancho * (j + 0.5);
+    const caja = Math.min(64, ancho * 0.55), my = marcas(y0, y1, 5), partes = [];
+    partes.push(`<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${alto - M.t - mb}" class="gr-fondo"/>`);
+    for (const v of my.lista) partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="gr-rejilla"/><text x="${M.l - 6}" y="${(Y(v) + 4).toFixed(1)}" text-anchor="end" class="gr-etq">${texto(v, my.paso)}</text>`);
+    for (const r of op.referencias || []) partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${Y(r.y).toFixed(1)}" y2="${Y(r.y).toFixed(1)}" class="gr-ref${r.discontinua ? ' disc' : ''}"/>`);
+    gs.forEach((g, j) => {
+      const x = cx(j), a = caja / 2;
+      if (Number.isFinite(g.q1)) {
+        partes.push(`<line x1="${x}" x2="${x}" y1="${Y(g.alto).toFixed(1)}" y2="${Y(g.q3).toFixed(1)}" class="gr-bigote"/><line x1="${x}" x2="${x}" y1="${Y(g.q1).toFixed(1)}" y2="${Y(g.bajo).toFixed(1)}" class="gr-bigote"/>`);
+        partes.push(`<line x1="${(x - a / 2).toFixed(1)}" x2="${(x + a / 2).toFixed(1)}" y1="${Y(g.alto).toFixed(1)}" y2="${Y(g.alto).toFixed(1)}" class="gr-bigote"/><line x1="${(x - a / 2).toFixed(1)}" x2="${(x + a / 2).toFixed(1)}" y1="${Y(g.bajo).toFixed(1)}" y2="${Y(g.bajo).toFixed(1)}" class="gr-bigote"/>`);
+        partes.push(`<rect x="${(x - a).toFixed(1)}" y="${Y(g.q3).toFixed(1)}" width="${caja.toFixed(1)}" height="${Math.max(1, Y(g.q1) - Y(g.q3)).toFixed(1)}" class="gr-caja"/>`);
+        partes.push(`<line x1="${(x - a).toFixed(1)}" x2="${(x + a).toFixed(1)}" y1="${Y(g.me).toFixed(1)}" y2="${Y(g.me).toFixed(1)}" class="gr-mediana"/>`);
+      }
+      const pts = g.v.length > 400 ? adelgazar(g.v.map(y => ({ y })), 400).map(p => p.y) : g.v;
+      pts.forEach((y, i) => {
+        const dx = (((i * 0.6180339887) % 1) - 0.5) * caja * 0.8, fuera = y < g.bajo || y > g.alto;
+        partes.push(`<circle cx="${(x + dx).toFixed(1)}" cy="${Y(y).toFixed(1)}" r="${fuera ? 3.6 : 2.6}" class="gr-punto${fuera ? ' marca' : ''}"/>`);
+      });
+      if (op.media && Number.isFinite(g.media)) {
+        const ym = Y(g.media);
+        partes.push(`<path d="M${x} ${(ym - 5).toFixed(1)} L${x + 5} ${ym.toFixed(1)} L${x} ${(ym + 5).toFixed(1)} L${x - 5} ${ym.toFixed(1)} Z" class="gr-media"/>`);
+      }
+      if (g.letra) partes.push(`<text x="${x}" y="${Math.max(M.t + 13, Y(g.max) - 9).toFixed(1)}" text-anchor="middle" class="gr-letra">${esc(g.letra)}</text>`);
+      const et = esc(g.nombre), ty = alto - mb + 16;
+      partes.push(girar
+        ? `<text transform="translate(${x + 4} ${ty - 4}) rotate(-35)" text-anchor="end" class="gr-etq">${et}</text>`
+        : `<text x="${x}" y="${ty}" text-anchor="middle" class="gr-etq">${et}</text>`);
+    });
+    partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${alto - mb}" y2="${alto - mb}" class="gr-eje"/><line x1="${M.l}" x2="${M.l}" y1="${M.t}" y2="${alto - mb}" class="gr-eje"/>`);
+    partes.push(`<text transform="translate(16 ${(M.t + alto - mb) / 2}) rotate(-90)" text-anchor="middle" class="gr-titulo-eje">${esc(op.y.titulo)}</text>`);
+    return `<figure class="sp-grafica"><svg viewBox="0 0 ${W} ${alto}" role="img" aria-label="${esc(op.descripcion || op.titulo)}" data-sigmapro-figura="${esc(op.titulo)}">` +
+      `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
+  }
+
+  SP.graficas = { dispersion, grupos, adelgazar, marcas };
 })();

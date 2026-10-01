@@ -1,0 +1,89 @@
+{
+  "esquema": 1,
+  "id": "np.paresFriedman/pares-friedman-catas-wilcoxon-holm",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresFriedman"
+  },
+  "titulo": "Calificaciones de 8 jueces a 4 muestras (muchos empates): wilcoxon con ajuste holm",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [7, 6, 5, 8, 6, 7, 4, 6, 5, 6, 4, 6, 5, 6, 4, 5, 6, 7, 6, 8, 5, 7, 5, 7, 8, 9, 7, 9, 7, 8, 6, 8],
+      "trat": ["A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B", "C", "C", "C", "C", "C", "C", "C", "C", "D", "D", "D", "D", "D", "D", "D", "D"],
+      "bloque": ["juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8", "juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8", "juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8", "juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C", "D"]
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "trat"
+    },
+    {
+      "columna": "bloque"
+    },
+    {
+      "metodo": "wilcoxon",
+      "ajuste": "holm"
+    }
+  ],
+  "esperado": {
+    "pares": [
+      {
+        "estadistico": 21,
+        "p": 0.030544849976475236,
+        "p_ajustado": 0.06923993094155384
+      },
+      {
+        "estadistico": 7,
+        "p": 0.48401835470478199,
+        "p_ajustado": 0.48401835470478199
+      },
+      {
+        "estadistico": 0,
+        "p": 0.012643830673814168,
+        "p_ajustado": 0.06923993094155384
+      },
+      {
+        "estadistico": 0,
+        "p": 0.019222025736867317,
+        "p_ajustado": 0.06923993094155384
+      },
+      {
+        "estadistico": 0,
+        "p": 0.011539988490258973,
+        "p_ajustado": 0.06923993094155384
+      },
+      {
+        "estadistico": 0,
+        "p": 0.011539988490258973,
+        "p_ajustado": 0.06923993094155384
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "PMCMRplus": "1.9.12"
+    },
+    "codigo": "pairwise.wilcox.test(y, trat, paired = TRUE, p.adjust.method = \"holm\")"
+  }
+}

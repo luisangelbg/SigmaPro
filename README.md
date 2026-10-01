@@ -15,7 +15,7 @@ medias, regresión y, más adelante, modelos mixtos y ensayos multiambiente. For
 
 ## Estado
 
-En construcción, por hitos. **Hitos 1.0 a 1.4 terminados:** cimientos (registro de métodos, cálculos en
+En construcción, por hitos. **Hitos 1.0 a 1.5 terminados:** cimientos (registro de métodos, cálculos en
 hilos de trabajo, pruebas automáticas en node y en el navegador, generador de referencias con R y reporte
 de validación), núcleo numérico (distribuciones, álgebra, fórmulas y modelo lineal con sumas de cuadrados
 tipo I, II y III) y el bloque de **Datos**: hoja de cálculo para 100 000 filas con deshacer, importación de
@@ -24,8 +24,11 @@ calculadas, transformaciones con Box-Cox, cambio de forma ancha ⇄ larga, diagn
 y siete conjuntos de ejemplo; y el bloque **Explorar**: descriptivos por hasta tres factores con sus
 intervalos, frecuencias, proporciones con seis intervalos y bondad de ajuste ji cuadrada, cada uno con el
 código R que reproduce sus números; y la **revisión de los supuestos** del modelo (normalidad, varianzas, aditividad,
-independencia y atípicos) con semáforo, recomendaciones y gráficas de diagnóstico. Validado contra R en 257 casos y
-23 021 valores. El plan completo está en
+independencia y atípicos) con semáforo, recomendaciones y gráficas de diagnóstico; y las **pruebas t** (una muestra,
+Student, Welch y pareada, con la F de varianzas y la d de Cohen y la g de Hedges con su intervalo) y **no
+paramétricas** (Wilcoxon y Mann-Whitney con Hodges-Lehmann, Kruskal-Wallis y Friedman con Dunn, Conover-Iman,
+Nemenyi o Wilcoxon pareada, ajustes de Holm, Bonferroni y BH, y letras de agrupación). Validado contra R en 372
+casos y 30 492 valores. El plan completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
 [`propuesta/maqueta.html`](propuesta/maqueta.html).
 

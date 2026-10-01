@@ -1,0 +1,109 @@
+{
+  "esquema": 1,
+  "id": "np.paresFriedman/pares-friedman-campo-wilcoxon-bh",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresFriedman"
+  },
+  "titulo": "5 variedades en 6 bloques, un faltante (el bloque sale): wilcoxon con ajuste BH",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [37.100000000000001, 39.100000000000001, 40.799999999999997, 36.5, 40.600000000000001, 40.100000000000001, 43.299999999999997, 46.299999999999997, 39.299999999999997, "NA", 40.799999999999997, 39.600000000000001, 42.899999999999999, 45.799999999999997, 45.5, 44.100000000000001, 42.100000000000001, 43.100000000000001, 44.700000000000003, 41.600000000000001, 39.299999999999997, 38.200000000000003, 40.399999999999999, 36, 45.5, 44.799999999999997, 50.5, 50, 46.799999999999997, 43.600000000000001],
+      "trat": ["v1", "v1", "v1", "v1", "v1", "v1", "v2", "v2", "v2", "v2", "v2", "v2", "v3", "v3", "v3", "v3", "v3", "v3", "v4", "v4", "v4", "v4", "v4", "v4", "v5", "v5", "v5", "v5", "v5", "v5"],
+      "bloque": ["b1", "b2", "b3", "b4", "b5", "b6", "b1", "b2", "b3", "b4", "b5", "b6", "b1", "b2", "b3", "b4", "b5", "b6", "b1", "b2", "b3", "b4", "b5", "b6", "b1", "b2", "b3", "b4", "b5", "b6"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["v1", "v2", "v3", "v4", "v5"]
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["b1", "b2", "b3", "b4", "b5", "b6"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "trat"
+    },
+    {
+      "columna": "bloque"
+    },
+    {
+      "metodo": "wilcoxon",
+      "ajuste": "BH"
+    }
+  ],
+  "esperado": {
+    "pares": [
+      {
+        "estadistico": 5,
+        "p": 0.625,
+        "p_ajustado": 0.69444444444444442
+      },
+      {
+        "estadistico": 0,
+        "p": 0.0625,
+        "p_ajustado": 0.20833333333333334
+      },
+      {
+        "estadistico": 7,
+        "p": 1,
+        "p_ajustado": 1
+      },
+      {
+        "estadistico": 0,
+        "p": 0.0625,
+        "p_ajustado": 0.20833333333333334
+      },
+      {
+        "estadistico": 3,
+        "p": 0.3125,
+        "p_ajustado": 0.44642857142857145
+      },
+      {
+        "estadistico": 8,
+        "p": 0.36131042852617873,
+        "p_ajustado": 0.45163803565772342
+      },
+      {
+        "estadistico": 1,
+        "p": 0.125,
+        "p_ajustado": 0.3125
+      },
+      {
+        "estadistico": 13,
+        "p": 0.1875,
+        "p_ajustado": 0.3125
+      },
+      {
+        "estadistico": 2,
+        "p": 0.1875,
+        "p_ajustado": 0.3125
+      },
+      {
+        "estadistico": 0,
+        "p": 0.0625,
+        "p_ajustado": 0.20833333333333334
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "PMCMRplus": "1.9.12"
+    },
+    "codigo": "pairwise.wilcox.test(y, trat, paired = TRUE, p.adjust.method = \"BH\")"
+  }
+}

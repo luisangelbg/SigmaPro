@@ -1,0 +1,53 @@
+{
+  "esquema": 1,
+  "id": "pruebaT.dosMuestras/dos-insectos-welch",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.dosMuestras"
+  },
+  "titulo": "Insecticida C contra A: varianzas muy distintas · Welch",
+  "fuente": "Beall (1942); conjunto InsectSprays de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [0, 1, 7, 2, 3, 1, 2, 1, 3, 0, 1, 4],
+      "y": [10, 7, 20, 14, 14, 12, 10, 23, 17, 20, 14, 13]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      },
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    {
+      "columna": "y"
+    },
+    {
+      "alternativa": "menor",
+      "nivel": 0.90000000000000002,
+      "varIguales": false
+    }
+  ],
+  "esperado": {
+    "t": -8.4073394990904653,
+    "gl": 14.739011598050247,
+    "p": 2.6392382720006141e-07,
+    "ic": ["-Inf", -10.435131356658591],
+    "estimado": [2.0833333333333335, 14.5]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "t.test(x, y, var.equal = FALSE, mu = 0, alternative = \"less\", conf.level = 0.9)"
+  }
+}

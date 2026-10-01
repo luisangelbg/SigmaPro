@@ -18,6 +18,7 @@ Reglas adicionales (las aplica `tests/lib/comparar.js`):
 | **Valores p diminutos.** Si la clave se llama `p`, empieza con `p_` o termina en `_p`, y 0 < \|R\| < 1e-6, se exige además error relativo ≤ 1e-6. | Que un p de 1e-20 no apruebe solo por ser «casi cero». |
 | **Modo relativo** (`comparacion: { modo: 'relativo' }`): \|SigmaPro − R\| ≤ 1e-6 · \|R\|. | Magnitudes pequeñas que no son valores p (concentraciones, varianzas de 1e-18). |
 | **Tolerancia propia por ruta**, siempre con su motivo: `tolerancias: { 'dunnett.p[*]': { tol: 1e-4, motivo: '…' } }`. | Clases B, C y E (abajo). El motivo aparece en el reporte. |
+| **Piso absoluto por ruta**, con su motivo: `tolerancias: { 'pares[*].p_ajustado': { absoluto: 1e-12, motivo: '…' } }`; el límite nunca baja de ese piso. | Valores p que R obtiene como 1 − P de una integral numérica (rango estudentizado): debajo de 1e-6 solo tienen cifras absolutas, en R y en cualquier programa. |
 | `"NA"` y `"NaN"` en la referencia esperan un faltante; `"Inf"` y `"-Inf"`, infinito. Textos y lógicos se comparan exactos. | Paridad con R también en los casos límite. |
 | Solo se comparan las claves que trae la referencia, pero **todas** deben existir en el resultado. | El resultado puede traer más información que R. |
 
@@ -44,6 +45,8 @@ con una identidad exacta.
 | Fligner-Killeen (`fligner.test`) | Centra con la mediana y ordena \|x − mediana\|; la resta binaria deja casi-empates como 0.0049999999999999888 y 0.0050000000000000001 (los dos son 0.005) y R los ordena como distintos: su estadístico depende del ruido del punto flotante. | Referencia = la misma fórmula en R con \|x − mediana\| redondeado a 12 cifras de la escala antes de los rangos; SigmaPro conserva así los empates. Con datos sin casi-empates (conteos, enteros) coincide con `fligner.test` tal cual. |
 | No aditividad de Tukey (`agricolae::nonadditivity`) | Calcula p = 1 − pf(F, 1, gl): con p ≈ 7e-13 pierde cifras (error relativo 7.9e-5). | Referencia = `pf(F, 1, gl, lower.tail = FALSE)` con el F de agricolae, que coincide en todo lo demás. |
 | Cuantil de t con menos de 1 gl y colas diminutas (`qt`) | `pt(qt(1e-8, 0.5, lower.tail = FALSE), 0.5, lower.tail = FALSE)` da 9.99999986e-9: error relativo 2.9e-8. | Referencia = inversión exacta de `pt` en escala logarítmica (dif. 2.8e-14). |
+| Cuantil exacto de la suma de rangos en la mediana (`qwilcox`) | Con m · n impar, P(W ≤ (mn − 1)/2) = ½ exactamente. Con m = n = 49, `choose(98, 49)` de R (exp de lbeta) trae un error relativo de 4e-15, la suma queda 2.3e-15 debajo de ½ —más allá de su margen de 10ε— y `qwilcox(0.5, 49, 49)` da 1201 en vez de 1200. | Referencia = (mn − 1)/2 exacto por simetría, en los 8 pares con m · n impar; la rejilla general se compara contra `qwilcox` tal cual. |
+| p de Nemenyi y de Conover con ajuste de Tukey (PMCMRplus) | El p es 1 − `ptukey()`, una integral numérica (AS 190): por debajo de 1e-6 solo tiene cifras absolutas, en R y en cualquier programa (con p ≈ 3e-11, R y SigmaPro difieren 1.4e-14, un 5e-4 relativo). | Mismo algoritmo; en esas rutas el límite tiene un piso absoluto de 1e-12 (regla `absoluto`, con su motivo en el reporte). Los p mayores siguen con 1e-6. |
 
 Nota: para la t con más de 4 × 10⁵ grados de libertad, R usa una aproximación normal corregida; SigmaPro usa la
 beta incompleta exacta. Coinciden a 4.5e-11.
@@ -106,6 +109,46 @@ ajuste por celdas (tablas grandes) da los mismos residuos, palancas y Durbin-Wat
 Dos convenciones de R que la app sigue a propósito: los números se muestran y se copian con 15 cifras
 significativas, como `as.character()` (0.1 + 0.2 se ve «0.3»), y los niveles sin observaciones (por un filtro
 o por la edición) se quitan antes del análisis, como `droplevels()`.
+
+## Pruebas t y no paramétricas (Hito 1.5)
+
+| Qué | Contra qué | Casos |
+|---|---|---|
+| Rango con signo y suma de rangos de Wilcoxon: probabilidades exactas (ambas colas, error relativo), cuantiles y cuantiles justo en los saltos, con n y m hasta 70 | `psignrank`, `qsignrank`, `pwilcox`, `qwilcox` (y un caso de clase B) | 11 |
+| t no central: rejilla de 1 188 puntos con t negativo, ncp > 40 y gl > 4 × 10⁵ (todas las ramas de AS 243) | `pt(q, gl, ncp)` | 4 |
+| t de una muestra, de dos (Student y Welch, con cola, μ ≠ 0, desbalance, faltantes) y pareada | `t.test` | 17 |
+| F de razón de varianzas, bilateral y de una cola, con razón ≠ 1 | `var.test` | 3 |
+| d de Cohen y g de Hedges con su IC por la t no central (una muestra, pareada, dos muestras, efecto nulo y enorme) | las fórmulas, con el IC por `uniroot` a 1e-13 sobre `pt(t, gl, ncp)` | 6 |
+| Wilcoxon de una muestra y pareada: exacta, normal con y sin corrección, empates, ceros, n ≥ 50, exacta pedida con empates, IC inalcanzable | `wilcox.test(conf.int = TRUE)`: estadístico, p, IC de Hodges-Lehmann, estimador y nivel logrado | 13 |
+| Suma de rangos (Mann-Whitney) en los mismos escenarios, con desplazamiento μ | `wilcox.test(x, y, conf.int = TRUE)` | 9 |
+| Kruskal-Wallis con η² de H (empates, faltantes, 6 grupos desbalanceados) | `kruskal.test` | 4 |
+| Dunn, Conover-Iman y Nemenyi con Holm, Bonferroni, BH y Tukey | `PMCMRplus::kwAllPairsDunnTest`, `kwAllPairsConoverTest`, `kwAllPairsNemenyiTest` | 11 |
+| Friedman y W de Kendall (con empates y un bloque incompleto) | `friedman.test` | 3 |
+| Conover, Nemenyi y Wilcoxon pareada tras Friedman | `PMCMRplus::frdAllPairsConoverTest`, `frdAllPairsNemenyiTest`, `pairwise.wilcox.test(paired = TRUE)` | 9 |
+| Ajuste de valores p (con empates y un faltante) | `p.adjust` | 3 |
+| Letras de agrupación (sin diferencias, todas, escalera, al azar con hasta 13 tratamientos y 60 tratamientos con más de 52 letras) | `multcompView::multcompLetters` | 9 |
+| Los métodos completos: prueba t, Wilcoxon, Kruskal-Wallis y Friedman con letras | todo lo anterior | 13 |
+
+El intervalo de Hodges-Lehmann por la aproximación normal es la raíz de una función escalonada que R busca con
+`uniroot(tol = 1e-4)`: SigmaPro traduce paso a paso el mismo algoritmo (`R_zeroin2` de `zeroin.c`), así que llega
+al mismo punto y no solo a un punto parecido. Las distribuciones exactas se calculan con los mismos conteos que
+`signrank.c` y `wilcox.c` (incluido el margen de 10ε de los cuantiles).
+
+Tres notas sobre los paquetes de referencia:
+
+- **dunn.test** (y FSA, que lo usa) reporta con Holm y con BH valores p ajustados que no son monótonos (no aplica
+  el máximo o el mínimo acumulado); sus decisiones coinciden con las de Holm y BH, pero sus p no. SigmaPro sigue
+  `p.adjust`, como PMCMRplus, que es la referencia.
+- **PMCMRplus** falla con un bloque incompleto en las pruebas tras Friedman (`frdRanks` no reajusta los nombres de
+  los bloques). La referencia le pasa solo los bloques completos, que es lo mismo que hace `friedman.test`, y el
+  código R que muestra la app hace ese filtro antes.
+- **t no central:** R acumula la serie de `pnt.c` en doble extendido y SigmaPro en doble. Por encima de 1e-6 las
+  probabilidades coinciden en error relativo (hasta 2e-7); más abajo, en la cola inferior con t muy por debajo de
+  ncp, ninguna de las dos conserva cifras relativas (el residuo de la serie es de ±1e-12) y se comparan en
+  absoluto, como toda probabilidad. Esas colas no intervienen en ningún intervalo de la app.
+
+`tests/codigo-r.mjs` corre también el código R de los cuatro métodos nuevos (9 escenarios más): el tamaño del
+efecto se escribe con la t no central en R base, sin paquetes, para que dé exactamente lo mismo que la app.
 
 ## Dónde está cada cosa
 

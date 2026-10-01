@@ -33,6 +33,14 @@ SPT.describir('Validación · comparador contra R', () => {
     SPT.afirmar(ok({ pendiente: 3e-12 }, { pendiente: 1e-12 }), 'una clave que no es valor p sigue el modo mixto');
   });
 
+  SPT.caso('el piso absoluto de una ruta acepta p diminutos que solo tienen cifras absolutas, y nada más', () => {
+    const op = { tolerancias: { 'pares[*].p_ajustado': { absoluto: 1e-12, motivo: 'p = 1 − ptukey' } } };
+    SPT.afirmar(ok({ pares: [{ p_ajustado: 3.0509e-11 }] }, { pares: [{ p_ajustado: 3.0495e-11 }] }, op), '|dif| = 1.4e-14 ≤ 1e-12');
+    SPT.afirmar(!ok({ pares: [{ p_ajustado: 3e-11 }] }, { pares: [{ p_ajustado: 1e-11 }] }, op), '|dif| = 2e-11 > 1e-12');
+    SPT.afirmar(!ok({ pares: [{ p_ajustado: 0.2 + 2e-6 }] }, { pares: [{ p_ajustado: 0.2 }] }, op), 'los p normales siguen con 1e-6');
+    SPT.afirmar(!ok({ otro: { p_ajustado: 3.0509e-11 } }, { otro: { p_ajustado: 3.0495e-11 } }, op), 'solo en la ruta indicada');
+  });
+
   SPT.caso('NA, NaN, Inf y -Inf de R', () => {
     SPT.afirmar(ok({ a: NaN, b: null }, { a: 'NA', b: 'NaN' }));
     SPT.afirmar(!ok({ a: 0 }, { a: 'NA' }), 'un número donde R dio NA falla');

@@ -397,6 +397,168 @@ SP.definir('dist', function (SP) {
     else { while (k < n && !cumple(k)) k++; }
     return k;
   }
+  /* ---------------- distribuciones exactas de rangos (Wilcoxon) ----------------
+     Conteos exactos: c[k] = número de subconjuntos de {1, …, n} que suman k (rango con signo) y número de
+     ordenaciones con estadístico U = k (suma de rangos, por la recurrencia f(k; m, n) = f(k − n; m − 1, n) +
+     f(k; m, n − 1)). Solo sumas de positivos: sin cancelación. Las probabilidades suman la cola más corta y
+     los cuantiles usan el margen de 10ε, como signrank.c y wilcox.c de R. */
+  const conteoSR = new Map(), conteoW = new Map();
+  function conteosSignrank(n) {
+    let c = conteoSR.get(n);
+    if (c) return c;
+    const tope = n * (n + 1) / 2;
+    c = new Float64Array(tope + 1); c[0] = 1;
+    for (let i = 1; i <= n; i++) for (let s = i * (i + 1) / 2; s >= i; s--) c[s] += c[s - i];
+    if (conteoSR.size > 50) conteoSR.clear();
+    conteoSR.set(n, c);
+    return c;
+  }
+  function psignrank(x, n, inferior) {
+    inferior = inferior !== false;
+    if (!(n > 0) || n !== floor(n)) return NaN;
+    x = Math.round(x + 1e-7);
+    if (x < 0) return inferior ? 0 : 1;
+    if (x >= n * (n + 1) / 2) return inferior ? 1 : 0;
+    const c = conteosSignrank(n), f = exp(-n * Math.LN2);
+    let p = 0;
+    if (x <= n * (n + 1) / 4) { for (let i = 0; i <= x; i++) p += c[i] * f; }
+    else { const y = n * (n + 1) / 2 - x; for (let i = 0; i < y; i++) p += c[i] * f; inferior = !inferior; }
+    return inferior ? p : 0.5 - p + 0.5;
+  }
+  function dsignrank(x, n) {
+    if (x < 0 || x !== floor(x) || x > n * (n + 1) / 2) return 0;
+    return exp(log(conteosSignrank(n)[x]) - n * Math.LN2);
+  }
+  function qsignrank(p, n, inferior) {
+    inferior = inferior !== false;
+    if (!pValido(p) || !(n > 0)) return NaN;
+    if (!inferior) p = 0.5 - p + 0.5;
+    if (p === 0) return 0;
+    if (p === 1) return n * (n + 1) / 2;
+    const c = conteosSignrank(n), f = exp(-n * Math.LN2), EPS = 2.220446049250313e-16;
+    let s = 0, q = 0;
+    if (p <= 0.5) { p = p - 10 * EPS; for (;;) { s += c[q] * f; if (s >= p) break; q++; } }
+    else { p = 1 - p + 10 * EPS; for (;;) { s += c[q] * f; if (s > p) { q = n * (n + 1) / 2 - q; break; } q++; } }
+    return q;
+  }
+  function conteosWilcox(m, n) {
+    const clave = m + ',' + n;
+    let c = conteoW.get(clave);
+    if (c) return c;
+    /* f[m'][k] para el n' en curso; se recorre n' = 0 … n */
+    const tope = m * n;
+    let f = Array.from({ length: m + 1 }, () => new Float64Array(tope + 1));
+    for (let a = 0; a <= m; a++) f[a][0] = 1;
+    for (let b = 1; b <= n; b++) {
+      const g = Array.from({ length: m + 1 }, () => new Float64Array(tope + 1));
+      g[0][0] = 1;
+      for (let a = 1; a <= m; a++) {
+        const ga = g[a], gant = g[a - 1], fa = f[a], lim = a * b;
+        for (let k = 0; k <= lim; k++) ga[k] = (k >= b ? gant[k - b] : 0) + fa[k];
+      }
+      f = g;
+    }
+    c = f[m];
+    if (conteoW.size > 50) conteoW.clear();
+    conteoW.set(clave, c);
+    return c;
+  }
+  /** C(N, k) como choose() de R: el k menor, producto si k < 30 y si no exp(−log(N + 1) − lbeta(N − k + 1, k + 1)). */
+  function chooseR(N, k) {
+    if (N - k < k) k = N - k;
+    if (k < 30) { let r = N; for (let j = 2; j <= k; j++) r *= (N - j + 1) / j; return Math.round(r); }
+    return Math.round(exp(-log(N + 1) - lbeta(N - k + 1, k + 1)));
+  }
+  function pwilcox(q, m, n, inferior) {
+    inferior = inferior !== false;
+    if (!(m > 0 && n > 0)) return NaN;
+    q = floor(q + 1e-7);
+    if (q < 0) return inferior ? 0 : 1;
+    if (q >= m * n) return inferior ? 1 : 0;
+    const c = conteosWilcox(m, n), tot = chooseR(m + n, n);
+    let p = 0;
+    if (q <= m * n / 2) { for (let i = 0; i <= q; i++) p += c[i] / tot; }
+    else { const y = m * n - q; for (let i = 0; i < y; i++) p += c[i] / tot; inferior = !inferior; }
+    return inferior ? p : 0.5 - p + 0.5;
+  }
+  function dwilcox(x, m, n) {
+    if (x < 0 || x !== floor(x) || x > m * n) return 0;
+    return conteosWilcox(m, n)[x] / chooseR(m + n, n);
+  }
+  function qwilcox(p, m, n, inferior) {
+    inferior = inferior !== false;
+    if (!pValido(p) || !(m > 0 && n > 0)) return NaN;
+    if (!inferior) p = 0.5 - p + 0.5;
+    if (p === 0) return 0;
+    if (p === 1) return m * n;
+    const c = conteosWilcox(m, n), tot = chooseR(m + n, n), EPS = 2.220446049250313e-16;
+    let s = 0, q = 0;
+    if (p <= 0.5) { p = p - 10 * EPS; for (;;) { s += c[q] / tot; if (s >= p) break; q++; } }
+    else { p = 1 - p + 10 * EPS; for (;;) { s += c[q] / tot; if (s > p) { q = m * n - q; break; } q++; } }
+    return q;
+  }
+
+  /* ---------------- t no central (AS 243 de Lenth, como pnt.c de R) ----------------
+     Serie doble de Guenther con errmax = 1e-12 y hasta 1000 términos; R la acumula en doble extendido,
+     aquí en doble (diferencias del orden de 1e-15). */
+  function ptnc(t, gl, ncp, inferior) {
+    inferior = inferior !== false;
+    if (!(gl > 0)) return NaN;
+    if (ncp === 0) return pt(t, gl, inferior);
+    if (!Number.isFinite(t)) return (t < 0) === inferior ? 0 : 1;
+    let negdel, tt, del;
+    if (t >= 0) { negdel = false; tt = t; del = ncp; }
+    else {
+      if (ncp > 40) return inferior ? 0 : 1;          // R_DT_0: pt(q, gl, ncp) ≤ Φ(−ncp)
+      negdel = true; tt = -t; del = -ncp;
+    }
+    if (gl > 4e5 || del * del > 2 * Math.LN2 * 1021) {
+      const s = 1 / (4 * gl);
+      return pnorm(tt * (1 - s), del, sqrt(1 + tt * tt * 2 * s), inferior !== negdel);
+    }
+    let x = t * t;
+    let rxb = gl / (x + gl);
+    x = x / (x + gl);
+    let tnc;
+    if (x > 0) {
+      const lambda = del * del;
+      let p = 0.5 * exp(-0.5 * lambda);
+      if (p === 0) return inferior ? 0 : 1;               // |ncp| enorme: R devuelve R_DT_0
+      let q = 0.797884560802865355879892119869 * p * del;
+      let s = 0.5 - p;
+      if (s < 1e-7) s = -0.5 * Math.expm1(-0.5 * lambda);
+      let a = 0.5;
+      const b = 0.5 * gl;
+      rxb = Math.pow(rxb, b);
+      const albeta = 0.572364942924700087071713675677 + lgamma(b) - lgamma(0.5 + b);
+      let xodd = pbeta(x, a, b, true);
+      let godd = 2 * rxb * exp(a * log(x) - albeta);
+      tnc = b * x;
+      let xeven = tnc < 2.220446049250313e-16 ? tnc : 1 - rxb;
+      let geven = tnc * rxb;
+      tnc = p * xodd + q * xeven;
+      for (let it = 1; it <= 1000; it++) {
+        a += 1;
+        xodd -= godd;
+        xeven -= geven;
+        godd *= x * (a + b - 1) / a;
+        geven *= x * (a + b - 0.5) / (a + 0.5);
+        p *= lambda / (2 * it);
+        q *= lambda / (2 * it + 1);
+        tnc += p * xodd + q * xeven;
+        s -= p;
+        if (s < -1e-10) break;
+        if (s <= 0 && it > 1) break;
+        const errbd = 2 * s * (xodd - godd);
+        if (abs(errbd) < 1e-12) break;
+      }
+    } else tnc = 0;
+    tnc += pnorm(-del, 0, 1, true);
+    const inf = inferior !== negdel;
+    tnc = min(tnc, 1);
+    return inf ? tnc : 0.5 - tnc + 0.5;
+  }
+
   function dpois(k, lambda) {
     if (k < 0 || k !== floor(k)) return 0;
     if (lambda === 0) return k === 0 ? 1 : 0;
@@ -630,6 +792,7 @@ SP.definir('dist', function (SP) {
     pchisq, qchisq, dchisq,
     pgamma, qgamma, pbeta, qbeta,
     dbinom, pbinom, qbinom, dpois, ppois,
+    psignrank, dsignrank, qsignrank, pwilcox, dwilcox, qwilcox, ptnc,
     ptukey, qtukey,
     _interno: { betaInc, gammaInc, brent, encerrar, erfcPositivo, pnormSerie, colaNormal, probRango },
   };

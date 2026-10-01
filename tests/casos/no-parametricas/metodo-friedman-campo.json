@@ -1,0 +1,114 @@
+{
+  "esquema": 1,
+  "id": "friedman/metodo-friedman-campo",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "friedman"
+  },
+  "titulo": "Variedades: Wilcoxon pareada con Bonferroni",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [37.100000000000001, 39.100000000000001, 40.799999999999997, 36.5, 40.600000000000001, 40.100000000000001, 43.299999999999997, 46.299999999999997, 39.299999999999997, "NA", 40.799999999999997, 39.600000000000001, 42.899999999999999, 45.799999999999997, 45.5, 44.100000000000001, 42.100000000000001, 43.100000000000001, 44.700000000000003, 41.600000000000001, 39.299999999999997, 38.200000000000003, 40.399999999999999, 36, 45.5, 44.799999999999997, 50.5, 50, 46.799999999999997, 43.600000000000001],
+      "trat": ["v1", "v1", "v1", "v1", "v1", "v1", "v2", "v2", "v2", "v2", "v2", "v2", "v3", "v3", "v3", "v3", "v3", "v3", "v4", "v4", "v4", "v4", "v4", "v4", "v5", "v5", "v5", "v5", "v5", "v5"],
+      "bloque": ["b1", "b2", "b3", "b4", "b5", "b6", "b1", "b2", "b3", "b4", "b5", "b6", "b1", "b2", "b3", "b4", "b5", "b6", "b1", "b2", "b3", "b4", "b5", "b6", "b1", "b2", "b3", "b4", "b5", "b6"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["v1", "v2", "v3", "v4", "v5"]
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["b1", "b2", "b3", "b4", "b5", "b6"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "y",
+    "tratamiento": "trat",
+    "bloque": "bloque"
+  },
+  "opciones": {
+    "posthoc": "wilcoxon",
+    "ajuste": "bonferroni",
+    "alfa": 0.050000000000000003
+  },
+  "esperado": {
+    "prueba": {
+      "Q": 10.383838383838384,
+      "gl": 4,
+      "p": 0.03443526459500787,
+      "W": 0.5191919191919192
+    },
+    "comparaciones": {
+      "pares": [
+        {
+          "estadistico": 5,
+          "p": 0.625,
+          "p_ajustado": 1
+        },
+        {
+          "estadistico": 0,
+          "p": 0.0625,
+          "p_ajustado": 0.625
+        },
+        {
+          "estadistico": 7,
+          "p": 1,
+          "p_ajustado": 1
+        },
+        {
+          "estadistico": 0,
+          "p": 0.0625,
+          "p_ajustado": 0.625
+        },
+        {
+          "estadistico": 3,
+          "p": 0.3125,
+          "p_ajustado": 1
+        },
+        {
+          "estadistico": 8,
+          "p": 0.36131042852617873,
+          "p_ajustado": 1
+        },
+        {
+          "estadistico": 1,
+          "p": 0.125,
+          "p_ajustado": 1
+        },
+        {
+          "estadistico": 13,
+          "p": 0.1875,
+          "p_ajustado": 1
+        },
+        {
+          "estadistico": 2,
+          "p": 0.1875,
+          "p_ajustado": 1
+        },
+        {
+          "estadistico": 0,
+          "p": 0.0625,
+          "p_ajustado": 0.625
+        }
+      ]
+    },
+    "letras": ["a", "a", "a", "a", "a"]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "PMCMRplus": "1.9.12",
+      "multcompView": "0.1.10"
+    },
+    "codigo": "friedman.test; PMCMRplus::frdAllPairs*Test o pairwise.wilcox.test(paired = TRUE); multcompLetters"
+  }
+}

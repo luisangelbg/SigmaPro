@@ -1,0 +1,50 @@
+{
+  "esquema": 1,
+  "id": "pruebaT.efecto/efecto-dos-plantas",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "pruebaT.efecto"
+  },
+  "titulo": "Testigo contra tratamiento 2 (d ≈ −1.3)",
+  "fuente": "Conjuntos de R y datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [4.1699999999999999, 5.5800000000000001, 5.1799999999999997, 6.1100000000000003, 4.5, 4.6100000000000003, 5.1699999999999999, 4.5300000000000002, 5.3300000000000001, 5.1399999999999997],
+      "y": [6.3099999999999996, 5.1200000000000001, 5.54, 5.5, 5.3700000000000001, 5.29, 4.9199999999999999, 6.1500000000000004, 5.7999999999999998, 5.2599999999999998]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      },
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "x"
+    },
+    {
+      "columna": "y"
+    },
+    []
+  ],
+  "esperado": {
+    "d": -0.95436295971206087,
+    "g": -0.91394227845203757,
+    "J": 0.95764642702372005,
+    "gl": 18,
+    "ic_d": [-1.8722029754846619, -0.013071639864810105],
+    "ic_g": [-1.7929084901360637, -0.01251800921187622]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "d de Cohen; IC: uniroot(function(n) pt(t, gl, n) - c(1 - a/2, a/2), tol = 1e-13); g = d * J(gl)"
+  }
+}

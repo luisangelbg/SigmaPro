@@ -56,8 +56,11 @@
       const a = Math.abs(esp);
       let limite = modo === 'relativo' ? tol * a : tol * Math.max(1, a);
       if (esClaveP(clave) && a > 0 && a < 1e-6) limite = Math.min(limite, tol * a);
+      /* piso absoluto (p. ej. p = 1 − P de una integral numérica: debajo de 1e-6 solo hay cifras absolutas) */
+      const piso = r && r.absoluto !== undefined ? r.absoluto : 0;
+      limite = Math.max(limite, piso);
       const dif = obt === esp ? 0 : Math.abs(obt - esp);
-      const escala = modo === 'relativo' || (esClaveP(clave) && a > 0 && a < 1e-6) ? (a || 1) : Math.max(1, a);
+      const escala = Math.max(modo === 'relativo' || (esClaveP(clave) && a > 0 && a < 1e-6) ? (a || 1) : Math.max(1, a), piso / tol);
       const esc = dif / escala;
       if (dif > out.difMax) out.difMax = dif;
       if (esc > out.difEscaladaMax) { out.difEscaladaMax = esc; out.peor = ruta; }

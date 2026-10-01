@@ -1,0 +1,126 @@
+{
+  "esquema": 1,
+  "id": "np.paresKruskal/pares-kruskal-pollos-dunn-holm",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.paresKruskal"
+  },
+  "titulo": "Peso de pollos por alimento, 6 grupos desbalanceados: dunn con ajuste holm",
+  "fuente": "Anónimo (1948); conjunto chickwts de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "y": [179, 160, 136, 227, 217, 168, 108, 124, 143, 140, 309, 229, 181, 141, 260, 203, 148, 169, 213, 257, 244, 271, 243, 230, 248, 327, 329, 250, 193, 271, 316, 267, 199, 171, 158, 248, 423, 340, 392, 339, 341, 226, 320, 295, 334, 322, 297, 318, 325, 257, 303, 315, 380, 153, 263, 242, 206, 344, 258, 368, 390, 379, 260, 404, 318, 352, 359, 216, 222, 283, 332],
+      "g": ["horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "g": {
+        "tipo": "factor",
+        "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "columna": "y"
+    },
+    {
+      "columna": "g"
+    },
+    {
+      "metodo": "dunn",
+      "ajuste": "holm"
+    }
+  ],
+  "esperado": {
+    "pares": [
+      {
+        "estadistico": 4.8130692279548315,
+        "p": 1.4862977352635759e-06,
+        "p_ajustado": 2.0808168293690061e-05
+      },
+      {
+        "estadistico": 3.3082925527106051,
+        "p": 0.00093866697786092776,
+        "p_ajustado": 0.010325336756470205
+      },
+      {
+        "estadistico": 1.415755959622417,
+        "p": 0.15684696798285705,
+        "p_ajustado": 0.6273878719314282
+      },
+      {
+        "estadistico": 2.4999220674379834,
+        "p": 0.012422062968441954,
+        "p_ajustado": 0.099376503747535636
+      },
+      {
+        "estadistico": -0.18296984222764154,
+        "p": 0.85482168154495874,
+        "p_ajustado": 0.98995368025577801
+      },
+      {
+        "estadistico": -1.6587360446654678,
+        "p": 0.097168992760043066,
+        "p_ajustado": 0.58301395656025834
+      },
+      {
+        "estadistico": -3.3640591452948865,
+        "p": 0.00076805081660873207,
+        "p_ajustado": 0.0092166097993047844
+      },
+      {
+        "estadistico": -2.6020934412435368,
+        "p": 0.0092656602833886218,
+        "p_ajustado": 0.083390942550497602
+      },
+      {
+        "estadistico": -4.9875241274790563,
+        "p": 6.1157983964443836e-07,
+        "p_ajustado": 9.1736975946665754e-06
+      },
+      {
+        "estadistico": -1.8198179866078199,
+        "p": 0.0687867276742328,
+        "p_ajustado": 0.48150709371962963
+      },
+      {
+        "estadistico": -0.93325536417846111,
+        "p": 0.35068813538871779,
+        "p_ajustado": 0.98995368025577801
+      },
+      {
+        "estadistico": -3.4912623949382464,
+        "p": 0.00048074385800458177,
+        "p_ajustado": 0.0062496701540595634
+      },
+      {
+        "estadistico": 0.97414497717209203,
+        "p": 0.32998456008525934,
+        "p_ajustado": 0.98995368025577801
+      },
+      {
+        "estadistico": -1.5947039955125792,
+        "p": 0.11077844415041904,
+        "p_ajustado": 0.58301395656025834
+      },
+      {
+        "estadistico": -2.6897988461671436,
+        "p": 0.0071495100142169718,
+        "p_ajustado": 0.071495100142169712
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "PMCMRplus": "1.9.12"
+    },
+    "codigo": "PMCMRplus::kwAllPairsDunnTest(y, g, p.adjust.method = \"holm\")"
+  }
+}

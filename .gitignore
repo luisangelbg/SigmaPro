@@ -6,3 +6,6 @@ CLAUDE.md
 
 # configuración local de las herramientas de desarrollo
 .claude/
+
+# gráficas que R abre solo al generar referencias
+Rplots.pdf

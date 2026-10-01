@@ -1,0 +1,24 @@
+{
+  "esquema": 1,
+  "id": "np.ajustarP/ajuste-bh",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "np.ajustarP"
+  },
+  "titulo": "p.adjust con BH (empates y un faltante)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "argumentos": [
+    [0.00040000000000000002, 0.012, 0.012, 0.029999999999999999, 0.20000000000000001, 0.049000000000000002, 0.84999999999999998, 0.0030999999999999999, "NA", 0.59999999999999998],
+    "BH"
+  ],
+  "esperado": [0.0036000000000000003, 0.027, 0.027, 0.053999999999999999, 0.25714285714285717, 0.07350000000000001, 0.84999999999999998, 0.013949999999999999, "NA", 0.67499999999999993],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "p.adjust(p, \"BH\")"
+  }
+}

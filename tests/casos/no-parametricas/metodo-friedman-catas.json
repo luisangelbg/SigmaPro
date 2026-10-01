@@ -1,0 +1,96 @@
+{
+  "esquema": 1,
+  "id": "friedman/metodo-friedman-catas",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "friedman"
+  },
+  "titulo": "Catas: Nemenyi",
+  "fuente": "Datos sintéticos",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "y": [7, 6, 5, 8, 6, 7, 4, 6, 5, 6, 4, 6, 5, 6, 4, 5, 6, 7, 6, 8, 5, 7, 5, 7, 8, 9, 7, 9, 7, 8, 6, 8],
+      "trat": ["A", "A", "A", "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "B", "B", "B", "C", "C", "C", "C", "C", "C", "C", "C", "D", "D", "D", "D", "D", "D", "D", "D"],
+      "bloque": ["juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8", "juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8", "juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8", "juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8"]
+    },
+    "tipos": {
+      "y": {
+        "tipo": "numerica"
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C", "D"]
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["juez1", "juez2", "juez3", "juez4", "juez5", "juez6", "juez7", "juez8"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "y",
+    "tratamiento": "trat",
+    "bloque": "bloque"
+  },
+  "opciones": {
+    "posthoc": "nemenyi",
+    "ajuste": "tukey",
+    "alfa": 0.10000000000000001
+  },
+  "esperado": {
+    "prueba": {
+      "Q": 20.68,
+      "gl": 3,
+      "p": 0.00012267733534817156,
+      "W": 0.86166666666666669
+    },
+    "comparaciones": {
+      "pares": [
+        {
+          "estadistico": 2.3278208693969562,
+          "p_ajustado": 0.3527442277079671
+        },
+        {
+          "estadistico": 0.68465319688145776,
+          "p_ajustado": 0.9626438513072143
+        },
+        {
+          "estadistico": 3.8340579025361632,
+          "p_ajustado": 0.033904444171393822
+        },
+        {
+          "estadistico": 3.0124740662784135,
+          "p_ajustado": 0.14353380538505045
+        },
+        {
+          "estadistico": 6.1618787719331198,
+          "p_ajustado": 7.77210503574155e-05
+        },
+        {
+          "estadistico": 3.1494047056547054,
+          "p_ajustado": 0.11594858608371084
+        }
+      ]
+    },
+    "letras": ["b", "b", "ab", "a"]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "comparaciones.pares[*].p_ajustado": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): la integral numérica del rango estudentizado (AS 190) deja debajo de 1e-6 solo cifras absolutas, en R y en SigmaPro (difieren ~1e-14)"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "PMCMRplus": "1.9.12",
+      "multcompView": "0.1.10"
+    },
+    "codigo": "friedman.test; PMCMRplus::frdAllPairs*Test o pairwise.wilcox.test(paired = TRUE); multcompLetters"
+  }
+}
