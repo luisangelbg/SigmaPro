@@ -1,0 +1,70 @@
+{
+  "esquema": 1,
+  "id": "comp.polinomiosDe/polinomios-avena",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.polinomiosDe"
+  },
+  "titulo": "Nitrógeno en parcelas divididas (0, 0.2, 0.4, 0.6 qq/acre), error b",
+  "fuente": "Yates (1935); conjunto oats del paquete MASS",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "Y": [111, 130, 157, 174, 117, 114, 161, 141, 105, 140, 118, 156, 61, 91, 97, 100, 70, 108, 126, 149, 96, 124, 121, 144, 68, 64, 112, 86, 60, 102, 89, 96, 89, 129, 132, 124, 74, 89, 81, 122, 64, 103, 132, 133, 70, 89, 104, 117, 62, 90, 100, 116, 80, 82, 94, 126, 63, 70, 109, 99, 53, 74, 118, 113, 89, 82, 86, 104, 97, 99, 119, 121],
+      "B": ["I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI"],
+      "V": ["Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous"],
+      "N": [0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998]
+    },
+    "tipos": {
+      "Y": {
+        "tipo": "numerica"
+      },
+      "B": {
+        "tipo": "factor",
+        "niveles": ["I", "II", "III", "IV", "V", "VI"]
+      },
+      "V": {
+        "tipo": "factor",
+        "niveles": ["Golden.rain", "Marvellous", "Victory"]
+      },
+      "N": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "diseno": "parcelas-divididas",
+      "respuesta": "Y",
+      "parcelaGrande": "V",
+      "subparcela": "N",
+      "bloque": "B",
+      "principal": "dbca"
+    },
+    "N",
+    [],
+    1
+  ],
+  "esperado": [
+    {
+      "est": [32.944734868496887, -5.1666666666666545, -0.44721359549998541],
+      "ee": [3.1365527196211707, 3.136552719621172, 3.136552719621172],
+      "gl": [45, 45, 45],
+      "F": [110.32319999999993, 2.7134117647058678, 0.020329411764708368],
+      "p": [1.0913799624483883e-13, 0.10647449838472633, 0.88725740860308533],
+      "curva": [81.872222222222064, 73.666666666666657]
+    }
+  ],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "contrast(emmeans(...), method = columnas de contr.poly(k, scores = dosis)); lm(medias ~ poly(dosis, grado, raw = TRUE)); dosis óptima = −b₁/(2b₂)"
+  }
+}

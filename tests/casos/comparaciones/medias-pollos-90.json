@@ -1,0 +1,57 @@
+{
+  "esquema": 1,
+  "id": "comp.mediasDe/medias-pollos-90",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.mediasDe"
+  },
+  "titulo": "Medias de un factor desbalanceado, IC 90 %",
+  "fuente": "Anónimo (1948); conjunto chickwts de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "peso": [179, 160, 136, 227, 217, 168, 108, 124, 143, 140, 309, 229, 181, 141, 260, 203, 148, 169, 213, 257, 244, 271, 243, 230, 248, 327, 329, 250, 193, 271, 316, 267, 199, 171, 158, 248, 423, 340, 392, 339, 341, 226, 320, 295, 334, 322, 297, 318, 325, 257, 303, 315, 380, 153, 263, 242, 206, 344, 258, 368, 390, 379, 260, 404, 318, 352, 359, 216, 222, 283, 332],
+      "alimento": ["horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein"]
+    },
+    "tipos": {
+      "peso": {
+        "tipo": "numerica"
+      },
+      "alimento": {
+        "tipo": "factor",
+        "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "diseno": "dca",
+      "respuesta": "peso",
+      "tratamientos": ["alimento"]
+    },
+    ["alimento"],
+    [],
+    0.90000000000000002
+  ],
+  "esperado": [
+    {
+      "media": [323.5833333333332, 160.19999999999996, 218.75, 276.90909090909076, 246.42857142857133, 328.91666666666652],
+      "ee": [15.833914469591749, 17.345184257205698, 15.833914469591754, 16.537984292817239, 14.659356274027486, 15.833914469591765],
+      "gl": [65, 65, 65, 65, 65, 65],
+      "inf": [297.16229401087929, 131.25720154072192, 192.32896067754606, 249.31321535009417, 221.96744216696254, 302.49562734421255],
+      "sup": [350.00437265578711, 189.142798459278, 245.17103932245394, 304.50496646808733, 270.88970069018012, 355.33770598912048]
+    }
+  ],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "confint(emmeans(lm(peso ~ alimento, data = datos), \"alimento\"), level = 0.9)"
+  }
+}

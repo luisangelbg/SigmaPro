@@ -1,0 +1,79 @@
+{
+  "esquema": 1,
+  "id": "comparaciones-medias/metodo-dunnett-bloques",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "comparaciones-medias"
+  },
+  "titulo": "Dunnett contra V1 en bloques completos",
+  "fuente": "Datos sintéticos",
+  "clase": "C",
+  "datos": {
+    "columnas": {
+      "rend": [53.600000000000001, 55.100000000000001, 60.700000000000003, 61.399999999999999, 64.5, 54.100000000000001, 57.799999999999997, 60.799999999999997, 58.5, 61.5, 54.399999999999999, 57.799999999999997, 60.799999999999997, 60.399999999999999, 62.5, 56.200000000000003, 59.899999999999999, 63.700000000000003, 64.099999999999994, 64.200000000000003],
+      "bloque": ["B1", "B1", "B1", "B1", "B1", "B2", "B2", "B2", "B2", "B2", "B3", "B3", "B3", "B3", "B3", "B4", "B4", "B4", "B4", "B4"],
+      "variedad": ["V1", "V2", "V3", "V4", "V5", "V1", "V2", "V3", "V4", "V5", "V1", "V2", "V3", "V4", "V5", "V1", "V2", "V3", "V4", "V5"]
+    },
+    "tipos": {
+      "rend": {
+        "tipo": "numerica"
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["B1", "B2", "B3", "B4"]
+      },
+      "variedad": {
+        "tipo": "factor",
+        "niveles": ["V1", "V2", "V3", "V4", "V5"]
+      }
+    }
+  },
+  "entradas": {
+    "diseno": "dbca",
+    "respuesta": "rend",
+    "tratamientos": ["variedad"],
+    "bloque": "bloque",
+    "comparar": ["variedad"]
+  },
+  "opciones": {
+    "metodo": "dunnett",
+    "testigo": "V1",
+    "alfa": 0.050000000000000003
+  },
+  "esperado": {
+    "grupos": [
+      {
+        "comparaciones": [
+          {
+            "dif": 3.0749999999999886,
+            "ee": 0.81560304887446933,
+            "p_ajustado": 0.0089768389370546015
+          },
+          {
+            "dif": 6.9249999999999901,
+            "ee": 0.81560304887446933,
+            "p_ajustado": 7.3754755989301232e-06
+          },
+          {
+            "dif": 6.5249999999999915,
+            "ee": 0.81560304887446899,
+            "p_ajustado": 1.3597096250211703e-05
+          },
+          {
+            "dif": 8.5999999999999943,
+            "ee": 0.81560304887446922,
+            "p_ajustado": 7.356066999823211e-07
+          }
+        ]
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "Dunnett por integración doble (integrate)"
+  }
+}

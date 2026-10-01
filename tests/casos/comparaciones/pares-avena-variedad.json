@@ -1,0 +1,139 @@
+{
+  "esquema": 1,
+  "id": "comp.paresDe/pares-avena-variedad",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+  },
+  "titulo": "Parcelas divididas: variedades (error a)",
+  "fuente": "Yates (1935); conjunto oats del paquete MASS",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "Y": [111, 130, 157, 174, 117, 114, 161, 141, 105, 140, 118, 156, 61, 91, 97, 100, 70, 108, 126, 149, 96, 124, 121, 144, 68, 64, 112, 86, 60, 102, 89, 96, 89, 129, 132, 124, 74, 89, 81, 122, 64, 103, 132, 133, 70, 89, 104, 117, 62, 90, 100, 116, 80, 82, 94, 126, 63, 70, 109, 99, 53, 74, 118, 113, 89, 82, 86, 104, 97, 99, 119, 121],
+      "B": ["I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI"],
+      "V": ["Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous"],
+      "N": ["0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt"]
+    },
+    "tipos": {
+      "Y": {
+        "tipo": "numerica"
+      },
+      "B": {
+        "tipo": "factor",
+        "niveles": ["I", "II", "III", "IV", "V", "VI"]
+      },
+      "V": {
+        "tipo": "factor",
+        "niveles": ["Golden.rain", "Marvellous", "Victory"]
+      },
+      "N": {
+        "tipo": "factor",
+        "niveles": ["0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "diseno": "parcelas-divididas",
+      "respuesta": "Y",
+      "parcelaGrande": "V",
+      "subparcela": "N",
+      "bloque": "B",
+      "principal": "dbca"
+    },
+    ["V"],
+    [],
+    ["dms", "tukey", "bonferroni", "holm", "sidak", "scheffe"],
+    0.050000000000000003
+  ],
+  "esperado": {
+    "dms": [
+      {
+        "medias": [104.49999999999983, 109.7916666666665, 97.624999999999844],
+        "letras": ["a", "a", "a"],
+        "dif": [-5.291666666666667, 6.8749999999999805, 12.166666666666648],
+        "ee": [7.0789038437903464, 7.0789038437903473, 7.0789038437903482],
+        "gl": [10, 10, 10],
+        "t": [-0.74752628139009769, 0.97119556243595084, 1.7187218438260483],
+        "p": [0.47195810570139396, 0.35435546553725528, 0.11641170689715868]
+      }
+    ],
+    "tukey": [
+      {
+        "medias": [104.49999999999983, 109.7916666666665, 97.624999999999844],
+        "letras": ["a", "a", "a"],
+        "dif": [-5.291666666666667, 6.8749999999999805, 12.166666666666648],
+        "ee": [7.0789038437903464, 7.0789038437903473, 7.0789038437903482],
+        "gl": [10, 10, 10],
+        "t": [-0.74752628139009769, 0.97119556243595084, 1.7187218438260483],
+        "p": [0.74187269726695726, 0.61035375925775925, 0.24583014497726674]
+      }
+    ],
+    "bonferroni": [
+      {
+        "medias": [104.49999999999983, 109.7916666666665, 97.624999999999844],
+        "letras": ["a", "a", "a"],
+        "dif": [-5.291666666666667, 6.8749999999999805, 12.166666666666648],
+        "ee": [7.0789038437903464, 7.0789038437903473, 7.0789038437903482],
+        "gl": [10, 10, 10],
+        "t": [-0.74752628139009769, 0.97119556243595084, 1.7187218438260483],
+        "p": [1, 1, 0.34923512069147605]
+      }
+    ],
+    "holm": [
+      {
+        "medias": [104.49999999999983, 109.7916666666665, 97.624999999999844],
+        "letras": ["a", "a", "a"],
+        "dif": [-5.291666666666667, 6.8749999999999805, 12.166666666666648],
+        "ee": [7.0789038437903464, 7.0789038437903473, 7.0789038437903482],
+        "gl": [10, 10, 10],
+        "t": [-0.74752628139009769, 0.97119556243595084, 1.7187218438260483],
+        "p": [0.70871093107451055, 0.70871093107451055, 0.34923512069147605]
+      }
+    ],
+    "sidak": [
+      {
+        "medias": [104.49999999999983, 109.7916666666665, 97.624999999999844],
+        "letras": ["a", "a", "a"],
+        "dif": [-5.291666666666667, 6.8749999999999805, 12.166666666666648],
+        "ee": [7.0789038437903464, 7.0789038437903473, 7.0789038437903482],
+        "gl": [10, 10, 10],
+        "t": [-0.74752628139009769, 0.97119556243595084, 1.7187218438260483],
+        "p": [0.85276700683936923, 0.73085864353591079, 0.31015763902405002]
+      }
+    ],
+    "scheffe": [
+      {
+        "medias": [104.49999999999983, 109.7916666666665, 97.624999999999844],
+        "letras": ["a", "a", "a"],
+        "dif": [-5.291666666666667, 6.8749999999999805, 12.166666666666648],
+        "ee": [7.0789038437903464, 7.0789038437903473, 7.0789038437903482],
+        "gl": [10, 10, 10],
+        "t": [-0.74752628139009769, 0.97119556243595084, 1.7187218438260483],
+        "p": [0.76195285066162144, 0.6371976799443404, 0.27414462525456346]
+      }
+    ]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "tukey[*].p[*]": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "emmeans": "1.10.6",
+      "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(aov(Y ~ V * N + Error(B/V), data = datos), \"V\"), adjust = …); letras con multcompLetters"
+  }
+}

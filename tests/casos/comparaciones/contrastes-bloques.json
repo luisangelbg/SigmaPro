@@ -1,0 +1,77 @@
+{
+  "esquema": 1,
+  "id": "comp.contrastesDe/contrastes-bloques",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.contrastesDe"
+  },
+  "titulo": "Contrastes en bloques, uno no ortogonal",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "rend": [53.600000000000001, 55.100000000000001, 60.700000000000003, 61.399999999999999, 64.5, 54.100000000000001, 57.799999999999997, 60.799999999999997, 58.5, 61.5, 54.399999999999999, 57.799999999999997, 60.799999999999997, 60.399999999999999, 62.5, 56.200000000000003, 59.899999999999999, 63.700000000000003, 64.099999999999994, 64.200000000000003],
+      "bloque": ["B1", "B1", "B1", "B1", "B1", "B2", "B2", "B2", "B2", "B2", "B3", "B3", "B3", "B3", "B3", "B4", "B4", "B4", "B4", "B4"],
+      "variedad": ["V1", "V2", "V3", "V4", "V5", "V1", "V2", "V3", "V4", "V5", "V1", "V2", "V3", "V4", "V5", "V1", "V2", "V3", "V4", "V5"]
+    },
+    "tipos": {
+      "rend": {
+        "tipo": "numerica"
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["B1", "B2", "B3", "B4"]
+      },
+      "variedad": {
+        "tipo": "factor",
+        "niveles": ["V1", "V2", "V3", "V4", "V5"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "diseno": "dbca",
+      "respuesta": "rend",
+      "tratamientos": ["variedad"],
+      "bloque": "bloque"
+    },
+    "variedad",
+    [],
+    [
+      {
+        "nombre": "V1 vs resto",
+        "coef": [4, -1, -1, -1, -1]
+      },
+      {
+        "nombre": "V2 vs V3",
+        "coef": [0, 1, -1, 0, 0]
+      },
+      {
+        "nombre": "no ortogonal",
+        "coef": [1, 1, 0, -2, 0]
+      }
+    ]
+  ],
+  "esperado": [
+    {
+      "est": [-25.124999999999964, -3.8500000000000023, -9.9749999999999872],
+      "ee": [2.5791633010209534, 0.81560304887446955, 1.4126659194586628],
+      "gl": [12, 12, 12],
+      "t": [-9.7415312904205464, -4.7204335556530763, -7.0611174677608366],
+      "p": [4.7490031403702161e-07, 0.00049660779732207841, 1.3170008033997818e-05],
+      "sc": [126.25312499999961, 29.645000000000014, 66.333749999999853]
+    }
+  ],
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans::contrast(emmeans(modelo, trt), method = list(...)); SC = t² · CMerror"
+  }
+}

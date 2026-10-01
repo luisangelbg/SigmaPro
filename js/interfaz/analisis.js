@@ -10,13 +10,15 @@
   const T = SP.T, esc = SP.ui.esc;
   const $ = s => document.querySelector(s);
   const L = () => window.LABG;
-  const HITO = { comparaciones: '1.7', regresion: '1.8', correlacion: '1.9', contingencia: '1.9' };
+  const HITO = { regresion: '1.8', correlacion: '1.9', contingencia: '1.9' };
   const DISENOS = ['dca', 'dbca', 'cuadro-latino', 'parcelas-divididas', 'parcelas-subdivididas', 'franjas', 'bib', 'latice'];
+  const COMPARAR = ['comparaciones-medias', 'contrastes', 'polinomios', 'medias-ajustadas'];
   const estado = SP.app.analisis = {
     metodo: 'supuestos', pendiente: true, turno: 0,
     sup: { respuesta: '', tratamientos: [], bloque: '', orden: '', alfa: 0.05, _iniciado: false },
     dos: { modo: '', variable: '', respuesta: '', grupo: '', nivelA: '', nivelB: '', antes: '', despues: '', mu: 0, alternativa: 'bilateral', nivel: 0.95, varIguales: false, exacta: 'auto', correccion: true, alfa: 0.05, _iniciado: false },
     rangos: { respuesta: '', tratamiento: '', bloque: '', posthocKW: 'dunn', posthocF: 'conover', ajuste: 'holm', alfa: 0.05, _iniciado: false },
+    cmp: { diseno: 'dbca', comparar: [], dentro: '', metodo: 'tukey', testigo: '', alternativa: 'bilateral', contrastes: '', grado: 2, nivel: 0.95, alfa: 0.05 },
     dis: { respuesta: '', tratamientos: [], bloque: '', fila: '', columna: '', repeticion: '', principal: 'dbca', parcelaGrande: '', subparcela: '', subsubparcela: '',
       franjaA: '', franjaB: '', tipoSC: 3, alfa: 0.05, _iniciado: false },
   };
@@ -170,7 +172,7 @@
     }
     return h + campo('rangos', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
-  function formDiseno(c, d) {
+  function formDiseno(c, d, paraComparar) {
     const s = estado.dis, { med, agr } = sanearDis(c), marca = n => (c.numFactor.includes(n) ? T('{c} (numérica)', { c: n }) : n);
     const opcFac = (excluir, conVacio) => (conVacio ? [['', T('— elige —')]] : []).concat(agr.filter(n => !excluir.includes(n) && n !== s.respuesta).map(n => [n, marca(n)]));
     const sel = (k, etq, excluir, ayuda) => campo('dis', k, etq, opcFac(excluir, !s[k]), s[k], ayuda);
@@ -205,14 +207,64 @@
     if (conBloque) h += sel('bloque', d === 'latice' ? T('Bloques incompletos (dentro de cada repetición)') : T('Bloques'), usados.concat([s.repeticion]));
     if (d === 'cuadro-latino' || (d === 'parcelas-divididas' && s.principal === 'latino')) h += sel('fila', T('Filas'), usados.concat([s.columna])) + sel('columna', T('Columnas'), usados.concat([s.fila]));
     if (d === 'parcelas-divididas' && s.principal === 'dca') h += sel('repeticion', T('Repetición de la parcela grande'), usados, T('Número de repetición de cada parcela grande dentro de su tratamiento.'));
+    if (paraComparar) return h;
     if (['dca', 'dbca', 'cuadro-latino'].includes(d)) {
       h += campo('dis', 'tipoSC', T('Sumas de cuadrados'), [[3, T('Tipo III (medias marginales)')], [2, T('Tipo II (marginalidad)')], [1, T('Tipo I (secuenciales)')]], s.tipoSC,
         T('Con datos balanceados las tres coinciden; con desbalance cambian la hipótesis que se prueba.'));
     }
     return h + campo('dis', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
+  /** Papeles del diseño elegido para comparar (los mismos que su método). */
+  function papelesDis(d) {
+    const s = estado.dis, e = { respuesta: s.respuesta };
+    if (MAX_TRAT[d]) e.tratamientos = MAX_TRAT[d] === 1 ? s.tratamientos[0] : s.tratamientos.slice();
+    for (const k of ['bloque', 'fila', 'columna', 'repeticion', 'parcelaGrande', 'subparcela', 'subsubparcela', 'franjaA', 'franjaB']) if (s[k]) e[k] = s[k];
+    if (d === 'parcelas-divididas') e.principal = s.principal;
+    return e;
+  }
+  function factoresDis(d) { try { return SP.disenos.modeloDe(d, papelesDis(d)).factores.filter(Boolean); } catch (err) { return []; } }
+  const nivelesDeFactor = (c, f) => { try { return SP.estructura.comoFactor(c.t, f).niveles; } catch (err) { return []; } };
+  function formComparar(c, m) {
+    const s = estado.cmp, d = s.diseno;
+    let h = campo('cmp', 'diseno', T('Diseño del experimento'), DISENOS.map(x => [x, T(SP.disenos.DISENOS[x].nombre)]), d) + formDiseno(c, d, true);
+    const facs = factoresDis(d);
+    s.comparar = s.comparar.filter(f => facs.includes(f));
+    if (!s.comparar.length && facs.length) s.comparar = [facs[0]];
+    const uno = m === 'contrastes' || m === 'polinomios';
+    if (uno && s.comparar.length > 1) s.comparar = s.comparar.slice(0, 1);
+    if (uno) h += campo('cmp', 'comparar1', m === 'polinomios' ? T('Factor cuantitativo (dosis)') : T('Factor'), lista(facs), s.comparar[0] || '');
+    else {
+      h += '<fieldset class="exp-casillas"><legend>' + esc(T('Medias de')) + '</legend>' +
+        facs.map(n => '<label class="imp-check"><input type="checkbox" data-lista="comparar" data-grupo="cmp" value="' + esc(n) + '"' + (s.comparar.includes(n) ? ' checked' : '') + '> ' + esc(n) + '</label>').join('') + '</fieldset>';
+    }
+    if (s.dentro && (!facs.includes(s.dentro) || s.comparar.includes(s.dentro))) s.dentro = '';
+    h += campo('cmp', 'dentro', T('Dentro de cada nivel de'), [['', T('— todos juntos —')]].concat(facs.filter(f => !s.comparar.includes(f)).map(f => [f, f])), s.dentro,
+      T('Con interacción, compara un factor dentro de cada nivel del otro.'));
+    if (m === 'comparaciones-medias') {
+      const met = [['tukey', 'Tukey'], ['dms', T('DMS de Fisher')], ['dms-protegida', T('DMS protegida')], ['duncan', 'Duncan'], ['snk', 'Student-Newman-Keuls'], ['scheffe', 'Scheffé'],
+        ['bonferroni', 'Bonferroni'], ['sidak', 'Šidák'], ['holm', 'Holm'], ['dunnett', T('Dunnett (contra un testigo)')], ['games-howell', T('Games-Howell (varianzas distintas)')]];
+      h += campo('cmp', 'metodo', T('Prueba'), met, s.metodo);
+      if (s.metodo === 'dunnett') {
+        const niv = nivelesDeFactor(c, s.comparar[0]);
+        if (!niv.includes(s.testigo)) s.testigo = niv[0] || '';
+        h += campo('cmp', 'testigo', T('Testigo'), lista(niv), s.testigo) +
+          campo('cmp', 'alternativa', T('Hipótesis'), [['bilateral', T('Distinto del testigo')], ['mayor', T('Mayor que el testigo')], ['menor', T('Menor que el testigo')]], s.alternativa);
+      }
+    }
+    if (m === 'contrastes') {
+      const niv = nivelesDeFactor(c, s.comparar[0]);
+      const ejemplo = T('Testigo vs resto: ') + niv.map((_, i) => (i === 0 ? niv.length - 1 : -1)).join(' ');
+      h += '<label class="field"><span>' + esc(T('Contrastes (uno por renglón)')) + '</span><textarea data-grupo="cmp" data-campo="contrastes" rows="4" spellcheck="false" placeholder="' + esc(ejemplo) + '">' + esc(s.contrastes) + '</textarea>' +
+        '<span class="field-help">' + esc(T('«nombre: coeficientes» en el orden de los niveles: {n}.', { n: niv.join(', ') })) + '</span></label>';
+    }
+    if (m === 'polinomios') h += campo('cmp', 'grado', T('Grado de la curva'), [[1, T('Recta')], [2, T('Cuadrática (con la dosis óptima)')], [3, T('Cúbica')]], s.grado);
+    if (m === 'medias-ajustadas') h += campo('cmp', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel);
+    else h += campo('cmp', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+    return h;
+  }
   function formulario(c) {
     if (DISENOS.includes(estado.metodo)) return formDiseno(c, estado.metodo);
+    if (COMPARAR.includes(estado.metodo)) return formComparar(c, estado.metodo);
     if (estado.metodo === 'prueba-t') return formDos(c, true);
     if (estado.metodo === 'wilcoxon') return formDos(c, false);
     if (estado.metodo === 'kruskal-wallis') return formRangos(c, false);
@@ -222,6 +274,16 @@
   /** Entradas y opciones del método elegido, desde el estado del formulario. */
   function pedido() {
     const m = estado.metodo;
+    if (COMPARAR.includes(m)) {
+      const s = estado.cmp, e = Object.assign({ diseno: s.diseno }, papelesDis(s.diseno), { comparar: s.comparar.slice() });
+      if (s.dentro) e.dentro = [s.dentro];
+      const op = { alfa: +s.alfa };
+      if (m === 'comparaciones-medias') Object.assign(op, { metodo: s.metodo, testigo: s.testigo, alternativa: s.alternativa });
+      if (m === 'contrastes') op.contrastes = s.contrastes;
+      if (m === 'polinomios') op.grado = +s.grado;
+      if (m === 'medias-ajustadas') op.nivel = +s.nivel;
+      return { e, op };
+    }
     if (DISENOS.includes(m)) {
       const s = estado.dis, e = { respuesta: s.respuesta };
       if (MAX_TRAT[m]) e.tratamientos = MAX_TRAT[m] === 1 ? s.tratamientos[0] : s.tratamientos.slice();
@@ -303,6 +365,30 @@
 
   /** Gráfica de cajas del método: los grupos comparados, con letras cuando las hay. */
   function graficaMetodo(r) {
+    if (r.tipo === 'pares' || r.tipo === 'dunnett' || r.tipo === 'medias' || r.tipo === 'contrastes') {
+      const lista = r.grupos.slice(0, 6), que = (r.comparar || [r.factor]).join(' × ');
+      return lista.map(g => {
+        const filas = r.tipo === 'medias' ? g.filas : g.medias;
+        const titulo = Object.keys(g.dentro || {}).length ? Object.entries(g.dentro).map(([f, l]) => f + ' = ' + l).join(', ') : T('Medias de {q}', { q: que });
+        return SP.graficas.medias({
+          titulo, y: { titulo: r.respuesta || T('Media') },
+          descripcion: T('Medias de {q} con {b}{l}.', { q: que, b: r.tipo === 'medias' ? T('su intervalo de confianza') : T('± un error estándar'), l: r.tipo === 'pares' ? T('; medias con una letra en común no difieren') : '' }),
+          grupos: filas.map(f => ({ nombre: f.nombre, media: f.media,
+            inf: r.tipo === 'medias' ? f.ic[0] : f.media - (f.ee || 0), sup: r.tipo === 'medias' ? f.ic[1] : f.media + (f.ee || 0), letra: f.letras, marca: r.tipo === 'dunnett' && f.nombre === g.testigo })),
+        });
+      }).join('');
+    }
+    if (r.tipo === 'polinomios') {
+      return r.grupos.slice(0, 6).map(g => {
+        const x0 = Math.min(...g.x), x1 = Math.max(...g.x), xs = Array.from({ length: 61 }, (_, i) => x0 + (x1 - x0) * i / 60);
+        const ys = xs.map(x => g.curva.coef.reduce((s, b, dd) => s + b * Math.pow(x, dd), 0));
+        return SP.graficas.dispersion({
+          titulo: Object.keys(g.dentro).length ? Object.entries(g.dentro).map(([f, l]) => f + ' = ' + l).join(', ') : T('Respuesta a {f}', { f: r.factor }),
+          x: { titulo: r.factor }, y: { titulo: r.respuesta }, descripcion: T('Medias de cada dosis y la curva de grado {g} ajustada.', { g: g.grado }),
+          puntos: g.x.map((x, i) => ({ x, y: g.medias[i], marca: true })), linea: { x: xs, y: ys },
+        });
+      }).join('');
+    }
     if (r.diseno) {
       if (r.celdas) {
         const [A, B] = r.celdas.factores, nivA = [], nivB = [];
@@ -346,10 +432,13 @@
       `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span></div>` +
       `<div class="callout exp-conclusion">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` +
       (global ? semaforoHTML(sem, global, T({ verde: 'Los supuestos de la prueba se cumplen', ambar: 'Hay supuestos que revisar', rojo: 'Hay supuestos que no se cumplen', gris: 'Sin datos suficientes' }[global]), T('Semáforo de los supuestos')) : '') +
-      `<div class="ana-graficas ana-una">${graficaMetodo(r)}</div>` +
+      graficasHTML(graficaMetodo(r)) +
+      (r.diseno && !r.tipo && r.factores && r.factores.length ? `<div class="btn-row exp-acciones"><button type="button" class="btn btn-primary btn-sm" data-accion="comparar">${esc(T('Comparar las medias de este diseño'))}</button></div>` : '') +
       rep.cuadros.map((q, i) => SP.cuadros.html(q, { numero: i + 1 }) + copiarHTML(i)).join('') +
       codigoHTML(codigo);
   }
+  /* una gráfica ocupa una columna de lectura; varias (comparaciones dentro de cada nivel) van en rejilla */
+  const graficasHTML = g => `<div class="ana-graficas${(g.match(/<figure/g) || []).length > 1 ? '' : ' ana-una'}">${g}</div>`;
 
   function calcular() {
     estado.pendiente = false;
@@ -413,8 +502,15 @@
     form.addEventListener('submit', e => e.preventDefault());
     form.addEventListener('change', e => {
       const el = e.target;
-      if (el.dataset.lista === 'tratamientos') {
-        const grupo = el.dataset.grupo || 'sup', max = grupo === 'dis' ? (MAX_TRAT[estado.metodo] || 3) : 3;
+      if (el.dataset.lista === 'comparar') {
+        const marcados = [...form.querySelectorAll('[data-lista="comparar"]:checked')].map(x => x.value);
+        if (!marcados.length) { el.checked = true; return; }
+        if (marcados.length > 2) { el.checked = false; L() && L().toast(T('Compara las medias de uno o dos factores a la vez.'), { type: 'warning' }); return; }
+        estado.cmp.comparar = marcados;
+      } else if (el.dataset.campo === 'comparar1') {
+        estado.cmp.comparar = el.value ? [el.value] : [];
+      } else if (el.dataset.lista === 'tratamientos') {
+        const grupo = el.dataset.grupo || 'sup', dsel = DISENOS.includes(estado.metodo) ? estado.metodo : estado.cmp.diseno, max = grupo === 'dis' ? (MAX_TRAT[dsel] || 3) : 3;
         const marcados = [...form.querySelectorAll('[data-lista="tratamientos"]:checked')].map(x => x.value);
         if (marcados.length > max) { el.checked = false; L() && L().toast(max === 2 ? T('Hasta dos factores de tratamiento.') : T('Hasta tres factores de tratamiento.'), { type: 'warning' }); return; }
         estado[grupo].tratamientos = marcados;
@@ -429,10 +525,23 @@
     $('#anaResultado').addEventListener('click', async e => {
       const a = e.target.closest('[data-accion]');
       if (!a) return;
+      if (a.dataset.accion === 'comparar') {
+        estado.cmp.diseno = estado.metodo;
+        estado.metodo = 'comparaciones-medias';
+        calcular();
+        $('#anaCatalogo').scrollIntoView({ block: 'nearest' });
+        return;
+      }
       const texto = a.dataset.accion === 'copiar' ? (estado.ultimo && SP.cuadros.tsv(estado.ultimo.cuadros[+a.dataset.cuadro || 0])) : $('#anaResultado').dataset.codigo;
       if (texto && await SP.cuadros.copiar(texto)) L() && L().toast(a.dataset.accion === 'copiar' ? T('Cuadro copiado.') : T('Código R copiado.'), { type: 'success' });
     });
-    $('#anaCatalogo').addEventListener('click', e => { const b = e.target.closest('[data-metodo]'); if (b) { estado.metodo = b.dataset.metodo; calcular(); } });
+    $('#anaCatalogo').addEventListener('click', e => {
+      const b = e.target.closest('[data-metodo]');
+      if (!b) return;
+      estado.metodo = b.dataset.metodo;
+      if (DISENOS.includes(estado.metodo)) estado.cmp.diseno = estado.metodo;   // las comparaciones usan el último diseño elegido
+      calcular();
+    });
     document.addEventListener('sp:datos', () => { if (panel.classList.contains('active')) recalcular(); else estado.pendiente = true; });
     document.addEventListener('sp:bloque', e => { if (e.detail.bloque === 4 && estado.pendiente) calcular(); });
     if (panel.classList.contains('active')) calcular();

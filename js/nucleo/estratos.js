@@ -88,7 +88,7 @@ SP.definir('estratos', function (SP) {
     if (hayDentro) { for (let i = dE.rango; i < n; i++) estrato[i] = nombres.length; nombres.push('Within'); }
 
     const etiquetas = ['(Intercept)', ...mX.terminos.map(t => t.etiqueta)];
-    const estratos = [];
+    const estratos = [], coefs = [];
     nombres.forEach((nombre, s) => {
       const sel = [];
       for (let i = 0; i < n; i++) if (estrato[i] === s) sel.push(i);
@@ -111,6 +111,7 @@ SP.definir('estratos', function (SP) {
         }
         for (let i = k; i < ni; i++) scRes += mc.efectos[i] * mc.efectos[i];
         glRes = ni - k;
+        if (op.coeficientes) coefs.push({ s, cols, mc, k, ultimo });
       } else for (let i = 0; i < ni; i++) scRes += yi[i] * yi[i];
       if (ultimo && dentro) { scRes += dentro.sc; glRes += dentro.gl; }
       const cmRes = glRes > 0 ? scRes / glRes : NaN;
@@ -118,10 +119,52 @@ SP.definir('estratos', function (SP) {
         const g = gl.get(t), s2 = sc.get(t), cm = s2 / g, F = glRes > 0 ? cm / cmRes : NaN;
         return { fuente: etiquetas[t], gl: g, sc: s2, cm, F, p: glRes > 0 ? D().pf(F, g, glRes, false) : NaN };
       });
+      if (op.coeficientes && coefs.length && coefs[coefs.length - 1].s === s) Object.assign(coefs[coefs.length - 1], { gl: glRes, cm: cmRes });
       if (!filasT.length && glRes === 0) return;
       estratos.push({ nombre, filas: filasT, residual: glRes > 0 ? { gl: glRes, sc: scRes, cm: cmRes } : null });
     });
-    return { estratos, n: mX.n, avisos, agrupado: !!dentro, formula, error, terminos: mX.terminos.map(t => t.etiqueta), filas: mX.filas };
+    const out = { estratos, n: mX.n, avisos, agrupado: !!dentro, formula, error, terminos: mX.terminos.map(t => t.etiqueta), filas: mX.filas };
+    if (op.coeficientes) Object.assign(out, combinarCoeficientes(coefs, p), { modelo: mX });
+    return out;
+  }
+
+  /**
+   * Coeficientes de los tratamientos combinando los estratos como emmeans con un modelo de estratos (contrastes de
+   * suma cero): cada coeficiente se toma del estrato más bajo donde se estima, con la varianza de ese estrato
+   * (CM del error del estrato · (XᵀX)⁻¹ en el estrato). Devuelve b y los bloques { idx, V, gl } para
+   * Var(L·b) = Σ Lₛ Vₛ Lₛᵀ y los grados de libertad de Satterthwaite.
+   */
+  function combinarCoeficientes(coefs, p) {
+    const b = new Float64Array(p).fill(NaN), asignado = new Uint8Array(p), bloques = [];
+    for (let c = coefs.length - 1; c >= 0; c--) {
+      const { cols, mc, k, gl, cm } = coefs[c];
+      const Vk = SP.algebra.rtrInversa(mc.qr), usar = [];
+      for (let jp = 0; jp < k; jp++) {
+        const j = cols[mc.qr.pivote[jp]];
+        if (!asignado[j]) { asignado[j] = 1; b[j] = mc.coeficientes[mc.qr.pivote[jp]]; usar.push(jp); }
+      }
+      if (!usar.length) continue;
+      const m = usar.length, V = new Float64Array(m * m);
+      usar.forEach((a, r) => usar.forEach((z, q) => { V[r + q * m] = cm * Vk[a + z * k]; }));
+      bloques.push({ idx: usar.map(jp => cols[mc.qr.pivote[jp]]), V, gl });
+    }
+    return { b, bloques };
+  }
+  /** Var(L·b) y grados de libertad de Satterthwaite (solo las entradas no nulas de L). */
+  function varianzaCombinada(co, L) {
+    let tot = 0, den = 0, mx = 0;
+    for (const v of L) mx = Math.max(mx, Math.abs(v));
+    /* entradas de redondeo (p. ej. los coeficientes polinomiales normalizados suman 1e-17, no 0) cuentan como cero */
+    const cero = 1e-12 * mx;
+    for (const bl of co.bloques) {
+      const m = bl.idx.length, x = bl.idx.map(j => (Math.abs(L[j]) <= cero ? 0 : L[j]));
+      if (x.every(v => v === 0)) continue;
+      let v = 0;
+      for (let r = 0; r < m; r++) { if (!x[r]) continue; for (let q = 0; q < m; q++) if (x[q]) v += x[r] * bl.V[r + q * m] * x[q]; }
+      if (v === 0) continue;
+      tot += v; den += bl.gl > 0 ? v * v / bl.gl : NaN;
+    }
+    return { v: tot, gl: tot * tot / den };
   }
 
   /** Versión plana para las pruebas: una lista de tablas con el nombre del estrato. */
@@ -133,5 +176,5 @@ SP.definir('estratos', function (SP) {
     });
   }
 
-  SP.estratos = { anova, anovaTabla, filasCompletas };
+  SP.estratos = { anova, anovaTabla, filasCompletas, varianzaCombinada };
 });

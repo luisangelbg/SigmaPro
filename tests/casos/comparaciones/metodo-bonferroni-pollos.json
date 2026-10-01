@@ -1,0 +1,193 @@
+{
+  "esquema": 1,
+  "id": "comparaciones-medias/metodo-bonferroni-pollos",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "comparaciones-medias"
+  },
+  "titulo": "Bonferroni con un factor desbalanceado",
+  "fuente": "Anónimo (1948); conjunto chickwts de R",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "peso": [179, 160, 136, 227, 217, 168, 108, 124, 143, 140, 309, 229, 181, 141, 260, 203, 148, 169, 213, 257, 244, 271, 243, 230, 248, 327, 329, 250, 193, 271, 316, 267, 199, 171, 158, 248, 423, 340, 392, 339, 341, 226, 320, 295, 334, 322, 297, 318, 325, 257, 303, 315, 380, 153, 263, 242, 206, 344, 258, 368, 390, 379, 260, 404, 318, 352, 359, 216, 222, 283, 332],
+      "alimento": ["horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein"]
+    },
+    "tipos": {
+      "peso": {
+        "tipo": "numerica"
+      },
+      "alimento": {
+        "tipo": "factor",
+        "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"]
+      }
+    }
+  },
+  "entradas": {
+    "diseno": "dca",
+    "respuesta": "peso",
+    "tratamientos": ["alimento"],
+    "comparar": ["alimento"]
+  },
+  "opciones": {
+    "metodo": "bonferroni",
+    "alfa": 0.050000000000000003
+  },
+  "esperado": {
+    "grupos": [
+      {
+        "medias": [
+          {
+            "media": 323.5833333333332,
+            "letras": "a"
+          },
+          {
+            "media": 160.19999999999996,
+            "letras": "c"
+          },
+          {
+            "media": 218.75,
+            "letras": "bc"
+          },
+          {
+            "media": 276.90909090909076,
+            "letras": "ab"
+          },
+          {
+            "media": 246.42857142857133,
+            "letras": "b"
+          },
+          {
+            "media": 328.91666666666652,
+            "letras": "a"
+          }
+        ],
+        "pares": [
+          {
+            "dif": 163.38333333333324,
+            "ee": 23.485490506837689,
+            "gl": 65,
+            "t": 6.9567775595644878,
+            "p_ajustado": 3.101994917230504e-08
+          },
+          {
+            "dif": 104.83333333333319,
+            "ee": 22.39253658835224,
+            "gl": 65,
+            "t": 4.6816193833021833,
+            "p_ajustado": 0.00022400160203361839
+          },
+          {
+            "dif": 46.674242424242422,
+            "ee": 22.895802495213324,
+            "gl": 65,
+            "t": 2.038550185519826,
+            "p_ajustado": 0.68350079710454958
+          },
+          {
+            "dif": 77.15476190476187,
+            "ee": 21.577988177752246,
+            "gl": 65,
+            "t": 3.5756235136096453,
+            "p_ajustado": 0.0099811182196778269
+          },
+          {
+            "dif": -5.3333333333333011,
+            "ee": 22.392536588352254,
+            "gl": 65,
+            "t": -0.23817459501696195,
+            "p_ajustado": 1
+          },
+          {
+            "dif": -58.550000000000054,
+            "ee": 23.485490506837689,
+            "gl": 65,
+            "t": -2.4930286204988352,
+            "p_ajustado": 0.22832962083626612
+          },
+          {
+            "dif": -116.70909090909082,
+            "ee": 23.965816100977786,
+            "gl": 65,
+            "t": -4.8698150072314537,
+            "p_ajustado": 0.00011217018019589513
+          },
+          {
+            "dif": -86.228571428571371,
+            "ee": 22.710177086171864,
+            "gl": 65,
+            "t": -3.7969132121420404,
+            "p_ajustado": 0.0048694029862283742
+          },
+          {
+            "dif": -168.71666666666655,
+            "ee": 23.485490506837706,
+            "gl": 65,
+            "t": -7.1838681256218759,
+            "p_ajustado": 1.2305665697390949e-08
+          },
+          {
+            "dif": -58.159090909090764,
+            "ee": 22.895802495213328,
+            "gl": 65,
+            "t": -2.5401638977821239,
+            "p_ajustado": 0.20218408927069725
+          },
+          {
+            "dif": -27.678571428571317,
+            "ee": 21.577988177752257,
+            "gl": 65,
+            "t": -1.2827225226265069,
+            "p_ajustado": 1
+          },
+          {
+            "dif": -110.16666666666649,
+            "ee": 22.392536588352257,
+            "gl": 65,
+            "t": -4.9197939783191416,
+            "p_ajustado": 9.3177545075647872e-05
+          },
+          {
+            "dif": 30.480519480519447,
+            "ee": 22.099811104132513,
+            "gl": 65,
+            "t": 1.3792208149154632,
+            "p_ajustado": 1
+          },
+          {
+            "dif": -52.007575757575722,
+            "ee": 22.895802495213339,
+            "gl": 65,
+            "t": -2.2714895347498114,
+            "p_ajustado": 0.39653216714252304
+          },
+          {
+            "dif": -82.48809523809517,
+            "ee": 21.57798817775226,
+            "gl": 65,
+            "t": -3.8227889717329431,
+            "p_ajustado": 0.0044706565393025765
+          }
+        ]
+      }
+    ]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "grupos[*].pares[*].p_ajustado": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): integral numérica (AS 190)"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "emmeans": "1.10.6",
+      "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(lm(peso ~ alimento, data = datos), ...), adjust = \"bonferroni\"); letras con multcompLetters"
+  }
+}

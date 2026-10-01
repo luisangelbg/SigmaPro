@@ -90,6 +90,11 @@ El análisis con estratos de error sigue el procedimiento público de Yates (193
 estimabilidad, a Searle, Speed y Milliken (1980) y al paquete estimability (GPL); los efectos simples, a
 `joint_tests` de emmeans (GPL); y la eficiencia relativa, a las fórmulas publicadas de Gomez y Gomez (1984).
 
+Comparaciones de medias (`js/metodos/comparaciones.js`): la combinación de estratos con los gl de Satterthwaite
+sigue a emmeans con un modelo de estratos (GPL); Duncan y Student-Newman-Keuls, a las fórmulas de agricolae (GPL);
+Games-Howell, a PMCMRplus (GPL-3); y el Dunnett exacto integra la t multivariada de Dunnett (1955) con la regla de
+Gauss-Kronrod de 21 puntos de QUADPACK (Piessens y col., 1983, dominio público; solo sus nodos y pesos).
+
 Las letras de agrupación siguen el algoritmo de inserción y absorción de Piepho (2004) tal como lo programa
 `multcompLetters` de multcompView (GPL); el ajuste de los valores p, a `p.adjust` de R; y las comparaciones tras
 Kruskal-Wallis y Friedman, a las fórmulas de PMCMRplus (GPL-3).

@@ -1,0 +1,264 @@
+{
+  "esquema": 1,
+  "id": "comparaciones-medias/metodo-tukey-avena-n-en-v",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "comparaciones-medias"
+  },
+  "titulo": "Tukey del nitrógeno dentro de cada variedad (parcelas divididas)",
+  "fuente": "Yates (1935); conjunto oats del paquete MASS",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "Y": [111, 130, 157, 174, 117, 114, 161, 141, 105, 140, 118, 156, 61, 91, 97, 100, 70, 108, 126, 149, 96, 124, 121, 144, 68, 64, 112, 86, 60, 102, 89, 96, 89, 129, 132, 124, 74, 89, 81, 122, 64, 103, 132, 133, 70, 89, 104, 117, 62, 90, 100, 116, 80, 82, 94, 126, 63, 70, 109, 99, 53, 74, 118, 113, 89, 82, 86, 104, 97, 99, 119, 121],
+      "B": ["I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI"],
+      "V": ["Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden.rain", "Golden.rain", "Golden.rain", "Golden.rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous"],
+      "N": ["0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt", "0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt"]
+    },
+    "tipos": {
+      "Y": {
+        "tipo": "numerica"
+      },
+      "B": {
+        "tipo": "factor",
+        "niveles": ["I", "II", "III", "IV", "V", "VI"]
+      },
+      "V": {
+        "tipo": "factor",
+        "niveles": ["Golden.rain", "Marvellous", "Victory"]
+      },
+      "N": {
+        "tipo": "factor",
+        "niveles": ["0.0cwt", "0.2cwt", "0.4cwt", "0.6cwt"]
+      }
+    }
+  },
+  "entradas": {
+    "diseno": "parcelas-divididas",
+    "respuesta": "Y",
+    "parcelaGrande": "V",
+    "subparcela": "N",
+    "bloque": "B",
+    "principal": "dbca",
+    "comparar": ["N"],
+    "dentro": ["V"]
+  },
+  "opciones": {
+    "metodo": "tukey",
+    "alfa": 0.050000000000000003
+  },
+  "esperado": {
+    "grupos": [
+      {
+        "medias": [
+          {
+            "media": 79.999999999999844,
+            "letras": "c"
+          },
+          {
+            "media": 98.499999999999829,
+            "letras": "bc"
+          },
+          {
+            "media": 114.66666666666649,
+            "letras": "ab"
+          },
+          {
+            "media": 124.83333333333314,
+            "letras": "a"
+          }
+        ],
+        "pares": [
+          {
+            "dif": -18.499999999999986,
+            "ee": 7.682953714410738,
+            "gl": 45,
+            "t": -2.4079280817870821,
+            "p_ajustado": 0.090042874759910019
+          },
+          {
+            "dif": -34.666666666666643,
+            "ee": 7.6829537144107389,
+            "gl": 44.999999999999993,
+            "t": -4.5121535226280454,
+            "p_ajustado": 0.0002600387370366164
+          },
+          {
+            "dif": -44.833333333333293,
+            "ee": 7.6829537144107389,
+            "gl": 44.999999999999993,
+            "t": -5.8354293153218464,
+            "p_ajustado": 3.2131827185644113e-06
+          },
+          {
+            "dif": -16.166666666666657,
+            "ee": 7.6829537144107407,
+            "gl": 45.000000000000007,
+            "t": -2.1042254408409633,
+            "p_ajustado": 0.16734054471191351
+          },
+          {
+            "dif": -26.333333333333304,
+            "ee": 7.6829537144107416,
+            "gl": 45,
+            "t": -3.4275012335347625,
+            "p_ajustado": 0.0069393207071353213
+          },
+          {
+            "dif": -10.166666666666647,
+            "ee": 7.6829537144107416,
+            "gl": 45,
+            "t": -1.3232757926937997,
+            "p_ajustado": 0.55325650100413459
+          }
+        ]
+      },
+      {
+        "medias": [
+          {
+            "media": 86.666666666666515,
+            "letras": "b"
+          },
+          {
+            "media": 108.49999999999983,
+            "letras": "a"
+          },
+          {
+            "media": 117.1666666666665,
+            "letras": "a"
+          },
+          {
+            "media": 126.83333333333314,
+            "letras": "a"
+          }
+        ],
+        "pares": [
+          {
+            "dif": -21.833333333333314,
+            "ee": 7.6829537144107407,
+            "gl": 45.000000000000007,
+            "t": -2.8417889974243931,
+            "p_ajustado": 0.032811089556571749
+          },
+          {
+            "dif": -30.499999999999989,
+            "ee": 7.6829537144107398,
+            "gl": 45,
+            "t": -3.9698273780814062,
+            "p_ajustado": 0.0014161613619846358
+          },
+          {
+            "dif": -40.166666666666629,
+            "ee": 7.6829537144107416,
+            "gl": 45,
+            "t": -5.2280240334296071,
+            "p_ajustado": 2.4904780487111644e-05
+          },
+          {
+            "dif": -8.6666666666666785,
+            "ee": 7.6829537144107407,
+            "gl": 45.000000000000007,
+            "t": -1.1280383806570133,
+            "p_ajustado": 0.67435330954226047
+          },
+          {
+            "dif": -18.333333333333318,
+            "ee": 7.6829537144107416,
+            "gl": 45,
+            "t": -2.3862350360052154,
+            "p_ajustado": 0.094356312448100499
+          },
+          {
+            "dif": -9.6666666666666412,
+            "ee": 7.6829537144107416,
+            "gl": 45,
+            "t": -1.258196655348202,
+            "p_ajustado": 0.59379840031795739
+          }
+        ]
+      },
+      {
+        "medias": [
+          {
+            "media": 71.499999999999886,
+            "letras": "b"
+          },
+          {
+            "media": 89.666666666666472,
+            "letras": "b"
+          },
+          {
+            "media": 110.83333333333321,
+            "letras": "a"
+          },
+          {
+            "media": 118.49999999999982,
+            "letras": "a"
+          }
+        ],
+        "pares": [
+          {
+            "dif": -18.166666666666586,
+            "ee": 7.682953714410738,
+            "gl": 45,
+            "t": -2.3645419902233424,
+            "p_ajustado": 0.09883931126543577
+          },
+          {
+            "dif": -39.333333333333314,
+            "ee": 7.6829537144107389,
+            "gl": 44.999999999999993,
+            "t": -5.1195588045202838,
+            "p_ajustado": 3.5740796618610737e-05
+          },
+          {
+            "dif": -46.999999999999922,
+            "ee": 7.6829537144107389,
+            "gl": 45,
+            "t": -6.1174389104860944,
+            "p_ajustado": 1.2301208847098621e-06
+          },
+          {
+            "dif": -21.166666666666732,
+            "ee": 7.6829537144107389,
+            "gl": 45,
+            "t": -2.7550168142969422,
+            "p_ajustado": 0.040581335355250547
+          },
+          {
+            "dif": -28.833333333333339,
+            "ee": 7.6829537144107416,
+            "gl": 45,
+            "t": -3.7528969202627516,
+            "p_ajustado": 0.0027137130953526212
+          },
+          {
+            "dif": -7.6666666666666075,
+            "ee": 7.6829537144107407,
+            "gl": 45.000000000000007,
+            "t": -0.99788010596581056,
+            "p_ajustado": 0.75135821710389783
+          }
+        ]
+      }
+    ]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "grupos[*].pares[*].p_ajustado": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): integral numérica (AS 190)"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "emmeans": "1.10.6",
+      "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(aov(Y ~ V * N + Error(B/V), data = datos), ...), adjust = \"tukey\"); letras con multcompLetters"
+  }
+}

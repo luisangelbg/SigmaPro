@@ -1,0 +1,67 @@
+{
+  "esquema": 1,
+  "id": "contrastes/metodo-contrastes-plantas",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "contrastes"
+  },
+  "titulo": "Contrastes escritos como texto",
+  "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "peso": [4.1699999999999999, 5.5800000000000001, 5.1799999999999997, 6.1100000000000003, 4.5, 4.6100000000000003, 5.1699999999999999, 4.5300000000000002, 5.3300000000000001, 5.1399999999999997, 4.8099999999999996, 4.1699999999999999, 4.4100000000000001, 3.5899999999999999, 5.8700000000000001, 3.8300000000000001, 6.0300000000000002, 4.8899999999999997, 4.3200000000000003, 4.6900000000000004, 6.3099999999999996, 5.1200000000000001, 5.54, 5.5, 5.3700000000000001, 5.29, 4.9199999999999999, 6.1500000000000004, 5.7999999999999998, 5.2599999999999998],
+      "grupo": ["ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "ctrl", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt1", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2", "trt2"]
+    },
+    "tipos": {
+      "peso": {
+        "tipo": "numerica"
+      },
+      "grupo": {
+        "tipo": "factor",
+        "niveles": ["ctrl", "trt1", "trt2"]
+      }
+    }
+  },
+  "entradas": {
+    "diseno": "dca",
+    "respuesta": "peso",
+    "tratamientos": ["grupo"],
+    "comparar": ["grupo"]
+  },
+  "opciones": {
+    "contrastes": "Testigo vs tratados: 2 -1 -1\ntrt1 vs trt2: 0, 1, -1"
+  },
+  "esperado": {
+    "grupos": [
+      {
+        "todosOrtogonales": true,
+        "contrastes": [
+          {
+            "est": -0.12299999999999967,
+            "ee": 0.48286390997418255,
+            "t": -0.25473015783386288,
+            "p": 0.80086174272419419,
+            "sc": 0.025214999999999869
+          },
+          {
+            "est": -0.86499999999999988,
+            "ee": 0.27878160840554955,
+            "t": -3.102787177917655,
+            "p": 0.0044592359382054714,
+            "sc": 3.7411249999999985
+          }
+        ]
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "contrast(emmeans(lm(peso ~ grupo), \"grupo\"), method = list(...))"
+  }
+}

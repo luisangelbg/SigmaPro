@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### Hito 1.7 · comparaciones de medias, contrastes y medias ajustadas (1 oct 2026)
+
+- `js/metodos/comparaciones.js`: un motor de combinaciones lineales sobre las medias marginales del diseño, con un
+  solo error o con estratos (cada diferencia con el error de su estrato y los gl de Satterthwaite, como emmeans).
+  Pares con DMS (también protegida), Tukey-Kramer, Duncan, SNK, Scheffé, Bonferroni, Šidák y Holm; Dunnett bilateral o
+  de una cola con la t multivariada exacta (integral doble de Gauss-Kronrod adaptativa, que reproduce el cuadro de
+  Dunnett, 1955); Games-Howell; letras por inserción y absorción con la «a» para la media más alta; comparaciones
+  dentro de cada nivel de otro factor; contrastes escritos como texto con su prueba, su SC y la revisión de
+  ortogonalidad; polinomios ortogonales con dosis igual o desigualmente espaciadas, la curva ajustada a las medias y la
+  dosis óptima; medias ajustadas con su intervalo.
+- `SP.estratos` entrega los coeficientes por estrato y la varianza combinada; `SP.medias` expone la rejilla y las
+  filas de medias.
+- Bloque 4: familia «Comparaciones de medias y contrastes» (cuatro métodos) con el diseño y sus papeles en el mismo
+  formulario, gráfica de medias con barras de error y letras (`SP.graficas.medias`), varias gráficas cuando se compara
+  dentro de cada nivel, curva de los polinomios, y el botón «Comparar las medias de este diseño» en cada ANOVA.
+- Validación: 49 casos nuevos contra R (5 642 valores) con emmeans, agricolae, PMCMRplus y una integral independiente
+  para Dunnett; hallazgos documentados: el Šidák de emmeans pierde cifras con p diminutos (clase B) y el ptukey de R
+  tiene un error de hasta 2e-5 con pocos gl (con una sola comparación se usa la t, como emmeans). 6 pruebas unitarias
+  y 5 escenarios del código R nuevos (29 en total), que verifican también las letras.
+- Con 100 000 filas, cada comparación tarda entre 0.4 y 1.5 s.
+
 ### Hito 1.6 · ANOVA de diseños experimentales (1 oct 2026)
 
 - Núcleo: `js/nucleo/estratos.js`, análisis de varianza con estratos de error como `aov(… + Error())` (parcelas

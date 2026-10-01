@@ -105,6 +105,17 @@ const ESCENARIOS = [
   { ej: 'avena', id: 'parcelas-divididas', e: { respuesta: 'rendimiento', parcelaGrande: 'variedad', subparcela: 'nitrogeno', bloque: 'bloque', principal: 'dbca' }, op: {},
     r: 'unlist(lapply(summary(modelo), function(s) { d <- s[[1]]; d[!is.na(d[["F value"]]), "F value"] }))',
     js: res => res.estratos.flatMap(s => s.filas.filter(f => Number.isFinite(f.F)).map(f => f.F)) },
+  /* Hito 1.7: comparaciones de medias */
+  { ej: 'maiz', id: 'comparaciones-medias', e: { diseno: 'dbca', respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque', comparar: ['hibrido'] }, op: { metodo: 'tukey', alfa: 0.05 },
+    r: 'c(pr$p.value, match(letras(emm, pr, 0.05), letters))', js: res => [...res.grupos[0].pares.map(p => p.p_ajustado), ...res.grupos[0].medias.map(m => 'abcdefghijklmnopqrstuvwxyz'.indexOf(m.letras) + 1)] },
+  { ej: 'avena', id: 'comparaciones-medias', e: { diseno: 'parcelas-divididas', respuesta: 'rendimiento', parcelaGrande: 'variedad', subparcela: 'nitrogeno', bloque: 'bloque', principal: 'dbca', comparar: ['nitrogeno'], dentro: ['variedad'] }, op: { metodo: 'tukey', alfa: 0.05 },
+    r: 'c(pr$estimate, pr$SE, pr$df, pr$p.value)', js: res => ['dif', 'ee', 'gl', 'p_ajustado'].flatMap(k => res.grupos.flatMap(g => g.pares.map(p => p[k]))) },
+  { ej: 'venenos', id: 'contrastes', e: { diseno: 'dca', respuesta: 'tiempo', tratamientos: ['veneno', 'tratamiento'], comparar: ['veneno'] }, op: { contrastes: ['I y II vs III: 1 1 -2', 'I vs II: 1 -1 0'].join('\n') },
+    r: 'c(summary(ct)$estimate, summary(ct)$t.ratio, summary(ct)$p.value)', js: res => ['est', 't', 'p'].flatMap(k => res.grupos[0].contrastes.map(c => c[k])) },
+  { ej: 'maiz', id: 'polinomios', e: { diseno: 'dbca', respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque', comparar: ['dosis'] }, op: { grado: 2 },
+    r: 'c(as.data.frame(pc)$estimate, as.data.frame(pc)$p.value, coef(curva))', js: res => [...res.grupos[0].polinomios.map(x => x.est), ...res.grupos[0].polinomios.map(x => x.p), ...res.grupos[0].curva.coef] },
+  { ej: 'maiz', id: 'medias-ajustadas', e: { diseno: 'dbca', respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque', comparar: ['dosis'], dentro: ['hibrido'] }, op: { nivel: 0.9 },
+    r: 'c(as.data.frame(ci)$emmean, as.data.frame(ci)$lower.CL, as.data.frame(ci)$upper.CL)', js: res => ['media', 'inf', 'sup'].flatMap(k => res.grupos.flatMap(g => g.filas.map(f => (k === 'media' ? f.media : k === 'inf' ? f.ic[0] : f.ic[1])))) },
 ];
 const efectoDe = res => [res.efecto.d, ...res.efecto.ic_d, res.efecto.g, ...res.efecto.ic_g];
 /* aggregate() de R deja el primer factor cambiando más rápido; la app, el último */

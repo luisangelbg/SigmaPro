@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-01T19:15:22.720Z",
+ "generado": "2026-10-01T19:57:03.380Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 417,
-  "aprobados": 417,
+  "casos": 466,
+  "aprobados": 466,
   "fallidos": 0,
-  "valores": 32397,
+  "valores": 38039,
   "difEscaladaMax": 2.0258232202030768e-7,
-  "objetivos": 89
+  "objetivos": 100
  },
  "casos": [
   {
@@ -11140,6 +11140,1549 @@ window.SP_VALIDACION = {
      "agricolae": "1.3.7"
     },
     "codigo": "summary(aov(y ~ bloque + A * B * C + Error(bloque/A/B))); CV = 100 * sqrt(CM error) / media"
+   }
+  },
+  {
+   "id": "comp.contrastesDe/contrastes-avena-n",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.contrastesDe"
+   },
+   "titulo": "Contrastes de nitrógeno en parcelas divididas (error b)",
+   "fuente": "Yates (1935); conjunto oats del paquete MASS",
+   "clase": "A",
+   "valores": 10,
+   "difMax": 7.105427357601002e-14,
+   "difEscaladaMax": 2.131152808470054e-14,
+   "peor": "[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans::contrast(emmeans(modelo, trt), method = list(...)); SC = t² · CMerror"
+   }
+  },
+  {
+   "id": "comp.contrastesDe/contrastes-bloques",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.contrastesDe"
+   },
+   "titulo": "Contrastes en bloques, uno no ortogonal",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 18,
+   "difMax": 9.237055564881302e-13,
+   "difEscaladaMax": 7.316298558852568e-15,
+   "peor": "[0].sc[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans::contrast(emmeans(modelo, trt), method = list(...)); SC = t² · CMerror"
+   }
+  },
+  {
+   "id": "comp.contrastesDe/contrastes-plantas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.contrastesDe"
+   },
+   "titulo": "Dos contrastes ortogonales",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 1.6653345369377348e-15,
+   "peor": "[0].t[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "emmeans::contrast(emmeans(modelo, trt), method = list(...)); SC = t² · CMerror"
+   }
+  },
+  {
+   "id": "comp.rangoMultipleDe/duncan-maiz",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.rangoMultipleDe"
+   },
+   "titulo": "DUNCAN con las medias de híbrido de un factorial en bloques",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 12,
+   "difMax": 2.8033131371785203e-15,
+   "difEscaladaMax": 2.8033131371785203e-15,
+   "peor": "[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "agricolae::duncan.test(lm(rend ~ bloque + hibrido * dosis, data = mzf), \"hibrido\") con los p sin redondear; letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.rangoMultipleDe/duncan-plantas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.rangoMultipleDe"
+   },
+   "titulo": "DUNCAN con un factor balanceado",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "B",
+   "valores": 12,
+   "difMax": 4.3298697960381105e-15,
+   "difEscaladaMax": 4.3298697960381105e-15,
+   "peor": "[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "agricolae::duncan.test(lm(peso ~ grupo, data = pg), \"grupo\") con los p sin redondear; letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.rangoMultipleDe/duncan-pollos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.rangoMultipleDe"
+   },
+   "titulo": "DUNCAN desbalanceado (media armónica de las repeticiones)",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "B",
+   "valores": 42,
+   "difMax": 2.2737367544323206e-13,
+   "difEscaladaMax": 3.5249581228304116e-9,
+   "peor": "[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "agricolae::duncan.test(lm(peso ~ alimento, data = ck), \"alimento\") con los p sin redondear; letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.rangoMultipleDe/snk-maiz",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.rangoMultipleDe"
+   },
+   "titulo": "SNK con las medias de híbrido de un factorial en bloques",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 12,
+   "difMax": 2.7755575615628914e-15,
+   "difEscaladaMax": 2.7755575615628914e-15,
+   "peor": "[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "agricolae::SNK.test(lm(rend ~ bloque + hibrido * dosis, data = mzf), \"hibrido\") con los p sin redondear; letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.rangoMultipleDe/snk-plantas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.rangoMultipleDe"
+   },
+   "titulo": "SNK con un factor balanceado",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "B",
+   "valores": 12,
+   "difMax": 4.3298697960381105e-15,
+   "difEscaladaMax": 4.3298697960381105e-15,
+   "peor": "[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "agricolae::SNK.test(lm(peso ~ grupo, data = pg), \"grupo\") con los p sin redondear; letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.rangoMultipleDe/snk-pollos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.rangoMultipleDe"
+   },
+   "titulo": "SNK desbalanceado (media armónica de las repeticiones)",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "B",
+   "valores": 42,
+   "difMax": 2.2737367544323206e-13,
+   "difEscaladaMax": 1.4099832412739488e-8,
+   "peor": "[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "agricolae::SNK.test(lm(peso ~ alimento, data = ck), \"alimento\") con los p sin redondear; letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.dunnettDe/dunnett-bloques",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.dunnettDe"
+   },
+   "titulo": "Dunnett en bloques completos (testigo V1)",
+   "fuente": "Datos sintéticos",
+   "clase": "C",
+   "valores": 16,
+   "difMax": 2.1316282072803006e-14,
+   "difEscaladaMax": 8.492130354645487e-15,
+   "peor": "[0].p[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "mvtnorm": "1.3.2"
+    },
+    "codigo": "P(máx |Tᵢ| > |t|) por integración doble (integrate, rel.tol 1e-12) con correlaciones λᵢλⱼ; emmeans(adjust = \"mvt\") como comprobación"
+   }
+  },
+  {
+   "id": "comp.dunnettDe/dunnett-dosis-en-hibrido",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.dunnettDe"
+   },
+   "titulo": "Dunnett contra la dosis 0 dentro de cada híbrido",
+   "fuente": "Datos sintéticos",
+   "clase": "C",
+   "valores": 36,
+   "difMax": 2.3092638912203256e-14,
+   "difEscaladaMax": 2.4699063320888935e-14,
+   "peor": "[1].p[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "mvtnorm": "1.3.2"
+    },
+    "codigo": "P(máx |Tᵢ| > |t|) por integración doble (integrate, rel.tol 1e-12) con correlaciones λᵢλⱼ; emmeans(adjust = \"mvt\") como comprobación"
+   }
+  },
+  {
+   "id": "comp.dunnettDe/dunnett-plantas-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.dunnettDe"
+   },
+   "titulo": "Dunnett de una cola (mayor que el testigo)",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "C",
+   "valores": 8,
+   "difMax": 3.4416913763379853e-15,
+   "difEscaladaMax": 3.4416913763379853e-15,
+   "peor": "[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "mvtnorm": "1.3.2"
+    },
+    "codigo": "P(máx |Tᵢ| > |t|) por integración doble (integrate, rel.tol 1e-12) con correlaciones λᵢλⱼ; emmeans(adjust = \"mvt\") como comprobación"
+   }
+  },
+  {
+   "id": "comp.dunnettDe/dunnett-plantas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.dunnettDe"
+   },
+   "titulo": "Dunnett bilateral contra el testigo, n iguales",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "C",
+   "valores": 8,
+   "difMax": 3.3306690738754696e-15,
+   "difEscaladaMax": 2.502774343616238e-15,
+   "peor": "[0].t[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "mvtnorm": "1.3.2"
+    },
+    "codigo": "P(máx |Tᵢ| > |t|) por integración doble (integrate, rel.tol 1e-12) con correlaciones λᵢλⱼ; emmeans(adjust = \"mvt\") como comprobación"
+   }
+  },
+  {
+   "id": "comp.dunnettDe/dunnett-pollos-menor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.dunnettDe"
+   },
+   "titulo": "Dunnett de una cola (menor que el testigo: casein)",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "C",
+   "valores": 20,
+   "difMax": 1.7053025658242404e-13,
+   "difEscaladaMax": 2.8618988501463385e-14,
+   "peor": "[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "mvtnorm": "1.3.2"
+    },
+    "codigo": "P(máx |Tᵢ| > |t|) por integración doble (integrate, rel.tol 1e-12) con correlaciones λᵢλⱼ; emmeans(adjust = \"mvt\") como comprobación"
+   }
+  },
+  {
+   "id": "comp.dunnettDe/dunnett-pollos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.dunnettDe"
+   },
+   "titulo": "Dunnett con n distintos (testigo: horsebean)",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "C",
+   "valores": 20,
+   "difMax": 2.2737367544323206e-13,
+   "difEscaladaMax": 5.6510550613790405e-14,
+   "peor": "[0].p[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "mvtnorm": "1.3.2"
+    },
+    "codigo": "P(máx |Tᵢ| > |t|) por integración doble (integrate, rel.tol 1e-12) con correlaciones λᵢλⱼ; emmeans(adjust = \"mvt\") como comprobación"
+   }
+  },
+  {
+   "id": "comp.gamesHowellDe/games-howell-insectos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.gamesHowellDe"
+   },
+   "titulo": "Games-Howell: insecticidas",
+   "fuente": "Beall (1942); conjunto InsectSprays de R",
+   "clase": "B",
+   "valores": 51,
+   "difMax": 5.329070518200751e-15,
+   "difEscaladaMax": 3.9968028886505635e-9,
+   "peor": "p[5]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "PMCMRplus::gamesHowellTest(conteo, insecticida)"
+   }
+  },
+  {
+   "id": "comp.gamesHowellDe/games-howell-pollos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.gamesHowellDe"
+   },
+   "titulo": "Games-Howell: alimentos de pollos",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "B",
+   "valores": 51,
+   "difMax": 3.6637359812630166e-15,
+   "difEscaladaMax": 3.6637359812630166e-9,
+   "peor": "p[8]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "PMCMRplus": "1.9.12",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "PMCMRplus::gamesHowellTest(peso, alimento)"
+   }
+  },
+  {
+   "id": "comp.mediasDe/medias-bib",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.mediasDe"
+   },
+   "titulo": "Medias ajustadas de un BIB, IC 99 %",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 35,
+   "difMax": 5.329070518200751e-15,
+   "difEscaladaMax": 4.440892098500626e-16,
+   "peor": "[0].ee[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "confint(emmeans(lm(y ~ bloque + trat, data = datos), \"trat\"), level = 0.99)"
+   }
+  },
+  {
+   "id": "comp.mediasDe/medias-maiz-hibrido",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.mediasDe"
+   },
+   "titulo": "Medias de híbrido en un factorial en bloques, IC 95 %",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 15,
+   "difMax": 2.6645352591003757e-15,
+   "difEscaladaMax": 4.3888935418782326e-16,
+   "peor": "[0].sup[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "confint(emmeans(lm(rend ~ bloque + hibrido * dosis, data = mzf), \"hibrido\"), level = 0.95)"
+   }
+  },
+  {
+   "id": "comp.mediasDe/medias-perdidas-celdas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.mediasDe"
+   },
+   "titulo": "Medias de dosis dentro de híbrido con dos parcelas perdidas",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 60,
+   "difMax": 2.6645352591003757e-15,
+   "difEscaladaMax": 5.898309006298508e-16,
+   "peor": "[0].inf[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "confint(emmeans(lm(rend ~ bloque + hibrido * dosis, data = transform(mz[-c(5, 30), ], dosis = factor(dosis))), \"dosis\"), level = 0.95)"
+   }
+  },
+  {
+   "id": "comp.mediasDe/medias-pollos-90",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.mediasDe"
+   },
+   "titulo": "Medias de un factor desbalanceado, IC 90 %",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "A",
+   "valores": 30,
+   "difMax": 1.9895196601282805e-13,
+   "difEscaladaMax": 1.0826723828020326e-15,
+   "peor": "[0].inf[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "confint(emmeans(lm(peso ~ alimento, data = datos), \"alimento\"), level = 0.9)"
+   }
+  },
+  {
+   "id": "comparaciones-medias/metodo-bonferroni-pollos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "comparaciones-medias"
+   },
+   "titulo": "Bonferroni con un factor desbalanceado",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "B",
+   "valores": 87,
+   "difMax": 2.4158453015843406e-13,
+   "difEscaladaMax": 4.723998969780041e-14,
+   "peor": "grupos[0].pares[9].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "grupos[*].pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(lm(peso ~ alimento, data = datos), ...), adjust = \"bonferroni\"); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comparaciones-medias/metodo-dms-dosis-en-hibrido",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "comparaciones-medias"
+   },
+   "titulo": "DMS de la dosis dentro de cada híbrido",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 114,
+   "difMax": 2.353672812205332e-14,
+   "difEscaladaMax": 9.396668549823257e-15,
+   "peor": "grupos[0].pares[0].t",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "grupos[*].pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(lm(rend ~ bloque + hibrido * dosis, data = mzf), ...), adjust = \"none\"); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comparaciones-medias/metodo-dms-protegida-no-significativa",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "comparaciones-medias"
+   },
+   "titulo": "DMS protegida con F no significativa: todas las medias en un grupo",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 21,
+   "difMax": 7.771561172376096e-16,
+   "difEscaladaMax": 7.771561172376096e-16,
+   "peor": "grupos[0].pares[5].dif",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "anova(modelo): F no significativa → la DMS protegida no separa medias"
+   }
+  },
+  {
+   "id": "comparaciones-medias/metodo-dunnett-bloques",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "comparaciones-medias"
+   },
+   "titulo": "Dunnett contra V1 en bloques completos",
+   "fuente": "Datos sintéticos",
+   "clase": "C",
+   "valores": 12,
+   "difMax": 2.1316282072803006e-14,
+   "difEscaladaMax": 8.492130354645487e-15,
+   "peor": "grupos[0].comparaciones[3].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "Dunnett por integración doble (integrate)"
+   }
+  },
+  {
+   "id": "comparaciones-medias/metodo-tukey-avena-n-en-v",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "comparaciones-medias"
+   },
+   "titulo": "Tukey del nitrógeno dentro de cada variedad (parcelas divididas)",
+   "fuente": "Yates (1935); conjunto oats del paquete MASS",
+   "clase": "B",
+   "valores": 114,
+   "difMax": 1.8474111129762605e-13,
+   "difEscaladaMax": 1.3211653993039363e-14,
+   "peor": "grupos[2].pares[4].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "grupos[*].pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(aov(Y ~ V * N + Error(B/V), data = datos), ...), adjust = \"tukey\"); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comparaciones-medias/metodo-tukey-maiz",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "comparaciones-medias"
+   },
+   "titulo": "Tukey de los híbridos en un factorial en bloques",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 21,
+   "difMax": 2.220446049250313e-14,
+   "difEscaladaMax": 1.327693324865179e-14,
+   "peor": "grupos[0].pares[0].t",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "grupos[*].pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(lm(rend ~ bloque + hibrido * dosis, data = mzf), ...), adjust = \"tukey\"); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "contrastes/metodo-contrastes-plantas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "contrastes"
+   },
+   "titulo": "Contrastes escritos como texto",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "A",
+   "valores": 11,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 1.6653345369377348e-15,
+   "peor": "grupos[0].contrastes[0].t",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "contrast(emmeans(lm(peso ~ grupo), \"grupo\"), method = list(...))"
+   }
+  },
+  {
+   "id": "medias-ajustadas/metodo-medias-maiz",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "medias-ajustadas"
+   },
+   "titulo": "Medias ajustadas de híbrido con IC 90 %",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 15,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 3.0584334383243285e-16,
+   "peor": "grupos[0].filas[2].ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "confint(emmeans(lm(rend ~ bloque + hibrido * dosis), \"hibrido\"), level = 0.9)"
+   }
+  },
+  {
+   "id": "polinomios/metodo-polinomios-maiz",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "polinomios"
+   },
+   "titulo": "Dosis de N: lineal y cuadrático con la dosis óptima",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 15,
+   "difMax": 2.4158453015843406e-13,
+   "difEscaladaMax": 2.8360595375816606e-14,
+   "peor": "grupos[0].polinomios[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "contr.poly(4, scores = dosis); contrast(emmeans(...)); lm(medias ~ poly(dosis, 2, raw = TRUE))"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-avena-n-en-v",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Parcelas divididas: nitrógeno dentro de cada variedad",
+   "fuente": "Yates (1935); conjunto oats del paquete MASS",
+   "clase": "B",
+   "valores": 684,
+   "difMax": 1.8474111129762605e-13,
+   "difEscaladaMax": 2.3584932876750253e-14,
+   "peor": "dms[0].p[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(aov(Y ~ V * N + Error(B/V), data = datos), \"N\", by = \"V\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-avena-nitrogeno",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Parcelas divididas: dosis de nitrógeno (error b)",
+   "fuente": "Yates (1935); conjunto oats del paquete MASS",
+   "clase": "B",
+   "valores": 228,
+   "difMax": 1.4210854715202004e-13,
+   "difEscaladaMax": 2.5807864698565013e-14,
+   "peor": "dms[0].p[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(aov(Y ~ V * N + Error(B/V), data = datos), \"N\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-avena-v-en-n",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Parcelas divididas: variedades dentro de cada dosis (errores combinados, Satterthwaite)",
+   "fuente": "Yates (1935); conjunto oats del paquete MASS",
+   "clase": "B",
+   "valores": 504,
+   "difMax": 1.334343746606237e-10,
+   "difEscaladaMax": 1.334343746606237e-10,
+   "peor": "tukey[1].p[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(aov(Y ~ V * N + Error(B/V), data = datos), \"V\", by = \"N\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-avena-variedad",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Parcelas divididas: variedades (error a)",
+   "fuente": "Yates (1935); conjunto oats del paquete MASS",
+   "clase": "B",
+   "valores": 126,
+   "difMax": 1.5631940186722204e-13,
+   "difEscaladaMax": 5.440092820663267e-15,
+   "peor": "dms[0].t[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(aov(Y ~ V * N + Error(B/V), data = datos), \"V\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-bib",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Bloques incompletos balanceados: medias ajustadas correlacionadas",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 357,
+   "difMax": 2.3092638912203256e-14,
+   "difEscaladaMax": 8.881784197001252e-15,
+   "peor": "dms[0].t[11]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(lm(y ~ bloque + trat, data = datos), \"trat\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-bloques-perdidas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Bloques con parcelas perdidas: medias ajustadas",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 360,
+   "difMax": 2.042810365310288e-14,
+   "difEscaladaMax": 1.0880185641326534e-14,
+   "peor": "bonferroni[0].p[8]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(lm(rend ~ bloque + variedad, data = datos), \"variedad\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-franjas-a-en-b",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Franjas: A dentro de cada B (error a con error c)",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 228,
+   "difMax": 3.2077651646034155e-9,
+   "difEscaladaMax": 3.2077651646034155e-9,
+   "peor": "tukey[0].p[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(aov(y ~ A * B + Error(bloque/(A + B)), data = datos), \"A\", by = \"B\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-maiz-dosis-en-hibrido",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Bloques, factorial: dosis dentro de cada híbrido",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 684,
+   "difMax": 2.353672812205332e-14,
+   "difEscaladaMax": 1.1102230246251565e-10,
+   "peor": "tukey[1].p[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(lm(rend ~ bloque + hibrido * dosis, data = mzf), \"dosis\", by = \"hibrido\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-maiz-hibrido",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Bloques, factorial: medias de híbrido",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 126,
+   "difMax": 2.220446049250313e-14,
+   "difEscaladaMax": 1.6209256159527285e-14,
+   "peor": "bonferroni[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(lm(rend ~ bloque + hibrido * dosis, data = mzf), \"hibrido\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-plantas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Un factor balanceado: los seis métodos",
+   "fuente": "Dobson (1983); conjunto PlantGrowth de R",
+   "clase": "B",
+   "valores": 126,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 3.552713678800501e-15,
+   "peor": "tukey[0].p[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(lm(peso ~ grupo, data = datos), \"grupo\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-pollos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Un factor desbalanceado (Tukey-Kramer)",
+   "fuente": "Anónimo (1948); conjunto chickwts de R",
+   "clase": "B",
+   "valores": 522,
+   "difMax": 2.4158453015843406e-13,
+   "difEscaladaMax": 1.4210854715202004e-8,
+   "peor": "tukey[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(lm(peso ~ alimento, data = datos), \"alimento\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-roturas-celdas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Factorial desbalanceado: las seis combinaciones",
+   "fuente": "Tippett (1950); conjunto warpbreaks de R sin cinco filas",
+   "clase": "B",
+   "valores": 261,
+   "difMax": 4.263256414560601e-14,
+   "difEscaladaMax": 2.4868995751603507e-14,
+   "peor": "dms[0].dif[10]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(lm(roturas ~ lana * tension, data = datos), c(\"lana\", \"tension\")), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-roturas-tension-en-lana",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Factorial desbalanceado: tensión dentro de cada lana",
+   "fuente": "Tippett (1950); conjunto warpbreaks de R sin cinco filas",
+   "clase": "B",
+   "valores": 252,
+   "difMax": 4.263256414560601e-14,
+   "difEscaladaMax": 2.4868995751603507e-14,
+   "peor": "dms[0].dif[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(lm(roturas ~ lana * tension, data = datos), \"tension\", by = \"lana\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-subdivididas-a-en-c",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Subdivididas: A dentro de cada C (tres errores combinados)",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 36,
+   "difMax": 5.329070518200751e-15,
+   "difEscaladaMax": 2.6209898276325307e-15,
+   "peor": "dms[0].t[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(aov(y ~ A * B * C + Error(bloque/A/B), data = datos), \"A\", by = \"C\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.paresDe/pares-subdivididas-b-en-a",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.paresDe"
+   },
+   "titulo": "Subdivididas: B dentro de cada A",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 84,
+   "difMax": 1.9095836023552692e-14,
+   "difEscaladaMax": 9.243369556878011e-15,
+   "peor": "dms[0].t[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "tukey[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "pairs(emmeans(aov(y ~ A * B * C + Error(bloque/A/B), data = datos), \"B\", by = \"A\"), adjust = …); letras con multcompLetters"
+   }
+  },
+  {
+   "id": "comp.polinomiosDe/polinomios-avena",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.polinomiosDe"
+   },
+   "titulo": "Nitrógeno en parcelas divididas (0, 0.2, 0.4, 0.6 qq/acre), error b",
+   "fuente": "Yates (1935); conjunto oats del paquete MASS",
+   "clase": "A",
+   "valores": 17,
+   "difMax": 1.2789769243681803e-13,
+   "difEscaladaMax": 1.0871070042286113e-14,
+   "peor": "[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "contrast(emmeans(...), method = columnas de contr.poly(k, scores = dosis)); lm(medias ~ poly(dosis, grado, raw = TRUE)); dosis óptima = −b₁/(2b₂)"
+   }
+  },
+  {
+   "id": "comp.polinomiosDe/polinomios-desiguales",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.polinomiosDe"
+   },
+   "titulo": "Dosis desigualmente espaciadas (0, 50, 100, 200) en completamente al azar",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 23,
+   "difMax": 4.263256414560601e-13,
+   "difEscaladaMax": 2.4121308251791745e-14,
+   "peor": "[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "contrast(emmeans(...), method = columnas de contr.poly(k, scores = dosis)); lm(medias ~ poly(dosis, grado, raw = TRUE)); dosis óptima = −b₁/(2b₂)"
+   }
+  },
+  {
+   "id": "comp.polinomiosDe/polinomios-maiz-en-hibrido",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.polinomiosDe"
+   },
+   "titulo": "Polinomios de la dosis dentro de cada híbrido",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 69,
+   "difMax": 2.8421709430404007e-13,
+   "difEscaladaMax": 1.6494218475181886e-14,
+   "peor": "[0].F[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "contrast(emmeans(...), method = columnas de contr.poly(k, scores = dosis)); lm(medias ~ poly(dosis, grado, raw = TRUE)); dosis óptima = −b₁/(2b₂)"
+   }
+  },
+  {
+   "id": "comp.polinomiosDe/polinomios-maiz",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.polinomiosDe"
+   },
+   "titulo": "Dosis de N (0, 60, 120, 180) en un factorial en bloques: lineal, cuadrático y cúbico; óptimo",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 23,
+   "difMax": 2.4158453015843406e-13,
+   "difEscaladaMax": 2.8360595375816606e-14,
+   "peor": "[0].p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "contrast(emmeans(...), method = columnas de contr.poly(k, scores = dosis)); lm(medias ~ poly(dosis, grado, raw = TRUE)); dosis óptima = −b₁/(2b₂)"
    }
   }
  ]

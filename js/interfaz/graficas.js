@@ -188,5 +188,40 @@
       `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
   }
 
-  SP.graficas = { dispersion, grupos, lineas, adelgazar, marcas };
+  /**
+   * Medias con su barra (± EE o el intervalo) y su letra arriba:
+   *   SP.graficas.medias({ titulo, descripcion, y: { titulo }, grupos: [{ nombre, media, inf, sup, letra, marca }] })
+   * «marca» resalta un nivel (el testigo de Dunnett).
+   */
+  function medias(op) {
+    const gs = op.grupos, k = gs.length;
+    let y0 = Infinity, y1 = -Infinity;
+    for (const g of gs) for (const v of [g.media, g.inf, g.sup]) if (Number.isFinite(v)) { y0 = Math.min(y0, v); y1 = Math.max(y1, v); }
+    const hy = (y1 - y0) * 0.08 || Math.abs(y1) * 0.1 || 1;
+    y0 -= hy; y1 += hy * (gs.some(g => g.letra) ? 2.4 : 1);
+    const largo = Math.max(...gs.map(g => String(g.nombre).length));
+    const ancho = (W - M.l - M.r) / k, girar = largo * 6.6 > ancho - 6;
+    const mb = girar ? Math.min(120, 30 + largo * 4.6) : M.b, alto = H + (girar ? mb - M.b : 0);
+    const Y = v => M.t + (y1 - v) / (y1 - y0) * (alto - M.t - mb), cx = j => M.l + ancho * (j + 0.5), my = marcas(y0, y1, 5), partes = [];
+    partes.push(`<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${alto - M.t - mb}" class="gr-fondo"/>`);
+    for (const v of my.lista) partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="gr-rejilla"/><text x="${M.l - 6}" y="${(Y(v) + 4).toFixed(1)}" text-anchor="end" class="gr-etq">${texto(v, my.paso)}</text>`);
+    gs.forEach((g, j) => {
+      const x = cx(j), tapa = Math.min(10, ancho * 0.15);
+      if (Number.isFinite(g.inf) && Number.isFinite(g.sup) && g.sup > g.inf) {
+        partes.push(`<line x1="${x}" x2="${x}" y1="${Y(g.inf).toFixed(1)}" y2="${Y(g.sup).toFixed(1)}" class="gr-bigote"/>`);
+        for (const v of [g.inf, g.sup]) partes.push(`<line x1="${(x - tapa).toFixed(1)}" x2="${(x + tapa).toFixed(1)}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="gr-bigote"/>`);
+      }
+      if (Number.isFinite(g.media)) partes.push(`<circle cx="${x}" cy="${Y(g.media).toFixed(1)}" r="${g.marca ? 6 : 5}" class="gr-punto-media${g.marca ? ' marca' : ''}"/>`);
+      const tope = Number.isFinite(g.sup) ? g.sup : g.media;
+      if (g.letra && Number.isFinite(tope)) partes.push(`<text x="${x}" y="${Math.max(M.t + 13, Y(tope) - 9).toFixed(1)}" text-anchor="middle" class="gr-letra">${esc(g.letra)}</text>`);
+      const et = esc(g.nombre), ty = alto - mb + 16;
+      partes.push(girar ? `<text transform="translate(${x + 4} ${ty - 4}) rotate(-35)" text-anchor="end" class="gr-etq">${et}</text>` : `<text x="${x}" y="${ty}" text-anchor="middle" class="gr-etq">${et}</text>`);
+    });
+    partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${alto - mb}" y2="${alto - mb}" class="gr-eje"/><line x1="${M.l}" x2="${M.l}" y1="${M.t}" y2="${alto - mb}" class="gr-eje"/>`);
+    partes.push(`<text transform="translate(16 ${(M.t + alto - mb) / 2}) rotate(-90)" text-anchor="middle" class="gr-titulo-eje">${esc(op.y.titulo)}</text>`);
+    return `<figure class="sp-grafica"><svg viewBox="0 0 ${W} ${alto}" role="img" aria-label="${esc(op.descripcion || op.titulo)}" data-sigmapro-figura="${esc(op.titulo)}">` +
+      `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
+  }
+
+  SP.graficas = { dispersion, grupos, lineas, medias, adelgazar, marcas };
 })();

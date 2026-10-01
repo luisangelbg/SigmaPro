@@ -260,7 +260,7 @@ SP.definir('disenos', function (SP) {
     return { anova: r.anova, estratos: r.estratos, resumen: r.resumen, eficiencia: r.eficiencia, bib: r.bib };
   }
 
-  SP.disenos = { DISENOS, analizar, anovaDe, modeloDe, eficienciaBloques, eficienciaLatino };
+  SP.disenos = { DISENOS, analizar, anovaDe, modeloDe, tablaDiseno, eficienciaBloques, eficienciaLatino };
 
   /* ======================= métodos ======================= */
   const fp = p => (!Number.isFinite(p) ? '—' : p < 0.001 ? '< 0.001' : '= ' + p.toFixed(3));

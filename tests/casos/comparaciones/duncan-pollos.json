@@ -1,0 +1,66 @@
+{
+  "esquema": 1,
+  "id": "comp.rangoMultipleDe/duncan-pollos",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.rangoMultipleDe"
+  },
+  "titulo": "DUNCAN desbalanceado (media armónica de las repeticiones)",
+  "fuente": "Anónimo (1948); conjunto chickwts de R",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "peso": [179, 160, 136, 227, 217, 168, 108, 124, 143, 140, 309, 229, 181, 141, 260, 203, 148, 169, 213, 257, 244, 271, 243, 230, 248, 327, 329, 250, 193, 271, 316, 267, 199, 171, 158, 248, 423, 340, 392, 339, 341, 226, 320, 295, 334, 322, 297, 318, 325, 257, 303, 315, 380, 153, 263, 242, 206, 344, 258, 368, 390, 379, 260, 404, 318, 352, 359, 216, 222, 283, 332],
+      "alimento": ["horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein"]
+    },
+    "tipos": {
+      "peso": {
+        "tipo": "numerica"
+      },
+      "alimento": {
+        "tipo": "factor",
+        "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "diseno": "dca",
+      "respuesta": "peso",
+      "tratamientos": ["alimento"]
+    },
+    ["alimento"],
+    [],
+    "duncan",
+    0.050000000000000003
+  ],
+  "esperado": [
+    {
+      "medias": [323.5833333333332, 160.19999999999996, 218.75, 276.90909090909076, 246.42857142857133, 328.91666666666652],
+      "letras": ["a", "d", "c", "b", "bc", "a"],
+      "dif": [163.38333333333324, 104.8333333333332, 46.674242424242436, 77.15476190476187, -5.3333333333333144, -58.55000000000004, -116.7090909090908, -86.228571428571371, -168.71666666666655, -58.159090909090764, -27.678571428571331, -110.16666666666652, 30.480519480519433, -52.007575757575751, -82.488095238095184],
+      "p": [1.8473209679855532e-09, 3.5423705353649244e-05, 0.043493935141197919, 0.0016191282113257061, 0.81472386113124395, 0.012052457980999742, 5.1449114036697977e-06, 0.0004572547880185934, 8.4768667784558885e-10, 0.016794170676367424, 0.22646319244794255, 1.8572646577564704e-05, 0.18339529558928358, 0.032368149694890866, 0.00099463571823434267]
+    }
+  ],
+  "comparacion": {
+    "tolerancias": {
+      "[*].p[*]": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "agricolae": "1.3.7",
+      "multcompView": "0.1.10"
+    },
+    "codigo": "agricolae::duncan.test(lm(peso ~ alimento, data = ck), \"alimento\") con los p sin redondear; letras con multcompLetters"
+  }
+}

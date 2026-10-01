@@ -1,0 +1,95 @@
+{
+  "esquema": 1,
+  "id": "comparaciones-medias/metodo-dms-protegida-no-significativa",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "comparaciones-medias"
+  },
+  "titulo": "DMS protegida con F no significativa: todas las medias en un grupo",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "trat": ["T1", "T1", "T1", "T1", "T2", "T2", "T2", "T2", "T3", "T3", "T3", "T3", "T4", "T4", "T4", "T4"],
+      "y": [10.76, 9.4700000000000006, 9.2200000000000006, 10.68, 11.9, 10.02, 9.0500000000000007, 7.9100000000000001, 8.8900000000000006, 10.35, 9.1199999999999992, 11.73, 11.75, 8.6799999999999997, 8.8900000000000006, 10.43]
+    },
+    "tipos": {
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["T1", "T2", "T3", "T4"]
+      },
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "diseno": "dca",
+    "respuesta": "y",
+    "tratamientos": ["trat"],
+    "comparar": ["trat"]
+  },
+  "opciones": {
+    "metodo": "dms-protegida",
+    "alfa": 0.050000000000000003
+  },
+  "esperado": {
+    "pF": 0.98610535846225611,
+    "grupos": [
+      {
+        "medias": [
+          {
+            "media": 10.032499999999999,
+            "letras": "a"
+          },
+          {
+            "media": 9.7199999999999989,
+            "letras": "a"
+          },
+          {
+            "media": 10.022499999999999,
+            "letras": "a"
+          },
+          {
+            "media": 9.9374999999999982,
+            "letras": "a"
+          }
+        ],
+        "pares": [
+          {
+            "dif": 0.31249999999999994,
+            "p_ajustado": 1
+          },
+          {
+            "dif": 0.010000000000000168,
+            "p_ajustado": 1
+          },
+          {
+            "dif": 0.095000000000000251,
+            "p_ajustado": 1
+          },
+          {
+            "dif": -0.30249999999999977,
+            "p_ajustado": 1
+          },
+          {
+            "dif": -0.21749999999999969,
+            "p_ajustado": 1
+          },
+          {
+            "dif": 0.085000000000000075,
+            "p_ajustado": 1
+          }
+        ]
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "anova(modelo): F no significativa → la DMS protegida no separa medias"
+  }
+}

@@ -267,5 +267,6 @@ SP.definir('medias', function (SP) {
     return out;
   }
 
-  SP.medias = { rejilla, emm, emmTabla, pruebasConjuntas, emmDe, pruebasConjuntasDe, estimable: (a, L) => estimable(L, partes(a).nula) };
+  SP.medias = { rejilla, emm, emmTabla, pruebasConjuntas, emmDe, pruebasConjuntasDe, estimable: (a, L) => estimable(L, partes(a).nula),
+    filasMedias, partes, esEstimable: estimable, pruebaF };
 });

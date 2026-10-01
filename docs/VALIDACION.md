@@ -185,6 +185,42 @@ Notas sobre las referencias:
 
 `tests/codigo-r.mjs` corre también el código R de cinco diseños (24 escenarios en total).
 
+## Comparaciones de medias y contrastes (Hito 1.7)
+
+| Qué | Contra qué | Casos |
+|---|---|---|
+| Pares con DMS, Tukey(-Kramer), Scheffé, Bonferroni, Šidák y Holm: un factor balanceado y desbalanceado, factorial en bloques (también dentro de cada nivel del otro factor), factorial desbalanceado (dentro y combinaciones), bloques con parcelas perdidas, BIB (medias ajustadas correlacionadas), y letras | `pairs(emmeans(…), adjust = …)` y `multcompView::multcompLetters` | 10 |
+| Lo mismo con estratos: avena (variedades, nitrógeno, cada uno dentro del otro), subdivididas y franjas, con los gl de Satterthwaite | `emmeans` con el modelo `aov(… + Error(…))` | 5 |
+| Duncan y Student-Newman-Keuls (balanceado, desbalanceado con la media armónica, medias de un factorial) | las fórmulas de `agricolae::duncan.test` y `SNK.test` sin redondear (sus p redondeados coinciden) | 6 |
+| Dunnett bilateral y de una cola, n iguales y distintos, en bloques y dentro de otro factor | la integral doble de la t multivariada con `integrate` (rel.tol 1e-12); `emmeans(adjust = "mvt")` como comprobación (clase C) | 6 |
+| Games-Howell | `PMCMRplus::gamesHowellTest` | 2 |
+| Contrastes definidos por el usuario (ortogonales y no, en bloques y en parcelas divididas) con su SC | `emmeans::contrast(method = list(…))` y la partición de `summary.aov(split = …)` | 3 |
+| Polinomios ortogonales con dosis igual y desigualmente espaciadas, dentro de otro factor y en parcelas divididas; curva ajustada a las medias y dosis óptima | `contr.poly(k, scores = dosis)`, `emmeans::contrast`, `summary.aov(split)` y `lm(medias ~ poly(dosis, 2, raw = TRUE))` | 4 |
+| Medias marginales con intervalo de confianza (90, 95 y 99 %, BIB, celdas con parcelas perdidas) | `confint(emmeans(…))` | 4 |
+| Los métodos completos (Tukey, DMS dentro de otro factor, Tukey en parcelas divididas, Bonferroni, DMS protegida, Dunnett, contrastes, polinomios y medias) | todo lo anterior | 9 |
+
+Notas sobre las referencias:
+
+- **Šidák** (clase B): emmeans calcula 1 − (1 − p)^m, que pierde cifras con p diminutos; SigmaPro usa
+  −expm1(m·log1p(−p)). La referencia es esa forma exacta con los p sin ajustar de emmeans (coinciden en absoluto).
+- **Tukey con un solo par:** emmeans no ajusta cuando la familia tiene una comparación (es la t); SigmaPro hace lo
+  mismo, porque la integral del rango estudentizado con pocos gl tiene un error de hasta 2e-5 (con 2.2 gl de
+  Satterthwaite, por ejemplo) y el resultado exacto es la t.
+- **p de Tukey, Duncan, SNK y Games-Howell diminutos:** son 1 − ptukey(); se comparan con el piso absoluto de 1e-12.
+- **Duncan y SNK:** agricolae redondea sus p a 4 decimales antes de asignar letras y usa un algoritmo secuencial
+  propio para las letras; SigmaPro compara los p exactos con las mismas fórmulas y asigna las letras por inserción y
+  absorción (multcompView), con la «a» para la media más alta.
+- **Dunnett exacto** (clase C): emmeans y multcomp integran la t multivariada con el método aleatorio de Genz (error
+  ~1e-4). SigmaPro la integra de forma determinista cuando las correlaciones son de forma producto λᵢλⱼ (un factor,
+  bloques completos, medias independientes), con cuadratura adaptativa de Gauss-Kronrod; reproduce además el cuadro
+  publicado de Dunnett (1955) y, si la correlación no es de forma producto, lo explica y sugiere Bonferroni u Holm.
+- **Parcelas divididas:** las diferencias toman cada coeficiente del estrato donde se estima, con su error, y los gl
+  de Satterthwaite, como emmeans con el modelo de estratos. El código R que muestra la app pone los bloques solo en
+  `Error()`, como los necesita emmeans.
+
+`tests/codigo-r.mjs` corre también el código R de las comparaciones (29 escenarios en total): Tukey con sus letras,
+Tukey en parcelas divididas, contrastes, polinomios y medias ajustadas.
+
 ## Dónde está cada cosa
 
 ```

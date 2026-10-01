@@ -1,0 +1,57 @@
+{
+  "esquema": 1,
+  "id": "comp.gamesHowellDe/games-howell-pollos",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "comp.gamesHowellDe"
+  },
+  "titulo": "Games-Howell: alimentos de pollos",
+  "fuente": "Anónimo (1948); conjunto chickwts de R",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "peso": [179, 160, 136, 227, 217, 168, 108, 124, 143, 140, 309, 229, 181, 141, 260, 203, 148, 169, 213, 257, 244, 271, 243, 230, 248, 327, 329, 250, 193, 271, 316, 267, 199, 171, 158, 248, 423, 340, 392, 339, 341, 226, 320, 295, 334, 322, 297, 318, 325, 257, 303, 315, 380, 153, 263, 242, 206, 344, 258, 368, 390, 379, 260, 404, 318, 352, 359, 216, 222, 283, 332],
+      "alimento": ["horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "horsebean", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "linseed", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "soybean", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "sunflower", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "meatmeal", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein", "casein"]
+    },
+    "tipos": {
+      "peso": {
+        "tipo": "numerica"
+      },
+      "alimento": {
+        "tipo": "factor",
+        "niveles": ["casein", "horsebean", "linseed", "meatmeal", "soybean", "sunflower"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    "peso",
+    "alimento"
+  ],
+  "esperado": {
+    "q": [10.383520488204159, 6.1915831680297053, 2.4448943039561475, 4.6305208649373091, -0.32316526075701385, -4.2669292447435696, -7.1551342336886714, -6.4407264783308795, -12.791389738117255, -3.329366617075356, -1.8732051555846556, -7.5473436704543859, 1.7713451250078798, -3.0496113722831457, -5.7750957782476382],
+    "gl": [18.359745096090919, 21.097354822719932, 20.798570782717981, 21.634509693266242, 20.502306225547674, 19.768720454593975, 16.523518052834103, 21.995412434764308, 19.963715769943583, 19.236095175979671, 23.629516229248765, 21.901129954833831, 19.449081226052151, 18.535313966740794, 23.920308691897286],
+    "p": [9.4359000394339532e-06, 0.0031015797738409567, 0.52927013195817152, 0.036042783223906083, 0.99990003811539152, 0.064938432431673632, 0.0012374089342824801, 0.0019014765156611935, 2.3071597643475883e-07, 0.22093065738978868, 0.76889970022640708, 0.00030424136997497797, 0.80599847582290696, 0.30300310609701586, 0.0050881149779681278],
+    "letras": ["a", "c", "bc", "ab", "b", "a"]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "p[*]": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): integral numérica (AS 190)"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "PMCMRplus": "1.9.12",
+      "multcompView": "0.1.10"
+    },
+    "codigo": "PMCMRplus::gamesHowellTest(peso, alimento)"
+  }
+}
