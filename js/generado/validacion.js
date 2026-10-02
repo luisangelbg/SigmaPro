@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-02T00:58:06.374Z",
+ "generado": "2026-10-02T02:45:01.168Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 520,
-  "aprobados": 520,
+  "casos": 610,
+  "aprobados": 610,
   "fallidos": 0,
-  "valores": 45728,
+  "valores": 47482,
   "difEscaladaMax": 2.0258232202030768e-7,
-  "objetivos": 112
+  "objetivos": 127
  },
  "casos": [
   {
@@ -14228,6 +14228,2356 @@ window.SP_VALIDACION = {
      "leaps": "3.2"
     },
     "codigo": "summary(leaps::regsubsets(…, nvmax = 5, nbest = 1))"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/empates-kendall-continuidad",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall con empates y corrección por continuidad",
+   "fuente": "Chambers, Cleveland, Kleiner y Tukey (1983), Graphical Methods for Data Analysis; conjunto airquality de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"less\", conf.level = 0.95, continuity = TRUE)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/empates-kendall",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall con empates (varianza corregida)",
+   "fuente": "Chambers, Cleveland, Kleiner y Tukey (1983), Graphical Methods for Data Analysis; conjunto airquality de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 1.6329405765118812e-14,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/empates-spearman-continuidad",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman con empates y corrección por continuidad",
+   "fuente": "Chambers, Cleveland, Kleiner y Tukey (1983), Graphical Methods for Data Analysis; conjunto airquality de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 1.8027519557123122e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"two.sided\", conf.level = 0.95, continuity = TRUE)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/empates-spearman",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman con empates (t de Student)",
+   "fuente": "Chambers, Cleveland, Kleiner y Tukey (1983), Graphical Methods for Data Analysis; conjunto airquality de R",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 3.4530146555404696e-38,
+   "difEscaladaMax": 1.5362705124778004e-14,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/faltantes-pearson",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Pearson con faltantes",
+   "fuente": "Chambers, Cleveland, Kleiner y Tukey (1983), Graphical Methods for Data Analysis; conjunto airquality de R",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 3.2844438465674977e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"pearson\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/grande-kendall",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall con 3000 datos y muchos empates (algoritmo de Knight)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 5.166026291698271e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/grande-spearman",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman con 3000 datos y empates",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.3988237764037803e-23,
+   "difEscaladaMax": 3.39047545079646e-15,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/hw-kendall-aprox",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall sin la exacta (normal)",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 4.440892098500626e-16,
+   "difEscaladaMax": 2.662221289702459e-16,
+   "peor": "estadistico",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95, exact = FALSE)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/hw-kendall-bilateral",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "kendall, alternativa bilateral, n = 9 (exacta)",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 1.1102230246251565e-16,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/hw-kendall-continuidad",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall normal con corrección por continuidad",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.220446049250313e-16,
+   "difEscaladaMax": 1.4198513545079782e-16,
+   "peor": "estadistico",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95, exact = FALSE, continuity = TRUE)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/hw-kendall-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "kendall, alternativa mayor, n = 9 (exacta)",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 1.1102230246251565e-16,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/hw-kendall-menor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "kendall, alternativa menor, n = 9 (exacta)",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 1.1102230246251565e-16,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"less\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/hw-pearson-90",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Pearson con IC al 90 %",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 3.3306690738754696e-16,
+   "difEscaladaMax": 3.3306690738754696e-16,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"pearson\", alternative = \"two.sided\", conf.level = 0.9)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/hw-pearson-bilateral",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "pearson, alternativa bilateral, n = 9 (exacta)",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 2.636779683484747e-16,
+   "difEscaladaMax": 2.636779683484747e-16,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"pearson\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/hw-pearson-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "pearson, alternativa mayor, n = 9 (exacta)",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 3.3306690738754696e-16,
+   "difEscaladaMax": 3.3306690738754696e-16,
+   "peor": "ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"pearson\", alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/hw-pearson-menor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "pearson, alternativa menor, n = 9 (exacta)",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 8,
+   "difMax": 2.220446049250313e-16,
+   "difEscaladaMax": 2.220446049250313e-16,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"pearson\", alternative = \"less\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/hw-spearman-aprox",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin la exacta (t de Student)",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.8041124150158794e-16,
+   "difEscaladaMax": 1.8041124150158794e-16,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"two.sided\", conf.level = 0.95, exact = FALSE)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/hw-spearman-bilateral",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "spearman, alternativa bilateral, n = 9 (exacta)",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/hw-spearman-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "spearman, alternativa mayor, n = 9 (exacta)",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/hw-spearman-menor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "spearman, alternativa menor, n = 9 (exacta)",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"less\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/kendall-n10",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall sin empates, n = 10",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/kendall-n12",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall sin empates, n = 12",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/kendall-n20",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall sin empates, n = 20",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.7755575615628914e-17,
+   "difEscaladaMax": 2.7755575615628914e-17,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/kendall-n300",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall sin empates, n = 300",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 1.3292815144062241e-14,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/kendall-n35",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall sin empates, n = 35",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 5.551115123125783e-17,
+   "difEscaladaMax": 5.551115123125783e-17,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/kendall-n4",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall sin empates, n = 4",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 5.551115123125783e-17,
+   "difEscaladaMax": 5.551115123125783e-17,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/kendall-n49-menor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall exacta con n = 49, una cola",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"less\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/kendall-n50",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall con n = 50: ya por la normal",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/kendall-n6",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall sin empates, n = 6",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/kendall-n80",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Kendall sin empates, n = 80",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n10-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 10, una cola",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 5.551115123125783e-17,
+   "difEscaladaMax": 5.551115123125783e-17,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n10",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 10",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 5.551115123125783e-17,
+   "difEscaladaMax": 5.551115123125783e-17,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n12-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 12, una cola",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 4.263256414560601e-14,
+   "difEscaladaMax": 3.33066907387547e-16,
+   "peor": "estadistico",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n12",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 12",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 4.263256414560601e-14,
+   "difEscaladaMax": 3.33066907387547e-16,
+   "peor": "estadistico",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n20-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 20, una cola",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.7755575615628914e-17,
+   "difEscaladaMax": 2.7755575615628914e-17,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n20",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 20",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.7755575615628914e-17,
+   "difEscaladaMax": 2.7755575615628914e-17,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n300-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 300, una cola",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n300",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 300",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n35-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 35, una cola",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 5.551115123125783e-17,
+   "difEscaladaMax": 5.551115123125783e-17,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n35",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 35",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 5.551115123125783e-17,
+   "difEscaladaMax": 5.551115123125783e-17,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n4-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 4, una cola",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n4",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 4",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n6-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 6, una cola",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n6",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 6",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n80-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 80, una cola",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.7755575615628914e-17,
+   "difEscaladaMax": 2.7755575615628914e-17,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.pruebaDe/spearman-n80",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+   },
+   "titulo": "Spearman sin empates, n = 80",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 2.7755575615628914e-17,
+   "difEscaladaMax": 2.7755575615628914e-17,
+   "peor": "estimado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"spearman\", alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cor.matrizDe/matriz-faltantes-completas",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.matrizDe"
+   },
+   "titulo": "Faltantes: solo las filas completas en todas",
+   "fuente": "Chambers, Cleveland, Kleiner y Tukey (1983), Graphical Methods for Data Analysis; conjunto airquality de R",
+   "clase": "A",
+   "valores": 62,
+   "difMax": 2.4216739724636227e-15,
+   "difEscaladaMax": 1.5818524833648682e-14,
+   "peor": "pares[3].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test por par (spearman) y p.adjust(\"holm\"); filas completas"
+   }
+  },
+  {
+   "id": "cor.matrizDe/matriz-faltantes-pares",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.matrizDe"
+   },
+   "titulo": "Faltantes: cada par con sus filas completas",
+   "fuente": "Chambers, Cleveland, Kleiner y Tukey (1983), Graphical Methods for Data Analysis; conjunto airquality de R",
+   "clase": "A",
+   "valores": 68,
+   "difMax": 3.885780586188048e-16,
+   "difEscaladaMax": 3.332419208230645e-14,
+   "peor": "pares[1].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test por par (pearson) y p.adjust(\"none\"); filas pares"
+   }
+  },
+  {
+   "id": "cor.matrizDe/matriz-mtcars-kendall-bonferroni",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.matrizDe"
+   },
+   "titulo": "Seis variables con empates, Kendall con Bonferroni",
+   "fuente": "Henderson y Velleman (1981), Biometrics 37: 391-411; conjunto mtcars de R",
+   "clase": "A",
+   "valores": 147,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 5.388695913506233e-15,
+   "peor": "pares[10].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test por par (kendall) y p.adjust(\"bonferroni\"); filas completas"
+   }
+  },
+  {
+   "id": "cor.matrizDe/matriz-swiss-pearson-holm",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.matrizDe"
+   },
+   "titulo": "Cinco variables, Pearson con Holm",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 110,
+   "difMax": 6.661338147750939e-16,
+   "difEscaladaMax": 1.1002949171261522e-14,
+   "peor": "pares[7].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test por par (pearson) y p.adjust(\"holm\"); filas completas"
+   }
+  },
+  {
+   "id": "cor.matrizDe/matriz-swiss-spearman-bh",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.matrizDe"
+   },
+   "titulo": "Cinco variables, Spearman con Benjamini-Hochberg",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 100,
+   "difMax": 9.08995101411847e-16,
+   "difEscaladaMax": 1.987735192122508e-15,
+   "peor": "pares[5].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test por par (spearman) y p.adjust(\"BH\"); filas completas"
+   }
+  },
+  {
+   "id": "correlacion/metodo-correlacion-hw",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "correlacion"
+   },
+   "titulo": "Kendall exacta con la tabla de los tres coeficientes",
+   "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+   "clase": "A",
+   "valores": 10,
+   "difMax": 2.636779683484747e-16,
+   "difEscaladaMax": 2.636779683484747e-16,
+   "peor": "comparar[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = …) con los tres coeficientes"
+   }
+  },
+  {
+   "id": "matriz-correlacion/metodo-matriz-swiss",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "matriz-correlacion"
+   },
+   "titulo": "Matriz de Pearson con Holm",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 75,
+   "difMax": 6.661338147750939e-16,
+   "difEscaladaMax": 1.1002949171261522e-14,
+   "peor": "pares[7].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "cor.test por par y p.adjust(\"holm\")"
+   }
+  },
+  {
+   "id": "correlacion-parcial/metodo-parcial-swiss",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "correlacion-parcial"
+   },
+   "titulo": "Parcial y semiparciales",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 16,
+   "difMax": 2.6645352591003757e-15,
+   "difEscaladaMax": 1.904707776881603e-15,
+   "peor": "parcial.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "psych": "2.4.12"
+    },
+    "codigo": "residuos de lm sobre los controles"
+   }
+  },
+  {
+   "id": "cor.parcialDe/parcial-faltantes",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.parcialDe"
+   },
+   "titulo": "Con faltantes y tres controles",
+   "fuente": "Chambers, Cleveland, Kleiner y Tukey (1983), Graphical Methods for Data Analysis; conjunto airquality de R",
+   "clase": "A",
+   "valores": 17,
+   "difMax": 8.881784197001252e-15,
+   "difEscaladaMax": 4.842494216153195e-14,
+   "peor": "simple.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "psych": "2.4.12"
+    },
+    "codigo": "cor(residuals(lm(x ~ controles)), residuals(lm(y ~ controles))); semiparciales con el residuo de una sola; psych::partial.r"
+   }
+  },
+  {
+   "id": "cor.parcialDe/parcial-mtcars",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.parcialDe"
+   },
+   "titulo": "Rendimiento y peso controlando la potencia",
+   "fuente": "Henderson y Velleman (1981), Biometrics 37: 391-411; conjunto mtcars de R",
+   "clase": "A",
+   "valores": 17,
+   "difMax": 1.0658141036401503e-14,
+   "difEscaladaMax": 3.196317671072867e-15,
+   "peor": "simple.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "psych": "2.4.12"
+    },
+    "codigo": "cor(residuals(lm(x ~ controles)), residuals(lm(y ~ controles))); semiparciales con el residuo de una sola; psych::partial.r"
+   }
+  },
+  {
+   "id": "cor.parcialDe/parcial-swiss-spearman",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.parcialDe"
+   },
+   "titulo": "Lo mismo con Spearman",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 17,
+   "difMax": 8.881784197001252e-16,
+   "difEscaladaMax": 2.7530046537996124e-16,
+   "peor": "parcial.t",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "psych": "2.4.12"
+    },
+    "codigo": "cor(residuals(lm(x ~ controles)), residuals(lm(y ~ controles))); semiparciales con el residuo de una sola; psych::partial.r"
+   }
+  },
+  {
+   "id": "cor.parcialDe/parcial-swiss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.parcialDe"
+   },
+   "titulo": "Fertilidad y educación, controlando agricultura y catolicismo",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 17,
+   "difMax": 2.6645352591003757e-15,
+   "difEscaladaMax": 1.904707776881603e-15,
+   "peor": "parcial.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "psych": "2.4.12"
+    },
+    "codigo": "cor(residuals(lm(x ~ controles)), residuals(lm(y ~ controles))); semiparciales con el residuo de una sola; psych::partial.r"
+   }
+  },
+  {
+   "id": "cont.mcnemarDe/aprobacion-sin-correccion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.mcnemarDe"
+   },
+   "titulo": "2 × 2 sin corrección",
+   "fuente": "Agresti (1990), Categorical Data Analysis, p. 350 (aprobación presidencial; ejemplo de mcnemar.test)",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 3.1170812458958252e-19,
+   "difEscaladaMax": 3.1170812458958252e-19,
+   "peor": "p_exacta",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mcnemar.test(tabla, correct = FALSE); binom.test(b, b + c)"
+   }
+  },
+  {
+   "id": "cont.mcnemarDe/aprobacion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.mcnemarDe"
+   },
+   "titulo": "2 × 2 con corrección y binomial exacta",
+   "fuente": "Agresti (1990), Categorical Data Analysis, p. 350 (aprobación presidencial; ejemplo de mcnemar.test)",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 3.1170812458958252e-19,
+   "difEscaladaMax": 3.1170812458958252e-19,
+   "peor": "p_exacta",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mcnemar.test(tabla, correct = TRUE); binom.test(b, b + c)"
+   }
+  },
+  {
+   "id": "cont.mcnemarDe/bowker",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.mcnemarDe"
+   },
+   "titulo": "3 × 3: simetría de Bowker",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 3.3306690738754696e-16,
+   "difEscaladaMax": 3.3306690738754696e-16,
+   "peor": "p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mcnemar.test(tabla, correct = TRUE); binom.test(b, b + c)"
+   }
+  },
+  {
+   "id": "cont.mcnemarDe/pocos-cambios",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.mcnemarDe"
+   },
+   "titulo": "2 × 2 con pocos casos discordantes",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 2.498001805406602e-16,
+   "difEscaladaMax": 2.498001805406602e-16,
+   "peor": "p_exacta",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mcnemar.test(tabla, correct = TRUE); binom.test(b, b + c)"
+   }
+  },
+  {
+   "id": "cont.cmhDe/berkeley-sin-correccion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.cmhDe"
+   },
+   "titulo": "Lo mismo sin corrección e IC al 90 %",
+   "fuente": "Bickel, Hammel y O'Connell (1975), Science 187: 398-403; conjunto UCBAdmissions de R",
+   "clase": "A",
+   "valores": 36,
+   "difMax": 4.796163466380676e-13,
+   "difEscaladaMax": 2.5476949602378838e-14,
+   "peor": "breslow_day.X2_tarone",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mantelhaen.test(tabla, correct = FALSE, conf.level = 0.9); Breslow-Day por su fórmula"
+   }
+  },
+  {
+   "id": "cont.cmhDe/berkeley",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.cmhDe"
+   },
+   "titulo": "2 × 2 × 6: admisiones por departamento",
+   "fuente": "Bickel, Hammel y O'Connell (1975), Science 187: 398-403; conjunto UCBAdmissions de R",
+   "clase": "A",
+   "valores": 36,
+   "difMax": 4.796163466380676e-13,
+   "difEscaladaMax": 2.5476949602378838e-14,
+   "peor": "breslow_day.X2_tarone",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mantelhaen.test(tabla, correct = TRUE, conf.level = 0.95); Breslow-Day por su fórmula"
+   }
+  },
+  {
+   "id": "cont.cmhDe/conejos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.cmhDe"
+   },
+   "titulo": "2 × 2 × 5 con celdas en cero",
+   "fuente": "Mantel (1963), J. Am. Stat. Assoc. 58: 690-700 (penicilina en conejos; ejemplo de mantelhaen.test)",
+   "clase": "A",
+   "valores": 32,
+   "difMax": 5.684341886080801e-13,
+   "difEscaladaMax": 3.29438002539648e-15,
+   "peor": "breslow_day.X2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mantelhaen.test(tabla, correct = TRUE, conf.level = 0.95); Breslow-Day por su fórmula"
+   }
+  },
+  {
+   "id": "cont.cmhDe/satisfaccion-sexo",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.cmhDe"
+   },
+   "titulo": "4 × 4 × 2: estadístico generalizado con 9 gl",
+   "fuente": "Agresti (1990), Categorical Data Analysis, p. 287 (satisfacción por ingreso y sexo; ejemplo de mantelhaen.test)",
+   "clase": "A",
+   "valores": 7,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 2.5762174073034943e-16,
+   "peor": "X2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mantelhaen.test(tabla, correct = TRUE, conf.level = 0.95); Breslow-Day por su fórmula"
+   }
+  },
+  {
+   "id": "cont.kappaDe/cohen-cuadratica",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.kappaDe"
+   },
+   "titulo": "3 categorías, ponderada cuadrática",
+   "fuente": "Cohen (1968), Psychol. Bull. 70: 213-220 (ejemplo de psych::cohen.kappa, 200 casos)",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 5.329070518200751e-15,
+   "difEscaladaMax": 3.689529005599475e-14,
+   "peor": "ponderada.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "psych": "2.4.12"
+    },
+    "codigo": "psych::cohen.kappa(tabla, w.exp = 2); z con la varianza nula de Fleiss, Cohen y Everitt (1969)"
+   }
+  },
+  {
+   "id": "cont.kappaDe/cohen-lineal",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.kappaDe"
+   },
+   "titulo": "3 categorías, ponderada lineal e IC al 90 %",
+   "fuente": "Cohen (1968), Psychol. Bull. 70: 213-220 (ejemplo de psych::cohen.kappa, 200 casos)",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 5.329070518200751e-15,
+   "difEscaladaMax": 4.6643181663200543e-14,
+   "peor": "ponderada.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "psych": "2.4.12"
+    },
+    "codigo": "psych::cohen.kappa(tabla, w.exp = 1); z con la varianza nula de Fleiss, Cohen y Everitt (1969)"
+   }
+  },
+  {
+   "id": "cont.kappaDe/dos-categorias",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.kappaDe"
+   },
+   "titulo": "2 × 2",
+   "fuente": "Agresti (1990), Categorical Data Analysis, p. 350 (aprobación presidencial; ejemplo de mcnemar.test)",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 9.991788087164842e-14,
+   "peor": "ponderada.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "psych": "2.4.12"
+    },
+    "codigo": "psych::cohen.kappa(tabla, w.exp = 1); z con la varianza nula de Fleiss, Cohen y Everitt (1969)"
+   }
+  },
+  {
+   "id": "cont.kappaDe/severidad",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.kappaDe"
+   },
+   "titulo": "4 grados de severidad",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 2.3092638912203256e-14,
+   "difEscaladaMax": 2.0395480461339062e-13,
+   "peor": "ponderada.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "psych": "2.4.12"
+    },
+    "codigo": "psych::cohen.kappa(tabla, w.exp = 2); z con la varianza nula de Fleiss, Cohen y Everitt (1969)"
+   }
+  },
+  {
+   "id": "cont.independenciaDe/con-cero",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+   },
+   "titulo": "Una fila sin datos se descarta",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 8.596456879672587e-13,
+   "difEscaladaMax": 8.596456879672587e-13,
+   "peor": "fisher.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = TRUE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cont.independenciaDe/dos-por-dos-sin-yates",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+   },
+   "titulo": "2 × 2 grande sin Yates",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 21,
+   "difMax": 1.3322676295501878e-14,
+   "difEscaladaMax": 3.876190689440163e-15,
+   "peor": "fisher.razon_momios",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = FALSE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cont.independenciaDe/dos-por-dos-yates",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+   },
+   "titulo": "2 × 2 grande con Yates",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 21,
+   "difMax": 1.3322676295501878e-14,
+   "difEscaladaMax": 3.876190689440163e-15,
+   "peor": "fisher.razon_momios",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = TRUE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cont.independenciaDe/dos-por-tres",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+   },
+   "titulo": "2 × 3 con Fisher",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 24,
+   "difMax": 1.6082968290476174e-13,
+   "difEscaladaMax": 1.6082968290476174e-13,
+   "peor": "fisher.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = TRUE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cont.independenciaDe/gemelos-crudos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+   },
+   "titulo": "2 × 2 con una fila por caso",
+   "fuente": "Fisher (1962), Confidence limits for a cross-product ratio, Aust. J. Stat. 4: 41 (gemelos y condenas; ejemplo de fisher.test)",
+   "clase": "A",
+   "valores": 21,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 4.440892098500626e-16,
+   "peor": "fisher.ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = TRUE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cont.independenciaDe/gemelos-menor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+   },
+   "titulo": "2 × 2 con Fisher de una cola (menor) e IC al 99 %",
+   "fuente": "Fisher (1962), Confidence limits for a cross-product ratio, Aust. J. Stat. 4: 41 (gemelos y condenas; ejemplo de fisher.test)",
+   "clase": "A",
+   "valores": 21,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 7.216449660063518e-16,
+   "peor": "fisher.ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = TRUE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"less\", conf.level = 0.99)"
+   }
+  },
+  {
+   "id": "cont.independenciaDe/pelo-ojos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+   },
+   "titulo": "4 × 4 con 592 casos (sin Fisher)",
+   "fuente": "Snee (1974), Graphical display of two-way contingency tables, Am. Stat. 28: 9-12; conjunto HairEyeColor de R",
+   "clase": "A",
+   "valores": 53,
+   "difMax": 2.2958874039497803e-40,
+   "difEscaladaMax": 8.360697124362323e-15,
+   "peor": "p_G2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = TRUE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cont.independenciaDe/satisfaccion-fisher",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+   },
+   "titulo": "4 × 4 con Fisher exacta (22 millones de nodos)",
+   "fuente": "Agresti (1990), Categorical Data Analysis, p. 21 (satisfacción laboral e ingreso; ejemplo de fisher.test)",
+   "clase": "A",
+   "valores": 54,
+   "difMax": 3.299582829185965e-13,
+   "difEscaladaMax": 3.299582829185965e-13,
+   "peor": "fisher.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = TRUE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cont.independenciaDe/te-bilateral",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+   },
+   "titulo": "2 × 2 con Fisher bilateral",
+   "fuente": "Fisher (1935), The Design of Experiments (la dama que prueba el té; ejemplo de fisher.test)",
+   "clase": "A",
+   "valores": 21,
+   "difMax": 3.296918293926865e-12,
+   "difEscaladaMax": 5.301076346211419e-15,
+   "peor": "fisher.ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = TRUE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cont.independenciaDe/te-mayor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+   },
+   "titulo": "2 × 2 con Fisher de una cola (mayor)",
+   "fuente": "Fisher (1935), The Design of Experiments (la dama que prueba el té; ejemplo de fisher.test)",
+   "clase": "A",
+   "valores": 21,
+   "difMax": 1.2434497875801753e-14,
+   "difEscaladaMax": 2.1371793224034263e-15,
+   "peor": "fisher.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = TRUE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"greater\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cont.independenciaDe/tres-por-tres",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+   },
+   "titulo": "3 × 3 con Fisher",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 33,
+   "difMax": 1.1126516374915241e-13,
+   "difEscaladaMax": 1.1126516374915241e-13,
+   "peor": "fisher.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = TRUE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"two.sided\", conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "cont.medidasDe/medidas-con-cero",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.medidasDe"
+   },
+   "titulo": "2 × 2 con una celda en cero (+0.5)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 52,
+   "difMax": 4.547473508864641e-13,
+   "difEscaladaMax": 5.397826245009091e-16,
+   "peor": "riesgo_relativo.ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "fórmulas de Agresti (2002) en R base; τ-b cotejada con cor(method = \"kendall\")"
+   }
+  },
+  {
+   "id": "cont.medidasDe/medidas-gemelos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.medidasDe"
+   },
+   "titulo": "2 × 2 con razón de momios y riesgo relativo",
+   "fuente": "Fisher (1962), Confidence limits for a cross-product ratio, Aust. J. Stat. 4: 41 (gemelos y condenas; ejemplo de fisher.test)",
+   "clase": "A",
+   "valores": 52,
+   "difMax": 1.6653345369377348e-16,
+   "difEscaladaMax": 1.6653345369377348e-16,
+   "peor": "razon_momios.ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "fórmulas de Agresti (2002) en R base; τ-b cotejada con cor(method = \"kendall\")"
+   }
+  },
+  {
+   "id": "cont.medidasDe/medidas-movilidad",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.medidasDe"
+   },
+   "titulo": "8 × 8 ordinal (estatus del padre y del hijo)",
+   "fuente": "Glass (1954), Social Mobility in Britain; conjunto occupationalStatus de R",
+   "clase": "A",
+   "valores": 44,
+   "difMax": 2.498001805406602e-16,
+   "difEscaladaMax": 2.498001805406602e-16,
+   "peor": "incertidumbre_r_c",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "fórmulas de Agresti (2002) en R base; τ-b cotejada con cor(method = \"kendall\")"
+   }
+  },
+  {
+   "id": "cont.medidasDe/medidas-pelo-ojos",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.medidasDe"
+   },
+   "titulo": "4 × 4 nominal",
+   "fuente": "Snee (1974), Graphical display of two-way contingency tables, Am. Stat. 28: 9-12; conjunto HairEyeColor de R",
+   "clase": "A",
+   "valores": 44,
+   "difMax": 5.551115123125783e-17,
+   "difEscaladaMax": 5.551115123125783e-17,
+   "peor": "gamma.ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "fórmulas de Agresti (2002) en R base; τ-b cotejada con cor(method = \"kendall\")"
+   }
+  },
+  {
+   "id": "cont.medidasDe/medidas-satisfaccion",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.medidasDe"
+   },
+   "titulo": "4 × 4 ordinal",
+   "fuente": "Agresti (1990), Categorical Data Analysis, p. 21 (satisfacción laboral e ingreso; ejemplo de fisher.test)",
+   "clase": "A",
+   "valores": 44,
+   "difMax": 3.920475055707584e-16,
+   "difEscaladaMax": 3.920475055707584e-16,
+   "peor": "incertidumbre_r_c",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "fórmulas de Agresti (2002) en R base; τ-b cotejada con cor(method = \"kendall\")"
+   }
+  },
+  {
+   "id": "mantel-haenszel/metodo-cmh-berkeley",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mantel-haenszel"
+   },
+   "titulo": "Cochran-Mantel-Haenszel con Breslow-Day",
+   "fuente": "Bickel, Hammel y O'Connell (1975), Science 187: 398-403; conjunto UCBAdmissions de R",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 4.796163466380676e-13,
+   "difEscaladaMax": 2.5476949602378838e-14,
+   "peor": "breslow_day.X2_tarone",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mantelhaen.test y Breslow-Day"
+   }
+  },
+  {
+   "id": "kappa/metodo-kappa-cohen",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kappa"
+   },
+   "titulo": "Kappa simple y ponderada",
+   "fuente": "Cohen (1968), Psychol. Bull. 70: 213-220 (ejemplo de psych::cohen.kappa, 200 casos)",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 5.329070518200751e-15,
+   "difEscaladaMax": 3.689529005599475e-14,
+   "peor": "ponderada.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "psych": "2.4.12"
+    },
+    "codigo": "psych::cohen.kappa"
+   }
+  },
+  {
+   "id": "mcnemar/metodo-mcnemar",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mcnemar"
+   },
+   "titulo": "McNemar con binomial exacta",
+   "fuente": "Agresti (1990), Categorical Data Analysis, p. 350 (aprobación presidencial; ejemplo de mcnemar.test)",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 3.1170812458958252e-19,
+   "difEscaladaMax": 3.1170812458958252e-19,
+   "peor": "p_exacta",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "mcnemar.test"
+   }
+  },
+  {
+   "id": "tabla-contingencia/metodo-tabla-gemelos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tabla-contingencia"
+   },
+   "titulo": "Tabla 2 × 2 con Fisher y medidas",
+   "fuente": "Fisher (1962), Confidence limits for a cross-product ratio, Aust. J. Stat. 4: 41 (gemelos y condenas; ejemplo de fisher.test)",
+   "clase": "A",
+   "valores": 18,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 4.440892098500626e-16,
+   "peor": "fisher.ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "chisq.test, fisher.test y las medidas"
    }
   }
  ]

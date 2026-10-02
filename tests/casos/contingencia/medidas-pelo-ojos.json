@@ -1,0 +1,103 @@
+{
+  "esquema": 1,
+  "id": "cont.medidasDe/medidas-pelo-ojos",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.medidasDe"
+  },
+  "titulo": "4 × 4 nominal",
+  "fuente": "Snee (1974), Graphical display of two-way contingency tables, Am. Stat. 28: 9-12; conjunto HairEyeColor de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "pelo": ["Black", "Brown", "Red", "Blond", "Black", "Brown", "Red", "Blond", "Black", "Brown", "Red", "Blond", "Black", "Brown", "Red", "Blond"],
+      "ojos": ["Brown", "Brown", "Brown", "Brown", "Blue", "Blue", "Blue", "Blue", "Hazel", "Hazel", "Hazel", "Hazel", "Green", "Green", "Green", "Green"],
+      "n": [68, 119, 26, 7, 20, 84, 17, 94, 15, 54, 14, 10, 5, 29, 14, 16]
+    },
+    "tipos": {
+      "pelo": {
+        "tipo": "factor",
+        "niveles": ["Black", "Brown", "Red", "Blond"]
+      },
+      "ojos": {
+        "tipo": "factor",
+        "niveles": ["Brown", "Blue", "Hazel", "Green"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "fila": "pelo",
+      "columna": "ojos",
+      "frecuencia": "n"
+    },
+    {
+      "nivel": 0.94999999999999996
+    }
+  ],
+  "esperado": {
+    "phi": 0.48331946520840463,
+    "v_cramer": 0.27904462334265839,
+    "contingencia": 0.43515853883059324,
+    "lambda_c_r": 0.23387096774193547,
+    "lambda_r_c": 0.032679738562091505,
+    "lambda_simetrica": 0.14306784660766961,
+    "incertidumbre_c_r": 0.097622489291848608,
+    "incertidumbre_r_c": 0.099231298249606706,
+    "incertidumbre_simetrica": 0.098420319687762603,
+    "gamma": {
+      "estimado": 0.31777213395546633,
+      "ee": 0.042965681391571905,
+      "ee0": 0.043446186096967591,
+      "z": 7.3141548776279315,
+      "p": 2.5900627488844976e-13,
+      "ic": [0.23356094585676263, 0.40198332205417003]
+    },
+    "tau_b": {
+      "estimado": 0.22470259692468725,
+      "ee": 0.030727511163444441,
+      "ee0": 0.030721607716018319,
+      "z": 7.3141548776279306,
+      "p": 2.5900627488845148e-13,
+      "ic": [0.16447778170978369, 0.28492741213959077]
+    },
+    "tau_c": {
+      "estimado": 0.20468864134404674,
+      "ee": 0.027985275779452697,
+      "ee0": 0.027985275779452697,
+      "z": 7.3141548776279306,
+      "p": 2.5900627488845148e-13,
+      "ic": [0.14983850871889837, 0.25953877396919511]
+    },
+    "somers_c_r": {
+      "estimado": 0.22813504414121796,
+      "ee": 0.030707640486176642,
+      "ee0": 0.031190896003449813,
+      "z": 7.3141548776279306,
+      "p": 2.5900627488845148e-13,
+      "ic": [0.16794917473810772, 0.28832091354432821]
+    },
+    "somers_r_c": {
+      "estimado": 0.22132179321579307,
+      "ee": 0.030934067100520601,
+      "ee0": 0.030259380190698175,
+      "z": 7.3141548776279315,
+      "p": 2.5900627488844976e-13,
+      "ic": [0.16069213580342734, 0.2819514506281588]
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "fórmulas de Agresti (2002) en R base; τ-b cotejada con cor(method = \"kendall\")"
+  }
+}

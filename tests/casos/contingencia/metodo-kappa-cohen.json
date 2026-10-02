@@ -1,0 +1,65 @@
+{
+  "esquema": 1,
+  "id": "kappa/metodo-kappa-cohen",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kappa"
+  },
+  "titulo": "Kappa simple y ponderada",
+  "fuente": "Cohen (1968), Psychol. Bull. 70: 213-220 (ejemplo de psych::cohen.kappa, 200 casos)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "evaluador1": ["A", "B", "C", "A", "B", "C", "A", "B", "C"],
+      "evaluador2": ["A", "A", "A", "B", "B", "B", "C", "C", "C"],
+      "n": [88, 10, 2, 14, 40, 6, 18, 10, 12]
+    },
+    "tipos": {
+      "evaluador1": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C"]
+      },
+      "evaluador2": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "evaluador1": "evaluador1",
+    "evaluador2": "evaluador2",
+    "frecuencia": "n"
+  },
+  "opciones": {
+    "ponderacion": "cuadratica",
+    "nivel": 0.94999999999999996
+  },
+  "esperado": {
+    "simple": {
+      "estimado": 0.49152542372881347,
+      "ee": 0.051001815576077865,
+      "ic": [0.39156370205354696, 0.59148714540407998],
+      "z": 9.4562424355273542,
+      "p": 3.192082565848789e-21
+    },
+    "ponderada": {
+      "estimado": 0.45454545454545431,
+      "ee": 0.066453681591078187,
+      "ic": [0.32429863198684872, 0.5847922771040599],
+      "z": 6.7481360848242975,
+      "p": 1.4975645914498101e-11
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "psych": "2.4.12"
+    },
+    "codigo": "psych::cohen.kappa"
+  }
+}

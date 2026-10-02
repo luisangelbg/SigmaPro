@@ -1,0 +1,17 @@
+"ingreso","satisfaccion","n"
+"<15k","MuyInsatisfecho",1
+"15-25k","MuyInsatisfecho",3
+"25-40k","MuyInsatisfecho",10
+">40k","MuyInsatisfecho",6
+"<15k","Poco",2
+"15-25k","Poco",3
+"25-40k","Poco",10
+">40k","Poco",7
+"<15k","Moderado",1
+"15-25k","Moderado",6
+"25-40k","Moderado",14
+">40k","Moderado",12
+"<15k","Muy",0
+"15-25k","Muy",1
+"25-40k","Muy",9
+">40k","Muy",11

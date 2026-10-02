@@ -1,0 +1,101 @@
+{
+  "esquema": 1,
+  "id": "cont.cmhDe/conejos",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.cmhDe"
+  },
+  "titulo": "2 × 2 × 5 con celdas en cero",
+  "fuente": "Mantel (1963), J. Am. Stat. Assoc. 58: 690-700 (penicilina en conejos; ejemplo de mantelhaen.test)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "retraso": ["Ninguno", "1.5h", "Ninguno", "1.5h", "Ninguno", "1.5h", "Ninguno", "1.5h", "Ninguno", "1.5h", "Ninguno", "1.5h", "Ninguno", "1.5h", "Ninguno", "1.5h", "Ninguno", "1.5h", "Ninguno", "1.5h"],
+      "respuesta": ["Cura", "Cura", "Muere", "Muere", "Cura", "Cura", "Muere", "Muere", "Cura", "Cura", "Muere", "Muere", "Cura", "Cura", "Muere", "Muere", "Cura", "Cura", "Muere", "Muere"],
+      "penicilina": ["1/8", "1/8", "1/8", "1/8", "1/4", "1/4", "1/4", "1/4", "1/2", "1/2", "1/2", "1/2", "1", "1", "1", "1", "4", "4", "4", "4"],
+      "n": [0, 0, 6, 5, 3, 0, 3, 6, 6, 2, 0, 4, 5, 6, 1, 0, 2, 5, 0, 0]
+    },
+    "tipos": {
+      "retraso": {
+        "tipo": "factor",
+        "niveles": ["Ninguno", "1.5h"]
+      },
+      "respuesta": {
+        "tipo": "factor",
+        "niveles": ["Cura", "Muere"]
+      },
+      "penicilina": {
+        "tipo": "factor",
+        "niveles": ["1/8", "1/4", "1/2", "1", "4"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "fila": "retraso",
+      "columna": "respuesta",
+      "estrato": "penicilina",
+      "frecuencia": "n"
+    },
+    {
+      "correccion": true,
+      "nivel": 0.94999999999999996
+    }
+  ],
+  "esperado": {
+    "X2": 3.9285714285714288,
+    "gl": 1,
+    "p": 0.047472255142918106,
+    "razon_momios": 7,
+    "ic": [1.026712688461668, 47.725133380222566],
+    "breslow_day": {
+      "X2": 8.6273317623650421,
+      "gl": 2,
+      "p": 0.013384393951994193,
+      "X2_tarone": 8.3583156014645521,
+      "p_tarone": 0.015311397385731649,
+      "estratos": 3
+    },
+    "estratos": [
+      {
+        "razon_momios": 0.84615384615384615,
+        "ic": [0.014290765986361066, 50.100626659499277],
+        "corregida": true
+      },
+      {
+        "razon_momios": 13,
+        "ic": [0.51138181003862393, 330.47714385311377],
+        "corregida": true
+      },
+      {
+        "razon_momios": 23.399999999999999,
+        "ic": [0.89327092726836532, 612.98311999747477],
+        "corregida": true
+      },
+      {
+        "razon_momios": 0.28205128205128205,
+        "ic": [0.0094499844407292533, 8.4183128772043538],
+        "corregida": true
+      },
+      {
+        "razon_momios": 0.45454545454545453,
+        "ic": [0.0068480184321805925, 30.171000895239004],
+        "corregida": true
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "mantelhaen.test(tabla, correct = TRUE, conf.level = 0.95); Breslow-Day por su fórmula"
+  }
+}

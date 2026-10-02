@@ -1,0 +1,10 @@
+"antes","despues","n"
+"Baja","Baja",20
+"Media","Baja",5
+"Alta","Baja",3
+"Baja","Media",9
+"Media","Media",15
+"Alta","Media",4
+"Baja","Alta",2
+"Media","Alta",8
+"Alta","Alta",14

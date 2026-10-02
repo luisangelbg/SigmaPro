@@ -32,7 +32,7 @@
     if (Array.isArray(a)) return a.map(numeroDe);
     if (typeof a === 'string') return numeroDe(a);
     if (a && typeof a === 'object') {
-      if (typeof a.columna === 'string') {
+      if (typeof a.columna === 'string' && Object.keys(a).length === 1) {   // { columna: 'x' } es una referencia; { fila, columna, … }, unas entradas
         const c = tabla.col(a.columna);
         return c.tipo === 'numerica' ? c.valores : c;
       }

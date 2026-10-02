@@ -242,12 +242,17 @@
   /**
    * Medias con su barra (± EE o el intervalo) y su letra arriba:
    *   SP.graficas.medias({ titulo, descripcion, y: { titulo }, grupos: [{ nombre, media, inf, sup, letra, marca }] })
-   * «marca» resalta un nivel (el testigo de Dunnett).
+   * «marca» resalta un nivel (el testigo de Dunnett). log: true dibuja en escala logarítmica (razones de momios);
+   * referencias: [{ y, discontinua }] (p. ej. y = 1, sin efecto).
    */
   function medias(op) {
-    const gs = op.grupos, k = gs.length;
+    const lg = !!op.log, tr = v => (lg ? Math.log10(v) : v);
+    const gs = op.grupos.map(g => Object.assign({}, g, { media: tr(g.media), inf: tr(g.inf), sup: tr(g.sup) })), k = gs.length;
+    const refs = (op.referencias || []).map(r => ({ y: tr(r.y), discontinua: r.discontinua }));
+    const etqY = (v, paso) => (lg ? String(Number((10 ** v).toPrecision(3))) : texto(v, paso));
     let y0 = Infinity, y1 = -Infinity;
     for (const g of gs) for (const v of [g.media, g.inf, g.sup]) if (Number.isFinite(v)) { y0 = Math.min(y0, v); y1 = Math.max(y1, v); }
+    for (const r of refs) { y0 = Math.min(y0, r.y); y1 = Math.max(y1, r.y); }
     const hy = margen(y0, y1, 0.08);
     y0 -= hy; y1 += hy * (gs.some(g => g.letra) ? 2.4 : 1);
     const largo = Math.max(...gs.map(g => String(g.nombre).length));
@@ -255,7 +260,8 @@
     const mb = girar ? Math.min(120, 30 + largo * 4.6) : M.b, alto = H + (girar ? mb - M.b : 0);
     const Y = v => M.t + (y1 - v) / (y1 - y0) * (alto - M.t - mb), cx = j => M.l + ancho * (j + 0.5), my = marcas(y0, y1, 5), partes = [];
     partes.push(`<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${alto - M.t - mb}" class="gr-fondo"/>`);
-    for (const v of my.lista) partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="gr-rejilla" data-role="grid"/><text x="${M.l - 6}" y="${(Y(v) + 4).toFixed(1)}" text-anchor="end" class="gr-etq" data-role="ytick" ${TENUE}>${texto(v, my.paso)}</text>`);
+    for (const v of my.lista) partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="gr-rejilla" data-role="grid"/><text x="${M.l - 6}" y="${(Y(v) + 4).toFixed(1)}" text-anchor="end" class="gr-etq" data-role="ytick" ${TENUE}>${etqY(v, my.paso)}</text>`);
+    for (const r of refs) partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${Y(r.y).toFixed(1)}" y2="${Y(r.y).toFixed(1)}" class="gr-ref${r.discontinua ? ' disc' : ''}" ${REF}/>`);
     gs.forEach((g, j) => {
       const x = cx(j), tapa = Math.min(10, ancho * 0.15);
       if (Number.isFinite(g.inf) && Number.isFinite(g.sup) && g.sup > g.inf) {
@@ -274,5 +280,91 @@
       `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
   }
 
-  SP.graficas = { dispersion, grupos, lineas, medias, adelgazar, marcas };
+  /**
+   * Mapa de calor de una matriz (correlaciones o frecuencias), con el valor escrito en cada celda:
+   *   SP.graficas.mapaCalor({ titulo, descripcion, filas: [], columnas: [], valores: [[]], textos: [[]],
+   *     escala: 'divergente' (−1 a 1: oro positivo, gris negativo) | 'secuencial' (0 al máximo, oro), leyenda: 'r' })
+   * La barra de color va en <g data-legend="colorbar"> para el Estudio de figuras.
+   */
+  function mapaCalor(op) {
+    const R = op.filas.length, C = op.columnas.length, div = op.escala !== 'secuencial';
+    let vmax = 0;
+    for (const f of op.valores) for (const v of f) if (Number.isFinite(v)) vmax = Math.max(vmax, Math.abs(v));
+    if (div) vmax = 1;
+    const largoF = Math.max(...op.filas.map(s => String(s).length)), largoC = Math.max(...op.columnas.map(s => String(s).length));
+    const ml = Math.min(150, 14 + largoF * 6.4), celda = Math.max(22, Math.min(54, (W - ml - 16) / C)), girar = largoC * 6.2 > celda - 4;
+    const mt = 12, alto = mt + R * celda, mb = girar ? Math.min(120, 24 + largoC * 4.8) : 26, barra = 46, totalH = alto + mb + barra;
+    const X = j => ml + j * celda, Y = i => mt + i * celda, partes = [];
+    const color = v => (div ? (v >= 0 ? ORO : 'var(--text-muted)') : ORO);
+    const opac = v => (Number.isFinite(v) ? Math.min(1, Math.abs(v) / (vmax || 1)) * 0.92 : 0);
+    for (let i = 0; i < R; i++) for (let j = 0; j < C; j++) {
+      const v = op.valores[i][j], o = opac(v), t = op.textos ? op.textos[i][j] : (Number.isFinite(v) ? texto(v, 0.01) : '');
+      partes.push(`<rect x="${X(j).toFixed(1)}" y="${Y(i).toFixed(1)}" width="${(celda - 1).toFixed(1)}" height="${(celda - 1).toFixed(1)}" fill="${color(v)}" fill-opacity="${o.toFixed(3)}" stroke="var(--border)" stroke-width="0.5"/>`);
+      if (t) partes.push(`<text x="${(X(j) + celda / 2).toFixed(1)}" y="${(Y(i) + celda / 2 + 4).toFixed(1)}" text-anchor="middle" class="gr-etq gr-celda" ${o > 0.55 ? 'fill="var(--card-bg)"' : TEXTO}>${esc(t)}</text>`);
+    }
+    op.filas.forEach((f, i) => partes.push(`<text x="${ml - 6}" y="${(Y(i) + celda / 2 + 4).toFixed(1)}" text-anchor="end" class="gr-etq" data-role="ytick" ${TENUE}>${esc(f)}</text>`));
+    op.columnas.forEach((c, j) => {
+      const x = X(j) + celda / 2, ty = alto + 14;
+      partes.push(girar ? `<text transform="translate(${(x + 4).toFixed(1)} ${ty - 4}) rotate(-35)" text-anchor="end" class="gr-etq" data-role="xtick" ${TENUE}>${esc(c)}</text>`
+        : `<text x="${x.toFixed(1)}" y="${ty}" text-anchor="middle" class="gr-etq" data-role="xtick" ${TENUE}>${esc(c)}</text>`);
+    });
+    /* barra de color */
+    const yb = alto + mb + 8, xb = ml, wb = Math.min(260, W - ml - 20), pasos = 10;
+    partes.push('<g data-legend="colorbar">');
+    for (let k = 0; k < pasos; k++) {
+      const v = div ? -1 + (2 * (k + 0.5)) / pasos : vmax * (k + 0.5) / pasos;
+      partes.push(`<rect x="${(xb + k * wb / pasos).toFixed(1)}" y="${yb}" width="${(wb / pasos).toFixed(1)}" height="10" fill="${color(v)}" fill-opacity="${opac(v).toFixed(3)}" stroke="var(--border)" stroke-width="0.5"/>`);
+    }
+    const etiquetas = div ? [[-1, '−1'], [0, '0'], [1, '1']] : [[0, '0'], [vmax, texto(vmax, vmax >= 10 ? 1 : 0.1)]];
+    for (const [v, t] of etiquetas) partes.push(`<text x="${(xb + (div ? (v + 1) / 2 : v / (vmax || 1)) * wb).toFixed(1)}" y="${yb + 24}" text-anchor="middle" class="gr-etq" ${TENUE}>${t}</text>`);
+    if (op.leyenda) partes.push(`<text x="${xb + wb + 8}" y="${yb + 9}" class="gr-etq" ${TEXTO}>${esc(op.leyenda)}</text>`);
+    partes.push('</g>');
+    return `<figure class="sp-grafica"><svg viewBox="0 0 ${W} ${totalH}"${area(ml, mt, C * celda, R * celda)} role="img" aria-label="${esc(op.descripcion || op.titulo)}" data-sigmapro-figura="${esc(op.titulo)}">` +
+      `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
+  }
+
+  /**
+   * Mosaico de una tabla de contingencia: el ancho de cada barra es el total de su fila y las alturas, la proporción de
+   * cada columna dentro de ella; el tono, el residuo ajustado (oro: más casos de los esperados; gris: menos).
+   *   SP.graficas.mosaico({ titulo, descripcion, filas: [], columnas: [], conteos: [[]], residuos: [[]], x: { titulo }, y: { titulo } })
+   */
+  const TONOS = [['var(--text-muted)', 0.75, '< −2'], ['var(--text-muted)', 0.3, '−2 a 0'], [ORO, 0.3, '0 a 2'], [ORO, 0.85, '> 2']];
+  const tonoDe = r => (r < -2 ? 0 : r < 0 ? 1 : r <= 2 ? 2 : 3);
+  function mosaico(op) {
+    const R = op.filas.length, C = op.columnas.length, tot = op.conteos.map(f => f.reduce((a, b) => a + b, 0)), n = tot.reduce((a, b) => a + b, 0);
+    const largoC = Math.max(...op.columnas.map(s => String(s).length)), ml = Math.min(150, 20 + largoC * 6.4), mr = 12, mt = 12, hueco = 4;
+    const anchoUtil = W - ml - mr - hueco * (R - 1), altoPlot = 230;
+    const largoF = Math.max(...op.filas.map(s => String(s).length)), girar = R > 1 && largoF * 6.2 > anchoUtil / R - 6;
+    const mb = girar ? Math.min(120, 30 + largoF * 4.8) : 40, yl = mt + altoPlot + mb, totalH = yl + 34;
+    const partes = [];
+    let x = ml;
+    op.conteos.forEach((f, i) => {
+      const w = anchoUtil * tot[i] / n;
+      let y = mt;
+      f.forEach((c, j) => {
+        const h = tot[i] ? altoPlot * c / tot[i] : 0, t = TONOS[tonoDe(op.residuos[i][j])];
+        if (h > 0) partes.push(`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${Math.max(0.5, w).toFixed(1)}" height="${h.toFixed(1)}" fill="${t[0]}" fill-opacity="${t[1]}" stroke="var(--card-bg)" stroke-width="1.5"><title>${esc(op.filas[i] + ' · ' + op.columnas[j] + ': ' + c)}</title></rect>`);
+        if (i === 0 && h > 0) partes.push(`<text x="${ml - 6}" y="${(y + h / 2 + 4).toFixed(1)}" text-anchor="end" class="gr-etq" data-role="ytick" ${TENUE}>${esc(op.columnas[j])}</text>`);
+        y += h;
+      });
+      const cx = x + w / 2, ty = mt + altoPlot + 16;
+      partes.push(girar ? `<text transform="translate(${(cx + 4).toFixed(1)} ${ty - 4}) rotate(-35)" text-anchor="end" class="gr-etq" data-role="xtick" ${TENUE}>${esc(op.filas[i])}</text>`
+        : `<text x="${cx.toFixed(1)}" y="${ty}" text-anchor="middle" class="gr-etq" data-role="xtick" ${TENUE}>${esc(op.filas[i])}</text>`);
+      x += w + hueco;
+    });
+    if (op.x && op.x.titulo) partes.push(`<text x="${(ml + W - mr) / 2}" y="${yl - 8}" text-anchor="middle" class="gr-titulo-eje" data-role="xlab" ${TITULO}>${esc(op.x.titulo)}</text>`);
+    if (op.y && op.y.titulo) partes.push(`<text transform="translate(14 ${mt + altoPlot / 2}) rotate(-90)" text-anchor="middle" class="gr-titulo-eje" data-role="ylab" ${TITULO}>${esc(op.y.titulo)}</text>`);
+    /* leyenda del residuo ajustado */
+    partes.push('<g data-role="legend">');
+    partes.push(`<text x="${ml}" y="${yl + 14}" class="gr-etq" ${TENUE}>${esc(op.leyenda || 'Residuo ajustado')}:</text>`);
+    TONOS.forEach((t, k) => {
+      const xx = ml + 120 + k * 90;
+      partes.push(`<rect x="${xx}" y="${yl + 4}" width="16" height="12" fill="${t[0]}" fill-opacity="${t[1]}" stroke="var(--border)" stroke-width="0.5" data-li="${k}"/><text x="${xx + 22}" y="${yl + 14}" class="gr-etq gr-ley" data-li="${k}" ${TEXTO}>${esc(t[2])}</text>`);
+    });
+    partes.push('</g>');
+    return `<figure class="sp-grafica"><svg viewBox="0 0 ${W} ${totalH}"${area(ml, mt, W - ml - mr, altoPlot)} role="img" aria-label="${esc(op.descripcion || op.titulo)}" data-sigmapro-figura="${esc(op.titulo)}">` +
+      `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
+  }
+
+  SP.graficas = { dispersion, grupos, lineas, medias, mapaCalor, mosaico, adelgazar, marcas };
 })();

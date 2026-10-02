@@ -1,0 +1,68 @@
+{
+  "esquema": 1,
+  "id": "cont.cmhDe/satisfaccion-sexo",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.cmhDe"
+  },
+  "titulo": "4 × 4 × 2: estadístico generalizado con 9 gl",
+  "fuente": "Agresti (1990), Categorical Data Analysis, p. 287 (satisfacción por ingreso y sexo; ejemplo de mantelhaen.test)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "ingreso": ["<5000", "5000-15000", "15000-25000", ">25000", "<5000", "5000-15000", "15000-25000", ">25000", "<5000", "5000-15000", "15000-25000", ">25000", "<5000", "5000-15000", "15000-25000", ">25000", "<5000", "5000-15000", "15000-25000", ">25000", "<5000", "5000-15000", "15000-25000", ">25000", "<5000", "5000-15000", "15000-25000", ">25000", "<5000", "5000-15000", "15000-25000", ">25000"],
+      "satisfaccion": ["V_D", "V_D", "V_D", "V_D", "L_S", "L_S", "L_S", "L_S", "M_S", "M_S", "M_S", "M_S", "V_S", "V_S", "V_S", "V_S", "V_D", "V_D", "V_D", "V_D", "L_S", "L_S", "L_S", "L_S", "M_S", "M_S", "M_S", "M_S", "V_S", "V_S", "V_S", "V_S"],
+      "sexo": ["Mujer", "Mujer", "Mujer", "Mujer", "Mujer", "Mujer", "Mujer", "Mujer", "Mujer", "Mujer", "Mujer", "Mujer", "Mujer", "Mujer", "Mujer", "Mujer", "Hombre", "Hombre", "Hombre", "Hombre", "Hombre", "Hombre", "Hombre", "Hombre", "Hombre", "Hombre", "Hombre", "Hombre", "Hombre", "Hombre", "Hombre", "Hombre"],
+      "n": [1, 2, 0, 0, 3, 3, 1, 2, 11, 17, 8, 4, 2, 3, 5, 2, 1, 0, 0, 0, 1, 3, 0, 1, 2, 5, 7, 9, 1, 1, 0, 2]
+    },
+    "tipos": {
+      "ingreso": {
+        "tipo": "factor",
+        "niveles": ["<5000", "5000-15000", "15000-25000", ">25000"]
+      },
+      "satisfaccion": {
+        "tipo": "factor",
+        "niveles": ["V_D", "L_S", "M_S", "V_S"]
+      },
+      "sexo": {
+        "tipo": "factor",
+        "niveles": ["Mujer", "Hombre"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "fila": "ingreso",
+      "columna": "satisfaccion",
+      "estrato": "sexo",
+      "frecuencia": "n"
+    },
+    {
+      "correccion": true,
+      "nivel": 0.94999999999999996
+    }
+  ],
+  "esperado": {
+    "X2": 6.8952132470044463,
+    "gl": 9,
+    "p": 0.64802834351746541,
+    "razon_momios": "NA",
+    "ic": "NA",
+    "breslow_day": "NA",
+    "estratos": "NA"
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "mantelhaen.test(tabla, correct = TRUE, conf.level = 0.95); Breslow-Day por su fórmula"
+  }
+}

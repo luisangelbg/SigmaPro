@@ -112,5 +112,37 @@ window.SP_EJEMPLOS = [
     "descripcion": "Cuarenta fincas: rendimiento (quintales de café oro por hectárea) con altitud, temperatura, lluvia, materia orgánica, pH, sombra y edad del cafetal; para regresión, colinealidad (altitud y temperatura) y selección de variables.",
     "csv": "\"finca\",\"altitud\",\"temperatura\",\"lluvia\",\"materia_organica\",\"ph\",\"sombra\",\"edad\",\"rendimiento\"\n\"F01\",1342,23.2,2818,6.5,5.1,33,21,17.6\n\"F02\",1053,25.3,2117,6.8,5.3,23,5,15.4\n\"F03\",1048,24.6,2537,2.2,5.7,61,16,4\n\"F04\",1442,22.8,2731,4.2,5.8,38,15,14.4\n\"F05\",1629,21.1,2625,6.8,5.4,29,6,20.5\n\"F06\",1557,22.2,2743,6.6,4.8,69,13,19.1\n\"F07\",1430,22.5,2003,3.6,5.7,61,8,10.1\n\"F08\",1682,20.6,1883,4,6,47,11,18.3\n\"F09\",1209,23.9,2476,5.5,5.4,21,15,16.8\n\"F10\",1539,21.1,2005,5.7,5.1,23,16,20.2\n\"F11\",1631,20.9,1534,2.4,6.2,59,5,12.7\n\"F12\",1564,22.7,2691,6.3,4.8,45,8,16.5\n\"F13\",1679,21,2498,3.3,6,70,13,12.9\n\"F14\",1338,23.4,1681,2.2,4.8,26,16,12.6\n\"F15\",907,25.4,1963,2.3,6.2,25,18,3.6\n\"F16\",964,25.7,1720,4,5.6,45,15,10\n\"F17\",1121,24.4,1811,6.1,4.7,43,16,19.4\n\"F18\",1621,21.3,2136,2.5,6.3,56,12,12.7\n\"F19\",1134,24.2,2197,2,4.8,44,24,6.4\n\"F20\",945,25.2,2076,2.8,6.2,23,19,5.8\n\"F21\",1238,23.7,2491,3.4,5.8,55,5,11.5\n\"F22\",1558,22,1946,5.6,5.8,41,17,17.5\n\"F23\",1063,24.9,2028,5.7,5.5,58,4,14.3\n\"F24\",1104,25,2222,5.1,5.2,68,8,14.7\n\"F25\",960,25.2,1816,2.5,5,34,24,3\n\"F26\",1147,24.5,1993,5.4,5.5,27,10,16.2\n\"F27\",1276,23.7,2693,4.4,5.3,44,24,12.1\n\"F28\",903,25.6,2679,6.6,6.2,58,16,10.4\n\"F29\",1513,22.3,1978,2.6,5.7,60,24,9.2\n\"F30\",1311,24,2518,3.1,5.1,66,3,13.4\n\"F31\",1072,25.7,1513,3.5,5.9,61,5,9.4\n\"F32\",1239,23.5,2507,5.2,5.6,46,8,16.6\n\"F33\",1065,24.4,2076,2.7,4.8,39,10,7\n\"F34\",1572,21.6,2896,2.4,5.3,68,8,12.3\n\"F35\",1365,23,2120,3.2,4.9,26,7,16.1\n\"F36\",941,25.6,2269,5.5,4.7,24,19,11.4\n\"F37\",1036,25.5,2196,6.4,5.5,54,9,12.6\n\"F38\",1407,23.5,2634,5.9,6,62,24,12.7\n\"F39\",1034,25,2876,2.2,4.9,49,13,5.3\n\"F40\",1150,25.1,2849,5.9,6.2,46,24,10.7",
     "tipos": null
+  },
+  {
+    "id": "germinacion-lotes",
+    "nombre": "Frijol: semilla tratada en cuatro lotes",
+    "descripcion": "Cien semillas por lote y tratamiento (fungicida o testigo), ya contadas por resultado; para la tabla de contingencia con frecuencias y Cochran-Mantel-Haenszel por lote.",
+    "csv": "\"lote\",\"tratamiento\",\"germinacion\",\"semillas\"\n\"L1\",\"Fungicida\",\"Germinó\",80\n\"L1\",\"Fungicida\",\"No germinó\",20\n\"L1\",\"Testigo\",\"Germinó\",65\n\"L1\",\"Testigo\",\"No germinó\",35\n\"L2\",\"Fungicida\",\"Germinó\",79\n\"L2\",\"Fungicida\",\"No germinó\",21\n\"L2\",\"Testigo\",\"Germinó\",67\n\"L2\",\"Testigo\",\"No germinó\",33\n\"L3\",\"Fungicida\",\"Germinó\",80\n\"L3\",\"Fungicida\",\"No germinó\",20\n\"L3\",\"Testigo\",\"Germinó\",59\n\"L3\",\"Testigo\",\"No germinó\",41\n\"L4\",\"Fungicida\",\"Germinó\",94\n\"L4\",\"Fungicida\",\"No germinó\",6\n\"L4\",\"Testigo\",\"Germinó\",72\n\"L4\",\"Testigo\",\"No germinó\",28",
+    "tipos": {
+      "germinacion": {
+        "tipo": "factor",
+        "niveles": ["Germinó", "No germinó"]
+      },
+      "tratamiento": {
+        "tipo": "factor",
+        "niveles": ["Fungicida", "Testigo"]
+      }
+    }
+  },
+  {
+    "id": "roya-evaluadores",
+    "nombre": "Roya: dos evaluadores",
+    "descripcion": "Severidad de roya (0 a 3) en 80 hojas calificada por dos técnicos; para la concordancia (kappa simple y ponderada) y para ver si uno califica más alto (Bowker).",
+    "csv": "\"hoja\",\"evaluador_A\",\"evaluador_B\"\n\"H01\",\"0 sana\",\"0 sana\"\n\"H02\",\"0 sana\",\"0 sana\"\n\"H03\",\"3 severa\",\"3 severa\"\n\"H04\",\"0 sana\",\"1 leve\"\n\"H05\",\"1 leve\",\"1 leve\"\n\"H06\",\"0 sana\",\"1 leve\"\n\"H07\",\"0 sana\",\"1 leve\"\n\"H08\",\"0 sana\",\"0 sana\"\n\"H09\",\"2 moderada\",\"2 moderada\"\n\"H10\",\"0 sana\",\"0 sana\"\n\"H11\",\"1 leve\",\"1 leve\"\n\"H12\",\"2 moderada\",\"2 moderada\"\n\"H13\",\"0 sana\",\"0 sana\"\n\"H14\",\"1 leve\",\"1 leve\"\n\"H15\",\"2 moderada\",\"2 moderada\"\n\"H16\",\"2 moderada\",\"1 leve\"\n\"H17\",\"0 sana\",\"0 sana\"\n\"H18\",\"0 sana\",\"0 sana\"\n\"H19\",\"3 severa\",\"3 severa\"\n\"H20\",\"0 sana\",\"0 sana\"\n\"H21\",\"2 moderada\",\"2 moderada\"\n\"H22\",\"0 sana\",\"0 sana\"\n\"H23\",\"1 leve\",\"1 leve\"\n\"H24\",\"0 sana\",\"0 sana\"\n\"H25\",\"3 severa\",\"3 severa\"\n\"H26\",\"1 leve\",\"1 leve\"\n\"H27\",\"3 severa\",\"3 severa\"\n\"H28\",\"2 moderada\",\"2 moderada\"\n\"H29\",\"1 leve\",\"2 moderada\"\n\"H30\",\"3 severa\",\"2 moderada\"\n\"H31\",\"0 sana\",\"0 sana\"\n\"H32\",\"1 leve\",\"1 leve\"\n\"H33\",\"0 sana\",\"1 leve\"\n\"H34\",\"3 severa\",\"3 severa\"\n\"H35\",\"0 sana\",\"0 sana\"\n\"H36\",\"1 leve\",\"1 leve\"\n\"H37\",\"1 leve\",\"1 leve\"\n\"H38\",\"1 leve\",\"1 leve\"\n\"H39\",\"2 moderada\",\"2 moderada\"\n\"H40\",\"1 leve\",\"1 leve\"\n\"H41\",\"0 sana\",\"0 sana\"\n\"H42\",\"2 moderada\",\"2 moderada\"\n\"H43\",\"1 leve\",\"1 leve\"\n\"H44\",\"1 leve\",\"1 leve\"\n\"H45\",\"2 moderada\",\"1 leve\"\n\"H46\",\"1 leve\",\"2 moderada\"\n\"H47\",\"0 sana\",\"0 sana\"\n\"H48\",\"2 moderada\",\"2 moderada\"\n\"H49\",\"3 severa\",\"3 severa\"\n\"H50\",\"1 leve\",\"1 leve\"\n\"H51\",\"0 sana\",\"0 sana\"\n\"H52\",\"0 sana\",\"1 leve\"\n\"H53\",\"1 leve\",\"1 leve\"\n\"H54\",\"2 moderada\",\"2 moderada\"\n\"H55\",\"0 sana\",\"0 sana\"\n\"H56\",\"1 leve\",\"1 leve\"\n\"H57\",\"0 sana\",\"0 sana\"\n\"H58\",\"3 severa\",\"2 moderada\"\n\"H59\",\"0 sana\",\"0 sana\"\n\"H60\",\"1 leve\",\"1 leve\"\n\"H61\",\"0 sana\",\"0 sana\"\n\"H62\",\"2 moderada\",\"3 severa\"\n\"H63\",\"0 sana\",\"0 sana\"\n\"H64\",\"1 leve\",\"1 leve\"\n\"H65\",\"2 moderada\",\"2 moderada\"\n\"H66\",\"0 sana\",\"0 sana\"\n\"H67\",\"0 sana\",\"0 sana\"\n\"H68\",\"1 leve\",\"1 leve\"\n\"H69\",\"0 sana\",\"0 sana\"\n\"H70\",\"0 sana\",\"1 leve\"\n\"H71\",\"3 severa\",\"3 severa\"\n\"H72\",\"3 severa\",\"3 severa\"\n\"H73\",\"1 leve\",\"1 leve\"\n\"H74\",\"1 leve\",\"1 leve\"\n\"H75\",\"1 leve\",\"2 moderada\"\n\"H76\",\"3 severa\",\"3 severa\"\n\"H77\",\"0 sana\",\"0 sana\"\n\"H78\",\"1 leve\",\"1 leve\"\n\"H79\",\"3 severa\",\"3 severa\"\n\"H80\",\"0 sana\",\"0 sana\"",
+    "tipos": {
+      "evaluador_A": {
+        "tipo": "factor",
+        "niveles": ["0 sana", "1 leve", "2 moderada", "3 severa"]
+      },
+      "evaluador_B": {
+        "tipo": "factor",
+        "niveles": ["0 sana", "1 leve", "2 moderada", "3 severa"]
+      }
+    }
   }
 ];

@@ -1,0 +1,58 @@
+{
+  "esquema": 1,
+  "id": "cont.mcnemarDe/pocos-cambios",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.mcnemarDe"
+  },
+  "titulo": "2 × 2 con pocos casos discordantes",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "antes": ["Si", "No", "Si", "No"],
+      "despues": ["Si", "Si", "No", "No"],
+      "n": [20, 2, 7, 15]
+    },
+    "tipos": {
+      "antes": {
+        "tipo": "factor",
+        "niveles": ["Si", "No"]
+      },
+      "despues": {
+        "tipo": "factor",
+        "niveles": ["Si", "No"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "antes": "antes",
+      "despues": "despues",
+      "frecuencia": "n"
+    },
+    {
+      "correccion": true
+    }
+  ],
+  "esperado": {
+    "X2": 1.7777777777777777,
+    "gl": 1,
+    "p": 0.18242243945173581,
+    "p_exacta": 0.17968750000000006
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "mcnemar.test(tabla, correct = TRUE); binom.test(b, b + c)"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "esquema": 1,
+  "id": "cor.pruebaDe/hw-kendall-continuidad",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+  },
+  "titulo": "Kendall normal con corrección por continuidad",
+  "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [44.399999999999999, 45.899999999999999, 41.899999999999999, 53.299999999999997, 44.700000000000003, 44.100000000000001, 50.700000000000003, 45.200000000000003, 60.100000000000001],
+      "y": [2.6000000000000001, 3.1000000000000001, 2.5, 5, 3.6000000000000001, 4, 5.2000000000000002, 2.7999999999999998, 3.7999999999999998]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      },
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "x": "x",
+      "y": "y"
+    },
+    {
+      "metodo": "kendall",
+      "alternativa": "bilateral",
+      "nivel": 0.94999999999999996,
+      "exacta": "no",
+      "continuidad": true
+    }
+  ],
+  "esperado": {
+    "estimado": 0.44444444444444453,
+    "estadistico": 1.5638581054280611,
+    "gl": "NA",
+    "p": 0.11785089502136502,
+    "ic": "NA",
+    "n": 9,
+    "exacta": false
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95, exact = FALSE, continuity = TRUE)"
+  }
+}

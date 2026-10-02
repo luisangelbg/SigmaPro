@@ -1,0 +1,70 @@
+{
+  "esquema": 1,
+  "id": "cont.kappaDe/dos-categorias",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.kappaDe"
+  },
+  "titulo": "2 × 2",
+  "fuente": "Agresti (1990), Categorical Data Analysis, p. 350 (aprobación presidencial; ejemplo de mcnemar.test)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "evaluador1": ["Aprueba", "Desaprueba", "Aprueba", "Desaprueba"],
+      "evaluador2": ["Aprueba", "Aprueba", "Desaprueba", "Desaprueba"],
+      "n": [794, 86, 150, 570]
+    },
+    "tipos": {
+      "evaluador1": {
+        "tipo": "factor",
+        "niveles": ["Aprueba", "Desaprueba"]
+      },
+      "evaluador2": {
+        "tipo": "factor",
+        "niveles": ["Aprueba", "Desaprueba"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "evaluador1": "evaluador1",
+      "evaluador2": "evaluador2",
+      "frecuencia": "n"
+    },
+    {
+      "ponderacion": "lineal",
+      "nivel": 0.94999999999999996
+    }
+  ],
+  "esperado": {
+    "simple": {
+      "estimado": 0.69959266802443987,
+      "ee": 0.017979165073619737,
+      "ic": [0.66435415200804471, 0.73483118404083503],
+      "z": 28.077032276237194,
+      "p": 1.868886140464424e-173
+    },
+    "ponderada": {
+      "estimado": 0.69959266802443987,
+      "ee": 0.017979165073619737,
+      "ic": [0.66435415200804471, 0.73483118404083503],
+      "z": 28.077032276237194,
+      "p": 1.868886140464424e-173
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "psych": "2.4.12"
+    },
+    "codigo": "psych::cohen.kappa(tabla, w.exp = 1); z con la varianza nula de Fleiss, Cohen y Everitt (1969)"
+  }
+}

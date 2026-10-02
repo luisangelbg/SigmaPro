@@ -15,13 +15,13 @@ medias, regresión y, más adelante, modelos mixtos y ensayos multiambiente. For
 
 ## Estado
 
-En construcción, por hitos. **Hitos 1.0 a 1.8 terminados:** cimientos (registro de métodos, cálculos en
+En construcción, por hitos. **Hitos 1.0 a 1.9 terminados:** cimientos (registro de métodos, cálculos en
 hilos de trabajo, pruebas automáticas en node y en el navegador, generador de referencias con R y reporte
 de validación), núcleo numérico (distribuciones, álgebra, fórmulas y modelo lineal con sumas de cuadrados
 tipo I, II y III) y el bloque de **Datos**: hoja de cálculo para 100 000 filas con deshacer, importación de
 CSV, .xlsx y .ods con lectores propios, tipos de variable explicados, faltantes, filtros, variables
 calculadas, transformaciones con Box-Cox, cambio de forma ancha ⇄ larga, diagnóstico del diseño del ensayo
-y diez conjuntos de ejemplo; y el bloque **Explorar**: descriptivos por hasta tres factores con sus
+y doce conjuntos de ejemplo; y el bloque **Explorar**: descriptivos por hasta tres factores con sus
 intervalos, frecuencias, proporciones con seis intervalos y bondad de ajuste ji cuadrada, cada uno con el
 código R que reproduce sus números; y la **revisión de los supuestos** del modelo (normalidad, varianzas, aditividad,
 independencia y atípicos) con semáforo, recomendaciones y gráficas de diagnóstico; y las **pruebas t** (una muestra,
@@ -37,7 +37,10 @@ factor y en parcelas divididas con Satterthwaite), contrastes, polinomios ortogo
 ajustadas; y la **ANCOVA** (completamente al azar y bloques, con homogeneidad de pendientes, medias ajustadas y eficiencia)
 y la **regresión** simple, múltiple y polinomial con diagnóstico completo (influencia, Breusch-Pagan, RESET,
 Durbin-Watson, VIF, índices de condición), predicciones y selección de variables (paso a paso por AIC o valor p y mejores
-subconjuntos). Validado contra R en 520 casos y 45 728 valores. El plan
+subconjuntos); y la **correlación** (Pearson, Spearman y Kendall exactas o aproximadas, matrices con p ajustados, parcial y
+semiparcial) y las **tablas de contingencia** (ji cuadrada, G², Fisher exacta 2 × 2 y r × c, residuos ajustados, medidas
+nominales y ordinales, razón de momios, McNemar y Bowker, Cochran-Mantel-Haenszel con Breslow-Day y kappa). Validado contra
+R en 610 casos y 47 482 valores. El plan
 completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
 [`propuesta/maqueta.html`](propuesta/maqueta.html).

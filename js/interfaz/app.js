@@ -56,8 +56,8 @@
     ['hecho', '1.6', 'ANOVA de diseños experimentales'],
     ['hecho', '1.7', 'Comparaciones de medias, letras, contrastes y medias ajustadas'],
     ['hecho', '1.8', 'ANCOVA y regresión con diagnóstico y selección de variables'],
-    ['actual', '1.9', 'Correlación y tablas de contingencia'],
-    ['', '1.10', 'Asistente de análisis y constructor visual de modelos'],
+    ['hecho', '1.9', 'Correlación y tablas de contingencia'],
+    ['actual', '1.10', 'Asistente de análisis y constructor visual de modelos'],
     ['', '1.11', 'Reporte, figuras, exportaciones y proyecto .labg'],
     ['', '1.12', 'Uso sin conexión, rendimiento, accesibilidad y cierre de la Fase 1'],
   ];

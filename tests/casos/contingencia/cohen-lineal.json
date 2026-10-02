@@ -1,0 +1,70 @@
+{
+  "esquema": 1,
+  "id": "cont.kappaDe/cohen-lineal",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.kappaDe"
+  },
+  "titulo": "3 categorías, ponderada lineal e IC al 90 %",
+  "fuente": "Cohen (1968), Psychol. Bull. 70: 213-220 (ejemplo de psych::cohen.kappa, 200 casos)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "evaluador1": ["A", "B", "C", "A", "B", "C", "A", "B", "C"],
+      "evaluador2": ["A", "A", "A", "B", "B", "B", "C", "C", "C"],
+      "n": [88, 10, 2, 14, 40, 6, 18, 10, 12]
+    },
+    "tipos": {
+      "evaluador1": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C"]
+      },
+      "evaluador2": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "evaluador1": "evaluador1",
+      "evaluador2": "evaluador2",
+      "frecuencia": "n"
+    },
+    {
+      "ponderacion": "lineal",
+      "nivel": 0.90000000000000002
+    }
+  ],
+  "esperado": {
+    "simple": {
+      "estimado": 0.49152542372881347,
+      "ee": 0.051001815576077865,
+      "ic": [0.40763490239739175, 0.57541594506023519],
+      "z": 9.4562424355273542,
+      "p": 3.192082565848789e-21
+    },
+    "ponderada": {
+      "estimado": 0.47368421052631593,
+      "ee": 0.054432309177641511,
+      "ic": [0.38415102935212841, 0.56321739170050344],
+      "z": 8.6602540378443855,
+      "p": 4.7071405901404259e-18
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "psych": "2.4.12"
+    },
+    "codigo": "psych::cohen.kappa(tabla, w.exp = 1); z con la varianza nula de Fleiss, Cohen y Everitt (1969)"
+  }
+}

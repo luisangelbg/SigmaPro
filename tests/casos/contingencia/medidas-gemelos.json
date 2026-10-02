@@ -1,0 +1,113 @@
+{
+  "esquema": 1,
+  "id": "cont.medidasDe/medidas-gemelos",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.medidasDe"
+  },
+  "titulo": "2 × 2 con razón de momios y riesgo relativo",
+  "fuente": "Fisher (1962), Confidence limits for a cross-product ratio, Aust. J. Stat. 4: 41 (gemelos y condenas; ejemplo de fisher.test)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "gemelos": ["Dicigoticos", "Monocigoticos", "Dicigoticos", "Monocigoticos"],
+      "condena": ["Si", "Si", "No", "No"],
+      "n": [2, 10, 15, 3]
+    },
+    "tipos": {
+      "gemelos": {
+        "tipo": "factor",
+        "niveles": ["Dicigoticos", "Monocigoticos"]
+      },
+      "condena": {
+        "tipo": "factor",
+        "niveles": ["Si", "No"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "fila": "gemelos",
+      "columna": "condena",
+      "frecuencia": "n"
+    },
+    {
+      "nivel": 0.94999999999999996
+    }
+  ],
+  "esperado": {
+    "phi": -0.6590820436573076,
+    "v_cramer": 0.65908204365730771,
+    "contingencia": 0.55030820157366622,
+    "lambda_c_r": 0.58333333333333337,
+    "lambda_r_c": 0.61538461538461542,
+    "lambda_simetrica": 0.59999999999999998,
+    "incertidumbre_c_r": 0.34720134541260739,
+    "incertidumbre_r_c": 0.3415079044444787,
+    "incertidumbre_simetrica": 0.34433109157969932,
+    "gamma": {
+      "estimado": -0.92307692307692313,
+      "ee": 0.073964497041420121,
+      "ee0": 0.20424489303618079,
+      "z": -4.5194614629282572,
+      "p": 6.1997130936580583e-06,
+      "ic": [-1.068044673412726, -0.77810917274112035]
+    },
+    "tau_b": {
+      "estimado": -0.6590820436573076,
+      "ee": 0.13854579993117522,
+      "ee0": 0.1458319866345921,
+      "z": -4.5194614629282572,
+      "p": 6.1997130936580583e-06,
+      "ic": [-0.93062682173170286, -0.38753726558291235]
+    },
+    "tau_c": {
+      "estimado": -0.64000000000000001,
+      "ee": 0.14160979250508535,
+      "ee0": 0.14160979250508535,
+      "z": -4.5194614629282572,
+      "p": 6.1997130936580583e-06,
+      "ic": [-0.91755009316815728, -0.36244990683184269]
+    },
+    "somers_c_r": {
+      "estimado": -0.65158371040723984,
+      "ee": 0.14057465204314076,
+      "ee0": 0.14417286567259824,
+      "z": -4.5194614629282563,
+      "p": 6.1997130936580854e-06,
+      "ic": [-0.9271049655510456, -0.37606245526343407]
+    },
+    "somers_r_c": {
+      "estimado": -0.66666666666666663,
+      "ee": 0.13888888888888887,
+      "ee0": 0.14751020052613056,
+      "z": -4.5194614629282572,
+      "p": 6.1997130936580583e-06,
+      "ic": [-0.938883886741674, -0.3944494465916592]
+    },
+    "razon_momios": {
+      "estimado": 0.040000000000000001,
+      "ic": [0.0056345397637287018, 0.28396285536925325],
+      "corregida": false
+    },
+    "riesgo_relativo": {
+      "estimado": 0.15294117647058822,
+      "ic": [0.04022986069948474, 0.58143386662303798],
+      "corregida": false
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "fórmulas de Agresti (2002) en R base; τ-b cotejada con cor(method = \"kendall\")"
+  }
+}

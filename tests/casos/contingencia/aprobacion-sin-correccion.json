@@ -1,0 +1,58 @@
+{
+  "esquema": 1,
+  "id": "cont.mcnemarDe/aprobacion-sin-correccion",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.mcnemarDe"
+  },
+  "titulo": "2 × 2 sin corrección",
+  "fuente": "Agresti (1990), Categorical Data Analysis, p. 350 (aprobación presidencial; ejemplo de mcnemar.test)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "antes": ["Aprueba", "Desaprueba", "Aprueba", "Desaprueba"],
+      "despues": ["Aprueba", "Aprueba", "Desaprueba", "Desaprueba"],
+      "n": [794, 86, 150, 570]
+    },
+    "tipos": {
+      "antes": {
+        "tipo": "factor",
+        "niveles": ["Aprueba", "Desaprueba"]
+      },
+      "despues": {
+        "tipo": "factor",
+        "niveles": ["Aprueba", "Desaprueba"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "antes": "antes",
+      "despues": "despues",
+      "frecuencia": "n"
+    },
+    {
+      "correccion": false
+    }
+  ],
+  "esperado": {
+    "X2": 17.35593220338983,
+    "gl": 1,
+    "p": 3.0992934410452182e-05,
+    "p_exacta": 3.71593613957143e-05
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "mcnemar.test(tabla, correct = FALSE); binom.test(b, b + c)"
+  }
+}

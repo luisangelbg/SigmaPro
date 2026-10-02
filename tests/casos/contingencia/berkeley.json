@@ -1,0 +1,106 @@
+{
+  "esquema": 1,
+  "id": "cont.cmhDe/berkeley",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.cmhDe"
+  },
+  "titulo": "2 × 2 × 6: admisiones por departamento",
+  "fuente": "Bickel, Hammel y O'Connell (1975), Science 187: 398-403; conjunto UCBAdmissions de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "admision": ["Admitted", "Rejected", "Admitted", "Rejected", "Admitted", "Rejected", "Admitted", "Rejected", "Admitted", "Rejected", "Admitted", "Rejected", "Admitted", "Rejected", "Admitted", "Rejected", "Admitted", "Rejected", "Admitted", "Rejected", "Admitted", "Rejected", "Admitted", "Rejected"],
+      "sexo": ["Male", "Male", "Female", "Female", "Male", "Male", "Female", "Female", "Male", "Male", "Female", "Female", "Male", "Male", "Female", "Female", "Male", "Male", "Female", "Female", "Male", "Male", "Female", "Female"],
+      "departamento": ["A", "A", "A", "A", "B", "B", "B", "B", "C", "C", "C", "C", "D", "D", "D", "D", "E", "E", "E", "E", "F", "F", "F", "F"],
+      "n": [512, 313, 89, 19, 353, 207, 17, 8, 120, 205, 202, 391, 138, 279, 131, 244, 53, 138, 94, 299, 22, 351, 24, 317]
+    },
+    "tipos": {
+      "admision": {
+        "tipo": "factor",
+        "niveles": ["Admitted", "Rejected"]
+      },
+      "sexo": {
+        "tipo": "factor",
+        "niveles": ["Male", "Female"]
+      },
+      "departamento": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C", "D", "E", "F"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "fila": "admision",
+      "columna": "sexo",
+      "estrato": "departamento",
+      "frecuencia": "n"
+    },
+    {
+      "correccion": true,
+      "nivel": 0.94999999999999996
+    }
+  ],
+  "esperado": {
+    "X2": 1.4269462285866883,
+    "gl": 1,
+    "p": 0.23226346281704827,
+    "razon_momios": 0.90469682825862308,
+    "ic": [0.77190736175935049, 1.0603297644366556],
+    "breslow_day": {
+      "X2": 18.825513705236034,
+      "gl": 5,
+      "p": 0.0020713903499180019,
+      "X2_tarone": 18.825501252052749,
+      "p_tarone": 0.0020714013978812553,
+      "estratos": 6
+    },
+    "estratos": [
+      {
+        "razon_momios": 0.34921204724126792,
+        "ic": [0.20867560215260661, 0.58439536141486703],
+        "corregida": false
+      },
+      {
+        "razon_momios": 0.80250071042909921,
+        "ic": [0.34038146637383021, 1.8920166162393692],
+        "corregida": false
+      },
+      {
+        "razon_momios": 1.1330596474281573,
+        "ic": [0.8545328411237153, 1.5023696022516635],
+        "corregida": false
+      },
+      {
+        "razon_momios": 0.9212837560535172,
+        "ic": [0.68633447896052768, 1.2366619850623743],
+        "corregida": false
+      },
+      {
+        "razon_momios": 1.2216312056737588,
+        "ic": [0.82507484431407341, 1.808784758086541],
+        "corregida": false
+      },
+      {
+        "razon_momios": 0.82787274453941118,
+        "ic": [0.455205923237467, 1.5056334862182339],
+        "corregida": false
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "mantelhaen.test(tabla, correct = TRUE, conf.level = 0.95); Breslow-Day por su fórmula"
+  }
+}

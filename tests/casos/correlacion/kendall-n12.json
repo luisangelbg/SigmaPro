@@ -1,0 +1,58 @@
+{
+  "esquema": 1,
+  "id": "cor.pruebaDe/kendall-n12",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+  },
+  "titulo": "Kendall sin empates, n = 12",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [0.40753627143631022, 0.21839653314600621, 0.036551864177371392, -0.15611537127563888, -0.18370777068731922, 3.3103350814727572, -0.53504365260383224, 1.9820133391352548, -2.9905581408778832, 0.21866401034296265, -2.6089798190196425, -0.99285060943161352],
+      "y": [-1.4501596625136071, -0.54818627474686088, -0.17648499719583871, 0.1848139388567186, -1.893948013716203, 0.89489063169206107, -0.28272978201176752, 1.2009629490948037, -3.4045083371511087, 2.0486490944607239, -1.013494393772423, 0.40726255005788314]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      },
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "x": "x",
+      "y": "y"
+    },
+    {
+      "metodo": "kendall",
+      "alternativa": "bilateral",
+      "nivel": 0.94999999999999996,
+      "exacta": "auto",
+      "continuidad": false
+    }
+  ],
+  "esperado": {
+    "estimado": 0.36363636363636365,
+    "estadistico": 45,
+    "gl": "NA",
+    "p": 0.11595087782587776,
+    "ic": "NA",
+    "n": 12,
+    "exacta": true
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"kendall\", alternative = \"two.sided\", conf.level = 0.95)"
+  }
+}

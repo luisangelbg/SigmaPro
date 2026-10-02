@@ -5,7 +5,7 @@
 # Box y Cox (1964, J. R. Stat. Soc. B 26: 211–252), cuadro 1, los chícharos de Mendel (1866) y la
 # avena de Yates (1935). Cada ejemplo muestra algo: diseño en bloques, porcentajes para el arcoseno,
 # cuadro latino, forma ancha con fechas, conteos con ceros y faltantes, Box-Cox, parcelas divididas,
-# una covariable (ANCOVA) y regresión múltiple con colinealidad.
+# una covariable (ANCOVA), regresión múltiple con colinealidad, conteos por lote y dos evaluadores.
 #
 #   Rscript datos/generar-ejemplos.R        (desde la carpeta de SigmaPro)
 
@@ -145,6 +145,30 @@ d$rendimiento <- round(8 + 0.011 * (d$altitud - 1300) + 1.6 * d$materia_organica
 d$rendimiento[17] <- d$rendimiento[17] + 7                                  # una finca fuera de lo común
 agregar("cafe", "Café: rendimiento y sitio",
         "Cuarenta fincas: rendimiento (quintales de café oro por hectárea) con altitud, temperatura, lluvia, materia orgánica, pH, sombra y edad del cafetal; para regresión, colinealidad (altitud y temperatura) y selección de variables.", d)
+
+## 11. Frijol: semilla tratada contra testigo en cuatro lotes (conteos; Cochran-Mantel-Haenszel)
+set.seed(1111)
+d <- expand.grid(germinacion = c("Germinó", "No germinó"), tratamiento = c("Fungicida", "Testigo"), lote = c("L1", "L2", "L3", "L4"), stringsAsFactors = FALSE)[, 3:1]
+base <- c(L1 = 0.62, L2 = 0.72, L3 = 0.55, L4 = 0.68)                      # germinación del testigo en cada lote
+d$semillas <- 0
+for (l in names(base)) for (tr in c("Fungicida", "Testigo")) {
+  p <- if (tr == "Testigo") base[[l]] else plogis(qlogis(base[[l]]) + 0.9)   # razón de momios común ≈ 2.5
+  g <- rbinom(1, 100, p)
+  d$semillas[d$lote == l & d$tratamiento == tr] <- c(g, 100 - g)
+}
+agregar("germinacion-lotes", "Frijol: semilla tratada en cuatro lotes",
+        "Cien semillas por lote y tratamiento (fungicida o testigo), ya contadas por resultado; para la tabla de contingencia con frecuencias y Cochran-Mantel-Haenszel por lote.", d,
+        list(germinacion = list(tipo = "factor", niveles = c("Germinó", "No germinó")), tratamiento = list(tipo = "factor", niveles = c("Fungicida", "Testigo"))))
+
+## 12. Roya: la severidad de 80 hojas calificada por dos evaluadores (kappa y simetría de Bowker)
+set.seed(1212)
+niv <- c("0 sana", "1 leve", "2 moderada", "3 severa")
+real <- sample(0:3, 80, TRUE, prob = c(0.35, 0.3, 0.2, 0.15))
+califica <- function(v, sesgo) pmin(3, pmax(0, v + sample(c(-1, 0, 1), length(v), TRUE, prob = c(0.12 - sesgo, 0.76, 0.12 + sesgo))))
+d <- data.frame(hoja = sprintf("H%02d", 1:80), evaluador_A = niv[califica(real, 0) + 1], evaluador_B = niv[califica(real, 0.08) + 1])
+agregar("roya-evaluadores", "Roya: dos evaluadores",
+        "Severidad de roya (0 a 3) en 80 hojas calificada por dos técnicos; para la concordancia (kappa simple y ponderada) y para ver si uno califica más alto (Bowker).", d,
+        list(evaluador_A = list(tipo = "factor", niveles = niv), evaluador_B = list(tipo = "factor", niveles = niv)))
 
 ## escribir datos/ejemplos.js
 js <- paste0(

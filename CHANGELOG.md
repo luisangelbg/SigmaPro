@@ -2,6 +2,30 @@
 
 ## Sin publicar
 
+### Hito 1.9 · correlación y tablas de contingencia (1 oct 2026)
+
+- `js/metodos/correlacion.js`: correlación de Pearson con IC por la z de Fisher, Spearman y Kendall con sus p exactos
+  sin empates (distribuciones de AS 89 y de ckendall, como R) y aproximados con empates y corrección por continuidad;
+  τ-b por el algoritmo de Knight (O(n log n)); matriz de correlaciones con p ajustados (Holm, Bonferroni,
+  Benjamini-Hochberg) y filas completas o por pares; correlación parcial y semiparciales con su t, también con rangos.
+- `js/metodos/contingencia.js`: tabla de contingencia (con una columna de frecuencias opcional) con ji cuadrada (Yates
+  en 2 × 2), G², esperados y residuos ajustados; Fisher exacta 2 × 2 con la razón de momios condicional y su IC exacto,
+  y r × c con un recorrido por niveles al estilo del algoritmo de red; φ, V de Cramér, coeficiente de contingencia, λ,
+  incertidumbre, γ, τ-b, τ-c y d de Somers con sus EE; razón de momios y riesgo relativo. McNemar con binomial exacta y
+  simetría de Bowker; Cochran-Mantel-Haenszel 2 × 2 × K e I × J × K con la razón de momios común y Breslow-Day (con
+  Tarone); kappa de Cohen simple y ponderada.
+- Bloque 4: familias «Correlación» (tres métodos) y «Tablas de contingencia» (cuatro), con gráficas nuevas: mapa de
+  calor (matriz de correlaciones, McNemar y kappa), mosaico con residuos ajustados, gráfica de variable agregada para
+  la parcial y razón de momios por estrato en escala logarítmica.
+- Datos: dos ejemplos nuevos (germinación de frijol tratada por lote, con conteos; roya calificada por dos evaluadores).
+- Validación: 90 casos nuevos contra R (1 754 valores, diferencia escalada máxima 8.6e-13) con cor.test, chisq.test,
+  fisher.test, mcnemar.test, mantelhaen.test, psych y datos clásicos (HairEyeColor, UCBAdmissions, occupationalStatus,
+  la cata de té y los gemelos de Fisher, la satisfacción laboral de Agresti, la tabla de Cohen). 6 pruebas unitarias y
+  7 escenarios del código R nuevos (44 en total). El arnés ya no confunde unas entradas con una clave «columna» con
+  una referencia a una columna de datos.
+- Con 100 000 filas: correlaciones de un par en 0.2–0.3 s, matriz de Pearson de 10 variables en 0.1 s (la de Kendall,
+  3.8 s), tablas de contingencia en milisegundos.
+
 ### Hito 1.8 · ANCOVA y regresión con diagnóstico y selección de variables (1 oct 2026)
 
 - `js/metodos/ancova.js`: análisis de covarianza en completamente al azar y en bloques, con uno o dos factores y una o

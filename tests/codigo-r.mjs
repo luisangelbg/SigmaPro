@@ -136,6 +136,21 @@ const ESCENARIOS = [
   { ej: 'maiz', id: 'ancova', e: { respuesta: 'rend', tratamientos: ['hibrido'], covariables: ['dosis'] }, op: { tipoSC: 1, metodo: 'bonferroni', alfa: 0.05, nivel: 0.9 },
     r: 'c(anova(modelo)[, "F value"][1:2], confint(em, level = 0.9)$lower.CL, as.data.frame(pr)$p.value)',
     js: res => [...res.anova.F.slice(0, 2), ...res.medias[0].filas.map(x => x.ic[0]), ...res.comparaciones[0].pares.map(x => x.p_ajustado)] },
+  { ej: 'cafe', id: 'correlacion', e: { x: 'altitud', y: 'rendimiento' }, op: { metodo: 'pearson', alternativa: 'bilateral', nivel: 0.9 },
+    r: 'c(prueba$estimate, prueba$conf.int, prueba$statistic, prueba$p.value)', js: res => [res.estimado, ...res.ic, res.estadistico, res.p] },
+  { ej: 'cafe', id: 'correlacion', e: { x: 'lluvia', y: 'rendimiento' }, op: { metodo: 'kendall', alternativa: 'menor', continuidad: true },
+    r: 'c(prueba$estimate, prueba$statistic, prueba$p.value)', js: res => [res.estimado, res.estadistico, res.p] },
+  { ej: 'cafe', id: 'matriz-correlacion', e: { variables: ['altitud', 'temperatura', 'materia_organica', 'sombra', 'rendimiento'] }, op: { metodo: 'spearman', ajuste: 'BH', faltantes: 'completas' },
+    r: 'c(apply(pares, 2, function(v) r[v[1], v[2]]), p.adjust(p, "BH"))', js: res => [...res.pares.map(x => x.r), ...res.pares.map(x => x.p_ajustado)] },
+  { ej: 'cafe', id: 'correlacion-parcial', e: { x: 'temperatura', y: 'rendimiento', controles: ['altitud', 'sombra'] }, op: { metodo: 'pearson' },
+    r: 'c(prueba(cor(ex, ey)), prueba(cor(d$rendimiento, ex)), prueba(cor(d$temperatura, ey)))', js: res => [res.parcial, res.semiparcial_x, res.semiparcial_y].flatMap(z => [z.r, z.t, z.p]) },
+  { ej: 'mendel', id: 'tabla-contingencia', e: { fila: 'forma', columna: 'color', frecuencia: 'semillas' }, op: { correccion: true, nivel: 0.95 },
+    r: 'c(prueba$statistic, prueba$p.value, G2, fisher.test(tabla)$p.value, fisher.test(tabla)$estimate, sqrt(chisq.test(tabla, correct = FALSE)$statistic / (sum(tabla) * (min(dim(tabla)) - 1))))',
+    js: res => [res.chi.X2, res.chi.p, res.chi.G2, res.fisher.p, res.fisher.razon_momios, res.medidas.v_cramer] },
+  { ej: 'germinacion-lotes', id: 'mantel-haenszel', e: { fila: 'tratamiento', columna: 'germinacion', estrato: 'lote', frecuencia: 'semillas' }, op: { correccion: true, nivel: 0.95 },
+    r: 'c(mh$statistic, mh$p.value, mh$estimate, mh$conf.int)', js: res => [res.X2, res.p, res.razon_momios, ...res.ic] },
+  { ej: 'roya-evaluadores', id: 'kappa', e: { evaluador1: 'evaluador_A', evaluador2: 'evaluador_B' }, op: { ponderacion: 'lineal', nivel: 0.95 },
+    r: 'c(ck$kappa, ck$weighted.kappa, sqrt(ck$var.kappa), sqrt(ck$var.weighted))', js: res => [res.simple.estimado, res.ponderada.estimado, res.simple.ee, res.ponderada.ee] },
 ];
 const efectoDe = res => [res.efecto.d, ...res.efecto.ic_d, res.efecto.g, ...res.efecto.ic_g];
 /* aggregate() de R deja el primer factor cambiando más rápido; la app, el último */

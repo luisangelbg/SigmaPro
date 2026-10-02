@@ -1,0 +1,58 @@
+{
+  "esquema": 1,
+  "id": "cont.mcnemarDe/bowker",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.mcnemarDe"
+  },
+  "titulo": "3 × 3: simetría de Bowker",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "antes": ["Baja", "Media", "Alta", "Baja", "Media", "Alta", "Baja", "Media", "Alta"],
+      "despues": ["Baja", "Baja", "Baja", "Media", "Media", "Media", "Alta", "Alta", "Alta"],
+      "n": [20, 5, 3, 9, 15, 4, 2, 8, 14]
+    },
+    "tipos": {
+      "antes": {
+        "tipo": "factor",
+        "niveles": ["Baja", "Media", "Alta"]
+      },
+      "despues": {
+        "tipo": "factor",
+        "niveles": ["Baja", "Media", "Alta"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "antes": "antes",
+      "despues": "despues",
+      "frecuencia": "n"
+    },
+    {
+      "correccion": true
+    }
+  ],
+  "esperado": {
+    "X2": 2.676190476190476,
+    "gl": 3,
+    "p": 0.44428864922803335,
+    "p_exacta": "NA"
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "mcnemar.test(tabla, correct = TRUE); binom.test(b, b + c)"
+  }
+}

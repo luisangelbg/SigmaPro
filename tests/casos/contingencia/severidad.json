@@ -1,0 +1,70 @@
+{
+  "esquema": 1,
+  "id": "cont.kappaDe/severidad",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.kappaDe"
+  },
+  "titulo": "4 grados de severidad",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "evaluador1": ["0", "1", "2", "3", "0", "1", "2", "3", "0", "1", "2", "3", "0", "1", "2", "3"],
+      "evaluador2": ["0", "0", "0", "0", "1", "1", "1", "1", "2", "2", "2", "2", "3", "3", "3", "3"],
+      "n": [30, 6, 1, 0, 5, 22, 5, 1, 1, 4, 18, 4, 0, 1, 3, 11]
+    },
+    "tipos": {
+      "evaluador1": {
+        "tipo": "factor",
+        "niveles": ["0", "1", "2", "3"]
+      },
+      "evaluador2": {
+        "tipo": "factor",
+        "niveles": ["0", "1", "2", "3"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "evaluador1": "evaluador1",
+      "evaluador2": "evaluador2",
+      "frecuencia": "n"
+    },
+    {
+      "ponderacion": "cuadratica",
+      "nivel": 0.94999999999999996
+    }
+  ],
+  "esperado": {
+    "simple": {
+      "estimado": 0.62071225693685828,
+      "ee": 0.057764562137806209,
+      "ic": [0.50749579556403213, 0.73392871830968442],
+      "z": 11.009229229338711,
+      "p": 3.4494204108788364e-28
+    },
+    "ponderada": {
+      "estimado": 0.82288908502500713,
+      "ee": 0.038340736724470192,
+      "ic": [0.7477426219043134, 0.89803554814570086],
+      "z": 8.7117754368878551,
+      "p": 2.9915186726707688e-18
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "psych": "2.4.12"
+    },
+    "codigo": "psych::cohen.kappa(tabla, w.exp = 2); z con la varianza nula de Fleiss, Cohen y Everitt (1969)"
+  }
+}

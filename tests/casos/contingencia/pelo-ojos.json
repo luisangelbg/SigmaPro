@@ -1,0 +1,79 @@
+{
+  "esquema": 1,
+  "id": "cont.independenciaDe/pelo-ojos",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+  },
+  "titulo": "4 × 4 con 592 casos (sin Fisher)",
+  "fuente": "Snee (1974), Graphical display of two-way contingency tables, Am. Stat. 28: 9-12; conjunto HairEyeColor de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "pelo": ["Black", "Brown", "Red", "Blond", "Black", "Brown", "Red", "Blond", "Black", "Brown", "Red", "Blond", "Black", "Brown", "Red", "Blond"],
+      "ojos": ["Brown", "Brown", "Brown", "Brown", "Blue", "Blue", "Blue", "Blue", "Hazel", "Hazel", "Hazel", "Hazel", "Green", "Green", "Green", "Green"],
+      "n": [68, 119, 26, 7, 20, 84, 17, 94, 15, 54, 14, 10, 5, 29, 14, 16]
+    },
+    "tipos": {
+      "pelo": {
+        "tipo": "factor",
+        "niveles": ["Black", "Brown", "Red", "Blond"]
+      },
+      "ojos": {
+        "tipo": "factor",
+        "niveles": ["Brown", "Blue", "Hazel", "Green"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "fila": "pelo",
+      "columna": "ojos",
+      "frecuencia": "n"
+    },
+    {
+      "correccion": true,
+      "alternativa": "bilateral",
+      "nivel": 0.94999999999999996
+    }
+  ],
+  "esperado": {
+    "X2": 138.28984162600827,
+    "gl": 9,
+    "p": 2.325286787098808e-25,
+    "G2": 146.44357846451612,
+    "p_G2": 4.8055836698169551e-27,
+    "esperados": [
+      [40.135135135135137, 39.222972972972975, 16.966216216216218, 11.675675675675675],
+      [106.28378378378379, 103.86824324324324, 44.929054054054056, 30.918918918918919],
+      [26.385135135135137, 25.785472972972972, 11.153716216216216, 7.6756756756756754],
+      [47.195945945945944, 46.123310810810814, 19.951013513513512, 13.72972972972973]
+    ],
+    "residuos": [
+      [4.3983985205878682, -3.0693774702370815, -0.47735203124730685, -1.9536835412572271],
+      [1.2334580965579369, -1.9494768179775712, 1.3532839824008476, -0.34509961474006917],
+      [-0.074977935640816951, -1.7301254559085022, 0.85225273420246495, 2.2827367222878134],
+      [-5.8509974118354018, 7.0495902202832186, -2.2278442954420226, 0.61269814841266845]
+    ],
+    "ajustados": [
+      [6.1365196945769176, -4.2538155234876838, -0.57502606105415432, -2.287896018114099],
+      [2.1642823793583519, -3.3978827881414597, 2.0502162063604534, -0.50826301303247712],
+      [-0.10082421607950331, -2.3110522586275706, 0.98951179522521293, 2.5765685959049232],
+      [-8.3282483288508171, 9.9675501211544812, -2.7379769779580219, 0.73202318572785763]
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = TRUE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"two.sided\", conf.level = 0.95)"
+  }
+}

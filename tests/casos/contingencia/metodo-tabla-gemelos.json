@@ -1,0 +1,75 @@
+{
+  "esquema": 1,
+  "id": "tabla-contingencia/metodo-tabla-gemelos",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tabla-contingencia"
+  },
+  "titulo": "Tabla 2 × 2 con Fisher y medidas",
+  "fuente": "Fisher (1962), Confidence limits for a cross-product ratio, Aust. J. Stat. 4: 41 (gemelos y condenas; ejemplo de fisher.test)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "gemelos": ["Dicigoticos", "Monocigoticos", "Dicigoticos", "Monocigoticos"],
+      "condena": ["Si", "Si", "No", "No"],
+      "n": [2, 10, 15, 3]
+    },
+    "tipos": {
+      "gemelos": {
+        "tipo": "factor",
+        "niveles": ["Dicigoticos", "Monocigoticos"]
+      },
+      "condena": {
+        "tipo": "factor",
+        "niveles": ["Si", "No"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "fila": "gemelos",
+    "columna": "condena",
+    "frecuencia": "n"
+  },
+  "opciones": {
+    "correccion": true,
+    "nivel": 0.94999999999999996
+  },
+  "esperado": {
+    "chi": {
+      "X2": 10.45814479638009,
+      "gl": 1,
+      "p": 0.0012210985163115088,
+      "G2": 14.020233375839739
+    },
+    "fisher": {
+      "p": 0.00053672411914343636,
+      "razon_momios": 0.046936608827698907,
+      "ic": [0.0033257640338593087, 0.36318227147489657]
+    },
+    "medidas": {
+      "phi": -0.6590820436573076,
+      "v_cramer": 0.65908204365730771,
+      "razon_momios": {
+        "estimado": 0.040000000000000001,
+        "ic": [0.0056345397637287018, 0.28396285536925325],
+        "corregida": false
+      },
+      "riesgo_relativo": {
+        "estimado": 0.15294117647058822,
+        "ic": [0.04022986069948474, 0.58143386662303798],
+        "corregida": false
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "chisq.test, fisher.test y las medidas"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "esquema": 1,
+  "id": "cor.pruebaDe/hw-pearson-bilateral",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cor.pruebaDe"
+  },
+  "titulo": "pearson, alternativa bilateral, n = 9 (exacta)",
+  "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [44.399999999999999, 45.899999999999999, 41.899999999999999, 53.299999999999997, 44.700000000000003, 44.100000000000001, 50.700000000000003, 45.200000000000003, 60.100000000000001],
+      "y": [2.6000000000000001, 3.1000000000000001, 2.5, 5, 3.6000000000000001, 4, 5.2000000000000002, 2.7999999999999998, 3.7999999999999998]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      },
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "x": "x",
+      "y": "y"
+    },
+    {
+      "metodo": "pearson",
+      "alternativa": "bilateral",
+      "nivel": 0.94999999999999996,
+      "exacta": "auto",
+      "continuidad": false
+    }
+  ],
+  "esperado": {
+    "estimado": 0.57118155756382871,
+    "estadistico": 1.8410826381153382,
+    "gl": 7,
+    "p": 0.10817305434949379,
+    "ic": [-0.14974263303675717, 0.89557946183873927],
+    "n": 9,
+    "exacta": "NA"
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = \"pearson\", alternative = \"two.sided\", conf.level = 0.95)"
+  }
+}

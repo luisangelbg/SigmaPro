@@ -11,10 +11,12 @@
   const T = SP.T, esc = SP.ui.esc;
   const $ = s => document.querySelector(s);
   const L = () => window.LABG;
-  const HITO = { correlacion: '1.9', contingencia: '1.9' };
+  const HITO = {};
   const DISENOS = ['dca', 'dbca', 'cuadro-latino', 'parcelas-divididas', 'parcelas-subdivididas', 'franjas', 'bib', 'latice'];
   const COMPARAR = ['comparaciones-medias', 'contrastes', 'polinomios', 'medias-ajustadas'];
   const REGRESION = ['regresion-lineal', 'regresion-polinomial', 'seleccion-pasos', 'mejores-subconjuntos'];
+  const CORREL = ['correlacion', 'matriz-correlacion', 'correlacion-parcial'];
+  const CONTING = ['tabla-contingencia', 'mcnemar', 'mantel-haenszel', 'kappa'];
   const estado = SP.app.analisis = {
     metodo: 'supuestos', pendiente: true, turno: 0,
     sup: { respuesta: '', tratamientos: [], bloque: '', orden: '', alfa: 0.05, _iniciado: false },
@@ -25,6 +27,8 @@
       franjaA: '', franjaB: '', tipoSC: 3, alfa: 0.05, _iniciado: false },
     reg: { respuesta: '', predictores: [], x: '', grado: 2, nivel: 0.95, alfa: 0.05, predecir: '', criterio: 'aic', direccion: 'ambas', entrada: 0.05, salida: 0.1, mejores: 1, _iniciado: false },
     anc: { respuesta: '', tratamientos: [], bloque: '', covariables: [], tipoSC: 3, metodo: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
+    cor: { x: '', y: '', variables: [], controles: [], metodo: 'pearson', alternativa: 'bilateral', nivel: 0.95, alfa: 0.05, exacta: 'auto', continuidad: false, ajuste: 'holm', faltantes: 'completas', _iniciado: false },
+    cont: { fila: '', columna: '', frecuencia: '', antes: '', despues: '', estrato: '', evaluador1: '', evaluador2: '', correccion: true, ponderacion: 'cuadratica', nivel: 0.95, alfa: 0.05, _iniciado: false },
   };
 
   /* ---------------- catálogo ---------------- */
@@ -294,6 +298,83 @@
     else h += campo('cmp', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
     return h;
   }
+  function sanearCor(c) {
+    const s = estado.cor, num = c.numericas, medida = num.filter(n => !c.numFactor.includes(n)), base = medida.length >= 2 ? medida : num;
+    if (!s._iniciado) {
+      s._iniciado = true;
+      s.y = ultimaRespuesta(c); s.x = base.find(n => n !== s.y) || '';
+      s.variables = base.slice(0, 8); s.controles = base.filter(n => n !== s.x && n !== s.y).slice(0, 1);
+    }
+    if (!num.includes(s.x)) s.x = base[0] || '';
+    if (!num.includes(s.y) || s.y === s.x) s.y = base.find(n => n !== s.x) || '';
+    s.variables = s.variables.filter(n => num.includes(n));
+    s.controles = s.controles.filter(n => num.includes(n) && n !== s.x && n !== s.y);
+    return { num };
+  }
+  const FREC_RE = /^(n|frec.*|frecuencia.*|conteos?|cuentas?|casos|semillas|veces|freq?)$/i;
+  function sanearCont(c) {
+    const s = estado.cont, agr = c.agrupables.filter(n => nivelesDe(c, n).length >= 2 && nivelesDe(c, n).length <= 50);
+    const enteros = c.numericas.filter(n => { const v = c.t.col(n).valores; for (let i = 0; i < v.length; i++) if (v[i] === v[i] && (v[i] < 0 || v[i] !== Math.round(v[i]))) return false; return true; });
+    if (!s._iniciado) {
+      s._iniciado = true;
+      s.frecuencia = enteros.find(n => FREC_RE.test(n)) || '';
+      const facs = c.pap.factores.filter(n => agr.includes(n)).concat(agr.filter(n => !c.pap.factores.includes(n))).filter(n => n !== s.frecuencia);
+      [s.fila, s.columna, s.estrato] = [facs[0] || '', facs[1] || '', facs[2] || ''];
+      /* pareados: dos columnas con las mismas categorías */
+      const par = (() => { for (let i = 0; i < agr.length; i++) for (let j = i + 1; j < agr.length; j++) { const a = nivelesDe(c, agr[i]), b = nivelesDe(c, agr[j]); if (a.length === b.length && a.every(l => b.includes(l))) return [agr[i], agr[j]]; } return [facs[0] || '', facs[1] || '']; })();
+      [s.antes, s.despues] = par; [s.evaluador1, s.evaluador2] = par;
+    }
+    for (const k of ['fila', 'columna', 'estrato', 'antes', 'despues', 'evaluador1', 'evaluador2']) if (s[k] && !agr.includes(s[k])) s[k] = '';
+    if (s.frecuencia && !enteros.includes(s.frecuencia)) s.frecuencia = '';
+    return { agr, enteros };
+  }
+  function formCorrelacion(c, m) {
+    const s = estado.cor, { num } = sanearCor(c), marca = n => (c.numFactor.includes(n) ? T('{c} (numérica)', { c: n }) : n);
+    const metodos = [['pearson', T('Pearson (relación lineal)')], ['spearman', T('Spearman (rangos)')], ['kendall', T('Kendall (rangos)')]];
+    let h = '';
+    if (m === 'matriz-correlacion') {
+      h += casillas('cor', 'variables', T('Variables (de 2 a 30)'), num, s.variables, marca, T('No hay columnas numéricas.'));
+      h += campo('cor', 'metodo', T('Coeficiente'), metodos, s.metodo);
+      h += campo('cor', 'ajuste', T('Ajuste de los valores p'), [['holm', 'Holm'], ['bonferroni', 'Bonferroni'], ['BH', T('Benjamini-Hochberg (FDR)')], ['ninguno', T('Sin ajuste')]], s.ajuste);
+      h += campo('cor', 'faltantes', T('Filas con faltantes'), [['completas', T('Solo las completas en todas las variables')], ['pares', T('Cada par con sus filas completas')]], s.faltantes);
+      return h + campo('cor', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+    }
+    h += campo('cor', 'x', T('Variable x'), num.map(n => [n, marca(n)]), s.x) + campo('cor', 'y', T('Variable y'), num.filter(n => n !== s.x).map(n => [n, marca(n)]), s.y);
+    if (m === 'correlacion-parcial') {
+      h += casillas('cor', 'controles', T('Variables de control (de 1 a 10)'), num.filter(n => n !== s.x && n !== s.y), s.controles, marca, T('No hay otras columnas numéricas.'));
+      if (s.metodo === 'kendall') s.metodo = 'pearson';
+      h += campo('cor', 'metodo', T('Coeficiente'), metodos.slice(0, 2), s.metodo);
+      return h + campo('cor', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+    }
+    h += campo('cor', 'metodo', T('Coeficiente'), metodos, s.metodo) + campo('cor', 'alternativa', T('Hipótesis alternativa'), [['bilateral', T('Correlación distinta de cero')], ['mayor', T('Correlación positiva')], ['menor', T('Correlación negativa')]], s.alternativa);
+    if (s.metodo === 'pearson') h += campo('cor', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel);
+    else {
+      h += campo('cor', 'exacta', T('Valor p'), [['auto', T('Exacto si se puede')], ['no', T('Aproximado')]], s.exacta, T('Exacto sin empates: Spearman hasta 1290 datos y Kendall con menos de 50, como R.'));
+      h += '<label class="imp-check"><input type="checkbox" data-grupo="cor" data-campo="continuidad"' + (s.continuidad ? ' checked' : '') + '> ' + esc(T('Corrección por continuidad (en el p aproximado)')) + '</label>';
+    }
+    return h + campo('cor', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+  }
+  function formContingencia(c, m) {
+    const s = estado.cont, { agr, enteros } = sanearCont(c), marca = n => (c.numFactor.includes(n) ? T('{c} (numérica)', { c: n }) : n);
+    const opc = (excluir, vacio) => (vacio ? [['', vacio]] : []).concat(agr.filter(n => !excluir.includes(n)).map(n => [n, marca(n)]));
+    const sel = (k, etq, excluir, ayuda) => campo('cont', k, etq, opc(excluir.concat([s.frecuencia]), s[k] ? '' : T('— elige —')), s[k], ayuda);
+    let h = '';
+    if (m === 'tabla-contingencia' || m === 'mantel-haenszel') {
+      const est = m === 'mantel-haenszel' ? [s.estrato] : [];      // el estrato solo cuenta en Mantel-Haenszel
+      h += sel('fila', T('Variable de las filas'), [s.columna, ...est]) + sel('columna', T('Variable de las columnas'), [s.fila, ...est]);
+      if (m === 'mantel-haenszel') h += sel('estrato', T('Estratos (lotes, sitios, años)'), [s.fila, s.columna]);
+    } else if (m === 'mcnemar') {
+      h += sel('antes', T('Primera clasificación (antes)'), [s.despues]) + sel('despues', T('Segunda clasificación (después)'), [s.antes], T('Cada fila es el mismo caso clasificado dos veces, con las mismas categorías.'));
+    } else {
+      h += sel('evaluador1', T('Evaluador 1'), [s.evaluador2]) + sel('evaluador2', T('Evaluador 2'), [s.evaluador1], T('Las dos columnas con las mismas categorías; para la ponderada, en orden.'));
+    }
+    const usadas = { 'tabla-contingencia': [s.fila, s.columna], 'mantel-haenszel': [s.fila, s.columna, s.estrato], mcnemar: [s.antes, s.despues], kappa: [s.evaluador1, s.evaluador2] }[m];
+    h += campo('cont', 'frecuencia', T('Frecuencias'), [['', T('— cada fila es un caso —')]].concat(enteros.filter(n => !usadas.includes(n)).map(n => [n, n])), s.frecuencia, T('Si la tabla ya trae los conteos, elige su columna.'));
+    if (m === 'kappa') h += campo('cont', 'ponderacion', T('Pesos de la kappa ponderada'), [['cuadratica', T('Cuadráticos')], ['lineal', T('Lineales')]], s.ponderacion);
+    else h += '<label class="imp-check"><input type="checkbox" data-grupo="cont" data-campo="correccion"' + (s.correccion ? ' checked' : '') + '> ' + esc(m === 'tabla-contingencia' ? T('Corrección de Yates (tablas 2 × 2)') : T('Corrección por continuidad')) + '</label>';
+    if (m !== 'mcnemar') h += campo('cont', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel);
+    return h + campo('cont', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+  }
   const casillas = (grupo, nombreLista, leyenda, nombres, elegidos, marca, vacio) => '<fieldset class="exp-casillas"><legend>' + esc(leyenda) + '</legend>' +
     (nombres.map(n => '<label class="imp-check"><input type="checkbox" data-lista="' + nombreLista + '" data-grupo="' + grupo + '" value="' + esc(n) + '"' + (elegidos.includes(n) ? ' checked' : '') + '> ' + esc(marca(n)) + '</label>').join('') ||
       '<p class="small muted">' + esc(vacio) + '</p>') + '</fieldset>';
@@ -336,6 +417,8 @@
     return h + campo('anc', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('anc', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
   function formulario(c) {
+    if (CORREL.includes(estado.metodo)) return formCorrelacion(c, estado.metodo);
+    if (CONTING.includes(estado.metodo)) return formContingencia(c, estado.metodo);
     if (REGRESION.includes(estado.metodo)) return formRegresion(c, estado.metodo);
     if (estado.metodo === 'ancova') return formAncova(c);
     if (DISENOS.includes(estado.metodo)) return formDiseno(c, estado.metodo);
@@ -349,6 +432,19 @@
   /** Entradas y opciones del método elegido, desde el estado del formulario. */
   function pedido() {
     const m = estado.metodo;
+    if (CORREL.includes(m)) {
+      const s = estado.cor;
+      if (m === 'matriz-correlacion') return { e: { variables: s.variables.slice() }, op: { metodo: s.metodo, ajuste: s.ajuste, faltantes: s.faltantes, alfa: +s.alfa } };
+      if (m === 'correlacion-parcial') return { e: { x: s.x, y: s.y, controles: s.controles.slice() }, op: { metodo: s.metodo, alfa: +s.alfa } };
+      return { e: { x: s.x, y: s.y }, op: { metodo: s.metodo, alternativa: s.alternativa, nivel: +s.nivel, alfa: +s.alfa, exacta: s.exacta, continuidad: !!s.continuidad } };
+    }
+    if (CONTING.includes(m)) {
+      const s = estado.cont, fr = s.frecuencia ? { frecuencia: s.frecuencia } : {};
+      if (m === 'tabla-contingencia') return { e: Object.assign({ fila: s.fila, columna: s.columna }, fr), op: { correccion: !!s.correccion, nivel: +s.nivel, alfa: +s.alfa } };
+      if (m === 'mcnemar') return { e: Object.assign({ antes: s.antes, despues: s.despues }, fr), op: { correccion: !!s.correccion, alfa: +s.alfa } };
+      if (m === 'mantel-haenszel') return { e: Object.assign({ fila: s.fila, columna: s.columna, estrato: s.estrato }, fr), op: { correccion: !!s.correccion, nivel: +s.nivel, alfa: +s.alfa } };
+      return { e: Object.assign({ evaluador1: s.evaluador1, evaluador2: s.evaluador2 }, fr), op: { ponderacion: s.ponderacion, nivel: +s.nivel, alfa: +s.alfa } };
+    }
     if (REGRESION.includes(m)) {
       const s = estado.reg;
       if (m === 'regresion-polinomial') return { e: { respuesta: s.respuesta, predictores: s.x }, op: { grado: +s.grado, nivel: +s.nivel, alfa: +s.alfa, predecir: s.predecir } };
@@ -528,8 +624,65 @@
     });
   }
 
+  function graficasCorrelacion(r) {
+    const f3 = x => (Number.isFinite(x) ? x.toFixed(2).replace(/^-/, '−') : '');
+    if (r.tipo === 'correlacion') {
+      const xs = r.puntos.x, x0 = Math.min(...xs), x1 = Math.max(...xs), b = r.recta;
+      return SP.graficas.dispersion({
+        titulo: T('«{y}» contra «{x}»', { x: r.x, y: r.y }), x: { titulo: r.x }, y: { titulo: r.y },
+        descripcion: T('Dispersión de {n} pares con la recta de mínimos cuadrados; coeficiente = {v}.', { n: r.n, v: f3(r.estimado) }),
+        puntos: SP.graficas.adelgazar(xs.map((x, i) => ({ x, y: r.puntos.y[i] })), 2500), linea: { x: [x0, x1], y: [b.intercepto + b.pendiente * x0, b.intercepto + b.pendiente * x1] },
+      });
+    }
+    if (r.tipo === 'matriz') {
+      const est = p => (p < 0.001 ? '***' : p < 0.01 ? '**' : p < 0.05 ? '*' : '');
+      const pa = (i, j) => { const x = r.pares.find(z => (z.i === i && z.j === j) || (z.i === j && z.j === i)); return x ? x.p_ajustado : NaN; };
+      return SP.graficas.mapaCalor({
+        titulo: T('Matriz de correlaciones'), filas: r.variables, columnas: r.variables, valores: r.r, escala: 'divergente', leyenda: r.metodo === 'pearson' ? 'r' : r.metodo === 'spearman' ? 'ρ' : 'τ',
+        textos: r.r.map((f, i) => f.map((v, j) => (i === j ? '1' : f3(v) + est(pa(i, j))))),
+        descripcion: T('Mapa de calor de las correlaciones entre {k} variables: oro, positivas; gris, negativas; más intenso, más fuerte. Asteriscos: p ajustado < 0.05, 0.01 y 0.001.', { k: r.variables.length }),
+      });
+    }
+    const ex = r.residuos.x, ey = r.residuos.y, x0 = Math.min(...ex), x1 = Math.max(...ex);
+    let sxy = 0, sxx = 0; for (let i = 0; i < ex.length; i++) { sxy += ex[i] * ey[i]; sxx += ex[i] * ex[i]; }
+    return SP.graficas.dispersion({
+      titulo: T('«{y}» contra «{x}» sin los controles', { x: r.x, y: r.y }), x: { titulo: T('«{x}» (residuo)', { x: r.x }) }, y: { titulo: T('«{y}» (residuo)', { y: r.y }) },
+      descripcion: T('Gráfica de variable agregada: los residuos de cada variable sobre los controles; su correlación es la parcial ({v}).', { v: f3(r.parcial.r) }),
+      puntos: SP.graficas.adelgazar(ex.map((x, i) => ({ x, y: ey[i] })), 2500), linea: { x: [x0, x1], y: [sxy / sxx * x0, sxy / sxx * x1] }, referencias: [{ y: 0, discontinua: true }],
+    });
+  }
+  function graficasContingencia(r) {
+    if (r.tipo === 'contingencia') {
+      const [nf, nc] = r.niveles;
+      return SP.graficas.mosaico({
+        titulo: T('Mosaico de «{f}» × «{c}»', { f: r.fila, c: r.columna }), filas: nf, columnas: nc, conteos: r.observados, residuos: r.chi.ajustados,
+        x: { titulo: r.fila }, y: { titulo: r.columna },
+        descripcion: T('Mosaico: el ancho de cada barra es el total de «{f}» y las alturas, la proporción de cada «{c}»; oro intenso, muchos más casos de los esperados; gris intenso, muchos menos.', { f: r.fila, c: r.columna }),
+      });
+    }
+    if (r.tipo === 'mcnemar' || r.tipo === 'kappa') {
+      const a = r.tipo === 'kappa' ? r.evaluador1 : r.antes, b = r.tipo === 'kappa' ? r.evaluador2 : r.despues;
+      return SP.graficas.mapaCalor({
+        titulo: T('«{a}» contra «{b}»', { a, b }), filas: r.niveles, columnas: r.niveles, valores: r.observados, escala: 'secuencial', leyenda: T('casos'),
+        textos: r.observados.map(f => f.map(v => String(v))),
+        descripcion: T('Frecuencias de cada combinación; la diagonal son los casos que no cambiaron (o en que coinciden).'),
+      });
+    }
+    if (r.tipo === 'cmh' && r.estratos) {
+      const nombres = r.niveles[2].concat([T('Común')]), ors = r.estratos.concat([{ razon_momios: r.razon_momios, ic: r.ic }]);
+      return SP.graficas.medias({
+        titulo: T('Razón de momios por estrato'), y: { titulo: T('Razón de momios (escala log)') }, log: true, referencias: [{ y: 1, discontinua: true }],
+        descripcion: T('Razón de momios de cada nivel de «{s}» con su IC y la común de Mantel-Haenszel; la línea punteada es 1 (sin asociación).', { s: r.estrato }),
+        grupos: nombres.map((nm, k) => ({ nombre: nm, media: ors[k].razon_momios, inf: ors[k].ic[0], sup: ors[k].ic[1], marca: k === nombres.length - 1 })),
+      });
+    }
+    return '';
+  }
+
   /** Gráfica de cajas del método: los grupos comparados, con letras cuando las hay. */
   function graficaMetodo(r) {
+    if (['correlacion', 'matriz', 'parcial'].includes(r.tipo)) return graficasCorrelacion(r);
+    if (['contingencia', 'mcnemar', 'kappa', 'cmh'].includes(r.tipo)) return graficasContingencia(r);
     if (r.tipo === 'regresion') return graficasRegresion(r);
     if (r.tipo === 'ancova') return graficasAncova(r);
     if (r.tipo === 'seleccion' || r.tipo === 'subconjuntos') return graficasSeleccion(r);
@@ -621,7 +774,7 @@
     return '';
   }
   /* una gráfica ocupa una columna de lectura; varias (comparaciones dentro de cada nivel) van en rejilla */
-  const graficasHTML = g => `<div class="ana-graficas${(g.match(/<figure/g) || []).length > 1 ? '' : ' ana-una'}">${g}</div>`;
+  const graficasHTML = g => (g ? `<div class="ana-graficas${(g.match(/<figure/g) || []).length > 1 ? '' : ' ana-una'}">${g}</div>` : '');
 
   function calcular() {
     estado.pendiente = false;
@@ -631,7 +784,7 @@
     if (!c) return;
     catalogo();
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -692,9 +845,9 @@
         estado.cmp.comparar = marcados;
       } else if (el.dataset.campo === 'comparar1') {
         estado.cmp.comparar = el.value ? [el.value] : [];
-      } else if (el.dataset.lista === 'predictores' || el.dataset.lista === 'covariables') {
-        const marcados = [...form.querySelectorAll('[data-lista="' + el.dataset.lista + '"]:checked')].map(x => x.value), max = el.dataset.lista === 'covariables' ? 2 : 15;
-        if (marcados.length > max) { el.checked = false; L() && L().toast(max === 2 ? T('Hasta dos covariables.') : T('Hasta 15 predictores.'), { type: 'warning' }); return; }
+      } else if (['predictores', 'covariables', 'variables', 'controles'].includes(el.dataset.lista)) {
+        const marcados = [...form.querySelectorAll('[data-lista="' + el.dataset.lista + '"]:checked')].map(x => x.value), max = { covariables: 2, predictores: 15, variables: 30, controles: 10 }[el.dataset.lista];
+        if (marcados.length > max) { el.checked = false; L() && L().toast(T('Hasta {k} variables.', { k: max }), { type: 'warning' }); return; }
         estado[el.dataset.grupo][el.dataset.lista] = marcados;
       } else if (el.dataset.lista === 'tratamientos') {
         const grupo = el.dataset.grupo || 'sup', dsel = DISENOS.includes(estado.metodo) ? estado.metodo : estado.cmp.diseno, max = grupo === 'dis' ? (MAX_TRAT[dsel] || 3) : grupo === 'anc' ? 2 : 3;

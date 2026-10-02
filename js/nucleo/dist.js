@@ -784,8 +784,89 @@ SP.definir('dist', function (SP) {
     return invertirPositivo((x, inf) => ptukey(x, k, gl, inf, r), p, inferior, 3);
   }
 
+  /* ---------------- distribuciones exactas de Kendall y de Spearman ----------------
+     Kendall (sin empates): c(k; n) = número de permutaciones de n con k inversiones, por la recurrencia
+     c(k; n) = Σ_{i=0}^{n−1} c(k − i; n − 1), y P(T ≤ q) = Σ_{k ≤ q} c(k; n) / n!, como ckendall de kendall.c de R.
+     Spearman: algoritmo AS 89 (Best y Roberts, 1975) como prho.c de R: exacto por enumeración con n ≤ 9 y serie de
+     Edgeworth para n mayor. Las colas se calculan igual que en R (incluso 1 − P donde R resta). */
+  const conteoK = new Map();
+  function conteosKendall(n) {
+    let c = conteoK.get(n);
+    if (c) return c;
+    let ant = new Float64Array([1]);
+    for (let m = 2; m <= n; m++) {
+      const u = m * (m - 1) / 2, act = new Float64Array(u + 1);
+      for (let k = 0; k <= u; k++) { let s = 0; for (let i = 0; i < m; i++) if (k - i >= 0 && k - i < ant.length) s += ant[k - i]; act[k] = s; }
+      ant = act;
+    }
+    if (conteoK.size > 50) conteoK.clear();
+    conteoK.set(n, ant);
+    return ant;
+  }
+  /** P(T ≤ q) del número de pares concordantes T con n datos sin empates (pkendall de R). */
+  function pkendall(q, n) {
+    q = floor(q + 1e-7);
+    if (q < 0) return 0;
+    if (q > n * (n - 1) / 2) return 1;
+    const c = conteosKendall(n);
+    let p = 0, f = 1;
+    for (let j = 0; j <= q; j++) p += c[j];
+    for (let i = 2; i <= n; i++) f *= i;
+    return p / f;
+  }
+  const conteoRho = new Map();
+  /* conteos exactos de S = Σ (rᵢ − i)² sobre las n! permutaciones (n ≤ 9), por el algoritmo de Heap */
+  function conteosRho(n) {
+    let c = conteoRho.get(n);
+    if (c) return c;
+    const tope = n * (n * n - 1) / 3;
+    c = new Float64Array(tope + 1);
+    const a = Array.from({ length: n }, (_, i) => i + 1), k = new Array(n).fill(0);
+    const S = () => { let s = 0; for (let i = 0; i < n; i++) { const d = i + 1 - a[i]; s += d * d; } return s; };
+    c[S()]++;
+    for (let i = 1; i < n;) {
+      if (k[i] < i) {
+        const j = i % 2 ? k[i] : 0, t = a[j]; a[j] = a[i]; a[i] = t;
+        c[S()]++;
+        k[i]++; i = 1;
+      } else { k[i] = 0; i++; }
+    }
+    conteoRho.set(n, c);
+    return c;
+  }
+  /** prho(n, is, inferior) de R: P[S ≥ is] (superior) o P[S < is] (inferior). */
+  function prho(n, is, inferior) {
+    let pv = inferior ? 0 : 1;
+    if (n <= 1 || is <= 0) return pv;
+    const n3 = n * (n * n - 1) / 3;
+    if (is > n3) return 1 - pv;
+    if (n <= 9) {
+      const nfac = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880][n];
+      let ifr;
+      if (is === n3) ifr = 1;
+      else { const c = conteosRho(n); ifr = 0; for (let s = Math.ceil(is); s < c.length; s++) ifr += c[s]; }
+      return (inferior ? nfac - ifr : ifr) / nfac;
+    }
+    const c1 = 0.2274, c2 = 0.2531, c3 = 0.1745, c4 = 0.0758, c5 = 0.1033, c6 = 0.3932, c7 = 0.0879, c8 = 0.0151, c9 = 0.0072, c10 = 0.0831, c11 = 0.0131, c12 = 4.6e-4;
+    let y = n;
+    const b = 1 / y, x = (6 * (is - 1) * b / (y * y - 1) - 1) * sqrt(y - 1);
+    y = x * x;
+    const u = x * b * (c1 + b * (c2 + c3 * b) + y * (-c4 + b * (c5 + c6 * b) - y * b * (c7 + c8 * b - y * (c9 - c10 * b + y * b * (c11 - c12 * y)))));
+    y = u / exp(y / 2);
+    pv = (inferior ? -y : y) + pnorm(x, 0, 1, inferior);
+    return pv < 0 ? 0 : pv > 1 ? 1 : pv;
+  }
+  /* ---------------- hipergeométrica ---------------- */
+  const lchoose = (n, k) => lgamma(n + 1) - lgamma(k + 1) - lgamma(n - k + 1);
+  /** log P(X = x) con x blancas al sacar k de una urna con m blancas y n negras (dhyper de R con log = TRUE). */
+  function ldhyper(x, m, n, k) {
+    if (x < max(0, k - n) || x > min(k, m)) return -Infinity;
+    return lchoose(m, x) + lchoose(n, k - x) - lchoose(m + n, k);
+  }
+
   SP.dist = {
     lgamma, lbeta,
+    pkendall, prho, ldhyper, lchoose,
     pnorm, qnorm, dnorm,
     pt, qt, dt,
     pf, qf, df,

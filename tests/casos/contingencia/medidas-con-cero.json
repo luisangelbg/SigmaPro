@@ -1,0 +1,113 @@
+{
+  "esquema": 1,
+  "id": "cont.medidasDe/medidas-con-cero",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.medidasDe"
+  },
+  "titulo": "2 × 2 con una celda en cero (+0.5)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "fila": ["A", "B", "A", "B"],
+      "columna": ["A", "A", "B", "B"],
+      "n": [12, 0, 5, 9]
+    },
+    "tipos": {
+      "fila": {
+        "tipo": "factor",
+        "niveles": ["A", "B"]
+      },
+      "columna": {
+        "tipo": "factor",
+        "niveles": ["A", "B"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "fila": "fila",
+      "columna": "columna",
+      "frecuencia": "n"
+    },
+    {
+      "nivel": 0.94999999999999996
+    }
+  ],
+  "esperado": {
+    "phi": 0.67363306970860781,
+    "v_cramer": 0.67363306970860781,
+    "contingencia": 0.5586937697197808,
+    "lambda_c_r": 0.58333333333333337,
+    "lambda_r_c": 0.44444444444444442,
+    "lambda_simetrica": 0.52380952380952384,
+    "incertidumbre_c_r": 0.42609883291259865,
+    "incertidumbre_r_c": 0.45592588579433174,
+    "incertidumbre_simetrica": 0.44050803500475877,
+    "gamma": {
+      "estimado": 1,
+      "ee": 0,
+      "ee0": 0.2014901749423296,
+      "z": 4.9630211512110671,
+      "p": 6.9405020444935135e-07,
+      "ic": [1, 1]
+    },
+    "tau_b": {
+      "estimado": 0.67363306970860781,
+      "ee": 0.10976765107237904,
+      "ee0": 0.13573044506252591,
+      "z": 4.9630211512110671,
+      "p": 6.9405020444935135e-07,
+      "ic": [0.45849242693918546, 0.88877371247803016]
+    },
+    "tau_c": {
+      "estimado": 0.63905325443786987,
+      "ee": 0.12876295203415147,
+      "ee0": 0.12876295203415147,
+      "z": 4.9630211512110671,
+      "p": 6.9405020444935135e-07,
+      "ic": [0.38668250590787456, 0.89142400296786517]
+    },
+    "somers_c_r": {
+      "estimado": 0.70588235294117652,
+      "ee": 0.11051016901502637,
+      "ee0": 0.14222835878282092,
+      "z": 4.9630211512110671,
+      "p": 6.9405020444935135e-07,
+      "ic": [0.48928640174629068, 0.92247830413606235]
+    },
+    "somers_r_c": {
+      "estimado": 0.6428571428571429,
+      "ee": 0.12806020814297076,
+      "ee0": 0.1295293981772119,
+      "z": 4.9630211512110671,
+      "p": 6.9405020444935135e-07,
+      "ic": [0.39186374704421734, 0.89385053867006847]
+    },
+    "razon_momios": {
+      "estimado": 43.18181818181818,
+      "ic": [2.1168980310536321, 880.84990119222289],
+      "corregida": true
+    },
+    "riesgo_relativo": {
+      "estimado": 13.888888888888888,
+      "ic": [0.91589085202190723, 210.61596383679918],
+      "corregida": true
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "fórmulas de Agresti (2002) en R base; τ-b cotejada con cor(method = \"kendall\")"
+  }
+}

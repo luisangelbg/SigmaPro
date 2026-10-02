@@ -1,0 +1,60 @@
+{
+  "esquema": 1,
+  "id": "correlacion/metodo-correlacion-hw",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "correlacion"
+  },
+  "titulo": "Kendall exacta con la tabla de los tres coeficientes",
+  "fuente": "Hollander y Wolfe (1973), Nonparametric Statistical Methods, p. 187 (ejemplo de cor.test)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "x": [44.399999999999999, 45.899999999999999, 41.899999999999999, 53.299999999999997, 44.700000000000003, 44.100000000000001, 50.700000000000003, 45.200000000000003, 60.100000000000001],
+      "y": [2.6000000000000001, 3.1000000000000001, 2.5, 5, 3.6000000000000001, 4, 5.2000000000000002, 2.7999999999999998, 3.7999999999999998]
+    },
+    "tipos": {
+      "x": {
+        "tipo": "numerica"
+      },
+      "y": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "x": "x",
+    "y": "y"
+  },
+  "opciones": {
+    "metodo": "kendall"
+  },
+  "esperado": {
+    "estimado": 0.44444444444444453,
+    "estadistico": 26,
+    "p": 0.1194389329805996,
+    "n": 9,
+    "comparar": [
+      {
+        "estimado": 0.57118155756382871,
+        "p": 0.10817305434949379
+      },
+      {
+        "estimado": 0.59999999999999998,
+        "p": 0.096797839506172836
+      },
+      {
+        "estimado": 0.44444444444444453,
+        "p": 0.1194389329805996
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "cor.test(x, y, method = …) con los tres coeficientes"
+  }
+}

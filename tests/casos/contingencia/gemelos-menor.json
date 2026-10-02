@@ -1,0 +1,78 @@
+{
+  "esquema": 1,
+  "id": "cont.independenciaDe/gemelos-menor",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+  },
+  "titulo": "2 × 2 con Fisher de una cola (menor) e IC al 99 %",
+  "fuente": "Fisher (1962), Confidence limits for a cross-product ratio, Aust. J. Stat. 4: 41 (gemelos y condenas; ejemplo de fisher.test)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "fila": ["Dicigoticos", "Monocigoticos", "Dicigoticos", "Monocigoticos"],
+      "columna": ["Si", "Si", "No", "No"],
+      "n": [2, 10, 15, 3]
+    },
+    "tipos": {
+      "fila": {
+        "tipo": "factor",
+        "niveles": ["Dicigoticos", "Monocigoticos"]
+      },
+      "columna": {
+        "tipo": "factor",
+        "niveles": ["Si", "No"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "fila": "fila",
+      "columna": "columna",
+      "frecuencia": "n"
+    },
+    {
+      "correccion": true,
+      "alternativa": "menor",
+      "nivel": 0.98999999999999999
+    }
+  ],
+  "esperado": {
+    "X2": 10.45814479638009,
+    "gl": 1,
+    "p": 0.0012210985163115088,
+    "G2": 14.020233375839739,
+    "p_G2": 0.00018085403546125179,
+    "esperados": [
+      [6.7999999999999998, 10.199999999999999],
+      [5.2000000000000002, 7.7999999999999998]
+    ],
+    "residuos": [
+      [-1.8407159732336891, 1.5029382986043591],
+      [2.1049392463368699, -1.7186756976946389]
+    ],
+    "ajustados": [
+      [-3.6099410255771209, 3.6099410255771214],
+      [3.6099410255771209, -3.6099410255771209]
+    ],
+    "fisher": {
+      "p": 0.0004651809433629053,
+      "razon_momios": 0.046936608827698907,
+      "ic": [0, 0.47979935917880068]
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = TRUE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"less\", conf.level = 0.99)"
+  }
+}

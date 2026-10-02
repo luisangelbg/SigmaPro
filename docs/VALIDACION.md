@@ -252,6 +252,44 @@ Notas sobre las referencias:
 `tests/codigo-r.mjs` corre el código R de la regresión, la polinomial, la selección (AIC y valor p), los
 subconjuntos y la ANCOVA (37 escenarios en total).
 
+## Correlación y tablas de contingencia (Hito 1.9)
+
+| Qué | Contra qué | Casos |
+|---|---|---|
+| Pearson (con IC al 90 y 95 %), Spearman y Kendall con las tres hipótesis alternativas: exactas sin empates (Spearman con n ≤ 9 por enumeración y hasta 1290 por la serie de Edgeworth de AS 89; Kendall con n < 50), aproximadas con empates, con corrección por continuidad, con faltantes y con 3000 datos | `cor.test` | 46 |
+| Matrices de correlación (Pearson, Spearman, Kendall) con Holm, Bonferroni, Benjamini-Hochberg o sin ajuste; filas completas o por pares | `cor.test` por par y `p.adjust` | 5 |
+| Correlación parcial y las dos semiparciales con su t (Pearson y Spearman; con faltantes) | residuos de `lm`; `psych::partial.r` como comprobación | 4 |
+| Ji cuadrada (con y sin Yates), G², esperados, residuos de Pearson y ajustados; Fisher exacta 2 × 2 (bilateral y de una cola, con la razón de momios condicional y su IC exacto) y r × c (2 × 3, 3 × 3, 3 × 3 con una fila vacía y la 4 × 4 de Agresti) | `chisq.test`, `fisher.test` | 11 |
+| φ, V de Cramér, coeficiente de contingencia, λ, coeficiente de incertidumbre, γ, τ-b, τ-c y d de Somers con sus EE, z e IC; razón de momios y riesgo relativo (también con una celda en cero) | fórmulas de Agresti (2002) en R base; τ-b cotejada con `cor(method = "kendall")` | 5 |
+| McNemar (con y sin corrección) con la binomial exacta, y simetría de Bowker | `mcnemar.test`, `binom.test` | 4 |
+| Cochran-Mantel-Haenszel 2 × 2 × K (con y sin corrección, estratos con ceros) e I × J × K, razón de momios común con IC, Breslow-Day con y sin Tarone y la razón de cada estrato | `mantelhaen.test` y la fórmula de Breslow y Day (1980) | 4 |
+| Kappa de Cohen simple y ponderada (lineal y cuadrática) con EE, IC y z | `psych::cohen.kappa`; la z con la varianza nula de Fleiss, Cohen y Everitt (1969) | 4 |
+| Los métodos completos (correlación con los tres coeficientes, matriz, parcial, tabla de contingencia, McNemar, Mantel-Haenszel y kappa) | todo lo anterior | 7 |
+
+Son 90 casos y 1 754 valores; la mayor diferencia escalada es 8.6e-13.
+
+Notas sobre las referencias:
+
+- **Distribuciones exactas:** Kendall con los conteos de inversiones de `ckendall` y Spearman con el algoritmo AS 89 de
+  `prho.c` (enumeración con n ≤ 9 y serie de Edgeworth hasta 1290), igual que R; las colas se calculan como R, incluso
+  donde R resta de 1.
+- **Fisher r × c:** R usa el algoritmo de red de FEXACT; SigmaPro recorre las tablas columna por columna juntando las
+  ramas que llegan a los mismos totales restantes, poda con cotas y suma de golpe las ramas enteras debajo del corte, y
+  resuelve las dos últimas columnas con la lista ordenada de terminaciones. El corte es P ≤ P(observada)·(1 + 1e-7),
+  como en 2 × 2. La 4 × 4 de Agresti (n = 104) tarda 0.4 s; si una tabla tardaría más de 4 s, se avisa y se usa la ji
+  cuadrada.
+- **Bowker con un par de categorías sin cambios:** R da NaN (0/0); SigmaPro deja fuera ese par y baja los gl, y lo
+  avisa. Los casos contra R usan tablas sin pares vacíos.
+- **Breslow-Day:** R base no lo trae; la referencia es la fórmula publicada, con el esperado de cada estrato por
+  `uniroot` (tolerancia 1e-13). Los estratos con un margen en cero no informan y no entran (ni a los gl).
+- **Medidas ordinales y nominales:** las fórmulas de Agresti (2002) y Brown y Benedetti (1977) se programaron en R
+  base de forma independiente (las mismas que usan SAS y DescTools); τ-b se coteja además con `cor(method = "kendall")`.
+- **Arnés:** un argumento `{ columna: 'x' }` es una referencia a la columna x de los datos solo si no trae otras
+  claves; así, las entradas de las tablas de contingencia (`{ fila, columna, frecuencia }`) pasan tal cual.
+
+`tests/codigo-r.mjs` corre también el código R de la correlación, la matriz, la parcial, la tabla de contingencia,
+Mantel-Haenszel y kappa (44 escenarios en total).
+
 ## Dónde está cada cosa
 
 ```

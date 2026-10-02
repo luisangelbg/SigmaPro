@@ -68,7 +68,7 @@ carpeta.
 
 ### Datos publicados en los ejemplos
 
-`datos/ejemplos.js` trae siete conjuntos ficticios generados por `datos/generar-ejemplos.R` (obra propia) y
+`datos/ejemplos.js` trae nueve conjuntos ficticios generados por `datos/generar-ejemplos.R` (obra propia) y
 tres publicados: los tiempos de supervivencia del cuadro 1 de Box, G. E. P. y Cox, D. R. (1964), *An analysis
 of transformations*, J. R. Stat. Soc. B 26: 211–252 (el script los coteja celda por celda con la copia del
 paquete boot de R); los conteos de la F2 dihíbrida del chícharo de Mendel, G. (1866), *Versuche über
@@ -90,6 +90,9 @@ fuente público. La traducción es obra derivada bajo la misma licencia (GPL), c
 | t no central | Lenth (1989), algoritmo AS 243, con la serie de Guenther (1978) | `src/nmath/pnt.c` de R 4.4.2 | GPL-2 o GPL-3 |
 | Raíz de una función por el método de Brent como `uniroot()` (`js/nucleo/numerico.js`) | Brent (1973) | `R_zeroin2` de `src/library/stats/src/zeroin.c` de R 4.4.2 | GPL-2 o GPL-3 |
 | Detección de factores anidados en la rejilla de referencia (`js/nucleo/medias.js`) | — | `.find_nests` del paquete emmeans | GPL-2 o GPL-3 |
+| Distribución de S de Spearman (`js/nucleo/dist.js`) | Best y Roberts (1975), algoritmo AS 89, *Applied Statistics* 24: 377–379 | `src/library/stats/src/prho.c` de R | GPL-2 o GPL-3 |
+| Distribución exacta de Kendall (`js/nucleo/dist.js`) | conteos de inversiones (Kendall, 1938) | `ckendall` de `src/library/stats/src/kendall.c` de R | GPL-2 o GPL-3 |
+| Razón de momios condicional y su IC en la Fisher 2 × 2 (`js/metodos/contingencia.js`) | Fisher (1935); Cornfield (1956) | `fisher.test` de R (código R) | GPL-2 o GPL-3 |
 
 El análisis con estratos de error sigue el procedimiento público de Yates (1937) tal como lo aplica `aov` con
 `Error()` en R (incluido su umbral de 1e-5 para las columnas que se anulan en un estrato); las medias marginales y la
@@ -111,6 +114,11 @@ a `step`, `add1` y `drop1` de R (GPL); Cp y BIC de los mejores subconjuntos, a l
 del paquete leaps (GPL); los índices de condición, a Belsley, Kuh y Welsch (1980), *Regression Diagnostics*; y la
 eficiencia relativa de la covarianza, a Cochran y Cox (1957), *Experimental Designs*. Todo se programó a partir de las
 fórmulas; ninguno de esos códigos viaja con la app.
+
+Correlación y contingencia: el τ-b sigue el algoritmo publicado de Knight (1966); Cochran-Mantel-Haenszel, a
+`mantelhaen.test` de R (GPL); la varianza de kappa, a Fleiss, Cohen y Everitt (1969) tal como la programa `cohen.kappa` de
+psych (GPL); las medidas de asociación, a Agresti (2002) y Brown y Benedetti (1977); Breslow-Day, a Breslow y Day (1980) y
+Tarone (1985); y la Fisher r × c, a la idea del algoritmo de red de Mehta y Patel (1983), programada de nuevo.
 
 Las fórmulas de Lilliefors (Dallal y Wilkinson, 1986) y Anderson-Darling (Stephens, 1986) siguen al paquete
 nortest; la no aditividad de Tukey, a agricolae; Grubbs, a outliers, y las rachas, a randtests (todos GPL). El
@@ -158,7 +166,8 @@ SOFTWARE.
 ### Conjuntos de datos clásicos
 
 Los casos de `tests/casos/` usan además datos publicados que R distribuye en su paquete datasets (PlantGrowth,
-airquality, trees, cars, stackloss, swiss, mtcars, longley, women, chickwts, warpbreaks) o en los paquetes boot
+airquality, trees, cars, stackloss, swiss, mtcars, longley, women, chickwts, warpbreaks, HairEyeColor, UCBAdmissions,
+occupationalStatus) o en los paquetes boot
 (poisons), MASS (oats, anorexia), agricolae (frijol) y carData (Soils); cada caso cita la publicación original en su
 campo `fuente`.
 
@@ -175,5 +184,5 @@ campo `fuente`.
 
 Se usan en el equipo del autor para calcular los resultados de referencia de `tests/casos/`: R 4.4.2 y los
 paquetes jsonlite (MIT), y según el caso stats, MASS, car, agricolae, emmeans, multcomp, mvtnorm, nortest,
-PMCMRplus, FSA, dunn.test, leaps, lmtest, multcompView y carData (licencias GPL). Las versiones exactas quedan
+PMCMRplus, FSA, dunn.test, leaps, lmtest, multcompView, carData y psych (licencias GPL). Las versiones exactas quedan
 registradas en cada caso y en `tests/r/sesion.txt`.

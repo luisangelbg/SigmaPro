@@ -1,0 +1,73 @@
+{
+  "esquema": 1,
+  "id": "cont.independenciaDe/gemelos-crudos",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.independenciaDe"
+  },
+  "titulo": "2 × 2 con una fila por caso",
+  "fuente": "Fisher (1962), Confidence limits for a cross-product ratio, Aust. J. Stat. 4: 41 (gemelos y condenas; ejemplo de fisher.test)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "fila": ["Dicigoticos", "Dicigoticos", "Monocigoticos", "Monocigoticos", "Monocigoticos", "Monocigoticos", "Monocigoticos", "Monocigoticos", "Monocigoticos", "Monocigoticos", "Monocigoticos", "Monocigoticos", "Dicigoticos", "Dicigoticos", "Dicigoticos", "Dicigoticos", "Dicigoticos", "Dicigoticos", "Dicigoticos", "Dicigoticos", "Dicigoticos", "Dicigoticos", "Dicigoticos", "Dicigoticos", "Dicigoticos", "Dicigoticos", "Dicigoticos", "Monocigoticos", "Monocigoticos", "Monocigoticos"],
+      "columna": ["Si", "Si", "Si", "Si", "Si", "Si", "Si", "Si", "Si", "Si", "Si", "Si", "No", "No", "No", "No", "No", "No", "No", "No", "No", "No", "No", "No", "No", "No", "No", "No", "No", "No"]
+    },
+    "tipos": {
+      "fila": {
+        "tipo": "factor",
+        "niveles": ["Dicigoticos", "Monocigoticos"]
+      },
+      "columna": {
+        "tipo": "factor",
+        "niveles": ["Si", "No"]
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "fila": "fila",
+      "columna": "columna"
+    },
+    {
+      "correccion": true,
+      "alternativa": "bilateral",
+      "nivel": 0.94999999999999996
+    }
+  ],
+  "esperado": {
+    "X2": 10.45814479638009,
+    "gl": 1,
+    "p": 0.0012210985163115088,
+    "G2": 14.020233375839739,
+    "p_G2": 0.00018085403546125179,
+    "esperados": [
+      [6.7999999999999998, 10.199999999999999],
+      [5.2000000000000002, 7.7999999999999998]
+    ],
+    "residuos": [
+      [-1.8407159732336891, 1.5029382986043591],
+      [2.1049392463368699, -1.7186756976946389]
+    ],
+    "ajustados": [
+      [-3.6099410255771209, 3.6099410255771214],
+      [3.6099410255771209, -3.6099410255771209]
+    ],
+    "fisher": {
+      "p": 0.00053672411914343636,
+      "razon_momios": 0.046936608827698907,
+      "ic": [0.0033257640338593087, 0.36318227147489657]
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "chisq.test(tabla, correct = TRUE); G² = 2 Σ O log(O/E); fisher.test(tabla, alternative = \"two.sided\", conf.level = 0.95)"
+  }
+}
