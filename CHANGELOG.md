@@ -2,6 +2,36 @@
 
 ## Sin publicar
 
+### Hito 1.8 · ANCOVA y regresión con diagnóstico y selección de variables (1 oct 2026)
+
+- `js/metodos/ancova.js`: análisis de covarianza en completamente al azar y en bloques, con uno o dos factores y una o
+  dos covariables: ANOVA con SC tipo I, II o III, pendientes comunes con IC, homogeneidad de pendientes, prueba de
+  que la covariable no depende de los tratamientos, medias ajustadas con IC y sus comparaciones (Tukey, DMS,
+  Bonferroni, Šidák, Holm, Scheffé) con letras, comparaciones dentro de cada nivel si hay interacción y eficiencia
+  relativa de la covarianza (Cochran y Cox, 1957). Avisa si la covariable está confundida con los tratamientos.
+- `js/metodos/regresion.js`: regresión lineal simple y múltiple (hasta 15 predictores) y polinomial de grado 2 a 4:
+  coeficientes con IC y β estandarizados, ANOVA de la regresión con falta de ajuste cuando hay repeticiones, SC
+  secuenciales y parciales, R², R² ajustada, CV, AIC y BIC, predicciones con IC de la media y de predicción, máximo o
+  mínimo de la curva; diagnóstico como `influence.measures` (palancas, residuos, Cook, DFFITS, DFBETAS, COVRATIO y
+  sus criterios), Shapiro-Wilk, Breusch-Pagan, RESET y Durbin-Watson con semáforo; VIF e índices de condición de
+  Belsley, Kuh y Welsch. Selección paso a paso por AIC (como `step`) o por valor p (adelante, atrás, mixta) y mejores
+  subconjuntos con R² ajustada, Cp y BIC (como `leaps`), con un botón que lleva el modelo elegido a la regresión.
+- Núcleo: `SP.algebra.svdJacobi` (SVD de Jacobi de un lado) y `minimosCuadradosCeldas`, que ajusta los modelos con
+  factores y covariables comprimiendo cada celda por su QR: la ANCOVA con 100 000 filas pasa de 12 s a 1–4 s.
+  `SP.comp.modeloLineal` reutiliza las comparaciones con cualquier ajuste.
+- Bloque 4: familia «ANCOVA y regresión» con cinco métodos; gráficas de dispersión con bandas de confianza y de
+  predicción, series por grupo con su marcador y leyenda (rectas paralelas de la ANCOVA), residuos, Q-Q, residuos
+  contra palanca, AIC por paso, BIC y Cp por tamaño. Formato de cuadros con cifras significativas (`sig`) y valores p
+  sin partir. Corregido: el eje de una gráfica entraba en un ciclo sin fin si todos los valores eran iguales salvo
+  por el redondeo (residuos de un modelo con solo la media).
+- Datos: dos ejemplos nuevos (sorgo con número de plantas para la ANCOVA; café con siete variables del sitio para la
+  regresión y la selección).
+- Validación: 54 casos nuevos contra R (7 689 valores; diferencia escalada máxima 1.4e-11, también con Longley),
+  con lm, car, lmtest, leaps, emmeans y los datos clásicos cars, trees, stackloss, swiss, mtcars, longley, women,
+  airquality, anorexia, frijol y Soils. 9 pruebas unitarias y 8 escenarios del código R nuevos (37 en total).
+- Suite: editor ✎ común (`js/labg-figedit.js`), Estudio de figuras 1.3.1 y las gráficas marcadas para ambos, con
+  los colores en el SVG (cambios de la sesión de la suite, incluidos en este hito).
+
 ### Hito 1.7 · comparaciones de medias, contrastes y medias ajustadas (1 oct 2026)
 
 - `js/metodos/comparaciones.js`: un motor de combinaciones lineales sobre las medias marginales del diseño, con un

@@ -41,8 +41,34 @@ SP.definir('lineal', function (SP) {
        que tienen las mismas ecuaciones normales, la misma R (salvo signos) y por eso las mismas sumas de cuadrados */
     const agrupar = op.agrupar !== undefined ? op.agrupar : mm.n >= 2000;
     const gr = agrupar ? SP.algebra.agruparFilas(mm.X, mm.n, mm.p, 0.25) : null;
-    const mc = gr ? SP.algebra.minimosCuadradosAgrupados(mm.X, mm.n, mm.p, mm.y, gr, TOL) : SP.algebra.minimosCuadrados(mm.X, mm.n, mm.p, mm.y, TOL);
+    /* con covariables las filas no se repiten, pero sí las celdas de los factores (ANCOVA): se comprime por celdas */
+    const cel = agrupar && !gr ? celdasConCovariables(tabla, mm) : null;
+    const mc = gr ? SP.algebra.minimosCuadradosAgrupados(mm.X, mm.n, mm.p, mm.y, gr, TOL)
+      : cel ? SP.algebra.minimosCuadradosCeldas(mm.X, mm.n, mm.p, mm.y, cel, TOL)
+        : SP.algebra.minimosCuadrados(mm.X, mm.n, mm.p, mm.y, TOL);
     return Object.assign({ modelo: mm, opciones: op, glResidual: mm.n - mc.qr.rango, rango: mc.qr.rango }, mc);
+  }
+  /**
+   * Celdas de los factores del modelo y sus covariables, si cada término lleva a lo más una variable numérica (así cada
+   * columna de X es, dentro de una celda, constante · 1 o constante · covariable) y hay pocas celdas.
+   */
+  function celdasConCovariables(tabla, mm) {
+    const vars = mm.formula.variables, fac = vars.filter(v => tabla.col(v).tipo === 'factor'), num = vars.filter(v => tabla.col(v).tipo !== 'factor');
+    if (!fac.length || !num.length) return null;
+    if (mm.terminos.some(t => t.variables.filter(v => num.includes(v)).length > 1)) return null;
+    const n = mm.n, g = new Int32Array(n), cods = fac.map(f => tabla.col(f).codigos), tam = fac.map(f => tabla.col(f).niveles.length);
+    if (tam.reduce((x, y) => x * y, 1) > 2 ** 52) return null;
+    const mapa = new Map();
+    for (let r = 0; r < n; r++) {
+      const i = mm.filas[r];
+      let clave = 0;
+      for (let k = 0; k < cods.length; k++) clave = clave * tam[k] + cods[k][i];
+      let v = mapa.get(clave);
+      if (v === undefined) { v = mapa.size; mapa.set(clave, v); }
+      g[r] = v;
+    }
+    if (mapa.size * (num.length + 1) > 0.25 * n) return null;
+    return { g, G: mapa.size, Z: num.map(v => { const c = tabla.col(v).valores; return Float64Array.from(mm.filas, i => c[i]); }) };
   }
 
   /** Coeficientes con error estándar, t y p (como el resumen de un modelo lineal). */

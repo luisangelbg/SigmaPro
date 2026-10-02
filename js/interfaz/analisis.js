@@ -1,18 +1,20 @@
-/* SigmaPro — bloque 4: Análisis (catálogo, supuestos, pruebas t y pruebas no paramétricas).
+/* SigmaPro — bloque 4: Análisis (catálogo, supuestos, pruebas t, no paramétricas, diseños, comparaciones, ANCOVA y regresión).
    Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
 
    El catálogo lista las familias de SP.familias de la Fase 1. Un análisis aparece activo solo si su método
    está registrado y su validación contra R aprobó (SP.metodoDisponible); los demás muestran el hito en que
    llegan. Cada método tiene su formulario; la prueba t y Wilcoxon comparten el suyo (estado «dos»), y
-   Kruskal-Wallis y Friedman el de los rangos (estado «rangos»), así cambiar de uno a otro conserva lo elegido. */
+   Kruskal-Wallis y Friedman el de los rangos (estado «rangos»); las regresiones y la selección de variables comparten
+   el estado «reg», así cambiar de uno a otro conserva lo elegido. */
 (function () {
   'use strict';
   const T = SP.T, esc = SP.ui.esc;
   const $ = s => document.querySelector(s);
   const L = () => window.LABG;
-  const HITO = { regresion: '1.8', correlacion: '1.9', contingencia: '1.9' };
+  const HITO = { correlacion: '1.9', contingencia: '1.9' };
   const DISENOS = ['dca', 'dbca', 'cuadro-latino', 'parcelas-divididas', 'parcelas-subdivididas', 'franjas', 'bib', 'latice'];
   const COMPARAR = ['comparaciones-medias', 'contrastes', 'polinomios', 'medias-ajustadas'];
+  const REGRESION = ['regresion-lineal', 'regresion-polinomial', 'seleccion-pasos', 'mejores-subconjuntos'];
   const estado = SP.app.analisis = {
     metodo: 'supuestos', pendiente: true, turno: 0,
     sup: { respuesta: '', tratamientos: [], bloque: '', orden: '', alfa: 0.05, _iniciado: false },
@@ -21,6 +23,8 @@
     cmp: { diseno: 'dbca', comparar: [], dentro: '', metodo: 'tukey', testigo: '', alternativa: 'bilateral', contrastes: '', grado: 2, nivel: 0.95, alfa: 0.05 },
     dis: { respuesta: '', tratamientos: [], bloque: '', fila: '', columna: '', repeticion: '', principal: 'dbca', parcelaGrande: '', subparcela: '', subsubparcela: '',
       franjaA: '', franjaB: '', tipoSC: 3, alfa: 0.05, _iniciado: false },
+    reg: { respuesta: '', predictores: [], x: '', grado: 2, nivel: 0.95, alfa: 0.05, predecir: '', criterio: 'aic', direccion: 'ambas', entrada: 0.05, salida: 0.1, mejores: 1, _iniciado: false },
+    anc: { respuesta: '', tratamientos: [], bloque: '', covariables: [], tipoSC: 3, metodo: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
   };
 
   /* ---------------- catálogo ---------------- */
@@ -111,6 +115,34 @@
     return { med, agr };
   }
   const MAX_TRAT = { dca: 3, dbca: 3, 'cuadro-latino': 2, bib: 1, latice: 1 };
+  /* la respuesta por omisión de la regresión y la ANCOVA: la última columna numérica que no parece factor (suele ir al final) */
+  const ultimaRespuesta = c => (c.pap.respuestas.length ? c.pap.respuestas[c.pap.respuestas.length - 1] : c.numericas[c.numericas.length - 1] || '');
+  function sanearReg(c) {
+    const s = estado.reg, num = c.numericas;
+    if (!num.includes(s.respuesta)) s.respuesta = ultimaRespuesta(c);
+    s.predictores = s.predictores.filter(x => num.includes(x) && x !== s.respuesta);
+    if (!s._iniciado) {
+      s._iniciado = true;
+      s.predictores = num.filter(x => x !== s.respuesta && !c.numFactor.includes(x)).slice(0, 15);
+      if (!s.predictores.length) s.predictores = num.filter(x => x !== s.respuesta).slice(0, 1);
+    }
+    if (!num.includes(s.x) || s.x === s.respuesta) s.x = s.predictores[0] || num.find(x => x !== s.respuesta) || '';
+    return { num };
+  }
+  function sanearAnc(c) {
+    const s = estado.anc, med = c.numericas, agr = c.agrupables.filter(n => nivelesDe(c, n).length >= 2);
+    if (!med.includes(s.respuesta)) s.respuesta = ultimaRespuesta(c);
+    if (!s._iniciado) {
+      s._iniciado = true;
+      s.bloque = c.pap.bloque && agr.includes(c.pap.bloque) ? c.pap.bloque : '';
+      s.tratamientos = c.pap.factores.filter(n => agr.includes(n) && n !== s.bloque && n !== s.respuesta).slice(0, 1);
+      s.covariables = med.filter(n => n !== s.respuesta && !c.numFactor.includes(n)).slice(0, 1);
+    }
+    s.tratamientos = s.tratamientos.filter(n => agr.includes(n) && n !== s.respuesta && n !== s.bloque).slice(0, 2);
+    if (s.bloque && (!agr.includes(s.bloque) || s.bloque === s.respuesta)) s.bloque = '';
+    s.covariables = s.covariables.filter(n => med.includes(n) && n !== s.respuesta && !s.tratamientos.includes(n) && n !== s.bloque).slice(0, 2);
+    return { med, agr };
+  }
 
   /* ---------------- formularios ---------------- */
   const opcion = (v, t, sel) => `<option value="${esc(v)}"${String(v) === String(sel) ? ' selected' : ''}>${esc(t)}</option>`;
@@ -262,7 +294,50 @@
     else h += campo('cmp', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
     return h;
   }
+  const casillas = (grupo, nombreLista, leyenda, nombres, elegidos, marca, vacio) => '<fieldset class="exp-casillas"><legend>' + esc(leyenda) + '</legend>' +
+    (nombres.map(n => '<label class="imp-check"><input type="checkbox" data-lista="' + nombreLista + '" data-grupo="' + grupo + '" value="' + esc(n) + '"' + (elegidos.includes(n) ? ' checked' : '') + '> ' + esc(marca(n)) + '</label>').join('') ||
+      '<p class="small muted">' + esc(vacio) + '</p>') + '</fieldset>';
+  function formRegresion(c, m) {
+    const s = estado.reg, { num } = sanearReg(c), marca = n => (c.numFactor.includes(n) ? T('{c} (numérica)', { c: n }) : n);
+    let h = campo('reg', 'respuesta', T('Variable de respuesta (y)'), lista(num), s.respuesta);
+    const cand = num.filter(n => n !== s.respuesta);
+    if (m === 'regresion-polinomial') {
+      h += campo('reg', 'x', T('Variable x'), cand.map(n => [n, marca(n)]), s.x) +
+        campo('reg', 'grado', T('Grado del polinomio'), [[2, T('2 (cuadrático)')], [3, T('3 (cúbico)')], [4, T('4 (cuártico)')]], s.grado);
+    } else {
+      h += casillas('reg', 'predictores', m === 'regresion-lineal' ? T('Predictores (hasta 15)') : T('Predictores candidatos (de 2 a 15)'), cand, s.predictores, marca, T('No hay otras columnas numéricas.'));
+    }
+    if (m === 'seleccion-pasos') {
+      h += campo('reg', 'criterio', T('Criterio'), [['aic', T('AIC (como step de R)')], ['p', T('Valor p de la F parcial')]], s.criterio);
+      const dirs = s.criterio === 'aic' ? [['ambas', T('Ambas direcciones, desde el modelo completo')], ['atras', T('Hacia atrás')], ['adelante', T('Hacia adelante')]]
+        : [['mixta', T('Mixta (entra y sale)')], ['adelante', T('Hacia adelante')], ['atras', T('Hacia atrás')]];
+      if (!dirs.some(d => d[0] === s.direccion)) s.direccion = dirs[0][0];
+      h += campo('reg', 'direccion', T('Dirección'), dirs, s.direccion);
+      if (s.criterio === 'p') {
+        h += campo('reg', 'entrada', T('Nivel para entrar'), [[0.05, '0.05'], [0.1, '0.10'], [0.15, '0.15'], [0.01, '0.01']], s.entrada) +
+          campo('reg', 'salida', T('Nivel para salir'), [[0.1, '0.10'], [0.05, '0.05'], [0.15, '0.15'], [0.2, '0.20']], s.salida, T('En la mixta, el nivel para entrar no puede ser mayor que el de salir.'));
+      }
+      return h;
+    }
+    if (m === 'mejores-subconjuntos') return h + campo('reg', 'mejores', T('Modelos por tamaño'), [[1, '1'], [2, '2'], [3, '3']], s.mejores);
+    const vars = m === 'regresion-polinomial' ? [s.x] : s.predictores;
+    h += '<label class="field"><span>' + esc(T('Predecir en (opcional)')) + '</span><textarea data-grupo="reg" data-campo="predecir" rows="3" spellcheck="false" placeholder="' + esc(vars.length > 1 ? '' : '10 20 30') + '">' + esc(s.predecir) + '</textarea>' +
+      '<span class="field-help">' + esc(vars.length > 1 ? T('Un renglón por punto con los valores de {v}, en ese orden, separados por espacios.', { v: vars.join(', ') }) : T('Valores de {v} separados por espacios.', { v: vars[0] || 'x' })) + '</span></label>';
+    return h + campo('reg', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('reg', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+  }
+  function formAncova(c) {
+    const s = estado.anc, { med, agr } = sanearAnc(c), marca = n => (c.numFactor.includes(n) ? T('{c} (numérica)', { c: n }) : n);
+    let h = campo('anc', 'respuesta', T('Variable de respuesta'), lista(med), s.respuesta);
+    h += casillas('anc', 'tratamientos', T('Factores de tratamiento (hasta 2, cruzados)'), agr.filter(n => n !== s.respuesta && n !== s.bloque && !s.covariables.includes(n)), s.tratamientos, marca, T('No hay factores en la tabla.'));
+    h += campo('anc', 'bloque', T('Bloques'), [['', T('— sin bloques (completamente al azar) —')]].concat(agr.filter(n => n !== s.respuesta && !s.tratamientos.includes(n) && !s.covariables.includes(n)).map(n => [n, marca(n)])), s.bloque);
+    h += casillas('anc', 'covariables', T('Covariables (hasta 2)'), med.filter(n => n !== s.respuesta && !s.tratamientos.includes(n) && n !== s.bloque), s.covariables, n => n, T('No hay otras columnas numéricas.'));
+    h += campo('anc', 'tipoSC', T('Sumas de cuadrados'), [[3, T('Tipo III (medias marginales)')], [2, T('Tipo II (marginalidad)')], [1, T('Tipo I (tratamientos ajustados por la covariable)')]], s.tipoSC);
+    h += campo('anc', 'metodo', T('Comparación de las medias ajustadas'), [['tukey', 'Tukey'], ['dms', T('DMS de Fisher')], ['bonferroni', 'Bonferroni'], ['sidak', 'Šidák'], ['holm', 'Holm'], ['scheffe', 'Scheffé'], ['ninguna', T('Ninguna')]], s.metodo);
+    return h + campo('anc', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('anc', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+  }
   function formulario(c) {
+    if (REGRESION.includes(estado.metodo)) return formRegresion(c, estado.metodo);
+    if (estado.metodo === 'ancova') return formAncova(c);
     if (DISENOS.includes(estado.metodo)) return formDiseno(c, estado.metodo);
     if (COMPARAR.includes(estado.metodo)) return formComparar(c, estado.metodo);
     if (estado.metodo === 'prueba-t') return formDos(c, true);
@@ -274,6 +349,19 @@
   /** Entradas y opciones del método elegido, desde el estado del formulario. */
   function pedido() {
     const m = estado.metodo;
+    if (REGRESION.includes(m)) {
+      const s = estado.reg;
+      if (m === 'regresion-polinomial') return { e: { respuesta: s.respuesta, predictores: s.x }, op: { grado: +s.grado, nivel: +s.nivel, alfa: +s.alfa, predecir: s.predecir } };
+      const e = { respuesta: s.respuesta, predictores: s.predictores.slice() };
+      if (m === 'regresion-lineal') return { e, op: { nivel: +s.nivel, alfa: +s.alfa, predecir: s.predecir } };
+      if (m === 'seleccion-pasos') return { e, op: { criterio: s.criterio, direccion: s.direccion, entrada: +s.entrada, salida: +s.salida } };
+      return { e, op: { mejores: +s.mejores } };
+    }
+    if (m === 'ancova') {
+      const s = estado.anc, e = { respuesta: s.respuesta, tratamientos: s.tratamientos.slice(), covariables: s.covariables.slice() };
+      if (s.bloque) e.bloque = s.bloque;
+      return { e, op: { tipoSC: +s.tipoSC, metodo: s.metodo, alfa: +s.alfa, nivel: +s.nivel } };
+    }
     if (COMPARAR.includes(m)) {
       const s = estado.cmp, e = Object.assign({ diseno: s.diseno }, papelesDis(s.diseno), { comparar: s.comparar.slice() });
       if (s.dentro) e.dentro = [s.dentro];
@@ -363,8 +451,88 @@
       codigoHTML(codigo);
   }
 
+  /** Gráficas de la regresión: la recta o curva con sus bandas (o observados contra ajustados) y el diagnóstico. */
+  function graficasRegresion(r) {
+    const inf = r.influencia, n = r.observados.length, p = r.coeficientes.nombre.length, out = [];
+    const etq = i => (inf.banderas.cook[i] || Math.abs(inf.rstudent[i]) > 3 ? r.filas[i] : undefined);
+    if (r.banda) {
+      const b = r.banda;
+      out.push(SP.graficas.dispersion({
+        titulo: r.modelo === 'polinomial' ? T('Curva ajustada de grado {g}', { g: r.grado }) : T('Recta ajustada'), x: { titulo: r.predictores[0] }, y: { titulo: r.respuesta },
+        descripcion: T('«{y}» contra «{x}» con la línea ajustada, la banda de confianza de la media al {c} % (sombreada) y la de predicción (borde discontinuo); {k} observaciones influyentes resaltadas.', { y: r.respuesta, x: r.predictores[0], c: Math.round(100 * r.nivel), k: inf.n_influyentes }),
+        puntos: SP.graficas.adelgazar(r.x.map((x, i) => ({ x, y: r.observados[i], marca: inf.influyente[i], etiqueta: etq(i) })), 2500),
+        bandas: [{ x: b.x, inf: b.ip_inf, sup: b.ip_sup, prediccion: true }, { x: b.x, inf: b.ic_inf, sup: b.ic_sup }], linea: { x: b.x, y: b.ajuste },
+      }));
+    } else {
+      out.push(SP.graficas.dispersion({
+        titulo: T('Observados contra ajustados'), x: { titulo: T('Valor ajustado') }, y: { titulo: T('«{y}» observado', { y: r.respuesta }) }, diagonal: true,
+        descripcion: T('Valores observados de «{y}» contra los ajustados; con un buen ajuste quedan cerca de la diagonal.', { y: r.respuesta }),
+        puntos: SP.graficas.adelgazar(r.ajustados.map((x, i) => ({ x, y: r.observados[i], marca: inf.influyente[i], etiqueta: etq(i) })), 2500),
+      }));
+    }
+    out.push(SP.graficas.dispersion({
+      titulo: T('Residuos contra valores ajustados'), x: { titulo: T('Valor ajustado') }, y: { titulo: T('Residuo estandarizado') },
+      descripcion: T('Residuos estandarizados contra ajustados: una nube sin forma y de ancho parejo indica un modelo adecuado.'),
+      puntos: SP.graficas.adelgazar(r.ajustados.map((x, i) => ({ x, y: inf.rstandard[i], marca: Math.abs(inf.rstandard[i]) > 2, etiqueta: etq(i) })).filter(q => Number.isFinite(q.y)), 2500),
+      referencias: [{ y: 0 }, { y: 2, discontinua: true }, { y: -2, discontinua: true }],
+    }));
+    const rs = Array.from(inf.rstandard).filter(Number.isFinite).sort((a, b) => a - b), m = rs.length, a = m <= 10 ? 3 / 8 : 1 / 2;
+    const qq = rs.map((y, i) => ({ x: SP.dist.qnorm((i + 1 - a) / (m + 1 - 2 * a)), y }));
+    out.push(SP.graficas.dispersion({
+      titulo: T('Q-Q normal de los residuos'), x: { titulo: T('Cuantil teórico de la normal') }, y: { titulo: T('Residuo estandarizado') }, diagonal: true,
+      descripcion: T('Gráfico Q-Q de los residuos estandarizados: cerca de la diagonal si son normales.'), puntos: SP.graficas.adelgazar(qq, 2500),
+    }));
+    const corte = SP.dist.qf(0.5, p, n - p);
+    out.push(SP.graficas.dispersion({
+      titulo: T('Residuos contra palanca'), x: { titulo: T('Palanca (hᵢᵢ)') }, y: { titulo: T('Residuo estudentizado') },
+      descripcion: T('Residuo estudentizado contra palanca: los puntos a la derecha de la línea vertical tienen palanca alta; {k} con distancia de Cook mayor que el percentil 50 de F({p}, {g}) = {c}.', { k: inf.banderas.cook.filter(Boolean).length, p, g: n - p, c: corte.toFixed(3) }),
+      puntos: SP.graficas.adelgazar(Array.from(inf.palanca, (h, i) => ({ x: h, y: inf.rstudent[i], marca: inf.influyente[i], etiqueta: etq(i) })).filter(q => Number.isFinite(q.y)), 2500),
+      referencias: [{ y: 0 }, { y: 2, discontinua: true }, { y: -2, discontinua: true }], verticales: [{ x: inf.cotas.palanca, discontinua: true }],
+    }));
+    return out.join('');
+  }
+  function graficasAncova(r) {
+    const g = r.grafica, out = [];
+    out.push(SP.graficas.dispersion({
+      titulo: T('«{y}» contra «{c}»: una recta por tratamiento', { y: r.respuesta, c: g.covariable }), x: { titulo: g.covariable }, y: { titulo: r.respuesta },
+      descripcion: T('Cada punto es una parcela con el marcador de su tratamiento; las rectas paralelas tienen la pendiente común y pasan por la media ajustada de cada tratamiento en la media de «{c}».', { c: g.covariable }),
+      puntos: SP.graficas.adelgazar(g.puntos.map(q => ({ x: q.x, y: q.y, serie: q.g })), 2500),
+      lineas: g.rectas.map((rc, k) => ({ x: rc.x, y: rc.x.map(x => rc.media + g.pendiente * (x - g.xbar)), serie: k })).filter(l => Number.isFinite(l.y[0])),
+      leyenda: { titulo: r.tratamientos.join(' × '), series: g.grupos },
+    }));
+    const m = r.medias[0], cmp = r.comparaciones.find(x => x.factor === m.factor);
+    out.push(SP.graficas.medias({
+      titulo: T('Medias ajustadas de «{f}»', { f: m.factor }), y: { titulo: r.respuesta },
+      descripcion: T('Medias de {f} ajustadas por la covariable, con su intervalo de confianza{l}.', { f: m.factor, l: cmp ? T('; medias con una letra en común no difieren') : '' }),
+      grupos: m.filas.map((f, i) => ({ nombre: f.nombre, media: f.media, inf: f.ic[0], sup: f.ic[1], letra: cmp ? cmp.medias[i].letras : '' })),
+    }));
+    return out.join('');
+  }
+  function graficasSeleccion(r) {
+    if (r.tipo === 'seleccion') {
+      const xs = r.pasos.map((_, k) => k), ys = r.pasos.map(q => q.aic);
+      return SP.graficas.dispersion({
+        titulo: T('AIC en cada paso'), x: { titulo: T('Paso') }, y: { titulo: 'AIC' }, descripcion: T('AIC del modelo después de cada paso de la selección; menor es mejor.'),
+        puntos: xs.map((x, k) => ({ x, y: ys[k], marca: k === xs.length - 1 })), linea: { x: xs, y: ys },
+      });
+    }
+    const prim = r.filas.filter(f => f.rango === 1), xs = prim.map(f => f.tamano);
+    return SP.graficas.dispersion({
+      titulo: T('BIC del mejor modelo de cada tamaño'), x: { titulo: T('Número de predictores') }, y: { titulo: 'BIC' },
+      descripcion: T('BIC del mejor modelo con cada número de predictores; el mínimo ({k}) es el elegido.', { k: r.elegido.bic }),
+      puntos: prim.map(f => ({ x: f.tamano, y: f.bic, marca: f.tamano === r.elegido.bic })), linea: { x: xs, y: prim.map(f => f.bic) },
+    }) + SP.graficas.dispersion({
+      titulo: T('Cp de Mallows contra coeficientes'), x: { titulo: T('Coeficientes (p)') }, y: { titulo: 'Cp' },
+      descripcion: T('Cp del mejor modelo de cada tamaño; los buenos modelos quedan cerca de la recta Cp = p o debajo.'),
+      puntos: prim.map(f => ({ x: f.tamano + 1, y: f.cp, marca: f.tamano === r.elegido.cp })), linea: { x: [xs[0] + 1, xs[xs.length - 1] + 1], y: [xs[0] + 1, xs[xs.length - 1] + 1] },
+    });
+  }
+
   /** Gráfica de cajas del método: los grupos comparados, con letras cuando las hay. */
   function graficaMetodo(r) {
+    if (r.tipo === 'regresion') return graficasRegresion(r);
+    if (r.tipo === 'ancova') return graficasAncova(r);
+    if (r.tipo === 'seleccion' || r.tipo === 'subconjuntos') return graficasSeleccion(r);
     if (r.tipo === 'pares' || r.tipo === 'dunnett' || r.tipo === 'medias' || r.tipo === 'contrastes') {
       const lista = r.grupos.slice(0, 6), que = (r.comparar || [r.factor]).join(' × ');
       return lista.map(g => {
@@ -434,8 +602,23 @@
       (global ? semaforoHTML(sem, global, T({ verde: 'Los supuestos de la prueba se cumplen', ambar: 'Hay supuestos que revisar', rojo: 'Hay supuestos que no se cumplen', gris: 'Sin datos suficientes' }[global]), T('Semáforo de los supuestos')) : '') +
       graficasHTML(graficaMetodo(r)) +
       (r.diseno && !r.tipo && r.factores && r.factores.length ? `<div class="btn-row exp-acciones"><button type="button" class="btn btn-primary btn-sm" data-accion="comparar">${esc(T('Comparar las medias de este diseño'))}</button></div>` : '') +
+      botonesModelo(r) +
       rep.cuadros.map((q, i) => SP.cuadros.html(q, { numero: i + 1 }) + copiarHTML(i)).join('') +
       codigoHTML(codigo);
+  }
+  /** Tras la selección, botones que llevan el modelo elegido a la regresión lineal con todo su diagnóstico. */
+  function botonesModelo(r) {
+    const boton = (vars, texto) => '<button type="button" class="btn btn-primary btn-sm" data-accion="analizar-modelo" data-vars="' + esc(JSON.stringify(vars)) + '">' + esc(texto) + '</button>';
+    if (r.tipo === 'seleccion' && r.finales.length) return '<div class="btn-row exp-acciones">' + boton(r.finales, T('Analizar el modelo elegido')) + '</div>';
+    if (r.tipo === 'subconjuntos') {
+      const de = k => r.filas.find(f => f.tamano === k && f.rango === 1).variables, hechos = new Set(), bs = [];
+      for (const [crit, k] of [['BIC', r.elegido.bic], ['Cp', r.elegido.cp], [T('R² ajustada'), r.elegido.r2_ajustada]]) {
+        if (hechos.has(k)) continue;
+        hechos.add(k); bs.push(boton(de(k), T('Analizar el modelo de {c} ({k} predictores)', { c: crit, k })));
+      }
+      return '<div class="btn-row exp-acciones">' + bs.join('') + '</div>';
+    }
+    return '';
   }
   /* una gráfica ocupa una columna de lectura; varias (comparaciones dentro de cada nivel) van en rejilla */
   const graficasHTML = g => `<div class="ana-graficas${(g.match(/<figure/g) || []).length > 1 ? '' : ' ana-una'}">${g}</div>`;
@@ -448,7 +631,7 @@
     if (!c) return;
     catalogo();
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -509,8 +692,12 @@
         estado.cmp.comparar = marcados;
       } else if (el.dataset.campo === 'comparar1') {
         estado.cmp.comparar = el.value ? [el.value] : [];
+      } else if (el.dataset.lista === 'predictores' || el.dataset.lista === 'covariables') {
+        const marcados = [...form.querySelectorAll('[data-lista="' + el.dataset.lista + '"]:checked')].map(x => x.value), max = el.dataset.lista === 'covariables' ? 2 : 15;
+        if (marcados.length > max) { el.checked = false; L() && L().toast(max === 2 ? T('Hasta dos covariables.') : T('Hasta 15 predictores.'), { type: 'warning' }); return; }
+        estado[el.dataset.grupo][el.dataset.lista] = marcados;
       } else if (el.dataset.lista === 'tratamientos') {
-        const grupo = el.dataset.grupo || 'sup', dsel = DISENOS.includes(estado.metodo) ? estado.metodo : estado.cmp.diseno, max = grupo === 'dis' ? (MAX_TRAT[dsel] || 3) : 3;
+        const grupo = el.dataset.grupo || 'sup', dsel = DISENOS.includes(estado.metodo) ? estado.metodo : estado.cmp.diseno, max = grupo === 'dis' ? (MAX_TRAT[dsel] || 3) : grupo === 'anc' ? 2 : 3;
         const marcados = [...form.querySelectorAll('[data-lista="tratamientos"]:checked')].map(x => x.value);
         if (marcados.length > max) { el.checked = false; L() && L().toast(max === 2 ? T('Hasta dos factores de tratamiento.') : T('Hasta tres factores de tratamiento.'), { type: 'warning' }); return; }
         estado[grupo].tratamientos = marcados;
@@ -525,6 +712,13 @@
     $('#anaResultado').addEventListener('click', async e => {
       const a = e.target.closest('[data-accion]');
       if (!a) return;
+      if (a.dataset.accion === 'analizar-modelo') {
+        estado.reg.predictores = JSON.parse(a.dataset.vars);
+        estado.metodo = 'regresion-lineal';
+        calcular();
+        $('#anaCatalogo').scrollIntoView({ block: 'nearest' });
+        return;
+      }
       if (a.dataset.accion === 'comparar') {
         estado.cmp.diseno = estado.metodo;
         estado.metodo = 'comparaciones-medias';

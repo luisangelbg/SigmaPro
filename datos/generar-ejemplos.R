@@ -1,10 +1,11 @@
 # SigmaPro — genera datos/ejemplos.js con los conjuntos de ejemplo del bloque Datos.
 # Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
 #
-# Todos son ficticios y reproducibles (semilla fija), salvo dos publicados: los venenos de
-# Box y Cox (1964, J. R. Stat. Soc. B 26: 211–252), cuadro 1, y los chícharos de Mendel (1866).
-# Cada ejemplo muestra algo del bloque: diseño en bloques, porcentajes para el arcoseno,
-# cuadro latino, forma ancha con fechas, conteos con ceros y faltantes, y Box-Cox.
+# Todos son ficticios y reproducibles (semilla fija), salvo tres publicados: los venenos de
+# Box y Cox (1964, J. R. Stat. Soc. B 26: 211–252), cuadro 1, los chícharos de Mendel (1866) y la
+# avena de Yates (1935). Cada ejemplo muestra algo: diseño en bloques, porcentajes para el arcoseno,
+# cuadro latino, forma ancha con fechas, conteos con ceros y faltantes, Box-Cox, parcelas divididas,
+# una covariable (ANCOVA) y regresión múltiple con colinealidad.
 #
 #   Rscript datos/generar-ejemplos.R        (desde la carpeta de SigmaPro)
 
@@ -116,6 +117,34 @@ stopifnot(!anyNA(k), identical(as.numeric(d$rendimiento), as.numeric(o$Y[k])))
 agregar("avena", "Avena en parcelas divididas (Yates, 1935)",
         "Datos publicados: 3 variedades en parcelas grandes y 4 dosis de nitrógeno (quintales por acre) en subparcelas, en 6 bloques; rendimiento en cuartos de libra por subparcela.", d,
         list(variedad = list(tipo = "factor", niveles = c("Victory", "Golden rain", "Marvellous")), bloque = list(tipo = "factor", niveles = c("I", "II", "III", "IV", "V", "VI"))))
+
+## 9. Sorgo: variedades en bloques con el número de plantas por parcela (covariable de la ANCOVA)
+set.seed(909)
+d <- expand.grid(variedad = c("Línea 1", "Línea 2", "Línea 3", "Línea 4", "Línea 5", "Testigo"), bloque = 1:4, stringsAsFactors = FALSE)
+d$plantas <- round(rnorm(nrow(d), 118, 10))                                 # plantas cosechadas: fallas de emergencia al azar
+d$rend <- round(3.4 + c(0.55, 0.30, -0.05, 0.40, 0.15, -0.45)[match(d$variedad, unique(d$variedad))] +
+                c(0.30, 0.10, -0.15, -0.25)[d$bloque] + 0.026 * (d$plantas - 118) + rnorm(nrow(d), 0, 0.14), 2)
+d <- d[order(d$bloque), c("bloque", "variedad", "plantas", "rend")]
+agregar("sorgo", "Sorgo: variedades y número de plantas",
+        "Seis variedades en 4 bloques; rendimiento en t/ha y plantas cosechadas por parcela, la covariable para ajustar las medias (ANCOVA).", d,
+        list(variedad = list(tipo = "factor", niveles = c("Línea 1", "Línea 2", "Línea 3", "Línea 4", "Línea 5", "Testigo"))))
+
+## 10. Café: rendimiento de 40 fincas y las condiciones del sitio (regresión múltiple y selección de variables)
+set.seed(1010)
+n <- 40
+d <- data.frame(finca = sprintf("F%02d", 1:n))
+d$altitud <- round(runif(n, 900, 1700))
+d$temperatura <- round(31.5 - 0.0062 * d$altitud + rnorm(n, 0, 0.45), 1)  # casi colineal con la altitud
+d$lluvia <- round(runif(n, 1500, 2900))
+d$materia_organica <- round(runif(n, 2, 7), 1)
+d$ph <- round(runif(n, 4.6, 6.3), 1)
+d$sombra <- round(runif(n, 15, 70))
+d$edad <- round(runif(n, 3, 25))
+d$rendimiento <- round(8 + 0.011 * (d$altitud - 1300) + 1.6 * d$materia_organica - 0.045 * d$sombra - 0.0009 * (d$lluvia - 2200) -
+                       0.12 * pmax(d$edad - 12, 0) + rnorm(n, 0, 1.6), 1)
+d$rendimiento[17] <- d$rendimiento[17] + 7                                  # una finca fuera de lo común
+agregar("cafe", "Café: rendimiento y sitio",
+        "Cuarenta fincas: rendimiento (quintales de café oro por hectárea) con altitud, temperatura, lluvia, materia orgánica, pH, sombra y edad del cafetal; para regresión, colinealidad (altitud y temperatura) y selección de variables.", d)
 
 ## escribir datos/ejemplos.js
 js <- paste0(

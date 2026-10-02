@@ -54,6 +54,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+### Editor ✎ de figuras
+
+- **Dónde:** `js/labg-figedit.js` (módulo común de la LABG Suite, Editor ✎ LABG v1.0.0).
+- **De dónde viene:** portal de la suite, `shared/figure-editor/`; obra del mismo autor, GPL-3.0. No trae íconos ni
+  código de terceros.
+
 ### Letras de la suite
 
 El navegador y el estudio de figuras usan «LABG Sans» y «LABG Serif» (IBM Plex, SIL Open Font License 1.1),
@@ -62,7 +68,7 @@ carpeta.
 
 ### Datos publicados en los ejemplos
 
-`datos/ejemplos.js` trae cinco conjuntos ficticios generados por `datos/generar-ejemplos.R` (obra propia) y
+`datos/ejemplos.js` trae siete conjuntos ficticios generados por `datos/generar-ejemplos.R` (obra propia) y
 tres publicados: los tiempos de supervivencia del cuadro 1 de Box, G. E. P. y Cox, D. R. (1964), *An analysis
 of transformations*, J. R. Stat. Soc. B 26: 211–252 (el script los coteja celda por celda con la copia del
 paquete boot de R); los conteos de la F2 dihíbrida del chícharo de Mendel, G. (1866), *Versuche über
@@ -98,6 +104,13 @@ Gauss-Kronrod de 21 puntos de QUADPACK (Piessens y col., 1983, dominio público;
 Las letras de agrupación siguen el algoritmo de inserción y absorción de Piepho (2004) tal como lo programa
 `multcompLetters` de multcompView (GPL); el ajuste de los valores p, a `p.adjust` de R; y las comparaciones tras
 Kruskal-Wallis y Friedman, a las fórmulas de PMCMRplus (GPL-3).
+
+ANCOVA y regresión (`js/metodos/ancova.js` y `regresion.js`): los criterios de influencia siguen a `influence.measures`
+de R (GPL); el VIF generalizado, a `car::vif` (GPL); Breusch-Pagan y RESET, a lmtest (GPL); la selección paso a paso,
+a `step`, `add1` y `drop1` de R (GPL); Cp y BIC de los mejores subconjuntos, a las fórmulas de `summary.regsubsets`
+del paquete leaps (GPL); los índices de condición, a Belsley, Kuh y Welsch (1980), *Regression Diagnostics*; y la
+eficiencia relativa de la covarianza, a Cochran y Cox (1957), *Experimental Designs*. Todo se programó a partir de las
+fórmulas; ninguno de esos códigos viaja con la app.
 
 Las fórmulas de Lilliefors (Dallal y Wilkinson, 1986) y Anderson-Darling (Stephens, 1986) siguen al paquete
 nortest; la no aditividad de Tukey, a agricolae; Grubbs, a outliers, y las rachas, a randtests (todos GPL). El
@@ -144,8 +157,10 @@ SOFTWARE.
 
 ### Conjuntos de datos clásicos
 
-Los casos de `tests/casos/` usan además datos publicados que R distribuye en su paquete datasets o en boot
-(PlantGrowth, airquality, trees, poisons); cada caso cita la publicación original en su campo `fuente`.
+Los casos de `tests/casos/` usan además datos publicados que R distribuye en su paquete datasets (PlantGrowth,
+airquality, trees, cars, stackloss, swiss, mtcars, longley, women, chickwts, warpbreaks) o en los paquetes boot
+(poisons), MASS (oats, anorexia), agricolae (frijol) y carData (Soils); cada caso cita la publicación original en su
+campo `fuente`.
 
 ## Que se descargan al usarse (Fase 2, aún no incluidos)
 
@@ -160,5 +175,5 @@ Los casos de `tests/casos/` usan además datos publicados que R distribuye en su
 
 Se usan en el equipo del autor para calcular los resultados de referencia de `tests/casos/`: R 4.4.2 y los
 paquetes jsonlite (MIT), y según el caso stats, MASS, car, agricolae, emmeans, multcomp, mvtnorm, nortest,
-PMCMRplus, FSA, dunn.test, leaps, lmtest y multcompView (licencias GPL). Las versiones exactas quedan
+PMCMRplus, FSA, dunn.test, leaps, lmtest, multcompView y carData (licencias GPL). Las versiones exactas quedan
 registradas en cada caso y en `tests/r/sesion.txt`.

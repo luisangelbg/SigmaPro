@@ -51,7 +51,11 @@ SP.definir('comparaciones', function (SP) {
         cme: NaN, glE: NaN,
       };
     }
-    const a = SP.lineal.ajustar(t, r.formula), P = SP.medias.partes(a), R = SP.medias.rejilla(t, a);
+    return modeloLineal(t, SP.lineal.ajustar(t, r.formula), r);
+  }
+  /** Modelo de un solo error a partir de un ajuste de SP.lineal (también la ANCOVA, con las covariables en su media). */
+  function modeloLineal(t, a, r) {
+    const P = SP.medias.partes(a), R = SP.medias.rejilla(t, a);
     const p = P.p;
     return {
       tipo: 'lineal', r, t, a, R, cme: P.s2, glE: a.glResidual,
@@ -362,7 +366,7 @@ SP.definir('comparaciones', function (SP) {
     return medias(M, spec, dentro || [], nivel || 0.95).map(G => ({ media: G.filas.map(x => x.media), ee: G.filas.map(x => x.ee), gl: G.filas.map(x => x.gl), inf: G.filas.map(x => x.ic[0]), sup: G.filas.map(x => x.ic[1]) }));
   }
 
-  SP.comp = { modelo, grupos, pares, dunnett, dunnettProb, gamesHowell, contrastes, polinomios, medias, lambdasProducto,
+  SP.comp = { modelo, modeloLineal, grupos, pares, dunnett, dunnettProb, gamesHowell, contrastes, polinomios, medias, lambdasProducto,
     paresDe, rangoMultipleDe, dunnettDe, gamesHowellDe, contrastesDe, polinomiosDe, mediasDe };
 
   /* ======================= métodos ======================= */

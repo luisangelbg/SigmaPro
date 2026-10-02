@@ -1,0 +1,67 @@
+{
+  "esquema": 1,
+  "id": "reg.pruebasDe/pruebas-polinomial",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pruebasDe"
+  },
+  "titulo": "Polinomio de grado 2 con repeticiones",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "rend": [2.8399999999999999, 3.2200000000000002, 3.3199999999999998, 3.2400000000000002, 4.2800000000000002, 4.1699999999999999, 3.9900000000000002, 4.1500000000000004, 4.6100000000000003, 4.8700000000000001, 4.7800000000000002, 5.2199999999999998, 5.3300000000000001, 5.5999999999999996, 5.4800000000000004, 5.0099999999999998, 5.5099999999999998, 5.0499999999999998, 5.3499999999999996, 5.5300000000000002, 4.9000000000000004, 4.96, 4.96, 4.7599999999999998],
+      "dosis": [0, 0, 0, 0, 40, 40, 40, 40, 80, 80, 80, 80, 120, 120, 120, 120, 160, 160, 160, 160, 200, 200, 200, 200]
+    },
+    "tipos": {
+      "rend": {
+        "tipo": "numerica"
+      },
+      "dosis": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "respuesta": "rend",
+      "predictores": ["dosis"]
+    },
+    {
+      "grado": 2
+    }
+  ],
+  "esperado": {
+    "shapiro": {
+      "W": 0.95713408903550723,
+      "p": 0.38359240609420214
+    },
+    "breusch_pagan": {
+      "BP": 2.9139828504842007,
+      "gl": 2,
+      "p": 0.23293602702450628
+    },
+    "reset": {
+      "F": 0.89810546926603141,
+      "gl1": 2,
+      "gl2": 19,
+      "p": 0.42394466767486316
+    },
+    "durbin_watson": {
+      "DW": 2.0095757378852288,
+      "p": 0.33505715453508972
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "lmtest": "0.9.40"
+    },
+    "codigo": "m <- lm(rend ~ dosis + I(dosis^2)); shapiro.test(residuals(m)); lmtest::bptest(m); lmtest::resettest(m); lmtest::dwtest(m)"
+  }
+}

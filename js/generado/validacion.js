@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-01T19:57:03.380Z",
+ "generado": "2026-10-02T00:58:06.374Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 466,
-  "aprobados": 466,
+  "casos": 520,
+  "aprobados": 520,
   "fallidos": 0,
-  "valores": 38039,
+  "valores": 45728,
   "difEscaladaMax": 2.0258232202030768e-7,
-  "objetivos": 100
+  "objetivos": 112
  },
  "casos": [
   {
@@ -12683,6 +12683,1551 @@ window.SP_VALIDACION = {
      "emmeans": "1.10.6"
     },
     "codigo": "contrast(emmeans(...), method = columnas de contr.poly(k, scores = dosis)); lm(medias ~ poly(dosis, grado, raw = TRUE)); dosis óptima = −b₁/(2b₂)"
+   }
+  },
+  {
+   "id": "ancova.analizarDe/anorexia-tipo1",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "ancova.analizarDe"
+   },
+   "titulo": "Un factor desbalanceado, SC tipo I (tratamientos ajustados por la covariable)",
+   "fuente": "Hand, Daly, McConway, Lunn y Ostrowski (1993), A Handbook of Small Data Sets, conjunto 285; anorexia del paquete MASS",
+   "clase": "A",
+   "valores": 65,
+   "difMax": 1.4779288903810084e-12,
+   "difEscaladaMax": 2.0943650167098274e-14,
+   "peor": "independencia[0].sc_trat",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "comparaciones[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "lm(peso_final ~ peso_inicial + tratamiento); anova(m); anova(m, m + covariable:tratamientos); emmeans; pairs(adjust = \"none\")"
+   }
+  },
+  {
+   "id": "ancova.analizarDe/anorexia-tipo2",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "ancova.analizarDe"
+   },
+   "titulo": "Un factor desbalanceado, SC tipo II, Bonferroni, IC 90 %",
+   "fuente": "Hand, Daly, McConway, Lunn y Ostrowski (1993), A Handbook of Small Data Sets, conjunto 285; anorexia del paquete MASS",
+   "clase": "A",
+   "valores": 65,
+   "difMax": 6.821210263296962e-13,
+   "difEscaladaMax": 2.0943650167098274e-14,
+   "peor": "independencia[0].sc_trat",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "comparaciones[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "lm(peso_final ~ peso_inicial + tratamiento); car::Anova(m, type = 2); anova(m, m + covariable:tratamientos); emmeans; pairs(adjust = \"bonferroni\")"
+   }
+  },
+  {
+   "id": "ancova.analizarDe/anorexia-tipo3",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "ancova.analizarDe"
+   },
+   "titulo": "Un factor desbalanceado, SC tipo III, Tukey",
+   "fuente": "Hand, Daly, McConway, Lunn y Ostrowski (1993), A Handbook of Small Data Sets, conjunto 285; anorexia del paquete MASS",
+   "clase": "B",
+   "valores": 65,
+   "difMax": 6.821210263296962e-13,
+   "difEscaladaMax": 2.853273173286652e-14,
+   "peor": "comparaciones[0].p[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "comparaciones[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "lm(peso_final ~ peso_inicial + tratamiento); car::Anova(m, type = 3); anova(m, m + covariable:tratamientos); emmeans; pairs(adjust = \"tukey\")"
+   }
+  },
+  {
+   "id": "ancova.analizarDe/frijol",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "ancova.analizarDe"
+   },
+   "titulo": "Cuatro tecnologías con su índice: la covariable es la misma en cada tecnología (F = 0; R da NA)",
+   "fuente": "Oriente antioqueño (1972), ICA, Colombia; conjunto frijol del paquete agricolae",
+   "clase": "A",
+   "valores": 82,
+   "difMax": 3.725290298461914e-9,
+   "difEscaladaMax": 1.1553825584554272e-14,
+   "peor": "anova.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "comparaciones[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "lm(produccion ~ indice + tecnologia); car::Anova(m, type = 3); anova(m, m + covariable:tratamientos); emmeans; pairs(adjust = \"holm\")"
+   }
+  },
+  {
+   "id": "ancova.analizarDe/sorgo-bloques",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "ancova.analizarDe"
+   },
+   "titulo": "Bloques completos con una covariable (número de plantas)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 107,
+   "difMax": 1.0231815394945443e-12,
+   "difEscaladaMax": 6.1117116327345396e-15,
+   "peor": "comparaciones[0].t[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "comparaciones[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "lm(rend ~ bloque + plantas + variedad); car::Anova(m, type = 3); anova(m, m + covariable:tratamientos); emmeans; pairs(adjust = \"none\")"
+   }
+  },
+  {
+   "id": "ancova.analizarDe/sorgo-faltantes",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "ancova.analizarDe"
+   },
+   "titulo": "Bloques con dos parcelas sin dato (medias ajustadas)",
+   "fuente": "Datos sintéticos",
+   "clase": "B",
+   "valores": 107,
+   "difMax": 1.0800249583553523e-12,
+   "difEscaladaMax": 9.769962616701378e-15,
+   "peor": "comparaciones[0].t[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "comparaciones[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "lm(rend ~ bloque + plantas + variedad); car::Anova(m, type = 2); anova(m, m + covariable:tratamientos); emmeans; pairs(adjust = \"sidak\")"
+   }
+  },
+  {
+   "id": "ancova.analizarDe/suelos-bloques-factorial",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "ancova.analizarDe"
+   },
+   "titulo": "Bloques con factorial 3 × 4 y una covariable",
+   "fuente": "Horton, Russell y Moore (1968), Biometrics 24: 845-858; conjunto Soils del paquete carData",
+   "clase": "B",
+   "valores": 123,
+   "difMax": 1.7053025658242404e-13,
+   "difEscaladaMax": 3.6945310575456614e-14,
+   "peor": "homogeneidad[0].F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "comparaciones[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "lm(N ~ bloque + densidad + contorno * profundidad); car::Anova(m, type = 3); anova(m, m + covariable:tratamientos); emmeans; pairs(adjust = \"tukey\")"
+   }
+  },
+  {
+   "id": "ancova.analizarDe/suelos-dos-covariables",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "ancova.analizarDe"
+   },
+   "titulo": "Bloques con factorial y dos covariables, SC tipo II",
+   "fuente": "Horton, Russell y Moore (1968), Biometrics 24: 845-858; conjunto Soils del paquete carData",
+   "clase": "A",
+   "valores": 141,
+   "difMax": 4.796163466380676e-14,
+   "difEscaladaMax": 2.7977620220553945e-14,
+   "peor": "homogeneidad[1].F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "comparaciones[*].p[*]": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "lm(N ~ bloque + densidad + pH + contorno * profundidad); car::Anova(m, type = 2); anova(m, m + covariable:tratamientos); emmeans; pairs(adjust = \"scheffe\")"
+   }
+  },
+  {
+   "id": "ancova/metodo-ancova-anorexia",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "ancova"
+   },
+   "titulo": "ANCOVA con Tukey y eficiencia relativa",
+   "fuente": "Hand, Daly, McConway, Lunn y Ostrowski (1993), A Handbook of Small Data Sets, conjunto 285; anorexia del paquete MASS",
+   "clase": "B",
+   "valores": 55,
+   "difMax": 6.821210263296962e-13,
+   "difEscaladaMax": 2.853273173286652e-14,
+   "peor": "comparaciones[0].pares[2].p_ajustado",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "comparaciones[*].pares[*].p_ajustado": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6",
+     "multcompView": "0.1.10"
+    },
+    "codigo": "lm(peso_final ~ peso_inicial + tratamiento, contrasts = contr.sum); car::Anova(type = 3); emmeans; pairs(adjust = \"tukey\")"
+   }
+  },
+  {
+   "id": "reg.colinealidadDe/colinealidad-arboles",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.colinealidadDe"
+   },
+   "titulo": "Dos predictores",
+   "fuente": "Ryan, Joiner y Ryan (1976), Minitab Student Handbook; conjunto trees de R",
+   "clase": "A",
+   "valores": 18,
+   "difMax": 7.105427357601002e-15,
+   "difEscaladaMax": 1.13518915337389e-15,
+   "peor": "vif[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "car::vif(lm(volumen ~ diametro + altura)); svd de la matriz del modelo con columnas de longitud 1"
+   }
+  },
+  {
+   "id": "reg.colinealidadDe/colinealidad-longley",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.colinealidadDe"
+   },
+   "titulo": "Seis predictores muy colineales",
+   "fuente": "Longley (1967), J. Am. Stat. Assoc. 62: 819-841; conjunto longley de R",
+   "clase": "A",
+   "valores": 70,
+   "difMax": 1.1568772606551647e-9,
+   "difEscaladaMax": 2.370326157574709e-13,
+   "peor": "proporciones[6][5]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": [
+     "car::vif(lm(Employed ~ GNP.deflator + GNP + Unemployed + Armed.Forces + Population + )); svd de la matriz del modelo con columnas de longitud 1",
+     "car::vif(lm(    Year)); svd de la matriz del modelo con columnas de longitud 1"
+    ]
+   }
+  },
+  {
+   "id": "reg.colinealidadDe/colinealidad-stackloss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.colinealidadDe"
+   },
+   "titulo": "Tres predictores",
+   "fuente": "Brownlee (1965), Statistical Theory and Methodology in Science and Engineering, pp. 491-500; conjunto stackloss de R",
+   "clase": "A",
+   "valores": 28,
+   "difMax": 7.815970093361102e-14,
+   "difEscaladaMax": 2.6645352591003757e-15,
+   "peor": "proporciones[2][1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "car::vif(lm(perdida ~ aire + agua + acido)); svd de la matriz del modelo con columnas de longitud 1"
+   }
+  },
+  {
+   "id": "reg.colinealidadDe/colinealidad-swiss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.colinealidadDe"
+   },
+   "titulo": "Cinco predictores",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 54,
+   "difMax": 5.3290705182007514e-14,
+   "difEscaladaMax": 1.9735047476468584e-15,
+   "peor": "indices[5]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": [
+     "car::vif(lm(Fertility ~ Agriculture + Examination + Education + Catholic + )); svd de la matriz del modelo con columnas de longitud 1",
+     "car::vif(lm(    Infant.Mortality)); svd de la matriz del modelo con columnas de longitud 1"
+    ]
+   }
+  },
+  {
+   "id": "reg.influenciaDe/influencia-arboles",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.influenciaDe"
+   },
+   "titulo": "Dos predictores",
+   "fuente": "Ryan, Joiner y Ryan (1976), Minitab Student Handbook; conjunto trees de R",
+   "clase": "A",
+   "valores": 496,
+   "difMax": 1.6209256159527285e-14,
+   "difEscaladaMax": 1.057997531707756e-14,
+   "peor": "rstudent[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "influence.measures(lm(volumen ~ diametro + altura)); rstandard; rstudent; influence()$sigma"
+   }
+  },
+  {
+   "id": "reg.influenciaDe/influencia-cars",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.influenciaDe"
+   },
+   "titulo": "Regresión simple",
+   "fuente": "Ezekiel (1930), Methods of Correlation Analysis; conjunto cars de R",
+   "clase": "A",
+   "valores": 750,
+   "difMax": 9.769962616701378e-15,
+   "difEscaladaMax": 9.769962616701378e-15,
+   "peor": "rstandard[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "influence.measures(lm(dist ~ speed)); rstandard; rstudent; influence()$sigma"
+   }
+  },
+  {
+   "id": "reg.influenciaDe/influencia-faltantes",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.influenciaDe"
+   },
+   "titulo": "Con filas incompletas fuera",
+   "fuente": "Chambers, Cleveland, Kleiner y Tukey (1983), Graphical Methods for Data Analysis; conjunto airquality de R",
+   "clase": "A",
+   "valores": 1887,
+   "difMax": 4.85722573273506e-14,
+   "difEscaladaMax": 4.85722573273506e-14,
+   "peor": "rstandard[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "influence.measures(lm(Ozone ~ Solar.R + Wind + Temp)); rstandard; rstudent; influence()$sigma"
+   }
+  },
+  {
+   "id": "reg.influenciaDe/influencia-polinomial",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.influenciaDe"
+   },
+   "titulo": "Polinomio de grado 2",
+   "fuente": "The World Almanac and Book of Facts (1975); conjunto women de R",
+   "clase": "A",
+   "valores": 240,
+   "difMax": 1.1574075031717257e-12,
+   "difEscaladaMax": 1.1574075031717257e-12,
+   "peor": "rstandard[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "influence.measures(lm(peso ~ estatura + I(estatura^2))); rstandard; rstudent; influence()$sigma"
+   }
+  },
+  {
+   "id": "reg.influenciaDe/influencia-stackloss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.influenciaDe"
+   },
+   "titulo": "Tres predictores",
+   "fuente": "Brownlee (1965), Statistical Theory and Methodology in Science and Engineering, pp. 491-500; conjunto stackloss de R",
+   "clase": "A",
+   "valores": 357,
+   "difMax": 2.9531932455029164e-14,
+   "difEscaladaMax": 2.4417156548946105e-14,
+   "peor": "rstudent[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "influence.measures(lm(perdida ~ aire + agua + acido)); rstandard; rstudent; influence()$sigma"
+   }
+  },
+  {
+   "id": "reg.influenciaDe/influencia-swiss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.influenciaDe"
+   },
+   "titulo": "Cinco predictores",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 893,
+   "difMax": 4.6629367034256575e-15,
+   "difEscaladaMax": 4.6629367034256575e-15,
+   "peor": "rstandard[18]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": [
+     "influence.measures(lm(Fertility ~ Agriculture + Examination + Education + Catholic + )); rstandard; rstudent; influence()$sigma",
+     "influence.measures(lm(    Infant.Mortality)); rstandard; rstudent; influence()$sigma"
+    ]
+   }
+  },
+  {
+   "id": "seleccion-pasos/metodo-pasos-swiss",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "seleccion-pasos"
+   },
+   "titulo": "Paso a paso por AIC en ambas direcciones",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 37,
+   "difMax": 4.263256414560601e-14,
+   "difEscaladaMax": 3.9274609204387306e-14,
+   "peor": "final.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "step(lm(Fertility ~ ., data = swiss))"
+   }
+  },
+  {
+   "id": "regresion-polinomial/metodo-polinomial-dosis",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "regresion-polinomial"
+   },
+   "titulo": "Cuadrática con dosis óptima y falta de ajuste",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 54,
+   "difMax": 4.831690603168681e-13,
+   "difEscaladaMax": 3.14329842548492e-14,
+   "peor": "coeficientes.p[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "lmtest": "0.9.40"
+    },
+    "codigo": "lm(rend ~ poly(dosis, 2, raw = TRUE)); anova; óptimo −b1/(2·b2)"
+   }
+  },
+  {
+   "id": "regresion-lineal/metodo-regresion-stackloss",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "regresion-lineal"
+   },
+   "titulo": "Regresión múltiple con diagnóstico completo",
+   "fuente": "Brownlee (1965), Statistical Theory and Methodology in Science and Engineering, pp. 491-500; conjunto stackloss de R",
+   "clase": "A",
+   "valores": 126,
+   "difMax": 7.389644451905042e-13,
+   "difEscaladaMax": 3.674740607931629e-14,
+   "peor": "anova.regresion.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "lmtest": "0.9.40"
+    },
+    "codigo": "lm(perdida ~ aire + agua + acido); summary; anova; AIC; influence.measures; bptest; resettest; dwtest; vif; svd"
+   }
+  },
+  {
+   "id": "mejores-subconjuntos/metodo-subconjuntos-mtcars",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mejores-subconjuntos"
+   },
+   "titulo": "Mejores subconjuntos con diez candidatos",
+   "fuente": "Henderson y Velleman (1981), Biometrics 37: 391-411; conjunto mtcars de R",
+   "clase": "A",
+   "valores": 128,
+   "difMax": 2.2737367544323206e-13,
+   "difEscaladaMax": 2.040563925332647e-14,
+   "peor": "filas[1].cp",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "leaps": "3.2"
+    },
+    "codigo": "summary(leaps::regsubsets(mpg ~ ., data = mtcars, nvmax = 10))"
+   }
+  },
+  {
+   "id": "reg.analizarDe/multiple-arboles",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.analizarDe"
+   },
+   "titulo": "Dos predictores, IC al 90 % y predicción",
+   "fuente": "Ryan, Joiner y Ryan (1976), Minitab Student Handbook; conjunto trees de R",
+   "clase": "A",
+   "valores": 76,
+   "difMax": 9.208633855450898e-12,
+   "difEscaladaMax": 5.819316393137645e-14,
+   "peor": "falta_ajuste.falta.F",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "lm(volumen ~ diametro + altura); summary, confint, anova, car::Anova(type = 2), AIC, BIC, predict(interval = …); falta de ajuste con anova(m, lm(y ~ factor(x)))"
+   }
+  },
+  {
+   "id": "reg.analizarDe/multiple-faltantes",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.analizarDe"
+   },
+   "titulo": "Tres predictores con faltantes (filas incompletas fuera)",
+   "fuente": "Chambers, Cleveland, Kleiner y Tukey (1983), Graphical Methods for Data Analysis; conjunto airquality de R",
+   "clase": "A",
+   "valores": 66,
+   "difMax": 1.2369127944111824e-10,
+   "difEscaladaMax": 2.6304005542273883e-14,
+   "peor": "coeficientes.ic_sup[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "lm(Ozone ~ Solar.R + Wind + Temp); summary, confint, anova, car::Anova(type = 2), AIC, BIC, predict(interval = …); falta de ajuste con anova(m, lm(y ~ factor(x)))"
+   }
+  },
+  {
+   "id": "reg.analizarDe/multiple-longley",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.analizarDe"
+   },
+   "titulo": "Seis predictores muy colineales (prueba de exactitud numérica)",
+   "fuente": "Longley (1967), J. Am. Stat. Assoc. 62: 819-841; conjunto longley de R",
+   "clase": "A",
+   "valores": 108,
+   "difMax": 1.2960299500264227e-11,
+   "difEscaladaMax": 5.950795411990839e-14,
+   "peor": "ajuste.logLik",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": [
+     "lm(Employed ~ GNP.deflator + GNP + Unemployed + Armed.Forces + Population + ); summary, confint, anova, car::Anova(type = 2), AIC, BIC, predict(interval = …); falta de ajuste con anova(m, lm(y ~ factor(x)))",
+     "lm(    Year); summary, confint, anova, car::Anova(type = 2), AIC, BIC, predict(interval = …); falta de ajuste con anova(m, lm(y ~ factor(x)))"
+    ]
+   }
+  },
+  {
+   "id": "reg.analizarDe/multiple-stackloss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.analizarDe"
+   },
+   "titulo": "Tres predictores (datos clásicos de influencia)",
+   "fuente": "Brownlee (1965), Statistical Theory and Methodology in Science and Engineering, pp. 491-500; conjunto stackloss de R",
+   "clase": "A",
+   "valores": 72,
+   "difMax": 3.637978807091713e-12,
+   "difEscaladaMax": 3.674740607931629e-14,
+   "peor": "anova.regresion.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "lm(perdida ~ aire + agua + acido); summary, confint, anova, car::Anova(type = 2), AIC, BIC, predict(interval = …); falta de ajuste con anova(m, lm(y ~ factor(x)))"
+   }
+  },
+  {
+   "id": "reg.analizarDe/multiple-swiss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.analizarDe"
+   },
+   "titulo": "Cinco predictores",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 94,
+   "difMax": 2.0463630789890885e-12,
+   "difEscaladaMax": 3.6245679850286947e-14,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": [
+     "lm(Fertility ~ Agriculture + Examination + Education + Catholic + ); summary, confint, anova, car::Anova(type = 2), AIC, BIC, predict(interval = …); falta de ajuste con anova(m, lm(y ~ factor(x)))",
+     "lm(    Infant.Mortality); summary, confint, anova, car::Anova(type = 2), AIC, BIC, predict(interval = …); falta de ajuste con anova(m, lm(y ~ factor(x)))"
+    ]
+   }
+  },
+  {
+   "id": "reg.analizarDe/polinomial-cubica",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.analizarDe"
+   },
+   "titulo": "Cúbica con máximo dentro de los datos",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 72,
+   "difMax": 3.865352482534945e-12,
+   "difEscaladaMax": 3.875175360168983e-14,
+   "peor": "terminos.sc2[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "lm(altura ~ dias + I(dias^2) + I(dias^3)); summary, confint, anova, car::Anova(type = 2), AIC, BIC, predict(interval = …); falta de ajuste con anova(m, lm(y ~ factor(x)))"
+   }
+  },
+  {
+   "id": "reg.analizarDe/polinomial-dosis",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.analizarDe"
+   },
+   "titulo": "Respuesta a la dosis: cuadrática con repeticiones y dosis óptima",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 65,
+   "difMax": 4.831690603168681e-13,
+   "difEscaladaMax": 5.3290705182007514e-14,
+   "peor": "ajuste.bic",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "lm(rend ~ dosis + I(dosis^2)); summary, confint, anova, car::Anova(type = 2), AIC, BIC, predict(interval = …); falta de ajuste con anova(m, lm(y ~ factor(x)))"
+   }
+  },
+  {
+   "id": "reg.analizarDe/polinomial-women-2",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.analizarDe"
+   },
+   "titulo": "Polinomio de grado 2",
+   "fuente": "The World Almanac and Book of Facts (1975); conjunto women de R",
+   "clase": "A",
+   "valores": 65,
+   "difMax": 2.2009771782904863e-9,
+   "difEscaladaMax": 1.8653689703995724e-12,
+   "peor": "predicciones.ee[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "lm(peso ~ estatura + I(estatura^2)); summary, confint, anova, car::Anova(type = 2), AIC, BIC, predict(interval = …); falta de ajuste con anova(m, lm(y ~ factor(x)))"
+   }
+  },
+  {
+   "id": "reg.analizarDe/polinomial-women-3",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.analizarDe"
+   },
+   "titulo": "Polinomio de grado 3",
+   "fuente": "The World Almanac and Book of Facts (1975); conjunto women de R",
+   "clase": "A",
+   "valores": 63,
+   "difMax": 1.275766408070922e-7,
+   "difEscaladaMax": 1.4268312785552282e-11,
+   "peor": "ajuste.logLik",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "lm(peso ~ estatura + I(estatura^2) + I(estatura^3)); summary, confint, anova, car::Anova(type = 2), AIC, BIC, predict(interval = …); falta de ajuste con anova(m, lm(y ~ factor(x)))"
+   }
+  },
+  {
+   "id": "reg.analizarDe/simple-cars",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.analizarDe"
+   },
+   "titulo": "Regresión simple con repeticiones de x (falta de ajuste) y predicción",
+   "fuente": "Ezekiel (1930), Methods of Correlation Analysis; conjunto cars de R",
+   "clase": "A",
+   "valores": 56,
+   "difMax": 1.0913936421275139e-11,
+   "difEscaladaMax": 1.1792911587797733e-14,
+   "peor": "anova.regresion.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3"
+    },
+    "codigo": "lm(dist ~ speed); summary, confint, anova, car::Anova(type = 2), AIC, BIC, predict(interval = …); falta de ajuste con anova(m, lm(y ~ factor(x)))"
+   }
+  },
+  {
+   "id": "reg.pasosDe/pasos-aic-adelante-mtcars",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pasosDe"
+   },
+   "titulo": "AIC hacia adelante con 10 candidatos",
+   "fuente": "Henderson y Velleman (1981), Biometrics 37: 391-411; conjunto mtcars de R",
+   "clase": "A",
+   "valores": 42,
+   "difMax": 2.2737367544323206e-13,
+   "difEscaladaMax": 2.20707116301624e-15,
+   "peor": "final.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "step(…, direction = \"adelante\")$anova"
+   }
+  },
+  {
+   "id": "reg.pasosDe/pasos-aic-adelante-swiss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pasosDe"
+   },
+   "titulo": "AIC hacia adelante",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 52,
+   "difMax": 3.183231456205249e-12,
+   "difEscaladaMax": 4.457356441450281e-14,
+   "peor": "final.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "step(…, direction = \"adelante\")$anova"
+   }
+  },
+  {
+   "id": "reg.pasosDe/pasos-aic-ambas-mtcars",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pasosDe"
+   },
+   "titulo": "AIC en ambas direcciones con 10 candidatos",
+   "fuente": "Henderson y Velleman (1981), Biometrics 37: 391-411; conjunto mtcars de R",
+   "clase": "A",
+   "valores": 62,
+   "difMax": 1.7053025658242404e-13,
+   "difEscaladaMax": 1.0653715736521573e-15,
+   "peor": "pasos[6].rss",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "step(…, direction = \"ambas\")$anova"
+   }
+  },
+  {
+   "id": "reg.pasosDe/pasos-aic-ambas-swiss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pasosDe"
+   },
+   "titulo": "AIC en ambas direcciones",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 37,
+   "difMax": 4.263256414560601e-14,
+   "difEscaladaMax": 3.9274609204387306e-14,
+   "peor": "final.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "step(…, direction = \"ambas\")$anova"
+   }
+  },
+  {
+   "id": "reg.pasosDe/pasos-aic-atras-swiss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pasosDe"
+   },
+   "titulo": "AIC hacia atrás",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 37,
+   "difMax": 4.263256414560601e-14,
+   "difEscaladaMax": 3.9274609204387306e-14,
+   "peor": "final.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "step(…, direction = \"atras\")$anova"
+   }
+  },
+  {
+   "id": "reg.pasosDe/pasos-p-adelante-swiss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pasosDe"
+   },
+   "titulo": "Valor p hacia adelante",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 65,
+   "difMax": 3.183231456205249e-12,
+   "difEscaladaMax": 4.457356441450281e-14,
+   "peor": "final.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "add1/drop1(…, test = \"F\") con entrada 0.05 y salida 0.1"
+   }
+  },
+  {
+   "id": "reg.pasosDe/pasos-p-atras-longley",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pasosDe"
+   },
+   "titulo": "Valor p hacia atrás con colinealidad",
+   "fuente": "Longley (1967), J. Am. Stat. Assoc. 62: 819-841; conjunto longley de R",
+   "clase": "A",
+   "valores": 49,
+   "difMax": 1.000444171950221e-11,
+   "difEscaladaMax": 4.4297898682543746e-14,
+   "peor": "pasos[1].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "add1/drop1(…, test = \"F\") con entrada 0.05 y salida 0.05"
+   }
+  },
+  {
+   "id": "reg.pasosDe/pasos-p-atras-swiss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pasosDe"
+   },
+   "titulo": "Valor p hacia atrás",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 41,
+   "difMax": 4.263256414560601e-14,
+   "difEscaladaMax": 3.9274609204387306e-14,
+   "peor": "final.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "add1/drop1(…, test = \"F\") con entrada 0.05 y salida 0.1"
+   }
+  },
+  {
+   "id": "reg.pasosDe/pasos-p-mixta-faltantes",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pasosDe"
+   },
+   "titulo": "Valor p mixta con filas incompletas",
+   "fuente": "Chambers, Cleveland, Kleiner y Tukey (1983), Graphical Methods for Data Analysis; conjunto airquality de R",
+   "clase": "A",
+   "valores": 52,
+   "difMax": 7.275957614183426e-11,
+   "difEscaladaMax": 7.25295809981285e-14,
+   "peor": "final.p[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "add1/drop1(…, test = \"F\") con entrada 0.1 y salida 0.1"
+   }
+  },
+  {
+   "id": "reg.pasosDe/pasos-p-mixta-mtcars",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pasosDe"
+   },
+   "titulo": "Valor p mixta (0.15 para entrar y salir)",
+   "fuente": "Henderson y Velleman (1981), Biometrics 37: 391-411; conjunto mtcars de R",
+   "clase": "A",
+   "valores": 52,
+   "difMax": 2.2737367544323206e-13,
+   "difEscaladaMax": 7.191714759913875e-15,
+   "peor": "pasos[1].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "add1/drop1(…, test = \"F\") con entrada 0.15 y salida 0.15"
+   }
+  },
+  {
+   "id": "reg.pruebasDe/pruebas-arboles",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pruebasDe"
+   },
+   "titulo": "Dos predictores",
+   "fuente": "Ryan, Joiner y Ryan (1976), Minitab Student Handbook; conjunto trees de R",
+   "clase": "A",
+   "valores": 11,
+   "difMax": 3.552713678800501e-14,
+   "difEscaladaMax": 9.992007221626409e-15,
+   "peor": "shapiro.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "lmtest": "0.9.40"
+    },
+    "codigo": "m <- lm(volumen ~ diametro + altura); shapiro.test(residuals(m)); lmtest::bptest(m); lmtest::resettest(m); lmtest::dwtest(m)"
+   }
+  },
+  {
+   "id": "reg.pruebasDe/pruebas-cars",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pruebasDe"
+   },
+   "titulo": "Regresión simple (Durbin-Watson exacto)",
+   "fuente": "Ezekiel (1930), Methods of Correlation Analysis; conjunto cars de R",
+   "clase": "A",
+   "valores": 11,
+   "difMax": 2.0372592501871623e-14,
+   "difEscaladaMax": 2.0372592501871623e-14,
+   "peor": "durbin_watson.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "lmtest": "0.9.40"
+    },
+    "codigo": "m <- lm(dist ~ speed); shapiro.test(residuals(m)); lmtest::bptest(m); lmtest::resettest(m); lmtest::dwtest(m)"
+   }
+  },
+  {
+   "id": "reg.pruebasDe/pruebas-faltantes",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pruebasDe"
+   },
+   "titulo": "111 datos: Durbin-Watson por la aproximación normal",
+   "fuente": "Chambers, Cleveland, Kleiner y Tukey (1983), Graphical Methods for Data Analysis; conjunto airquality de R",
+   "clase": "A",
+   "valores": 11,
+   "difMax": 2.4868995751603507e-14,
+   "difEscaladaMax": 1.939852996263605e-14,
+   "peor": "reset.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "lmtest": "0.9.40"
+    },
+    "codigo": "m <- lm(Ozone ~ Solar.R + Wind + Temp); shapiro.test(residuals(m)); lmtest::bptest(m); lmtest::resettest(m); lmtest::dwtest(m)"
+   }
+  },
+  {
+   "id": "reg.pruebasDe/pruebas-longley",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pruebasDe"
+   },
+   "titulo": "Seis predictores colineales",
+   "fuente": "Longley (1967), J. Am. Stat. Assoc. 62: 819-841; conjunto longley de R",
+   "clase": "A",
+   "valores": 11,
+   "difMax": 5.595524044110789e-14,
+   "difEscaladaMax": 3.3306690738754696e-14,
+   "peor": "durbin_watson.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "lmtest": "0.9.40"
+    },
+    "codigo": [
+     "m <- lm(Employed ~ GNP.deflator + GNP + Unemployed + Armed.Forces + Population + ); shapiro.test(residuals(m)); lmtest::bptest(m); lmtest::resettest(m); lmtest::dwtest(m)",
+     "m <- lm(    Year); shapiro.test(residuals(m)); lmtest::bptest(m); lmtest::resettest(m); lmtest::dwtest(m)"
+    ]
+   }
+  },
+  {
+   "id": "reg.pruebasDe/pruebas-polinomial",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pruebasDe"
+   },
+   "titulo": "Polinomio de grado 2 con repeticiones",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 11,
+   "difMax": 3.5083047578154947e-14,
+   "difEscaladaMax": 1.554312234475219e-14,
+   "peor": "shapiro.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "lmtest": "0.9.40"
+    },
+    "codigo": "m <- lm(rend ~ dosis + I(dosis^2)); shapiro.test(residuals(m)); lmtest::bptest(m); lmtest::resettest(m); lmtest::dwtest(m)"
+   }
+  },
+  {
+   "id": "reg.pruebasDe/pruebas-stackloss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pruebasDe"
+   },
+   "titulo": "Tres predictores",
+   "fuente": "Brownlee (1965), Statistical Theory and Methodology in Science and Engineering, pp. 491-500; conjunto stackloss de R",
+   "clase": "A",
+   "valores": 11,
+   "difMax": 1.0658141036401503e-13,
+   "difEscaladaMax": 2.179415044917952e-14,
+   "peor": "breusch_pagan.BP",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "lmtest": "0.9.40"
+    },
+    "codigo": "m <- lm(perdida ~ aire + agua + acido); shapiro.test(residuals(m)); lmtest::bptest(m); lmtest::resettest(m); lmtest::dwtest(m)"
+   }
+  },
+  {
+   "id": "reg.pruebasDe/pruebas-swiss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pruebasDe"
+   },
+   "titulo": "Cinco predictores",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 11,
+   "difMax": 1.4654943925052066e-14,
+   "difEscaladaMax": 1.4654943925052066e-14,
+   "peor": "shapiro.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "lmtest": "0.9.40"
+    },
+    "codigo": [
+     "m <- lm(Fertility ~ Agriculture + Examination + Education + Catholic + ); shapiro.test(residuals(m)); lmtest::bptest(m); lmtest::resettest(m); lmtest::dwtest(m)",
+     "m <- lm(    Infant.Mortality); shapiro.test(residuals(m)); lmtest::bptest(m); lmtest::resettest(m); lmtest::dwtest(m)"
+    ]
+   }
+  },
+  {
+   "id": "reg.subconjuntosDe/subconjuntos-longley",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.subconjuntosDe"
+   },
+   "titulo": "Seis candidatos colineales",
+   "fuente": "Longley (1967), J. Am. Stat. Assoc. 62: 819-841; conjunto longley de R",
+   "clase": "A",
+   "valores": 166,
+   "difMax": 9.124789812631207e-11,
+   "difEscaladaMax": 1.1111213473714407e-12,
+   "peor": "filas[7].cp",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "leaps": "3.2"
+    },
+    "codigo": "summary(leaps::regsubsets(…, nvmax = 6, nbest = 3))"
+   }
+  },
+  {
+   "id": "reg.subconjuntosDe/subconjuntos-mtcars",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.subconjuntosDe"
+   },
+   "titulo": "Diez candidatos (1023 modelos)",
+   "fuente": "Henderson y Velleman (1981), Biometrics 37: 391-411; conjunto mtcars de R",
+   "clase": "A",
+   "valores": 128,
+   "difMax": 2.2737367544323206e-13,
+   "difEscaladaMax": 2.040563925332647e-14,
+   "peor": "filas[1].cp",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "leaps": "3.2"
+    },
+    "codigo": "summary(leaps::regsubsets(…, nvmax = 10, nbest = 1))"
+   }
+  },
+  {
+   "id": "reg.subconjuntosDe/subconjuntos-swiss-2",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.subconjuntosDe"
+   },
+   "titulo": "Los dos mejores de cada tamaño",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 91,
+   "difMax": 5.4569682106375694e-12,
+   "difEscaladaMax": 3.618517173330157e-15,
+   "peor": "filas[1].bic",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "leaps": "3.2"
+    },
+    "codigo": "summary(leaps::regsubsets(…, nvmax = 5, nbest = 2))"
+   }
+  },
+  {
+   "id": "reg.subconjuntosDe/subconjuntos-swiss",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.subconjuntosDe"
+   },
+   "titulo": "Cinco candidatos",
+   "fuente": "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R",
+   "clase": "A",
+   "valores": 53,
+   "difMax": 2.7284841053187847e-12,
+   "difEscaladaMax": 3.4753176615575785e-15,
+   "peor": "filas[2].cp",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "leaps": "3.2"
+    },
+    "codigo": "summary(leaps::regsubsets(…, nvmax = 5, nbest = 1))"
    }
   }
  ]

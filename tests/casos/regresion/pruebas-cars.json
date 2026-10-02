@@ -1,0 +1,67 @@
+{
+  "esquema": 1,
+  "id": "reg.pruebasDe/pruebas-cars",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pruebasDe"
+  },
+  "titulo": "Regresión simple (Durbin-Watson exacto)",
+  "fuente": "Ezekiel (1930), Methods of Correlation Analysis; conjunto cars de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "dist": [2, 10, 4, 22, 16, 10, 18, 26, 34, 17, 28, 14, 20, 24, 28, 26, 34, 34, 46, 26, 36, 60, 80, 20, 26, 54, 32, 40, 32, 40, 50, 42, 56, 76, 84, 36, 46, 68, 32, 48, 52, 56, 64, 66, 54, 70, 92, 93, 120, 85],
+      "speed": [4, 4, 7, 7, 8, 9, 10, 10, 10, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 16, 16, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 20, 20, 20, 20, 20, 22, 23, 24, 24, 24, 24, 25]
+    },
+    "tipos": {
+      "dist": {
+        "tipo": "numerica"
+      },
+      "speed": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "respuesta": "dist",
+      "predictores": ["speed"]
+    },
+    {
+      "grado": 1
+    }
+  ],
+  "esperado": {
+    "shapiro": {
+      "W": 0.94509055285889376,
+      "p": 0.021524575909292749
+    },
+    "breusch_pagan": {
+      "BP": 3.2148799271746502,
+      "gl": 1,
+      "p": 0.072971545054077588
+    },
+    "reset": {
+      "F": 1.555397542186677,
+      "gl1": 2,
+      "gl2": 46,
+      "p": 0.22200355452671902
+    },
+    "durbin_watson": {
+      "DW": 1.6762253234350972,
+      "p": 0.09521708980211406
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "lmtest": "0.9.40"
+    },
+    "codigo": "m <- lm(dist ~ speed); shapiro.test(residuals(m)); lmtest::bptest(m); lmtest::resettest(m); lmtest::dwtest(m)"
+  }
+}

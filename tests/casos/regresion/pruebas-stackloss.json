@@ -1,0 +1,75 @@
+{
+  "esquema": 1,
+  "id": "reg.pruebasDe/pruebas-stackloss",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "reg.pruebasDe"
+  },
+  "titulo": "Tres predictores",
+  "fuente": "Brownlee (1965), Statistical Theory and Methodology in Science and Engineering, pp. 491-500; conjunto stackloss de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "perdida": [42, 37, 37, 28, 18, 18, 19, 20, 15, 14, 14, 13, 11, 12, 8, 7, 8, 8, 9, 15, 15],
+      "aire": [80, 80, 75, 62, 62, 62, 62, 62, 58, 58, 58, 58, 58, 58, 50, 50, 50, 50, 50, 56, 70],
+      "agua": [27, 27, 25, 24, 22, 23, 24, 24, 23, 18, 18, 17, 18, 19, 18, 18, 19, 19, 20, 20, 20],
+      "acido": [89, 88, 90, 87, 87, 87, 93, 93, 87, 80, 89, 88, 82, 93, 89, 86, 72, 79, 80, 82, 91]
+    },
+    "tipos": {
+      "perdida": {
+        "tipo": "numerica"
+      },
+      "aire": {
+        "tipo": "numerica"
+      },
+      "agua": {
+        "tipo": "numerica"
+      },
+      "acido": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "respuesta": "perdida",
+      "predictores": ["aire", "agua", "acido"]
+    },
+    {
+      "grado": 1
+    }
+  ],
+  "esperado": {
+    "shapiro": {
+      "W": 0.97398570770689163,
+      "p": 0.81864591459709168
+    },
+    "breusch_pagan": {
+      "BP": 4.8903677439754247,
+      "gl": 3,
+      "p": 0.18000324351489289
+    },
+    "reset": {
+      "F": 1.1728648400634261,
+      "gl1": 2,
+      "gl2": 15,
+      "p": 0.3363102765984331
+    },
+    "durbin_watson": {
+      "DW": 1.4851310343413366,
+      "p": 0.043458224008751455
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "lmtest": "0.9.40"
+    },
+    "codigo": "m <- lm(perdida ~ aire + agua + acido); shapiro.test(residuals(m)); lmtest::bptest(m); lmtest::resettest(m); lmtest::dwtest(m)"
+  }
+}

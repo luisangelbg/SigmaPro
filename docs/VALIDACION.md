@@ -47,6 +47,7 @@ con una identidad exacta.
 | Cuantil de t con menos de 1 gl y colas diminutas (`qt`) | `pt(qt(1e-8, 0.5, lower.tail = FALSE), 0.5, lower.tail = FALSE)` da 9.99999986e-9: error relativo 2.9e-8. | Referencia = inversión exacta de `pt` en escala logarítmica (dif. 2.8e-14). |
 | Cuantil exacto de la suma de rangos en la mediana (`qwilcox`) | Con m · n impar, P(W ≤ (mn − 1)/2) = ½ exactamente. Con m = n = 49, `choose(98, 49)` de R (exp de lbeta) trae un error relativo de 4e-15, la suma queda 2.3e-15 debajo de ½ —más allá de su margen de 10ε— y `qwilcox(0.5, 49, 49)` da 1201 en vez de 1200. | Referencia = (mn − 1)/2 exacto por simetría, en los 8 pares con m · n impar; la rejilla general se compara contra `qwilcox` tal cual. |
 | F de los efectos simples (`emmeans::joint_tests`, `test(joint = TRUE)`) | emmeans redondea a propósito la F a 3 decimales (y los gl a 2) al guardarla, aunque calcula el p con la F exacta. | Referencia = la F exacta que corresponde a su p (`qf(p, gl1, gl2, lower.tail = FALSE)`); el generador comprueba que redondeada a 3 decimales es la de emmeans. |
+| Independencia de la covariable en la ANCOVA (`anova(m0, m1)`) | Si la covariable es la misma en cada tratamiento (datos frijol de agricolae), la SC entre tratamientos es cero y por redondeo sale −1e-15; `stat.anova` no acepta una F negativa y da `NA`. | Referencia = F = 0 y p = 1 cuando \|SC\| ≤ 1e-9 · SC del error (el generador lo comprueba); SigmaPro toma como cero toda diferencia negativa entre modelos anidados. |
 | p de Nemenyi y de Conover con ajuste de Tukey (PMCMRplus) | El p es 1 − `ptukey()`, una integral numérica (AS 190): por debajo de 1e-6 solo tiene cifras absolutas, en R y en cualquier programa (con p ≈ 3e-11, R y SigmaPro difieren 1.4e-14, un 5e-4 relativo). | Mismo algoritmo; en esas rutas el límite tiene un piso absoluto de 1e-12 (regla `absoluto`, con su motivo en el reporte). Los p mayores siguen con 1e-6. |
 
 Nota: para la t con más de 4 × 10⁵ grados de libertad, R usa una aproximación normal corregida; SigmaPro usa la
@@ -220,6 +221,36 @@ Notas sobre las referencias:
 
 `tests/codigo-r.mjs` corre también el código R de las comparaciones (29 escenarios en total): Tukey con sus letras,
 Tukey en parcelas divididas, contrastes, polinomios y medias ajustadas.
+
+## ANCOVA y regresión (Hito 1.8)
+
+| Qué | Contra qué | Casos |
+|---|---|---|
+| ANCOVA en completamente al azar (desbalanceado, SC tipo I, II y III) y en bloques (factorial 3 × 4, dos covariables, parcelas sin dato): ANOVA, pendientes comunes con IC, homogeneidad de pendientes, independencia de la covariable, medias ajustadas con IC, comparaciones (Tukey, DMS, Bonferroni, Holm, Scheffé, Šidák) con letras y eficiencia relativa | `lm`, `anova`, `car::Anova`, `anova(m0, m1)`, `emmeans`, `pairs`, `multcompLetters` y la fórmula de Cochran y Cox | 9 |
+| Regresión simple, múltiple (con faltantes y con la colinealidad de Longley) y polinomial de grado 2 y 3: coeficientes con IC, β estandarizados, ANOVA de la regresión, falta de ajuste con repeticiones, SC secuenciales y parciales, R², R² ajustada, σ, CV, log-verosimilitud, AIC, BIC, predicciones con IC y de predicción, y el máximo o mínimo de la curva | `lm`, `summary`, `confint`, `anova`, `car::Anova(type = 2)`, `AIC`, `BIC`, `predict`, `polyroot` | 10 |
+| Palancas, residuos estandarizados y estudentizados, Cook, DFFITS, DFBETAS, COVRATIO, σ₍ᵢ₎ y los criterios de influencia | `influence.measures`, `rstandard`, `rstudent`, `influence` | 6 |
+| Shapiro-Wilk de los residuos, Breusch-Pagan estudentizada, RESET y Durbin-Watson (exacto y por la normal con 111 datos) | `shapiro.test`, `lmtest::bptest`, `resettest`, `dwtest` | 7 |
+| VIF e índices de condición con sus proporciones de varianza | `car::vif` y `svd` de la matriz escalada | 4 |
+| Paso a paso por AIC (ambas direcciones, atrás y adelante, con 5 y 10 candidatos) y por valor p (adelante, atrás y mixta) | `step`, `extractAIC`, y `add1`/`drop1(test = "F")` en el mismo procedimiento | 10 |
+| Mejores subconjuntos (1, 2 y 3 mejores por tamaño) | `leaps::regsubsets` exhaustivo y su `summary` | 4 |
+| Los métodos completos (regresión con diagnóstico, polinomial con óptimo, paso a paso, subconjuntos y ANCOVA) | todo lo anterior | 5 |
+
+Son 54 casos y 7 689 valores; la mayor diferencia escalada es 1.4e-11, también con los datos de Longley (1967),
+el conjunto clásico para probar la exactitud de los programas de regresión.
+
+Notas sobre las referencias:
+
+- **Selección por valor p:** R no trae una función; la referencia es el mismo procedimiento escrito en R con las F
+  parciales de `add1` y `drop1(test = "F")` (entra la de menor p si p < entrada; sale la de mayor p si p > salida;
+  en la mixta, después de cada entrada se revisan las salidas). Es el código R que muestra la app.
+- **Índices de condición:** la SVD se calcula por Jacobi sobre la R de la QR (exactitud relativa en los valores
+  pequeños); los vectores singulares solo entran al cuadrado, así que su signo no importa.
+- **Muchas filas:** con 2000 filas o más, los modelos con factores y covariables se ajustan comprimiendo cada celda
+  a q + 1 filas por su QR (mismas XᵀX y Xᵀy); una prueba unitaria compara coeficientes, SC tipo I, II y III y medias
+  ajustadas contra el ajuste completo (dif. < 1e-9).
+
+`tests/codigo-r.mjs` corre el código R de la regresión, la polinomial, la selección (AIC y valor p), los
+subconjuntos y la ANCOVA (37 escenarios en total).
 
 ## Dónde está cada cosa
 
