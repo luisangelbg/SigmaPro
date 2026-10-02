@@ -283,12 +283,36 @@ Notas sobre las referencias:
 - **Breslow-Day:** R base no lo trae; la referencia es la fórmula publicada, con el esperado de cada estrato por
   `uniroot` (tolerancia 1e-13). Los estratos con un margen en cero no informan y no entran (ni a los gl).
 - **Medidas ordinales y nominales:** las fórmulas de Agresti (2002) y Brown y Benedetti (1977) se programaron en R
-  base de forma independiente (las mismas que usan SAS y DescTools); τ-b se coteja además con `cor(method = "kendall")`.
+  base de forma independiente (las mismas que usa el paquete DescTools); τ-b se coteja además con `cor(method = "kendall")`.
 - **Arnés:** un argumento `{ columna: 'x' }` es una referencia a la columna x de los datos solo si no trae otras
   claves; así, las entradas de las tablas de contingencia (`{ fila, columna, frecuencia }`) pasan tal cual.
 
 `tests/codigo-r.mjs` corre también el código R de la correlación, la matriz, la parcial, la tabla de contingencia,
 Mantel-Haenszel y kappa (44 escenarios en total).
+
+## Modelo lineal general, asistente y constructor (Hito 1.10)
+
+| Qué | Contra qué | Casos |
+|---|---|---|
+| Factorial 2 × 3 balanceado y desbalanceado con SC tipo I (en el orden escrito), II y III; sin intercepto con R² sin centrar | `lm`, `anova`, `car::Anova` con `contr.sum` para el tipo III | 4 |
+| Un factor con su propia pendiente de una covariable (tipo II y III), numérica tomada como factor, `(a + b + c)^2` y faltantes | lo mismo y `emmeans` | 5 |
+| Factor anidado (`a / b` y `a + a:b`), tipo I y III | lo mismo | 2 |
+| Producto de dos covariables más una tercera (tipo I y II) | lo mismo | 2 |
+| El método completo: ANOVA, coeficientes, resumen, total y medias marginales con IC | todo lo anterior | 1 |
+
+Son 14 casos y 976 valores; la mayor diferencia escalada es 2.5e-13. En cada caso se comparan los gl, SC, F y p del
+ANOVA, los coeficientes de `summary(lm)` con sus EE, t y p, σ, R² y R² ajustada, y las medias marginales de `emmeans`
+con su EE (en el método, también el IC).
+
+El asistente y el constructor no calculan: eligen el método y sus papeles. El árbol de decisión está escrito al
+principio de `js/nucleo/asistente.js` y se prueba con 11 pruebas unitarias
+(`tests/unidad/asistente.test.js`) que recorren todas sus ramas: cada recomendación nombra un método que existe
+y lo arma con las columnas correctas; el constructor lleva cada combinación de papeles a su diseño y su fórmula, y la
+lectura de fórmulas explica cada término o da el error con su arreglo. Una de ellas comprueba además que el modelo
+lineal general da el mismo ANOVA que el modelo de bloques al azar.
+
+`tests/codigo-r.mjs` corre el código R del modelo lineal general con SC tipo III y una numérica como factor, con tipo
+II y una covariable que interactúa, y sin intercepto (47 escenarios en total).
 
 ## Dónde está cada cosa
 

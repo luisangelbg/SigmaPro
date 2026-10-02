@@ -1,0 +1,167 @@
+/* SigmaPro — bloque 4: el constructor de modelos (interfaz).
+   Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
+
+   Las variables se ponen en zonas (respuesta, bloques, factores, parcela grande, covariables) de tres maneras: se
+   arrastran, se eligen en el menú «Agregar…» de cada zona (también en el celular) o, con una variable enfocada, se
+   pulsa R, F, B, C o P (Supr la quita). SP.constructorModelos.modelo decide el diseño y su fórmula; la fórmula se
+   puede editar a mano y entonces va al modelo lineal general, con la explicación de cada término o del error. */
+(function () {
+  'use strict';
+  const T = SP.T, esc = SP.ui.esc;
+  const $ = s => document.querySelector(s);
+  const A = () => SP.app.analisis;
+  const L = () => window.LABG;
+  const est = { roles: null, hoja: null, editando: false, derecha: '', comoFactor: [], modelo: null, c: null };
+  const ZONAS = [
+    { id: 'respuesta', titulo: 'Respuesta', tecla: 'R', ayuda: 'La variable numérica que mediste.', max: 1, numerica: true },
+    { id: 'bloques', titulo: 'Bloques o repeticiones', tecla: 'B', ayuda: 'Uno: bloques al azar; dos: filas y columnas (cuadro latino).', max: 2 },
+    { id: 'factores', titulo: 'Factores de tratamiento', tecla: 'F', ayuda: 'Se cruzan todos (con sus interacciones).', max: 6 },
+    { id: 'parcela', titulo: 'Parcela grande', tecla: 'P', ayuda: 'El factor aplicado a parcelas grandes (parcelas divididas).', max: 1 },
+    { id: 'covariables', titulo: 'Covariables', tecla: 'C', ayuda: 'Numéricas medidas antes del tratamiento (ANCOVA) o predictores (regresión).', max: 15, numerica: true },
+  ];
+  const TECLAS = { r: 'respuesta', b: 'bloques', f: 'factores', p: 'parcela', c: 'covariables' };
+
+  const infoDe = c => ({ numericas: c.numericas, factores: c.t.nombres.filter(n => !c.numericas.includes(n) && !c.fechas.includes(n)).concat(c.numFactor) });
+  function rolesIniciales(c) {
+    const p = c.pap, resp = p.respuestas.length ? p.respuestas[p.respuestas.length - 1] : (c.numericas[0] || '');
+    const bloques = p.fila && p.columna ? [p.fila, p.columna] : p.bloque ? [p.bloque] : [];
+    return { respuesta: resp, bloques, factores: p.factores.filter(f => !bloques.includes(f) && f !== resp).slice(0, 2), parcelaGrande: '', covariables: [] };
+  }
+  /** Papeles a partir de una recomendación del asistente. */
+  function desde(rec) {
+    const e = rec.e || {}, r = { respuesta: e.respuesta || '', bloques: [], factores: [], parcelaGrande: e.parcelaGrande || '', covariables: [] };
+    if (e.fila && e.columna) r.bloques = [e.fila, e.columna]; else if (e.bloque) r.bloques = [e.bloque]; else if (e.repeticion) r.bloques = [e.repeticion];
+    r.factores = [].concat(e.tratamientos || []).concat([e.parcelaGrande, e.subparcela, e.subsubparcela].filter(Boolean));
+    r.factores = r.factores.filter((f, i) => f && r.factores.indexOf(f) === i);
+    r.covariables = [].concat(e.covariables || (rec.metodo === 'regresion-lineal' ? e.predictores || [] : []));
+    est.roles = r; est.editando = false; est.hoja = SP.app.datos.hoja;
+  }
+  const enZona = (r, z) => (z === 'respuesta' ? (r.respuesta ? [r.respuesta] : []) : z === 'parcela' ? (r.parcelaGrande ? [r.parcelaGrande] : []) : r[z]);
+  function quitar(v) {
+    const r = est.roles;
+    if (r.respuesta === v) r.respuesta = '';
+    if (r.parcelaGrande === v) r.parcelaGrande = '';
+    for (const z of ['bloques', 'factores', 'covariables']) r[z] = r[z].filter(x => x !== v);
+  }
+  function asignar(v, z) {
+    const r = est.roles, c = est.c, zona = ZONAS.find(x => x.id === z);
+    if (!zona || !v) return;
+    if (zona.numerica && !c.numericas.includes(v)) { L() && L().toast(T('«{v}» no es numérica: no puede ir en «{z}».', { v, z: T(zona.titulo) }), { type: 'warning' }); return; }
+    if (z === 'parcela') {
+      if (!r.factores.includes(v)) { quitar(v); r.factores.push(v); }
+      r.parcelaGrande = v;
+    } else {
+      quitar(v);
+      if (z === 'respuesta') r.respuesta = v;
+      else {
+        if (r[z].length >= zona.max) { L() && L().toast(T('En «{z}» caben {k} variables.', { z: T(zona.titulo), k: zona.max }), { type: 'warning' }); return; }
+        r[z].push(v);
+      }
+    }
+    est.editando = false;
+    A().calcular();
+  }
+
+  /** La lectura de la fórmula escrita: cada término explicado, o el error y cómo arreglarlo. */
+  function lectura(c) {
+    const lec = SP.constructorModelos.interpretar(est.roles.respuesta, est.derecha, infoDe(c), est.comoFactor);
+    const numEn = lec.ok ? lec.variables.filter(v => c.numericas.includes(v)) : [];
+    const html = lec.ok ? `<ul class="ml-terminos small">${lec.terminos.map(x => `<li><b>${esc(x.etiqueta)}</b>: ${esc(x.explicacion)}</li>`).join('')}</ul>` +
+        (numEn.length ? `<fieldset class="exp-casillas"><legend>${esc(T('Numéricas que son tratamientos (factor)'))}</legend>${numEn.map(n => `<label class="imp-check"><input type="checkbox" data-comofactor value="${esc(n)}"${est.comoFactor.includes(n) ? ' checked' : ''}> ${esc(n)}</label>`).join('')}</fieldset>` : '')
+      : `<p class="msg msg-error small"><strong>${esc(lec.mensaje)}</strong>${lec.arreglo ? ` <span class="msg-fix">${esc(lec.arreglo)}</span>` : ''}</p>`;
+    return { ok: lec.ok, html };
+  }
+  /** Al escribir, solo se rehace la lectura (el campo conserva el cursor). */
+  function releer() {
+    const cont = $('#consLectura'), b = $('#consUsarFormula');
+    if (!cont || !est.c) return;
+    const lec = lectura(est.c);
+    cont.innerHTML = lec.html;
+    if (b) b.disabled = !lec.ok;
+  }
+
+  function pintar(c) {
+    const cont = $('#anaConstructor');
+    if (!cont) return;
+    est.c = c;
+    if (!est.roles || SP.app.datos.hoja !== est.hoja) { est.roles = rolesIniciales(c); est.hoja = SP.app.datos.hoja; est.editando = false; }
+    const r = est.roles, usadas = new Set([r.respuesta, ...r.bloques, ...r.factores, ...r.covariables].filter(Boolean));
+    const columnas = c.t.nombres.filter(n => !c.fechas.includes(n));
+    const tipoDe = n => (c.numFactor.includes(n) ? T('num. (factor)') : c.numericas.includes(n) ? T('numérica') : T('factor'));
+    const m = est.modelo = SP.constructorModelos.modelo(r, infoDe(c));
+    if (!est.editando) { est.derecha = m.formula ? m.formula.replace(/^[^~]*~\s*/, '').replace(/\s*\+\s*Error\(.*$/, '') : ''; est.comoFactor = m.op && m.op.comoFactor ? m.op.comoFactor.slice() : r.factores.concat(r.bloques).filter(v => c.numericas.includes(v)); }
+    /* foco */
+    const f = document.activeElement && cont.contains(document.activeElement) ? document.activeElement : null;
+    const clave = f ? (f.dataset.var ? 'var|' + f.dataset.var : f.dataset.zona ? 'zona|' + f.dataset.zona + '|' + (f.dataset.quitar || '') : f.id ? 'id|' + f.id : '') : '';
+    const pool = `<div class="cons-pool" role="list" aria-label="${esc(T('Variables de la tabla'))}">${columnas.map(n => `<button type="button" class="cons-chip${usadas.has(n) ? ' usada' : ''}" draggable="true" data-var="${esc(n)}" role="listitem" aria-describedby="consAyuda">${esc(n)} <span class="cons-tipo">${esc(tipoDe(n))}</span></button>`).join('')}</div>` +
+      `<p class="small muted" id="consAyuda">${esc(T('Arrastra cada variable a su zona, o enfócala y pulsa R (respuesta), F (factor), B (bloque), C (covariable) o P (parcela grande); Supr la quita.'))}</p>`;
+    const zonas = ZONAS.map(z => {
+      const vs = enZona(r, z.id), compatibles = columnas.filter(n => !vs.includes(n) && (!z.numerica || c.numericas.includes(n)) && (z.id !== 'parcela' || r.factores.includes(n)));
+      const sep = z.id === 'factores' ? '<span class="cons-x" aria-hidden="true">×</span>' : '';
+      return `<div class="cons-zona${vs.length ? ' llena' : ''}" data-zona="${z.id}"><div class="cons-zt"><span>${esc(T(z.titulo))}</span><kbd>${z.tecla}</kbd></div>` +
+        `<div class="cons-chips">${vs.map(v => `<span class="cons-chip puesta">${esc(v)}<button type="button" class="cons-quitar" data-zona="${z.id}" data-quitar="${esc(v)}" aria-label="${esc(T('Quitar «{v}» de {z}', { v, z: T(z.titulo) }))}">×</button></span>`).join(sep) || `<span class="small muted">${esc(T(z.ayuda))}</span>`}</div>` +
+        (compatibles.length && vs.length < z.max ? `<select class="select cons-agregar" data-zona="${z.id}" aria-label="${esc(T('Agregar a {z}', { z: T(z.titulo) }))}"><option value="">${esc(T('Agregar…'))}</option>${compatibles.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('')}</select>` : '') + '</div>';
+    }).join('') + `<div class="cons-zona deshabilitada"><div class="cons-zt"><span>${esc(T('Efectos aleatorios'))}</span><span class="pill gris">${esc(T('Fase 2'))}</span></div><span class="small muted">${esc(T('Modelos mixtos con REML, con el motor R.'))}</span></div>`;
+    /* fórmula */
+    let formula;
+    if (!est.editando) {
+      formula = `<div class="cons-formula"><span class="cons-lbl">${esc(T('Fórmula'))}</span><code>${esc(m.formula || '—')}</code>` +
+        (r.respuesta ? `<button type="button" class="btn btn-ghost btn-sm" id="consEditar">${esc(T('Editar la fórmula'))}</button>` : '') + '</div>';
+    } else {
+      const lec = lectura(c);
+      formula = `<div class="cons-editor"><div class="cons-formula editando"><label class="cons-lbl" for="consDerecha">${esc(r.respuesta)} ~</label><input class="input" type="text" id="consDerecha" spellcheck="false" autocomplete="off" value="${esc(est.derecha)}" aria-describedby="consLectura"></div><div id="consLectura">${lec.html}</div><p class="small muted">${esc(T('Se analiza con el modelo lineal general (sin estratos de error): «a * b» cruza, «a / b» anida b en a, «(a + b + c)^2» deja hasta las interacciones dobles y «- 1» quita la intercepción.'))}</p>` +
+        `<div class="btn-row"><button type="button" class="btn btn-primary" id="consUsarFormula"${lec.ok ? '' : ' disabled'}>${esc(T('Usar y calcular esta fórmula'))}</button><button type="button" class="btn btn-ghost" id="consVolver">${esc(T('Volver a la del constructor'))}</button></div></div>`;
+    }
+    const nombre = m.metodo && SP.metodos[m.metodo] ? SP.metodos[m.metodo].nombre : '';
+    const resumen = est.editando ? '' : m.error
+      ? `<div class="msg msg-warning"><strong>${esc(m.error.mensaje)}</strong>${m.error.arreglo ? ` <span class="msg-fix">${esc(m.error.arreglo)}</span>` : ''}</div>`
+      : `<div class="cons-resumen"><p><span class="pill">${esc(T('Análisis'))}</span> <b>${esc(nombre)}</b></p>${m.descripcion.map(d => `<p class="small">${esc(d)}</p>`).join('')}${m.avisos.map(a => `<p class="msg msg-warning small">${esc(a)}</p>`).join('')}` +
+        `<div class="btn-row"><button type="button" class="btn btn-primary" id="consUsar">${esc(T('Usar y calcular'))}</button></div></div>`;
+    cont.innerHTML = `<div class="cons-grid"><div class="cons-izq"><p class="cons-titulo">${esc(T('Variables'))}</p>${pool}</div><div class="cons-der"><div class="cons-zonas">${zonas}</div>${formula}${resumen}</div></div>`;
+    if (clave) {
+      const [k, a] = clave.split('|');
+      const el = k === 'var' ? cont.querySelector(`[data-var="${CSS.escape(a)}"]`) : k === 'zona' ? cont.querySelector(`.cons-agregar[data-zona="${a}"]`) || cont.querySelector(`.cons-zona[data-zona="${a}"] .cons-quitar`) : k === 'id' ? cont.querySelector('#' + a) : null;
+      if (el) { el.focus(); if (el.type === 'text') el.setSelectionRange(el.value.length, el.value.length); }
+    }
+  }
+
+  function iniciar() {
+    const cont = $('#anaConstructor');
+    if (!cont) return;
+    cont.addEventListener('keydown', e => {
+      const chip = e.target.closest('.cons-chip[data-var]');
+      if (!chip || e.ctrlKey || e.altKey || e.metaKey) return;
+      const k = e.key.toLowerCase();
+      if (TECLAS[k]) { e.preventDefault(); asignar(chip.dataset.var, TECLAS[k]); }
+      else if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); quitar(chip.dataset.var); est.editando = false; A().calcular(); }
+    });
+    cont.addEventListener('dragstart', e => { const chip = e.target.closest('.cons-chip[data-var]'); if (chip) { e.dataTransfer.setData('text/plain', chip.dataset.var); e.dataTransfer.effectAllowed = 'move'; } });
+    cont.addEventListener('dragover', e => { const z = e.target.closest('.cons-zona[data-zona]'); if (z) { e.preventDefault(); z.classList.add('sobre'); } });
+    cont.addEventListener('dragleave', e => { const z = e.target.closest('.cons-zona[data-zona]'); if (z) z.classList.remove('sobre'); });
+    cont.addEventListener('drop', e => { const z = e.target.closest('.cons-zona[data-zona]'); if (!z) return; e.preventDefault(); asignar(e.dataTransfer.getData('text/plain'), z.dataset.zona); });
+    cont.addEventListener('change', e => {
+      const el = e.target;
+      if (el.classList.contains('cons-agregar') && el.value) asignar(el.value, el.dataset.zona);
+      else if (el.hasAttribute('data-comofactor')) { est.comoFactor = [...cont.querySelectorAll('[data-comofactor]:checked')].map(x => x.value); releer(); }
+    });
+    let espera = 0;
+    cont.addEventListener('input', e => {
+      if (e.target.id !== 'consDerecha') return;
+      est.derecha = e.target.value;
+      clearTimeout(espera);
+      espera = setTimeout(releer, 250);
+    });
+    cont.addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      if (b.dataset.quitar) { quitar(b.dataset.quitar); est.editando = false; A().calcular(); }
+      else if (b.id === 'consEditar') { est.editando = true; A().calcular(); const i = $('#consDerecha'); if (i) i.focus(); }
+      else if (b.id === 'consVolver') { est.editando = false; A().calcular(); }
+      else if (b.id === 'consUsar' && est.modelo && est.modelo.metodo) A().usar(est.modelo.metodo, est.modelo.e, est.modelo.op);
+      else if (b.id === 'consUsarFormula') A().usar('modelo-lineal', { respuesta: est.roles.respuesta }, { derecha: est.derecha, comoFactor: est.comoFactor, tipoSC: 3 });
+    });
+    A().pintores.constructor = pintar;
+    SP.app.constructorUI = { desde, estado: est };
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+})();

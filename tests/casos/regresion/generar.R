@@ -3,7 +3,7 @@
 suppressPackageStartupMessages({ library(lmtest); library(car); library(leaps) })
 
 F_CARS <- "Ezekiel (1930), Methods of Correlation Analysis; conjunto cars de R"
-F_TREES <- "Ryan, Joiner y Ryan (1976), Minitab Student Handbook; conjunto trees de R"
+F_TREES <- "Atkinson (1985), Plots, Transformations and Regression; conjunto trees de R"
 F_STACK <- "Brownlee (1965), Statistical Theory and Methodology in Science and Engineering, pp. 491-500; conjunto stackloss de R"
 F_SWISS <- "Mosteller y Tukey (1977), Data Analysis and Regression, pp. 549-551; conjunto swiss de R"
 F_MTCARS <- "Henderson y Velleman (1981), Biometrics 37: 391-411; conjunto mtcars de R"

@@ -170,7 +170,7 @@
 
 <!-- ======================= 4 · ANÁLISIS ======================= -->
 <section class="step-panel" id="panel-4" aria-labelledby="t4">
-  <div class="panel-title"><div><h2 id="t4">Análisis</h2><p>Elige el análisis en el catálogo. Cada uno trae su conclusión en palabras, sus cuadros, el semáforo de los supuestos y el código R que da lo mismo.</p></div></div>
+  <div class="panel-title"><div><h2 id="t4">Análisis</h2><p>Responde las preguntas del asistente, elige directo en el catálogo o arma el modelo en el constructor. Cada análisis trae su conclusión en palabras, sus cuadros, el semáforo de los supuestos y el código R que da lo mismo.</p></div></div>
 
   <div class="dat-inicio" id="anaVacio">
     <h3>Aún no hay datos</h3>
@@ -179,10 +179,19 @@
   </div>
 
   <div id="anaTrabajo" hidden>
-    <nav class="ana-catalogo" aria-label="Catálogo de análisis" data-lnav-skip><ul id="anaCatalogo"></ul></nav>
-    <div class="exp-grid ana-espacio">
-      <form class="exp-opciones" id="anaOpciones" aria-label="Modelo del experimento"></form>
-      <div class="exp-resultado" id="anaResultado" aria-live="polite"></div>
+    <div class="seg exp-tipos" id="anaModos" role="group" aria-label="Forma de elegir el análisis">
+      <button type="button" data-modo="asistente" aria-pressed="true">Asistente</button>
+      <button type="button" data-modo="catalogo" aria-pressed="false">Catálogo</button>
+      <button type="button" data-modo="constructor" aria-pressed="false">Constructor de modelo</button>
+    </div>
+    <div id="anaAsistente" class="asis"></div>
+    <div id="anaConstructor" class="cons" hidden></div>
+    <div id="anaCatalogoVista" hidden>
+      <nav class="ana-catalogo" aria-label="Catálogo de análisis" data-lnav-skip><ul id="anaCatalogo"></ul></nav>
+      <div class="exp-grid ana-espacio">
+        <form class="exp-opciones" id="anaOpciones" aria-label="Modelo del experimento"></form>
+        <div class="exp-resultado" id="anaResultado" aria-live="polite"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -280,6 +289,8 @@
 <script src="js/nucleo/reformar.js"></script>
 <script src="js/nucleo/registro.js"></script>
 <script src="js/nucleo/hilos.js"></script>
+<script src="js/nucleo/asistente.js"></script>
+<script src="js/nucleo/constructor.js"></script>
 <script src="js/metodos/descriptiva.js"></script>
 <script src="js/metodos/frecuencias.js"></script>
 <script src="js/metodos/supuestos.js"></script>
@@ -291,6 +302,7 @@
 <script src="js/metodos/ancova.js"></script>
 <script src="js/metodos/correlacion.js"></script>
 <script src="js/metodos/contingencia.js"></script>
+<script src="js/metodos/modelo-lineal.js"></script>
 <!-- generado por tests/correr.mjs -->
 <script src="js/generado/validacion.js"></script>
 <!-- interfaz -->
@@ -305,6 +317,8 @@
 <script src="js/interfaz/explorar.js"></script>
 <script src="js/interfaz/graficas.js"></script>
 <script src="js/interfaz/analisis.js"></script>
+<script src="js/interfaz/asistente.js"></script>
+<script src="js/interfaz/constructor.js"></script>
 <script src="js/labg-figedit.js" data-key="sigmapro:figedit" data-panes="figure.sp-grafica" data-title="figcaption"></script>
 <script src="js/labg-figure-studio.js" defer></script>
 <script src="js/labg-navigator.js" defer></script>

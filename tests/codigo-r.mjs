@@ -151,6 +151,13 @@ const ESCENARIOS = [
     r: 'c(mh$statistic, mh$p.value, mh$estimate, mh$conf.int)', js: res => [res.X2, res.p, res.razon_momios, ...res.ic] },
   { ej: 'roya-evaluadores', id: 'kappa', e: { evaluador1: 'evaluador_A', evaluador2: 'evaluador_B' }, op: { ponderacion: 'lineal', nivel: 0.95 },
     r: 'c(ck$kappa, ck$weighted.kappa, sqrt(ck$var.kappa), sqrt(ck$var.weighted))', js: res => [res.simple.estimado, res.ponderada.estimado, res.simple.ee, res.ponderada.ee] },
+  { ej: 'maiz', id: 'modelo-lineal', e: { respuesta: 'rend' }, op: { derecha: 'bloque + hibrido * dosis', comoFactor: ['dosis'], tipoSC: 3 },
+    r: 'c(local({ o <- options(contrasts = c("contr.sum", "contr.poly")); a <- car::Anova(update(modelo), type = 3); options(o); a[2:5, "F value"] }), coef(modelo), summary(modelo)$r.squared)',
+    js: res => [...res.anova.F.slice(0, 4), ...res.coeficientes.estimado, res.resumen.r2] },
+  { ej: 'sorgo', id: 'modelo-lineal', e: { respuesta: 'rend' }, op: { derecha: 'bloque + variedad * plantas', tipoSC: 2 },
+    r: 'c(car::Anova(modelo, type = 2)[1:4, "F value"], coef(modelo))', js: res => [...res.anova.F.slice(0, 4), ...res.coeficientes.estimado] },
+  { ej: 'maiz', id: 'modelo-lineal', e: { respuesta: 'rend' }, op: { derecha: 'hibrido + bloque - 1', tipoSC: 1 },
+    r: 'c(anova(modelo)[1:2, "F value"], summary(modelo)$r.squared, coef(modelo))', js: res => [res.anova.F[0], res.anova.F[1], res.resumen.r2, ...res.coeficientes.estimado] },
 ];
 const efectoDe = res => [res.efecto.d, ...res.efecto.ic_d, res.efecto.g, ...res.efecto.ic_g];
 /* aggregate() de R deja el primer factor cambiando más rápido; la app, el último */

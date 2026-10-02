@@ -57,8 +57,8 @@
     ['hecho', '1.7', 'Comparaciones de medias, letras, contrastes y medias ajustadas'],
     ['hecho', '1.8', 'ANCOVA y regresión con diagnóstico y selección de variables'],
     ['hecho', '1.9', 'Correlación y tablas de contingencia'],
-    ['actual', '1.10', 'Asistente de análisis y constructor visual de modelos'],
-    ['', '1.11', 'Reporte, figuras, exportaciones y proyecto .labg'],
+    ['hecho', '1.10', 'Asistente de análisis, constructor visual de modelos y modelo lineal general'],
+    ['actual', '1.11', 'Reporte, figuras, exportaciones y proyecto .labg'],
     ['', '1.12', 'Uso sin conexión, rendimiento, accesibilidad y cierre de la Fase 1'],
   ];
   function hitos() {
@@ -79,7 +79,14 @@
 
     if (L()) {
       L().theme.init('sigmapro.theme');
-      L().shortcuts([]);
+      L().shortcuts([
+        { keys: ['R'], es: 'Constructor de modelo: la variable enfocada va a «Respuesta»', en: 'Model builder: focused variable to «Response»' },
+        { keys: ['F'], es: 'Constructor de modelo: … a «Factores de tratamiento»', en: 'Model builder: … to «Treatment factors»' },
+        { keys: ['B'], es: 'Constructor de modelo: … a «Bloques o repeticiones»', en: 'Model builder: … to «Blocks»' },
+        { keys: ['C'], es: 'Constructor de modelo: … a «Covariables»', en: 'Model builder: … to «Covariates»' },
+        { keys: ['P'], es: 'Constructor de modelo: … a «Parcela grande»', en: 'Model builder: … to «Main plot»' },
+        { keys: ['Supr'], es: 'Constructor de modelo: quitar la variable enfocada de su zona', en: 'Model builder: remove the focused variable' },
+      ]);
       L().bindStepKeys(app.ir);
       const s = $('#suiteLink');
       if (s && !$('.labg-iso', s)) s.insertAdjacentHTML('afterbegin', L().isotipo('labg-iso'));

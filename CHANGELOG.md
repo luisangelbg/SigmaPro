@@ -2,6 +2,35 @@
 
 ## Sin publicar
 
+### Hito 1.10 · asistente de análisis y constructor visual de modelos (1 oct 2026)
+
+- Bloque 4 con tres formas de elegir el análisis: **Asistente**, **Catálogo** y **Constructor de modelo** (la
+  elección se recuerda).
+- `js/nucleo/asistente.js`: preguntas en lenguaje del campo que cambian según las respuestas (qué quieres saber, qué
+  mediste y qué clase de dato es, qué factores, bloques en una o dos direcciones o incompletos, parcelas grandes o
+  franjas, covariable, mediciones en el tiempo, dosis numérica, testigo). La recomendación dice el análisis, por qué,
+  qué supuestos se revisarán, qué hacer si fallan y los pasos siguientes (polinomios, Dunnett, contrastes, Tukey,
+  supuestos), y lleva todo al catálogo con «Usar y calcular». Cubre los diseños, la ANCOVA, las pruebas t y de rangos,
+  correlación y regresión, tablas de contingencia, McNemar, kappa y Mantel-Haenszel, y los descriptivos del bloque 3.
+  Propone las respuestas a partir de la tabla: tipo de dato (continuo, conteo, proporción, escala), datos ya contados,
+  pares de columnas que se determinan una a otra (no se cruzan), mismas categorías en dos columnas (evaluadores o
+  antes y después). Las escalas de calificación (daño, severidad…) no se toman como factor numérico.
+- `js/nucleo/constructor.js` y `js/interfaz/constructor.js`: las variables se ponen en zonas (respuesta, bloques,
+  factores, parcela grande, covariables) arrastrándolas, con el menú «Agregar…» de cada zona (también en el celular)
+  o con las teclas R, F, B, C y P (Supr la quita). El constructor elige el diseño y muestra su fórmula; la fórmula se
+  puede editar a mano con la explicación de cada término (efecto, pendiente, interacción, anidado, pendiente por
+  grupo) o del error y cómo arreglarlo. «Efectos aleatorios» queda marcado para la Fase 2.
+- `js/metodos/modelo-lineal.js`: **modelo lineal general** desde una fórmula (`+`, `*`, `:`, `/`, `(…)^2`, `- 1`, con
+  numéricas tomadas como factor): ANOVA con SC tipo I, II o III (pasa a tipo II si hay coeficientes sin estimar, y a
+  tipo I sin intercepto, con aviso), coeficientes como `summary(lm)`, R², medias marginales con IC de cada factor
+  principal y la gráfica de la primera interacción entre dos factores. Avisa de términos confundidos.
+- Validación: 14 casos nuevos contra R (976 valores, diferencia escalada máxima 2.5e-13) con lm, car y emmeans y los
+  datos warpbreaks, CO2 y stackloss (factoriales desbalanceados, anidados, factor × covariable, numérica como factor,
+  `(a + b + c)^2`, faltantes, sin intercepto). 11 pruebas unitarias nuevas (todas las ramas del asistente, el
+  constructor y la lectura de fórmulas) y 3 escenarios del código R (47 en total).
+- Auditoría de accesibilidad de las pantallas nuevas: 0 fallas de contraste, nombres o etiquetas, en claro y oscuro,
+  a 1280 y 360 px.
+
 ### Hito 1.9 · correlación y tablas de contingencia (1 oct 2026)
 
 - `js/metodos/correlacion.js`: correlación de Pearson con IC por la z de Fisher, Spearman y Kendall con sus p exactos

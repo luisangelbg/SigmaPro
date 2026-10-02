@@ -6,7 +6,7 @@
     "nombre": "reg.influenciaDe"
   },
   "titulo": "Dos predictores",
-  "fuente": "Ryan, Joiner y Ryan (1976), Minitab Student Handbook; conjunto trees de R",
+  "fuente": "Atkinson (1985), Plots, Transformations and Regression; conjunto trees de R",
   "clase": "A",
   "datos": {
     "columnas": {

@@ -1,0 +1,96 @@
+{
+  "esquema": 1,
+  "id": "modeloLineal.analizarDe/co2-faltantes-tipo3",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+  },
+  "titulo": "Con cinco datos faltantes: las medias marginales ya no son las aritméticas",
+  "fuente": "Potvin, Lechowicz y Tardif (1990), Ecology 71: 1389-1400; conjunto CO2 de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "captacion": [16, 30.399999999999999, 34.799999999999997, 37.200000000000003, "NA", 39.200000000000003, 39.700000000000003, 13.6, 27.300000000000001, 37.100000000000001, 41.799999999999997, 40.600000000000001, 41.399999999999999, 44.299999999999997, 16.199999999999999, 32.399999999999999, 40.299999999999997, 42.100000000000001, 42.899999999999999, 43.899999999999999, 45.5, "NA", 24.100000000000001, 30.300000000000001, 34.600000000000001, 32.5, 35.399999999999999, 38.700000000000003, 9.3000000000000007, 27.300000000000001, 35, 38.799999999999997, 38.600000000000001, 37.5, 42.399999999999999, 15.1, 21, 38.100000000000001, 34, "NA", 39.600000000000001, 41.399999999999999, 10.6, 19.199999999999999, 26.199999999999999, 30, 30.899999999999999, 32.399999999999999, 35.5, 12, 22, 30.600000000000001, 31.800000000000001, 32.399999999999999, 31.100000000000001, 31.5, 11.300000000000001, 19.399999999999999, 25.800000000000001, 27.899999999999999, "NA", 28.100000000000001, 27.800000000000001, 10.5, 14.9, 18.100000000000001, 18.899999999999999, 19.5, 22.199999999999999, 21.899999999999999, 7.7000000000000002, 11.4, 12.300000000000001, 13, 12.5, 13.699999999999999, "NA", 10.6, 18, 17.899999999999999, 17.899999999999999, 17.899999999999999, 18.899999999999999, 19.899999999999999],
+      "origen": ["Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi"],
+      "tratamiento": ["sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío"],
+      "conc": [95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000]
+    },
+    "tipos": {
+      "captacion": {
+        "tipo": "numerica"
+      },
+      "origen": {
+        "tipo": "factor",
+        "niveles": ["Quebec", "Mississippi"]
+      },
+      "tratamiento": {
+        "tipo": "factor",
+        "niveles": ["sin frío", "con frío"]
+      },
+      "conc": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "respuesta": "captacion"
+    },
+    {
+      "derecha": "origen * tratamiento + conc",
+      "comoFactor": ["conc"],
+      "tipoSC": 3,
+      "alfa": 0.050000000000000003,
+      "nivel": 0.94999999999999996
+    }
+  ],
+  "esperado": {
+    "anova": {
+      "gl": [1, 1, 6, 1, 69],
+      "sc": [3069.5187872457732, 907.3400497865124, 3798.0418510612635, 174.94755853473669, 955.76664893873556],
+      "F": [221.59885632662883, 65.503921385817705, 45.698896624718124, 12.630051019567022, "NA"],
+      "p": [3.1230178506220994e-23, 1.3486124120934084e-11, 3.8626433930691193e-22, 0.00069010308211069722, "NA"]
+    },
+    "coeficientes": {
+      "estimado": [20.6272539797395, -9.5099999999999927, -3.8090918958031752, 9.8068198263386446, 16.398486493005311, 18.190153159671969, 18.516056439942123, 19.473486493005304, 21.838656536420661, -5.9647780993728858],
+      "ee": [1.3241266215882348, 1.1769320525981737, 1.1935489830928927, 1.5550022798026326, 1.5550022798026328, 1.5550022798026322, 1.6749981581446813, 1.5550022798026326, 1.5906986913088672, 1.6783855789193305],
+      "t": [15.578007150855381, -8.0803305331058759, -3.1913997244859766, 6.3066272980534581, 10.545635016745232, 11.697830540789139, 11.054374209253764, 12.523124078941517, 13.728971209784087, -3.5538783068032878],
+      "p": [2.7616397455770614e-24, 1.4252264446721695e-11, 0.0021321129284434027, 2.342071909560602e-08, 4.9880235626893326e-16, 4.8993623284725971e-18, 6.3648202527658239e-17, 1.960579860595391e-19, 2.069378836885134e-21, 0.00069010308211070296]
+    },
+    "resumen": {
+      "sigma": 3.7217859374673217,
+      "r2": 0.89576715343799451,
+      "r2_ajustada": 0.88217156475599379
+    },
+    "medias": [
+      {
+        "factor": "origen",
+        "media": [33.611802167321343, 21.119413117634906],
+        "ee": [0.59910754498328211, 0.58947825904178075]
+      },
+      {
+        "factor": "tratamiento",
+        "media": [30.761348115222933, 23.969867169733316],
+        "ee": [0.5911831835515472, 0.59738329167291182]
+      },
+      {
+        "factor": "conc",
+        "media": [12.476513506994694, 22.283333333333339, 28.875000000000007, 30.666666666666664, 30.992569946936818, 31.949999999999999, 34.315170043415357],
+        "ee": [1.1241550351992944, 1.0743870564314604, 1.0743870564314608, 1.0743870564314604, 1.2432092990737884, 1.0743870564314606, 1.1240955938374084]
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "factor(conc); lm(captacion ~ origen * tratamiento + conc); summary(m); options(contrasts = c(\"contr.sum\", \"contr.poly\")); car::Anova(m, type = 3); emmeans(m, factor)"
+  }
+}

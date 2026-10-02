@@ -15,7 +15,7 @@ medias, regresión y, más adelante, modelos mixtos y ensayos multiambiente. For
 
 ## Estado
 
-En construcción, por hitos. **Hitos 1.0 a 1.9 terminados:** cimientos (registro de métodos, cálculos en
+En construcción, por hitos. **Hitos 1.0 a 1.10 terminados:** cimientos (registro de métodos, cálculos en
 hilos de trabajo, pruebas automáticas en node y en el navegador, generador de referencias con R y reporte
 de validación), núcleo numérico (distribuciones, álgebra, fórmulas y modelo lineal con sumas de cuadrados
 tipo I, II y III) y el bloque de **Datos**: hoja de cálculo para 100 000 filas con deshacer, importación de
@@ -39,8 +39,11 @@ y la **regresión** simple, múltiple y polinomial con diagnóstico completo (in
 Durbin-Watson, VIF, índices de condición), predicciones y selección de variables (paso a paso por AIC o valor p y mejores
 subconjuntos); y la **correlación** (Pearson, Spearman y Kendall exactas o aproximadas, matrices con p ajustados, parcial y
 semiparcial) y las **tablas de contingencia** (ji cuadrada, G², Fisher exacta 2 × 2 y r × c, residuos ajustados, medidas
-nominales y ordinales, razón de momios, McNemar y Bowker, Cochran-Mantel-Haenszel con Breslow-Day y kappa). Validado contra
-R en 610 casos y 47 482 valores. El plan
+nominales y ordinales, razón de momios, McNemar y Bowker, Cochran-Mantel-Haenszel con Breslow-Day y kappa); y el
+**asistente** que pregunta en lenguaje del campo y recomienda el análisis con su porqué, el **constructor visual de
+modelos** (variables arrastradas a sus zonas, o con teclas, y la fórmula que se puede editar con la explicación de cada
+término) y el **modelo lineal general** desde una fórmula (anidados, interacciones con covariables, SC tipo I, II y III,
+medias marginales). Validado contra R en 624 casos y 48 458 valores. El plan
 completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
 [`propuesta/maqueta.html`](propuesta/maqueta.html).

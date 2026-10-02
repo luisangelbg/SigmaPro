@@ -1,0 +1,91 @@
+{
+  "esquema": 1,
+  "id": "modeloLineal.analizarDe/co2-covariable-interaccion-tipo2",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+  },
+  "titulo": "Un factor con su propia pendiente de una covariable (tratamiento × conc), SC tipo II",
+  "fuente": "Potvin, Lechowicz y Tardif (1990), Ecology 71: 1389-1400; conjunto CO2 de R",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "captacion": [16, 30.399999999999999, 34.799999999999997, 37.200000000000003, 35.299999999999997, 39.200000000000003, 39.700000000000003, 13.6, 27.300000000000001, 37.100000000000001, 41.799999999999997, 40.600000000000001, 41.399999999999999, 44.299999999999997, 16.199999999999999, 32.399999999999999, 40.299999999999997, 42.100000000000001, 42.899999999999999, 43.899999999999999, 45.5, 14.199999999999999, 24.100000000000001, 30.300000000000001, 34.600000000000001, 32.5, 35.399999999999999, 38.700000000000003, 9.3000000000000007, 27.300000000000001, 35, 38.799999999999997, 38.600000000000001, 37.5, 42.399999999999999, 15.1, 21, 38.100000000000001, 34, 38.899999999999999, 39.600000000000001, 41.399999999999999, 10.6, 19.199999999999999, 26.199999999999999, 30, 30.899999999999999, 32.399999999999999, 35.5, 12, 22, 30.600000000000001, 31.800000000000001, 32.399999999999999, 31.100000000000001, 31.5, 11.300000000000001, 19.399999999999999, 25.800000000000001, 27.899999999999999, 28.5, 28.100000000000001, 27.800000000000001, 10.5, 14.9, 18.100000000000001, 18.899999999999999, 19.5, 22.199999999999999, 21.899999999999999, 7.7000000000000002, 11.4, 12.300000000000001, 13, 12.5, 13.699999999999999, 14.4, 10.6, 18, 17.899999999999999, 17.899999999999999, 17.899999999999999, 18.899999999999999, 19.899999999999999],
+      "origen": ["Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Quebec", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi", "Mississippi"],
+      "tratamiento": ["sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "sin frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío", "con frío"],
+      "conc": [95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000, 95, 175, 250, 350, 500, 675, 1000]
+    },
+    "tipos": {
+      "captacion": {
+        "tipo": "numerica"
+      },
+      "origen": {
+        "tipo": "factor",
+        "niveles": ["Quebec", "Mississippi"]
+      },
+      "tratamiento": {
+        "tipo": "factor",
+        "niveles": ["sin frío", "con frío"]
+      },
+      "conc": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "respuesta": "captacion"
+    },
+    {
+      "derecha": "origen + tratamiento * conc",
+      "comoFactor": [],
+      "tipoSC": 2,
+      "alfa": 0.050000000000000003,
+      "nivel": 0.94999999999999996
+    }
+  ],
+  "esperado": {
+    "anova": {
+      "gl": [1, 1, 1, 1, 79],
+      "sc": [3365.534404761911, 988.11440476192229, 2284.9939641461651, 31.870618017720517, 3036.462203550398],
+      "F": [87.56151078228892, 25.707890546083075, 59.448961016698831, 0.8291816774323737, "NA"],
+      "p": [1.9531757495793995e-14, 2.5622174128462713e-06, 3.1900021283835298e-11, 0.36527933308781824, "NA"]
+    },
+    "coeficientes": {
+      "estimado": [28.348925387391237, -12.659523809523833, -5.0377473525319116, 0.019824583126960529, -0.0041879918551538014],
+      "ee": [1.8368490961534809, 1.3528845800325817, 2.4151357851339843, 0.003252115655884907, 0.0045991860669583077],
+      "t": [15.433453649924923, -9.3574307789205129, -2.0859064668500338, 6.0959034747385763, -0.91059413430593128],
+      "p": [1.4664208168350606e-25, 1.9531757495793853e-14, 0.04021449747755574, 3.7585674990196542e-08, 0.36527933308782012]
+    },
+    "resumen": {
+      "sigma": 6.1996959945378434,
+      "r2": 0.68718761330357325,
+      "r2_ajustada": 0.67134901144552628
+    },
+    "medias": [
+      {
+        "factor": "origen",
+        "media": [33.542857142857159, 20.883333333333326],
+        "ee": [0.95663386070375311, 0.95663386070375245]
+      },
+      {
+        "factor": "tratamiento",
+        "media": [30.642857142857149, 23.783333333333335],
+        "ee": [0.95663386070375278, 0.95663386070375223]
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "lm(captacion ~ origen + tratamiento * conc); summary(m); car::Anova(m, type = 2); emmeans(m, factor)"
+  }
+}

@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-02T02:45:01.168Z",
+ "generado": "2026-10-02T04:35:14.415Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 610,
-  "aprobados": 610,
+  "casos": 624,
+  "aprobados": 624,
   "fallidos": 0,
-  "valores": 47482,
+  "valores": 48458,
   "difEscaladaMax": 2.0258232202030768e-7,
-  "objetivos": 127
+  "objetivos": 129
  },
  "casos": [
   {
@@ -13016,7 +13016,7 @@ window.SP_VALIDACION = {
     "nombre": "reg.colinealidadDe"
    },
    "titulo": "Dos predictores",
-   "fuente": "Ryan, Joiner y Ryan (1976), Minitab Student Handbook; conjunto trees de R",
+   "fuente": "Atkinson (1985), Plots, Transformations and Regression; conjunto trees de R",
    "clase": "A",
    "valores": 18,
    "difMax": 7.105427357601002e-15,
@@ -13130,7 +13130,7 @@ window.SP_VALIDACION = {
     "nombre": "reg.influenciaDe"
    },
    "titulo": "Dos predictores",
-   "fuente": "Ryan, Joiner y Ryan (1976), Minitab Student Handbook; conjunto trees de R",
+   "fuente": "Atkinson (1985), Plots, Transformations and Regression; conjunto trees de R",
    "clase": "A",
    "valores": 496,
    "difMax": 1.6209256159527285e-14,
@@ -13398,7 +13398,7 @@ window.SP_VALIDACION = {
     "nombre": "reg.analizarDe"
    },
    "titulo": "Dos predictores, IC al 90 % y predicción",
-   "fuente": "Ryan, Joiner y Ryan (1976), Minitab Student Handbook; conjunto trees de R",
+   "fuente": "Atkinson (1985), Plots, Transformations and Regression; conjunto trees de R",
    "clase": "A",
    "valores": 76,
    "difMax": 9.208633855450898e-12,
@@ -13934,7 +13934,7 @@ window.SP_VALIDACION = {
     "nombre": "reg.pruebasDe"
    },
    "titulo": "Dos predictores",
-   "fuente": "Ryan, Joiner y Ryan (1976), Minitab Student Handbook; conjunto trees de R",
+   "fuente": "Atkinson (1985), Plots, Transformations and Regression; conjunto trees de R",
    "clase": "A",
    "valores": 11,
    "difMax": 3.552713678800501e-14,
@@ -16578,6 +16578,398 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "chisq.test, fisher.test y las medidas"
+   }
+  },
+  {
+   "id": "modeloLineal.analizarDe/co2-covariable-interaccion-tipo2",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+   },
+   "titulo": "Un factor con su propia pendiente de una covariable (tratamiento × conc), SC tipo II",
+   "fuente": "Potvin, Lechowicz y Tardif (1990), Ecology 71: 1389-1400; conjunto CO2 de R",
+   "clase": "A",
+   "valores": 53,
+   "difMax": 1.5120349416974932e-11,
+   "difEscaladaMax": 2.4110859321498193e-14,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "lm(captacion ~ origen + tratamiento * conc); summary(m); car::Anova(m, type = 2); emmeans(m, factor)"
+   }
+  },
+  {
+   "id": "modeloLineal.analizarDe/co2-covariable-interaccion-tipo3",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+   },
+   "titulo": "La misma interacción factor × covariable con SC tipo III",
+   "fuente": "Potvin, Lechowicz y Tardif (1990), Ecology 71: 1389-1400; conjunto CO2 de R",
+   "clase": "A",
+   "valores": 53,
+   "difMax": 5.002220859751105e-12,
+   "difEscaladaMax": 5.702874400380345e-14,
+   "peor": "anova.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "lm(captacion ~ origen + tratamiento * conc); summary(m); options(contrasts = c(\"contr.sum\", \"contr.poly\")); car::Anova(m, type = 3); emmeans(m, factor)"
+   }
+  },
+  {
+   "id": "modeloLineal.analizarDe/co2-dosis-como-factor",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+   },
+   "titulo": "Concentración numérica tomada como factor de 7 niveles",
+   "fuente": "Potvin, Lechowicz y Tardif (1990), Ecology 71: 1389-1400; conjunto CO2 de R",
+   "clase": "A",
+   "valores": 88,
+   "difMax": 9.094947017729282e-12,
+   "difEscaladaMax": 1.8509250048035634e-13,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "factor(conc); lm(captacion ~ origen * tratamiento + conc); summary(m); options(contrasts = c(\"contr.sum\", \"contr.poly\")); car::Anova(m, type = 3); emmeans(m, factor)"
+   }
+  },
+  {
+   "id": "modeloLineal.analizarDe/co2-faltantes-tipo3",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+   },
+   "titulo": "Con cinco datos faltantes: las medias marginales ya no son las aritméticas",
+   "fuente": "Potvin, Lechowicz y Tardif (1990), Ecology 71: 1389-1400; conjunto CO2 de R",
+   "clase": "A",
+   "valores": 88,
+   "difMax": 3.637978807091713e-12,
+   "difEscaladaMax": 6.517778894149395e-14,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "factor(conc); lm(captacion ~ origen * tratamiento + conc); summary(m); options(contrasts = c(\"contr.sum\", \"contr.poly\")); car::Anova(m, type = 3); emmeans(m, factor)"
+   }
+  },
+  {
+   "id": "modeloLineal.analizarDe/co2-interacciones-dobles",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+   },
+   "titulo": "(a + b + c)^2: efectos principales e interacciones dobles, sin la triple",
+   "fuente": "Potvin, Lechowicz y Tardif (1990), Ecology 71: 1389-1400; conjunto CO2 de R",
+   "clase": "A",
+   "valores": 144,
+   "difMax": 1.1823431123048067e-11,
+   "difEscaladaMax": 2.5335658061198676e-13,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "factor(conc); lm(captacion ~ (origen + tratamiento + conc)^2); summary(m); options(contrasts = c(\"contr.sum\", \"contr.poly\")); car::Anova(m, type = 3); emmeans(m, factor)"
+   }
+  },
+  {
+   "id": "modeloLineal.analizarDe/fertilizante-anidado-tipo1",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+   },
+   "titulo": "Anidado escrito como término (fertilizante + fertilizante:parcela), SC tipo I",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 70,
+   "difMax": 2.5011104298755527e-12,
+   "difEscaladaMax": 4.7252599767943274e-14,
+   "peor": "anova.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "lm(altura ~ fertilizante + fertilizante:parcela); summary(m); anova(m); emmeans(m, factor)"
+   }
+  },
+  {
+   "id": "modeloLineal.analizarDe/fertilizante-anidado-tipo3",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+   },
+   "titulo": "Parcelas anidadas en fertilizante (fertilizante / parcela), SC tipo III",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 70,
+   "difMax": 8.526512829121202e-13,
+   "difEscaladaMax": 4.3842618341391605e-14,
+   "peor": "anova.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "lm(altura ~ fertilizante / parcela); summary(m); options(contrasts = c(\"contr.sum\", \"contr.poly\")); car::Anova(m, type = 3); emmeans(m, factor)"
+   }
+  },
+  {
+   "id": "modeloLineal.analizarDe/lana-desbalanceado-tipo1",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+   },
+   "titulo": "Factorial desbalanceado, SC tipo I en el orden escrito (tensión primero)",
+   "fuente": "Tippett (1950), Technological Applications of Statistics, p. 106; conjunto warpbreaks de R",
+   "clase": "A",
+   "valores": 55,
+   "difMax": 1.000444171950221e-11,
+   "difEscaladaMax": 4.544795863703486e-14,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "lm(roturas ~ tension * lana); summary(m); anova(m); emmeans(m, factor)"
+   }
+  },
+  {
+   "id": "modeloLineal.analizarDe/lana-desbalanceado-tipo2",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+   },
+   "titulo": "Factorial desbalanceado (seis datos menos), SC tipo II",
+   "fuente": "Tippett (1950), Technological Applications of Statistics, p. 106; conjunto warpbreaks de R",
+   "clase": "A",
+   "valores": 55,
+   "difMax": 5.4569682106375694e-12,
+   "difEscaladaMax": 5.589321074432463e-14,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "lm(roturas ~ lana * tension); summary(m); car::Anova(m, type = 2); emmeans(m, factor)"
+   }
+  },
+  {
+   "id": "modeloLineal.analizarDe/lana-factorial-tipo3",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+   },
+   "titulo": "Factorial 2 × 3 balanceado, SC tipo III",
+   "fuente": "Tippett (1950), Technological Applications of Statistics, p. 106; conjunto warpbreaks de R",
+   "clase": "A",
+   "valores": 55,
+   "difMax": 2.7284841053187847e-12,
+   "difEscaladaMax": 4.877736005656419e-15,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "lm(roturas ~ lana * tension); summary(m); options(contrasts = c(\"contr.sum\", \"contr.poly\")); car::Anova(m, type = 3); emmeans(m, factor)"
+   }
+  },
+  {
+   "id": "modeloLineal.analizarDe/lana-sin-intercepto",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+   },
+   "titulo": "Sin intercepto («- 1»): una media por tensión, SC tipo I y R² sin centrar",
+   "fuente": "Tippett (1950), Technological Applications of Statistics, p. 106; conjunto warpbreaks de R",
+   "clase": "A",
+   "valores": 43,
+   "difMax": 2.7284841053187847e-12,
+   "difEscaladaMax": 1.2805782199174683e-14,
+   "peor": "coeficientes.p[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "lm(roturas ~ tension + lana - 1); summary(m); anova(m); emmeans(m, factor)"
+   }
+  },
+  {
+   "id": "modeloLineal.analizarDe/planta-superficie-tipo1",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+   },
+   "titulo": "Producto de dos covariables (aire × agua) más una tercera, SC tipo I",
+   "fuente": "Brownlee (1960), Statistical Theory and Methodology in Science and Engineering; conjunto stackloss de R",
+   "clase": "A",
+   "valores": 43,
+   "difMax": 3.637978807091713e-12,
+   "difEscaladaMax": 3.3458600725398254e-14,
+   "peor": "anova.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "lm(perdida ~ aire * agua + acido); summary(m); anova(m); emmeans(m, factor)"
+   }
+  },
+  {
+   "id": "modeloLineal.analizarDe/planta-superficie-tipo2",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "modeloLineal.analizarDe"
+   },
+   "titulo": "El mismo modelo con SC tipo II",
+   "fuente": "Brownlee (1960), Statistical Theory and Methodology in Science and Engineering; conjunto stackloss de R",
+   "clase": "A",
+   "valores": 43,
+   "difMax": 5.4569682106375694e-12,
+   "difEscaladaMax": 2.7505814285505628e-14,
+   "peor": "coeficientes.estimado[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "lm(perdida ~ aire * agua + acido); summary(m); car::Anova(m, type = 2); emmeans(m, factor)"
+   }
+  },
+  {
+   "id": "modelo-lineal/metodo-modelo-lineal-co2",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-lineal"
+   },
+   "titulo": "Modelo lineal general con una numérica como factor: ANOVA III, coeficientes y medias con IC",
+   "fuente": "Potvin, Lechowicz y Tardif (1990), Ecology 71: 1389-1400; conjunto CO2 de R",
+   "clase": "A",
+   "valores": 116,
+   "difMax": 9.094947017729282e-12,
+   "difEscaladaMax": 1.8509250048035634e-13,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "lm(captacion ~ origen * tratamiento + factor(conc)); car::Anova(type = 3) con contr.sum; summary(m); confint(emmeans(m, factor))"
    }
   }
  ]
