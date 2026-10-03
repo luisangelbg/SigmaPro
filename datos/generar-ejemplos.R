@@ -186,6 +186,26 @@ agregar("avena-ambientes", "Avena en 14 ambientes (Olivoto y Lúcio, 2020)",
         list(ambiente = list(tipo = "factor", niveles = paste0("E", 1:14)), genotipo = list(tipo = "factor", niveles = paste0("G", 1:10)),
              repeticion = list(tipo = "factor", niveles = c("1", "2", "3"))))
 
+## 15. Maíz: altura de la misma planta en cinco fechas (medidas repetidas; ficticio)
+set.seed(1515)
+trat <- c("N0", "N60", "N120", "N180"); fechas <- c(15, 30, 45, 60, 75)
+d <- expand.grid(dds = fechas, tratamiento = trat, bloque = paste0("B", 1:4), stringsAsFactors = FALSE)
+d <- d[order(d$bloque, match(d$tratamiento, trat), d$dds), c("bloque", "tratamiento", "dds")]
+efN <- c(N0 = 0, N60 = 0.12, N120 = 0.2, N180 = 0.22)
+d$altura <- NA_real_
+for (b in unique(d$bloque)) for (tr in trat) {
+  i <- which(d$bloque == b & d$tratamiento == tr)
+  cur <- 10 + 210 * (1 + efN[[tr]]) / (1 + exp(-(fechas - 40) / 9))   # de unos 20 cm a los 15 días hasta la altura final
+  e <- numeric(5); e[1] <- rnorm(1, 0, 1.5)
+  for (k in 2:5) e[k] <- 0.7 * e[k - 1] + rnorm(1, 0, 1.5 * k)           # correlación entre fechas y varianza creciente
+  d$altura[i] <- round(cur * (1 + rnorm(1, 0, 0.03)) + e, 1)
+}
+d$planta <- sub("B", "", d$bloque)                                     # la planta marcada de cada parcela: 1 a 4 en cada tratamiento
+d <- d[c("bloque", "tratamiento", "planta", "dds", "altura")]
+agregar("maiz-altura", "Maíz: altura en cinco fechas",
+        "Ficticio: la misma planta de cada parcela medida a los 15, 30, 45, 60 y 75 días después de la siembra, con 4 dosis de N en 4 bloques; para las medidas repetidas en el tiempo (estructuras de covarianza).", d,
+        list(bloque = list(tipo = "factor", niveles = paste0("B", 1:4)), tratamiento = list(tipo = "factor", niveles = trat), planta = list(tipo = "factor", niveles = as.character(1:4))))
+
 ## escribir datos/ejemplos.js
 js <- paste0(
   "/* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.\n",

@@ -62,8 +62,9 @@
     ['hecho', '1.12', 'Uso sin conexión, rendimiento, accesibilidad y cierre de la Fase 1'],
     ['hecho', '2.0', 'Motor R en el navegador (webR) y modelo lineal mixto desde una fórmula'],
     ['hecho', '2.1', 'Modelos mixtos completos: medias marginales, comparaciones y diseños con efectos aleatorios'],
-    ['actual', '2.2', 'Medidas repetidas en el tiempo con estructuras de covarianza'],
-    ['', '2.3–2.10', 'Heredabilidad, GLM y GLMM, no lineales, superficies de respuesta y ensayos multiambiente'],
+    ['hecho', '2.2', 'Medidas repetidas en el tiempo con estructuras de covarianza'],
+    ['actual', '2.3', 'Componentes de varianza por REML, heredabilidad, repetibilidad y BLUP de genotipos'],
+    ['', '2.4–2.10', 'GLM y GLMM, no lineales, superficies de respuesta y ensayos multiambiente'],
     ['', '3', 'Fase 3: multivariado con PCAPro y ClusteringPro, potencia y tamaño de muestra'],
   ];
   function hitos() {

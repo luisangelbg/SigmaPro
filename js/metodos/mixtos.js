@@ -366,7 +366,7 @@ SP.definir('mixtos', function (SP) {
     return L.join('\n');
   }
 
-  const nucleo = { separar, leerModelo, preparar, leer, traducir, reporte, codigoR, comparacionesDe };
+  const nucleo = { separar, leerModelo, preparar, leer, traducir, reporte, codigoR, comparacionesDe, leerMedias, AJUSTES, NOMBRE_AJUSTE };
   SP.mixtos = nucleo;
 
   const OPCIONES = { derecha: { tipo: 'texto', omision: '' }, comoFactor: { tipo: 'lista', omision: [] }, tipoSC: { tipo: 'numero', omision: 3 },

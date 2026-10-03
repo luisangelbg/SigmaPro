@@ -45,13 +45,17 @@ que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA
 
 Plan detallado en [`propuesta/FASE2.md`](../propuesta/FASE2.md). Hecho: Hito 2.0 (el motor R y el modelo lineal mixto
 desde una fórmula) e Hito 2.1 (medias marginales, comparaciones, prueba de los aleatorios, BLUP y los diseños con
-efectos aleatorios). Notas:
+efectos aleatorios) e Hito 2.2 (medidas repetidas con estructuras de covarianza). Notas:
 
 - Con doble clic el motor R necesita internet la primera vez (luego sale de la caché del navegador); sin conexión
   llega en el cierre de la fase (Hito 2.10), con el repositorio propio de paquetes en Pages.
 - `tests/codigo-r.mjs` corre en node y no cubre los métodos del motor R; su código R es el mismo que corre en el
   motor y lo validan sus casos (`tests/motor-r.mjs`).
-- El asistente y el constructor todavía no proponen los modelos mixtos (Hito 2.9); se eligen en el catálogo.
+- El asistente y el constructor todavía no proponen los modelos mixtos ni las medidas repetidas (Hito 2.9); se eligen
+  en el catálogo.
+- Medidas repetidas: las pruebas usan los gl del error de nlme (N − p); los de Kenward-Roger para estas estructuras
+  (como en otros programas) quedan pendientes. Faltan Toeplitz y antedependencia, y combinar un efecto aleatorio con
+  la estructura (lme con correlación).
 - Las letras de los modelos mixtos se arman con los p de emmeans; no se comparan aparte contra multcompView (el
   algoritmo de letras ya se validó en la Fase 1).
 - webR deja en el registro del navegador «Refused to get unsafe header "Content-Encoding"» al descargar (su servidor

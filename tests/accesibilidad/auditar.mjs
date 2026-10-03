@@ -38,7 +38,17 @@ if (AUDITOR && process.platform === 'win32') {
   const tmp = mkdtempSync(join(tmpdir(), 'sigmapro-aa-'));
   const tareas = [];
   for (const [nombre, e] of Object.entries(ESC)) if (nombre.includes(filtro)) for (const ancho of [1280, 360]) tareas.push({ nombre, e, ancho });
-  const correr = (t, puerto) => new Promise(ok => {
+  /* Antes de abrir otro navegador en el mismo puerto: que el anterior haya soltado su perfil (labg-audit-headless-<puerto>).
+     Si el perfil sigue en uso, el navegador nuevo se entrega al viejo, que el auditor está cerrando, y la corrida falla
+     sin salida (se alternaban una buena y una mala). Se espera hasta 20 s a poder borrarlo. */
+  const soltarPerfil = async puerto => {
+    const perfil = join(tmpdir(), 'labg-audit-headless-' + puerto);
+    for (let k = 0; k < 40 && existsSync(perfil); k++) {
+      try { rmSync(perfil, { recursive: true, force: true }); } catch { /* aún en uso */ }
+      if (existsSync(perfil)) await dormir(500);
+    }
+  };
+  const correr1 = (t, puerto) => new Promise(ok => {
     const archivo = join(tmp, t.nombre + '.js');
     /* Antes de preparar: el bloque Análisis en el modo Catálogo (desde el Hito 1.10 abre en el Asistente; los escenarios
        del asistente y del constructor cambian de modo ellos mismos) y un registro de errores: los de la preparación y los
@@ -48,13 +58,18 @@ if (AUDITOR && process.platform === 'win32') {
       "addEventListener('unhandledrejection', ev => window.__errores.push(String(ev.reason && ev.reason.message || ev.reason))), SP.app.analisis.modo = 'catalogo')";
     const prep = '(() => { try { const r = (' + t.e.prep + '); if (r && typeof r.catch === "function") r.catch(e => { window.__errorPrep = String(e && e.message || e); window.__esperando = false; }); } catch (e) { window.__errorPrep = String(e && e.message || e); window.__esperando = false; } })()';
     writeFileSync(archivo, `(${GUARDA} ? (window.__prep = 1, window.__auditT0 = 0, ${antes}, ${prep}, null) : window.__esperando ? null : ` + MEDICION);
-    execFile('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', AUDITOR, '-Url', URL_APP, '-EvalFile', archivo, '-Width', String(t.ancho), '-Port', String(puerto), '-Timeout', t.e.espera ? '150' : '90'],
-      { maxBuffer: 1 << 24, timeout: 240000 }, (err, out) => {
-        const perfil = join(tmpdir(), 'labg-audit-headless-' + puerto);
-        try { if (existsSync(perfil)) rmSync(perfil, { recursive: true, force: true }); } catch { /* aún en uso */ }
-        ok(String(out || '') || String(err && err.message));
-      });
+    execFile('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', AUDITOR, '-Url', URL_APP, '-EvalFile', archivo, '-Width', String(t.ancho), '-Port', String(puerto), '-Timeout', t.e.espera ? '180' : '120'],
+      { maxBuffer: 1 << 24, timeout: 300000 }, (err, out, errores) => ok(String(out || '') ||
+        String(err && err.message).split('\n')[0].slice(0, 80) + ' … ' + String(errores || '').trim().split('\n').slice(-3).join(' ')));
   });
+  /* una corrida sin salida legible se repite una vez (el navegador pudo tardar en abrir con el equipo cargado) */
+  const correr = async (t, puerto) => {
+    await soltarPerfil(puerto);
+    let salida = await correr1(t, puerto);
+    if (!/^\s*\{/m.test(salida)) { await dormir(2000); await soltarPerfil(puerto); salida = await correr1(t, puerto); }
+    await soltarPerfil(puerto);
+    return salida;
+  };
   let i = 0;
   const trabajador = async puerto => {
     while (i < tareas.length) {
@@ -86,7 +101,8 @@ if (AUDITOR && process.platform === 'win32') {
     }
   };
   console.log('Auditor de la suite: ' + tareas.length + ' corridas (' + (tareas.length / 2) + ' escenarios × 1280 y 360 px)');
-  await Promise.all([9471, 9472, 9473].map(trabajador));
+  /* en paralelo: 3 por omisión; con el equipo cargado, menos (SIGMAPRO_AA_HILOS=1) */
+  await Promise.all([9471, 9472, 9473].slice(0, Math.max(1, Math.min(3, +process.env.SIGMAPRO_AA_HILOS || 3))).map(trabajador));
   rmSync(tmp, { recursive: true, force: true });
 } else avisos.push('Sin el auditor de la suite (LABG-Design/labg-audit.ps1 o SIGMAPRO_AUDITOR, en Windows): solo se revisa el foco con el teclado.');
 

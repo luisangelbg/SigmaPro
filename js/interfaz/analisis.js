@@ -41,6 +41,7 @@
     mx: { respuesta: '', derecha: '', comoFactor: [], tipoSC: 3, gl: 'satterthwaite', estimacion: 'reml', compararMx: null, dentro: '', ajuste: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
     mxd: { respuesta: '', tratamientos: [], bloque: '', parcelaGrande: '', subparcela: '', subsubparcela: '', repeticion: '', tratamiento: '', genotipo: '', localidad: '',
       repeticionAleatoria: false, localidadFija: false, compararMx: null, ajuste: 'tukey', gl: 'satterthwaite', estimacion: 'reml', alfa: 0.05, nivel: 0.95, _iniciado: false },
+    rep: { respuesta: '', tiempo: '', sujeto: '', tratamientos: [], bloque: '', estructura: 'auto', criterio: 'aic', compararMx: null, dentro: '', ajuste: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
     motorAceptado: false,
   };
 
@@ -569,7 +570,40 @@
     h += '<p class="small muted">' + esc(T('Corre en el motor R dentro de tu navegador (lme4, lmerTest y emmeans).')) + '</p>';
     return h + campo('mxd', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('mxd', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
+  /** Medidas repetidas: papeles propuestos por el nombre de las columnas; la estructura de covarianza, automática o pedida. */
+  function formRepetidas(c) {
+    const s = estado.rep, med = medidas(c).length ? medidas(c) : c.numericas, agr = c.agrupables.filter(n => nivelesDe(c, n).length >= 2);
+    const marca = n => (c.numFactor.includes(n) ? T('{c} (numérica)', { c: n }) : n);
+    if (!s._iniciado) {
+      s._iniciado = true;
+      const usadas = new Set(), todas = c.t.nombres;
+      const busca = (re, lista0) => { const n = lista0.find(x => re.test(x) && !usadas.has(x)) || ''; if (n) usadas.add(n); return n; };
+      s.tiempo = busca(/^(dds|dde|ddt|dia|día|dias|días|fecha|tiempo|semana|mes|edad|time|day|age|muestreo)/i, todas);
+      s.sujeto = busca(/^(planta|sujeto|parcela|unidad|animal|arbol|árbol|rata|individuo|id|subject)/i, todas);
+      s.bloque = busca(/^(bloque|block|blq|rep)/i, agr);
+      s.respuesta = c.pap.respuestas.find(n => med.includes(n) && !usadas.has(n)) || med.find(n => !usadas.has(n)) || '';
+      s.tratamientos = c.pap.factores.filter(n => agr.includes(n) && !usadas.has(n) && n !== s.respuesta).slice(0, 1);
+      s.compararMx = null;
+    }
+    const todas = c.t.nombres.filter(n => n !== s.respuesta);
+    let h = campo('rep', 'respuesta', T('Variable de respuesta'), lista(med), s.respuesta);
+    h += campo('rep', 'tiempo', T('Tiempo (fecha de medición)'), [['', T('— elige —')]].concat(todas.filter(n => n !== s.sujeto).map(n => [n, n])), s.tiempo,
+      T('Numérico (días, semanas) o factor; si es numérico se puede usar la AR(1) continua para fechas desiguales.'));
+    h += campo('rep', 'sujeto', T('Unidad medida en cada fecha (planta, parcela, animal)'), [['', T('— elige —')]].concat(todas.filter(n => n !== s.tiempo).map(n => [n, n])), s.sujeto,
+      T('Puede repetir su número en cada tratamiento: la unidad es la combinación de unidad, tratamiento y bloque.'));
+    s.tratamientos = s.tratamientos.filter(x => agr.includes(x) && ![s.tiempo, s.sujeto, s.bloque].includes(x));
+    h += casillas('rep', 'tratamientos', T('Factores de tratamiento (hasta 2; pueden faltar)'), agr.filter(n => ![s.respuesta, s.tiempo, s.sujeto, s.bloque].includes(n)), s.tratamientos, marca, T('No hay factores en la tabla.'));
+    h += campo('rep', 'bloque', T('Bloques'), [['', T('— sin bloques —')]].concat(agr.filter(n => ![s.respuesta, s.tiempo, s.sujeto, ...s.tratamientos].includes(n)).map(n => [n, marca(n)])), s.bloque);
+    const R = SP.repetidas;
+    h += campo('rep', 'estructura', T('Estructura de covarianza entre fechas'), [['auto', T('La mejor según el criterio (se comparan todas)')]].concat(Object.entries(R.ESTRUCTURAS).map(([k, x]) => [k, x.nombre])), s.estructura);
+    h += campo('rep', 'criterio', T('Criterio para elegirla'), [['aic', T('AIC (Akaike)')], ['bic', T('BIC (Schwarz)')]], s.criterio);
+    if (s.compararMx === null) { s.compararMx = s.tratamientos.length ? [s.tratamientos[0]] : (s.tiempo ? [s.tiempo] : []); s.dentro = s.tratamientos.length ? s.tiempo : ''; }
+    h += formCompararMx('rep', s, s.tratamientos.concat(s.tiempo ? [s.tiempo] : []), true);
+    h += '<p class="small muted">' + esc(T('Corre en el motor R dentro de tu navegador (nlme y emmeans).')) + '</p>';
+    return h + campo('rep', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('rep', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+  }
   function formulario(c) {
+    if (estado.metodo === 'medidas-repetidas') return formRepetidas(c);
     if (estado.metodo === 'modelo-mixto') return formMixto(c);
     if (MIXTOS_DIS.includes(estado.metodo)) return formDisenoMixto(c, estado.metodo);
     if (estado.metodo === 'modelo-lineal') return formModelo(c);
@@ -593,6 +627,11 @@
       const s = estado.mx;
       return { e: { respuesta: s.respuesta }, op: Object.assign({ derecha: s.derecha, comoFactor: s.comoFactor.slice(), tipoSC: +s.tipoSC, gl: s.gl, reml: s.estimacion !== 'ml', ajuste: s.ajuste, alfa: +s.alfa, nivel: +s.nivel },
         s.compararMx ? { comparar: s.compararMx.slice() } : {}, s.dentro ? { dentro: s.dentro } : {}) };
+    }
+    if (m === 'medidas-repetidas') {
+      const s = estado.rep;
+      return { e: Object.assign({ respuesta: s.respuesta, tiempo: s.tiempo, sujeto: s.sujeto, tratamientos: s.tratamientos.slice() }, s.bloque ? { bloque: s.bloque } : {}),
+        op: { estructura: s.estructura, criterio: s.criterio, comparar: (s.compararMx || []).slice(), dentro: s.dentro || '', ajuste: s.ajuste, alfa: +s.alfa, nivel: +s.nivel } };
     }
     if (MIXTOS_DIS.includes(m)) {
       const s = estado.mxd, e = { respuesta: s.respuesta };
@@ -857,6 +896,24 @@
   }
 
   /** Gráfica de cajas del método: los grupos comparados, con letras cuando las hay. */
+  /** Medidas repetidas: el perfil de cada tratamiento en el tiempo (o la media de cada fecha) y los residuos normalizados. */
+  function graficasRepetidas(r) {
+    let g0 = '';
+    const md = (r.medias || [])[0];
+    if (md && md.filas.length) {
+      if (md.dentro === r.tiempo) {
+        const fechas = [...new Set(md.filas.map(f => f.por))], niv = [...new Set(md.filas.map(f => f.nivel))];
+        const valor = (n, t) => { const x = md.filas.find(f => f.nivel === n && f.por === t); return x ? x.media : NaN; };
+        g0 = SP.graficas.lineas({ titulo: T('Perfil de «{v}» en el tiempo', { v: r.respuesta }), x: { titulo: r.tiempo, niveles: fechas }, y: { titulo: r.respuesta }, leyenda: md.factor,
+          descripcion: T('Medias marginales estimadas de «{v}» en cada {t}, una línea por cada nivel de {f}.', { v: r.respuesta, t: r.tiempo, f: md.factor }), series: niv.map(n => ({ nombre: n, valores: fechas.map(t => valor(n, t)) })) });
+      } else if (!md.dentro && md.filas.length <= 40) {
+        g0 = SP.graficas.medias({ titulo: T('Medias marginales de «{f}»', { f: md.factor }), y: { titulo: r.respuesta },
+          descripcion: T('Medias marginales estimadas con su intervalo de confianza; la misma letra indica que no difieren.'),
+          grupos: md.filas.map(x => ({ nombre: x.nivel, media: x.media, inf: x.ic[0], sup: x.ic[1], letra: x.letras })) });
+      }
+    }
+    return g0 + graficasMixto(Object.assign({}, r, { medias: [] }));
+  }
   /** Residuos del modelo mixto: contra los ajustados y su Q-Q. */
   function graficasMixto(r) {
     const res = r.valores.residuos, aj = r.valores.ajustados, n = res.length;
@@ -887,6 +944,7 @@
   function graficaMetodo(r, op) {
     op = op || {};
     if (r.tipo === 'mixto') return graficasMixto(r);
+    if (r.tipo === 'repetidas') return graficasRepetidas(r);
     if (r.tipo === 'modelo') {
       if (r.celdas) {
         const [A, B] = r.celdas.factores, nivA = [], nivB = [];
@@ -1015,7 +1073,7 @@
     if (estado.modo !== 'catalogo') { const p = estado.pintores[estado.modo]; if (p) p(c); return; }
     catalogo();
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -1127,6 +1185,10 @@
       pon(estado.mx, { respuesta: e.respuesta, derecha: op.derecha, comoFactor: op.comoFactor || [], tipoSC: op.tipoSC, gl: op.gl, estimacion: op.reml === false ? 'ml' : op.reml === undefined ? undefined : 'reml',
         ajuste: op.ajuste, dentro: op.dentro || '' });
       estado.mx.compararMx = op.comparar ? [].concat(op.comparar) : null;
+    } else if (m === 'medidas-repetidas') {
+      pon(estado.rep, { respuesta: e.respuesta, tiempo: e.tiempo, sujeto: e.sujeto, tratamientos: [].concat(e.tratamientos || []), bloque: e.bloque || '',
+        estructura: op.estructura, criterio: op.criterio, ajuste: op.ajuste, dentro: op.dentro === undefined ? undefined : op.dentro });
+      estado.rep.compararMx = op.comparar ? [].concat(op.comparar) : null;
     } else if (MIXTOS_DIS.includes(m)) {
       pon(estado.mxd, Object.assign({}, e, { tratamientos: e.tratamientos ? [].concat(e.tratamientos) : undefined, subsubparcela: e.subsubparcela || '', bloque: e.bloque || '',
         gl: op.gl, estimacion: op.reml === false ? 'ml' : op.reml === undefined ? undefined : 'reml', ajuste: op.ajuste, repeticionAleatoria: op.repeticionAleatoria, localidadFija: op.localidadFija }));

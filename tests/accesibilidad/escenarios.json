@@ -150,5 +150,9 @@
  "mixto-latice": {
   "espera": true,
   "prep": "(async () => { window.__esperando = true; try { localStorage.setItem('sigmapro.motorR.usado', '1'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[12].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.ponerModo('catalogo'); document.querySelector('#anaCatalogo [data-metodo=\\\"mixto-latice\\\"]').click(); for (let k = 0; k < 400; k++) { await new Promise(r => setTimeout(r, 200)); const r = document.querySelector('#anaResultado'); if (r && !r.classList.contains('calculando') && (r.querySelector('.exp-cabeza h3') || r.querySelector('.msg-error'))) break; } document.querySelectorAll('#anaResultado details').forEach(d => d.open = true); window.__auditT0 = 0; window.__esperando = false; })()"
+ },
+ "repetidas": {
+  "espera": true,
+  "prep": "(async () => { window.__esperando = true; try { localStorage.setItem('sigmapro.motorR.usado', '1'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[14].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.ponerModo('catalogo'); document.querySelector('#anaCatalogo [data-metodo=\"medidas-repetidas\"]').click(); for (let k = 0; k < 400; k++) { await new Promise(r => setTimeout(r, 200)); const r = document.querySelector('#anaResultado'); if (r && !r.classList.contains('calculando') && (r.querySelector('.exp-cabeza h3') || r.querySelector('.msg-error'))) break; } document.querySelectorAll('#anaResultado details').forEach(d => d.open = true); window.__auditT0 = 0; window.__esperando = false; })()"
  }
 }

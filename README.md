@@ -58,8 +58,9 @@ casos y 48 458 valores.
 que se descarga solo cuando se necesita; los datos no salen del equipo) y el **modelo lineal mixto** escrito como
 fórmula, con efectos aleatorios como en lme4, grados de libertad de Satterthwaite o Kenward-Roger, componentes de
 varianza, medias marginales con letras, prueba de cada aleatorio y BLUP; y los diseños con efectos aleatorios
-(bloques aleatorios, parcelas divididas, látice y alfa-látice, varias localidades), validados en el navegador
-contra R. En total, 646 casos y 62 080 valores. Lo que falta para publicar y las
+(bloques aleatorios, parcelas divididas, látice y alfa-látice, varias localidades) y las **medidas repetidas en el
+tiempo** con la comparación de estructuras de covarianza (simetría compuesta, AR(1), no estructurada…), validados en
+el navegador contra R. En total, 652 casos y 64 450 valores. Lo que falta para publicar y las
 fases 2 y 3 están en
 [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan
 completo está en

@@ -2,6 +2,35 @@
 
 ## Sin publicar
 
+### Hito 2.2 · Medidas repetidas en el tiempo con estructuras de covarianza (3 oct 2026)
+
+- **Medidas repetidas en el tiempo** (familia Modelos mixtos, motor R con nlme y emmeans): la misma planta, parcela o
+  animal medida en varias fechas, con los tratamientos entre unidades, el tiempo como factor y, si los hay, bloques.
+  Se ajustan por REML las estructuras de covarianza entre fechas —independientes, simetría compuesta (y heterogénea),
+  AR(1) (y heterogénea), AR(1) continua para fechas desiguales y no estructurada— y se elige la de menor AIC o BIC, o
+  la que se pida; la tabla de las candidatas dice cuál se eligió y cuáles no se pudieron ajustar. De la elegida: pruebas
+  F marginales de los efectos fijos con los gl del error de nlme (N − p), coeficientes, la correlación entre fechas, la
+  matriz de covarianzas (y correlaciones) entre fechas de una unidad, las medias marginales con letras —por omisión,
+  los tratamientos dentro de cada fecha— con esos mismos gl, el semáforo de los residuos normalizados (Shapiro-Wilk y
+  Levene entre fechas), el perfil de cada tratamiento en el tiempo, el párrafo con sus citas (Pinheiro y Bates 2000;
+  Wolfinger 1993; Akaike 1974 o Schwarz 1978) y el código R.
+- La unidad es la combinación de unidad, tratamientos y bloque (las plantas pueden numerarse de nuevo en cada
+  tratamiento). El tiempo numérico se mide en unidades del intervalo más corto entre fechas: así la AR(1) continua es
+  la AR(1) cuando las fechas son parejas (con días, el optimizador se atoraba) y su parámetro es la correlación entre
+  dos fechas seguidas. La no estructurada no entra sola con más de ocho fechas (demasiados parámetros).
+- Ejemplo nuevo (ficticio): **maíz, altura en cinco fechas**, 4 dosis de N en 4 bloques, con correlación entre fechas
+  y varianza creciente.
+- Validación en el navegador: 6 casos (Orthodont de Potthoff y Roy 1964 con elección por AIC y por BIC, faltantes y la
+  no estructurada pedida; BodyWeight de Crowder y Hand 1990 con fechas desiguales; sleepstudy sin tratamientos; el
+  ejemplo de maíz con bloques) contra el R de escritorio: 2 370 valores, diferencia escalada máxima 1.4 × 10⁻⁷ (nlme
+  3.1-169 en el motor y 3.1-166 en el escritorio). 652 casos en total.
+- Corrección: el formulario de las comparaciones de los modelos mixtos (Hito 2.1) se llamaba igual que el de las
+  comparaciones de medias de la Fase 1 y lo reemplazaba; ahora tienen nombres distintos.
+- Auditoría de accesibilidad: cada escenario empieza en el modo Catálogo del bloque Análisis y cuenta como falla un
+  error de la preparación o de la página (así se halló la corrección anterior); el corredor espera a que el navegador
+  anterior suelte su perfil antes de abrir otro en el mismo puerto (las corridas alternaban una buena y una mala) y
+  repite una vez la corrida que no devuelve nada.
+
 ### Hito 2.1 · Modelos mixtos completos y diseños con efectos aleatorios (3 oct 2026)
 
 - Modelo lineal mixto, ahora con: **medias marginales** de los factores fijos (emmeans, con los grados de libertad de

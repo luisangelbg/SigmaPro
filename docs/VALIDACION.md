@@ -400,7 +400,8 @@ escritorio con el que se calcula la referencia.
   del caso, del puente (`js/nucleo/motor-r.js`), del registro y del archivo que define el método
   (`tests/lib/huella-motor-r.mjs`). Si alguno cambió después de la corrida, el caso queda **sin aprobar** y el método
   no aparece en la app hasta volver a correrlo.
-- **Resultado** (Hito 2.1): 22 casos de 5 métodos, 13 622 valores, diferencia escalada máxima 4.7 × 10⁻⁹, a pesar de que
+- **Resultado** (Hito 2.2): 28 casos de 6 métodos, 15 992 valores, diferencia escalada máxima 1.4 × 10⁻⁷ (medidas
+  repetidas: nlme 3.1-169 en el motor y 3.1-166 en el escritorio). Hasta el Hito 2.1: 22 casos, diferencia máxima 4.7 × 10⁻⁹, a pesar de que
   el motor trae lme4 2.0-1 y emmeans 2.0.3 y el escritorio lme4 1.1-35.5 y emmeans 1.10.6. La referencia común está en
   `tests/r/mixto.R`: ANOVA, coeficientes, componentes de varianza, ajuste, medias marginales y sus pares (emmeans),
   ranova y BLUP. Los p de Tukey se comparan con un piso absoluto de 1e-12 (son 1 − ptukey, una integral numérica: con 28
@@ -417,6 +418,7 @@ escritorio con el que se calcula la referencia.
 | npk (Yates 1935) | factorial 2 × 2 × 2 en bloques aleatorios con N × P × K confundida con los bloques: se estima con la información entre bloques |
 | plots (agricolae) | parcelas divididas sin bloques: la repetición identifica cada parcela grande |
 | data_alpha (Olivoto y Lúcio 2020) | alfa-látice de 24 genotipos, con repeticiones fijas y aleatorias |
+| Orthodont (Potthoff y Roy 1964), BodyWeight (Crowder y Hand 1990), sleepstudy y el maíz de los ejemplos | medidas repetidas: siete estructuras de covarianza con elección por AIC y BIC, la no estructurada pedida, fechas desiguales (AR(1) continua), faltantes, bloques, sin tratamientos (`tests/r/repetidas.R`) |
 | data_ge (Olivoto y Lúcio 2020) y plrv (CIP, agricolae) | ensayos en varias localidades: localidad, repetición y G × L aleatorios; localidades fijas con 28 clones (378 pares de Tukey) |
 
 Las piezas puras del puente (lectura de la salida de R, nombres, columnas, código que se manda) tienen pruebas unitarias

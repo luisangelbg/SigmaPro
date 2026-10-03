@@ -80,6 +80,8 @@ SP.definir('informe', function (SP) {
     bates2015: () => 'Bates, D., Mächler, M., Bolker, B. y Walker, S. (2015). Fitting linear mixed-effects models using lme4. Journal of Statistical Software, 67(1), 1–48.',
     kuznetsova2017: () => 'Kuznetsova, A., Brockhoff, P. B. y Christensen, R. H. B. (2017). lmerTest package: tests in linear mixed effects models. Journal of Statistical Software, 82(13), 1–26.',
     kenward1997: () => 'Kenward, M. G. y Roger, J. H. (1997). Small sample inference for fixed effects from restricted maximum likelihood. Biometrics, 53(3), 983–997.',
+    pinheiro2000: () => 'Pinheiro, J. C. y Bates, D. M. (2000). Mixed-effects models in S and S-PLUS. Springer.',
+    wolfinger1993: () => 'Wolfinger, R. D. (1993). Covariance structure selection in general mixed models. Communications in Statistics – Simulation and Computation, 22(4), 1079–1106.',
     halekoh2014: () => 'Halekoh, U. y Højsgaard, S. (2014). A Kenward-Roger approximation and parametric bootstrap methods for tests in linear mixed models – the R package pbkrtest. Journal of Statistical Software, 59(9), 1–32.',
     patterson1971: () => 'Patterson, H. D. y Thompson, R. (1971). Recovery of inter-block information when block sizes are unequal. Biometrika, 58(3), 545–554.',
   };
@@ -98,7 +100,7 @@ SP.definir('informe', function (SP) {
     mcnemar1947: 'McNemar, 1947', bowker1948: 'Bowker, 1948', mantel1959: 'Mantel y Haenszel, 1959', breslow1980: 'Breslow y Day, 1980', tarone1985: 'Tarone, 1985',
     cohen1960: 'Cohen, 1960', cohen1968: 'Cohen, 1968', wilson1927: 'Wilson, 1927', clopper1934: 'Clopper y Pearson, 1934', agresti1998: 'Agresti y Coull, 1998',
     brown2001: 'Brown et al., 2001', bates2015: 'Bates et al., 2015', kuznetsova2017: 'Kuznetsova et al., 2017', kenward1997: 'Kenward y Roger, 1997',
-    halekoh2014: 'Halekoh y Højsgaard, 2014', patterson1971: 'Patterson y Thompson, 1971',
+    halekoh2014: 'Halekoh y Højsgaard, 2014', patterson1971: 'Patterson y Thompson, 1971', pinheiro2000: 'Pinheiro y Bates, 2000', wolfinger1993: 'Wolfinger, 1993',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -491,6 +493,29 @@ SP.definir('informe', function (SP) {
     return { metodos, resultados: [oracion(frases), varianzas, oracion(aleatorios)].concat(medias).concat([r.ajuste && r.ajuste.singular ? T('El ajuste fue singular: al menos un componente de varianza se estimó en cero.') : '']).filter(Boolean).join(' ') };
   }
 
+  /** Medidas repetidas (motor R): la estructura de covarianza elegida y las pruebas de los efectos fijos. */
+  function repetidas(r, rep, citas) {
+    const el = r.estructuras.find(x => x.clave === r.elegida) || { nombre: r.elegida };
+    const nombreE = n => (/^[A-Z][A-Z(]/.test(n) ? n : minuscula(n));   // las siglas, como AR(1), se quedan
+    const ajustes = { tukey: () => T('con la prueba de Tukey ({c})', { c: cita(['tukey1949'], citas) }), holm: () => T('con el ajuste de Holm ({c})', { c: cita(['holm1979'], citas) }),
+      sidak: () => T('con el ajuste de Šidák ({c})', { c: cita(['sidak1967'], citas) }), bonferroni: () => T('con el ajuste de Bonferroni'), none: () => T('por pares sin ajuste') };
+    const metodos = T('Las mediciones repetidas en el tiempo se analizaron con un modelo de mínimos cuadrados generalizados ({f}) ajustado por REML con nlme ({c}). ', { f: r.formula, c: cita(['pinheiro2000'], citas) }) +
+      (r.forzada ? T('La covarianza entre las fechas de una misma unidad se modeló con una estructura {e}. ', { e: nombreE(el.nombre) })
+        : T('La estructura de covarianza entre las fechas de una misma unidad ({e}) se eligió por el menor {k} ({kc}) entre {n} candidatas ({w}). ', {
+          e: nombreE(el.nombre), k: r.criterio, kc: cita([r.criterio === 'BIC' ? 'schwarz1978' : 'akaike1974'], citas), n: r.estructuras.filter(x => !x.error).length, w: cita(['wolfinger1993'], citas) })) +
+      T('Los efectos fijos se probaron con pruebas F marginales con {g} grados de libertad del error.', { g: r.gl }) +
+      ((r.medias || []).length ? ' ' + T('Las medias marginales ({m}) se compararon {a}.', { m: cita(['searle1980'], citas), a: (ajustes[r.medias[0].ajuste] || (() => ''))() }) : '');
+    const frases = [];
+    r.anova.termino.forEach((t, i) => {
+      if (!Number.isFinite(r.anova.F[i]) || !Number.isFinite(r.anova.p[i])) return;
+      const sig = r.anova.p[i] < (r.alfa || 0.05), e = `F(${r.anova.gl1[i]}, ${r.anova.gl2[i]}) = ${n2(r.anova.F[i])}; ${fp(r.anova.p[i])}`, nombre = String(t);
+      frases.push(nombre.includes(':') ? (sig ? T('la interacción {t} fue significativa ({e})', { t: nombre.replace(/:/g, ' × '), e }) : T('la interacción {t} no fue significativa ({e})', { t: nombre.replace(/:/g, ' × '), e }))
+        : (sig ? T('el efecto de {t} fue significativo ({e})', { t: nombre, e }) : T('el efecto de {t} no fue significativo ({e})', { t: nombre, e })));
+    });
+    const cor = r.correlacion && r.correlacion.valor.length === 1 ? T('La correlación estimada entre fechas de una misma unidad fue {v}.', { v: n3(r.correlacion.valor[0]) }) : '';
+    return { metodos, resultados: [oracion(frases), cor].filter(Boolean).join(' ') };
+  }
+
   /** El párrafo de métodos y el de resultados de un análisis. */
   function parrafo(id, r, rep, e, op) {
     e = e || {}; op = op || {};
@@ -507,6 +532,7 @@ SP.definir('informe', function (SP) {
     else if (id === 'supuestos') p = supuestos(r, rep, citas);
     else if (id === 'modelo-lineal') p = modeloLineal(r, rep, citas);
     else if (id === 'modelo-mixto' || /^mixto-/.test(id)) p = mixto(r, rep, citas);
+    else if (id === 'medidas-repetidas') p = repetidas(r, rep, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };

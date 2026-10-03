@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-03T15:38:19.079Z",
+ "generado": "2026-10-03T19:03:32.727Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 646,
-  "aprobados": 646,
+  "casos": 652,
+  "aprobados": 652,
   "fallidos": 0,
-  "valores": 62080,
+  "valores": 64450,
   "difEscaladaMax": 2.0258232202030768e-7,
-  "objetivos": 134
+  "objetivos": 135
  },
  "casos": [
   {
@@ -16970,6 +16970,239 @@ window.SP_VALIDACION = {
      "emmeans": "1.10.6"
     },
     "codigo": "lm(captacion ~ origen * tratamiento + factor(conc)); car::Anova(type = 3) con contr.sum; summary(m); confint(emmeans(m, factor))"
+   }
+  },
+  {
+   "id": "medidas-repetidas/maiz-altura-bloques",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "medidas-repetidas"
+   },
+   "titulo": "Con bloques; la planta se numera de nuevo en cada tratamiento (la unidad es planta × tratamiento × bloque)",
+   "fuente": "Ejemplo ficticio de SigmaPro «Maíz: altura en cinco fechas» (datos/generar-ejemplos.R)",
+   "clase": "D",
+   "valores": 515,
+   "difMax": 9.322320693172514e-12,
+   "difEscaladaMax": 2.651234506088716e-14,
+   "peor": "estructuras[6].logLik",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nlme": "3.1.166",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "gls(altura ~ tratamiento * dds + bloque, correlation = <cada estructura> (form = ~ orden | unidad), weights = varIdent(~ 1 | dds) en las heterogéneas, method = \"REML\"); AIC/BIC; anova(type = \"marginal\"); emmeans(mode = \"df.error\", df = N - p); pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "nlme": "3.1.169",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "medidas-repetidas/orthodont-automatica",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "medidas-repetidas"
+   },
+   "titulo": "Siete estructuras candidatas, elegida por AIC; sexo comparado en cada edad",
+   "fuente": "Potthoff y Roy (1964), Biometrika 51: 313-326; conjunto Orthodont de nlme",
+   "clase": "D",
+   "valores": 189,
+   "difMax": 9.672021406004205e-9,
+   "difEscaladaMax": 2.2362908857803197e-11,
+   "peor": "estructuras[4].logLik",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nlme": "3.1.166",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "gls(distancia ~ sexo * edad, correlation = <cada estructura> (form = ~ orden | unidad), weights = varIdent(~ 1 | edad) en las heterogéneas, method = \"REML\"); AIC/BIC; anova(type = \"marginal\"); emmeans(mode = \"df.error\", df = N - p); pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "nlme": "3.1.169",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "medidas-repetidas/orthodont-faltantes-bic",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "medidas-repetidas"
+   },
+   "titulo": "Tres mediciones faltantes; estructura elegida por BIC",
+   "fuente": "Potthoff y Roy (1964), Biometrika 51: 313-326; conjunto Orthodont de nlme",
+   "clase": "D",
+   "valores": 189,
+   "difMax": 1.7053025658242404e-12,
+   "difEscaladaMax": 4.220995646852216e-15,
+   "peor": "estructuras[6].logLik",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nlme": "3.1.166",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "gls(distancia ~ sexo * edad, correlation = <cada estructura> (form = ~ orden | unidad), weights = varIdent(~ 1 | edad) en las heterogéneas, method = \"REML\"); AIC/BIC; anova(type = \"marginal\"); emmeans(mode = \"df.error\", df = N - p); pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "nlme": "3.1.169",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "medidas-repetidas/orthodont-no-estructurada",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "medidas-repetidas"
+   },
+   "titulo": "No estructurada pedida; medias de la edad (todas las unidades) con Holm",
+   "fuente": "Potthoff y Roy (1964), Biometrika 51: 313-326; conjunto Orthodont de nlme",
+   "clase": "D",
+   "valores": 189,
+   "difMax": 6.320102841073094e-8,
+   "difEscaladaMax": 8.600378709585246e-8,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nlme": "3.1.166",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "gls(distancia ~ sexo * edad, correlation = <cada estructura> (form = ~ orden | unidad), weights = varIdent(~ 1 | edad) en las heterogéneas, method = \"REML\"); AIC/BIC; anova(type = \"marginal\"); emmeans(mode = \"df.error\", df = N - p); pairs(adjust = \"holm\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "nlme": "3.1.169",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "medidas-repetidas/ratas-fechas-desiguales",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "medidas-repetidas"
+   },
+   "titulo": "Once fechas desiguales (días 1 a 64): AR(1) continua entre las candidatas; dieta en cada día",
+   "fuente": "Crowder y Hand (1990), Analysis of Repeated Measures; conjunto BodyWeight de nlme",
+   "clase": "D",
+   "valores": 740,
+   "difMax": 0.000004008687483292306,
+   "difEscaladaMax": 1.4340374072715713e-7,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nlme": "3.1.166",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "gls(peso ~ dieta * dia, correlation = <cada estructura> (form = ~ orden | unidad), weights = varIdent(~ 1 | dia) en las heterogéneas, method = \"REML\"); AIC/BIC; anova(type = \"marginal\"); emmeans(mode = \"df.error\", df = N - p); pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "nlme": "3.1.169",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "medidas-repetidas/sueno-sin-tratamientos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "medidas-repetidas"
+   },
+   "titulo": "Sin tratamientos: diez días (la no estructurada no entra sola con más de ocho fechas); medias de cada día",
+   "fuente": "Belenky et al. (2003), Journal of Sleep Research 12: 1-12; conjunto sleepstudy de lme4",
+   "clase": "D",
+   "valores": 548,
+   "difMax": 0.000009085153578780591,
+   "difEscaladaMax": 5.8861386555458376e-8,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "nlme": "3.1.166",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "gls(reaccion ~ dias, correlation = <cada estructura> (form = ~ orden | unidad), weights = varIdent(~ 1 | dias) en las heterogéneas, method = \"REML\"); AIC/BIC; anova(type = \"marginal\"); emmeans(mode = \"df.error\", df = N - p); pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "nlme": "3.1.169",
+    "emmeans": "2.0.3"
    }
   },
   {

@@ -68,7 +68,7 @@ carpeta.
 
 ### Datos publicados en los ejemplos
 
-`datos/ejemplos.js` trae nueve conjuntos ficticios generados por `datos/generar-ejemplos.R` (obra propia) y
+`datos/ejemplos.js` trae diez conjuntos ficticios generados por `datos/generar-ejemplos.R` (obra propia) y
 cinco publicados: los tiempos de supervivencia del cuadro 1 de Box, G. E. P. y Cox, D. R. (1964), *An analysis
 of transformations*, J. R. Stat. Soc. B 26: 211–252 (el script los coteja celda por celda con la copia del
 paquete boot de R); los conteos de la F2 dihíbrida del chícharo de Mendel, G. (1866), *Versuche über
@@ -171,7 +171,7 @@ Los casos de `tests/casos/` usan además datos publicados que R distribuye en su
 airquality, trees, cars, stackloss, swiss, mtcars, longley, women, chickwts, warpbreaks, HairEyeColor, UCBAdmissions,
 occupationalStatus) o en los paquetes boot
 (poisons), MASS (oats, anorexia, npk), agricolae (frijol, plots, plrv), carData (Soils), lme4 (sleepstudy, Penicillin),
-nlme (Oats, Machines) y metan (data_alpha, data_ge); cada caso cita la publicación original en su
+nlme (Oats, Machines, Orthodont, BodyWeight) y metan (data_alpha, data_ge); cada caso cita la publicación original en su
 campo `fuente`.
 
 ## Que se descargan al usarse (motor R, Fase 2)
@@ -187,6 +187,7 @@ No viajan dentro de esta carpeta: el navegador los descarga la primera vez que s
 | lmerTest | 3.2-1 | GPL ≥ 2 | ídem | Grados de libertad de Satterthwaite y ANOVA de los efectos fijos |
 | pbkrtest | 0.5.5 | GPL ≥ 2 | ídem | Kenward-Roger (solo si se elige) |
 | emmeans | 2.0.3 | GPL-2 o GPL-3 | ídem | Medias marginales y comparaciones de los modelos mixtos |
+| nlme | 3.1-169 | GPL ≥ 2 | con webR (paquete recomendado de R) | Medidas repetidas con estructuras de covarianza |
 | Dependencias de los anteriores (Matrix, minqa, nloptr, numDeriv, MASS, boot, Rcpp, RcppEigen y otras) | las del repositorio de webR | GPL-2, GPL ≥ 2, LGPL ≥ 3 o MIT, según el paquete | ídem | Las instala R junto con los anteriores |
 
 Dos dependencias son solo GPL-2 (minqa, de lme4; numDeriv, de lmerTest): no se enlazan con el código de SigmaPro, que

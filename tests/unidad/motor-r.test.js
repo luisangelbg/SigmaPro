@@ -150,3 +150,48 @@ SPT.describir('Modelo mixto · fórmula y trabajo para R', () => {
     SPT.igualJSON(ids, ['anova', 'varianzas', 'aleatorios', 'medias-trat', 'pares-trat', 'coeficientes', 'blup', 'ajuste']);
   });
 });
+
+SPT.describir('Medidas repetidas · trabajo para R y lectura', () => {
+  const n = 16, c = f => Array.from({ length: n }, (_, i) => f(i));
+  const t = () => SP.tabla.crear({ y: c(i => 10 + i % 4 * 3 + (i > 7 ? 2 : 0)), dds: c(i => [15, 30, 45, 60][i % 4]), planta: c(i => 'p' + (Math.floor(i / 4) % 2)),
+    trat: c(i => 't' + Math.floor(i / 8)) }, { planta: { tipo: 'factor' }, trat: { tipo: 'factor' } });
+  const f = () => SP.metodos['medidas-repetidas'];
+  const e = { respuesta: 'y', tiempo: 'dds', sujeto: 'planta', tratamientos: ['trat'] };
+  SPT.caso('preparar: unidad = planta × tratamiento, tiempo en unidades del intervalo, una gls por estructura, medias por fecha', () => {
+    const p = f().preparar(t(), e, SP.opcionesCon(f(), {})), L = p.codigo;
+    SPT.afirmar(L.includes('.tnum <- datos[["dds"]] / min(diff(sort(unique(datos[["dds"]]))))'), 'tiempo reescalado');
+    SPT.afirmar(L.includes('datos$.unidad <- interaction(datos[c("planta", "trat")], drop = TRUE, lex.order = TRUE)'), 'unidad');
+    SPT.afirmar(L.includes('  car1 = tryCatch(gls(y ~ trat * dds, data = datos, correlation = corCAR1(form = ~ .tnum | .unidad)'), 'AR(1) continua');
+    SPT.afirmar(L.includes('weights = varIdent(form = ~ 1 | dds)') && L.includes('elegida <- names(crit)[which.min(crit)]'), 'heterogéneas y elección por AIC');
+    SPT.afirmar(L.includes('emmeans(m, specs = f, by = "dds", mode = "df.error", data = datos), df = gle)'), 'tratamientos en cada fecha');
+    const q = f().preparar(t(), e, SP.opcionesCon(f(), { estructura: 'un', criterio: 'bic' })).codigo;
+    SPT.afirmar(q.includes('elegida <- "un"') && q.includes('BIC(m)'), 'forzada y BIC');
+    const sinNum = SP.repetidas.estructurasDe({ tiempoNum: false, k: 4 }, {});
+    SPT.afirmar(!sinNum.includes('car1') && sinNum.includes('un'), 'sin tiempo numérico no hay AR(1) continua');
+    SPT.afirmar(!SP.repetidas.estructurasDe({ tiempoNum: true, k: 10 }, {}).includes('un'), 'con 10 fechas la no estructurada no entra sola');
+  });
+  SPT.caso('validar: columnas distintas, al menos dos fechas, hasta dos tratamientos', () => {
+    const v = (x, op) => () => f().validar(t(), Object.assign({}, e, x), SP.opcionesCon(f(), op || {}));
+    SPT.lanza(v({ sujeto: 'dds' }), 'columna distinta');
+    SPT.lanza(v({}, { estructura: 'toeplitz' }), 'desconocida');
+    v({})();
+  });
+  SPT.caso('leer: estructuras como filas, matriz de covarianzas y medias con letras', () => {
+    const salida = { estructuras: { clave: ['independiente', 'ar1', 'un'], npar: [9, 10, NaN], logLik: [-30, -25, NaN], AIC: [78, 70, NaN], BIC: [80, 73, NaN], error: ['', '', 'false convergence (8)'] },
+      elegida: 'ar1', gl: 8, anova: { termino: ['trat', 'dds', 'trat:dds'], gl1: [1, 3, 3], F: [10, 20, 1], p: [0.01, 0.001, 0.4] },
+      coeficientes: { nombre: ['(Intercept)'], estimado: [10], ee: [1], t: [10], p: [0.001] }, correlacion: { parametro: 'Phi', valor: 0.6 },
+      sigma: 1.5, covarianza: { tiempos: ['15', '30'], matriz: { filas: null, columnas: null, valores: [[2.25, 1.35], [1.35, 2.25]] } }, ajuste: { n: 16, logLik: -25, AIC: 70, BIC: 73 },
+      medias: [{ factor: 'trat', medias: { datos: { trat: ['t0', 't1', 't0', 't1'], dds: ['15', '15', '30', '30'], emmean: [10, 12, 13, 15], SE: [1, 1, 1, 1], df: [8, 8, 8, 8], 'lower.CL': [8, 10, 11, 13], 'upper.CL': [12, 14, 15, 17] } },
+        pares: { datos: { contrast: ['t0 - t1', 't0 - t1'], dds: ['15', '30'], estimate: [-2, -2], SE: [0.5, 0.5], df: [8, 8], 't.ratio': [-4, -4], 'p.value': [0.004, 0.2] } } }],
+      filas: c(i => i + 1), residuos: c(i => ((i * 7) % 5 - 2) / 2), ajustados: c(i => i) };
+    const r = f().leer(salida, [], t(), e, SP.opcionesCon(f(), {}));
+    SPT.igualJSON(r.estructuras.map(x => x.clave + (x.error ? '!' : '')), ['independiente', 'ar1', 'un!']);
+    SPT.igualJSON(r.covarianza.matriz, [[2.25, 1.35], [1.35, 2.25]]);
+    SPT.igualJSON(r.medias[0].filas.map(x => x.por + x.letras), ['15b', '15a', '30a', '30a']);
+    SPT.igualJSON(r.anova.gl2, [8, 8, 8]);
+    const rep = f().reporte(r);
+    SPT.afirmar(/AR\(1\) \(AIC = 70\.00\)/.test(rep.conclusiones[0]), rep.conclusiones[0]);
+    SPT.igualJSON(rep.cuadros.map(x => x.id), ['estructuras', 'anova', 'covarianza', 'medias-trat', 'coeficientes', 'ajuste']);
+    SPT.afirmar(Math.abs(rep.cuadros[2].filas[0].c1 - 0.6) < 1e-12, 'arriba de la diagonal, la correlación');
+  });
+});
