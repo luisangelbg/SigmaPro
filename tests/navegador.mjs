@@ -7,7 +7,7 @@
 // Usa Edge o Chrome instalados y su protocolo de depuración (sin dependencias). El perfil
 // temporal del navegador se borra al terminar.
 
-import { spawn } from 'node:child_process';
+import { spawn, execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -95,7 +95,12 @@ try {
   console.error('Error: ' + e.message);
 } finally {
   try { ws && ws.close(); } catch { /* nada */ }
+  /* en Windows, el árbol completo: los procesos hijos del navegador retienen el perfil */
   nav.kill();
+  if (process.platform === 'win32') {
+    const clave = perfil.split(/[\\/]/).pop();
+    try { execFileSync('powershell', ['-NoProfile', '-Command', "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*" + clave + "*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"], { stdio: 'ignore' }); } catch { /* ya terminaron */ }
+  }
   /* el navegador tarda en soltar su perfil temporal: se reintenta unos segundos para no dejarlo en %TEMP% */
   for (let k = 0; k < 15 && existsSync(perfil); k++) { await dormir(400); try { rmSync(perfil, { recursive: true, force: true }); } catch { /* aún en uso */ } }
   process.exit(codigo);

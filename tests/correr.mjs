@@ -16,6 +16,7 @@ import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import { createHash } from 'node:crypto';
 
 const TESTS = dirname(fileURLToPath(import.meta.url));
 const RAIZ = join(TESTS, '..');
@@ -32,13 +33,16 @@ const problemas = [];
 // ---------------------------------------------------------------- 1. núcleo
 const htmlApp = leer(join(RAIZ, 'index.html'));
 const scriptsDe = (html, re) => [...html.matchAll(/<script\s+src="([^"]+)"/g)].map(m => m[1]).filter(s => re.test(s));
-const NUCLEO = /^(\.\.\/)?js\/(nucleo|metodos)\//;
+const NUCLEO = /^(\.\.\/)?js\/(nucleo|metodos|exportar)\//;
 const nucleoApp = scriptsDe(htmlApp, NUCLEO);
 if (!nucleoApp.length) problemas.push('index.html no carga ningún script de js/nucleo');
 
 const ctx = vm.createContext({
   console, setTimeout, clearTimeout, setInterval, clearInterval, performance,
   TextEncoder, TextDecoder, structuredClone, __SPT_NODE: true,
+  /* para las exportaciones: la compresión del sistema y una huella SHA-256 independiente (crypto de node) */
+  CompressionStream, DecompressionStream, Blob, Response,
+  __sha256Node: bytes => createHash('sha256').update(bytes).digest('hex'),
 });
 ctx.__nuevoContexto = codigo => { const c = vm.createContext({ console }); c.self = c; vm.runInContext(codigo, c); return c; };
 const correrEn = (archivo) => vm.runInContext(leer(archivo), ctx, { filename: rel(archivo) });

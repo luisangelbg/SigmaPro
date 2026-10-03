@@ -142,6 +142,18 @@
 
   /* ---------------- pintar ---------------- */
   let ultimo = null;
+  /* el resumen en pantalla como análisis del reporte (con el cuadro elegido y las columnas extra a la vista) */
+  function pedidoActual() {
+    const c = columnas();
+    if (!c) return null;
+    const { entradas, opciones, ctx } = armar(c);
+    return { metodo: METODO[estado.tipo], e: entradas, op: opciones, ctx, bloque: 3, visibles: extras.slice(), vista: estado.tipo === 'frec' ? estado.frec.vista : undefined };
+  }
+  const botonReporte = () => {
+    let p = null; try { p = pedidoActual(); } catch (e) { p = null; }
+    const ya = p && SP.app.reporte && SP.app.reporte.tiene(p);
+    return `<button type="button" class="btn ${ya ? 'btn-ghost' : 'btn-secondary'} btn-sm exp-reporte" data-accion="reporte"${ya ? ' aria-pressed="true"' : ''}>${esc(ya ? T('En el reporte ✓') : T('Agregar al reporte'))}</button>`;
+  };
   function pintarResultado(rep, codigo, ms) {
     const r = $('#expResultado');
     const varios = rep.cuadros.length > 1;
@@ -151,7 +163,7 @@
     const extrasDisp = cuadro.columnasExtra || [];
     r.innerHTML =
       `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span>` +
-      `<a class="exp-a-opciones small" href="#expOpciones">${esc(T('Cambiar las opciones ↓'))}</a></div>` +
+      `<a class="exp-a-opciones small" href="#expOpciones">${esc(T('Cambiar las opciones ↓'))}</a>${botonReporte()}</div>` +
       `<div class="callout exp-conclusion">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` +
       (varios ? `<div class="seg exp-vistas" role="group" aria-label="${esc(T('Cuadro que se muestra'))}">${rep.cuadros.map(x => `<button type="button" data-vista="${esc(x.id)}" aria-pressed="${x === cuadro}">${esc({ conteos: T('Frecuencias'), 'pct-fila': T('% por fila'), 'pct-columna': T('% por columna'), 'pct-total': T('% del total') }[x.id] || x.titulo)}</button>`).join('')}</div>` : '') +
       SP.cuadros.html(cuadro, { numero: 1, visibles: extras }) +
@@ -232,6 +244,14 @@
       if (v) { estado.frec.vista = v.dataset.vista; calcular(); return; }
       const a = e.target.closest('[data-accion]');
       if (!a) return;
+      if (a.dataset.accion === 'reporte') {
+        const p = pedidoActual();
+        if (!p) return;
+        if (SP.app.reporte.tiene(p)) { SP.app.ir(5); return; }
+        SP.app.reporte.agregar(p);
+        a.outerHTML = botonReporte();
+        return;
+      }
       const texto = a.dataset.accion === 'copiar' ? (ultimo && SP.cuadros.tsv(ultimo.cuadro, extras)) : $('#expResultado').dataset.codigo;
       if (texto && await SP.cuadros.copiar(texto)) L() && L().toast(a.dataset.accion === 'copiar' ? T('Cuadro copiado: pégalo en tu hoja de cálculo o documento.') : T('Código R copiado.'), { type: 'success' });
       else L() && L().toast(T('El navegador no dejó copiar; selecciona el texto y usa Ctrl+C.'), { type: 'warning' });

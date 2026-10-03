@@ -314,6 +314,36 @@ lineal general da el mismo ANOVA que el modelo de bloques al azar.
 `tests/codigo-r.mjs` corre el código R del modelo lineal general con SC tipo III y una numérica como factor, con tipo
 II y una covariable que interactúa, y sin intercepto (47 escenarios en total).
 
+## Reporte, figuras y exportaciones (Hito 1.11)
+
+Las exportaciones no calculan: llevan a un archivo los números que ya se validaron contra R. Lo que se valida es que
+lleguen **completos e intactos** y que el archivo esté **bien hecho**, leyéndolo con lectores que no son de SigmaPro.
+`tests/exportar.mjs` abre la app por file:// en un navegador sin ventana, arma un reporte con cinco análisis del
+ejemplo del maíz (bloques al azar, Tukey, polinomios, regresión polinomial y descriptivos), exporta todo y revisa:
+
+| Qué | Con qué lector | Resultado |
+|---|---|---|
+| Hoja de cálculo (.xlsx) | readxl | cada celda idéntica a la de la app (246 números con todas sus cifras y 105 textos) |
+| Los mismos números, contra R | car::Anova (tipo III) y emmeans, calculados desde los datos | gl, SC, F y p del ANOVA y medias y EE de Tukey iguales (24 valores, ≤ 1e-9) |
+| Reporte .docx | xml2 y png | las 9 partes son XML válido; el texto de los 16 cuadros es exacto; 7 figuras a 300 ppp del ancho pedido; campos SEQ; frases clave («F(2, 33) = 60.63», las citas) |
+| Página HTML | xml2 | los 16 cuadros y las 7 figuras vectoriales |
+| Figuras | pdftools, png y el lector de imágenes del sistema | cada PDF de una página del tamaño pedido, con su texto en Helvetica y sin caracteres perdidos; cada PNG a 600 ppp; cada TIFF a 600 ppp, del tamaño del PNG e igual a él en todos los píxeles muestreados (44 733) |
+| Proyecto .labg | openssl y R | las 7 huellas SHA-256 del manifiesto; datos.csv idéntico a los datos originales; el código R del proyecto corre de principio a fin |
+| Reabrir el proyecto | la app, en una página nueva | los mismos análisis dan exactamente los mismos cuadros |
+| LaTeX | revisión estructural (no hay compilador instalado) | un entorno table por cuadro, las tres reglas de booktabs y llaves balanceadas |
+
+Las pruebas unitarias (`tests/unidad/exportar.test.js`) cubren además la huella SHA-256 (los vectores de FIPS 180-4 y
+300 mensajes al azar contra crypto de node), el ZIP comprimido, la hoja de cálculo leída con el lector propio, el
+escapado de LaTeX, el bloque de resolución del PNG con su CRC, el TIFF decodificado píxel por píxel, los párrafos de 14
+métodos (sin huecos, con su estadística y con cada cita en la lista de referencias), la numeración del documento y el
+proyecto con un archivo alterado (la huella lo detecta).
+
+La validación atrapó un subíndice («hᵢᵢ») que el PDF escribía como «h??»: ahora los subíndices y superíndices de letras
+se escriben con su letra normal, que sí está en las fuentes estándar.
+
+Los párrafos para la tesis no se comparan con R: describen la prueba y sus números (los mismos de los cuadros) con la
+cita de cada método. Las referencias son las publicaciones originales de cada prueba.
+
 ## Dónde está cada cosa
 
 ```
@@ -328,6 +358,8 @@ tests/
 ├─ unidad/*.test.js               pruebas unitarias con valores resueltos a mano
 ├─ correr.mjs                     corredor en node (sin navegador)
 ├─ navegador.mjs                  las mismas pruebas en Edge o Chrome sin ventana, por file://
+├─ codigo-r.mjs                   el código R que muestra la app, corrido en R contra los números de la app
+├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ index.html                     las mismas pruebas con doble clic
 └─ reporte-validacion.html/.csv   el reporte publicado (también en la app, bloque 8)
 ```
@@ -364,6 +396,8 @@ Requisitos: R ≥ 4.4 con los paquetes que pida cada caso, y node ≥ 20 (cualqu
 Rscript tests/r/generar-todo.R      # regenera todas las referencias con tu R
 node tests/correr.mjs               # compara y escribe los reportes
 node tests/navegador.mjs            # lo mismo en el navegador, por file://
+node tests/codigo-r.mjs             # el código R que muestra la app da lo mismo en R
+node tests/exportar.mjs             # las exportaciones, leídas con R y con el sistema
 ```
 
 En Windows, `tests/pruebas.ps1` encuentra R, node y el navegador y corre todo.

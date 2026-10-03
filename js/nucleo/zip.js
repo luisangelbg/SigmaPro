@@ -9,7 +9,8 @@
      SP.zip.leer(bytes)            → { nombres: [..], datos(nombre) → Uint8Array | null }
      SP.zip.inflar(bytes)          → Uint8Array (DEFLATE «crudo»)
      SP.zip.crc32(bytes)           → entero sin signo
-     SP.zip.construir([{ nombre, datos }]) → Uint8Array (ZIP sin compresión) */
+     SP.zip.construir([{ nombre, datos }]) → Uint8Array (ZIP sin compresión)
+     SP.zip.construirComprimido([{ nombre, datos }]) → Promise<Uint8Array> (DEFLATE donde se pueda) */
 SP.definir('zip', function (SP) {
   'use strict';
   const T = SP.T;
@@ -206,22 +207,46 @@ SP.definir('zip', function (SP) {
   /** ZIP sin compresión (método 0) con nombres UTF-8. archivos: [{ nombre, datos: Uint8Array | texto }] */
   function construir(archivos) {
     const enc = new TextEncoder();
+    return armar(archivos.map(a => { const d = typeof a.datos === 'string' ? enc.encode(a.datos) : a.datos; return { nombre: a.nombre, datos: d, guardado: d, metodo: 0 }; }));
+  }
+  /** ZIP con DEFLATE (método 8) donde el navegador o node lo ofrecen (CompressionStream); si no, sin comprimir.
+      Un archivo que no se achica (PNG, por ejemplo) se guarda tal cual. → Promise<Uint8Array> */
+  async function construirComprimido(archivos) {
+    const enc = new TextEncoder();
+    const puede = typeof CompressionStream !== 'undefined' && typeof Blob !== 'undefined' && typeof Response !== 'undefined';
+    const lista = [];
+    for (const a of archivos) {
+      const datos = typeof a.datos === 'string' ? enc.encode(a.datos) : a.datos;
+      let guardado = datos, metodo = 0;
+      if (puede && datos.length > 64) {
+        try {
+          const flujo = new Blob([datos]).stream().pipeThrough(new CompressionStream('deflate-raw'));
+          const c = new Uint8Array(await new Response(flujo).arrayBuffer());
+          if (c.length < datos.length) { guardado = c; metodo = 8; }
+        } catch (e) { /* sin compresión */ }
+      }
+      lista.push({ nombre: a.nombre, datos, guardado, metodo });
+    }
+    return armar(lista);
+  }
+  function armar(archivos) {
+    const enc = new TextEncoder();
     const partes = [], central = [];
     let desplazamiento = 0;
     for (const a of archivos) {
       const nombre = enc.encode(a.nombre);
-      const datos = typeof a.datos === 'string' ? enc.encode(a.datos) : a.datos;
+      const datos = a.datos, guardado = a.guardado;
       const crc = crc32(datos);
       const cab = new Uint8Array(30 + nombre.length), dv = new DataView(cab.buffer);
-      dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true); dv.setUint16(6, 0x0800, true);
-      dv.setUint32(14, crc, true); dv.setUint32(18, datos.length, true); dv.setUint32(22, datos.length, true);
+      dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true); dv.setUint16(6, 0x0800, true); dv.setUint16(8, a.metodo, true);
+      dv.setUint32(14, crc, true); dv.setUint32(18, guardado.length, true); dv.setUint32(22, datos.length, true);
       dv.setUint16(26, nombre.length, true); cab.set(nombre, 30);
       const c = new Uint8Array(46 + nombre.length), dc = new DataView(c.buffer);
-      dc.setUint32(0, 0x02014b50, true); dc.setUint16(4, 20, true); dc.setUint16(6, 20, true); dc.setUint16(8, 0x0800, true);
-      dc.setUint32(16, crc, true); dc.setUint32(20, datos.length, true); dc.setUint32(24, datos.length, true);
+      dc.setUint32(0, 0x02014b50, true); dc.setUint16(4, 20, true); dc.setUint16(6, 20, true); dc.setUint16(8, 0x0800, true); dc.setUint16(10, a.metodo, true);
+      dc.setUint32(16, crc, true); dc.setUint32(20, guardado.length, true); dc.setUint32(24, datos.length, true);
       dc.setUint16(28, nombre.length, true); dc.setUint32(42, desplazamiento, true); c.set(nombre, 46);
-      partes.push(cab, datos); central.push(c);
-      desplazamiento += cab.length + datos.length;
+      partes.push(cab, guardado); central.push(c);
+      desplazamiento += cab.length + guardado.length;
     }
     const tamCentral = central.reduce((s, c) => s + c.length, 0);
     const fin = new Uint8Array(22), df = new DataView(fin.buffer);
@@ -246,5 +271,5 @@ SP.definir('zip', function (SP) {
     return out.subarray(0, o);
   }
 
-  SP.zip = { inflar, leer, crc32, construir, deBase64 };
+  SP.zip = { inflar, leer, crc32, construir, construirComprimido, deBase64 };
 });

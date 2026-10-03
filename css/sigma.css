@@ -472,3 +472,46 @@ button.cons-chip:focus-visible { outline: 2px solid var(--primary); outline-offs
 .ml-terminos li { margin: 3px 0; }
 .ml-terminos b { font-family: var(--font-mono, ui-monospace, Consolas, monospace); font-weight: 700; }
 .cons-der > .msg { margin: var(--sp-2) 0; }
+
+/* ================= bloque 5 · Reporte LABG (js/interfaz/reporte.js) ================= */
+.exp-reporte { margin-left: auto; }
+.rep-cabeza { margin-bottom: var(--sp-4); }
+.rep-cabeza .exp-fila { margin-bottom: var(--sp-2); }
+@media (max-width: 700px) { .rep-cabeza .exp-fila { grid-template-columns: minmax(0, 1fr); } }
+.rep-cabeza > p { margin: 0 0 var(--sp-3); }
+.rep-indice { border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--card-bg); padding: var(--sp-3) var(--sp-4); margin-bottom: var(--sp-4); }
+.rep-indice ol { margin: 0; padding-left: 0; list-style: none; display: grid; gap: 4px; font-size: var(--fs-sm); }
+.rep-indice a { color: var(--btn-oro-texto); font-weight: 600; }
+.rep-item { border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--card-bg); padding: var(--sp-4) var(--sp-5); margin-bottom: var(--sp-5); min-width: 0; }
+@media (max-width: 700px) { .rep-item { padding: var(--sp-3); } }
+.rep-item-cabeza { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-2) var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-2); }
+.rep-item-cabeza h3 { margin: 0; font-size: var(--fs-xl); min-width: 0; overflow-wrap: anywhere; }
+.rep-acciones { gap: 4px; }
+.rep-acciones .btn[aria-label] { min-width: 36px; }
+.rep-ajustes { margin: 0 0 var(--sp-3); }
+.rep-ajustes .field { margin-top: var(--sp-2); }
+.rep-item .exp-conclusion { margin: var(--sp-2) 0 var(--sp-4); }
+.rep-item .ana-graficas { margin-top: var(--sp-3); }
+.rep-sub { font-size: var(--fs-2xs); text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); font-weight: 700; margin: var(--sp-4) 0 var(--sp-2); }
+.rep-parrafo { border-left: 3px solid var(--accent); background: var(--bg-soft); border-radius: 0 var(--r-md) var(--r-md) 0; padding: var(--sp-1) var(--sp-4) var(--sp-3); margin: var(--sp-4) 0; }
+.rep-parrafo p { margin: 0 0 var(--sp-2); max-width: 80ch; line-height: 1.6; }
+.rep-parrafo .btn-row { align-items: center; }
+.rep-detalles dd { text-align: left; }
+
+/* ================= bloque 6 · Figuras (js/interfaz/figuras.js) ================= */
+.fig-ancho { min-width: 0; flex: 0 1 300px; }
+.fig-galeria { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: var(--sp-4); margin-top: var(--sp-3); }
+.fig-tarjeta { border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--card-bg); padding: var(--sp-3); min-width: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+.fig-tarjeta .sp-grafica { border: 0; padding: 0; }
+.fig-tarjeta figcaption { text-align: left; font-size: var(--fs-xs); }
+.fig-origen { margin: 0; }
+.fig-acciones { gap: 4px; margin-top: auto; }
+
+/* ================= bloque 7 · Exportar (js/interfaz/exportar.js) ================= */
+.expo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: var(--sp-4); margin: var(--sp-3) 0; }
+.expo-tarjeta { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; }
+.card.expo-tarjeta + .card.expo-tarjeta { margin-top: 0; }
+.expo-tarjeta h3 { margin: 0; }
+.expo-tarjeta p { margin: 0; }
+.expo-tarjeta .btn-row { margin-top: auto; padding-top: var(--sp-2); }
+.expo-estado { min-height: 1.4em; }

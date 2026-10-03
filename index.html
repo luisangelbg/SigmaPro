@@ -34,9 +34,9 @@
       <button type="button" class="step-btn" data-step="2"><span class="step-num">2</span>Datos</button>
       <button type="button" class="step-btn" data-step="3"><span class="step-num">3</span>Explorar</button>
       <button type="button" class="step-btn" data-step="4"><span class="step-num">4</span>Análisis</button>
-      <button type="button" class="step-btn soon" data-step="5" data-soon="pronto"><span class="step-num">5</span>Resultados</button>
-      <button type="button" class="step-btn soon" data-step="6" data-soon="pronto"><span class="step-num">6</span>Figuras</button>
-      <button type="button" class="step-btn soon" data-step="7" data-soon="pronto"><span class="step-num">7</span>Exportar</button>
+      <button type="button" class="step-btn" data-step="5"><span class="step-num">5</span>Resultados</button>
+      <button type="button" class="step-btn" data-step="6"><span class="step-num">6</span>Figuras</button>
+      <button type="button" class="step-btn" data-step="7"><span class="step-num">7</span>Exportar</button>
       <button type="button" class="step-btn" data-step="8"><span class="step-num">8</span>Validación</button>
     </nav>
   </div>
@@ -196,18 +196,103 @@
   </div>
 </section>
 
-<!-- ======================= 5–7 · PRÓXIMAMENTE ======================= -->
+<!-- ======================= 5 · RESULTADOS ======================= -->
 <section class="step-panel" id="panel-5" aria-labelledby="t5">
-  <div class="panel-title"><div><h2 id="t5">Resultados</h2><p>Conclusión en lenguaje claro, cuadros, supuestos y código R.</p></div></div>
-  <div class="soon-box"><h3>En construcción · Hito 1.11</h3><p>Primero la conclusión en lenguaje sencillo, luego los cuadros estilo revista, los supuestos con semáforo, el párrafo para tu tesis, los detalles técnicos y el código R equivalente.</p></div>
+  <div class="panel-title"><div><h2 id="t5">Resultados</h2><p>El Reporte LABG: cada análisis que agregues, con su conclusión en palabras, sus cuadros de revista, los supuestos con semáforo, el párrafo para tu tesis o artículo, los detalles técnicos y el código R.</p></div></div>
+
+  <div class="dat-inicio" id="repVacio">
+    <h3>El reporte está vacío</h3>
+    <p>En Explorar o en Análisis, usa «Agregar al reporte» en cada resultado que quieras conservar. Aquí se juntan en orden, con los cuadros y las figuras numerados, listos para copiar o exportar.</p>
+    <div class="btn-row">
+      <button type="button" class="btn btn-primary" data-ir="4">Ir a Análisis</button>
+      <button type="button" class="btn btn-secondary" data-ir="3">Ir a Explorar</button>
+      <button type="button" class="btn btn-ghost" id="repAbrir">Abrir un proyecto .labg</button>
+    </div>
+  </div>
+
+  <div id="repTrabajo" hidden>
+    <div class="card rep-cabeza">
+      <div class="exp-fila">
+        <label class="field"><span>Título del reporte</span><input class="input" id="repTitulo" autocomplete="off" placeholder="Reporte de análisis estadístico"></label>
+        <label class="field"><span>Autor o autores</span><input class="input" id="repAutor" autocomplete="name"></label>
+      </div>
+      <p class="small muted" id="repResumen" aria-live="polite"></p>
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary btn-sm" data-rep="copiar-todo">Copiar todos los párrafos</button>
+        <button type="button" class="btn btn-ghost btn-sm" data-ir="6">Ver las figuras</button>
+        <button type="button" class="btn btn-primary btn-sm" data-ir="7">Exportar</button>
+      </div>
+    </div>
+    <nav class="rep-indice" aria-label="Análisis del reporte"><ol id="repIndice"></ol></nav>
+    <div id="repItems"></div>
+  </div>
 </section>
+
+<!-- ======================= 6 · FIGURAS ======================= -->
 <section class="step-panel" id="panel-6" aria-labelledby="t6">
-  <div class="panel-title"><div><h2 id="t6">Figuras</h2><p>Figuras de calidad de publicación.</p></div></div>
-  <div class="soon-box"><h3>En construcción · Hito 1.11</h3><p>Medias con barras de error y letras, interacciones, diagnósticos de residuos y gráficos Q-Q, editables con el Estudio de figuras LABG y exportables a PNG, SVG, PDF y TIFF a 600 ppp.</p></div>
+  <div class="panel-title"><div><h2 id="t6">Figuras</h2><p>Las figuras del reporte, numeradas y con su leyenda, listas para publicar: SVG, PDF vectorial, y PNG o TIFF a 600 ppp. Se editan con el editor ✎ y, para el tamaño exacto de cada revista, con el Estudio de figuras.</p></div></div>
+  <div class="dat-inicio" id="figVacio">
+    <h3>Aún no hay figuras</h3>
+    <p>Las figuras aparecen aquí cuando el reporte tiene análisis con gráficas (diseños, comparaciones, regresión, correlación, contingencia…).</p>
+    <div class="btn-row"><button type="button" class="btn btn-primary" data-ir="5">Ir a Resultados</button></div>
+  </div>
+  <div id="figTrabajo" hidden>
+    <div class="dat-barra" id="figBarra">
+      <div class="seg exp-modo" id="figBarras" role="group" aria-label="Barras de error en las gráficas de medias">
+        <button type="button" data-barras="ee" aria-pressed="true">± 1 EE</button>
+        <button type="button" data-barras="ic" aria-pressed="false">IC 95 %</button>
+      </div>
+      <label class="field fig-ancho"><span>Ancho en el documento y en las descargas</span>
+        <select class="select" id="figAncho"><option value="8.5">8.5 cm (una columna)</option><option value="12">12 cm</option><option value="16">16 cm (ancho de página)</option><option value="17.5">17.5 cm (dos columnas)</option></select></label>
+    </div>
+    <p class="small muted" id="figResumen" aria-live="polite"></p>
+    <div class="fig-galeria" id="figGaleria"></div>
+  </div>
 </section>
+
+<!-- ======================= 7 · EXPORTAR ======================= -->
 <section class="step-panel" id="panel-7" aria-labelledby="t7">
-  <div class="panel-title"><div><h2 id="t7">Exportar</h2><p>Reporte, cuadros, figuras y proyecto.</p></div></div>
-  <div class="soon-box"><h3>En construcción · Hito 1.11</h3><p>Reporte en .docx, PDF y HTML; cuadros en .xlsx y LaTeX; figuras; y el proyecto completo en un archivo .labg para reabrirlo después.</p></div>
+  <div class="panel-title"><div><h2 id="t7">Exportar</h2><p>El reporte en .docx, PDF o HTML; los cuadros en hoja de cálculo o LaTeX; todas las figuras; y el proyecto completo en un archivo .labg para reabrirlo o repetirlo en R. Todo se arma en tu navegador.</p></div></div>
+  <p class="msg msg-info" id="expoResumen" aria-live="polite"></p>
+  <div class="expo-grid">
+    <div class="card expo-tarjeta">
+      <h3>Reporte completo</h3>
+      <p class="small muted">Portada, métodos (con la cita de cada prueba), resultados con cuadros y figuras numerados, supuestos, referencias y anexos.</p>
+      <div class="exp-fila">
+        <label class="field"><span>Tamaño de hoja</span><select class="select" id="expoHoja"><option value="carta">Carta</option><option value="a4">A4</option></select></label>
+      </div>
+      <div class="exp-casillas"><label class="imp-check"><input type="checkbox" id="expoCodigo" checked> Código R en un anexo</label><label class="imp-check"><input type="checkbox" id="expoDetalles" checked> Detalles técnicos en un anexo</label></div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary btn-sm" data-expo="docx">Documento .docx</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-expo="imprimir">PDF (imprimir)</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-expo="html">Página HTML</button>
+      </div>
+    </div>
+    <div class="card expo-tarjeta">
+      <h3>Cuadros</h3>
+      <p class="small muted">Cada cuadro del reporte con todas sus cifras (sin redondear) en una hoja de cálculo, uno por hoja y con un índice; o en LaTeX con las reglas de revista (booktabs).</p>
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary btn-sm" data-expo="xlsx">Hoja de cálculo .xlsx</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-expo="latex">LaTeX .tex</button>
+      </div>
+    </div>
+    <div class="card expo-tarjeta">
+      <h3>Figuras</h3>
+      <p class="small muted">Todas las figuras en un ZIP: SVG, PDF vectorial y PNG a 600 ppp, del ancho elegido en Figuras, con un índice.</p>
+      <div class="exp-casillas"><label class="imp-check"><input type="checkbox" id="expoTiff"> También en TIFF a 600 ppp</label></div>
+      <div class="btn-row"><button type="button" class="btn btn-primary btn-sm" data-expo="figuras">Todas las figuras (.zip)</button></div>
+    </div>
+    <div class="card expo-tarjeta">
+      <h3>Proyecto .labg</h3>
+      <p class="small muted">Datos (con sus tipos y el filtro), los análisis del reporte, los ajustes de las figuras y el código R que lo repite todo, con la huella SHA-256 de cada archivo. Los resultados se recalculan al abrir.</p>
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary btn-sm" data-expo="proyecto">Guardar proyecto</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-expo="abrir">Abrir un proyecto</button>
+      </div>
+      <input type="file" id="expoArchivo" accept=".labg,application/zip" hidden aria-label="Archivo de proyecto .labg">
+    </div>
+  </div>
+  <p class="small muted expo-estado" id="expoEstado" role="status" aria-live="polite"></p>
 </section>
 
 <!-- ======================= 8 · VALIDACIÓN ======================= -->
@@ -270,6 +355,7 @@
 <!-- núcleo (sin DOM; lo mismo corre en hilos de trabajo y en las pruebas de node) -->
 <script src="js/nucleo/sp.js"></script>
 <script src="js/nucleo/numerico.js"></script>
+<script src="js/nucleo/formatos.js"></script>
 <script src="js/nucleo/dist.js"></script>
 <script src="js/nucleo/tabla.js"></script>
 <script src="js/nucleo/algebra.js"></script>
@@ -278,6 +364,7 @@
 <script src="js/nucleo/estratos.js"></script>
 <script src="js/nucleo/medias.js"></script>
 <script src="js/nucleo/zip.js"></script>
+<script src="js/nucleo/sha256.js"></script>
 <script src="js/nucleo/xml.js"></script>
 <script src="js/nucleo/hojas.js"></script>
 <script src="js/nucleo/csv.js"></script>
@@ -291,6 +378,7 @@
 <script src="js/nucleo/hilos.js"></script>
 <script src="js/nucleo/asistente.js"></script>
 <script src="js/nucleo/constructor.js"></script>
+<script src="js/nucleo/informe.js"></script>
 <script src="js/metodos/descriptiva.js"></script>
 <script src="js/metodos/frecuencias.js"></script>
 <script src="js/metodos/supuestos.js"></script>
@@ -303,6 +391,12 @@
 <script src="js/metodos/correlacion.js"></script>
 <script src="js/metodos/contingencia.js"></script>
 <script src="js/metodos/modelo-lineal.js"></script>
+<script src="js/exportar/xlsx.js"></script>
+<script src="js/exportar/docx.js"></script>
+<script src="js/exportar/latex.js"></script>
+<script src="js/exportar/imagen.js"></script>
+<script src="js/exportar/pdf.js"></script>
+<script src="js/exportar/proyecto.js"></script>
 <!-- generado por tests/correr.mjs -->
 <script src="js/generado/validacion.js"></script>
 <!-- interfaz -->
@@ -319,6 +413,9 @@
 <script src="js/interfaz/analisis.js"></script>
 <script src="js/interfaz/asistente.js"></script>
 <script src="js/interfaz/constructor.js"></script>
+<script src="js/interfaz/reporte.js"></script>
+<script src="js/interfaz/figuras.js"></script>
+<script src="js/interfaz/exportar.js"></script>
 <script src="js/labg-figedit.js" data-key="sigmapro:figedit" data-panes="figure.sp-grafica" data-title="figcaption"></script>
 <script src="js/labg-figure-studio.js" defer></script>
 <script src="js/labg-navigator.js" defer></script>

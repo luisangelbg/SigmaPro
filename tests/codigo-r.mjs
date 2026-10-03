@@ -16,7 +16,7 @@ import vm from 'node:vm';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 const html = readFileSync(join(RAIZ, 'index.html'), 'utf8');
-const scripts = [...html.matchAll(/<script\s+src="([^"]+)"/g)].map(m => m[1]).filter(s => /^js\/(nucleo|metodos)\//.test(s));
+const scripts = [...html.matchAll(/<script\s+src="([^"]+)"/g)].map(m => m[1]).filter(s => /^js\/(nucleo|metodos|exportar)\//.test(s));
 const ctx = vm.createContext({ console, performance, TextEncoder, TextDecoder, structuredClone });
 for (const s of scripts) vm.runInContext(readFileSync(join(RAIZ, s), 'utf8'), ctx, { filename: s });
 vm.runInContext(readFileSync(join(RAIZ, 'datos/ejemplos.js'), 'utf8').replace('window.SP_EJEMPLOS', 'globalThis.SP_EJEMPLOS'), ctx);

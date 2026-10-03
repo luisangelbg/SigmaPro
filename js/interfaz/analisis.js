@@ -533,6 +533,12 @@
   }
   const codigoHTML = codigo => `<details class="exp-codigo"><summary>${esc(T('Código R equivalente'))}</summary><pre><code>${esc(codigo)}</code></pre>` +
     `<button type="button" class="btn btn-ghost btn-sm" data-accion="copiar-r">${esc(T('Copiar el código'))}</button></details>`;
+  /* el análisis que está en pantalla, tal como se pidió (método, entradas y opciones) */
+  const pedidoActual = () => Object.assign({ metodo: estado.metodo, bloque: 4 }, pedido());
+  const botonReporte = () => {
+    const ya = SP.app.reporte && SP.app.reporte.tiene(pedidoActual());
+    return `<button type="button" class="btn ${ya ? 'btn-ghost' : 'btn-secondary'} btn-sm exp-reporte" data-accion="reporte"${ya ? ' aria-pressed="true"' : ''}>${esc(ya ? T('En el reporte ✓') : T('Agregar al reporte'))}</button>`;
+  };
   const copiarHTML = i => `<div class="btn-row exp-acciones"><button type="button" class="btn btn-secondary btn-sm" data-accion="copiar" data-cuadro="${i}">${esc(T('Copiar cuadro'))}</button></div>`;
 
   function graficasSupuestos(r) {
@@ -566,7 +572,7 @@
   function pintarSupuestos(r, rep, codigo, ms) {
     const rec = rep.recomendaciones;
     $('#anaResultado').innerHTML =
-      `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('modelo {m} · n = {n} · calculado en {ms} ms', { m: r.formula, n: r.n, ms: Math.max(1, Math.round(ms)) }))}</span></div>` +
+      `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('modelo {m} · n = {n} · calculado en {ms} ms', { m: r.formula, n: r.n, ms: Math.max(1, Math.round(ms)) }))}</span>${botonReporte()}</div>` +
       semaforoHTML(rep.semaforo, r.global, T({ verde: 'Los supuestos se cumplen', ambar: 'Hay supuestos que revisar', rojo: 'Hay supuestos que no se cumplen', gris: 'Sin datos suficientes' }[r.global]), T('Semáforo de los supuestos')) +
       (rec.length ? `<div class="callout exp-conclusion"><p><b>${esc(T('Qué hacer'))}</b></p><ul class="ana-rec">${rec.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '') +
       (r.excluidas ? `<p class="small muted">${esc(T('{k} filas con algún valor faltante en el modelo no entran.', { k: r.excluidas }))}</p>` : '') +
@@ -709,7 +715,8 @@
   }
 
   /** Gráfica de cajas del método: los grupos comparados, con letras cuando las hay. */
-  function graficaMetodo(r) {
+  function graficaMetodo(r, op) {
+    op = op || {};
     if (r.tipo === 'modelo') {
       if (r.celdas) {
         const [A, B] = r.celdas.factores, nivA = [], nivB = [];
@@ -735,14 +742,16 @@
     if (r.tipo === 'seleccion' || r.tipo === 'subconjuntos') return graficasSeleccion(r);
     if (r.tipo === 'pares' || r.tipo === 'dunnett' || r.tipo === 'medias' || r.tipo === 'contrastes') {
       const lista = r.grupos.slice(0, 6), que = (r.comparar || [r.factor]).join(' × ');
+      /* las barras: el intervalo de confianza en las medias ajustadas; en las comparaciones, ± 1 EE o el IC si se pide */
+      const conIC = r.tipo === 'medias' || op.barras === 'ic', nivel = r.nivel || 0.95;
+      const banda = f => { if (r.tipo === 'medias') return f.ic; const w = op.barras === 'ic' && f.gl > 0 ? SP.dist.qt(1 - (1 - nivel) / 2, f.gl) * (f.ee || 0) : (f.ee || 0); return [f.media - w, f.media + w]; };
       return lista.map(g => {
         const filas = r.tipo === 'medias' ? g.filas : g.medias;
         const titulo = Object.keys(g.dentro || {}).length ? Object.entries(g.dentro).map(([f, l]) => f + ' = ' + l).join(', ') : T('Medias de {q}', { q: que });
         return SP.graficas.medias({
           titulo, y: { titulo: r.respuesta || T('Media') },
-          descripcion: T('Medias de {q} con {b}{l}.', { q: que, b: r.tipo === 'medias' ? T('su intervalo de confianza') : T('± un error estándar'), l: r.tipo === 'pares' ? T('; medias con una letra en común no difieren') : '' }),
-          grupos: filas.map(f => ({ nombre: f.nombre, media: f.media,
-            inf: r.tipo === 'medias' ? f.ic[0] : f.media - (f.ee || 0), sup: r.tipo === 'medias' ? f.ic[1] : f.media + (f.ee || 0), letra: f.letras, marca: r.tipo === 'dunnett' && f.nombre === g.testigo })),
+          descripcion: T('Medias de {q} con {b}{l}.', { q: que, b: conIC ? T('su intervalo de confianza al {n} %', { n: Math.round(100 * nivel) }) : T('± un error estándar'), l: r.tipo === 'pares' ? T('; medias con una letra en común no difieren') : '' }),
+          grupos: filas.map(f => { const b = banda(f); return { nombre: f.nombre, media: f.media, inf: b[0], sup: b[1], letra: f.letras, marca: r.tipo === 'dunnett' && f.nombre === g.testigo }; }),
         });
       }).join('');
     }
@@ -797,7 +806,7 @@
     const sem = rep.semaforo;
     const global = sem && sem.length ? sem.map(s => s.color).reduce((a, b) => (PEOR[b] > PEOR[a] ? b : a), 'verde') : null;
     $('#anaResultado').innerHTML =
-      `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span></div>` +
+      `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span>${botonReporte()}</div>` +
       `<div class="callout exp-conclusion">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` +
       (global ? semaforoHTML(sem, global, T({ verde: 'Los supuestos de la prueba se cumplen', ambar: 'Hay supuestos que revisar', rojo: 'Hay supuestos que no se cumplen', gris: 'Sin datos suficientes' }[global]), T('Semáforo de los supuestos')) : '') +
       graficasHTML(graficaMetodo(r)) +
@@ -940,7 +949,9 @@
     $('#anaConstructor').hidden = m !== 'constructor';
     calcular();
   }
-  Object.assign(estado, { aplicar, usar, ponerModo });
+  /** Las gráficas de un resultado (para el reporte y el bloque Figuras); op.barras: 'ee' | 'ic'. */
+  const graficasDe = (id, r, op) => (id === 'supuestos' ? graficasSupuestos(r) : graficasHTML(graficaMetodo(r, op)));
+  Object.assign(estado, { aplicar, usar, ponerModo, graficasDe });
 
   function iniciar() {
     const panel = $('#panel-4');
@@ -981,6 +992,13 @@
         estado.metodo = 'regresion-lineal';
         calcular();
         $('#anaCatalogo').scrollIntoView({ block: 'nearest' });
+        return;
+      }
+      if (a.dataset.accion === 'reporte') {
+        const p = pedidoActual();
+        if (SP.app.reporte.tiene(p)) { SP.app.ir(5); return; }
+        SP.app.reporte.agregar(p);
+        a.outerHTML = botonReporte();
         return;
       }
       if (a.dataset.accion === 'comparar') {

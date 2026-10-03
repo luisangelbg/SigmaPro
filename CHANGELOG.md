@@ -2,6 +2,46 @@
 
 ## Sin publicar
 
+### Hito 1.11 · Reporte LABG, figuras de publicación, exportaciones y proyecto .labg (2 oct 2026)
+
+- **Agregar al reporte**: cada resultado de Explorar y de Análisis tiene su botón; el reporte guarda el análisis
+  (método, entradas y opciones), no el resultado, y lo vuelve a calcular con los datos de ese momento.
+- **Bloque 5 · Resultados (Reporte LABG)**: título y autor; por cada análisis, la conclusión en palabras, los cuadros de
+  revista numerados en todo el reporte, sus figuras, los supuestos con semáforo (en completamente al azar y bloques
+  se revisan solos) y «Qué hacer», el **párrafo para la tesis o el artículo** (métodos y resultados, con la estadística
+  como la piden las revistas —F(2, 33) = 60.63; p < 0.001— y la cita de cada prueba), los detalles técnicos y el código
+  R; ordenar, quitar, renombrar, anotar, abrir de nuevo en Análisis y copiar párrafos, cuadros y código.
+- `js/nucleo/informe.js`: los párrafos de los 34 métodos, 58 referencias en estilo autor-año (solo las citadas, en
+  orden alfabético), la frase del programa con la versión de R validada, y el documento completo (portada, métodos,
+  resultados, referencias, anexos de detalles técnicos y de código R) para el .docx y la página HTML.
+- **Bloque 6 · Figuras**: las figuras del reporte numeradas, con su leyenda (que declara las barras: ± 1 EE o IC 95 %,
+  a elegir en las gráficas de medias), el ancho para el documento (8.5, 12, 16 o 17.5 cm) y sus descargas: SVG, **PDF
+  vectorial** (texto seleccionable), PNG y TIFF a 600 ppp con la resolución dentro del archivo. El Estudio de figuras
+  le pide a SigmaPro el PDF vectorial en lugar de una imagen; el editor ✎ funciona igual.
+- **Bloque 7 · Exportar**: reporte en .docx (figuras a 300 ppp con su tamaño físico; carta o A4; anexos opcionales), PDF
+  (la misma página, con el diálogo de impresión) y HTML (figuras vectoriales en la página); cuadros en hoja de cálculo
+  (uno por hoja, todas las cifras, con índice) y en LaTeX (booktabs); todas las figuras en un ZIP con índice; y el
+  **proyecto .labg**.
+- **Proyecto .labg** (`js/exportar/proyecto.js`): ZIP comprimido con manifiesto (versión, fecha y la huella SHA-256 de
+  cada archivo y del conjunto), la hoja con sus tipos, niveles, columnas derivadas y filtro, las filas en CSV, el reporte,
+  los ajustes de las figuras (editor ✎ y estudio) y el código R que repite todo. Al abrir se verifican las huellas y se
+  avisa si algo cambió; los resultados se recalculan.
+- Escritores propios en `js/exportar/`: .docx, .xlsx y SVG → PDF vectorial adaptados de SciMetricsPro (mismo autor),
+  LaTeX, PNG con su bloque de resolución y TIFF con PackBits; en el núcleo, SHA-256 (FIPS 180-4), ZIP comprimido y el
+  formato de los cuadros compartido entre la pantalla y las exportaciones (`js/nucleo/formatos.js`).
+- Validación: `tests/exportar.mjs` arma todas las exportaciones en un navegador sin ventana y las lee con lectores
+  independientes: en R, readxl (246 números de la hoja idénticos a la app y el ANOVA y las medias iguales a car y
+  emmeans), xml2 (cada parte del .docx válida, con el texto exacto de sus 16 cuadros y sus 7 figuras a 300 ppp),
+  pdftools (cada PDF del tamaño pedido, con su texto), png (600 ppp) y openssl (las huellas del proyecto); el código R
+  del proyecto corre de principio a fin; el TIFF se compara con el PNG píxel por píxel con el lector de imágenes del
+  sistema; el proyecto se reabre en una página nueva y da los mismos cuadros. 10 pruebas unitarias nuevas (SHA-256
+  contra el estándar y contra crypto de node, ZIP, hoja leída de vuelta, .docx, LaTeX, PNG y TIFF, párrafos de 14
+  métodos, documento y proyecto con su huella).
+- Corregido: los bloques 5 a 7 seguían marcados como «pronto» en la barra y Alt+→ saltaba de Resultados al Inicio; un
+  subíndice («hᵢᵢ») salía como «h??» en el PDF; las pruebas en el navegador dejaban perfiles temporales (ahora se
+  cierran todos los procesos del perfil).
+- Auditoría de accesibilidad de los bloques 5, 6 y 7 y de los botones nuevos: 0 fallas en claro y oscuro, 1280 y 360 px.
+
 ### Hito 1.10 · asistente de análisis y constructor visual de modelos (1 oct 2026)
 
 - Bloque 4 con tres formas de elegir el análisis: **Asistente**, **Catálogo** y **Constructor de modelo** (la

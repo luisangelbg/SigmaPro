@@ -15,7 +15,7 @@ medias, regresión y, más adelante, modelos mixtos y ensayos multiambiente. For
 
 ## Estado
 
-En construcción, por hitos. **Hitos 1.0 a 1.10 terminados:** cimientos (registro de métodos, cálculos en
+En construcción, por hitos. **Hitos 1.0 a 1.11 terminados:** cimientos (registro de métodos, cálculos en
 hilos de trabajo, pruebas automáticas en node y en el navegador, generador de referencias con R y reporte
 de validación), núcleo numérico (distribuciones, álgebra, fórmulas y modelo lineal con sumas de cuadrados
 tipo I, II y III) y el bloque de **Datos**: hoja de cálculo para 100 000 filas con deshacer, importación de
@@ -43,7 +43,11 @@ nominales y ordinales, razón de momios, McNemar y Bowker, Cochran-Mantel-Haensz
 **asistente** que pregunta en lenguaje del campo y recomienda el análisis con su porqué, el **constructor visual de
 modelos** (variables arrastradas a sus zonas, o con teclas, y la fórmula que se puede editar con la explicación de cada
 término) y el **modelo lineal general** desde una fórmula (anidados, interacciones con covariables, SC tipo I, II y III,
-medias marginales). Validado contra R en 624 casos y 48 458 valores. El plan
+medias marginales); y el **Reporte LABG** (conclusión en palabras, cuadros de revista numerados, supuestos con
+semáforo, el párrafo de métodos y resultados para la tesis o el artículo con la cita de cada prueba, detalles técnicos
+y código R), las **figuras de publicación** (SVG, PDF vectorial, PNG y TIFF a 600 ppp) y las **exportaciones**: reporte
+en .docx, PDF y HTML, cuadros en hoja de cálculo y LaTeX, y el **proyecto .labg** con la huella SHA-256 de cada archivo y
+el código R que lo repite todo. Validado contra R en 624 casos y 48 458 valores. El plan
 completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
 [`propuesta/maqueta.html`](propuesta/maqueta.html).
@@ -55,6 +59,7 @@ Rscript tests/r/generar-todo.R    # referencias con R
 node tests/correr.mjs             # pruebas y reporte
 node tests/navegador.mjs          # las mismas pruebas en el navegador
 node tests/codigo-r.mjs           # el código R que muestra la app corre en R y da lo mismo
+node tests/exportar.mjs           # cada exportación, leída con lectores independientes (R y el sistema)
 ```
 
 O abre `tests/index.html` con doble clic. Detalles en [`docs/VALIDACION.md`](docs/VALIDACION.md).

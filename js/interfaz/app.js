@@ -58,8 +58,8 @@
     ['hecho', '1.8', 'ANCOVA y regresión con diagnóstico y selección de variables'],
     ['hecho', '1.9', 'Correlación y tablas de contingencia'],
     ['hecho', '1.10', 'Asistente de análisis, constructor visual de modelos y modelo lineal general'],
-    ['actual', '1.11', 'Reporte, figuras, exportaciones y proyecto .labg'],
-    ['', '1.12', 'Uso sin conexión, rendimiento, accesibilidad y cierre de la Fase 1'],
+    ['hecho', '1.11', 'Reporte LABG, figuras de publicación, exportaciones y proyecto .labg'],
+    ['actual', '1.12', 'Uso sin conexión, rendimiento, accesibilidad y cierre de la Fase 1'],
   ];
   function hitos() {
     const ul = $('#hitos');
