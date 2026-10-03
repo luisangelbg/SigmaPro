@@ -159,6 +159,15 @@ const ESCENARIOS = [
     r: 'c(car::Anova(modelo, type = 2)[1:4, "F value"], coef(modelo))', js: res => [...res.anova.F.slice(0, 4), ...res.coeficientes.estimado] },
   { ej: 'maiz', id: 'modelo-lineal', e: { respuesta: 'rend' }, op: { derecha: 'hibrido + bloque - 1', tipoSC: 1 },
     r: 'c(anova(modelo)[1:2, "F value"], summary(modelo)$r.squared, coef(modelo))', js: res => [res.anova.F[0], res.anova.F[1], res.resumen.r2, ...res.coeficientes.estimado] },
+  /* Hito 2.3: componentes de varianza, heredabilidad y repetibilidad (REML del núcleo contra lme4 con tolerancia estricta) */
+  { ej: 'alfa-latice', id: 'componentes-varianza', e: { respuesta: 'rendimiento', aleatorios: ['repeticion', 'bloque'], fijos: ['genotipo'] }, op: { estructura: 'anidados' },
+    r: 'vc$vcov[match(c("repeticion", "repeticion:bloque", "Residual"), vc$grp)]', js: res => res.componentes.map(x => x.sigma2) },
+  { ej: 'alfa-latice', id: 'heredabilidad', e: { respuesta: 'rendimiento', genotipo: 'genotipo', repeticion: 'repeticion', bloque: 'bloque' }, op: { seleccion: 0.1, direccion: 'mayor' },
+    r: 'c(s2g, s2e, H2, H2_cullis, H2_piepho)', js: res => [res.componentes[0].sigma2, res.componentes[2].sigma2, res.heredabilidad.estandar, res.heredabilidad.cullis, res.heredabilidad.piepho] },
+  { ej: 'avena-ambientes', id: 'heredabilidad', e: { respuesta: 'rendimiento', genotipo: 'genotipo', repeticion: 'repeticion', ambiente: 'ambiente' }, op: { seleccion: 0.2, direccion: 'mayor' },
+    r: 'c(s2g, s2ga, s2e, H2, H2_cullis, H2_piepho)', js: res => [res.componentes[0].sigma2, res.componentes[1].sigma2, res.componentes[2].sigma2, res.heredabilidad.estandar, res.heredabilidad.cullis, res.heredabilidad.piepho] },
+  { ej: 'guayabo-cosechas', id: 'repetibilidad', e: { respuesta: 'rendimiento', individuo: 'arbol', fijos: ['cosecha'] }, op: {},
+    r: 'c(r, mh * r / (1 + (mh - 1) * r), R2 * (1 - r) / ((1 - R2) * r))', js: res => [res.repetibilidad.r, res.repetibilidad.R2, ...res.necesarias.map(x => x.medidas)] },
 ];
 const efectoDe = res => [res.efecto.d, ...res.efecto.ic_d, res.efecto.g, ...res.efecto.ic_g];
 /* aggregate() de R deja el primer factor cambiando más rápido; la app, el último */

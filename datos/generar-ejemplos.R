@@ -174,7 +174,7 @@ agregar("roya-evaluadores", "Roya: dos evaluadores",
 al <- metan::data_alpha
 d <- data.frame(repeticion = as.character(al$REP), bloque = as.character(al$BLOCK), genotipo = as.character(al$GEN), rendimiento = al$YIELD)
 agregar("alfa-latice", "Alfa-látice: 24 genotipos (Olivoto y Lúcio, 2020)",
-        "Datos publicados: 24 genotipos en 3 repeticiones, cada una con 6 bloques incompletos de 4 parcelas; para el látice con recuperación de la información entre bloques (modelos mixtos).", d,
+        "Datos publicados: 24 genotipos en 3 repeticiones, cada una con 6 bloques incompletos de 4 parcelas; para el látice con recuperación de la información entre bloques (modelos mixtos) y la heredabilidad con BLUP de genotipos.", d,
         list(repeticion = list(tipo = "factor", niveles = levels(al$REP)), bloque = list(tipo = "factor", niveles = levels(al$BLOCK)),
              genotipo = list(tipo = "factor", niveles = levels(al$GEN))))
 
@@ -182,7 +182,7 @@ agregar("alfa-latice", "Alfa-látice: 24 genotipos (Olivoto y Lúcio, 2020)",
 ge <- metan::data_ge
 d <- data.frame(ambiente = as.character(ge$ENV), genotipo = as.character(ge$GEN), repeticion = as.character(ge$REP), rendimiento = ge$GY)
 agregar("avena-ambientes", "Avena en 14 ambientes (Olivoto y Lúcio, 2020)",
-        "Datos publicados: 10 genotipos de avena en 14 ambientes con 3 repeticiones; rendimiento de grano (t/ha). Para el ensayo en varias localidades (modelos mixtos) y, más adelante, la estabilidad.", d,
+        "Datos publicados: 10 genotipos de avena en 14 ambientes con 3 repeticiones; rendimiento de grano (t/ha). Para el ensayo en varias localidades (modelos mixtos), la heredabilidad en varios ambientes y, más adelante, la estabilidad.", d,
         list(ambiente = list(tipo = "factor", niveles = paste0("E", 1:14)), genotipo = list(tipo = "factor", niveles = paste0("G", 1:10)),
              repeticion = list(tipo = "factor", niveles = c("1", "2", "3"))))
 
@@ -205,6 +205,16 @@ d <- d[c("bloque", "tratamiento", "planta", "dds", "altura")]
 agregar("maiz-altura", "Maíz: altura en cinco fechas",
         "Ficticio: la misma planta de cada parcela medida a los 15, 30, 45, 60 y 75 días después de la siembra, con 4 dosis de N en 4 bloques; para las medidas repetidas en el tiempo (estructuras de covarianza).", d,
         list(bloque = list(tipo = "factor", niveles = paste0("B", 1:4)), tratamiento = list(tipo = "factor", niveles = trat), planta = list(tipo = "factor", niveles = as.character(1:4))))
+
+## 16. Guayabo: rendimiento de 20 árboles en cuatro cosechas (repetibilidad; ficticio)
+set.seed(1616)
+d <- expand.grid(cosecha = c("2022", "2023", "2024", "2025"), arbol = sprintf("G%02d", 1:20), stringsAsFactors = FALSE)[, 2:1]
+perm <- rnorm(20, 0, 6)                                                  # diferencias permanentes entre árboles
+d$rendimiento <- round(38 + c(0, 5, -4, 7)[match(d$cosecha, c("2022", "2023", "2024", "2025"))] + perm[match(d$arbol, sprintf("G%02d", 1:20))] + rnorm(80, 0, 4.5), 1)
+d$rendimiento[c(7, 26, 43, 58, 77)] <- NA                               # cinco cosechas sin registro
+agregar("guayabo-cosechas", "Guayabo: 20 árboles en cuatro cosechas",
+        "Ficticio: kilogramos de fruta por árbol en cuatro cosechas (2022 a 2025), con cinco registros perdidos; para la repetibilidad, el número de cosechas que hay que medir y el valor permanente de cada árbol.", d,
+        list(arbol = list(tipo = "factor", niveles = sprintf("G%02d", 1:20)), cosecha = list(tipo = "factor", niveles = c("2022", "2023", "2024", "2025"))))
 
 ## escribir datos/ejemplos.js
 js <- paste0(

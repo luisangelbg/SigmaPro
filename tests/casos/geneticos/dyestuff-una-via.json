@@ -1,0 +1,73 @@
+{
+  "esquema": 1,
+  "id": "componentes-varianza/dyestuff-una-via",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "componentes-varianza"
+  },
+  "titulo": "Una vía: lotes aleatorios (balanceado)",
+  "fuente": "Davies y Goldsmith (1972), Statistical Methods in Research and Production; conjunto Dyestuff de lme4",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "Yield": [1545, 1440, 1440, 1520, 1580, 1540, 1555, 1490, 1560, 1495, 1595, 1550, 1605, 1510, 1560, 1445, 1440, 1595, 1465, 1545, 1595, 1630, 1515, 1635, 1625, 1520, 1455, 1450, 1480, 1445],
+      "Batch": ["A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "C", "C", "C", "C", "C", "D", "D", "D", "D", "D", "E", "E", "E", "E", "E", "F", "F", "F", "F", "F"]
+    },
+    "tipos": {
+      "Yield": {
+        "tipo": "numerica"
+      },
+      "Batch": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C", "D", "E", "F"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "Yield",
+    "aleatorios": ["Batch"]
+  },
+  "opciones": {
+    "estructura": "cruzados"
+  },
+  "esperado": {
+    "componentes": [
+      {
+        "termino": "Batch",
+        "sigma2": 1764.0500000000129,
+        "ee": 1432.7512523841581,
+        "porcentaje": 41.848741489336639
+      },
+      {
+        "termino": "Residual",
+        "sigma2": 2451.25,
+        "ee": 707.61492367553467,
+        "porcentaje": 58.151258510663354
+      }
+    ],
+    "lrt": [
+      {
+        "termino": "Batch",
+        "chi2": 6.3689553136331369,
+        "p": 0.0058066972176877294
+      }
+    ],
+    "niveles": [6],
+    "ajuste": {
+      "n": 30,
+      "logLik": -159.82713842112753,
+      "AIC": 325.65427684225506,
+      "BIC": 329.85786898724155
+    },
+    "media": 1527.5000000000005
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "lme4": "1.1.35.5",
+      "stats": "4.4.2"
+    },
+    "codigo": "lmer(Yield ~ 1 + (1 | Batch), REML = TRUE) pulido con Newton sobre V y P completas; EE de la inversa de la información promedio; RV del modelo sin cada término"
+  }
+}

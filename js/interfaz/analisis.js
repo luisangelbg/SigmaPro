@@ -23,6 +23,7 @@
   const CORREL = ['correlacion', 'matriz-correlacion', 'correlacion-parcial'];
   const CONTING = ['tabla-contingencia', 'mcnemar', 'mantel-haenszel', 'kappa'];
   const MIXTOS_DIS = ['mixto-bloques', 'mixto-divididas', 'mixto-latice', 'mixto-localidades'];
+  const GENETICOS = ['componentes-varianza', 'heredabilidad', 'repetibilidad'];
   const AJUSTES_MX = () => [['tukey', 'Tukey'], ['bonferroni', 'Bonferroni'], ['holm', 'Holm'], ['sidak', 'Šidák'], ['none', T('Sin ajuste (DMS)')]];
   const estado = SP.app.analisis = {
     metodo: 'supuestos', pendiente: true, turno: 0, modo: (() => { try { const m = localStorage.getItem('sigmapro.analisis.modo'); return MODOS.includes(m) ? m : 'asistente'; } catch (e) { return 'asistente'; } })(),
@@ -42,6 +43,8 @@
     mxd: { respuesta: '', tratamientos: [], bloque: '', parcelaGrande: '', subparcela: '', subsubparcela: '', repeticion: '', tratamiento: '', genotipo: '', localidad: '',
       repeticionAleatoria: false, localidadFija: false, compararMx: null, ajuste: 'tukey', gl: 'satterthwaite', estimacion: 'reml', alfa: 0.05, nivel: 0.95, _iniciado: false },
     rep: { respuesta: '', tiempo: '', sujeto: '', tratamientos: [], bloque: '', estructura: 'auto', criterio: 'aic', compararMx: null, dentro: '', ajuste: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
+    gen: { respuesta: '', aleatorios: [], fijos: [], estructura: 'cruzados', genotipo: '', repeticion: '', bloque: '', ambiente: '', seleccion: 0.1, direccion: 'mayor',
+      individuo: '', fijosRep: [], _iniciado: false },
     motorAceptado: false,
   };
 
@@ -602,7 +605,62 @@
     h += '<p class="small muted">' + esc(T('Corre en el motor R dentro de tu navegador (nlme y emmeans).')) + '</p>';
     return h + campo('rep', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('rep', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
+  /** Componentes de varianza, heredabilidad y repetibilidad: papeles propuestos por el nombre de las columnas (una vez por tabla). */
+  function sanearGen(c) {
+    const s = estado.gen, med = medidas(c).length ? medidas(c) : c.numericas, agr = c.agrupables.filter(n => nivelesDe(c, n).length >= 2);
+    if (!s._iniciado) {
+      s._iniciado = true;
+      const usadas = new Set(), busca = re => { const n = agr.find(x => re.test(x) && !usadas.has(x)) || ''; if (n) usadas.add(n); return n; };
+      s.respuesta = c.pap.respuestas.find(n => med.includes(n)) || med[0] || '';
+      s.genotipo = busca(/(genotipo|^gen|clon|variedad|cultivar|hibrido|híbrido|linea|línea|familia|progenie|accesi)/i);
+      s.ambiente = busca(/(ambiente|locali|^env|^amb|sitio|^loc)/i);
+      s.repeticion = busca(/^(rep|repeticion|repetición)/i);
+      s.bloque = busca(/^(bloque|block|blq)/i);
+      if (s.bloque && !s.repeticion) { s.repeticion = s.bloque; s.bloque = ''; }   // un solo nivel de bloques: completos
+      const u2 = new Set(), busca2 = re => { const n = agr.find(x => re.test(x) && !u2.has(x)) || ''; if (n) u2.add(n); return n; };
+      s.individuo = busca2(/^(arbol|árbol|planta|individuo|animal|vaca|sujeto|subject|parcela|rail|riel|id)/i) || s.genotipo;
+      u2.add(s.individuo);
+      s.fijosRep = [busca2(/(cosecha|año|anio|fecha|medici|evaluador|ciclo|ocasi|type|tipo)/i)].filter(Boolean);
+      s.aleatorios = c.pap.factores.filter(n => agr.includes(n) && n !== s.respuesta).slice(0, 2);
+      s.fijos = [];
+    }
+    if (!med.includes(s.respuesta)) s.respuesta = med[0] || '';
+    for (const k of ['genotipo', 'repeticion', 'bloque', 'ambiente', 'individuo']) if (s[k] && !agr.includes(s[k])) s[k] = '';
+    s.aleatorios = s.aleatorios.filter(n => agr.includes(n) && n !== s.respuesta).slice(0, 4);
+    s.fijos = s.fijos.filter(n => agr.includes(n) && n !== s.respuesta && !s.aleatorios.includes(n)).slice(0, 3);
+    s.fijosRep = s.fijosRep.filter(n => agr.includes(n) && n !== s.respuesta && n !== s.individuo).slice(0, 3);
+    return { med, agr };
+  }
+  const PROPORCIONES = [[0.05, '5 %'], [0.1, '10 %'], [0.15, '15 %'], [0.2, '20 %'], [0.25, '25 %'], [0.3, '30 %'], [0.4, '40 %'], [0.5, '50 %']];
+  function formGenetico(c, m) {
+    const s = estado.gen, { med, agr } = sanearGen(c), marca = n => (c.numFactor.includes(n) ? T('{c} (numérica)', { c: n }) : n);
+    let h = campo('gen', 'respuesta', T('Variable de respuesta'), lista(med), s.respuesta);
+    const opc = (excl, vacio) => (vacio ? [['', vacio]] : []).concat(agr.filter(n => n !== s.respuesta && !excl.includes(n)).map(n => [n, marca(n)]));
+    if (m === 'componentes-varianza') {
+      h += casillas('gen', 'aleatorios', T('Factores aleatorios (hasta 4)'), agr.filter(n => n !== s.respuesta && !s.fijos.includes(n)), s.aleatorios, marca, T('No hay factores en la tabla.'));
+      h += campo('gen', 'estructura', T('Cómo se relacionan'), Object.entries(SP.geneticos.ESTRUCTURAS).map(([k, v]) => [k, T(v)]), s.estructura,
+        T('Anidados: cada factor dentro de los anteriores, en el orden de la tabla (por ejemplo, plantas dentro de parcelas dentro de localidades).'));
+      h += casillas('gen', 'fijos', T('Factores fijos (opcional, hasta 3)'), agr.filter(n => n !== s.respuesta && !s.aleatorios.includes(n)), s.fijos, marca, T('No hay más factores.'));
+    } else if (m === 'heredabilidad') {
+      h += campo('gen', 'genotipo', T('Genotipos (aleatorios)'), opc([s.repeticion, s.bloque, s.ambiente], T('— elige —')), s.genotipo);
+      h += campo('gen', 'repeticion', T('Repetición o bloque completo (fijo)'), opc([s.genotipo, s.bloque, s.ambiente], T('— sin repeticiones (completamente al azar) —')), s.repeticion);
+      h += campo('gen', 'bloque', T('Bloque incompleto dentro de la repetición (aleatorio)'), opc([s.genotipo, s.repeticion, s.ambiente], T('— sin bloques incompletos —')), s.bloque,
+        T('Para alfa-látice y otros diseños con bloques incompletos.'));
+      h += campo('gen', 'ambiente', T('Ambiente o localidad (fijo)'), opc([s.genotipo, s.repeticion, s.bloque], T('— un solo ambiente —')), s.ambiente,
+        T('Con varios ambientes, la interacción genotipo × ambiente entra como aleatoria.'));
+      try { const ds = SP.geneticos.disenoGenetico({ genotipo: s.genotipo, repeticion: s.repeticion, bloque: s.bloque, ambiente: s.ambiente });
+        if (s.genotipo) h += '<p class="small"><b>' + esc(T('Modelo:')) + '</b> <code>' + esc(q(s.respuesta) + ' ~ ' + (ds.fijos.length ? ds.fijos.map(t => t.map(q).join(':')).join(' + ') : '1') + ' + ' +
+          ds.aleatorios.map(t => '(1 | ' + t.map(q).join(':') + ')').join(' + ')) + '</code></p>'; } catch (err) { /* papeles incompletos */ }
+      h += campo('gen', 'seleccion', T('Proporción seleccionada'), PROPORCIONES, s.seleccion);
+      h += campo('gen', 'direccion', T('Se seleccionan los valores'), [['mayor', T('Mayores (rendimiento, peso, contenido)')], ['menor', T('Menores (días a floración, altura, daño)')]], s.direccion);
+    } else {
+      h += campo('gen', 'individuo', T('Individuo medido varias veces (árbol, planta, animal)'), opc([], T('— elige —')), s.individuo);
+      h += casillas('gen', 'fijosRep', T('Factores fijos (opcional: cosecha, año, evaluador)'), agr.filter(n => n !== s.respuesta && n !== s.individuo), s.fijosRep, marca, T('No hay más factores.'));
+    }
+    return h + '<p class="small muted">' + esc(T('Corre en tu navegador (REML por información promedio, validado contra lme4).')) + '</p>';
+  }
   function formulario(c) {
+    if (GENETICOS.includes(estado.metodo)) return formGenetico(c, estado.metodo);
     if (estado.metodo === 'medidas-repetidas') return formRepetidas(c);
     if (estado.metodo === 'modelo-mixto') return formMixto(c);
     if (MIXTOS_DIS.includes(estado.metodo)) return formDisenoMixto(c, estado.metodo);
@@ -627,6 +685,16 @@
       const s = estado.mx;
       return { e: { respuesta: s.respuesta }, op: Object.assign({ derecha: s.derecha, comoFactor: s.comoFactor.slice(), tipoSC: +s.tipoSC, gl: s.gl, reml: s.estimacion !== 'ml', ajuste: s.ajuste, alfa: +s.alfa, nivel: +s.nivel },
         s.compararMx ? { comparar: s.compararMx.slice() } : {}, s.dentro ? { dentro: s.dentro } : {}) };
+    }
+    if (GENETICOS.includes(m)) {
+      const s = estado.gen;
+      if (m === 'componentes-varianza') return { e: Object.assign({ respuesta: s.respuesta, aleatorios: s.aleatorios.slice() }, s.fijos.length ? { fijos: s.fijos.slice() } : {}), op: { estructura: s.estructura } };
+      if (m === 'heredabilidad') {
+        const e = { respuesta: s.respuesta, genotipo: s.genotipo };
+        for (const k of ['repeticion', 'bloque', 'ambiente']) if (s[k]) e[k] = s[k];
+        return { e, op: { seleccion: +s.seleccion, direccion: s.direccion } };
+      }
+      return { e: Object.assign({ respuesta: s.respuesta, individuo: s.individuo }, s.fijosRep.length ? { fijos: s.fijosRep.slice() } : {}), op: {} };
     }
     if (m === 'medidas-repetidas') {
       const s = estado.rep;
@@ -897,6 +965,34 @@
 
   /** Gráfica de cajas del método: los grupos comparados, con letras cuando las hay. */
   /** Medidas repetidas: el perfil de cada tratamiento en el tiempo (o la media de cada fecha) y los residuos normalizados. */
+  /** Componentes: el porcentaje de cada uno. Heredabilidad y repetibilidad: los valores predichos (BLUP) con su intervalo y,
+      según el caso, BLUP contra BLUE (el encogimiento) o la determinación según el número de medidas. */
+  function graficasGeneticos(r) {
+    if (r.tipo === 'componentes') {
+      return SP.graficas.medias({ titulo: T('Porcentaje de la varianza total'), y: { titulo: T('% de la varianza total') },
+        descripcion: T('Parte de la varianza total de «{y}» que aporta cada componente.', { y: r.respuesta }),
+        grupos: r.componentes.map(x => ({ nombre: r.etiqueta(x.termino), media: x.porcentaje })) });
+    }
+    const her = r.tipo === 'heredabilidad', out = [];
+    const vals = r.blup.map((b, j) => ({ nombre: her ? b.genotipo : b.individuo, v: r.media + b.u, ee: Math.sqrt(b.pev), blue: her ? r.blue[j].media : NaN }));
+    const menor = r.direccion === 'menor', ord = vals.slice().sort((a, b) => (menor ? a.v - b.v : b.v - a.v)), sel = new Set(her ? r.seleccion.seleccionados : []);
+    const tope = 40, muestra = ord.slice(0, tope);
+    out.push(SP.graficas.medias({ titulo: her ? T('Valores genotípicos predichos (BLUP)') : T('Valor permanente de cada individuo (BLUP)'), y: { titulo: r.respuesta },
+      descripcion: T('{q} ordenados{m}, con su intervalo de ± 1.96 √PEV; la línea discontinua es la media general{s}.', { q: her ? T('Genotipos') : T('Individuos'),
+        m: ord.length > tope ? T(' (los {k} mejores de {n})', { k: tope, n: ord.length }) : '', s: sel.size ? T('; los seleccionados, resaltados') : '' }),
+      grupos: muestra.map(b => ({ nombre: b.nombre, media: b.v, inf: b.v - 1.96 * b.ee, sup: b.v + 1.96 * b.ee, marca: sel.has(b.nombre) })), referencias: [{ y: r.media, discontinua: true }] }));
+    if (her) {
+      out.push(SP.graficas.dispersion({ titulo: T('BLUP contra BLUE'), x: { titulo: T('Media ajustada (BLUE)') }, y: { titulo: T('Valor genotípico (BLUP)') }, diagonal: true,
+        descripcion: T('Cada punto es un genotipo. Los BLUP se acercan a la media general (encogimiento) tanto más cuanto menor es la heredabilidad; la diagonal es BLUP = BLUE.'),
+        puntos: SP.graficas.adelgazar(vals.map(b => ({ x: b.blue, y: b.v, marca: sel.has(b.nombre), etiqueta: sel.has(b.nombre) ? b.nombre : undefined })), 2500) }));
+    } else {
+      const ms = Array.from({ length: 10 }, (_, k) => k + 1), rr = r.repetibilidad.r;
+      out.push(SP.graficas.lineas({ titulo: T('Determinación según el número de medidas'), x: { titulo: T('Medidas por individuo'), niveles: ms.map(String) }, y: { titulo: 'R²' }, leyenda: '',
+        descripcion: T('Determinación R² = m·r / (1 + (m − 1)·r) con 1 a 10 medidas por individuo, para r = {r}.', { r: rr.toFixed(3) }),
+        series: [{ nombre: 'R²', valores: ms.map(m => m * rr / (1 + (m - 1) * rr)) }] }));
+    }
+    return out.join('');
+  }
   function graficasRepetidas(r) {
     let g0 = '';
     const md = (r.medias || [])[0];
@@ -945,6 +1041,7 @@
     op = op || {};
     if (r.tipo === 'mixto') return graficasMixto(r);
     if (r.tipo === 'repetidas') return graficasRepetidas(r);
+    if (r.tipo === 'componentes' || r.tipo === 'heredabilidad' || r.tipo === 'repetibilidad') return graficasGeneticos(r);
     if (r.tipo === 'modelo') {
       if (r.celdas) {
         const [A, B] = r.celdas.factores, nivA = [], nivB = [];
@@ -1073,7 +1170,7 @@
     if (estado.modo !== 'catalogo') { const p = estado.pintores[estado.modo]; if (p) p(c); return; }
     catalogo();
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -1111,7 +1208,8 @@
     };
     /* con tablas grandes (hasta ~2 s con 100 000 filas y muchos tratamientos), primero se avisa y se deja pintar.
        Un hilo de trabajo resultó más lento: arranca sin el código optimizado y con menos prioridad (Hito 1.12). */
-    if (c.t.n >= 20000) {
+    /* el REML de los métodos genéticos itera: con más de 1500 filas también se avisa antes */
+    if (c.t.n >= 20000 || (GENETICOS.includes(id) && c.t.n >= 1500)) {
       const r0 = $('#anaResultado');
       r0.classList.add('calculando');
       if (!r0.querySelector('.ana-espera')) r0.insertAdjacentHTML('afterbegin', `<p class="ana-espera small" role="status">${esc(T('Calculando con {n} filas…', { n: c.t.n.toLocaleString('es-MX') }))}</p>`);
@@ -1189,6 +1287,10 @@
       pon(estado.rep, { respuesta: e.respuesta, tiempo: e.tiempo, sujeto: e.sujeto, tratamientos: [].concat(e.tratamientos || []), bloque: e.bloque || '',
         estructura: op.estructura, criterio: op.criterio, ajuste: op.ajuste, dentro: op.dentro === undefined ? undefined : op.dentro });
       estado.rep.compararMx = op.comparar ? [].concat(op.comparar) : null;
+    } else if (GENETICOS.includes(m)) {
+      pon(estado.gen, m === 'componentes-varianza' ? { respuesta: e.respuesta, aleatorios: [].concat(e.aleatorios || []), fijos: [].concat(e.fijos || []), estructura: op.estructura }
+        : m === 'heredabilidad' ? { respuesta: e.respuesta, genotipo: e.genotipo, repeticion: e.repeticion || '', bloque: e.bloque || '', ambiente: e.ambiente || '', seleccion: op.seleccion, direccion: op.direccion }
+          : { respuesta: e.respuesta, individuo: e.individuo, fijosRep: [].concat(e.fijos || []) });
     } else if (MIXTOS_DIS.includes(m)) {
       pon(estado.mxd, Object.assign({}, e, { tratamientos: e.tratamientos ? [].concat(e.tratamientos) : undefined, subsubparcela: e.subsubparcela || '', bloque: e.bloque || '',
         gl: op.gl, estimacion: op.reml === false ? 'ml' : op.reml === undefined ? undefined : 'reml', ajuste: op.ajuste, repeticionAleatoria: op.repeticionAleatoria, localidadFija: op.localidadFija }));
@@ -1231,8 +1333,8 @@
         estado.cmp.comparar = marcados;
       } else if (el.dataset.campo === 'comparar1') {
         estado.cmp.comparar = el.value ? [el.value] : [];
-      } else if (['predictores', 'covariables', 'variables', 'controles', 'comoFactor', 'compararMx'].includes(el.dataset.lista)) {
-        const marcados = [...form.querySelectorAll('[data-lista="' + el.dataset.lista + '"]:checked')].map(x => x.value), max = { covariables: 2, predictores: 15, variables: 30, controles: 10, comoFactor: 30, compararMx: 6 }[el.dataset.lista];
+      } else if (['predictores', 'covariables', 'variables', 'controles', 'comoFactor', 'compararMx', 'aleatorios', 'fijos', 'fijosRep'].includes(el.dataset.lista)) {
+        const marcados = [...form.querySelectorAll('[data-lista="' + el.dataset.lista + '"]:checked')].map(x => x.value), max = { covariables: 2, predictores: 15, variables: 30, controles: 10, comoFactor: 30, compararMx: 6, aleatorios: 4, fijos: 3, fijosRep: 3 }[el.dataset.lista];
         if (marcados.length > max) { el.checked = false; L() && L().toast(T('Hasta {k} variables.', { k: max }), { type: 'warning' }); return; }
         estado[el.dataset.grupo][el.dataset.lista] = marcados;
       } else if (el.dataset.lista === 'tratamientos') {

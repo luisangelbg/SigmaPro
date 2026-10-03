@@ -84,6 +84,15 @@ SP.definir('informe', function (SP) {
     wolfinger1993: () => 'Wolfinger, R. D. (1993). Covariance structure selection in general mixed models. Communications in Statistics – Simulation and Computation, 22(4), 1079–1106.',
     halekoh2014: () => 'Halekoh, U. y Højsgaard, S. (2014). A Kenward-Roger approximation and parametric bootstrap methods for tests in linear mixed models – the R package pbkrtest. Journal of Statistical Software, 59(9), 1–32.',
     patterson1971: () => 'Patterson, H. D. y Thompson, R. (1971). Recovery of inter-block information when block sizes are unequal. Biometrika, 58(3), 545–554.',
+    henderson1975: () => 'Henderson, C. R. (1975). Best linear unbiased estimation and prediction under a selection model. Biometrics, 31(2), 423–447.',
+    gilmour1995: () => 'Gilmour, A. R., Thompson, R. y Cullis, B. R. (1995). Average information REML: an efficient algorithm for variance parameter estimation in linear mixed models. Biometrics, 51(4), 1440–1450.',
+    self1987: () => 'Self, S. G. y Liang, K.-Y. (1987). Asymptotic properties of maximum likelihood estimators and likelihood ratio tests under nonstandard conditions. Journal of the American Statistical Association, 82(398), 605–610.',
+    holland2003: () => 'Holland, J. B., Nyquist, W. E. y Cervantes-Martínez, C. T. (2003). Estimating and interpreting heritability for plant breeding: an update. Plant Breeding Reviews, 22, 9–112.',
+    cullis2006: () => 'Cullis, B. R., Smith, A. B. y Coombes, N. E. (2006). On the design of early generation variety trials with correlated data. Journal of Agricultural, Biological, and Environmental Statistics, 11(4), 381–393.',
+    piepho2007: () => 'Piepho, H.-P. y Möhring, J. (2007). Computing heritability and selection response from unbalanced plant breeding trials. Genetics, 177(3), 1881–1888.',
+    schmidt2019: () => 'Schmidt, P., Hartung, J., Rath, J. y Piepho, H.-P. (2019). Estimating broad-sense heritability with unbalanced data from agricultural cultivar trials. Crop Science, 59(2), 525–536.',
+    falconer1996: () => 'Falconer, D. S. y Mackay, T. F. C. (1996). Introduction to quantitative genetics (4.ª ed.). Longman.',
+    cruz2012: () => 'Cruz, C. D., Regazzi, A. J. y Carneiro, P. C. S. (2012). Modelos biométricos aplicados ao melhoramento genético (4.ª ed., vol. 1). Editora UFV.',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -101,6 +110,9 @@ SP.definir('informe', function (SP) {
     cohen1960: 'Cohen, 1960', cohen1968: 'Cohen, 1968', wilson1927: 'Wilson, 1927', clopper1934: 'Clopper y Pearson, 1934', agresti1998: 'Agresti y Coull, 1998',
     brown2001: 'Brown et al., 2001', bates2015: 'Bates et al., 2015', kuznetsova2017: 'Kuznetsova et al., 2017', kenward1997: 'Kenward y Roger, 1997',
     halekoh2014: 'Halekoh y Højsgaard, 2014', patterson1971: 'Patterson y Thompson, 1971', pinheiro2000: 'Pinheiro y Bates, 2000', wolfinger1993: 'Wolfinger, 1993',
+    henderson1975: 'Henderson, 1975', gilmour1995: 'Gilmour et al., 1995', self1987: 'Self y Liang, 1987', holland2003: 'Holland et al., 2003',
+    cullis2006: 'Cullis et al., 2006', piepho2007: 'Piepho y Möhring, 2007', schmidt2019: 'Schmidt et al., 2019', falconer1996: 'Falconer y Mackay, 1996',
+    cruz2012: 'Cruz et al., 2012',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -516,6 +528,48 @@ SP.definir('informe', function (SP) {
     return { metodos, resultados: [oracion(frases), cor].filter(Boolean).join(' ') };
   }
 
+  /** Componentes de varianza, heredabilidad y repetibilidad (núcleo JS, REML). */
+  function genetico(id, r, citas) {
+    const reml = T('máxima verosimilitud restringida (REML; {c}) con el algoritmo de información promedio ({g})', { c: cita(['patterson1971'], citas), g: cita(['gilmour1995'], citas) });
+    const prueba = T('Cada componente se probó con una prueba de razón de verosimilitudes restringidas contra el modelo sin él, con la distribución ½χ²₀ + ½χ²₁ porque una varianza no puede ser negativa ({c}).', { c: cita(['self1987'], citas) });
+    const comps = r.componentes.filter(x => x.termino !== 'Residual'), resid = r.componentes.find(x => x.termino === 'Residual');
+    const lrt = Object.fromEntries(r.lrt.map(x => [x.termino, x])), alfa = 0.05;
+    const frasesLrt = comps.map(x => {
+      const l = lrt[x.termino], e = l && l.chi2 > 0 ? T('χ² = {c}; {p}', { c: n2(l.chi2), p: fp(l.p) }) : T('en cero');
+      return x.frontera ? T('la varianza de {t} se estimó en cero', { t: minuscula(r.etiqueta(x.termino)) })
+        : (l && l.p < alfa ? T('la varianza de {t} fue significativa ({e})', { t: minuscula(r.etiqueta(x.termino)), e }) : T('la varianza de {t} no fue significativa ({e})', { t: minuscula(r.etiqueta(x.termino)), e }));
+    });
+    const lista0 = r.componentes.map(x => T('{t}, {v} ({p} %)', { t: minuscula(r.etiqueta(x.termino)), v: s4(x.sigma2), p: pct(x.porcentaje) }));
+    if (id === 'componentes-varianza') {
+      const metodos = T('Los componentes de varianza de {y} se estimaron por {m}, con {a} como efectos aleatorios{f}. ', { y: r.respuesta, m: reml,
+        a: y(comps.map(x => minuscula(r.etiqueta(x.termino)))), f: r.fijos.length === 1 ? T(' y {x} como efecto fijo', { x: r.fijos[0] }) : r.fijos.length ? T(' y {x} como efectos fijos', { x: y(r.fijos) }) : '' }) + prueba;
+      return { metodos, resultados: [T('Las varianzas estimadas (y su porcentaje de la varianza total) fueron: {l}.', { l: y(lista0) }), oracion(frasesLrt)].filter(Boolean).join(' ') };
+    }
+    if (id === 'heredabilidad') {
+      const h = r.heredabilidad, S = r.seleccion;
+      const dis = r.ambiente ? T('un ensayo en {k} ambientes, con los ambientes y las repeticiones dentro de ellos como efectos fijos y la interacción genotipo × ambiente como aleatoria', { k: r.nAmbientes })
+        : r.bloque && r.repeticion ? T('bloques incompletos aleatorios dentro de repeticiones fijas') : r.bloque ? T('bloques incompletos aleatorios') : r.repeticion ? T('bloques completos al azar (fijos)') : T('un diseño completamente al azar');
+      const metodos = T('Los componentes de varianza se estimaron por {m} en un modelo con {d} y los genotipos como efecto aleatorio. ', { m: reml, d: dis }) + prueba + ' ' +
+        T('La heredabilidad en sentido amplio se calculó con base en medias de genotipos, con medias armónicas del número de parcelas{a} por genotipo ({c}), y también como la definen {cu} y {pm} ({sc}). ', {
+          a: r.ambiente ? T(' y de ambientes') : '', c: cita(['holland2003'], citas), cu: cita(['cullis2006'], citas), pm: cita(['piepho2007'], citas), sc: cita(['schmidt2019'], citas) }) +
+        T('Los valores genotípicos se predijeron por BLUP ({h}) y la ganancia esperada se calculó al seleccionar el {p} % de los genotipos con {d} valor ({f}).', {
+          h: cita(['henderson1975'], citas), p: pct(100 * S.k / r.blup.length, 0), d: r.direccion === 'menor' ? T('menor') : T('mayor'), f: cita(['falconer1996'], citas) });
+      const resultados = [T('Las varianzas estimadas fueron: {l}.', { l: y(lista0) }), oracion(frasesLrt),
+        T('La heredabilidad en medias fue H² = {h} (EE = {e}); la de Cullis, {c}, y la de Piepho y Möhring, {p}. El coeficiente de variación genético fue {cg} % y el del error, {ce} %.', {
+          h: n3(h.estandar), e: n3(h.ee), c: n3(h.cullis), p: n3(h.piepho), cg: pct(r.cvg, 2), ce: pct(r.cve, 2) }),
+        T('Al seleccionar {k} de {n} genotipos ({g}), la ganancia esperada fue {d} ({dp} % de la media general).', { k: S.k, n: r.blup.length, g: y(S.seleccionados), d: s4(S.dg_blup), dp: pct(S.dg_blup_pct, 2) })];
+      return { metodos, resultados: resultados.filter(Boolean).join(' ') };
+    }
+    const R = r.repetibilidad, n90 = r.necesarias.find(x => x.R2 === 0.9);
+    const metodos = T('La repetibilidad de {y} se estimó como la correlación intraclase entre medidas del mismo individuo, r = σ²i / (σ²i + σ²e) ({f}), con los componentes de varianza por {m}{x}. ', {
+      y: r.respuesta, f: cita(['falconer1996'], citas), m: reml, x: r.fijos.length === 1 ? T(', con {v} como efecto fijo', { v: r.fijos[0] }) : r.fijos.length ? T(', con {v} como efectos fijos', { v: y(r.fijos) }) : '' }) + prueba + ' ' +
+      T('El número de medidas necesario para una determinación R² se calculó como η = R²(1 − r)/[(1 − R²)r] ({c}) y el valor permanente de cada individuo se predijo por BLUP ({h}).', {
+        c: cita(['cruz2012'], citas), h: cita(['henderson1975'], citas) });
+    const resultados = [T('La repetibilidad fue r = {r} (EE = {e}); con {m} medidas por individuo, la determinación fue R² = {R}.', { r: n3(R.r), e: n3(R.ee), m: n2(R.m), R: n3(R.R2) }),
+      oracion(frasesLrt), n90 && Number.isFinite(n90.medidas) ? T('Para una determinación de 90 % se necesitan {k} medidas por individuo.', { k: Math.ceil(n90.medidas - 1e-9) }) : ''];
+    return { metodos, resultados: resultados.filter(Boolean).join(' ') };
+  }
+
   /** El párrafo de métodos y el de resultados de un análisis. */
   function parrafo(id, r, rep, e, op) {
     e = e || {}; op = op || {};
@@ -533,6 +587,7 @@ SP.definir('informe', function (SP) {
     else if (id === 'modelo-lineal') p = modeloLineal(r, rep, citas);
     else if (id === 'modelo-mixto' || /^mixto-/.test(id)) p = mixto(r, rep, citas);
     else if (id === 'medidas-repetidas') p = repetidas(r, rep, citas);
+    else if (['componentes-varianza', 'heredabilidad', 'repetibilidad'].includes(id)) p = genetico(id, r, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };

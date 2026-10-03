@@ -419,6 +419,7 @@ escritorio con el que se calcula la referencia.
 | plots (agricolae) | parcelas divididas sin bloques: la repetición identifica cada parcela grande |
 | data_alpha (Olivoto y Lúcio 2020) | alfa-látice de 24 genotipos, con repeticiones fijas y aleatorias |
 | Orthodont (Potthoff y Roy 1964), BodyWeight (Crowder y Hand 1990), sleepstudy y el maíz de los ejemplos | medidas repetidas: siete estructuras de covarianza con elección por AIC y BIC, la no estructurada pedida, fechas desiguales (AR(1) continua), faltantes, bloques, sin tratamientos (`tests/r/repetidas.R`) |
+| Dyestuff, Dyestuff2, Penicillin y Pastes (Davies y Goldsmith 1972; Box y Tiao 1973), Rail y ergoStool (Pinheiro y Bates 2000), data_alpha, data_ge y data_ge2 (Olivoto y Lúcio 2020) | componentes de varianza cruzados, anidados y con interacción, frontera, desbalance; heredabilidad en completamente al azar, bloques, alfa-látice y varios ambientes; repetibilidad con y sin efectos fijos (`tests/r/geneticos.R`) |
 | data_ge (Olivoto y Lúcio 2020) y plrv (CIP, agricolae) | ensayos en varias localidades: localidad, repetición y G × L aleatorios; localidades fijas con 28 clones (378 pares de Tukey) |
 
 Las piezas puras del puente (lectura de la salida de R, nombres, columnas, código que se manda) tienen pruebas unitarias
@@ -427,6 +428,26 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
+
+## Componentes de varianza y heredabilidad en el núcleo JS (Hito 2.3)
+
+El REML de la familia nueva corre en JavaScript (`js/nucleo/reml.js`, información promedio sobre las ecuaciones de
+Henderson), así que se valida como los métodos de la Fase 1, en node, con `tests/correr.mjs`.
+
+- **Referencia** (`tests/r/geneticos.R`): lme4 1.1-35.5 con REML y tolerancia estricta de bobyqa da el punto de
+  partida; luego se pule con pasos de Newton sobre la verosimilitud restringida escrita con matrices completas
+  (V = Σ σ²ₖZₖZₖ' + σ²eI, P, gradiente e información promedio) hasta que el gradiente queda en 10⁻¹³. Con sus
+  tolerancias de omisión lme4 se queda hasta 6 × 10⁻⁵ del óptimo (Penicillin), más que el criterio de 1e-6. Con esos
+  componentes, también con matrices completas: los efectos fijos, los BLUP (σ²ₖZₖ'Py), las PEV
+  (σ²ₖI − σ⁴ₖZₖ'PZₖ), los EE (inversa de la información promedio) y −2ℓR, que coincide con el de lme4. Los BLUE salen
+  de un segundo ajuste con los genotipos fijos y de `model.matrix` con cada genotipo en todas las parcelas.
+- **Razón de verosimilitudes**: el modelo sin cada término, con las mismas filas; un componente en cero da χ² = 0 y
+  p = 1 en los dos lados.
+- **Resultado**: 17 casos de 3 métodos, 1 451 valores, diferencia escalada máxima 4.9 × 10⁻¹⁰.
+- **El código R** que muestra la app (lme4 con la misma tolerancia estricta, la PEV con V y P completas para la H² de
+  Cullis y emmeans con gl asintóticos para la de Piepho) se corre en R en 4 escenarios de `tests/codigo-r.mjs`.
+- **Pruebas unitarias** (`tests/unidad/geneticos.test.js`): absorber el término mayor (aleatorio, o un factor fijo de
+  indicadoras) da lo mismo que el cálculo denso, la frontera y los mensajes de error.
 
 ## Dónde está cada cosa
 
@@ -446,7 +467,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          43 operaciones con 100 000 filas en el navegador (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      46 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      54 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

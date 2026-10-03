@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-03T19:03:32.727Z",
+ "generado": "2026-10-03T21:31:03.182Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 652,
-  "aprobados": 652,
+  "casos": 669,
+  "aprobados": 669,
   "fallidos": 0,
-  "valores": 64450,
+  "valores": 65901,
   "difEscaladaMax": 2.0258232202030768e-7,
-  "objetivos": 135
+  "objetivos": 138
  },
  "casos": [
   {
@@ -16970,6 +16970,465 @@ window.SP_VALIDACION = {
      "emmeans": "1.10.6"
     },
     "codigo": "lm(captacion ~ origen * tratamiento + factor(conc)); car::Anova(type = 3) con contr.sum; summary(m); confint(emmeans(m, factor))"
+   }
+  },
+  {
+   "id": "componentes-varianza/alfa-genotipos-fijos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "componentes-varianza"
+   },
+   "titulo": "Repeticiones y bloques dentro de ellas aleatorios, con los genotipos fijos",
+   "fuente": "Ensayo en alfa-látice (24 genotipos, 3 repeticiones); conjunto data_alpha de metan (Olivoto y Lúcio 2020)",
+   "clase": "D",
+   "valores": 25,
+   "difMax": 1.1226575225009583e-11,
+   "difEscaladaMax": 1.939129404162397e-12,
+   "peor": "lrt[1].chi2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(YIELD ~ GEN + (1 | REP) + (1 | REP:BLOCK), REML = TRUE) pulido con Newton sobre V y P completas; EE de la inversa de la información promedio; RV del modelo sin cada término"
+   }
+  },
+  {
+   "id": "componentes-varianza/dyestuff-una-via",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "componentes-varianza"
+   },
+   "titulo": "Una vía: lotes aleatorios (balanceado)",
+   "fuente": "Davies y Goldsmith (1972), Statistical Methods in Research and Production; conjunto Dyestuff de lme4",
+   "clase": "D",
+   "valores": 17,
+   "difMax": 1.3642420526593924e-11,
+   "difEscaladaMax": 1.2941362168414066e-12,
+   "peor": "lrt[0].chi2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(Yield ~ 1 + (1 | Batch), REML = TRUE) pulido con Newton sobre V y P completas; EE de la inversa de la información promedio; RV del modelo sin cada término"
+   }
+  },
+  {
+   "id": "componentes-varianza/dyestuff2-frontera",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "componentes-varianza"
+   },
+   "titulo": "Una vía con la varianza entre lotes en cero (frontera)",
+   "fuente": "Box y Tiao (1973), Bayesian Inference in Statistical Analysis; conjunto Dyestuff2 de lme4",
+   "clase": "D",
+   "valores": 17,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 1.2248322514159625e-15,
+   "peor": "componentes[1].ee",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(Yield ~ 1 + (1 | Batch), REML = TRUE) pulido con Newton sobre V y P completas; EE de la inversa de la información promedio; RV del modelo sin cada término"
+   }
+  },
+  {
+   "id": "componentes-varianza/ge-cruzados-interaccion",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "componentes-varianza"
+   },
+   "titulo": "Genotipos y ambientes aleatorios con su interacción",
+   "fuente": "Ensayo multiambiente (10 genotipos, 14 ambientes, 3 repeticiones); conjunto data_ge de metan (Olivoto y Lúcio 2020)",
+   "clase": "D",
+   "valores": 33,
+   "difMax": 2.021351974690333e-10,
+   "difEscaladaMax": 4.207242332015444e-11,
+   "peor": "lrt[2].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(GY ~ 1 + (1 | GEN) + (1 | ENV) + (1 | GEN:ENV), REML = TRUE) pulido con Newton sobre V y P completas; EE de la inversa de la información promedio; RV del modelo sin cada término"
+   }
+  },
+  {
+   "id": "componentes-varianza/pastas-anidados-desbalanceado",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "componentes-varianza"
+   },
+   "titulo": "Anidados con ocho muestras menos (desbalanceado)",
+   "fuente": "Davies y Goldsmith (1972); conjunto Pastes de lme4",
+   "clase": "D",
+   "valores": 25,
+   "difMax": 5.4285465012071654e-11,
+   "difEscaladaMax": 5.4285465012071654e-11,
+   "peor": "lrt[0].chi2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(strength ~ 1 + (1 | batch) + (1 | batch:cask), REML = TRUE) pulido con Newton sobre V y P completas; EE de la inversa de la información promedio; RV del modelo sin cada término"
+   }
+  },
+  {
+   "id": "componentes-varianza/pastas-anidados",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "componentes-varianza"
+   },
+   "titulo": "Barriles dentro de lotes (anidados; el barril se numera de nuevo en cada lote)",
+   "fuente": "Davies y Goldsmith (1972); conjunto Pastes de lme4",
+   "clase": "D",
+   "valores": 25,
+   "difMax": 4.0657255340192933e-10,
+   "difEscaladaMax": 4.0657255340192933e-10,
+   "peor": "lrt[0].chi2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(strength ~ 1 + (1 | batch) + (1 | batch:cask), REML = TRUE) pulido con Newton sobre V y P completas; EE de la inversa de la información promedio; RV del modelo sin cada término"
+   }
+  },
+  {
+   "id": "componentes-varianza/penicilina-cruzados",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "componentes-varianza"
+   },
+   "titulo": "Dos factores aleatorios cruzados (placa y muestra)",
+   "fuente": "Davies y Goldsmith (1972); conjunto Penicillin de lme4",
+   "clase": "D",
+   "valores": 25,
+   "difMax": 1.9747403712244704e-10,
+   "difEscaladaMax": 9.898280129047101e-11,
+   "peor": "lrt[1].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(diameter ~ 1 + (1 | plate) + (1 | sample), REML = TRUE) pulido con Newton sobre V y P completas; EE de la inversa de la información promedio; RV del modelo sin cada término"
+   }
+  },
+  {
+   "id": "heredabilidad/alfa-latice-desbalanceado",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "heredabilidad"
+   },
+   "titulo": "Alfa-látice con cinco parcelas perdidas; selección del 20 %",
+   "fuente": "Ensayo en alfa-látice (24 genotipos, 3 repeticiones); conjunto data_alpha de metan (Olivoto y Lúcio 2020)",
+   "clase": "D",
+   "valores": 214,
+   "difMax": 4.703792910731863e-12,
+   "difEscaladaMax": 2.4290609201481805e-12,
+   "peor": "lrt[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(YIELD ~ REP + (1 | GEN) + (1 | REP:BLOCK), REML = TRUE) pulido; H² = σ²g/(σ²g + σ²ga/a + σ²e/n); Cullis 1 − v̄BLUP/(2σ²g); BLUE con GEN fijo: Piepho σ²g/(σ²g + v̄BLUE/2); selección 0.2 (mayor)"
+   }
+  },
+  {
+   "id": "heredabilidad/alfa-latice",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "heredabilidad"
+   },
+   "titulo": "Alfa-látice: genotipos y bloques incompletos aleatorios, repeticiones fijas",
+   "fuente": "Ensayo en alfa-látice (24 genotipos, 3 repeticiones); conjunto data_alpha de metan (Olivoto y Lúcio 2020)",
+   "clase": "D",
+   "valores": 211,
+   "difMax": 1.1027623258996755e-11,
+   "difEscaladaMax": 5.728404540601857e-12,
+   "peor": "lrt[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(YIELD ~ REP + (1 | GEN) + (1 | REP:BLOCK), REML = TRUE) pulido; H² = σ²g/(σ²g + σ²ga/a + σ²e/n); Cullis 1 − v̄BLUP/(2σ²g); BLUE con GEN fijo: Piepho σ²g/(σ²g + v̄BLUE/2); selección 0.1 (mayor)"
+   }
+  },
+  {
+   "id": "heredabilidad/bloques-un-ambiente-menor",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "heredabilidad"
+   },
+   "titulo": "Bloques completos en un ambiente; se selecciona la menor altura de mazorca (25 %)",
+   "fuente": "Ensayo multiambiente (13 híbridos de maíz, 4 ambientes, 3 repeticiones); conjunto data_ge2 de metan (Olivoto y Lúcio 2020)",
+   "clase": "D",
+   "valores": 128,
+   "difMax": 8.597567102697212e-12,
+   "difEscaladaMax": 2.643760675926504e-12,
+   "peor": "lrt[0].chi2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(EH ~ REP + (1 | GEN), REML = TRUE) pulido; H² = σ²g/(σ²g + σ²ga/a + σ²e/n); Cullis 1 − v̄BLUP/(2σ²g); BLUE con GEN fijo: Piepho σ²g/(σ²g + v̄BLUE/2); selección 0.25 (menor)"
+   }
+  },
+  {
+   "id": "heredabilidad/completamente-al-azar",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "heredabilidad"
+   },
+   "titulo": "Completamente al azar con repeticiones desiguales (sin bloques)",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 121,
+   "difMax": 1.0373923942097463e-11,
+   "difEscaladaMax": 1.4065275813372018e-12,
+   "peor": "lrt[0].chi2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(peso ~ 1 + (1 | linea), REML = TRUE) pulido; H² = σ²g/(σ²g + σ²ga/a + σ²e/n); Cullis 1 − v̄BLUP/(2σ²g); BLUE con linea fijo: Piepho σ²g/(σ²g + v̄BLUE/2); selección 0.25 (mayor)"
+   }
+  },
+  {
+   "id": "heredabilidad/multiambiente-desbalanceado",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "heredabilidad"
+   },
+   "titulo": "Varios ambientes con parcelas perdidas y un híbrido ausente en un ambiente",
+   "fuente": "Ensayo multiambiente (13 híbridos de maíz, 4 ambientes, 3 repeticiones); conjunto data_ge2 de metan (Olivoto y Lúcio 2020)",
+   "clase": "D",
+   "valores": 134,
+   "difMax": 2.2793489318218008e-11,
+   "difEscaladaMax": 2.2793489318218008e-11,
+   "peor": "lrt[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(KW ~ ENV + ENV:REP + (1 | GEN) + (1 | GEN:ENV), REML = TRUE) pulido; H² = σ²g/(σ²g + σ²ga/a + σ²e/n); Cullis 1 − v̄BLUP/(2σ²g); BLUE con GEN fijo: Piepho σ²g/(σ²g + v̄BLUE/2); selección 0.15 (mayor)"
+   }
+  },
+  {
+   "id": "heredabilidad/multiambiente-varianza-genetica-cero",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "heredabilidad"
+   },
+   "titulo": "Varianza genética en cero: toda la variación genética está en la interacción",
+   "fuente": "Ensayo multiambiente (13 híbridos de maíz, 4 ambientes, 3 repeticiones); conjunto data_ge2 de metan (Olivoto y Lúcio 2020)",
+   "clase": "D",
+   "valores": 133,
+   "difMax": 3.7061909097246826e-11,
+   "difEscaladaMax": 1.5724821278707846e-12,
+   "peor": "lrt[1].chi2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(EP ~ ENV + ENV:REP + (1 | GEN) + (1 | GEN:ENV), REML = TRUE) pulido; H² = σ²g/(σ²g + σ²ga/a + σ²e/n); Cullis 1 − v̄BLUP/(2σ²g); BLUE con GEN fijo: Piepho σ²g/(σ²g + v̄BLUE/2); selección 0.1 (mayor)"
+   }
+  },
+  {
+   "id": "heredabilidad/multiambiente",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "heredabilidad"
+   },
+   "titulo": "Varios ambientes: repeticiones dentro de ambientes fijas, genotipo × ambiente aleatorio",
+   "fuente": "Ensayo multiambiente (10 genotipos, 14 ambientes, 3 repeticiones); conjunto data_ge de metan (Olivoto y Lúcio 2020)",
+   "clase": "D",
+   "valores": 113,
+   "difMax": 7.87281351222191e-11,
+   "difEscaladaMax": 4.020712589417227e-11,
+   "peor": "lrt[1].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(GY ~ ENV + ENV:REP + (1 | GEN) + (1 | GEN:ENV), REML = TRUE) pulido; H² = σ²g/(σ²g + σ²ga/a + σ²e/n); Cullis 1 − v̄BLUP/(2σ²g); BLUE con GEN fijo: Piepho σ²g/(σ²g + v̄BLUE/2); selección 0.2 (mayor)"
+   }
+  },
+  {
+   "id": "repetibilidad/arboles-cosechas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "repetibilidad"
+   },
+   "titulo": "Veinte árboles en cuatro cosechas, con cinco faltantes y la cosecha fija",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 110,
+   "difMax": 4.774847184307873e-12,
+   "difEscaladaMax": 9.84999014781768e-13,
+   "peor": "lrt[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(rendimiento ~ cosecha + (1 | arbol), REML = TRUE) pulido; r = σ²i/(σ²i + σ²e); R² = m·r/(1 + (m − 1)·r); η = R²(1 − r)/((1 − R²)r)"
+   }
+  },
+  {
+   "id": "repetibilidad/ergostool-tipo-fijo",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "repetibilidad"
+   },
+   "titulo": "Esfuerzo de nueve personas en cuatro bancos (tipo de banco fijo)",
+   "fuente": "Pinheiro y Bates (2000), Mixed-Effects Models in S and S-PLUS; conjunto ergoStool de nlme",
+   "clase": "D",
+   "valores": 66,
+   "difMax": 5.684341886080802e-14,
+   "difEscaladaMax": 6.161737786669619e-15,
+   "peor": "blup[3].u",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(effort ~ Type + (1 | Subject), REML = TRUE) pulido; r = σ²i/(σ²i + σ²e); R² = m·r/(1 + (m − 1)·r); η = R²(1 − r)/((1 − R²)r)"
+   }
+  },
+  {
+   "id": "repetibilidad/rieles",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "repetibilidad"
+   },
+   "titulo": "Seis rieles medidos tres veces cada uno (sin efectos fijos)",
+   "fuente": "Devore (2000), Probability and Statistics for Engineering and the Sciences; conjunto Rail de nlme (Pinheiro y Bates 2000)",
+   "clase": "D",
+   "valores": 54,
+   "difMax": 7.901235221652314e-12,
+   "difEscaladaMax": 1.0956570958897009e-13,
+   "peor": "lrt[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "stats": "4.4.2"
+    },
+    "codigo": "lmer(travel ~ 1 + (1 | Rail), REML = TRUE) pulido; r = σ²i/(σ²i + σ²e); R² = m·r/(1 + (m − 1)·r); η = R²(1 − r)/((1 − R²)r)"
    }
   },
   {

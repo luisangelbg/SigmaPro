@@ -68,7 +68,7 @@ carpeta.
 
 ### Datos publicados en los ejemplos
 
-`datos/ejemplos.js` trae diez conjuntos ficticios generados por `datos/generar-ejemplos.R` (obra propia) y
+`datos/ejemplos.js` trae once conjuntos ficticios generados por `datos/generar-ejemplos.R` (obra propia) y
 cinco publicados: los tiempos de supervivencia del cuadro 1 de Box, G. E. P. y Cox, D. R. (1964), *An analysis
 of transformations*, J. R. Stat. Soc. B 26: 211–252 (el script los coteja celda por celda con la copia del
 paquete boot de R); los conteos de la F2 dihíbrida del chícharo de Mendel, G. (1866), *Versuche über
@@ -170,8 +170,8 @@ SOFTWARE.
 Los casos de `tests/casos/` usan además datos publicados que R distribuye en su paquete datasets (PlantGrowth,
 airquality, trees, cars, stackloss, swiss, mtcars, longley, women, chickwts, warpbreaks, HairEyeColor, UCBAdmissions,
 occupationalStatus) o en los paquetes boot
-(poisons), MASS (oats, anorexia, npk), agricolae (frijol, plots, plrv), carData (Soils), lme4 (sleepstudy, Penicillin),
-nlme (Oats, Machines, Orthodont, BodyWeight) y metan (data_alpha, data_ge); cada caso cita la publicación original en su
+(poisons), MASS (oats, anorexia, npk), agricolae (frijol, plots, plrv), carData (Soils), lme4 (sleepstudy, Penicillin, Dyestuff, Dyestuff2, Pastes),
+nlme (Oats, Machines, Orthodont, BodyWeight, Rail, ergoStool) y metan (data_alpha, data_ge, data_ge2); cada caso cita la publicación original en su
 campo `fuente`.
 
 ## Que se descargan al usarse (motor R, Fase 2)

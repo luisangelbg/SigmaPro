@@ -60,7 +60,9 @@ fórmula, con efectos aleatorios como en lme4, grados de libertad de Satterthwai
 varianza, medias marginales con letras, prueba de cada aleatorio y BLUP; y los diseños con efectos aleatorios
 (bloques aleatorios, parcelas divididas, látice y alfa-látice, varias localidades) y las **medidas repetidas en el
 tiempo** con la comparación de estructuras de covarianza (simetría compuesta, AR(1), no estructurada…), validados en
-el navegador contra R. En total, 652 casos y 64 450 valores. Lo que falta para publicar y las
+el navegador contra R. Y, en el propio núcleo (sin internet), los **componentes de varianza por REML**, la
+**heredabilidad** (en medias, de Cullis y de Piepho) con BLUP, BLUE y ganancia por selección, y la **repetibilidad**.
+En total, 669 casos y 65 901 valores. Lo que falta para publicar y las
 fases 2 y 3 están en
 [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan
 completo está en

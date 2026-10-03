@@ -154,5 +154,17 @@
  "repetidas": {
   "espera": true,
   "prep": "(async () => { window.__esperando = true; try { localStorage.setItem('sigmapro.motorR.usado', '1'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[14].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.ponerModo('catalogo'); document.querySelector('#anaCatalogo [data-metodo=\"medidas-repetidas\"]').click(); for (let k = 0; k < 400; k++) { await new Promise(r => setTimeout(r, 200)); const r = document.querySelector('#anaResultado'); if (r && !r.classList.contains('calculando') && (r.querySelector('.exp-cabeza h3') || r.querySelector('.msg-error'))) break; } document.querySelectorAll('#anaResultado details').forEach(d => d.open = true); window.__auditT0 = 0; window.__esperando = false; })()"
+ },
+ "gen-heredabilidad": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[12].click(), SP.app.ir(4), SP.app.analisis.usar('heredabilidad', { respuesta: 'rendimiento', genotipo: 'genotipo', repeticion: 'repeticion', bloque: 'bloque' }, { seleccion: 0.1, direccion: 'mayor' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "gen-ambientes": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[13].click(), SP.app.ir(4), SP.app.analisis.usar('heredabilidad', { respuesta: 'rendimiento', genotipo: 'genotipo', repeticion: 'repeticion', ambiente: 'ambiente' }, { seleccion: 0.2, direccion: 'menor' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "gen-componentes": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[12].click(), SP.app.ir(4), SP.app.analisis.usar('componentes-varianza', { respuesta: 'rendimiento', aleatorios: ['repeticion', 'bloque'], fijos: ['genotipo'] }, { estructura: 'anidados' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "gen-repetibilidad": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[15].click(), SP.app.ir(4), SP.app.analisis.usar('repetibilidad', { respuesta: 'rendimiento', individuo: 'arbol', fijos: ['cosecha'] }, {}), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  }
 }

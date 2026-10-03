@@ -1,0 +1,136 @@
+{
+  "esquema": 1,
+  "id": "repetibilidad/rieles",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "repetibilidad"
+  },
+  "titulo": "Seis rieles medidos tres veces cada uno (sin efectos fijos)",
+  "fuente": "Devore (2000), Probability and Statistics for Engineering and the Sciences; conjunto Rail de nlme (Pinheiro y Bates 2000)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "travel": [55, 53, 54, 26, 37, 32, 78, 91, 85, 92, 100, 96, 49, 51, 50, 80, 85, 83],
+      "Rail": ["1", "1", "1", "2", "2", "2", "3", "3", "3", "4", "4", "4", "5", "5", "5", "6", "6", "6"]
+    },
+    "tipos": {
+      "travel": {
+        "tipo": "numerica"
+      },
+      "Rail": {
+        "tipo": "factor",
+        "niveles": ["2", "5", "1", "6", "3", "4"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "travel",
+    "individuo": "Rail"
+  },
+  "opciones": [],
+  "esperado": {
+    "componentes": [
+      {
+        "termino": "Rail",
+        "sigma2": 615.31111111111261,
+        "ee": 392.57131329298551,
+        "porcentaje": 97.439867682508421
+      },
+      {
+        "termino": "Residual",
+        "sigma2": 16.166666666666686,
+        "ee": 6.6000140291657399,
+        "porcentaje": 2.5601323174915951
+      }
+    ],
+    "lrt": [
+      {
+        "termino": "Rail",
+        "chi2": 36.504505273287421,
+        "p": 7.6156896719159935e-10
+      }
+    ],
+    "ajuste": {
+      "n": 18,
+      "logLik": -61.088500404298706,
+      "AIC": 128.17700080859743,
+      "BIC": 130.84811608228591
+    },
+    "repetibilidad": {
+      "r": 0.97439867682508419,
+      "ee": 0.018943050569409477,
+      "m": 3,
+      "R2": 0.99131804593380224
+    },
+    "necesarias": [
+      {
+        "R2": 0.80000000000000004,
+        "medidas": 0.10509588645310343
+      },
+      {
+        "R2": 0.84999999999999998,
+        "medidas": 0.14888583914189649
+      },
+      {
+        "R2": 0.90000000000000002,
+        "medidas": 0.23646574451948274
+      },
+      {
+        "R2": 0.94999999999999996,
+        "medidas": 0.49920546065224075
+      },
+      {
+        "R2": 0.98999999999999999,
+        "medidas": 2.6011231897143072
+      }
+    ],
+    "media": 66.500000000000014,
+    "blup": [
+      {
+        "individuo": "2",
+        "u": -34.530911933360976,
+        "pev": 107.00360418776256,
+        "confiabilidad": 0.82609837161149535
+      },
+      {
+        "individuo": "5",
+        "u": -16.356747757907716,
+        "pev": 107.00360418776256,
+        "confiabilidad": 0.82609837161149535
+      },
+      {
+        "individuo": "1",
+        "u": -12.391475574172764,
+        "pev": 107.00360418776256,
+        "confiabilidad": 0.82609837161149535
+      },
+      {
+        "individuo": "6",
+        "u": 16.026308409262676,
+        "pev": 107.00360418776256,
+        "confiabilidad": 0.82609837161149535
+      },
+      {
+        "individuo": "3",
+        "u": 18.008944501130578,
+        "pev": 107.00360418776256,
+        "confiabilidad": 0.82609837161149535
+      },
+      {
+        "individuo": "4",
+        "u": 29.243882355046775,
+        "pev": 107.00360418776256,
+        "confiabilidad": 0.82609837161149535
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "lme4": "1.1.35.5",
+      "stats": "4.4.2"
+    },
+    "codigo": "lmer(travel ~ 1 + (1 | Rail), REML = TRUE) pulido; r = σ²i/(σ²i + σ²e); R² = m·r/(1 + (m − 1)·r); η = R²(1 − r)/((1 − R²)r)"
+  }
+}

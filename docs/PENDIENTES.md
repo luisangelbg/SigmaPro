@@ -45,14 +45,18 @@ que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA
 
 Plan detallado en [`propuesta/FASE2.md`](../propuesta/FASE2.md). Hecho: Hito 2.0 (el motor R y el modelo lineal mixto
 desde una fórmula) e Hito 2.1 (medias marginales, comparaciones, prueba de los aleatorios, BLUP y los diseños con
-efectos aleatorios) e Hito 2.2 (medidas repetidas con estructuras de covarianza). Notas:
+efectos aleatorios), Hito 2.2 (medidas repetidas con estructuras de covarianza) e Hito 2.3 (componentes de varianza por
+REML en el núcleo, heredabilidad y repetibilidad). Notas:
 
 - Con doble clic el motor R necesita internet la primera vez (luego sale de la caché del navegador); sin conexión
   llega en el cierre de la fase (Hito 2.10), con el repositorio propio de paquetes en Pages.
 - `tests/codigo-r.mjs` corre en node y no cubre los métodos del motor R; su código R es el mismo que corre en el
   motor y lo validan sus casos (`tests/motor-r.mjs`).
-- El asistente y el constructor todavía no proponen los modelos mixtos ni las medidas repetidas (Hito 2.9); se eligen
-  en el catálogo.
+- El asistente y el constructor todavía no proponen los modelos mixtos, las medidas repetidas ni la heredabilidad
+  (Hito 2.9); se eligen en el catálogo.
+- Heredabilidad: los testigos (genotipos fijos dentro de un ensayo de genotipos aleatorios), las matrices de
+  parentesco (modelo animal, como en BreedingPro) y los intervalos de confianza de H² quedan pendientes. El REML del
+  núcleo admite hasta 2500 incógnitas fuera del término mayor; para modelos más grandes, el modelo mixto del motor R.
 - Medidas repetidas: las pruebas usan los gl del error de nlme (N − p); los de Kenward-Roger para estas estructuras
   (como en otros programas) quedan pendientes. Faltan Toeplitz y antedependencia, y combinar un efecto aleatorio con
   la estructura (lme con correlación).
@@ -63,8 +67,6 @@ efectos aleatorios) e Hito 2.2 (medidas repetidas con estructuras de covarianza)
 
 Sigue:
 
-- Modelos mixtos: lme4 y lmerTest (Satterthwaite y Kenward-Roger), nlme para estructuras de covarianza en medidas
-  repetidas, emmeans; componentes de varianza instantáneos con el REML propio de BreedingPro.
 - GLM y GLMM con sobredispersión; modelos no lineales (logístico, Gompertz, dosis-respuesta, meseta); superficies de
   respuesta.
 - Ensayos multiambiente: AMMI, GGE, Eberhart-Russell y Finlay-Wilkinson desde el código ya validado de BreedingPro;

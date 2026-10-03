@@ -1,0 +1,89 @@
+{
+  "esquema": 1,
+  "id": "componentes-varianza/penicilina-cruzados",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "componentes-varianza"
+  },
+  "titulo": "Dos factores aleatorios cruzados (placa y muestra)",
+  "fuente": "Davies y Goldsmith (1972); conjunto Penicillin de lme4",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "diameter": [27, 23, 26, 23, 23, 21, 27, 23, 26, 23, 23, 21, 25, 21, 25, 24, 24, 20, 26, 23, 25, 23, 23, 20, 25, 22, 26, 22, 23, 20, 24, 22, 25, 23, 22, 19, 24, 20, 23, 21, 22, 19, 26, 22, 26, 24, 24, 21, 24, 21, 24, 22, 22, 20, 24, 21, 24, 23, 22, 19, 26, 23, 26, 24, 24, 21, 25, 22, 26, 24, 24, 20, 26, 24, 26, 24, 25, 22, 26, 23, 26, 23, 23, 20, 26, 23, 25, 24, 24, 22, 25, 22, 25, 23, 23, 20, 25, 21, 24, 23, 23, 20, 25, 22, 24, 23, 23, 19, 24, 21, 23, 21, 21, 19, 26, 23, 26, 24, 24, 21, 25, 21, 24, 22, 22, 18, 25, 22, 25, 22, 22, 20, 24, 21, 24, 22, 24, 19, 24, 21, 24, 22, 21, 18],
+      "plate": ["a", "a", "a", "a", "a", "a", "b", "b", "b", "b", "b", "b", "c", "c", "c", "c", "c", "c", "d", "d", "d", "d", "d", "d", "e", "e", "e", "e", "e", "e", "f", "f", "f", "f", "f", "f", "g", "g", "g", "g", "g", "g", "h", "h", "h", "h", "h", "h", "i", "i", "i", "i", "i", "i", "j", "j", "j", "j", "j", "j", "k", "k", "k", "k", "k", "k", "l", "l", "l", "l", "l", "l", "m", "m", "m", "m", "m", "m", "n", "n", "n", "n", "n", "n", "o", "o", "o", "o", "o", "o", "p", "p", "p", "p", "p", "p", "q", "q", "q", "q", "q", "q", "r", "r", "r", "r", "r", "r", "s", "s", "s", "s", "s", "s", "t", "t", "t", "t", "t", "t", "u", "u", "u", "u", "u", "u", "v", "v", "v", "v", "v", "v", "w", "w", "w", "w", "w", "w", "x", "x", "x", "x", "x", "x"],
+      "sample": ["A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F", "A", "B", "C", "D", "E", "F"]
+    },
+    "tipos": {
+      "diameter": {
+        "tipo": "numerica"
+      },
+      "plate": {
+        "tipo": "factor",
+        "niveles": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x"]
+      },
+      "sample": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C", "D", "E", "F"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "diameter",
+    "aleatorios": ["plate", "sample"]
+  },
+  "opciones": {
+    "estructura": "cruzados"
+  },
+  "esperado": {
+    "componentes": [
+      {
+        "termino": "plate",
+        "sigma2": 0.7169082125603945,
+        "ee": 0.22636521681946375,
+        "porcentaje": 15.092037018187735
+      },
+      {
+        "termino": "sample",
+        "sigma2": 3.7309178744013058,
+        "ee": 2.3676095794576266,
+        "porcentaje": 78.54164547953107
+      },
+      {
+        "termino": "Residual",
+        "sigma2": 0.30241545893719424,
+        "ee": 0.039881369695242537,
+        "porcentaje": 6.3663175022811966
+      }
+    ],
+    "lrt": [
+      {
+        "termino": "plate",
+        "chi2": 105.05727265350652,
+        "p": 5.9328076125030452e-25
+      },
+      {
+        "termino": "sample",
+        "chi2": 282.39543501608529,
+        "p": 1.1286704287376764e-63
+      }
+    ],
+    "niveles": [24, 6],
+    "ajuste": {
+      "n": 144,
+      "logLik": -165.43029449554726,
+      "AIC": 338.86058899109452,
+      "BIC": 350.73984218939853
+    },
+    "media": 22.9722222222222
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "lme4": "1.1.35.5",
+      "stats": "4.4.2"
+    },
+    "codigo": "lmer(diameter ~ 1 + (1 | plate) + (1 | sample), REML = TRUE) pulido con Newton sobre V y P completas; EE de la inversa de la información promedio; RV del modelo sin cada término"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "esquema": 1,
+  "id": "componentes-varianza/dyestuff2-frontera",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "componentes-varianza"
+  },
+  "titulo": "Una vía con la varianza entre lotes en cero (frontera)",
+  "fuente": "Box y Tiao (1973), Bayesian Inference in Statistical Analysis; conjunto Dyestuff2 de lme4",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "Yield": [7.298, 3.8460000000000001, 2.4340000000000002, 9.5660000000000007, 7.9900000000000002, 5.2199999999999998, 6.556, 0.60799999999999998, 11.788, -0.89200000000000002, 0.11, 10.385999999999999, 13.433999999999999, 5.5099999999999998, 8.1660000000000004, 2.2120000000000002, 4.8520000000000003, 7.0919999999999996, 9.2880000000000003, 4.9800000000000004, 0.28199999999999997, 9.0139999999999993, 4.4580000000000002, 9.4459999999999997, 7.1980000000000004, 1.722, 4.782, 8.1059999999999999, 0.75800000000000001, 3.758],
+      "Batch": ["A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "C", "C", "C", "C", "C", "D", "D", "D", "D", "D", "E", "E", "E", "E", "E", "F", "F", "F", "F", "F"]
+    },
+    "tipos": {
+      "Yield": {
+        "tipo": "numerica"
+      },
+      "Batch": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C", "D", "E", "F"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "Yield",
+    "aleatorios": ["Batch"]
+  },
+  "opciones": {
+    "estructura": "cruzados"
+  },
+  "esperado": {
+    "componentes": [
+      {
+        "termino": "Batch",
+        "sigma2": 0,
+        "ee": "NA",
+        "porcentaje": 0
+      },
+      {
+        "termino": "Residual",
+        "sigma2": 13.806309627586209,
+        "ee": 3.6257145363103809,
+        "porcentaje": 100
+      }
+    ],
+    "lrt": [
+      {
+        "termino": "Batch",
+        "chi2": 0,
+        "p": 1
+      }
+    ],
+    "niveles": [6],
+    "ajuste": {
+      "n": 30,
+      "logLik": -80.914138906144217,
+      "AIC": 167.82827781228843,
+      "BIC": 172.03186995727489
+    },
+    "media": 5.6656000000000022
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "lme4": "1.1.35.5",
+      "stats": "4.4.2"
+    },
+    "codigo": "lmer(Yield ~ 1 + (1 | Batch), REML = TRUE) pulido con Newton sobre V y P completas; EE de la inversa de la información promedio; RV del modelo sin cada término"
+  }
+}

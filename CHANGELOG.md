@@ -2,6 +2,36 @@
 
 ## Sin publicar
 
+### Hito 2.3 · Componentes de varianza por REML, heredabilidad y repetibilidad (3 oct 2026)
+
+- **Familia nueva: Componentes de varianza y heredabilidad**, en el núcleo JS (sin internet, al instante). REML por
+  información promedio (Gilmour, Thompson y Cullis 1995) sobre las ecuaciones del modelo mixto de Henderson, el de
+  BreedingPro con un criterio de convergencia más estricto. El término con más niveles (por ejemplo, genotipo ×
+  ambiente, o los genotipos fijos de los BLUE) se absorbe con el complemento de Schur porque su bloque es diagonal:
+  200 genotipos en 4 ambientes en 0.4 s, 1000 genotipos en 1.6 s y 500 en 4 ambientes (6000 parcelas) en unos 5 s. Un
+  componente que llega a cero queda en la frontera, sin EE, como en lme4.
+- **Componentes de varianza (REML)**: factores aleatorios cruzados, anidados (cada uno dentro de los anteriores) o
+  cruzados con sus interacciones dobles, y factores fijos opcionales. Cada componente con su EE (inversa de la
+  información promedio), su porcentaje del total y la razón de verosimilitudes restringidas contra el modelo sin él,
+  con p de la mezcla ½χ²₀ + ½χ²₁ (Self y Liang 1987).
+- **Heredabilidad y BLUP de genotipos**: completamente al azar, bloques completos, bloques incompletos dentro de
+  repeticiones (alfa-látice) y varios ambientes (genotipo × ambiente aleatorio). H² en medias con medias armónicas
+  (Holland y col. 2003) y su EE por el método delta, H² por parcela, de Cullis, Smith y Coombes (2006) y de Piepho y
+  Möhring (2007); BLUP con PEV y confiabilidad, BLUE (genotipos fijos) y la gráfica de BLUP contra BLUE; CV genético y
+  del error; ganancia esperada por selección por BLUP, por la ecuación del criador y por el diferencial de selección,
+  hacia valores mayores o menores.
+- **Repetibilidad**: r = σ²i/(σ²i + σ²e) con su EE, la determinación con las medidas que hay, las medidas necesarias
+  para 80 a 99 % (Cruz, Regazzi y Carneiro 2012) y el valor permanente predicho de cada individuo.
+- Párrafos para tesis con sus citas (nueve referencias nuevas), semáforo (normalidad de residuos y de BLUP,
+  atípicos, convergencia) y el código R equivalente con lme4, con tolerancia estricta del optimizador para que dé las
+  mismas cifras (con las de omisión, lme4 se queda a 10⁻⁵ en algunos casos).
+- Ejemplo nuevo (ficticio): **guayabo, 20 árboles en cuatro cosechas**; el alfa-látice y la avena en 14 ambientes
+  sirven también para la heredabilidad.
+- Validación: 17 casos (Dyestuff, Dyestuff2, Penicillin, Pastes, Rail y ergoStool; el alfa-látice, data_ge y
+  data_ge2 de metan, desbalanceados, con componentes en cero y selección hacia el menor valor). La referencia ajusta con
+  lme4 y pule el óptimo con pasos de Newton sobre V y P completas: 1 451 valores, diferencia escalada máxima
+  4.9 × 10⁻¹⁰. 669 casos en total. El código R de los tres métodos se corre en R en 4 escenarios más.
+
 ### Hito 2.2 · Medidas repetidas en el tiempo con estructuras de covarianza (3 oct 2026)
 
 - **Medidas repetidas en el tiempo** (familia Modelos mixtos, motor R con nlme y emmeans): la misma planta, parcela o
