@@ -40,13 +40,38 @@ SP.definir('lineal', function (SP) {
     /* tablas grandes con pocas celdas (solo factores, con submuestras o repeticiones): mínimos cuadrados por celdas,
        que tienen las mismas ecuaciones normales, la misma R (salvo signos) y por eso las mismas sumas de cuadrados */
     const agrupar = op.agrupar !== undefined ? op.agrupar : mm.n >= 2000;
-    const gr = agrupar ? SP.algebra.agruparFilas(mm.X, mm.n, mm.p, 0.25) : null;
+    /* solo factores: las filas iguales de X son las de la misma combinación de niveles (clave entera, sin comparar
+       las filas de X); con alguna numérica, las filas se comparan */
+    const gr = !agrupar ? null : celdasDeFactores(tabla, mm) || SP.algebra.agruparFilas(mm.X, mm.n, mm.p, 0.25);
     /* con covariables las filas no se repiten, pero sí las celdas de los factores (ANCOVA): se comprime por celdas */
     const cel = agrupar && !gr ? celdasConCovariables(tabla, mm) : null;
     const mc = gr ? SP.algebra.minimosCuadradosAgrupados(mm.X, mm.n, mm.p, mm.y, gr, TOL)
       : cel ? SP.algebra.minimosCuadradosCeldas(mm.X, mm.n, mm.p, mm.y, cel, TOL)
         : SP.algebra.minimosCuadrados(mm.X, mm.n, mm.p, mm.y, TOL);
     return Object.assign({ modelo: mm, opciones: op, glResidual: mm.n - mc.qr.rango, rango: mc.qr.rango }, mc);
+  }
+  /**
+   * Grupos de filas idénticas de X cuando todas las variables del modelo son factores: la misma agrupación (y en el
+   * mismo orden, el de la primera aparición) que SP.algebra.agruparFilas, pero con una clave entera de los códigos.
+   * null si hay numéricas, si la clave no cabe o si hay más de un cuarto de filas distintas.
+   */
+  function celdasDeFactores(tabla, mm) {
+    const vars = mm.formula.variables;
+    if (!vars.length || vars.some(v => tabla.col(v).tipo !== 'factor')) return null;
+    const cods = vars.map(v => tabla.col(v).codigos), tam = vars.map(v => tabla.col(v).niveles.length);
+    if (tam.reduce((x, y) => x * y, 1) > 2 ** 52) return null;
+    const n = mm.n, g = new Int32Array(n), mapa = new Map(), rep = [], tope = 0.25 * n;
+    for (let r = 0; r < n; r++) {
+      const i = mm.filas[r];
+      let clave = 0;
+      for (let k = 0; k < cods.length; k++) clave = clave * tam[k] + cods[k][i];
+      let q = mapa.get(clave);
+      if (q === undefined) { q = rep.length; mapa.set(clave, q); rep.push(r); if (rep.length > tope) return null; }
+      g[r] = q;
+    }
+    const cuenta = new Float64Array(rep.length);
+    for (let r = 0; r < n; r++) cuenta[g[r]]++;
+    return { g, rep: Int32Array.from(rep), cuenta, G: rep.length };
   }
   /**
    * Celdas de los factores del modelo y sus covariables, si cada término lleva a lo más una variable numérica (así cada

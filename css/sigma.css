@@ -109,7 +109,8 @@ table.revista th:first-child, table.revista td:first-child { text-align: left; }
 table.revista td { padding: 6px 10px; text-align: right; vertical-align: top; }
 table.revista td.izq, table.revista th.izq { text-align: left; }
 table.revista .nowrap { white-space: nowrap; }
-table.revista tbody tr:last-child td { border-bottom: 1.5px solid var(--text); }
+/* también la primera celda, que es encabezado de fila (th) */
+table.revista tbody tr:last-child > td, table.revista tbody tr:last-child > th { border-bottom: 1.5px solid var(--text); }
 .pie-cuadro { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 6px; }
 
 .veredicto { display: inline-block; font-size: var(--fs-xs); font-weight: 800; padding: 2px 9px; border-radius: var(--r-pill); white-space: nowrap; }
@@ -515,3 +516,10 @@ button.cons-chip:focus-visible { outline: 2px solid var(--primary); outline-offs
 .expo-tarjeta p { margin: 0; }
 .expo-tarjeta .btn-row { margin-top: auto; padding-top: var(--sp-2); }
 .expo-estado { min-height: 1.4em; }
+
+/* bloque 8 · otras comprobaciones */
+.val-otras { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
+.val-otras > li { border-top: 1px solid var(--border); padding-top: var(--sp-3); }
+.val-otras > li:first-child { border-top: 0; padding-top: 0; }
+.val-otra-cabeza { margin: 0 0 4px; display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: baseline; }
+.val-otras p.small { margin: 0; max-width: 90ch; }

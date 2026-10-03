@@ -122,14 +122,26 @@
       `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
   }
 
-  /** Muestra a lo más «tope» puntos (los marcados siempre entran), para que 100 000 filas no saturen el SVG. */
+  /**
+   * Muestra a lo más «tope» puntos, repartidos parejo y sin azar, para que 100 000 filas no saturen el SVG. Los marcados
+   * entran todos mientras no pasen de la mitad del tope; si son más (con 100 000 filas, los residuos mayores que 2 son
+   * miles) también se adelgazan, y primero se quedan los que llevan etiqueta. Se dibujan al final, encima del resto.
+   */
   function adelgazar(puntos, tope) {
     if (puntos.length <= tope) return puntos;
-    const marcados = puntos.filter(p => p.marca), resto = puntos.filter(p => !p.marca);
-    const paso = resto.length / Math.max(1, tope - marcados.length);
-    const elegidos = [];
-    for (let k = 0; k < resto.length; k += paso) elegidos.push(resto[Math.floor(k)]);
-    return elegidos.concat(marcados);
+    const parejo = (lista, cuantos) => {
+      if (lista.length <= cuantos) return lista;
+      const paso = lista.length / Math.max(1, cuantos), out = [];
+      for (let k = 0; k < lista.length && out.length < cuantos; k += paso) out.push(lista[Math.floor(k)]);
+      return out;
+    };
+    let marcados = puntos.filter(p => p.marca);
+    const resto = puntos.filter(p => !p.marca);
+    if (marcados.length > tope / 2) {
+      const conEtq = parejo(marcados.filter(p => p.etiqueta !== undefined), Math.floor(tope / 4));
+      marcados = conEtq.concat(parejo(marcados.filter(p => p.etiqueta === undefined), Math.floor(tope / 2) - conEtq.length));
+    }
+    return parejo(resto, tope - marcados.length).concat(marcados);
   }
 
   /**

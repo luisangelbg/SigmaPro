@@ -12,6 +12,7 @@ import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { BANDERAS, paginaPropia } from './lib/navegador.mjs';
 
 const TESTS = dirname(fileURLToPath(import.meta.url));
 const RAIZ = join(TESTS, '..');
@@ -29,7 +30,7 @@ const exe = candidatos.find(p => existsSync(p));
 if (!exe) { console.error('No encontré Edge ni Chrome. Indica la ruta en la variable SIGMAPRO_NAVEGADOR.'); process.exit(2); }
 
 const perfil = mkdtempSync(join(tmpdir(), 'sigmapro-nav-'));
-const nav = spawn(exe, ['--headless=new', '--remote-debugging-port=' + PUERTO, '--user-data-dir=' + perfil, '--no-first-run', '--no-default-browser-check', 'about:blank'], { stdio: 'ignore' });
+const nav = spawn(exe, [...BANDERAS, '--remote-debugging-port=' + PUERTO, '--user-data-dir=' + perfil, 'about:blank'], { stdio: 'ignore' });
 const dormir = ms => new Promise(r => setTimeout(r, ms));
 let ws, id = 0;
 const pendientes = new Map(), consola = [];
@@ -41,7 +42,7 @@ try {
   let destino;
   for (let k = 0; k < 75 && !destino; k++) {
     await dormir(200);
-    try { destino = (await (await fetch('http://127.0.0.1:' + PUERTO + '/json')).json()).find(t => t.type === 'page'); } catch { /* aún arranca */ }
+    try { destino = await paginaPropia(PUERTO); } catch { /* aún arranca */ }
   }
   if (!destino) throw new Error('El navegador no abrió su puerto de depuración.');
   ws = new WebSocket(destino.webSocketDebuggerUrl);

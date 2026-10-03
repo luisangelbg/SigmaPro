@@ -240,18 +240,19 @@ SP.definir('formula', function (SP) {
     for (const v of usadas) tabla.col(v);   // lanza si no existe
 
     /* filas completas (como na.omit); op.filas restringe a esas filas (otro modelo sobre los mismos datos) */
-    const filas = [];
-    const candidatas = op.filas || null;
-    for (let r = 0, total = candidatas ? candidatas.length : tabla.n; r < total; r++) {
+    const candidatas = op.filas || null, total = candidatas ? candidatas.length : tabla.n;
+    const nums = [], facs = [];
+    for (const v of new Set(usadas)) { const c = tabla.col(v); if (c.tipo === 'numerica') nums.push(c.valores); else facs.push(c.codigos); }
+    const todas = new Int32Array(total);
+    let n = 0;
+    for (let r = 0; r < total; r++) {
       const i = candidatas ? candidatas[r] : r;
       let ok = true;
-      for (const v of usadas) {
-        const c = tabla.col(v);
-        if (c.tipo === 'numerica' ? Number.isNaN(c.valores[i]) : c.codigos[i] < 0) { ok = false; break; }
-      }
-      if (ok) filas.push(i);
+      for (let k = 0; k < nums.length && ok; k++) if (nums[k][i] !== nums[k][i]) ok = false;
+      for (let k = 0; k < facs.length && ok; k++) if (facs[k][i] < 0) ok = false;
+      if (ok) todas[n++] = i;
     }
-    const n = filas.length;
+    const filas = todas.subarray(0, n);
     if (!n) throw error(T('No queda ninguna fila completa con las variables del modelo.'), T('Revisa los valores faltantes.'));
 
     /* factores: niveles usados, en el orden original (como drop.unused.levels) */
@@ -259,8 +260,8 @@ SP.definir('formula', function (SP) {
     for (const v of form.variables) {
       const c = tabla.col(v);
       if (c.tipo !== 'factor') continue;
-      const usado = new Array(c.niveles.length).fill(false);
-      for (const i of filas) usado[c.codigos[i]] = true;
+      const usado = new Array(c.niveles.length).fill(false), cod = c.codigos;
+      for (let r = 0; r < n; r++) usado[cod[filas[r]]] = true;
       const mapa = new Int32Array(c.niveles.length).fill(-1);
       const lista = [];
       c.niveles.forEach((nv, k) => { if (usado[k]) { mapa[k] = lista.length; lista.push(nv); } });
@@ -299,17 +300,20 @@ SP.definir('formula', function (SP) {
       const partes = t.variables.map((v, vi) => {
         const c = tabla.col(v);
         if (codigos[ti][vi] === 'numerica') {
-          const x = new Float64Array(n);
-          filas.forEach((fi, r) => { x[r] = c.valores[fi]; });
+          const x = new Float64Array(n), val = c.valores;
+          for (let r = 0; r < n; r++) x[r] = val[filas[r]];
           return [{ nombre: v, valores: x }];
         }
         const nv = niveles[v], mapa = recodigo[v];
         const tipo = codigos[ti][vi] === 'indicadoras' ? 'indicadoras' : tipoContraste(v);
         const pj = op.puntajes && op.puntajes[v];
         const ct = contrastes(tipo, nv, pj && pj.length === nv.length ? pj : (pj ? nv.map(l => pj[c.niveles.indexOf(l)]) : undefined));
+        const cod = c.codigos;
         return ct.nombres.map((nom, j) => {
+          const porNivel = new Float64Array(c.niveles.length);
+          for (let k = 0; k < porNivel.length; k++) if (mapa[k] >= 0) porNivel[k] = ct.matriz[mapa[k]][j];
           const x = new Float64Array(n);
-          filas.forEach((fi, r) => { x[r] = ct.matriz[mapa[c.codigos[fi]]][j]; });
+          for (let r = 0; r < n; r++) x[r] = porNivel[cod[filas[r]]];
           return { nombre: v + nom, valores: x };
         });
       });
@@ -335,7 +339,8 @@ SP.definir('formula', function (SP) {
       const c = tabla.col(form.respuesta);
       if (c.tipo !== 'numerica') throw error(T('La respuesta «{r}» debe ser numérica.', { r: form.respuesta }));
       y = new Float64Array(n);
-      filas.forEach((fi, r) => { y[r] = c.valores[fi]; });
+      const val = c.valores;
+      for (let r = 0; r < n; r++) y[r] = val[filas[r]];
     }
     return { X, n, p, columnas, asignacion: Int32Array.from(asignacion), terminos: form.terminos, intercepto: form.intercepto,
       respuesta: form.respuesta, y, filas: Int32Array.from(filas), niveles, formula: form, codificacion: codigos };

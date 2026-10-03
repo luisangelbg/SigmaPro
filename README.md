@@ -11,11 +11,13 @@ medias, regresión y, más adelante, modelos mixtos y ensayos multiambiente. For
   propia app (bloque 8) y en [`tests/reporte-validacion.html`](tests/reporte-validacion.html).
 - **Reproducible.** Cada análisis trae el código R equivalente.
 - **Privado.** Todo se calcula en el navegador; los datos no salen del equipo.
-- **Sin instalación.** Se abre con doble clic en `index.html` y funciona sin conexión.
+- **Sin instalación.** Se abre con doble clic en `index.html` y funciona sin conexión; publicada en la web, se
+  guarda en el navegador la primera vez y después abre sin red.
+- **Rápido con tablas grandes.** Probado con 100 000 filas: una ANOVA con Tukey en menos de una décima de segundo.
 
 ## Estado
 
-En construcción, por hitos. **Hitos 1.0 a 1.11 terminados:** cimientos (registro de métodos, cálculos en
+**Fase 1 completa (hitos 1.0 a 1.12):** cimientos (registro de métodos, cálculos en
 hilos de trabajo, pruebas automáticas en node y en el navegador, generador de referencias con R y reporte
 de validación), núcleo numérico (distribuciones, álgebra, fórmulas y modelo lineal con sumas de cuadrados
 tipo I, II y III) y el bloque de **Datos**: hoja de cálculo para 100 000 filas con deshacer, importación de
@@ -47,10 +49,14 @@ medias marginales); y el **Reporte LABG** (conclusión en palabras, cuadros de r
 semáforo, el párrafo de métodos y resultados para la tesis o el artículo con la cita de cada prueba, detalles técnicos
 y código R), las **figuras de publicación** (SVG, PDF vectorial, PNG y TIFF a 600 ppp) y las **exportaciones**: reporte
 en .docx, PDF y HTML, cuadros en hoja de cálculo y LaTeX, y el **proyecto .labg** con la huella SHA-256 de cada archivo y
-el código R que lo repite todo. Validado contra R en 624 casos y 48 458 valores. El plan
+el código R que lo repite todo; y el cierre de la fase: **uso sin conexión**, **100 000 filas** en 43 operaciones
+medidas dentro de su meta, la prueba de **privacidad** (ningún dato sale del navegador) y la **auditoría de
+accesibilidad AA** en claro y oscuro, a 1280 y 360 px, con el foco revisado tecla por tecla. Validado contra R en 624
+casos y 48 458 valores. Lo que falta para publicar y las fases 2 y 3 están en
+[`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan
 completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
-[`propuesta/maqueta.html`](propuesta/maqueta.html).
+[`propuesta/maqueta.html`](propuesta/maqueta.html); capturas de la app en [`docs/capturas/`](docs/capturas/).
 
 ## Pruebas
 
@@ -60,6 +66,9 @@ node tests/correr.mjs             # pruebas y reporte
 node tests/navegador.mjs          # las mismas pruebas en el navegador
 node tests/codigo-r.mjs           # el código R que muestra la app corre en R y da lo mismo
 node tests/exportar.mjs           # cada exportación, leída con lectores independientes (R y el sistema)
+node tests/sin-conexion.mjs       # privacidad y uso sin conexión
+node tests/rendimiento/medir.mjs  # rendimiento con 100 000 filas
+node tests/accesibilidad/auditar.mjs  # accesibilidad AA
 ```
 
 O abre `tests/index.html` con doble clic. Detalles en [`docs/VALIDACION.md`](docs/VALIDACION.md).

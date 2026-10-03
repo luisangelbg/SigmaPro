@@ -2,8 +2,10 @@
 #   powershell -ExecutionPolicy Bypass -File tests\pruebas.ps1            pruebas de node + navegador
 #   powershell -ExecutionPolicy Bypass -File tests\pruebas.ps1 -R         antes regenera las referencias con R
 #   powershell -ExecutionPolicy Bypass -File tests\pruebas.ps1 -SoloNode  sin navegador
+#   powershell -ExecutionPolicy Bypass -File tests\pruebas.ps1 -Completo  todo, con exportaciones, privacidad,
+#                                                                         rendimiento y accesibilidad
 # Busca node en el PATH o en la ruta de Adobe; R en el PATH o en C:\Program Files\R.
-param([switch]$R, [switch]$SoloNode)
+param([switch]$R, [switch]$SoloNode, [switch]$Completo)
 $ErrorActionPreference = 'Stop'
 $tests = $PSScriptRoot
 
@@ -35,5 +37,13 @@ if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
 if (-not $SoloNode) {
   & $node (Join-Path $tests 'navegador.mjs')
   if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
+}
+# -Completo: ademas las exportaciones, la privacidad y el uso sin conexion, el rendimiento con 100 000 filas y la
+# accesibilidad (unos 15 minutos); cada una deja su resultado en el bloque 8, en "Otras comprobaciones"
+if ($Completo -and -not $SoloNode) {
+  foreach ($p in @('exportar.mjs', 'sin-conexion.mjs', 'rendimiento\medir.mjs', 'accesibilidad\auditar.mjs')) {
+    & $node (Join-Path $tests $p)
+    if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
+  }
 }
 exit $codigo

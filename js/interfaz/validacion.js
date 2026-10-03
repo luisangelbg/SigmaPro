@@ -3,7 +3,9 @@
 
    Lee window.SP_VALIDACION, que escribe tests/correr.mjs en js/generado/validacion.js
    cada vez que corren las pruebas. Es la misma información que el reporte publicado
-   en tests/reporte-validacion.html. */
+   en tests/reporte-validacion.html. Debajo, las otras comprobaciones (window.SP_COMPROBACIONES,
+   js/generado/comprobaciones.js): el código R equivalente, las exportaciones, el rendimiento,
+   la privacidad, el uso sin conexión y la accesibilidad. */
 (function () {
   'use strict';
   const T = SP.T;
@@ -90,7 +92,22 @@
       '<div class="teja"><div class="k">' + T('Mayor diferencia') + '</div><div class="v">' + cientifico(r.difEscaladaMax) + '</div><div class="nota">' + T('escalada; el límite es 10⁻⁶') + '</div></div>' +
       '<div class="teja"><div class="k">' + T('Referencia') + '</div><div class="v" style="font-size:var(--fs-lg)">' + esc((V.referencias || []).map(s => s.replace(/^R version ([\d.]+).*$/, 'R $1')).join(', ')) + '</div><div class="nota">' + esc(r.objetivos === 1 ? T('1 función o método') : T('{n} funciones y métodos', { n: r.objetivos })) + '</div></div>';
     pintarTabla(V);
+    pintarOtras();
     if (window.LABG) window.LABG.markStep(8, r.fallidos ? 'warn' : 'done');
+  }
+  /* las comprobaciones que no son casos contra R */
+  const ORDEN = ['codigo-r', 'exportar', 'rendimiento', 'sin-conexion', 'accesibilidad'];
+  function pintarOtras() {
+    const C = window.SP_COMPROBACIONES || {}, el = $('#valOtras');
+    if (!el) return;
+    const claves = ORDEN.filter(k => C[k]).concat(Object.keys(C).filter(k => !ORDEN.includes(k)));
+    el.closest('.card').hidden = !claves.length;
+    el.innerHTML = claves.map(k => {
+      const x = C[k], f = x.fecha ? new Date(x.fecha).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+      return '<li><p class="val-otra-cabeza"><span class="veredicto ' + (x.ok ? 'ok' : 'falla') + '">' + (x.ok ? T('Aprobado') : T('Con fallas')) + '</span> <b>' + esc(x.titulo) + '</b>' +
+        (f ? ' <span class="small muted">· ' + esc(f) + '</span>' : '') + '</p><p class="small">' + esc(x.resumen) + '</p>' +
+        (x.renglones && x.renglones.length ? '<details class="exp-extras"><summary>' + esc(T('Detalle')) + '</summary><ul class="small">' + x.renglones.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul></details>' : '') + '</li>';
+    }).join('');
   }
 
   function iniciar() {

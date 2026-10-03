@@ -59,7 +59,9 @@
     ['hecho', '1.9', 'Correlación y tablas de contingencia'],
     ['hecho', '1.10', 'Asistente de análisis, constructor visual de modelos y modelo lineal general'],
     ['hecho', '1.11', 'Reporte LABG, figuras de publicación, exportaciones y proyecto .labg'],
-    ['actual', '1.12', 'Uso sin conexión, rendimiento, accesibilidad y cierre de la Fase 1'],
+    ['hecho', '1.12', 'Uso sin conexión, rendimiento, accesibilidad y cierre de la Fase 1'],
+    ['', '2', 'Fase 2: modelos mixtos, GLM, no lineales y ensayos multiambiente con el motor R en el navegador'],
+    ['', '3', 'Fase 3: multivariado con PCAPro y ClusteringPro, potencia y tamaño de muestra'],
   ];
   function hitos() {
     const ul = $('#hitos');
@@ -104,7 +106,21 @@
 
     const m = /^#b(\d+)/.exec(location.hash);
     app.ir(m && document.getElementById('panel-' + m[1]) ? m[1] : '1');
+    sinConexion();
     document.dispatchEvent(new CustomEvent('sp:listo'));
+  }
+
+  /* ---------------- sin conexión ----------------
+     Servida por http o https, la app se instala y guarda en el navegador (sw.js) y trae su manifiesto. Con doble clic
+     no hace falta (todo ya está en el equipo) y el navegador no admite ninguno de los dos. */
+  function sinConexion() {
+    if (!/^https?:$/.test(location.protocol)) return;
+    const l = document.createElement('link');
+    l.rel = 'manifest'; l.href = 'manifest.webmanifest';
+    document.head.appendChild(l);
+    if (!('serviceWorker' in navigator)) return;
+    const registrar = () => navigator.serviceWorker.register('sw.js').then(r => { app.sinConexion = r; }).catch(() => { /* la app funciona igual, solo que necesita la red */ });
+    if (document.readyState === 'complete') registrar(); else window.addEventListener('load', registrar);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);

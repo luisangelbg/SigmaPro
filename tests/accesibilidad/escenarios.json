@@ -1,0 +1,143 @@
+{
+ "ana-boton": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.usar('dbca', { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, {})"
+ },
+ "analisis-0": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "analisis-5": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[5].click(), SP.app.ir(4), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "analisis-fr": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[4].click(), SP.app.ir(4), SP.app.analisis.metodo = 'friedman', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.rangos, { respuesta: 'trips', tratamiento: 'tratamiento', bloque: 'bloque', posthocF: 'wilcoxon' }), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "analisis-kw": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[4].click(), SP.app.ir(4), SP.app.analisis.metodo = 'kruskal-wallis', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.rangos, { respuesta: 'trips', tratamiento: 'tratamiento' }), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "analisis-t": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[5].click(), SP.app.ir(4), SP.app.analisis.metodo = 'prueba-t', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.dos, { modo: 'independientes', respuesta: 'tiempo', grupo: 'tratamiento', nivelA: 'A', nivelB: 'B', varIguales: true }), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "analisis-w": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[3].click(), SP.app.ir(4), SP.app.analisis.metodo = 'wilcoxon', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.dos, { modo: 'pareadas', antes: 'altura_60dds', despues: 'altura_45dds' }), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "asis-cafe": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[9].click(), SP.app.ir(4), SP.app.analisis.ponerModo('asistente'), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "asis-maiz": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.ponerModo('asistente'), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "asis-roya": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[11].click(), SP.app.ir(4), SP.app.analisis.ponerModo('asistente'), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "boxcox": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[5].click(), document.querySelector('#datTransformar').click(), document.querySelector('dialog[open] input[value=\"boxcox\"]').click()",
+  "dialogo": true
+ },
+ "cmp-contrastes": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[5].click(), SP.app.ir(4), SP.app.analisis.metodo = 'contrastes', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.dis, {\"respuesta\":\"tiempo\",\"tratamientos\":[\"veneno\",\"tratamiento\"]}), Object.assign(SP.app.analisis.cmp, {\"diseno\":\"dca\",\"comparar\":[\"veneno\"],\"dentro\":\"\",\"contrastes\":\"I y II vs III: 1 1 -2\\nI vs II: 1 -1 0\"}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "cmp-dunnett": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[4].click(), SP.app.ir(4), SP.app.analisis.metodo = 'comparaciones-medias', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.dis, {\"respuesta\":\"trips\",\"tratamientos\":[\"tratamiento\"],\"bloque\":\"bloque\"}), Object.assign(SP.app.analisis.cmp, {\"diseno\":\"dbca\",\"comparar\":[\"tratamiento\"],\"dentro\":\"\",\"metodo\":\"dunnett\",\"testigo\":\"Testigo\"}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "cmp-poli": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[7].click(), SP.app.ir(4), SP.app.analisis.metodo = 'polinomios', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.dis, {\"respuesta\":\"rendimiento\",\"parcelaGrande\":\"variedad\",\"subparcela\":\"nitrogeno\",\"bloque\":\"bloque\",\"principal\":\"dbca\"}), Object.assign(SP.app.analisis.cmp, {\"diseno\":\"parcelas-divididas\",\"comparar\":[\"nitrogeno\"],\"dentro\":\"\",\"grado\":2}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "cmp-tukey": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.metodo = 'comparaciones-medias', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.dis, {\"respuesta\":\"rend\",\"tratamientos\":[\"hibrido\",\"dosis\"],\"bloque\":\"bloque\"}), Object.assign(SP.app.analisis.cmp, {\"diseno\":\"dbca\",\"comparar\":[\"dosis\"],\"dentro\":\"hibrido\",\"metodo\":\"tukey\"}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "con-cmh": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[10].click(), SP.app.ir(4), SP.app.analisis.metodo = 'mantel-haenszel', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.cont, {\"fila\":\"tratamiento\",\"columna\":\"germinacion\",\"estrato\":\"lote\",\"frecuencia\":\"semillas\"}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "con-kappa": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[11].click(), SP.app.ir(4), SP.app.analisis.metodo = 'kappa', SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "con-mcnemar": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[11].click(), SP.app.ir(4), SP.app.analisis.metodo = 'mcnemar', SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "con-tabla": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[6].click(), SP.app.ir(4), SP.app.analisis.metodo = 'tabla-contingencia', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.cont, {\"fila\":\"forma\",\"columna\":\"color\",\"frecuencia\":\"semillas\"}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "cons-editar": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.ponerModo('constructor'), document.querySelector('#consEditar').click(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "cons-sorgo": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[8].click(), SP.app.ir(4), SP.app.constructorUI.desde({ metodo: 'ancova', e: { respuesta: 'rend', tratamientos: ['variedad'], bloque: 'bloque', covariables: ['plantas'] } }), SP.app.analisis.ponerModo('constructor'), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "cor-dos": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[9].click(), SP.app.ir(4), SP.app.analisis.metodo = 'correlacion', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.cor, {\"x\":\"altitud\",\"y\":\"rendimiento\",\"metodo\":\"spearman\"}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "cor-matriz": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[9].click(), SP.app.ir(4), SP.app.analisis.metodo = 'matriz-correlacion', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.cor, {\"variables\":[\"altitud\",\"temperatura\",\"lluvia\",\"materia_organica\",\"ph\",\"sombra\",\"edad\",\"rendimiento\"]}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "cor-parcial": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[9].click(), SP.app.ir(4), SP.app.analisis.metodo = 'correlacion-parcial', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.cor, {\"x\":\"temperatura\",\"y\":\"rendimiento\",\"controles\":[\"altitud\"]}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "datos": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[4].click(), SP.app.datos.filtro = { expresion: 'tratamiento != \"Testigo\"', filas: SP.expresiones.filtrar(SP.app.datos.hoja, 'tratamiento != \"Testigo\"') }, SP.datosUI.refrescar()"
+ },
+ "dis-dbca": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.metodo = 'dbca', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.dis, { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "dis-divididas": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[7].click(), SP.app.ir(4), SP.app.analisis.metodo = 'parcelas-divididas', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.dis, { respuesta: 'rendimiento', parcelaGrande: 'variedad', subparcela: 'nitrogeno', bloque: 'bloque' }), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "dis-latino": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[2].click(), SP.app.ir(4), SP.app.analisis.metodo = 'cuadro-latino', SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "exp-boton": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(3), SP.app.explorar.tipo = 'desc', SP.app.explorar.calcular()"
+ },
+ "explorar-bondad": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[6].click(), SP.app.ir(3), SP.app.explorar.tipo = 'bondad', SP.app.explorar.calcular()"
+ },
+ "explorar-desc": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(3), SP.app.explorar.calcular(), document.querySelectorAll('#expResultado details').forEach(d => d.open = true)"
+ },
+ "explorar-prop": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[1].click(), SP.app.ir(3), SP.app.explorar.tipo = 'prop', SP.app.explorar.calcular()"
+ },
+ "expo-7": {
+  "prep": "(async () => { document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(); await new Promise(r => setTimeout(r, 400)); SP.app.reporte.agregar({ metodo: 'dbca', e: { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, op: {} }), SP.app.reporte.agregar({ metodo: 'comparaciones-medias', e: Object.assign({ comparar: ['hibrido'] }, { diseno: 'dbca', respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }), op: { metodo: 'tukey' } }), SP.app.reporte.agregar({ metodo: 'regresion-polinomial', e: { respuesta: 'rend', predictores: 'dosis' }, op: { grado: 2 } }), SP.app.reporte.agregar({ metodo: 'descriptivos', e: { variables: ['rend'], grupos: ['hibrido'] }, op: {}, bloque: 3 }), SP.app.reporte.titulo = 'Ensayo', document.querySelectorAll('.toast, .lw-toast, [class*=toast]').forEach(t => t.remove()); SP.app.ir(7); })()"
+ },
+ "fig-6": {
+  "prep": "(async () => { document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(); await new Promise(r => setTimeout(r, 400)); SP.app.reporte.agregar({ metodo: 'dbca', e: { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, op: {} }), SP.app.reporte.agregar({ metodo: 'comparaciones-medias', e: Object.assign({ comparar: ['hibrido'] }, { diseno: 'dbca', respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }), op: { metodo: 'tukey' } }), SP.app.reporte.agregar({ metodo: 'regresion-polinomial', e: { respuesta: 'rend', predictores: 'dosis' }, op: { grado: 2 } }), SP.app.reporte.agregar({ metodo: 'descriptivos', e: { variables: ['rend'], grupos: ['hibrido'] }, op: {}, bloque: 3 }), SP.app.reporte.titulo = 'Ensayo', document.querySelectorAll('.toast, .lw-toast, [class*=toast]').forEach(t => t.remove()); SP.app.ir(6); })()"
+ },
+ "importar": {
+  "prep": "SP.datosDialogos.importarTexto('parcela;tratamiento;rend\\n101;T1;4,2\\n102;T2;perdida\\n103;T1;5,1\\n', 'a.csv')",
+  "dialogo": true
+ },
+ "inicio-1": {
+  "prep": "SP.app.ir(1)"
+ },
+ "menu": {
+  "prep": "document.querySelector('#datEjemplos').click()"
+ },
+ "ml-catalogo": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.usar('modelo-lineal', { respuesta: 'rend' }, { derecha: 'bloque + hibrido * dosis', comoFactor: ['dosis'], tipoSC: 3 }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "reg-ancova": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[8].click(), SP.app.ir(4), SP.app.analisis.metodo = 'ancova', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.anc, {\"respuesta\":\"rend\",\"tratamientos\":[\"variedad\"],\"bloque\":\"bloque\",\"covariables\":[\"plantas\"]}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "reg-lineal": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[9].click(), SP.app.ir(4), SP.app.analisis.metodo = 'regresion-lineal', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.reg, {\"respuesta\":\"rendimiento\",\"predictores\":[\"altitud\",\"temperatura\",\"lluvia\",\"materia_organica\",\"ph\",\"sombra\",\"edad\"],\"predecir\":\"1200 22 2000 4 5.5 40 10\"}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "reg-pasos": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[9].click(), SP.app.ir(4), SP.app.analisis.metodo = 'seleccion-pasos', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.reg, {\"respuesta\":\"rendimiento\",\"predictores\":[\"altitud\",\"temperatura\",\"lluvia\",\"materia_organica\",\"ph\",\"sombra\",\"edad\"],\"criterio\":\"p\",\"direccion\":\"mixta\"}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "reg-poli": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.metodo = 'regresion-polinomial', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.reg, {\"respuesta\":\"rend\",\"x\":\"dosis\",\"grado\":2,\"predecir\":\"90 150\"}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "reg-subconj": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[9].click(), SP.app.ir(4), SP.app.analisis.metodo = 'mejores-subconjuntos', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.reg, {\"respuesta\":\"rendimiento\",\"predictores\":[\"altitud\",\"temperatura\",\"lluvia\",\"materia_organica\",\"ph\",\"sombra\",\"edad\"],\"mejores\":2}), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "rep-5": {
+  "prep": "(async () => { document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(); await new Promise(r => setTimeout(r, 400)); SP.app.reporte.agregar({ metodo: 'dbca', e: { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, op: {} }), SP.app.reporte.agregar({ metodo: 'comparaciones-medias', e: Object.assign({ comparar: ['hibrido'] }, { diseno: 'dbca', respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }), op: { metodo: 'tukey' } }), SP.app.reporte.agregar({ metodo: 'regresion-polinomial', e: { respuesta: 'rend', predictores: 'dosis' }, op: { grado: 2 } }), SP.app.reporte.agregar({ metodo: 'descriptivos', e: { variables: ['rend'], grupos: ['hibrido'] }, op: {}, bloque: 3 }), SP.app.reporte.titulo = 'Ensayo', document.querySelectorAll('.toast, .lw-toast, [class*=toast]').forEach(t => t.remove()); SP.app.ir(5); })()"
+ },
+ "rep-vacio": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(5)"
+ },
+ "val-8": {
+  "prep": "SP.app.ir(8), document.querySelectorAll('#panel-8 details').forEach(d => d.open = true)",
+  "ultimo": true
+ }
+}

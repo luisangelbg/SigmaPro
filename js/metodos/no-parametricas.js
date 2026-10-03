@@ -188,11 +188,24 @@ SP.definir('no-parametricas', function (SP) {
         const alfa = 1 - op.nivel;
         let corregir = !!op.correccion;
         const mumin = menor(x) - mayor(y), mumax = mayor(x) - menor(y);
+        /* x − d conserva el orden de x: con x y y ordenados una vez, la muestra combinada ordenada sale de mezclar las
+           dos listas en cada evaluación, sin volver a ordenar. Los rangos promedio son medios enteros y sus sumas, exactas:
+           el mismo valor que con rangos() y empates() */
+        const xo = Float64Array.from(x).sort(), yo = Float64Array.from(y).sort();
         const Wd = d => {
-          const dr = rangos(x.map(v => v - d).concat(y));
-          let dz = -nx * (nx + 1) / 2 - nx * ny / 2;
-          for (let i = 0; i < nx; i++) dz += dr[i];
-          const s = sqrt((nx * ny / 12) * ((N + 1) - empates(dr) / (N * (N - 1))));
+          let i = 0, j = 0, pos = 0, sx = 0, te = 0;
+          while (i < nx || j < ny) {
+            const v = j >= ny || (i < nx && xo[i] - d <= yo[j]) ? xo[i] - d : yo[j];
+            const i0 = i, j0 = j;
+            while (i < nx && xo[i] - d === v) i++;
+            while (j < ny && yo[j] === v) j++;
+            const t = i - i0 + j - j0;
+            sx += (i - i0) * (pos + (t + 1) / 2);
+            if (t > 1) te += t * t * t - t;
+            pos += t;
+          }
+          const dz = -nx * (nx + 1) / 2 - nx * ny / 2 + sx;
+          const s = sqrt((nx * ny / 12) * ((N + 1) - te / (N * (N - 1))));
           return (dz - correccionDe(alt, dz, corregir)) / s;
         };
         const wmin = Wd(mumin), wmax = Wd(mumax);

@@ -344,6 +344,45 @@ se escriben con su letra normal, que sí está en las fuentes estándar.
 Los párrafos para la tesis no se comparan con R: describen la prueba y sus números (los mismos de los cuadros) con la
 cita de cada método. Las referencias son las publicaciones originales de cada prueba.
 
+## Rendimiento, privacidad, sin conexión y accesibilidad (Hito 1.12)
+
+Cuatro pruebas más, que no comparan números con R sino cómo se comporta la app. Cada una escribe su resultado en
+`js/generado/comprobaciones.js` y la app lo muestra en el bloque 8, en «Otras comprobaciones».
+
+**Rendimiento con 100 000 filas** (`tests/rendimiento/medir.mjs`). Un ensayo sintético con semilla fija (99 941 filas:
+5 tratamientos, 10 bloques, tres factores desbalanceados, una dosis, una covariable, diez variables correlacionadas y
+categorías para contingencia) se mide en el navegador, por file://, como lo usa la app: la primera vez y la mediana de
+tres más. 43 operaciones con su meta: leer un CSV de 9.4 MB, cada familia de análisis (calcular y armar el reporte), el
+bloque Análisis pintado, el reporte de cinco análisis, sus figuras, el .docx, el proyecto .labg y su apertura. Las
+metas del plan (propuesta §5.4) se cumplen con holgura: descriptivos de 10 variables en 105 ms (meta 150 ms), ANOVA de
+una vía con Tukey en 82 ms (meta 250 ms) y el factorial 4 × 3 × 2 desbalanceado con SC tipo III en 142 ms (meta 1.5 s).
+El plan pedía además un hilo de trabajo con más de 20 000 filas; medido, el hilo resultó más lento (arranca sin el
+código optimizado), así que el cálculo sigue en la página con un aviso mientras dura (ver `docs/PENDIENTES.md`). Las
+optimizaciones de este hito no cambiaron ningún número: los 624 casos contra R siguen aprobados con la misma diferencia
+máxima.
+
+**Privacidad y sin conexión** (`tests/sin-conexion.mjs`). Con el ejemplo del maíz se usan seis análisis de familias
+distintas, el asistente, el constructor, el reporte y seis exportaciones mientras se registra cada petición de red:
+
+| Cómo se abre | Qué se comprueba | Resultado |
+|---|---|---|
+| Doble clic (file://) | ninguna petición sale del equipo | solo las 3 letras de la suite (ver abajo) |
+| Servida por http | todas las peticiones son GET, sin parámetros ni cuerpo, a archivos de la propia app | 73 peticiones, todas así |
+| Servida por http | el servicio sin conexión (`sw.js`) queda activo y guarda la app | activo, 75 archivos |
+| Sin red y con el servidor apagado | la app abre, carga datos, calcula, arma el reporte, exporta y verifica las huellas del proyecto | igual que con red |
+
+La única excepción, declarada: el navegador y el estudio de figuras (módulos comunes de la suite) piden sus letras
+«LABG Sans» y «LABG Serif» al portal de la suite, tres archivos .woff2 con GET y sin datos. En GitHub Pages son del
+mismo origen y se guardan para usarse sin conexión; sin red, la app usa las letras del sistema.
+
+**Accesibilidad AA** (`tests/accesibilidad/auditar.mjs`). 46 escenarios (cada bloque vacío y con datos, análisis de
+todas las familias, el asistente, el constructor, diálogos, el reporte, las figuras y la exportación) pasan por el
+auditor de la suite a 1280 y 360 px: 92 revisiones con 19 370 textos medidos en claro y en oscuro, todos con el
+contraste AA; ningún botón ni enlace sin nombre, ningún campo sin etiqueta, ningún id repetido, sin desborde lateral;
+Alt+→ y Alt+← cambian de bloque y «?» abre los atajos. El foco se revisa aparte con el teclado de verdad (eventos de
+teclado del navegador): 294 paradas de Tab en los 8 bloques a 1280 px en claro y 275 a 360 px en oscuro, todas con su
+anillo visible.
+
 ## Dónde está cada cosa
 
 ```
@@ -360,6 +399,11 @@ tests/
 ├─ navegador.mjs                  las mismas pruebas en Edge o Chrome sin ventana, por file://
 ├─ codigo-r.mjs                   el código R que muestra la app, corrido en R contra los números de la app
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
+├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
+├─ rendimiento/medir.mjs          43 operaciones con 100 000 filas en el navegador (pagina.js: lo que corre en la página)
+├─ accesibilidad/auditar.mjs      46 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana
+├─ lib/comprobaciones.mjs         escribe js/generado/comprobaciones.js (bloque 8, «Otras comprobaciones»)
 ├─ index.html                     las mismas pruebas con doble clic
 └─ reporte-validacion.html/.csv   el reporte publicado (también en la app, bloque 8)
 ```
@@ -398,9 +442,13 @@ node tests/correr.mjs               # compara y escribe los reportes
 node tests/navegador.mjs            # lo mismo en el navegador, por file://
 node tests/codigo-r.mjs             # el código R que muestra la app da lo mismo en R
 node tests/exportar.mjs             # las exportaciones, leídas con R y con el sistema
+node tests/sin-conexion.mjs         # privacidad y uso sin conexión
+node tests/rendimiento/medir.mjs    # rendimiento con 100 000 filas (--json guarda resultados.json)
+node tests/accesibilidad/auditar.mjs   # accesibilidad AA (el auditor está en LABG-Design, junto a SigmaPro)
 ```
 
-En Windows, `tests/pruebas.ps1` encuentra R, node y el navegador y corre todo.
+En Windows, `tests/pruebas.ps1` encuentra R, node y el navegador y corre las pruebas; con `-Completo`, también las
+exportaciones, la privacidad, el rendimiento y la accesibilidad.
 
 ## Regla de liberación
 

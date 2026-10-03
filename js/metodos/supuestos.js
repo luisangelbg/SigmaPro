@@ -284,11 +284,16 @@ SP.definir('supuestos', function (SP) {
   }
   /** Rangos con empates promediados (como rank() de R). */
   function rangos(v) {
-    /* ordenamiento nativo de una copia y, para cada valor, su primer y último lugar por búsqueda binaria */
-    const n = v.length, s = Float64Array.from(v).sort(), r = new Float64Array(n);
-    const primero = x => { let lo = 0, hi = n; while (lo < hi) { const m = (lo + hi) >> 1; if (s[m] < x) lo = m + 1; else hi = m; } return lo; };
-    const ultimo = x => { let lo = 0, hi = n; while (lo < hi) { const m = (lo + hi) >> 1; if (s[m] <= x) lo = m + 1; else hi = m; } return lo - 1; };
-    for (let i = 0; i < n; i++) r[i] = (primero(v[i]) + ultimo(v[i]) + 2) / 2;
+    /* ordenamiento nativo de una copia; el rango promedio de cada racha de iguales se guarda en su primer lugar y
+       cada valor encuentra ese lugar por búsqueda binaria */
+    const n = v.length, s = Float64Array.from(v).sort(), r = new Float64Array(n), prom = new Float64Array(n);
+    for (let a = 0; a < n;) { let b = a + 1; while (b < n && s[b] === s[a]) b++; prom[a] = (a + b + 1) / 2; a = b; }
+    for (let i = 0; i < n; i++) {
+      const x = v[i];
+      let lo = 0, hi = n;
+      while (lo < hi) { const m = (lo + hi) >> 1; if (s[m] < x) lo = m + 1; else hi = m; }
+      r[i] = prom[lo];
+    }
     return r;
   }
   function fligner(y, g) {

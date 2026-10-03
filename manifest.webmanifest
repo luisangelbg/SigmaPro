@@ -1,0 +1,17 @@
+{
+  "name": "SigmaPro — Estadística para la investigación agronómica y biológica",
+  "short_name": "SigmaPro",
+  "description": "Diseños experimentales, comparaciones de medias, regresión y más, con resultados comprobados contra R. Los datos no salen del navegador.",
+  "lang": "es",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0C0C0D",
+  "theme_color": "#111111",
+  "icons": [
+    { "src": "iconos/sigmapro-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "iconos/sigmapro-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "iconos/sigmapro-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "iconos/sigmapro.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

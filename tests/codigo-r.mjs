@@ -13,6 +13,7 @@ import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import vm from 'node:vm';
+import { guardar } from './lib/comprobaciones.mjs';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 const html = readFileSync(join(RAIZ, 'index.html'), 'utf8');
@@ -169,7 +170,8 @@ function ordenR(res, k) {
 }
 
 const dir = mkdtempSync(join(tmpdir(), 'sigmapro-codigo-r-'));
-let fallas = 0;
+let fallas = 0, numeros = 0;
+const metodosR = new Set();
 try {
   ESCENARIOS.forEach((s, n) => {
     const { csv, hoja } = hojaDe(s.ej);
@@ -188,8 +190,10 @@ try {
     const deR = salida.trim().split(/\s+/).map(v => (v === 'Inf' ? Infinity : v === '-Inf' ? -Infinity : Number(v))), deJS = s.js(resultado).map(Number);
     const malos = deR.map((v, i) => [v, deJS[i]]).filter(([a, b]) => !(a === b || (Number.isNaN(a) && Number.isNaN(b)) || Math.abs(a - b) <= 1e-6 * Math.max(1, Math.abs(a))));
     if (deR.length !== deJS.length || malos.length) { fallas++; console.log(`✗ ${n + 1}. ${s.id} con ${s.ej}: ${deR.length} números de R contra ${deJS.length} de la app; ${malos.length} distintos`, malos.slice(0, 4)); }
-    else console.log(`✓ ${n + 1}. ${s.id} con ${s.ej}: ${deR.length} números iguales`);
+    else { numeros += deR.length; metodosR.add(s.id); console.log(`✓ ${n + 1}. ${s.id} con ${s.ej}: ${deR.length} números iguales`); }
   });
 } finally { rmSync(dir, { recursive: true, force: true }); }
 console.log(fallas ? `\nHAY FALLAS (${fallas})` : '\nTODO APROBADO: el código R que muestra la app reproduce sus números');
+guardar('codigo-r', { titulo: 'El código R equivalente', ok: !fallas,
+  resumen: `${ESCENARIOS.length} escenarios de ${metodosR.size} métodos: el código R que muestra la app corre en R y da ${numeros.toLocaleString('es-MX')} números iguales a los de la app (tolerancia 1e-6)` + (fallas ? `; ${fallas} con fallas` : '') });
 process.exit(fallas ? 1 : 0);

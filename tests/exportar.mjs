@@ -20,6 +20,8 @@ import { existsSync, mkdtempSync, rmSync, writeFileSync, readFileSync, readdirSy
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { BANDERAS, paginaPropia } from './lib/navegador.mjs';
+import { guardar } from './lib/comprobaciones.mjs';
 
 const TESTS = dirname(fileURLToPath(import.meta.url));
 const RAIZ = join(TESTS, '..');
@@ -38,7 +40,7 @@ if (!exe || !RS) { console.error('Hace falta ' + (!exe ? 'Edge o Chrome' : 'Rscr
 
 const dir = mkdtempSync(join(tmpdir(), 'sigmapro-exportar-'));
 const perfil = mkdtempSync(join(tmpdir(), 'sigmapro-exp-nav-'));
-const nav = spawn(exe, ['--headless=new', '--remote-debugging-port=' + PUERTO, '--user-data-dir=' + perfil, '--no-first-run', '--no-default-browser-check', 'about:blank'], { stdio: 'ignore' });
+const nav = spawn(exe, [...BANDERAS, '--remote-debugging-port=' + PUERTO, '--user-data-dir=' + perfil, 'about:blank'], { stdio: 'ignore' });
 const dormir = ms => new Promise(r => setTimeout(r, ms));
 let ws, id = 0;
 const pend = new Map(), consola = [];
@@ -78,7 +80,7 @@ const PAGINA = `(async () => {
 let codigo = 1;
 try {
   let destino;
-  for (let k = 0; k < 75 && !destino; k++) { await dormir(200); try { destino = (await (await fetch('http://127.0.0.1:' + PUERTO + '/json')).json()).find(t => t.type === 'page'); } catch { /* arranca */ } }
+  for (let k = 0; k < 75 && !destino; k++) { await dormir(200); try { destino = await paginaPropia(PUERTO); } catch { /* arranca */ } }
   if (!destino) throw new Error('El navegador no abrió su puerto de depuración.');
   ws = new WebSocket(destino.webSocketDebuggerUrl);
   await new Promise((res, rej) => { ws.onopen = res; ws.onerror = rej; });
@@ -290,6 +292,9 @@ $res | ConvertTo-Json -Compress`;
   console.log('  LaTeX: ' + esperado.cuadros.length + ' cuadros con booktabs y llaves balanceadas');
   console.log('  proyecto reabierto en una página nueva: ' + reabierto.n + ' análisis y ' + reabierto.cuadros.length + ' cuadros idénticos; el Estudio de figuras recibe un PDF vectorial (' + Math.round(reabierto.estudio.bytes / 1024) + ' KB a 85 mm)');
   const todas = fallasNode.concat(fallasR, fallasTiff, consola);
+  guardar('exportar', { titulo: 'Las exportaciones, leídas con lectores independientes', ok: !todas.length,
+    resumen: `Hoja de cálculo: ${c.xlsx_numeros || 0} números idénticos a la app y ${c.contra_R || 0} valores del ANOVA y las medias iguales a R; .docx válido con ${c.docx_cuadros || 0} cuadros exactos y ${c.docx_imagenes || 0} figuras a 300 ppp; ${c.pdf || 0} PDF vectoriales y ${c.png || 0} PNG a 600 ppp; TIFF iguales al PNG; proyecto .labg con ${c.labg_huellas || 0} huellas SHA-256 iguales, su código R corrido completo y reabierto con los mismos cuadros`,
+    renglones: ['Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema'] });
   if (todas.length) { console.log('\nFALLAS:'); todas.forEach(f => console.log('  ✗ ' + f)); }
   else console.log('\nTODO APROBADO');
   codigo = todas.length ? 1 : 0;

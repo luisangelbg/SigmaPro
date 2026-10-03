@@ -2,6 +2,46 @@
 
 ## Sin publicar
 
+### Hito 1.12 · Sin conexión, 100 000 filas, privacidad, accesibilidad y cierre de la Fase 1 (2 oct 2026)
+
+- **Servicio sin conexión** (`sw.js`) y manifiesto con íconos para GitHub Pages: la primera visita guarda la app y
+  después abre y calcula sin red (las páginas, primero de la red y si no del guardado; lo demás, del guardado y se
+  actualiza en segundo plano). Con doble clic no se registra (file:// no lo permite) y no hace falta.
+- **Rendimiento con 100 000 filas** (`tests/rendimiento/`): un ensayo sintético de 99 941 filas medido en el
+  navegador, por file://, en 43 operaciones (datos, cada familia de análisis, el bloque Análisis, el reporte, las
+  figuras y las exportaciones), todas dentro de su meta. Las del plan: descriptivos de 10 variables en 105 ms (meta
+  150), una vía + Tukey en 82 ms (meta 250) y el factorial 4 × 3 × 2 desbalanceado con SC tipo III en 142 ms (meta
+  1.5 s).
+- Más rápido, con los mismos números (624 de 624 casos contra R sin cambios): la matriz del modelo busca cada columna
+  una vez y no por fila; los modelos solo con factores agrupan sus celdas con una clave entera; los rangos hacen una
+  búsqueda binaria en lugar de dos; el intervalo de Hodges-Lehmann ordena una sola vez y en cada paso mezcla dos
+  listas ordenadas; los anidamientos se detectan con arreglos de enteros. Bloques al azar de 895 a 186 ms, factorial
+  en bloques con dosis de 3.3 a 0.55 s, Mann-Whitney con Hodges-Lehmann de 1.68 s a 73 ms.
+- Las gráficas de dispersión con miles de filas dibujan a lo más 2 500 puntos también cuando hay muchos marcados
+  (antes entraban todos los residuos mayores que 2: con 100 000 filas, 52 000 círculos en el reporte). El reporte de 5
+  análisis bajó de 5.4 a 2.6 s, el .docx de 3.5 a 1.0 s y el proyecto .labg de 7.0 a 1.4 s.
+- **Privacidad y sin conexión** (`tests/sin-conexion.mjs`): con datos, seis análisis, el asistente, el constructor, el
+  reporte y seis exportaciones, ningún dato sale del navegador. Por doble clic ninguna petición sale del equipo salvo
+  las letras de la suite; servida por http, todas son GET sin parámetros a archivos de la propia app. Después se apaga
+  el servidor, se corta la red y la app abre, calcula, exporta y verifica las huellas del proyecto.
+- Bloque 8: tarjeta **«Otras comprobaciones»** con el resultado más reciente de cada prueba que no es un caso contra R
+  (código R, exportaciones, rendimiento, privacidad y sin conexión), que esas pruebas escriben en
+  `js/generado/comprobaciones.js`.
+- Pruebas en el navegador más firmes (`tests/lib/navegador.mjs`): un perfil nuevo de Edge podía iniciar sesión solo,
+  instalar una extensión y dejar su pestaña al frente; la página de la prueba quedaba oculta y las corridas largas se
+  detenían. Ahora sin extensiones ni sincronización, y la prueba en su propia ventana.
+- **Accesibilidad AA** (`tests/accesibilidad/auditar.mjs`): 46 escenarios (cada bloque, análisis de todas las
+  familias, asistente, constructor, diálogos, reporte, figuras y exportación) con el auditor de la suite a 1280 y 360
+  px: 92 revisiones, 19 370 textos con contraste AA en claro y oscuro, sin fallas de nombres, etiquetas, ids ni
+  desborde. El foco se revisa con el teclado de verdad: 569 paradas de Tab en los 8 bloques, todas con su anillo.
+- `tests/pruebas.ps1 -Completo` corre también las exportaciones, la privacidad, el rendimiento y la accesibilidad.
+- Inicio: la Fase 1 aparece completa y las fases 2 y 3 como pendientes.
+- Capturas de la app terminada en `docs/capturas/` (inicio, datos, asistente, constructor, resultados en claro y oscuro,
+  reporte, figuras, exportar, celular y validación).
+- Corregido: en los cuadros de revista de la app, la línea inferior no cubría la primera columna cuando era encabezado
+  de fila (las medias, el resumen del ensayo).
+- `docs/PENDIENTES.md`: lo que falta para publicar, los límites conocidos de la Fase 1 y las fases 2 y 3.
+
 ### Hito 1.11 · Reporte LABG, figuras de publicación, exportaciones y proyecto .labg (2 oct 2026)
 
 - **Agregar al reporte**: cada resultado de Explorar y de Análisis tiene su botón; el reporte guarda el análisis

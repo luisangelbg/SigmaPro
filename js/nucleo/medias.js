@@ -83,15 +83,16 @@ SP.definir('medias', function (SP) {
     const mm = a.modelo, res = {};
     const nms = factores.filter(f => mm.niveles[f].length > 1);
     if (nms.length < 2) return res;
-    const cod = f => { const c = tabla.col(f); return Array.from(mm.filas, i => c.codigos[i]); };
+    const cod = f => { const c = tabla.col(f).codigos, x = new Int32Array(mm.n); for (let r = 0; r < mm.n; r++) x[r] = c[mm.filas[r]]; return x; };
     const datos = Object.fromEntries(nms.map(f => [f, cod(f)]));
     for (const nm of nms) {
       const excl = Object.keys(res).filter(l => res[l].includes(nm));
       const otros = nms.filter(x => x !== nm && !excl.includes(x));
+      /* o es padre si cada nivel de nm aparece con un solo nivel de o */
       const padres = otros.filter(o => {
-        const m = new Map();
-        for (let r = 0; r < datos[nm].length; r++) { const s = m.get(datos[nm][r]) || new Set(); s.add(datos[o][r]); m.set(datos[nm][r], s); }
-        return [...m.values()].every(s => s.size === 1);
+        const a = datos[nm], b = datos[o], visto = new Int32Array(tabla.col(nm).niveles.length).fill(-1);
+        for (let r = 0; r < a.length; r++) { const p = visto[a[r]]; if (p < 0) visto[a[r]] = b[r]; else if (p !== b[r]) return false; }
+        return true;
       });
       if (padres.length) res[nm] = padres;
     }

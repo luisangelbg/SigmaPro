@@ -1,0 +1,297 @@
+{
+ "fecha": "2026-10-03T04:16:28.521Z",
+ "navegador": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0",
+ "n": 99941,
+ "grupos": [
+  {
+   "titulo": "Datos",
+   "medidas": [
+    {
+     "nombre": "Crear la hoja (23 columnas)",
+     "primera": 294.79999999701977,
+     "mediana": 233,
+     "meta": 1500
+    },
+    {
+     "nombre": "Leer un CSV de 9.4 MB",
+     "primera": 696.3999999910593,
+     "mediana": 855.6000000089407,
+     "meta": 1500
+    },
+    {
+     "nombre": "Filtrar con una expresión",
+     "primera": 18.5,
+     "mediana": 11.799999997019768,
+     "meta": 500
+    },
+    {
+     "nombre": "Tabla de análisis (todas las columnas)",
+     "primera": 99.29999999701977,
+     "mediana": 0,
+     "meta": 500
+    },
+    {
+     "nombre": "Cargar en la app (rejilla y estructura)",
+     "primera": 207.5,
+     "meta": 1500
+    }
+   ]
+  },
+  {
+   "titulo": "Explorar",
+   "medidas": [
+    {
+     "nombre": "Descriptivos de 10 variables",
+     "primera": 105.09999999403954,
+     "mediana": 89.59999999403954,
+     "meta": 150,
+     "plan": true
+    },
+    {
+     "nombre": "Descriptivos de 10 variables en 20 grupos (trat × A)",
+     "primera": 189.40000000596046,
+     "mediana": 167.3999999910593,
+     "meta": 800
+    },
+    {
+     "nombre": "Frecuencias trat × bloque",
+     "primera": 2,
+     "mediana": 0.699999988079071,
+     "meta": 200
+    },
+    {
+     "nombre": "Bondad de ajuste de trat",
+     "primera": 1.3999999910593033,
+     "mediana": 0.20000000298023224,
+     "meta": 200
+    }
+   ]
+  },
+  {
+   "titulo": "Supuestos, pruebas t y de rangos",
+   "medidas": [
+    {
+     "nombre": "Supuestos del modelo bloques + tratamientos",
+     "primera": 445.40000000596046,
+     "mediana": 415.40000000596046,
+     "meta": 2000
+    },
+    {
+     "nombre": "Prueba t de Welch",
+     "primera": 20.5,
+     "mediana": 19.899999991059303,
+     "meta": 300
+    },
+    {
+     "nombre": "Mann-Whitney con Hodges-Lehmann",
+     "primera": 74,
+     "mediana": 63.900000005960464,
+     "meta": 1500
+    },
+    {
+     "nombre": "Kruskal-Wallis con Dunn",
+     "primera": 85.90000000596046,
+     "mediana": 79,
+     "meta": 800
+    }
+   ]
+  },
+  {
+   "titulo": "Diseños y comparaciones",
+   "medidas": [
+    {
+     "nombre": "ANOVA de una vía + Tukey",
+     "primera": 82.29999999701977,
+     "mediana": 70.79999999701977,
+     "meta": 250,
+     "plan": true
+    },
+    {
+     "nombre": "Bloques al azar (5 tratamientos, 10 bloques)",
+     "primera": 209.79999999701977,
+     "mediana": 185,
+     "meta": 500
+    },
+    {
+     "nombre": "Factorial 4 × 3 × 2 desbalanceado, SC tipo III",
+     "primera": 142,
+     "mediana": 124,
+     "meta": 1500,
+     "plan": true
+    },
+    {
+     "nombre": "Factorial en bloques con dosis numérica (tipo III)",
+     "primera": 628.6000000089407,
+     "mediana": 640.5,
+     "meta": 1500
+    },
+    {
+     "nombre": "Parcelas divididas (A en parcelas grandes, B)",
+     "primera": 206.6000000089407,
+     "mediana": 200.3999999910593,
+     "meta": 3000
+    },
+    {
+     "nombre": "Tukey de A dentro de cada B (factorial)",
+     "primera": 122.19999998807907,
+     "mediana": 125.59999999403954,
+     "meta": 1500
+    },
+    {
+     "nombre": "Polinomios ortogonales de la dosis",
+     "primera": 173,
+     "mediana": 172.29999999701977,
+     "meta": 1000
+    }
+   ]
+  },
+  {
+   "titulo": "ANCOVA, regresión y modelo lineal general",
+   "medidas": [
+    {
+     "nombre": "ANCOVA en bloques (5 tratamientos, 1 covariable)",
+     "primera": 245.6000000089407,
+     "mediana": 248.80000001192093,
+     "meta": 3000
+    },
+    {
+     "nombre": "Regresión múltiple con 10 predictores y diagnóstico",
+     "primera": 715.5,
+     "mediana": 660.5,
+     "meta": 2000
+    },
+    {
+     "nombre": "Regresión polinomial de grado 2",
+     "primera": 236.79999999701977,
+     "mediana": 209.29999999701977,
+     "meta": 1500
+    },
+    {
+     "nombre": "Selección paso a paso (AIC) entre 10 predictores",
+     "primera": 129.20000000298023,
+     "mediana": 97.69999998807907,
+     "meta": 1500
+    },
+    {
+     "nombre": "Mejores subconjuntos de 10 predictores (1 023 modelos)",
+     "primera": 47.6000000089407,
+     "mediana": 54.599999994039536,
+     "meta": 1500
+    },
+    {
+     "nombre": "Modelo lineal general bloque + A * B + covariable",
+     "primera": 210.09999999403954,
+     "mediana": 194.8999999910593,
+     "meta": 3000
+    }
+   ]
+  },
+  {
+   "titulo": "Correlación y contingencia",
+   "medidas": [
+    {
+     "nombre": "Correlación de Pearson",
+     "primera": 167.20000000298023,
+     "mediana": 158.90000000596046,
+     "meta": 200
+    },
+    {
+     "nombre": "Correlación de Spearman",
+     "primera": 196.20000000298023,
+     "mediana": 195.29999999701977,
+     "meta": 600
+    },
+    {
+     "nombre": "Correlación de Kendall (τ-b de Knight)",
+     "primera": 217.20000000298023,
+     "mediana": 218.29999999701977,
+     "meta": 800
+    },
+    {
+     "nombre": "Matriz de Pearson de 10 variables",
+     "primera": 148,
+     "mediana": 131.5,
+     "meta": 500
+    },
+    {
+     "nombre": "Matriz de Kendall de 10 variables (45 pares)",
+     "primera": 2941.5,
+     "mediana": 2646,
+     "meta": 8000,
+     "nota": "O(n log n) por par"
+    },
+    {
+     "nombre": "Correlación parcial con 3 controles",
+     "primera": 59.29999999701977,
+     "mediana": 55.29999999701977,
+     "meta": 500
+    },
+    {
+     "nombre": "Tabla de contingencia trat × l",
+     "primera": 3.1000000089406967,
+     "mediana": 0.7999999970197678,
+     "meta": 500
+    },
+    {
+     "nombre": "McNemar-Bowker de dos evaluaciones",
+     "primera": 1.4000000059604645,
+     "mediana": 0.30000001192092896,
+     "meta": 300
+    },
+    {
+     "nombre": "Cochran-Mantel-Haenszel grupo × resp × l",
+     "primera": 1.6000000089406967,
+     "mediana": 1.2000000029802322,
+     "meta": 500
+    },
+    {
+     "nombre": "Kappa de Cohen",
+     "primera": 1.1000000089406967,
+     "mediana": 0.4000000059604645,
+     "meta": 300
+    }
+   ]
+  },
+  {
+   "titulo": "Interfaz: análisis, reporte y exportaciones",
+   "medidas": [
+    {
+     "nombre": "Bloque Análisis: factorial en bloques, calculado y pintado",
+     "primera": 725.6999999880791,
+     "meta": 2500
+    },
+    {
+     "nombre": "Reporte de 5 análisis: calculado y pintado (bloque 5)",
+     "primera": 2967.1000000089407,
+     "meta": 5000
+    },
+    {
+     "nombre": "Figuras del reporte (bloque 6)",
+     "primera": 158,
+     "meta": 1500
+    },
+    {
+     "nombre": "Hoja de cálculo de los cuadros",
+     "primera": 3.8999999910593033,
+     "meta": 1500
+    },
+    {
+     "nombre": "Documento .docx (figuras a 300 ppp)",
+     "primera": 991.7999999970198,
+     "meta": 3000
+    },
+    {
+     "nombre": "Proyecto .labg (datos completos, comprimido)",
+     "primera": 1661.4000000059605,
+     "meta": 3000,
+     "nota": "5.1 MB"
+    },
+    {
+     "nombre": "Abrir el .labg y verificar sus huellas",
+     "primera": 460.79999999701977,
+     "meta": 2000
+    }
+   ]
+  }
+ ]
+}
