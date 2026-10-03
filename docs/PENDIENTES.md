@@ -43,6 +43,18 @@ que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA
 
 ## Fase 2 · motor R en el navegador (webR)
 
+Plan detallado en [`propuesta/FASE2.md`](../propuesta/FASE2.md). Hecho: Hito 2.0 (el motor R y el modelo lineal mixto
+desde una fórmula). Notas del 2.0:
+
+- Con doble clic el motor R necesita internet la primera vez (luego sale de la caché del navegador); sin conexión
+  llega en el cierre de la fase (Hito 2.10), con el repositorio propio de paquetes en Pages.
+- `tests/codigo-r.mjs` corre en node y no cubre los métodos del motor R; su código R es el mismo que corre en el
+  motor y lo validan sus casos (`tests/motor-r.mjs`).
+- webR deja en el registro del navegador «Refused to get unsafe header "Content-Encoding"» al descargar (su servidor
+  no expone ese encabezado); no afecta el cálculo.
+
+Sigue:
+
 - Modelos mixtos: lme4 y lmerTest (Satterthwaite y Kenward-Roger), nlme para estructuras de covarianza en medidas
   repetidas, emmeans; componentes de varianza instantáneos con el REML propio de BreedingPro.
 - GLM y GLMM con sobredispersión; modelos no lineales (logístico, Gompertz, dosis-respuesta, meseta); superficies de

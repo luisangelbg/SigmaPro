@@ -383,6 +383,41 @@ Alt+→ y Alt+← cambian de bloque y «?» abre los atajos. El foco se revisa a
 teclado del navegador): 294 paradas de Tab en los 8 bloques a 1280 px en claro y 275 a 360 px en oscuro, todas con su
 anillo visible.
 
+## Motor R en el navegador (Fase 2, Hito 2.0)
+
+Los métodos de la Fase 2 que necesitan paquetes de R (modelos mixtos con lme4 y lmerTest) corren en R dentro del
+navegador (webR 0.6.0, R 4.6.0). Ahí no se reimplementa el algoritmo: lo que se valida es que **el puente** lleve los
+datos y las opciones a R tal cual (numéricas con sus faltantes, factores con sus niveles en orden, nombres con
+espacios) y traiga los resultados completos y con todas sus cifras, y que el modelo sea el mismo que el del R de
+escritorio con el que se calcula la referencia.
+
+- **Casos**: el mismo formato de siempre (`tests/casos/modelo-mixto/`, clase D), con la referencia del R de
+  escritorio 4.4.2 (lme4 1.1-35.5, lmerTest 3.2-1, pbkrtest 0.5.3).
+- **Dónde corren**: `node tests/motor-r.mjs` abre la app por file:// en un navegador sin ventana, carga el motor
+  (necesita internet: lo descarga) y corre cada caso con `SPT.ejecutarCasoAsync`, con el mismo criterio de comparación.
+  Guarda el resultado de cada caso en `tests/generado/motor-r.json` con las versiones de webR, R y los paquetes.
+- **Cómo entran al reporte**: `tests/correr.mjs` toma ese resultado solo si la huella coincide: SHA-256 del archivo
+  del caso, del puente (`js/nucleo/motor-r.js`), del registro y del archivo que define el método
+  (`tests/lib/huella-motor-r.mjs`). Si alguno cambió después de la corrida, el caso queda **sin aprobar** y el método
+  no aparece en la app hasta volver a correrlo.
+- **Resultado**: 12 casos, 710 valores, diferencia escalada máxima 4.7 × 10⁻¹⁶, a pesar de que el motor trae lme4
+  2.0-1 y el escritorio 1.1-35.5.
+
+| Caso | Qué cubre |
+|---|---|
+| sleepstudy (Belenky et al. 2003) | intercepto y pendiente aleatorios correlacionados `(Days \| Subject)` y sin correlación `(Days \|\| Subject)`; cuatro respuestas faltantes |
+| Penicillin (Davies y Goldsmith 1972) | dos aleatorios cruzados y solo el intercepto fijo (ANOVA vacía) |
+| Oats (Yates 1935) | parcelas divididas `(1 \| bloque/variedad)` con Satterthwaite y con Kenward-Roger; nitrógeno como covariable por máxima verosimilitud |
+| Machines (Milliken y Johnson 1992) | operario aleatorio y su interacción con la máquina; desbalanceado (gl no enteros) con SC tipo III y tipo I; el operario como columna numérica |
+| Maíz de los ejemplos | factorial con bloques aleatorios: balanceado, da las mismas F que el ANOVA de bloques del núcleo JS |
+
+Las piezas puras del puente (lectura de la salida de R, nombres, columnas, código que se manda) tienen pruebas unitarias
+en node (`tests/unidad/motor-r.test.js`). La prueba de privacidad registra también las peticiones del hilo del motor:
+solo descargas de código de webR y de su repositorio de paquetes, sin datos.
+
+Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
+desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
+
 ## Dónde está cada cosa
 
 ```
@@ -402,6 +437,8 @@ tests/
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          43 operaciones con 100 000 filas en el navegador (pagina.js: lo que corre en la página)
 ├─ accesibilidad/auditar.mjs      46 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
+├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana
 ├─ lib/comprobaciones.mjs         escribe js/generado/comprobaciones.js (bloque 8, «Otras comprobaciones»)
 ├─ index.html                     las mismas pruebas con doble clic
@@ -445,6 +482,7 @@ node tests/exportar.mjs             # las exportaciones, leídas con R y con el 
 node tests/sin-conexion.mjs         # privacidad y uso sin conexión
 node tests/rendimiento/medir.mjs    # rendimiento con 100 000 filas (--json guarda resultados.json)
 node tests/accesibilidad/auditar.mjs   # accesibilidad AA (el auditor está en LABG-Design, junto a SigmaPro)
+node tests/motor-r.mjs              # los métodos del motor R, en el navegador (necesita internet); luego correr.mjs
 ```
 
 En Windows, `tests/pruebas.ps1` encuentra R, node y el navegador y corre las pruebas; con `-Completo`, también las

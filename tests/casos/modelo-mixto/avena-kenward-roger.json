@@ -1,0 +1,88 @@
+{
+  "esquema": 1,
+  "id": "modelo-mixto/avena-kenward-roger",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+  },
+  "titulo": "Las mismas parcelas divididas con grados de libertad de Kenward-Roger",
+  "fuente": "Yates (1935), Supplement to the Journal of the Royal Statistical Society 2: 181-247; conjunto Oats de nlme",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "rendimiento": [111, 130, 157, 174, 117, 114, 161, 141, 105, 140, 118, 156, 61, 91, 97, 100, 70, 108, 126, 149, 96, 124, 121, 144, 68, 64, 112, 86, 60, 102, 89, 96, 89, 129, 132, 124, 74, 89, 81, 122, 64, 103, 132, 133, 70, 89, 104, 117, 62, 90, 100, 116, 80, 82, 94, 126, 63, 70, 109, 99, 53, 74, 118, 113, 89, 82, 86, 104, 97, 99, 119, 121],
+      "bloque": ["I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "I", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "II", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "III", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "IV", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "V", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI", "VI"],
+      "variedad": ["Victory", "Victory", "Victory", "Victory", "Golden Rain", "Golden Rain", "Golden Rain", "Golden Rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden Rain", "Golden Rain", "Golden Rain", "Golden Rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden Rain", "Golden Rain", "Golden Rain", "Golden Rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden Rain", "Golden Rain", "Golden Rain", "Golden Rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden Rain", "Golden Rain", "Golden Rain", "Golden Rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous", "Victory", "Victory", "Victory", "Victory", "Golden Rain", "Golden Rain", "Golden Rain", "Golden Rain", "Marvellous", "Marvellous", "Marvellous", "Marvellous"],
+      "nitrogeno": [0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998, 0, 0.20000000000000001, 0.40000000000000002, 0.59999999999999998]
+    },
+    "tipos": {
+      "rendimiento": {
+        "tipo": "numerica"
+      },
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["I", "II", "III", "IV", "V", "VI"]
+      },
+      "variedad": {
+        "tipo": "factor",
+        "niveles": ["Golden Rain", "Marvellous", "Victory"]
+      },
+      "nitrogeno": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "rendimiento"
+  },
+  "opciones": {
+    "derecha": "variedad * nitrogeno + (1 | bloque/variedad)",
+    "comoFactor": ["nitrogeno"],
+    "tipoSC": 3,
+    "gl": "kenward-roger",
+    "reml": true
+  },
+  "esperado": {
+    "anova": {
+      "termino": ["variedad", "nitrogeno", "variedad:nitrogeno"],
+      "sc": [526.05750833772584, 20020.500070399612, 321.74999999999949],
+      "cm": [263.02875416886292, 6673.5000234665367, 53.624999999999915],
+      "gl1": [2, 3, 6],
+      "gl2": [10.000000000000011, 44.999999999999886, 44.99999999999978],
+      "F": [1.4853410891469723, 37.685704076727724, 0.3028239865150657],
+      "p": [0.2723867076946212, 2.4576502083420315e-12, 0.93219852444767759]
+    },
+    "coeficientes": {
+      "nombre": ["(Intercept)", "variedadMarvellous", "variedadVictory", "nitrogeno0.2", "nitrogeno0.4", "nitrogeno0.6", "variedadMarvellous:nitrogeno0.2", "variedadVictory:nitrogeno0.2", "variedadMarvellous:nitrogeno0.4", "variedadVictory:nitrogeno0.4", "variedadMarvellous:nitrogeno0.6", "variedadVictory:nitrogeno0.6"],
+      "estimado": [79.999999999999233, 6.6666666666668757, -8.4999999999996998, 18.50000000000005, 34.666666666666728, 44.833333333333378, 3.3333333333332953, -0.33333333333338333, -4.1666666666667247, 4.6666666666665959, -4.6666666666667052, 2.1666666666666052],
+      "ee": [9.107010314870724, 9.7150204422871003, 9.7150204422871003, 7.6829479158198222, 7.6829479158198266, 7.6829479158198266, 10.865329141558496, 10.865329141558497, 10.865329141558501, 10.865329141558504, 10.865329141558499, 10.865329141558503],
+      "gl": [16.08186066925343, 30.230760198275163, 30.230760198275469, 44.999999999999218, 44.999999999999467, 44.999999999999467, 44.999999999999339, 44.999999999999588, 44.999999999999467, 44.999999999999588, 44.999999999999588, 44.999999999999588],
+      "t": [8.7844415712770445, 0.68622260820456038, -0.87493382546075615, 2.4079298991350737, 4.5121569281089604, 5.8354337195255264, 0.30678622708112185, -0.03067862270811713, -0.38348278385141182, 0.42950071791356864, -0.42950071791357891, 0.19941104760272568],
+      "p": [1.5508465287784821e-07, 0.49780255263313367, 0.38850843017530234, 0.020203579371323794, 4.5761476430722908e-05, 5.4768264443815045e-07, 0.76042123340680301, 0.97566150399516571, 0.70316765420453198, 0.66960843521400404, 0.6696084352139966, 0.84283956107346092]
+    },
+    "varianzas": {
+      "grupo": ["variedad:bloque", "bloque", "Residual"],
+      "var1": ["(Intercept)", "(Intercept)", "NA"],
+      "var2": ["NA", "NA", "NA"],
+      "varianza": [106.06180055056791, 214.48095466880292, 177.08306603160062],
+      "de": [10.298631003709566, 14.645168304557068, 13.307256142105352]
+    },
+    "ajuste": {
+      "n": 72,
+      "logLik": -264.51425350363911,
+      "AIC": 559.02850700727822,
+      "BIC": 593.17849879251901,
+      "singular": false
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "lme4": "1.1.35.5",
+      "lmerTest": "3.2.1",
+      "pbkrtest": "0.5.3"
+    },
+    "codigo": "datos$nitrogeno <- factor(datos$nitrogeno); modelo <- lmer(rendimiento ~ variedad * nitrogeno + (1 | bloque/variedad), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Kenward-Roger\"); summary(modelo, ddf = \"Kenward-Roger\"); VarCorr(modelo)"
+  }
+}

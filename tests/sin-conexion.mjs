@@ -11,8 +11,10 @@
 //    Única excepción, declarada en el resumen: las letras «LABG Sans» y «LABG Serif» del navegador y del estudio de
 //    figuras (módulos comunes de la suite), que se piden al portal de la suite como archivos .woff2, con GET, sin
 //    parámetros ni cuerpo (LICENSES-TERCEROS.md). En GitHub Pages son del mismo origen; sin red, se usan las del sistema.
+//    Con un método del motor R (Fase 2) se registran también las peticiones de su hilo: solo pueden ser descargas de
+//    código (GET sin parámetros ni cuerpo) de webR fijado y de su repositorio de paquetes.
 // 2. Sin conexión: comprueba que el servicio (sw.js) quedó activo, apaga el servidor, recarga la página y vuelve a
-//    cargar datos, calcular y exportar sin red.
+//    cargar datos, calcular y exportar sin red (sin el motor R, que sin conexión llega al cierre de la Fase 2).
 
 import { spawn, execFileSync } from 'node:child_process';
 import { createServer } from 'node:http';
@@ -57,10 +59,16 @@ const enviar = (method, params = {}) => new Promise(res => { const i = ++id; pen
 const evaluar = async expr => { const r = await enviar('Runtime.evaluate', { expression: expr, returnByValue: true, awaitPromise: true, timeout: 300000 }); if (r && r.exceptionDetails) throw new Error(r.exceptionDetails.exception?.description || r.exceptionDetails.text); return r.result.value; };
 const LETRAS = /^https:\/\/luisangelbg\.github\.io\/assets\/fonts\/[\w-]+\.woff2$/;
 const esLetra = p => LETRAS.test(p.url) && p.metodo === 'GET' && !p.cuerpo;
+const MOTOR_R = /^https:\/\/(webr\.r-wasm\.org\/v0\.6\.0\/|repo\.r-wasm\.org\/)[^?#]*$/;
+/* webR pide sus archivos con GET y a veces solo comprueba que existan (HEAD): ninguno lleva cuerpo ni parámetros */
+const esMotorR = p => MOTOR_R.test(p.url) && (p.metodo === 'GET' || p.metodo === 'HEAD') && !p.cuerpo;
+/* el descargador de webR lee el encabezado Content-Encoding de su propio servidor, que no lo expone: el navegador lo
+   anota en su registro; no viene de SigmaPro ni afecta el cálculo */
+const ESPERADO = /Refused to get unsafe header "Content-Encoding"/;
 const esperarApp = async () => { for (let k = 0; k < 75; k++) { await dormir(200); try { if (await evaluar('!!(window.SP && SP.app && SP.app.exportar && SP.datosUI && document.readyState === "complete")')) return true; } catch { /* recargando */ } } return false; };
 
-/* el uso: datos, análisis de cada familia, reporte, figuras y exportaciones */
-const USO = `(async () => {
+/* el uso: datos, análisis de cada familia (y el modelo mixto del motor R, si se pide), reporte, figuras y exportaciones */
+const USO = conMotorR => `(async () => {
   const ej = window.SP_EJEMPLOS.find(x => x.id === 'maiz');
   const l = SP.csv.leerColumnas(ej.csv, { delimitador: ',', decimal: '.' });
   SP.datosUI.cargar(SP.hoja.crear({ nombres: l.nombres, columnas: l.columnas, tipos: ej.tipos }), 'Ejemplo: maíz');
@@ -75,12 +83,19 @@ const USO = `(async () => {
     A.usar(m, e, op); await espera(150);
     if (m !== 'supuestos') R.agregar({ metodo: m, e, op });
   }
+  if (${conMotorR ? 'true' : 'false'}) {
+    const em = { respuesta: 'rend' }, om = { derecha: 'hibrido * dosis + (1 | bloque)', comoFactor: ['dosis'] };
+    A.motorAceptado = true; A.usar('modelo-mixto', em, om);
+    for (let k = 0; k < 480; k++) { await espera(250); const r = document.querySelector('#anaResultado'); if (r && !r.classList.contains('calculando') && (r.querySelector('.exp-cabeza h3') || r.querySelector('.msg-error'))) break; }
+    if (document.querySelector('#anaResultado .msg-error')) throw new Error('modelo mixto: ' + document.querySelector('#anaResultado .msg-error').textContent);
+    R.agregar({ metodo: 'modelo-mixto', e: em, op: om });
+  }
   A.ponerModo('asistente'); await espera(100); A.ponerModo('constructor'); await espera(100);
   SP.app.ir(5); await espera(300); SP.app.ir(6); await espera(300); SP.app.ir(7);
   const C = SP.app.exportar.construir, tam = {};
   for (const k of ['docx', 'html', 'xlsx', 'latex', 'figuras', 'proyecto']) { const r = await C[k](true); tam[k] = (r.datos.length || r.datos.size || 0); }
   const p = SP.proyecto.abrir((await C.proyecto()).datos);
-  return JSON.stringify({ analisis: R.items.length, tam, huellas: p.verificacion.ok, version: SP.VERSION });
+  return JSON.stringify({ analisis: R.items.length, tam, huellas: p.verificacion.ok, version: SP.VERSION, motor: SP.motorR ? SP.motorR.estado().r : '' });
 })()`;
 
 let codigo = 1;
@@ -94,20 +109,27 @@ try {
   ws.onmessage = ev => {
     const m = JSON.parse(ev.data);
     if (m.id && pend.has(m.id)) { pend.get(m.id)(m.result); pend.delete(m.id); }
-    else if (m.method === 'Network.requestWillBeSent') { const q = m.params.request; peticiones.push({ url: q.url, metodo: q.method, cuerpo: !!(q.hasPostData || q.postData), tipo: m.params.type }); }
+    else if (m.method === 'Network.requestWillBeSent') { const q = m.params.request; peticiones.push({ url: q.url, metodo: q.method, cuerpo: !!(q.hasPostData || q.postData), tipo: m.params.type, hilo: !!m.sessionId }); }
+    else if (m.method === 'Target.attachedToTarget') {
+      /* el hilo del motor R (y los que abra): se registran sus peticiones antes de que empiece */
+      const sid = m.params.sessionId, a = (method, params) => ws.send(JSON.stringify({ id: ++id, sessionId: sid, method, params: params || {} }));
+      a('Network.enable'); a('Target.setAutoAttach', { autoAttach: true, waitForDebuggerOnStart: true, flatten: true }); a('Runtime.runIfWaitingForDebugger');
+    }
     else if (m.method === 'Runtime.exceptionThrown') consola.push('excepción: ' + (m.params.exceptionDetails.exception?.description || m.params.exceptionDetails.text));
     else if (m.method === 'Runtime.consoleAPICalled' && m.params.type === 'error') consola.push('error: ' + m.params.args.map(a => a.value ?? a.description).join(' '));
-    else if (m.method === 'Log.entryAdded' && m.params.entry.level === 'error') consola.push('registro: ' + m.params.entry.text);
+    else if (m.method === 'Log.entryAdded' && m.params.entry.level === 'error' && !ESPERADO.test(m.params.entry.text)) consola.push('registro: ' + m.params.entry.text);
   };
   await enviar('Runtime.enable'); await enviar('Page.enable'); await enviar('Network.enable'); await enviar('Log.enable');
+  await enviar('Target.setAutoAttach', { autoAttach: true, waitForDebuggerOnStart: true, flatten: true });
   await enviar('Emulation.setDeviceMetricsOverride', { width: 1366, height: 900, deviceScaleFactor: 1, mobile: false });
 
   /* ---- 1a. privacidad con doble clic (file://) ---- */
   await enviar('Page.navigate', { url: pathToFileURL(join(RAIZ, 'index.html')).href + '#b1' });
   if (!(await esperarApp())) throw new Error('La app no abrió por file://');
-  const usoArchivo = JSON.parse(await evaluar(USO));
-  const letrasArchivo = peticiones.filter(esLetra).length;
-  const fueraArchivo = peticiones.filter(p => !/^(file|data|blob):/.test(p.url) && !esLetra(p));
+  const usoArchivo = JSON.parse(await evaluar(USO(true)));
+  const letrasArchivo = peticiones.filter(esLetra).length, motorArchivo = peticiones.filter(esMotorR).length;
+  const fueraArchivo = peticiones.filter(p => !/^(file|data|blob):/.test(p.url) && !esLetra(p) && !esMotorR(p));
+  if (!motorArchivo) fallas.push('file://: el motor R no descargó nada (¿se usó el modelo mixto?)');
   if (fueraArchivo.length) fallas.push('file://: ' + fueraArchivo.length + ' peticiones fuera del equipo: ' + fueraArchivo.slice(0, 3).map(p => p.metodo + ' ' + p.url).join(', '));
   const nArchivo = peticiones.length;
   peticiones.length = 0;
@@ -115,9 +137,9 @@ try {
   /* ---- 1b. privacidad servida por http ---- */
   await enviar('Page.navigate', { url: ORIGEN + '/index.html#b1' });
   if (!(await esperarApp())) throw new Error('La app no abrió por http');
-  const uso = JSON.parse(await evaluar(USO));
-  const letrasHttp = peticiones.filter(esLetra).length;
-  const http = peticiones.filter(p => /^https?:/.test(p.url) && !esLetra(p));
+  const uso = JSON.parse(await evaluar(USO(true)));
+  const letrasHttp = peticiones.filter(esLetra).length, motorHttp = peticiones.filter(esMotorR).length;
+  const http = peticiones.filter(p => /^https?:/.test(p.url) && !esLetra(p) && !esMotorR(p));
   const ajenas = http.filter(p => !p.url.startsWith(ORIGEN + '/'));
   const noGet = http.filter(p => p.metodo !== 'GET' || p.cuerpo);
   const conDatos = http.filter(p => /\?/.test(p.url.replace(/#.*$/, '')));
@@ -144,19 +166,19 @@ try {
   const abrio = await esperarApp();
   let usoSin = null;
   if (!abrio) fallas.push('sin conexión: la app no abrió');
-  else usoSin = JSON.parse(await evaluar(USO));
-  if (usoSin && (!usoSin.huellas || usoSin.analisis !== uso.analisis)) fallas.push('sin conexión: el uso no dio lo mismo');
+  else usoSin = JSON.parse(await evaluar(USO(false)));
+  if (usoSin && (!usoSin.huellas || usoSin.analisis !== uso.analisis - 1)) fallas.push('sin conexión: el uso no dio lo mismo');
   if (servidas.length !== antes) fallas.push('sin conexión: el servidor apagado recibió peticiones');
 
   console.log('\nSigmaPro · privacidad y uso sin conexión');
-  console.log('  doble clic (file://): ' + nArchivo + ' peticiones; fuera del equipo solo ' + letrasArchivo + ' de letras de la suite (sin datos); ' + usoArchivo.analisis + ' análisis, reporte y 6 exportaciones');
-  console.log('  servida por http: ' + http.length + ' peticiones, todas GET sin datos a ' + archivosApp.length + ' archivos de la propia app; fuera del origen solo ' + letrasHttp + ' de letras de la suite');
+  console.log('  doble clic (file://): ' + nArchivo + ' peticiones; fuera del equipo solo ' + letrasArchivo + ' de letras de la suite y ' + motorArchivo + ' descargas del motor R (código, sin datos); ' + usoArchivo.analisis + ' análisis (uno en ' + usoArchivo.motor + '), reporte y 6 exportaciones');
+  console.log('  servida por http: ' + http.length + ' peticiones, todas GET sin datos a ' + archivosApp.length + ' archivos de la propia app; fuera del origen solo ' + letrasHttp + ' de letras de la suite y ' + motorHttp + ' descargas del motor R');
   console.log('  servicio sin conexión: ' + (activo ? 'activo' : 'NO activo') + ', ' + guardados + ' archivos guardados');
   console.log('  sin red y con el servidor apagado: ' + (usoSin ? 'abre, carga datos, calcula ' + usoSin.analisis + ' análisis, arma el reporte, exporta y verifica las huellas del proyecto' : 'no abrió'));
   if (consola.length) fallas.push(...consola.map(x => 'consola: ' + x));
   guardar('sin-conexion', { titulo: 'Privacidad y uso sin conexión', ok: !fallas.length,
-    resumen: 'Con datos, ' + uso.analisis + ' análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, ' + http.length + ' peticiones GET sin datos, todas a la propia app; fuera del equipo o del origen solo se piden las letras de la suite (' + Math.max(letrasArchivo, letrasHttp) + ' archivos .woff2, sin datos ni parámetros). Sin red y con el servidor apagado, la app abre, calcula, exporta y verifica las huellas del proyecto.',
-    renglones: ['Doble clic: ' + nArchivo + ' peticiones; ' + letrasArchivo + ' de letras al portal de la suite.', 'Servida por http: ' + http.length + ' peticiones GET a ' + archivosApp.length + ' archivos de la app, sin parámetros ni cuerpo.', 'Servicio sin conexión activo con ' + guardados + ' archivos guardados.', 'Sin red: ' + (usoSin ? usoSin.analisis + ' análisis, reporte, 6 exportaciones y huellas del proyecto verificadas.' : 'no abrió.')] });
+    resumen: 'Con datos, ' + uso.analisis + ' análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, ' + http.length + ' peticiones GET sin datos, todas a la propia app; fuera del equipo o del origen solo se piden las letras de la suite (' + Math.max(letrasArchivo, letrasHttp) + ' archivos .woff2) y el código del motor R para el modelo mixto (' + Math.max(motorArchivo, motorHttp) + ' descargas de webR y sus paquetes), todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo, exporta y verifica las huellas del proyecto.',
+    renglones: ['Doble clic: ' + nArchivo + ' peticiones; ' + letrasArchivo + ' de letras al portal de la suite; ' + motorArchivo + ' descargas del motor R (webR y paquetes).', 'Servida por http: ' + http.length + ' peticiones GET a ' + archivosApp.length + ' archivos de la app, sin parámetros ni cuerpo.', 'Servicio sin conexión activo con ' + guardados + ' archivos guardados.', 'Sin red: ' + (usoSin ? usoSin.analisis + ' análisis, reporte, 6 exportaciones y huellas del proyecto verificadas.' : 'no abrió.')] });
   if (fallas.length) { console.log('\nFALLAS:'); fallas.forEach(f => console.log('  ✗ ' + f)); } else console.log('\nTODO APROBADO');
   codigo = fallas.length ? 1 : 0;
 } catch (e) { console.error(e); codigo = 1; } finally {

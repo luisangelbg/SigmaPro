@@ -60,7 +60,9 @@
     ['hecho', '1.10', 'Asistente de análisis, constructor visual de modelos y modelo lineal general'],
     ['hecho', '1.11', 'Reporte LABG, figuras de publicación, exportaciones y proyecto .labg'],
     ['hecho', '1.12', 'Uso sin conexión, rendimiento, accesibilidad y cierre de la Fase 1'],
-    ['', '2', 'Fase 2: modelos mixtos, GLM, no lineales y ensayos multiambiente con el motor R en el navegador'],
+    ['hecho', '2.0', 'Motor R en el navegador (webR) y modelo lineal mixto desde una fórmula'],
+    ['actual', '2.1', 'Modelos mixtos completos: medias marginales, comparaciones y diseños con efectos aleatorios'],
+    ['', '2.2–2.10', 'Medidas repetidas, heredabilidad, GLM y GLMM, no lineales, superficies de respuesta y ensayos multiambiente'],
     ['', '3', 'Fase 3: multivariado con PCAPro y ClusteringPro, potencia y tamaño de muestra'],
   ];
   function hitos() {

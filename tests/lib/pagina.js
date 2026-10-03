@@ -7,7 +7,9 @@
   const dif = x => (x === null || x === undefined ? '—' : x === 0 ? '0' : x.toExponential(1));
 
   /* casos contra R */
-  const casos = (window.SP_CASOS || []).map(c => SPT.ejecutarCaso(c, SP));
+  /* los del motor R se validan aparte (tests/motor-r.mjs): necesitan descargar el motor */
+  const todos = window.SP_CASOS || [], deMotorR = todos.filter(c => SPT.esMotorR(c, SP)).length;
+  const casos = todos.filter(c => !SPT.esMotorR(c, SP)).map(c => SPT.ejecutarCaso(c, SP));
   const rc = SPT.resumirCasos(casos);
   document.querySelector('#tCasos tbody').innerHTML = casos.map(c =>
     '<tr><td>' + esc(c.id) + (c.error ? '<br><span class="mal">' + esc(c.error) + '</span>' : '') +
@@ -31,8 +33,9 @@
   e.className = ok ? 'ok' : 'mal';
   e.textContent = (ok ? '✓ Todo aprobado. ' : '✗ Hay fallas. ') +
     'Casos contra R: ' + rc.aprobados + ' de ' + rc.casos + ' (' + rc.valores + ' valores, dif. máx. ' + dif(rc.difEscaladaMax) + '). ' +
-    'Pruebas unitarias: ' + ru.aprobadas + ' aprobadas, ' + ru.fallidas + ' con falla, ' + ru.omitidas + ' omitidas.';
-  window.__resultado = { ok, unidad: ru, casos: rc, detallesCasos: casos.map(c => ({ id: c.id, aprobado: c.aprobado, difEscaladaMax: c.difEscaladaMax, error: c.error })) };
+    'Pruebas unitarias: ' + ru.aprobadas + ' aprobadas, ' + ru.fallidas + ' con falla, ' + ru.omitidas + ' omitidas.' +
+    (deMotorR ? ' ' + deMotorR + ' casos del motor R se validan con node tests/motor-r.mjs.' : '');
+  window.__resultado = { ok, unidad: ru, casos: rc, deMotorR, detallesCasos: casos.map(c => ({ id: c.id, aprobado: c.aprobado, difEscaladaMax: c.difEscaladaMax, error: c.error })) };
 })().catch(err => {
   const e = document.getElementById('estado');
   e.className = 'mal'; e.textContent = 'Error al correr las pruebas: ' + ((err && err.message) || err);

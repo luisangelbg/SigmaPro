@@ -9,7 +9,7 @@
        familia: 'disenos',                    una de SP.familias
        nombre: 'Completamente al azar',
        resumen: 'Compara tratamientos aplicados al azar a unidades homogéneas.',
-       motor: 'js',                           'js' (núcleo) o 'r' (motor R, Fase 2)
+       motor: 'js',                           'js' (núcleo) o 'r' (motor R en el navegador, Fase 2)
        entradas: { respuesta: { tipo: 'numerica' }, tratamiento: { tipo: 'factor' } },
        opciones: { alfa: { tipo: 'numero', omision: 0.05 } },
        validar(tabla, entradas, opciones) { … },   lanza SP.ErrorSP con el arreglo
@@ -17,6 +17,12 @@
        reporte(resultado, contexto) { … },         conclusión, cuadros, supuestos, figuras
        codigoR(entradas, opciones) { … },          script de R equivalente
      });
+
+   Un método del motor R (motor: 'r') no tiene calcular(); en su lugar, dos funciones puras y sus paquetes:
+       paquetes: ['lme4', 'lmerTest'],
+       preparar(tabla, entradas, opciones) → { columnas: [nombres], codigo, mensaje?, tabla? }   el trabajo para R
+       leer(valor, avisos, tabla, entradas, opciones) → resultado                               la salida de R
+   SP.ejecutarAsync corre cualquier método (JS o R) y devuelve una promesa.
 
    Regla de liberación: un método solo se ofrece si tiene casos de validación y
    todos aprobaron (SP.metodoDisponible, que lee el reporte generado por las pruebas). */
@@ -86,6 +92,10 @@ SP.definir('registro', function (SP) {
       if (!e || !TIPOS_ENTRADA.has(e.tipo)) mal('la entrada «' + rol + '» tiene un tipo no válido');
     }
     if (f.motor === 'js' && typeof f.calcular !== 'function') mal('un método del núcleo necesita calcular()');
+    if (f.motor === 'r') {
+      if (!Array.isArray(f.paquetes)) mal('un método del motor R declara sus paquetes (puede ser [])');
+      if (typeof f.preparar !== 'function' || typeof f.leer !== 'function') mal('un método del motor R necesita preparar() y leer()');
+    }
     if (typeof f.codigoR !== 'function') mal('todo método debe dar su código R equivalente (codigoR)');
     for (const k of ['validar', 'calcular', 'reporte']) {
       if (f[k] !== undefined && typeof f[k] !== 'function') mal(k + ' debe ser una función');
@@ -125,6 +135,24 @@ SP.definir('registro', function (SP) {
     const t0 = (typeof performance !== 'undefined' ? performance : Date).now();
     const resultado = f.calcular(tabla, entradas, op);
     return { resultado, ms: (typeof performance !== 'undefined' ? performance : Date).now() - t0 };
+  };
+
+  /**
+   * Valida y calcula cualquier método: los del núcleo al momento, los del motor R en su cola (SP.motorR).
+   * @returns {Promise<{ resultado, ms, avisos? }>}
+   */
+  SP.ejecutarAsync = async function (id, tabla, entradas, opciones) {
+    const f = SP.metodos[id];
+    if (!f) throw new Error('Método no registrado: ' + id);
+    if (f.motor !== 'r') return SP.ejecutar(id, tabla, entradas, opciones);
+    if (!SP.motorR) throw new SP.ErrorSP(SP.T('El motor R no está disponible en esta página.'));
+    const op = SP.opcionesCon(f, opciones);
+    if (f.validar) f.validar(tabla, entradas, op);
+    const reloj = typeof performance !== 'undefined' ? performance : Date, t0 = reloj.now();
+    const p = f.preparar(tabla, entradas, op);
+    const salida = await SP.motorR.ejecutar({ paquetes: f.paquetes.concat(p.paquetes || []), columnas: SP.motorR.columnas(p.tabla || tabla, p.columnas), codigo: p.codigo, mensaje: p.mensaje, arreglo: p.arreglo });
+    const resultado = f.leer(salida.valor, salida.avisos, tabla, entradas, op);
+    return { resultado, ms: reloj.now() - t0, avisos: salida.avisos };
   };
 
   /** Lo mismo con la tabla en forma plana (SP.tabla.aPlano): es la entrada de los hilos de trabajo. */

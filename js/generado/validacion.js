@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-02T04:35:14.415Z",
+ "generado": "2026-10-03T13:05:37.885Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 624,
-  "aprobados": 624,
+  "casos": 636,
+  "aprobados": 636,
   "fallidos": 0,
-  "valores": 48458,
+  "valores": 49168,
   "difEscaladaMax": 2.0258232202030768e-7,
-  "objetivos": 129
+  "objetivos": 130
  },
  "casos": [
   {
@@ -16970,6 +16970,403 @@ window.SP_VALIDACION = {
      "emmeans": "1.10.6"
     },
     "codigo": "lm(captacion ~ origen * tratamiento + factor(conc)); car::Anova(type = 3) con contr.sum; summary(m); confint(emmeans(m, factor))"
+   }
+  },
+  {
+   "id": "modelo-mixto/avena-kenward-roger",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "Las mismas parcelas divididas con grados de libertad de Kenward-Roger",
+   "fuente": "Yates (1935), Supplement to the Journal of the Royal Statistical Society 2: 181-247; conjunto Oats de nlme",
+   "clase": "D",
+   "valores": 113,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 1.3398654974206838e-16,
+   "peor": "varianzas.varianza[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1",
+     "pbkrtest": "0.5.3"
+    },
+    "codigo": "datos$nitrogeno <- factor(datos$nitrogeno); modelo <- lmer(rendimiento ~ variedad * nitrogeno + (1 | bloque/variedad), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Kenward-Roger\"); summary(modelo, ddf = \"Kenward-Roger\"); VarCorr(modelo)"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "modelo-mixto/avena-maxima-verosimilitud",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "Nitrógeno como covariable, ajuste por máxima verosimilitud (REML = FALSE)",
+   "fuente": "Yates (1935), Supplement to the Journal of the Royal Statistical Society 2: 181-247; conjunto Oats de nlme",
+   "clase": "D",
+   "valores": 58,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 1.678696234671167e-16,
+   "peor": "varianzas.varianza[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1"
+    },
+    "codigo": "modelo <- lmer(rendimiento ~ variedad + nitrogeno + (1 | bloque/variedad), data = datos, REML = FALSE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "modelo-mixto/avena-parcelas-divididas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "Parcelas divididas como modelo mixto: (1 | bloque/variedad), nitrógeno como factor",
+   "fuente": "Yates (1935), Supplement to the Journal of the Royal Statistical Society 2: 181-247; conjunto Oats de nlme",
+   "clase": "D",
+   "valores": 113,
+   "difMax": 5.684341886080802e-14,
+   "difEscaladaMax": 2.6500428373337124e-16,
+   "peor": "anova.cm[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1"
+    },
+    "codigo": "datos$nitrogeno <- factor(datos$nitrogeno); modelo <- lmer(rendimiento ~ variedad * nitrogeno + (1 | bloque/variedad), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "modelo-mixto/maiz-bloques-aleatorios",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "Factorial híbrido × dosis con bloques aleatorios (balanceado: mismas F que el ANOVA de bloques)",
+   "fuente": "Ensayo ficticio de maíz de SigmaPro: 3 híbridos × 4 dosis de N en 4 bloques (propuesta/maqueta-maiz.csv)",
+   "clase": "D",
+   "valores": 108,
+   "difMax": 7.105427357601002e-15,
+   "difEscaladaMax": 4.718447854656915e-16,
+   "peor": "anova.p[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1"
+    },
+    "codigo": "datos$dosis <- factor(datos$dosis); modelo <- lmer(rend ~ hibrido * dosis + (1 | bloque), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "modelo-mixto/maquinas-agrupamiento-numerico",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "El operario como columna numérica: se toma como factor de agrupamiento",
+   "fuente": "Milliken y Johnson (1992), Analysis of Messy Data, vol. 1; conjunto Machines de nlme",
+   "clase": "D",
+   "valores": 40,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 1.7257736691666708e-16,
+   "peor": "varianzas.de[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1"
+    },
+    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "modelo-mixto/maquinas-desbalanceado-tipo1",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "El mismo diseño desbalanceado con SC tipo I",
+   "fuente": "Milliken y Johnson (1992), Analysis of Messy Data, vol. 1; conjunto Machines de nlme",
+   "clase": "D",
+   "valores": 45,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 1.514271063112094e-16,
+   "peor": "varianzas.varianza[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1"
+    },
+    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario) + (1 | operario:maquina), data = datos, REML = TRUE); anova(modelo, type = 1, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "modelo-mixto/maquinas-desbalanceado-tipo3",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "Seis datos menos (desbalanceado): gl de Satterthwaite no enteros, SC tipo III",
+   "fuente": "Milliken y Johnson (1992), Analysis of Messy Data, vol. 1; conjunto Machines de nlme",
+   "clase": "D",
+   "valores": 45,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 1.8336731441770397e-16,
+   "peor": "varianzas.de[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1"
+    },
+    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario/maquina), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "modelo-mixto/maquinas-operario",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "Operario aleatorio y su interacción con la máquina (1 | operario/maquina)",
+   "fuente": "Milliken y Johnson (1992), Analysis of Messy Data, vol. 1; conjunto Machines de nlme",
+   "clase": "D",
+   "valores": 45,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 1.277085695582275e-16,
+   "peor": "varianzas.varianza[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1"
+    },
+    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario/maquina), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "modelo-mixto/penicilina-cruzados",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "Dos efectos aleatorios cruzados (placa y muestra) y solo el intercepto fijo",
+   "fuente": "Davies y Goldsmith (1972), Statistical Methods in Research and Production, 4.ª ed.; conjunto Penicillin de lme4",
+   "clase": "D",
+   "valores": 26,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 1.1102230246251565e-16,
+   "peor": "varianzas.varianza[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1"
+    },
+    "codigo": "modelo <- lmer(diametro ~ 1 + (1 | placa) + (1 | muestra), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "modelo-mixto/sueno-faltantes",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "Cuatro respuestas faltantes: el modelo usa las 176 filas completas",
+   "fuente": "Belenky et al. (2003), Journal of Sleep Research 12: 1-12; conjunto sleepstudy de lme4",
+   "clase": "D",
+   "valores": 34,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1"
+    },
+    "codigo": "modelo <- lmer(Reaction ~ Days + (1 | Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "modelo-mixto/sueno-pendientes",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "Intercepto y pendiente aleatorios correlacionados por sujeto (Days | Subject)",
+   "fuente": "Belenky et al. (2003), Journal of Sleep Research 12: 1-12; conjunto sleepstudy de lme4",
+   "clase": "D",
+   "valores": 44,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1"
+    },
+    "codigo": "modelo <- lmer(Reaction ~ Days + (Days | Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "modelo-mixto/sueno-sin-correlacion",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "Intercepto y pendiente aleatorios sin correlación (Days || Subject)",
+   "fuente": "Belenky et al. (2003), Journal of Sleep Research 12: 1-12; conjunto sleepstudy de lme4",
+   "clase": "D",
+   "valores": 39,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1"
+    },
+    "codigo": "modelo <- lmer(Reaction ~ Days + (Days || Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
    }
   }
  ]

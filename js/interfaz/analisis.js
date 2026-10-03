@@ -5,13 +5,17 @@
    está registrado y su validación contra R aprobó (SP.metodoDisponible); los demás muestran el hito en que
    llegan. Cada método tiene su formulario; la prueba t y Wilcoxon comparten el suyo (estado «dos»), y
    Kruskal-Wallis y Friedman el de los rangos (estado «rangos»); las regresiones y la selección de variables comparten
-   el estado «reg», así cambiar de uno a otro conserva lo elegido. */
+   el estado «reg», así cambiar de uno a otro conserva lo elegido.
+   Los métodos del motor R (motor: 'r', Fase 2) corren con SP.ejecutarAsync: la primera vez se pide permiso para
+   descargar el motor (después se recuerda), se muestra cada paso y se puede cancelar. */
 (function () {
   'use strict';
   const T = SP.T, esc = SP.ui.esc;
   const $ = s => document.querySelector(s);
   const L = () => window.LABG;
-  const HITO = {};
+  /* familias de la Fase 2 que todavía no tienen métodos: el hito en que llegan (propuesta/FASE2.md §6) */
+  const HITO = { mixtos: '2.1', geneticos: '2.3', generalizados: '2.4', 'no-lineal': '2.6', superficies: '2.7', multiambiente: '2.8' };
+  const MOTOR_USADO = 'sigmapro.motorR.usado';
   const DISENOS = ['dca', 'dbca', 'cuadro-latino', 'parcelas-divididas', 'parcelas-subdivididas', 'franjas', 'bib', 'latice'];
   const MODOS = ['asistente', 'catalogo', 'constructor'];
   const COMPARAR = ['comparaciones-medias', 'contrastes', 'polinomios', 'medias-ajustadas'];
@@ -32,11 +36,13 @@
     cor: { x: '', y: '', variables: [], controles: [], metodo: 'pearson', alternativa: 'bilateral', nivel: 0.95, alfa: 0.05, exacta: 'auto', continuidad: false, ajuste: 'holm', faltantes: 'completas', _iniciado: false },
     cont: { fila: '', columna: '', frecuencia: '', antes: '', despues: '', estrato: '', evaluador1: '', evaluador2: '', correccion: true, ponderacion: 'cuadratica', nivel: 0.95, alfa: 0.05, _iniciado: false },
     ml: { respuesta: '', derecha: '', comoFactor: [], tipoSC: 3, alfa: 0.05, nivel: 0.95, _iniciado: false },
+    mx: { respuesta: '', derecha: '', comoFactor: [], tipoSC: 3, gl: 'satterthwaite', estimacion: 'reml', alfa: 0.05, nivel: 0.95, _iniciado: false },
+    motorAceptado: false,
   };
 
   /* ---------------- catálogo ---------------- */
   function catalogo() {
-    const fams = SP.familias.filter(f => f.fase === 1 && f.id !== 'descriptiva');
+    const fams = SP.familias.filter(f => f.fase <= 2 && f.id !== 'descriptiva');
     if (!SP.metodoDisponible(estado.metodo)) estado.metodo = 'supuestos';
     $('#anaCatalogo').innerHTML = fams.map(f => {
       const metodos = SP.listaMetodos(f.id).filter(m => SP.metodoDisponible(m.id));
@@ -443,7 +449,53 @@
     h += campo('ml', 'tipoSC', T('Sumas de cuadrados'), [[3, T('Tipo III (medias marginales)')], [2, T('Tipo II (marginalidad)')], [1, T('Tipo I (secuenciales)')]], s.tipoSC);
     return h + campo('ml', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('ml', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
+  const q = n => (/^[\p{L}_.][\p{L}\p{N}_.]*$/u.test(n) ? n : '`' + n + '`');
+  /** Lo que significa cada efecto aleatorio, en palabras. */
+  function explicarAleatorio(a) {
+    const g = a.agrupan, pend = a.variables.filter(v => v !== '1' && v !== '0');
+    const quien = a.grupos.includes('/') ? T('{b} dentro de {a}', { a: g[0], b: g.slice(1).join(' dentro de ') }) : a.grupos.includes(':') ? T('cada combinación {g}', { g: g.join(' × ') }) : g[0];
+    if (!pend.length) return a.grupos.includes('/') ? T('efecto aleatorio de {a} y de {q}: cada uno tiene su propio nivel medio.', { a: g[0], q: quien }) : T('cada nivel de {q} tiene su propio nivel medio (intercepto aleatorio).', { q: quien });
+    return T('la pendiente de {v} cambia en cada {q}{c}.', { v: pend.join(', '), q: quien, c: a.doble ? T(', sin correlación con el intercepto') : /^\s*0\s*\+/.test(a.expr) ? '' : T(', correlacionada con su intercepto') });
+  }
+  function formMixto(c) {
+    const s = estado.mx, num = c.numericas;
+    if (!s._iniciado) {
+      s._iniciado = true;
+      s.respuesta = ultimaRespuesta(c);
+      const b = c.pap.bloque, fs = c.pap.factores.filter(n => n !== b && n !== s.respuesta).slice(0, 2);
+      s.derecha = [fs.map(q).join(' * '), b ? '(1 | ' + q(b) + ')' : ''].filter(Boolean).join(' + ');
+      s.comoFactor = c.numFactor.filter(n => fs.includes(n));
+    }
+    if (!num.includes(s.respuesta)) s.respuesta = ultimaRespuesta(c);
+    let h = campo('mx', 'respuesta', T('Variable de respuesta'), lista(num), s.respuesta);
+    h += '<label class="field"><span>' + esc(T('Términos del modelo (lo que va después de «~»)')) + '</span><input type="text" data-grupo="mx" data-campo="derecha" spellcheck="false" autocomplete="off" value="' + esc(s.derecha) + '" placeholder="variedad * dosis + (1 | bloque)">' +
+      '<span class="field-help">' + esc(T('Los efectos fijos como en el modelo lineal; cada efecto aleatorio entre paréntesis con su agrupamiento: (1 | bloque) un nivel propio por bloque, (1 | bloque/parcela) parcelas dentro de bloques, (dias | planta) una pendiente por planta.')) + '</span></label>';
+    try {
+      const sep = SP.mixtos.separar(s.derecha), inf = { numericas: c.numericas, factores: c.t.nombres.filter(n => !c.numericas.includes(n)) };
+      const items = [];
+      let numEnFijos = [];
+      if (sep.fijos) {
+        const lec = SP.constructorModelos.interpretar(s.respuesta, sep.fijos, inf, s.comoFactor);
+        if (!lec.ok) throw new SP.ErrorSP(lec.mensaje, lec.arreglo);
+        lec.terminos.forEach(x => items.push('<li><b>' + esc(x.etiqueta) + '</b>: ' + esc(x.explicacion) + '</li>'));
+        numEnFijos = lec.variables.filter(v => c.numericas.includes(v));
+      }
+      sep.aleatorios.forEach(a => items.push('<li><b>' + esc(a.texto) + '</b>: ' + esc(explicarAleatorio(a)) + '</li>'));
+      if (!sep.aleatorios.length) items.push('<li class="msg-error">' + esc(T('Falta al menos un efecto aleatorio, como (1 | bloque).')) + '</li>');
+      h += '<ul class="ml-terminos small">' + items.join('') + '</ul>';
+      s.comoFactor = s.comoFactor.filter(v => numEnFijos.includes(v));
+      if (numEnFijos.length) h += casillas('mx', 'comoFactor', T('Numéricas que son tratamientos (factor)'), numEnFijos, s.comoFactor, n => n, '');
+    } catch (err) {
+      h += '<p class="msg msg-error small" role="alert"><strong>' + esc(err.message) + '</strong>' + (err.arreglo ? ' <span class="msg-fix">' + esc(err.arreglo) + '</span>' : '') + '</p>';
+    }
+    h += campo('mx', 'tipoSC', T('Sumas de cuadrados'), [[3, T('Tipo III (medias marginales)')], [2, T('Tipo II (marginalidad)')], [1, T('Tipo I (secuenciales)')]], s.tipoSC);
+    h += campo('mx', 'gl', T('Grados de libertad de las pruebas'), [['satterthwaite', 'Satterthwaite'], ['kenward-roger', T('Kenward-Roger (más exacto con pocos grupos; tarda más)')]], s.gl);
+    h += campo('mx', 'estimacion', T('Estimación'), [['reml', T('REML (componentes de varianza sin sesgo)')], ['ml', T('Máxima verosimilitud (para comparar efectos fijos entre modelos)')]], s.estimacion);
+    h += '<p class="small muted">' + esc(T('Corre en el motor R dentro de tu navegador (lme4 y lmerTest).')) + '</p>';
+    return h + campo('mx', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+  }
   function formulario(c) {
+    if (estado.metodo === 'modelo-mixto') return formMixto(c);
     if (estado.metodo === 'modelo-lineal') return formModelo(c);
     if (CORREL.includes(estado.metodo)) return formCorrelacion(c, estado.metodo);
     if (CONTING.includes(estado.metodo)) return formContingencia(c, estado.metodo);
@@ -461,6 +513,7 @@
   function pedido() {
     const m = estado.metodo;
     if (m === 'modelo-lineal') { const s = estado.ml; return { e: { respuesta: s.respuesta }, op: { derecha: s.derecha, comoFactor: s.comoFactor.slice(), tipoSC: +s.tipoSC, alfa: +s.alfa, nivel: +s.nivel } }; }
+    if (m === 'modelo-mixto') { const s = estado.mx; return { e: { respuesta: s.respuesta }, op: { derecha: s.derecha, comoFactor: s.comoFactor.slice(), tipoSC: +s.tipoSC, gl: s.gl, reml: s.estimacion !== 'ml', alfa: +s.alfa, nivel: +s.nivel } }; }
     if (CORREL.includes(m)) {
       const s = estado.cor;
       if (m === 'matriz-correlacion') return { e: { variables: s.variables.slice() }, op: { metodo: s.metodo, ajuste: s.ajuste, faltantes: s.faltantes, alfa: +s.alfa } };
@@ -715,8 +768,22 @@
   }
 
   /** Gráfica de cajas del método: los grupos comparados, con letras cuando las hay. */
+  /** Residuos del modelo mixto: contra los ajustados y su Q-Q. */
+  function graficasMixto(r) {
+    const res = r.valores.residuos, aj = r.valores.ajustados, n = res.length;
+    if (!n) return '';
+    const g1 = SP.graficas.dispersion({ titulo: T('Residuos contra ajustados'), x: { titulo: T('Valor ajustado') }, y: { titulo: T('Residuo') }, referencias: [{ y: 0 }],
+      descripcion: T('Residuos condicionales (con los efectos aleatorios) contra los valores ajustados: sin patrón si el modelo es adecuado.'),
+      puntos: SP.graficas.adelgazar(aj.map((x, i) => ({ x, y: res[i] })).filter(p => Number.isFinite(p.x) && Number.isFinite(p.y)), 2500) });
+    const ord = res.filter(Number.isFinite).slice().sort((a, b) => a - b), m = ord.length, a = m <= 10 ? 3 / 8 : 0.5;
+    const g2 = SP.graficas.dispersion({ titulo: T('Gráfico Q-Q de los residuos'), x: { titulo: T('Cuantil normal teórico') }, y: { titulo: T('Residuo') },
+      descripcion: T('Residuos ordenados contra los cuantiles de la normal: cerca de una recta si son normales.'),
+      puntos: SP.graficas.adelgazar(ord.map((y, i) => ({ x: SP.dist.qnorm((i + 1 - a) / (m + 1 - 2 * a)), y })), 2500) });
+    return g1 + g2;
+  }
   function graficaMetodo(r, op) {
     op = op || {};
+    if (r.tipo === 'mixto') return graficasMixto(r);
     if (r.tipo === 'modelo') {
       if (r.celdas) {
         const [A, B] = r.celdas.factores, nivA = [], nivB = [];
@@ -845,7 +912,7 @@
     if (estado.modo !== 'catalogo') { const p = estado.pintores[estado.modo]; if (p) p(c); return; }
     catalogo();
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -873,6 +940,7 @@
       $('#anaResultado').classList.remove('calculando');
       $('#anaResultado').innerHTML = `<div class="msg msg-error"><strong>${esc(err.message)}</strong>${err.arreglo ? `<span class="msg-fix">${esc(err.arreglo)}</span>` : ''}</div>`;
     };
+    if (ficha.motor === 'r') { correrR(id, c, e, opciones, turno, mostrar, fallar); return; }
     const correr = () => {
       try {
         const { resultado, ms } = SP.ejecutar(id, c.t, e, opciones);
@@ -888,6 +956,29 @@
       if (!r0.querySelector('.ana-espera')) r0.insertAdjacentHTML('afterbegin', `<p class="ana-espera small" role="status">${esc(T('Calculando con {n} filas…', { n: c.t.n.toLocaleString('es-MX') }))}</p>`);
       setTimeout(() => { if (turno === estado.turno) correr(); }, 30);
     } else correr();
+  }
+  /** Un método del motor R: la primera vez pide permiso para descargarlo; luego muestra cada paso y se puede cancelar. */
+  const motorAceptado = () => { if (estado.motorAceptado) return true; try { return localStorage.getItem(MOTOR_USADO) === '1'; } catch (e) { return false; } };
+  function correrR(id, c, e, opciones, turno, mostrar, fallar) {
+    const r0 = $('#anaResultado'), st = SP.motorR.estado();
+    if (!motorAceptado() && st.fase !== 'listo' && st.fase !== 'ocupado') {
+      r0.classList.remove('calculando');
+      r0.innerHTML = '<div class="callout ana-motor"><p><b>' + esc(T('Este análisis usa el motor R dentro de tu navegador')) + '</b></p><p class="small">' +
+        esc(T('La primera vez se descargan R y sus paquetes (unos 25 MB, con internet); después quedan en la caché del navegador. Tus datos no salen del equipo: el cálculo corre aquí mismo.')) +
+        '</p><div class="btn-row"><button type="button" class="btn btn-primary btn-sm" data-accion="motor-cargar">' + esc(T('Cargar el motor R y calcular')) + '</button></div></div>';
+      return;
+    }
+    r0.classList.add('calculando');
+    const viejo = r0.querySelector('.ana-espera');
+    if (viejo) viejo.remove();
+    r0.insertAdjacentHTML('afterbegin', '<div class="ana-espera ana-motor-espera small" role="status"><span data-motor-paso>' + esc(st.paso || T('Calculando en el motor R…')) + '</span> ' +
+      '<button type="button" class="btn btn-ghost btn-sm" data-accion="motor-cancelar">' + esc(T('Cancelar')) + '</button></div>');
+    SP.ejecutarAsync(id, c.t, e, opciones).then(({ resultado, ms }) => {
+      try { localStorage.setItem(MOTOR_USADO, '1'); } catch (err) { /* sin almacenamiento */ }
+      if (turno !== estado.turno) return;
+      r0.classList.remove('calculando');
+      mostrar(resultado, ms);
+    }, err => { if (turno === estado.turno) fallar(err); });
   }
   let reloj = null;
   const recalcular = () => { clearTimeout(reloj); reloj = setTimeout(calcular, 150); };
@@ -929,6 +1020,8 @@
       pon(estado.sup, { respuesta: e.respuesta, tratamientos: [].concat(e.tratamientos || []), bloque: e.bloque || '', orden: '' });
     } else if (m === 'modelo-lineal') {
       pon(estado.ml, { respuesta: e.respuesta, derecha: op.derecha, comoFactor: op.comoFactor || [], tipoSC: op.tipoSC });
+    } else if (m === 'modelo-mixto') {
+      pon(estado.mx, { respuesta: e.respuesta, derecha: op.derecha, comoFactor: op.comoFactor || [], tipoSC: op.tipoSC, gl: op.gl, estimacion: op.reml === false ? 'ml' : op.reml === undefined ? undefined : 'reml' });
     }
     estado.metodo = m;
   }
@@ -987,6 +1080,8 @@
     $('#anaResultado').addEventListener('click', async e => {
       const a = e.target.closest('[data-accion]');
       if (!a) return;
+      if (a.dataset.accion === 'motor-cargar') { estado.motorAceptado = true; calcular(); return; }
+      if (a.dataset.accion === 'motor-cancelar') { SP.motorR.cancelar(); return; }
       if (a.dataset.accion === 'analizar-modelo') {
         estado.reg.predictores = JSON.parse(a.dataset.vars);
         estado.metodo = 'regresion-lineal';
@@ -1020,6 +1115,8 @@
     });
     document.addEventListener('sp:datos', () => { if (panel.classList.contains('active')) recalcular(); else estado.pendiente = true; });
     document.addEventListener('sp:bloque', e => { if (e.detail.bloque === 4 && estado.pendiente) calcular(); });
+    /* el paso del motor R, en vivo */
+    if (SP.motorR) SP.motorR.al(s => { const el = document.querySelector('#anaResultado [data-motor-paso]'); if (el && s.paso) el.textContent = s.paso; });
     if (panel.classList.contains('active')) calcular();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();

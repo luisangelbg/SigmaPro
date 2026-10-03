@@ -96,6 +96,8 @@
       return { datos, nombre, tipo: 'application/zip', mensaje: T('Proyecto guardado: {n} ({k} KB, con la huella SHA-256 de cada archivo).', { n: nombre, k: Math.max(1, Math.round(datos.length / 1024)) }) };
     },
   };
+  /* los análisis del motor R se calculan aparte: antes de armar cualquier archivo se espera a que terminen */
+  for (const k of Object.keys(construir)) { const f = construir[k]; construir[k] = async (...a) => { await R().listo(); return f(...a); }; }
   /* armar y descargar, con la espera de la suite */
   async function exportar(boton, mensaje, que, arg) {
     const r = await trabajo(boton, mensaje, () => construir[que](arg));
@@ -106,6 +108,7 @@
   }
   const docx = b => (hayReporte() ? exportar(b, T('Armando el documento .docx…'), 'docx') : null);
   async function paginaHtml() {
+    await R().listo();
     const o = opcionesDoc();
     return SP.informe.html(SP.informe.bloques(await items(false), o), o);
   }

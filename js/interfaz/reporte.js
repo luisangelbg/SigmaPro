@@ -8,7 +8,9 @@
    artículo, los detalles técnicos y el código R.
 
      SP.app.reporte.agregar(p) · tiene(p) · quitar(id) · mover(id, ±1) · items · calcular(item) · elementos()
-     SP.app.reporte.reemplazar({ titulo, autor, items }) (al abrir un proyecto) */
+     SP.app.reporte.reemplazar({ titulo, autor, items }) (al abrir un proyecto)
+     SP.app.reporte.listo() → promesa: los análisis del motor R (Fase 2) se calculan aparte; mientras tanto se muestran
+     como «calculando» y no entran a las exportaciones, que esperan a que terminen. */
 (function () {
   'use strict';
   const T = SP.T, esc = SP.ui.esc;
@@ -23,6 +25,37 @@
   };
   const cache = new Map();
   const SUPUESTOS_SOLOS = ['dca', 'dbca'];
+  /* motor R: un cálculo por análisis y versión de los datos; mientras corre, calcular() lanza PENDIENTE */
+  const remotos = new Map(), PENDIENTE = { pendiente: true };
+  let repintado = null;
+  const repintar = () => {
+    clearTimeout(repintado);
+    repintado = setTimeout(() => {
+      const panel = $('#panel-5');
+      if (panel && panel.classList.contains('active')) pintar(); else est.pendiente = true;
+      document.dispatchEvent(new CustomEvent('sp:reporte', { detail: { items: est.items.length } }));
+    }, 30);
+  };
+  function ejecutarItem(it, ficha, t, opciones) {
+    if (ficha.motor !== 'r') return SP.ejecutar(it.metodo, t, it.e || {}, opciones);
+    const k = clave(it) + '|' + versionDatos;
+    let x = remotos.get(k);
+    if (!x) {
+      x = { listo: false };
+      x.promesa = SP.ejecutarAsync(it.metodo, t, it.e || {}, opciones)
+        .then(s => { x.salida = s; }, err => { x.error = err; })
+        .then(() => { x.listo = true; repintar(); });
+      remotos.set(k, x);
+    }
+    if (!x.listo) throw PENDIENTE;
+    if (x.error) throw x.error;
+    return x.salida;
+  }
+  /** Espera a que terminen los análisis del motor R (antes de exportar). */
+  est.listo = async () => {
+    for (const it of est.items) { try { calcular(it); } catch (e) { /* los errores quedan en su análisis */ } }
+    await Promise.all([...remotos.values()].map(x => x.promesa));
+  };
 
   const clave = p => JSON.stringify([p.metodo, p.e || {}, p.op || {}, p.vista || null]);
   est.tiene = p => !!p && est.items.some(it => clave(it) === clave(p));
@@ -68,7 +101,7 @@
       if (!ficha) throw new SP.ErrorSP(T('Este análisis ya no existe en SigmaPro: «{m}».', { m: it.metodo }));
       const opciones = SP.opcionesCon(ficha, it.op || {});
       const numFactor = t.nombres.filter(n => t.col(n).tipo === 'numerica' && !t.col(n).fecha && SP.estructura.pareceFactorNumerico(t.col(n), t.n));
-      const { resultado, ms } = SP.ejecutar(it.metodo, t, it.e || {}, opciones);
+      const { resultado, ms } = ejecutarItem(it, ficha, t, opciones);
       const ctx = Object.assign({ factoresNumericos: numFactor }, it.ctx || {});
       let rep = it.bloque === 3 ? ficha.reporte(resultado, ctx) : ficha.reporte(resultado);
       if (it.vista) rep = Object.assign({}, rep, { cuadros: rep.cuadros.filter(q => q.id === it.vista).concat(rep.cuadros.some(q => q.id === it.vista) ? [] : rep.cuadros.slice(0, 1)) });
@@ -88,6 +121,11 @@
       res.figuras = figurasDe(res.figurasHTML);
       res.detalles = detalles(it, res, t);
     } catch (e) {
+      if (e === PENDIENTE) {
+        res.pendiente = true;
+        res.titulo = it.titulo || (SP.metodos[it.metodo] ? SP.metodos[it.metodo].nombre : it.metodo);
+        return res;
+      }
       if (!(e instanceof SP.ErrorSP) && !(e && e.arreglo !== undefined)) console.error(e);
       res.error = e;
       res.titulo = it.titulo || (SP.metodos[it.metodo] ? SP.metodos[it.metodo].nombre : it.metodo);
@@ -118,12 +156,15 @@
       [T('Opciones'), describir(res.opciones)],
       [T('Datos'), (d && d.origen ? d.origen + ' · ' : '') + T('{n} filas', { n: t.n }) + (filtro ? T(' · filtro: {f}', { f: filtro.expresion }) : '')],
       [T('Filas usadas'), String(res.r && Number.isFinite(res.r.n) ? res.r.n : (res.r && res.r.resumen && res.r.resumen.n) || t.n)],
-      [T('Programa'), T('SigmaPro {v}; núcleo propio validado contra R en {n} casos{c}', { v: SP.VERSION, n: v ? v.resumen.casos : '—', c: casos ? T(' ({k} de este método completo)', { k: casos }) : '' })],
+      res.ficha.motor === 'r'
+        ? [T('Programa'), T('SigmaPro {v}; motor R en el navegador (webR {w}, R {r}{p}); validado contra R en {k} casos de este método', { v: SP.VERSION, w: SP.motorR.CONFIG.version,
+          r: (res.r.versiones && res.r.versiones.R) || '', p: Object.entries(res.r.versiones || {}).filter(([k]) => k !== 'R').map(([k, x]) => '; ' + k + ' ' + x).join(''), k: casos })]
+        : [T('Programa'), T('SigmaPro {v}; núcleo propio validado contra R en {n} casos{c}', { v: SP.VERSION, n: v ? v.resumen.casos : '—', c: casos ? T(' ({k} de este método completo)', { k: casos }) : '' })],
       [T('Calculado en'), T('{ms} ms', { ms: Math.max(1, Math.round(res.ms || 0)) })],
     ].concat(it.nota ? [[T('Nota'), it.nota]] : []);
   }
   /** Todo lo que necesita el documento: un elemento por análisis que se pudo calcular. */
-  est.elementos = () => est.items.map(it => ({ it, res: calcular(it) })).filter(x => !x.res.error).map(({ it, res }) => ({
+  est.elementos = () => est.items.map(it => ({ it, res: calcular(it) })).filter(x => !x.res.error && !x.res.pendiente).map(({ it, res }) => ({
     item: it, titulo: res.titulo, id: it.metodo, e: it.e, op: res.opciones, r: res.r, rep: res.rep, codigo: res.codigo, supuestos: res.supuestos,
     detalles: res.detalles, visibles: it.visibles, figurasHTML: res.figurasHTML, figuras: res.figuras, parrafo: res.parrafo,
   }));
@@ -151,7 +192,7 @@
     const indice = [], partes = [];
     est.items.forEach((it, k) => {
       const res = calcular(it), num = k + 1, idt = 'repT' + it.id;
-      indice.push(`<li><a href="#repItem${it.id}">${esc(num + '. ' + res.titulo)}</a>${res.error ? ' <span class="pill gris">' + esc(T('no se pudo calcular')) + '</span>' : ''}</li>`);
+      indice.push(`<li><a href="#repItem${it.id}">${esc(num + '. ' + res.titulo)}</a>${res.error ? ' <span class="pill gris">' + esc(T('no se pudo calcular')) + '</span>' : res.pendiente ? ' <span class="pill gris">' + esc(T('calculando')) + '</span>' : ''}</li>`);
       const barra = `<div class="btn-row rep-acciones" role="group" aria-label="${esc(T('Acciones del análisis {n}', { n: num }))}">` +
         `<button type="button" class="btn btn-ghost btn-sm" data-rep="subir" data-id="${it.id}"${k === 0 ? ' disabled' : ''} aria-label="${esc(T('Subir el análisis {n}', { n: num }))}">↑</button>` +
         `<button type="button" class="btn btn-ghost btn-sm" data-rep="bajar" data-id="${it.id}"${k === est.items.length - 1 ? ' disabled' : ''} aria-label="${esc(T('Bajar el análisis {n}', { n: num }))}">↓</button>` +
@@ -160,6 +201,11 @@
       const ajustes = `<details class="exp-extras rep-ajustes"><summary>${esc(T('Título y nota'))}</summary>` +
         `<label class="field"><span>${esc(T('Título en el reporte'))}</span><input class="input" data-rep-campo="titulo" data-id="${it.id}" value="${esc(it.titulo)}" placeholder="${esc(res.titulo)}"></label>` +
         `<label class="field"><span>${esc(T('Nota (va en los detalles técnicos)'))}</span><textarea class="textarea" rows="2" data-rep-campo="nota" data-id="${it.id}">${esc(it.nota)}</textarea></label></details>`;
+      if (res.pendiente) {
+        partes.push(`<article class="rep-item" id="repItem${it.id}" aria-labelledby="${idt}"><header class="rep-item-cabeza"><h3 id="${idt}">${esc(num + '. ' + res.titulo)}</h3>${barra}</header>` +
+          `<p class="ana-espera small" role="status">${esc(T('Calculando en el motor R… (la primera vez se descarga)'))}</p></article>`);
+        return;
+      }
       if (res.error) {
         errores++;
         partes.push(`<article class="rep-item" id="repItem${it.id}" aria-labelledby="${idt}"><header class="rep-item-cabeza"><h3 id="${idt}">${esc(num + '. ' + res.titulo)}</h3>${barra}</header>` +
@@ -200,7 +246,7 @@
 
   const textoParrafos = (lista, todos) => {
     const ms = lista.map(x => x.parrafo.metodos).filter(Boolean), rs = lista.map((x, k) => (todos ? (k + 1) + '. ' : '') + x.parrafo.resultados).filter(Boolean);
-    if (todos) ms.push(SP.informe.software().texto);
+    if (todos) ms.push(SP.informe.software(lista).texto);
     return T('Métodos') + '\n\n' + ms.join('\n\n') + '\n\n' + T('Resultados') + '\n\n' + rs.join('\n\n');
   };
 
@@ -240,7 +286,7 @@
         if (texto && await SP.cuadros.copiar(texto)) L() && L().toast({ 'copiar-r': T('Código R copiado.'), 'copiar-parrafo': T('Párrafo copiado.'), 'copiar-cuadro': T('Cuadro copiado.') }[accion], { type: 'success' });
       }
     });
-    document.addEventListener('sp:datos', () => { versionDatos++; if (panel.classList.contains('active')) pintar(); else est.pendiente = true; });
+    document.addEventListener('sp:datos', () => { versionDatos++; remotos.clear(); if (panel.classList.contains('active')) pintar(); else est.pendiente = true; });
     document.addEventListener('sp:bloque', e => { if (e.detail.bloque === 5 && est.pendiente) pintar(); });
     if (panel.classList.contains('active')) pintar();
   }

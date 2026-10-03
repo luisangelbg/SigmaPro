@@ -40,9 +40,10 @@ if (AUDITOR && process.platform === 'win32') {
   for (const [nombre, e] of Object.entries(ESC)) if (nombre.includes(filtro)) for (const ancho of [1280, 360]) tareas.push({ nombre, e, ancho });
   const correr = (t, puerto) => new Promise(ok => {
     const archivo = join(tmp, t.nombre + '.js');
-    writeFileSync(archivo, `(${GUARDA} ? (window.__prep = 1, window.__auditT0 = 0, (${t.e.prep}, null), null) : ` + MEDICION);
-    execFile('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', AUDITOR, '-Url', URL_APP, '-EvalFile', archivo, '-Width', String(t.ancho), '-Port', String(puerto), '-Timeout', '90'],
-      { maxBuffer: 1 << 24, timeout: 180000 }, (err, out) => {
+    /* una preparación asíncrona (espera: true) pone window.__esperando mientras termina: hasta entonces no se mide */
+    writeFileSync(archivo, `(${GUARDA} ? (window.__prep = 1, window.__auditT0 = 0, (${t.e.prep}, null), null) : window.__esperando ? null : ` + MEDICION);
+    execFile('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', AUDITOR, '-Url', URL_APP, '-EvalFile', archivo, '-Width', String(t.ancho), '-Port', String(puerto), '-Timeout', t.e.espera ? '150' : '90'],
+      { maxBuffer: 1 << 24, timeout: 240000 }, (err, out) => {
         const perfil = join(tmpdir(), 'labg-audit-headless-' + puerto);
         try { if (existsSync(perfil)) rmSync(perfil, { recursive: true, force: true }); } catch { /* aún en uso */ }
         ok(String(out || '') || String(err && err.message));

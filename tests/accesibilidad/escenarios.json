@@ -139,5 +139,12 @@
  "val-8": {
   "prep": "SP.app.ir(8), document.querySelectorAll('#panel-8 details').forEach(d => d.open = true)",
   "ultimo": true
+ },
+ "mixto-tarjeta": {
+  "prep": "(function () { try { localStorage.removeItem('sigmapro.motorR.usado'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[0].click(); SP.app.ir(4); SP.app.analisis.motorAceptado = false; SP.app.analisis.usar('modelo-mixto', { respuesta: 'rend' }, { derecha: 'hibrido * dosis + (1 | bloque)', comoFactor: ['dosis'] }); })()"
+ },
+ "mixto-resultado": {
+  "espera": true,
+  "prep": "(async () => { window.__esperando = true; try { localStorage.setItem('sigmapro.motorR.usado', '1'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[0].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.usar('modelo-mixto', { respuesta: 'rend' }, { derecha: 'hibrido * dosis + (1 | bloque)', comoFactor: ['dosis'] }); for (let k = 0; k < 400; k++) { await new Promise(r => setTimeout(r, 200)); const r = document.querySelector('#anaResultado'); if (r && !r.classList.contains('calculando') && (r.querySelector('.exp-cabeza h3') || r.querySelector('.msg-error'))) break; } document.querySelectorAll('#anaResultado details').forEach(d => d.open = true); window.__auditT0 = 0; window.__esperando = false; })()"
  }
 }

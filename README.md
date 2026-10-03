@@ -52,7 +52,13 @@ en .docx, PDF y HTML, cuadros en hoja de cálculo y LaTeX, y el **proyecto .labg
 el código R que lo repite todo; y el cierre de la fase: **uso sin conexión**, **100 000 filas** en 43 operaciones
 medidas dentro de su meta, la prueba de **privacidad** (ningún dato sale del navegador) y la **auditoría de
 accesibilidad AA** en claro y oscuro, a 1280 y 360 px, con el foco revisado tecla por tecla. Validado contra R en 624
-casos y 48 458 valores. Lo que falta para publicar y las fases 2 y 3 están en
+casos y 48 458 valores.
+
+**Fase 2 en curso** (plan en [`propuesta/FASE2.md`](propuesta/FASE2.md)): el **motor R dentro del navegador** (webR,
+que se descarga solo cuando se necesita; los datos no salen del equipo) y el **modelo lineal mixto** escrito como
+fórmula, con efectos aleatorios como en lme4, grados de libertad de Satterthwaite o Kenward-Roger y componentes de
+varianza, validado en el navegador contra R. En total, 636 casos y 49 168 valores. Lo que falta para publicar y las
+fases 2 y 3 están en
 [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan
 completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
@@ -69,6 +75,7 @@ node tests/exportar.mjs           # cada exportación, leída con lectores indep
 node tests/sin-conexion.mjs       # privacidad y uso sin conexión
 node tests/rendimiento/medir.mjs  # rendimiento con 100 000 filas
 node tests/accesibilidad/auditar.mjs  # accesibilidad AA
+node tests/motor-r.mjs            # los métodos del motor R, en el navegador (necesita internet)
 ```
 
 O abre `tests/index.html` con doble clic. Detalles en [`docs/VALIDACION.md`](docs/VALIDACION.md).

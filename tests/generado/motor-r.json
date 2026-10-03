@@ -1,0 +1,212 @@
+{
+ "generado": "2026-10-03T13:11:36.684Z",
+ "webr": "0.6.0",
+ "r": "R 4.6.0",
+ "navegador": "Chrome/154.0.0.0",
+ "casos": {
+  "modelo-mixto/avena-kenward-roger": {
+   "huella": "38aa5662e9563c381d5c89c9c10dc22a78488bc159ebc6141f40169fa7e930a5",
+   "aprobado": true,
+   "valores": 113,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 1.3398654974206838e-16,
+   "peor": "varianzas.varianza[0]",
+   "fallas": [],
+   "error": "",
+   "ms": 19910,
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  "modelo-mixto/avena-maxima-verosimilitud": {
+   "huella": "830539375257759b75a571d2b0e584364cb4e8ca7d6ddc22cd6ffc390a76c9d2",
+   "aprobado": true,
+   "valores": 58,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 1.678696234671167e-16,
+   "peor": "varianzas.varianza[0]",
+   "fallas": [],
+   "error": "",
+   "ms": 314,
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  "modelo-mixto/avena-parcelas-divididas": {
+   "huella": "56fe91db48ca8730a28ef598bc9b2f1211a8e080262583671005637d724385f1",
+   "aprobado": true,
+   "valores": 113,
+   "difMax": 5.684341886080802e-14,
+   "difEscaladaMax": 2.6500428373337124e-16,
+   "peor": "anova.cm[2]",
+   "fallas": [],
+   "error": "",
+   "ms": 315,
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  "modelo-mixto/maiz-bloques-aleatorios": {
+   "huella": "3d460dfaefc2c37e8457ed62fc20b9dda4e1182029af788393894378bba003e5",
+   "aprobado": true,
+   "valores": 108,
+   "difMax": 7.105427357601002e-15,
+   "difEscaladaMax": 4.718447854656915e-16,
+   "peor": "anova.p[2]",
+   "fallas": [],
+   "error": "",
+   "ms": 279,
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  "modelo-mixto/maquinas-agrupamiento-numerico": {
+   "huella": "611390e759e03524bb61b35acc90d04ddc2657a84b0a259189ac66356ffa0005",
+   "aprobado": true,
+   "valores": 40,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 1.7257736691666708e-16,
+   "peor": "varianzas.de[0]",
+   "fallas": [],
+   "error": "",
+   "ms": 262,
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  "modelo-mixto/maquinas-desbalanceado-tipo1": {
+   "huella": "9a6fd3c95f6728d92772a1447f90b2d323c93a7750b22731fcec9c2366a325bf",
+   "aprobado": true,
+   "valores": 45,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 1.514271063112094e-16,
+   "peor": "varianzas.varianza[1]",
+   "fallas": [],
+   "error": "",
+   "ms": 244,
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  "modelo-mixto/maquinas-desbalanceado-tipo3": {
+   "huella": "7e7eac4f890d153e120f910d99479554891b202fdedc4d3798f0ae386e5ba1c2",
+   "aprobado": true,
+   "valores": 45,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 1.8336731441770397e-16,
+   "peor": "varianzas.de[1]",
+   "fallas": [],
+   "error": "",
+   "ms": 250,
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  "modelo-mixto/maquinas-operario": {
+   "huella": "77828d5da65b8e363a1b4648628710655228f98de7bbc51910f6484d719337fd",
+   "aprobado": true,
+   "valores": 45,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 1.277085695582275e-16,
+   "peor": "varianzas.varianza[0]",
+   "fallas": [],
+   "error": "",
+   "ms": 289,
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  "modelo-mixto/penicilina-cruzados": {
+   "huella": "803f21d3dec53cf6737b2c78f10e47ffd1d09194edfb4e779af7e8abbcc6b2ba",
+   "aprobado": true,
+   "valores": 26,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 1.1102230246251565e-16,
+   "peor": "varianzas.varianza[0]",
+   "fallas": [],
+   "error": "",
+   "ms": 273,
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  "modelo-mixto/sueno-faltantes": {
+   "huella": "98c91cbf083d65ea74ffe5bea362b0d220f2f5321029769267fcad66c80eaf8f",
+   "aprobado": true,
+   "valores": 34,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "fallas": [],
+   "error": "",
+   "ms": 207,
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  "modelo-mixto/sueno-pendientes": {
+   "huella": "6ca199073114ead7063d7d1d8aa7b9cda840c4cd27a843c2d9741a53456e47c1",
+   "aprobado": true,
+   "valores": 44,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "fallas": [],
+   "error": "",
+   "ms": 346,
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  },
+  "modelo-mixto/sueno-sin-correlacion": {
+   "huella": "c9f8730d1dff47fafcef332b1fa0cf6386a84f11e02293e6e6a6c2b1d6605ae6",
+   "aprobado": true,
+   "valores": 39,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "fallas": [],
+   "error": "",
+   "ms": 334,
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1"
+   }
+  }
+ }
+}

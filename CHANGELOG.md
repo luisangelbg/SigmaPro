@@ -2,6 +2,42 @@
 
 ## Sin publicar
 
+### Hito 2.0 · Motor R en el navegador y modelo lineal mixto (3 oct 2026)
+
+- Plan detallado de la Fase 2 en `propuesta/FASE2.md`: decisiones (webR 0.6.0 fijado, paquetes y licencias), qué
+  corre en JS y qué en el motor R, los métodos, el puente, la validación y los hitos 2.0 a 2.10.
+- **Motor R** (`js/nucleo/motor-r.js`): webR (R 4.6.0 compilado a WebAssembly) se descarga solo cuando se usa un
+  método que lo necesita y corre en su propio hilo dentro de la página; los datos no salen del navegador. Instala los
+  paquetes uno por uno con reintentos, atiende un trabajo a la vez, avisa cada paso y se puede cancelar (cierra el
+  motor; lo descargado queda en la caché del navegador). Un serializador propio en R devuelve los resultados con 17
+  cifras, NA, NaN e infinitos y las dimensiones de las matrices (la conversión automática de webR los perdía); los
+  errores y avisos de R llegan traducidos, con el texto original.
+- Contrato de las fichas con `motor: 'r'`: `paquetes`, `preparar()` (el trabajo para R) y `leer()` (la salida), las
+  dos puras y probadas en node; `SP.ejecutarAsync` corre cualquier método.
+- **Modelo lineal mixto desde una fórmula** (familia Modelos mixtos): efectos fijos como en el modelo lineal y cada
+  aleatorio entre paréntesis, como en lme4 — `hibrido * dosis + (1 | bloque)`, `(1 | bloque/parcela)`,
+  `Days + (Days | Subject)`, `(x || g)` —; ANOVA de los efectos fijos con SC tipo III, II o I y grados de libertad de
+  Satterthwaite o Kenward-Roger (lmerTest), coeficientes, componentes de varianza (REML o máxima verosimilitud) con su
+  proporción, ajuste (logLik, AIC, BIC), avisos de ajuste singular o falta de convergencia, gráficas de residuos y Q-Q,
+  párrafo para la tesis con sus citas (Bates et al. 2015, Kuznetsova et al. 2017, Satterthwaite 1946, Kenward y Roger
+  1997) y el código R equivalente.
+- Bloque Análisis: el catálogo muestra las familias de la Fase 2 (las que aún no tienen métodos, con su hito); la
+  primera vez que se usa el motor R se explica la descarga y se pide permiso (luego se recuerda); mientras calcula se
+  ve cada paso y el botón Cancelar. Reporte: los análisis del motor R se calculan aparte y se pintan al terminar; las
+  exportaciones esperan a que acaben; los detalles técnicos y el párrafo de métodos dicen la versión de R y de los
+  paquetes.
+- **Validación del motor R** (`tests/motor-r.mjs`): corre en el navegador los 12 casos del modelo mixto (sleepstudy,
+  Penicillin, Oats como parcelas divididas con Satterthwaite y Kenward-Roger y por máxima verosimilitud, Machines
+  balanceado y desbalanceado con SC tipo III y I, faltantes, agrupamiento numérico y el maíz de los ejemplos) contra el
+  R de escritorio: 710 valores, diferencia máxima 4.7 × 10⁻¹⁶ (lme4 2.0-1 en el motor, 1.1-35.5 en el escritorio).
+  `tests/correr.mjs` integra esos resultados al reporte de validación solo si ni el caso ni el código del método
+  cambiaron desde la corrida (`tests/lib/huella-motor-r.mjs`); si cambiaron, el caso queda sin aprobar y el método no
+  aparece en la app. 636 casos en total.
+- **Privacidad con el motor R** (`tests/sin-conexion.mjs`): se registran también las peticiones del hilo del motor;
+  solo hay descargas de código (GET o HEAD sin parámetros ni cuerpo) de webR y de su repositorio de paquetes.
+- Comprobado: con un tipo III de lmerTest, las F no dependen de la codificación de contrastes (desbalanceado), así que
+  los coeficientes conservan los contrastes de tratamiento.
+
 ### Hito 1.12 · Sin conexión, 100 000 filas, privacidad, accesibilidad y cierre de la Fase 1 (2 oct 2026)
 
 - **Servicio sin conexión** (`sw.js`) y manifiesto con íconos para GitHub Pages: la primera visita guarda la app y

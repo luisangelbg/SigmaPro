@@ -171,14 +171,24 @@ occupationalStatus) o en los paquetes boot
 (poisons), MASS (oats, anorexia), agricolae (frijol) y carData (Soils); cada caso cita la publicación original en su
 campo `fuente`.
 
-## Que se descargan al usarse (Fase 2, aún no incluidos)
+## Que se descargan al usarse (motor R, Fase 2)
 
-| Componente | Licencia | Uso |
-|---|---|---|
-| webR v0.6.0 (R compilado a WebAssembly) | binarios GPL-3; resto del proyecto MIT | Motor R para modelos mixtos, cargado solo cuando se necesita |
-| R y sus paquetes base | GPL-2 \| GPL-3 | Dentro de webR |
-| lme4, nlme, lmerTest, pbkrtest | GPL ≥ 2 | Modelos mixtos |
-| emmeans | GPL-2 \| GPL-3 | Medias marginales |
+No viajan dentro de esta carpeta: el navegador los descarga la primera vez que se usa un método del motor R
+(`js/nucleo/motor-r.js`) y los guarda en su caché. Corren dentro de la página; los datos no salen del equipo.
+
+| Componente | Versión | Licencia | De dónde se descarga | Uso |
+|---|---|---|---|---|
+| webR (R compilado a WebAssembly) | 0.6.0 | binarios GPL-3; el resto del proyecto, MIT | <https://webr.r-wasm.org/v0.6.0/> | El motor R en el navegador |
+| R y sus paquetes base | 4.6.0 (dentro de webR) | GPL-2 o GPL-3 | con webR | — |
+| lme4 | 2.0-1 | GPL ≥ 2 | repositorio de webR, <https://repo.r-wasm.org/> | Modelos lineales mixtos |
+| lmerTest | 3.2-1 | GPL ≥ 2 | ídem | Grados de libertad de Satterthwaite y ANOVA de los efectos fijos |
+| pbkrtest | 0.5.5 | GPL ≥ 2 | ídem | Kenward-Roger (solo si se elige) |
+| Dependencias de los anteriores (Matrix, minqa, nloptr, numDeriv, MASS, boot, Rcpp, RcppEigen y otras) | las del repositorio de webR | GPL-2, GPL ≥ 2, LGPL ≥ 3 o MIT, según el paquete | ídem | Las instala R junto con los anteriores |
+
+Dos dependencias son solo GPL-2 (minqa, de lme4; numDeriv, de lmerTest): no se enlazan con el código de SigmaPro, que
+se comunica con el motor por mensajes; si se publican en un repositorio propio (cierre de la Fase 2), irán con su
+código fuente, como pide la GPL-2. Cada resultado del motor R registra la versión de R y de sus paquetes (detalles
+técnicos del reporte y `tests/generado/motor-r.json`).
 
 ## Solo para generar referencias de validación (no se distribuyen)
 

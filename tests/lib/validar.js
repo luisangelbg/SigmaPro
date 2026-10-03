@@ -12,7 +12,9 @@
      el objeto del factor si es factor); { tabla: true } en la tabla completa.
    - vectorizar: true (solo funciones): los argumentos que son arreglos se recorren
      juntos y el resultado es el arreglo de valores (rejillas de distribuciones).
-   - tipo 'metodo': arma la tabla y corre SP.ejecutar(nombre, tabla, entradas, opciones). */
+   - tipo 'metodo': arma la tabla y corre SP.ejecutar(nombre, tabla, entradas, opciones).
+   - Los métodos del motor R (motor: 'r', Fase 2) se corren con SPT.ejecutarCasoAsync en el navegador
+     (tests/motor-r.mjs); ejecutarCaso los marca con motorR: true y no los corre. */
 (function (raiz) {
   'use strict';
   const SPT = raiz.SPT || (raiz.SPT = {});
@@ -41,10 +43,14 @@
     return a;
   }
 
-  /** Corre un caso y lo compara. Nunca lanza: los errores quedan en el resultado. */
-  SPT.ejecutarCaso = function (caso, SP) {
+  /** ¿El caso es de un método del motor R? */
+  SPT.esMotorR = function (caso, SP) {
     SP = SP || raiz.SP;
-    const r = {
+    const o = caso && caso.objetivo;
+    return !!(o && o.tipo === 'metodo' && SP.metodos && SP.metodos[o.nombre] && SP.metodos[o.nombre].motor === 'r');
+  };
+  function nuevoResultado(caso) {
+    return {
       id: caso.id,
       objetivo: caso.objetivo,
       titulo: caso.titulo || '',
@@ -61,6 +67,22 @@
       error: '',
       ms: 0,
     };
+  }
+  function anotarComparacion(r, obtenido, caso) {
+    const c = SPT.comparar(obtenido, caso.esperado, caso.comparacion || {});
+    Object.assign(r, { aprobado: c.aprobado, valores: c.valores, difMax: c.difMax, difEscaladaMax: c.difEscaladaMax, peor: c.peor, fallas: c.fallas.slice(0, 20) });
+    r.totalFallas = c.fallas.length;
+  }
+
+  /** Corre un caso y lo compara. Nunca lanza: los errores quedan en el resultado. */
+  SPT.ejecutarCaso = function (caso, SP) {
+    SP = SP || raiz.SP;
+    const r = nuevoResultado(caso);
+    if (SPT.esMotorR(caso, SP)) {
+      r.motorR = true;
+      r.error = 'Se valida en el motor R: node tests/motor-r.mjs';
+      return r;
+    }
     try {
       if (!caso.objetivo || !caso.objetivo.nombre) throw new Error('El caso no dice qué se valida (objetivo)');
       const d = caso.datos || { columnas: {} };
@@ -86,11 +108,31 @@
         throw new Error('Tipo de objetivo desconocido: ' + caso.objetivo.tipo);
       }
       r.ms = Date.now() - t0;
-      const c = SPT.comparar(obtenido, caso.esperado, caso.comparacion || {});
-      Object.assign(r, { aprobado: c.aprobado, valores: c.valores, difMax: c.difMax, difEscaladaMax: c.difEscaladaMax, peor: c.peor, fallas: c.fallas.slice(0, 20) });
-      r.totalFallas = c.fallas.length;
+      anotarComparacion(r, obtenido, caso);
     } catch (e) {
       r.error = (e && e.message) || String(e);
+      r.aprobado = false;
+    }
+    return r;
+  };
+
+  /** Lo mismo para cualquier caso, también los del motor R (en el navegador). Devuelve una promesa; nunca la rechaza. */
+  SPT.ejecutarCasoAsync = async function (caso, SP) {
+    SP = SP || raiz.SP;
+    if (!SPT.esMotorR(caso, SP)) return SPT.ejecutarCaso(caso, SP);
+    const r = nuevoResultado(caso);
+    r.motorR = true;
+    try {
+      const d = caso.datos || { columnas: {} };
+      const tabla = SP.tabla.crear(d.columnas, d.tipos);
+      const t0 = Date.now();
+      const salida = await SP.ejecutarAsync(caso.objetivo.nombre, tabla, caso.entradas || {}, caso.opciones || {});
+      r.ms = Date.now() - t0;
+      r.motor = Object.assign({ webr: SP.motorR.CONFIG.version }, (salida.resultado && salida.resultado.versiones) || {});
+      anotarComparacion(r, salida.resultado, caso);
+    } catch (e) {
+      r.error = (e && e.message) || String(e);
+      if (e && e.r) r.error += ' (R: ' + e.r + ')';
       r.aprobado = false;
     }
     return r;

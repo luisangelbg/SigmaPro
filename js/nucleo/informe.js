@@ -8,7 +8,7 @@
    tesis o el artículo, que la persona revisa y ajusta.
 
      SP.informe.parrafo(id, r, rep, e, op) → { metodos, resultados, citas: [clave] }
-     SP.informe.software()                  → { texto, citas }
+     SP.informe.software(items?)            → { texto, citas } (con items: menciona el motor R si alguno lo usó)
      SP.informe.referencia(clave)            → texto de la referencia (estilo autor-año)
      SP.informe.bloques(items, opciones)     → bloques del documento (los que entiende SP.docx y SP.informe.html)
      SP.informe.html(bloques, opciones)      → página HTML completa, con su hoja de estilo e imprimible */
@@ -77,6 +77,11 @@ SP.definir('informe', function (SP) {
     clopper1934: () => 'Clopper, C. J. y Pearson, E. S. (1934). The use of confidence or fiducial limits illustrated in the case of the binomial. Biometrika, 26(4), 404–413.',
     agresti1998: () => 'Agresti, A. y Coull, B. A. (1998). Approximate is better than "exact" for interval estimation of binomial proportions. The American Statistician, 52(2), 119–126.',
     brown2001: () => 'Brown, L. D., Cai, T. T. y DasGupta, A. (2001). Interval estimation for a binomial proportion. Statistical Science, 16(2), 101–133.',
+    bates2015: () => 'Bates, D., Mächler, M., Bolker, B. y Walker, S. (2015). Fitting linear mixed-effects models using lme4. Journal of Statistical Software, 67(1), 1–48.',
+    kuznetsova2017: () => 'Kuznetsova, A., Brockhoff, P. B. y Christensen, R. H. B. (2017). lmerTest package: tests in linear mixed effects models. Journal of Statistical Software, 82(13), 1–26.',
+    kenward1997: () => 'Kenward, M. G. y Roger, J. H. (1997). Small sample inference for fixed effects from restricted maximum likelihood. Biometrics, 53(3), 983–997.',
+    halekoh2014: () => 'Halekoh, U. y Højsgaard, S. (2014). A Kenward-Roger approximation and parametric bootstrap methods for tests in linear mixed models – the R package pbkrtest. Journal of Statistical Software, 59(9), 1–32.',
+    patterson1971: () => 'Patterson, H. D. y Thompson, R. (1971). Recovery of inter-block information when block sizes are unequal. Biometrika, 58(3), 545–554.',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -92,7 +97,8 @@ SP.definir('informe', function (SP) {
     kendall1938: 'Kendall, 1938', pearson1900: 'Pearson, 1900', yates1934: 'Yates, 1934', fisher1922: 'Fisher, 1922', cramer1946: 'Cramér, 1946',
     mcnemar1947: 'McNemar, 1947', bowker1948: 'Bowker, 1948', mantel1959: 'Mantel y Haenszel, 1959', breslow1980: 'Breslow y Day, 1980', tarone1985: 'Tarone, 1985',
     cohen1960: 'Cohen, 1960', cohen1968: 'Cohen, 1968', wilson1927: 'Wilson, 1927', clopper1934: 'Clopper y Pearson, 1934', agresti1998: 'Agresti y Coull, 1998',
-    brown2001: 'Brown et al., 2001',
+    brown2001: 'Brown et al., 2001', bates2015: 'Bates et al., 2015', kuznetsova2017: 'Kuznetsova et al., 2017', kenward1997: 'Kenward y Roger, 1997',
+    halekoh2014: 'Halekoh y Højsgaard, 2014', patterson1971: 'Patterson y Thompson, 1971',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -435,6 +441,34 @@ SP.definir('informe', function (SP) {
     return { metodos, resultados: [oracion(frases), T('R² = {r} (ajustada = {a}); error estándar = {s}; CV = {cv} %.', { r: n3(rs.r2), a: n3(rs.r2_ajustada), s: s4(rs.sigma), cv: pct(rs.cv) })].filter(Boolean).join(' ') };
   }
 
+  /** Modelo lineal mixto (motor R): cómo se ajustó y las pruebas de sus efectos fijos con los gl del modelo. */
+  function mixto(r, rep, citas) {
+    const cf = lista(r.comoFactor), kr = r.gl === 'Kenward-Roger';
+    const est = r.reml ? T('máxima verosimilitud restringida (REML; {c})', { c: cita(['patterson1971'], citas) }) : T('máxima verosimilitud');
+    const pruebas = kr ? T('Kenward-Roger ({c})', { c: cita(['kenward1997', 'halekoh2014'], citas) }) : T('Satterthwaite ({c})', { c: cita(['satterthwaite1946'], citas) });
+    const metodos = T('Se ajustó el modelo lineal mixto {f} por {e} con lme4 ({l}); los efectos fijos se probaron con sumas de cuadrados tipo {s} y grados de libertad de {g}, calculados con lmerTest ({t}){c}.', {
+      f: r.formula, e: est, l: cita(['bates2015'], citas), s: SC(r.tipoSC), g: pruebas, t: cita(['kuznetsova2017'], citas),
+      c: cf.length ? T('; {v} se {t} como {x}', { v: y(cf), t: cf.length > 1 ? T('trataron') : T('trató'), x: cf.length > 1 ? T('factores') : T('factor') }) : '' });
+    const a = r.anova, alfa = r.alfa || 0.05, frases = [];
+    a.termino.forEach((t, i) => {
+      if (!Number.isFinite(a.F[i]) || !Number.isFinite(a.p[i])) return;
+      const nombre = String(t), inter = nombre.includes(':'), sig = a.p[i] < alfa;
+      const glm = g => (Math.abs(g - Math.round(g)) < 0.005 ? String(Math.round(g)) : F.fijo(g, 2));
+      const e = `F(${glm(a.gl1[i])}, ${glm(a.gl2[i])}) = ${n2(a.F[i])}; ${fp(a.p[i])}`;
+      frases.push(inter
+        ? (sig ? T('la interacción {t} fue significativa ({e})', { t: nombre.replace(/:/g, ' × '), e }) : T('la interacción {t} no fue significativa ({e})', { t: nombre.replace(/:/g, ' × '), e }))
+        : (sig ? T('el efecto de {t} fue significativo ({e})', { t: nombre, e }) : T('el efecto de {t} no fue significativo ({e})', { t: nombre, e })));
+    });
+    const vc = r.varianzas, soloInt = vc.grupo.every((g, k) => g === 'Residual' || (vc.var1[k] === '(Intercept)' && (vc.var2[k] === null || vc.var2[k] === undefined)));
+    let varianzas = '';
+    if (soloInt) {
+      const total = vc.varianza.reduce((s, x) => s + x, 0);
+      const partes = vc.grupo.map((g, k) => (g === 'Residual' ? T('la residual, {v}', { v: s4(vc.varianza[k]) }) : T('la de {g}, {v} ({p} % de la variación aleatoria)', { g, v: s4(vc.varianza[k]), p: pct(total > 0 ? 100 * vc.varianza[k] / total : NaN) })));
+      varianzas = T('Las varianzas estimadas fueron: {l}.', { l: y(partes) });
+    }
+    return { metodos, resultados: [oracion(frases), varianzas, r.ajuste && r.ajuste.singular ? T('El ajuste fue singular: al menos un componente de varianza se estimó en cero.') : ''].filter(Boolean).join(' ') };
+  }
+
   /** El párrafo de métodos y el de resultados de un análisis. */
   function parrafo(id, r, rep, e, op) {
     e = e || {}; op = op || {};
@@ -450,19 +484,22 @@ SP.definir('informe', function (SP) {
     else if (['tabla-contingencia', 'mcnemar', 'mantel-haenszel', 'kappa'].includes(id)) p = contingencia(id, r, e, op, citas);
     else if (id === 'supuestos') p = supuestos(r, rep, citas);
     else if (id === 'modelo-lineal') p = modeloLineal(r, rep, citas);
+    else if (id === 'modelo-mixto') p = mixto(r, rep, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };
   }
 
-  /** La frase del programa (va una vez, al final de los métodos). */
-  function software() {
+  /** La frase del programa (va una vez, al final de los métodos); con los análisis, también el motor R si alguno lo usó. */
+  function software(items) {
     const v = typeof globalThis !== 'undefined' && globalThis.SP_VALIDACION ? globalThis.SP_VALIDACION : null;
     const rv = v && v.referencias && v.referencias[0] ? (String(v.referencias[0]).match(/R version ([\d.]+)/) || [])[1] : '';
     const casos = v && v.resumen ? v.resumen.casos : null;
+    const motor = (items || []).map(it => it && it.r && it.r.versiones).find(x => x && x.R);
     return {
       texto: T('Los análisis se hicieron con SigmaPro {v} ({c}), cuyos cálculos se validan contra R{r} ({rc}){k} con una tolerancia de 1 × 10⁻⁶.', {
-        v: SP.VERSION, c: CITA.sigmapro, r: rv ? ' ' + rv : '', rc: CITA.rcore, k: casos ? T(' en {n} casos de prueba', { n: casos.toLocaleString('es-MX') }) : '' }),
+        v: SP.VERSION, c: CITA.sigmapro, r: rv ? ' ' + rv : '', rc: CITA.rcore, k: casos ? T(' en {n} casos de prueba', { n: casos.toLocaleString('es-MX') }) : '' }) +
+        (motor ? ' ' + T('Los análisis con paquetes de R se calcularon en R {r} dentro del propio navegador (webR {w}).', { r: motor.R, w: SP.motorR ? SP.motorR.CONFIG.version : '' }) : ''),
       citas: ['sigmapro', 'rcore'],
     };
   }
@@ -489,7 +526,7 @@ SP.definir('informe', function (SP) {
     /* 1. métodos */
     out.push({ tipo: 'encabezado', nivel: 1, texto: T('Métodos') });
     items.forEach((it, i) => { if (pars[i].metodos) out.push({ tipo: 'parrafo', texto: pars[i].metodos }); });
-    const sw = software(); sw.citas.forEach(c => citas.add(c));
+    const sw = software(items); sw.citas.forEach(c => citas.add(c));
     out.push({ tipo: 'parrafo', texto: sw.texto });
     /* 2. resultados, con cuadros y figuras numerados en orden */
     out.push({ tipo: 'encabezado', nivel: 1, texto: T('Resultados') });

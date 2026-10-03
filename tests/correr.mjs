@@ -6,7 +6,9 @@
 // 1. Carga el núcleo con la MISMA lista de scripts que index.html (js/nucleo y js/metodos).
 // 2. Comprueba que tests/index.html carga lo mismo, en el mismo orden, y todas las pruebas.
 // 3. Corre las pruebas unitarias (tests/unidad/*.test.js).
-// 4. Corre cada caso de validación (tests/casos/*/*.json) y lo compara contra R.
+// 4. Corre cada caso de validación (tests/casos/*/*.json) y lo compara contra R. Los de métodos del motor R (Fase 2)
+//    se corren en el navegador con tests/motor-r.mjs: aquí se toma su último resultado (tests/generado/motor-r.json)
+//    solo si el caso no cambió desde entonces; si no, queda sin aprobar.
 // 5. Escribe: tests/generado/casos.js (los casos para la página de pruebas),
 //    js/generado/validacion.js (el reporte que muestra la app),
 //    tests/reporte-validacion.html y tests/reporte-validacion.csv.
@@ -17,6 +19,7 @@ import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { createHash } from 'node:crypto';
+import { huellero } from './lib/huella-motor-r.mjs';
 
 const TESTS = dirname(fileURLToPath(import.meta.url));
 const RAIZ = join(TESTS, '..');
@@ -84,6 +87,21 @@ const casos = textos.map((t, i) => {
 const elegidos = casos.filter(c => !opt.solo || c.id.includes(opt.solo));
 ctx.__casos = elegidos;
 const resultados = vm.runInContext('__casos.map(c => SPT.ejecutarCaso(c, SP))', ctx);
+/* motor R: el resultado de la última corrida en el navegador, si la huella del caso y de su código coincide */
+const huellaDe = new Map();
+const huella = huellero(RAIZ);
+textos.forEach(t => { try { const c = JSON.parse(t); huellaDe.set(c.id, huella(t, c.objetivo && c.objetivo.nombre)); } catch { /* ya se avisó */ } });
+const archivoMotorR = join(TESTS, 'generado', 'motor-r.json');
+const motorR = existsSync(archivoMotorR) ? JSON.parse(leer(archivoMotorR)) : { casos: {} };
+let deMotorR = 0;
+for (const r of resultados) {
+  if (!r.motorR) continue;
+  deMotorR++;
+  const g = (motorR.casos || {})[r.id];
+  if (!g) { r.error = 'Falta correrlo en el motor R: node tests/motor-r.mjs'; continue; }
+  if (g.huella !== huellaDe.get(r.id)) { r.error = 'El caso o el código del método cambió desde la última corrida en el motor R: node tests/motor-r.mjs'; continue; }
+  Object.assign(r, { aprobado: g.aprobado, valores: g.valores, difMax: g.difMax, difEscaladaMax: g.difEscaladaMax, peor: g.peor, fallas: g.fallas || [], error: g.error || '', ms: g.ms, motor: g.motor });
+}
 /* agrupar por función o método, en el orden en que aparece cada uno por primera vez */
 {
   const clave = r => r.objetivo.tipo + ':' + r.objetivo.nombre;
@@ -107,7 +125,7 @@ const V = {
     id: r.id, objetivo: r.objetivo, titulo: r.titulo, fuente: r.fuente, clase: r.clase,
     valores: r.valores, difMax: r.difMax, difEscaladaMax: r.difEscaladaMax, peor: r.peor,
     aprobado: r.aprobado, error: r.error, fallas: (r.fallas || []).slice(0, 5),
-    comparacion: r.comparacion, referencia: r.referencia,
+    comparacion: r.comparacion, referencia: r.referencia, motor: r.motor || undefined,
   })),
 };
 
@@ -149,6 +167,7 @@ for (const r of resultados) {
 }
 console.log('  ' + (resumen.fallidos ? rojo : verde)(resumen.aprobados + ' de ' + resumen.casos + ' casos aprobados') +
   ' · ' + resumen.valores + ' valores · ' + (resumen.objetivos === 1 ? '1 función o método' : resumen.objetivos + ' funciones y métodos') + ' · mayor diferencia escalada ' + fmtDif(resumen.difEscaladaMax));
+if (deMotorR) console.log(gris('  ' + deMotorR + ' de ellos corren en el motor R' + (motorR.generado ? ' (webR ' + motorR.webr + ', ' + motorR.r + '; última corrida ' + motorR.generado.slice(0, 16).replace('T', ' ') + ' UTC)' : ' y aún no se corren: node tests/motor-r.mjs')));
 if (opt.escribir && !opt.solo) console.log(gris('\nReporte: tests/reporte-validacion.html · en la app: bloque 8'));
 const ok = !problemas.length && !unidad.fallidas && !resumen.fallidos && resumen.casos > 0;
 console.log('\n' + (ok ? verde('TODO APROBADO') : rojo('HAY FALLAS')) + '\n');
