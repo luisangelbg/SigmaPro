@@ -40,7 +40,8 @@
     "comoFactor": ["nitrogeno"],
     "tipoSC": 3,
     "gl": "kenward-roger",
-    "reml": true
+    "reml": true,
+    "ajuste": "tukey"
   },
   "esperado": {
     "anova": {
@@ -73,6 +74,167 @@
       "AIC": 559.02850700727822,
       "BIC": 593.17849879251901,
       "singular": false
+    },
+    "medias": [
+      {
+        "factor": "variedad",
+        "filas": [
+          {
+            "nivel": "Golden Rain",
+            "media": 104.49999999999928,
+            "ee": 7.7975799849191478,
+            "gl": 8.8689253060282027,
+            "ic": [86.820829518988035, 122.17917048101052]
+          },
+          {
+            "nivel": "Marvellous",
+            "media": 109.79166666666612,
+            "ee": 7.7975799849191567,
+            "gl": 8.8689253060281565,
+            "ic": [92.112496185654834, 127.4708371476774]
+          },
+          {
+            "nivel": "Victory",
+            "media": 97.624999999999531,
+            "ee": 7.7975799849191585,
+            "gl": 8.8689253060281388,
+            "ic": [79.945829518988234, 115.30417048101083]
+          }
+        ],
+        "pares": [
+          {
+            "contraste": "Golden Rain - Marvellous",
+            "dif": -5.2916666666668419,
+            "ee": 7.0789021526050266,
+            "gl": 9.9999999999999751,
+            "t": -0.7475264599779099,
+            "p": 0.74187259465399924
+          },
+          {
+            "contraste": "Golden Rain - Victory",
+            "dif": 6.8749999999997451,
+            "ee": 7.078902152605024,
+            "gl": 10.000000000000011,
+            "t": 0.9711957944594215,
+            "p": 0.61035362241586721
+          },
+          {
+            "contraste": "Marvellous - Victory",
+            "dif": 12.166666666666588,
+            "ee": 7.0789021526050249,
+            "gl": 9.9999999999999964,
+            "t": 1.7187222544373315,
+            "p": 0.24583000184272474
+          }
+        ]
+      },
+      {
+        "factor": "nitrogeno",
+        "filas": [
+          {
+            "nivel": "0",
+            "media": 79.388888888888289,
+            "ee": 7.1747540824623233,
+            "gl": 6.7920204799155819,
+            "ic": [62.317407852320088, 96.46036992545649]
+          },
+          {
+            "nivel": "0.2",
+            "media": 98.888888888888317,
+            "ee": 7.1747540824623242,
+            "gl": 6.7920204799155881,
+            "ic": [81.817407852320116, 115.96036992545652]
+          },
+          {
+            "nivel": "0.4",
+            "media": 114.22222222222165,
+            "ee": 7.174754082462325,
+            "gl": 6.7920204799155854,
+            "ic": [97.150741185653445, 131.29370325878986]
+          },
+          {
+            "nivel": "0.6",
+            "media": 123.3888888888883,
+            "ee": 7.1747540824623242,
+            "gl": 6.7920204799155819,
+            "ic": [106.3174078523201, 140.46036992545652]
+          }
+        ],
+        "pares": [
+          {
+            "contraste": "nitrogeno0 - nitrogeno0.2",
+            "dif": -19.500000000000021,
+            "ee": 4.4357520473684495,
+            "gl": 44.999999999999837,
+            "t": -4.3960978413048526,
+            "p": 0.00037642666566306549
+          },
+          {
+            "contraste": "nitrogeno0 - nitrogeno0.4",
+            "dif": -34.83333333333335,
+            "ee": 4.4357520473684504,
+            "gl": 44.999999999999837,
+            "t": -7.8528585370317385,
+            "p": 3.3622894468621212e-09
+          },
+          {
+            "contraste": "nitrogeno0 - nitrogeno0.6",
+            "dif": -44.000000000000014,
+            "ee": 4.4357520473684504,
+            "gl": 44.999999999999964,
+            "t": -9.9194002573032467,
+            "p": 4.2761350016462529e-12
+          },
+          {
+            "contraste": "nitrogeno0.2 - nitrogeno0.4",
+            "dif": -15.333333333333332,
+            "ee": 4.4357520473684495,
+            "gl": 45.000000000000085,
+            "t": -3.4567606957268886,
+            "p": 0.0063901634502741
+          },
+          {
+            "contraste": "nitrogeno0.2 - nitrogeno0.6",
+            "dif": -24.499999999999993,
+            "ee": 4.4357520473684477,
+            "gl": 44.999999999999964,
+            "t": -5.5233024159983994,
+            "p": 9.2447256964112157e-06
+          },
+          {
+            "contraste": "nitrogeno0.4 - nitrogeno0.6",
+            "dif": -9.1666666666666607,
+            "ee": 4.4357520473684504,
+            "gl": 44.999999999999964,
+            "t": -2.0665417202715077,
+            "p": 0.17971896046134983
+          }
+        ]
+      }
+    ],
+    "ranova": {
+      "termino": ["<none>", "(1 | variedad:bloque)", "(1 | bloque)"],
+      "npar": [15, 14, 14],
+      "logLik": [-264.51425350363911, -268.34498334795381, -267.00335554143584],
+      "AIC": [559.02850700727822, 564.68996669590763, 562.00671108287167],
+      "LRT": ["NA", 7.6614596886294066, 4.9782040755934531],
+      "gl": ["NA", 1, 1],
+      "p": ["NA", 0.0056412845506056877, 0.025668616433956938]
+    },
+    "blup": {
+      "grupo": ["variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "variedad:bloque", "bloque", "bloque", "bloque", "bloque", "bloque", "bloque"],
+      "termino": ["(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)"],
+      "nivel": ["Golden Rain:I", "Golden Rain:II", "Golden Rain:III", "Golden Rain:IV", "Golden Rain:V", "Golden Rain:VI", "Marvellous:I", "Marvellous:II", "Marvellous:III", "Marvellous:IV", "Marvellous:V", "Marvellous:VI", "Victory:I", "Victory:II", "Victory:III", "Victory:IV", "Victory:V", "Victory:VI", "I", "II", "III", "IV", "V", "VI"],
+      "valor": [2.348197321861667, 4.298698387578419, -7.9159290221039766, 5.7894837955050065, 1.1168104398737158, -5.6372609227140638, -3.8544506788502275, 6.2094667290297956, 10.750807852075884, -7.1155516182983076, -9.8480601964557586, 3.8577879124986412, 14.077375294771441, -9.1942657466715403, -6.0639535526973267, -1.001092925653569, 3.4979217576823203, -1.3159848274316299, 25.421652475040712, 2.6570017644422643, -6.5299195905766299, -4.7060454980361373, -10.582973129555626, -6.2597160213113971],
+      "de": [7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 7.1730394624603226, 6.3734132296601986, 6.3734132296601986, 6.3734132296601986, 6.3734132296601986, 6.3734132296601986, 6.3734132296601986]
+    }
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+      }
     }
   },
   "referencia": {
@@ -81,8 +243,9 @@
     "paquetes": {
       "lme4": "1.1.35.5",
       "lmerTest": "3.2.1",
+      "emmeans": "1.10.6",
       "pbkrtest": "0.5.3"
     },
-    "codigo": "datos$nitrogeno <- factor(datos$nitrogeno); modelo <- lmer(rendimiento ~ variedad * nitrogeno + (1 | bloque/variedad), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Kenward-Roger\"); summary(modelo, ddf = \"Kenward-Roger\"); VarCorr(modelo)"
+    "codigo": "datos$nitrogeno <- factor(datos$nitrogeno); modelo <- lmer(rendimiento ~ variedad * nitrogeno + (1 | bloque/variedad), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Kenward-Roger\"); summary(modelo, ddf = \"Kenward-Roger\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"variedad\" | \"nitrogeno\", lmer.df = \"kenward-roger\") y pairs(adjust = \"tukey\")"
   }
 }

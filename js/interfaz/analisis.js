@@ -22,6 +22,8 @@
   const REGRESION = ['regresion-lineal', 'regresion-polinomial', 'seleccion-pasos', 'mejores-subconjuntos'];
   const CORREL = ['correlacion', 'matriz-correlacion', 'correlacion-parcial'];
   const CONTING = ['tabla-contingencia', 'mcnemar', 'mantel-haenszel', 'kappa'];
+  const MIXTOS_DIS = ['mixto-bloques', 'mixto-divididas', 'mixto-latice', 'mixto-localidades'];
+  const AJUSTES_MX = () => [['tukey', 'Tukey'], ['bonferroni', 'Bonferroni'], ['holm', 'Holm'], ['sidak', 'Šidák'], ['none', T('Sin ajuste (DMS)')]];
   const estado = SP.app.analisis = {
     metodo: 'supuestos', pendiente: true, turno: 0, modo: (() => { try { const m = localStorage.getItem('sigmapro.analisis.modo'); return MODOS.includes(m) ? m : 'asistente'; } catch (e) { return 'asistente'; } })(),
     pintores: {},   // asistente y constructor (js/interfaz/asistente.js y constructor.js)
@@ -36,7 +38,9 @@
     cor: { x: '', y: '', variables: [], controles: [], metodo: 'pearson', alternativa: 'bilateral', nivel: 0.95, alfa: 0.05, exacta: 'auto', continuidad: false, ajuste: 'holm', faltantes: 'completas', _iniciado: false },
     cont: { fila: '', columna: '', frecuencia: '', antes: '', despues: '', estrato: '', evaluador1: '', evaluador2: '', correccion: true, ponderacion: 'cuadratica', nivel: 0.95, alfa: 0.05, _iniciado: false },
     ml: { respuesta: '', derecha: '', comoFactor: [], tipoSC: 3, alfa: 0.05, nivel: 0.95, _iniciado: false },
-    mx: { respuesta: '', derecha: '', comoFactor: [], tipoSC: 3, gl: 'satterthwaite', estimacion: 'reml', alfa: 0.05, nivel: 0.95, _iniciado: false },
+    mx: { respuesta: '', derecha: '', comoFactor: [], tipoSC: 3, gl: 'satterthwaite', estimacion: 'reml', compararMx: null, dentro: '', ajuste: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
+    mxd: { respuesta: '', tratamientos: [], bloque: '', parcelaGrande: '', subparcela: '', subsubparcela: '', repeticion: '', tratamiento: '', genotipo: '', localidad: '',
+      repeticionAleatoria: false, localidadFija: false, compararMx: null, ajuste: 'tukey', gl: 'satterthwaite', estimacion: 'reml', alfa: 0.05, nivel: 0.95, _iniciado: false },
     motorAceptado: false,
   };
 
@@ -485,17 +489,89 @@
       h += '<ul class="ml-terminos small">' + items.join('') + '</ul>';
       s.comoFactor = s.comoFactor.filter(v => numEnFijos.includes(v));
       if (numEnFijos.length) h += casillas('mx', 'comoFactor', T('Numéricas que son tratamientos (factor)'), numEnFijos, s.comoFactor, n => n, '');
+      /* medias marginales: los factores fijos que entran como efecto principal */
+      const facs = inf.factores.concat(s.comoFactor);
+      const principales = sep.fijos ? SP.formula.analizar(q(s.respuesta) + ' ~ ' + sep.fijos).terminos.filter(t => t.variables.length === 1 && facs.includes(t.variables[0])).map(t => t.variables[0]) : [];
+      h += formCompararMx('mx', s, principales, true);
     } catch (err) {
       h += '<p class="msg msg-error small" role="alert"><strong>' + esc(err.message) + '</strong>' + (err.arreglo ? ' <span class="msg-fix">' + esc(err.arreglo) + '</span>' : '') + '</p>';
     }
     h += campo('mx', 'tipoSC', T('Sumas de cuadrados'), [[3, T('Tipo III (medias marginales)')], [2, T('Tipo II (marginalidad)')], [1, T('Tipo I (secuenciales)')]], s.tipoSC);
     h += campo('mx', 'gl', T('Grados de libertad de las pruebas'), [['satterthwaite', 'Satterthwaite'], ['kenward-roger', T('Kenward-Roger (más exacto con pocos grupos; tarda más)')]], s.gl);
     h += campo('mx', 'estimacion', T('Estimación'), [['reml', T('REML (componentes de varianza sin sesgo)')], ['ml', T('Máxima verosimilitud (para comparar efectos fijos entre modelos)')]], s.estimacion);
-    h += '<p class="small muted">' + esc(T('Corre en el motor R dentro de tu navegador (lme4 y lmerTest).')) + '</p>';
-    return h + campo('mx', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+    h += '<p class="small muted">' + esc(T('Corre en el motor R dentro de tu navegador (lme4, lmerTest y emmeans).')) + '</p>';
+    return h + campo('mx', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('mx', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+  }
+  /** Qué medias comparar, dentro de qué factor y con qué ajuste (modelo mixto y sus diseños). */
+  function formCompararMx(grupo, s, principales, conDentro) {
+    if (!principales.length) { s.compararMx = null; return ''; }
+    if (s.compararMx) s.compararMx = s.compararMx.filter(v => principales.includes(v));
+    const elegidos = s.compararMx || principales.slice(0, 3);
+    if (s.dentro && (!principales.includes(s.dentro) || elegidos.includes(s.dentro) && elegidos.length === 1)) s.dentro = '';
+    let h = casillas(grupo, 'compararMx', T('Comparar las medias de'), principales, elegidos, n => n, '');
+    if (conDentro && principales.length > 1) h += campo(grupo, 'dentro', T('Dentro de cada nivel de'), [['', T('— todos los niveles juntos —')]].concat(principales.map(n => [n, n])), s.dentro || '', T('Para comparar un factor por separado en cada nivel de otro cuando interactúan.'));
+    return h + campo(grupo, 'ajuste', T('Ajuste de las comparaciones'), AJUSTES_MX(), s.ajuste);
+  }
+  /** Papeles de los diseños con efectos aleatorios: se proponen una vez por tabla. */
+  function formDisenoMixto(c, m) {
+    const s = estado.mxd, med = medidas(c).length ? medidas(c) : c.numericas, agr = c.agrupables.filter(n => nivelesDe(c, n).length >= 2);
+    const marca = n => (c.numFactor.includes(n) ? T('{c} (numérica)', { c: n }) : n);
+    if (!s._iniciado) {
+      s._iniciado = true;
+      /* primero por el nombre de la columna; nunca la misma columna en dos papeles */
+      const usadas = new Set();
+      const busca = re => { const n = agr.find(x => re.test(x) && !usadas.has(x)) || ''; if (n) usadas.add(n); return n; };
+      s.respuesta = c.pap.respuestas.find(n => med.includes(n)) || med[0] || '';
+      s.repeticion = busca(/^(rep|repeticion|repetición)/i);
+      s.bloque = busca(/^(bloque|block|blq)/i) || (c.pap.bloque && agr.includes(c.pap.bloque) && !usadas.has(c.pap.bloque) ? (usadas.add(c.pap.bloque), c.pap.bloque) : '');
+      s.localidad = busca(/(locali|ambiente|^env|^amb|sitio|^loc)/i);
+      s.genotipo = busca(/(genotipo|^gen|clon|variedad|hibrido|híbrido|linea|línea)/i);
+      const facs = c.pap.factores.filter(n => agr.includes(n) && ![s.respuesta, s.bloque, s.repeticion, s.localidad].includes(n));
+      s.tratamientos = facs.slice(0, 2); s.tratamiento = s.genotipo || facs[0] || '';
+      [s.parcelaGrande, s.subparcela] = [facs[0] || '', facs[1] || ''];
+    }
+    if (!med.includes(s.respuesta)) s.respuesta = med[0] || '';
+    const opc = (excl, vacio) => (vacio ? [['', vacio]] : []).concat(agr.filter(n => n !== s.respuesta && !excl.includes(n)).map(n => [n, marca(n)]));
+    let h = campo('mxd', 'respuesta', T('Variable de respuesta'), lista(med), s.respuesta);
+    let trats = [];
+    if (m === 'mixto-bloques') {
+      s.tratamientos = s.tratamientos.filter(x => agr.includes(x) && x !== s.bloque);
+      h += casillas('mxd', 'tratamientos', T('Factores de tratamiento (hasta 3, cruzados)'), agr.filter(n => n !== s.respuesta && n !== s.bloque), s.tratamientos, marca, T('No hay factores en la tabla.'));
+      h += campo('mxd', 'bloque', T('Bloques (aleatorios)'), opc(s.tratamientos, T('— elige —')), s.bloque);
+      trats = s.tratamientos;
+    } else if (m === 'mixto-divididas') {
+      h += campo('mxd', 'parcelaGrande', T('Factor en las parcelas grandes'), opc([s.bloque, s.repeticion], T('— elige —')), s.parcelaGrande);
+      h += campo('mxd', 'subparcela', T('Factor en las subparcelas'), opc([s.bloque, s.repeticion, s.parcelaGrande], T('— elige —')), s.subparcela);
+      h += campo('mxd', 'subsubparcela', T('Factor en sub-subparcelas (opcional)'), opc([s.bloque, s.repeticion, s.parcelaGrande, s.subparcela], T('— ninguno —')), s.subsubparcela);
+      h += campo('mxd', 'bloque', T('Bloques (aleatorios)'), opc([s.parcelaGrande, s.subparcela, s.subsubparcela], T('— sin bloques —')), s.bloque);
+      if (!s.bloque) h += campo('mxd', 'repeticion', T('Repetición (identifica cada parcela grande)'), opc([s.parcelaGrande, s.subparcela, s.subsubparcela], T('— elige —')), s.repeticion);
+      trats = [s.parcelaGrande, s.subparcela, s.subsubparcela].filter(Boolean);
+    } else if (m === 'mixto-latice') {
+      h += campo('mxd', 'tratamiento', T('Tratamientos (genotipos, variedades)'), opc([s.repeticion, s.bloque], T('— elige —')), s.tratamiento);
+      h += campo('mxd', 'repeticion', T('Repetición'), opc([s.tratamiento, s.bloque], T('— elige —')), s.repeticion);
+      h += campo('mxd', 'bloque', T('Bloque incompleto (dentro de la repetición)'), opc([s.tratamiento, s.repeticion], T('— elige —')), s.bloque);
+      h += '<label class="imp-check"><input type="checkbox" data-grupo="mxd" data-campo="repeticionAleatoria"' + (s.repeticionAleatoria ? ' checked' : '') + '> ' + esc(T('Repeticiones también aleatorias')) + '</label>';
+      trats = [s.tratamiento].filter(Boolean);
+    } else {
+      h += campo('mxd', 'genotipo', T('Genotipos (fijos)'), opc([s.localidad, s.repeticion], T('— elige —')), s.genotipo);
+      h += campo('mxd', 'localidad', T('Localidad o ambiente'), opc([s.genotipo, s.repeticion], T('— elige —')), s.localidad);
+      h += campo('mxd', 'repeticion', T('Repetición (dentro de cada localidad)'), opc([s.genotipo, s.localidad], T('— elige —')), s.repeticion);
+      h += '<label class="imp-check"><input type="checkbox" data-grupo="mxd" data-campo="localidadFija"' + (s.localidadFija ? ' checked' : '') + '> ' + esc(T('Localidades fijas (solo estas localidades interesan)')) + '</label>';
+      trats = [s.genotipo].filter(Boolean);
+    }
+    try {
+      const r = pedido(), f = SP.metodos[m];
+      if (r && f) { f.validar(c.t, r.e, SP.opcionesCon(f, r.op)); } if (r && f) h += '<p class="small"><b>' + esc(T('Modelo:')) + '</b> <code>' + esc(q(s.respuesta) + ' ~ ' + SP.mixtos.opcionesDiseno(m, c.t, r.e, SP.opcionesCon(f, r.op)).derecha) + '</code></p>';
+    } catch (err) { /* papeles incompletos */ }
+    h += formCompararMx('mxd', s, trats, false);
+    h += campo('mxd', 'gl', T('Grados de libertad de las pruebas'), [['satterthwaite', 'Satterthwaite'], ['kenward-roger', T('Kenward-Roger (más exacto con pocos grupos; tarda más)')]], s.gl);
+    h += campo('mxd', 'estimacion', T('Estimación'), [['reml', T('REML (componentes de varianza sin sesgo)')], ['ml', T('Máxima verosimilitud')]], s.estimacion);
+    h += '<p class="small muted">' + esc(T('Corre en el motor R dentro de tu navegador (lme4, lmerTest y emmeans).')) + '</p>';
+    return h + campo('mxd', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('mxd', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
   function formulario(c) {
     if (estado.metodo === 'modelo-mixto') return formMixto(c);
+    if (MIXTOS_DIS.includes(estado.metodo)) return formDisenoMixto(c, estado.metodo);
     if (estado.metodo === 'modelo-lineal') return formModelo(c);
     if (CORREL.includes(estado.metodo)) return formCorrelacion(c, estado.metodo);
     if (CONTING.includes(estado.metodo)) return formContingencia(c, estado.metodo);
@@ -513,7 +589,20 @@
   function pedido() {
     const m = estado.metodo;
     if (m === 'modelo-lineal') { const s = estado.ml; return { e: { respuesta: s.respuesta }, op: { derecha: s.derecha, comoFactor: s.comoFactor.slice(), tipoSC: +s.tipoSC, alfa: +s.alfa, nivel: +s.nivel } }; }
-    if (m === 'modelo-mixto') { const s = estado.mx; return { e: { respuesta: s.respuesta }, op: { derecha: s.derecha, comoFactor: s.comoFactor.slice(), tipoSC: +s.tipoSC, gl: s.gl, reml: s.estimacion !== 'ml', alfa: +s.alfa, nivel: +s.nivel } }; }
+    if (m === 'modelo-mixto') {
+      const s = estado.mx;
+      return { e: { respuesta: s.respuesta }, op: Object.assign({ derecha: s.derecha, comoFactor: s.comoFactor.slice(), tipoSC: +s.tipoSC, gl: s.gl, reml: s.estimacion !== 'ml', ajuste: s.ajuste, alfa: +s.alfa, nivel: +s.nivel },
+        s.compararMx ? { comparar: s.compararMx.slice() } : {}, s.dentro ? { dentro: s.dentro } : {}) };
+    }
+    if (MIXTOS_DIS.includes(m)) {
+      const s = estado.mxd, e = { respuesta: s.respuesta };
+      if (m === 'mixto-bloques') Object.assign(e, { tratamientos: s.tratamientos.slice(), bloque: s.bloque });
+      else if (m === 'mixto-divididas') Object.assign(e, { parcelaGrande: s.parcelaGrande, subparcela: s.subparcela }, s.subsubparcela ? { subsubparcela: s.subsubparcela } : {}, s.bloque ? { bloque: s.bloque } : { repeticion: s.repeticion });
+      else if (m === 'mixto-latice') Object.assign(e, { tratamiento: s.tratamiento, repeticion: s.repeticion, bloque: s.bloque });
+      else Object.assign(e, { genotipo: s.genotipo, localidad: s.localidad, repeticion: s.repeticion });
+      return { e, op: Object.assign({ gl: s.gl, reml: s.estimacion !== 'ml', ajuste: s.ajuste, alfa: +s.alfa, nivel: +s.nivel },
+        s.compararMx ? { comparar: s.compararMx.slice() } : {}, m === 'mixto-latice' ? { repeticionAleatoria: !!s.repeticionAleatoria } : {}, m === 'mixto-localidades' ? { localidadFija: !!s.localidadFija } : {}) };
+    }
     if (CORREL.includes(m)) {
       const s = estado.cor;
       if (m === 'matriz-correlacion') return { e: { variables: s.variables.slice() }, op: { metodo: s.metodo, ajuste: s.ajuste, faltantes: s.faltantes, alfa: +s.alfa } };
@@ -772,6 +861,20 @@
   function graficasMixto(r) {
     const res = r.valores.residuos, aj = r.valores.ajustados, n = res.length;
     if (!n) return '';
+    let g0 = '';
+    const md = (r.medias || [])[0];
+    if (md && md.filas.length) {
+      if (md.dentro) {
+        const nivA = [...new Set(md.filas.map(f => f.nivel))], nivB = [...new Set(md.filas.map(f => f.por))];
+        const valor = (a, b) => { const x = md.filas.find(f => f.nivel === a && f.por === b); return x ? x.media : NaN; };
+        g0 = SP.graficas.lineas({ titulo: T('Medias de {a} dentro de {b}', { a: md.factor, b: md.dentro }), x: { titulo: md.factor, niveles: nivA }, y: { titulo: r.respuesta }, leyenda: md.dentro,
+          descripcion: T('Medias marginales estimadas de «{v}» para cada {a}, una línea por cada {b}.', { v: r.respuesta, a: md.factor, b: md.dentro }), series: nivB.map(b => ({ nombre: b, valores: nivA.map(a => valor(a, b)) })) });
+      } else if (md.filas.length <= 40) {
+        g0 = SP.graficas.medias({ titulo: T('Medias marginales de «{f}»', { f: md.factor }), y: { titulo: r.respuesta },
+          descripcion: T('Medias marginales estimadas del modelo mixto con su intervalo de confianza de {c} %; la misma letra indica que no difieren ({a}).', { c: Math.round(100 * r.nivel), a: md.ajuste }),
+          grupos: md.filas.map(x => ({ nombre: x.nivel, media: x.media, inf: x.ic[0], sup: x.ic[1], letra: x.letras })) });
+      }
+    }
     const g1 = SP.graficas.dispersion({ titulo: T('Residuos contra ajustados'), x: { titulo: T('Valor ajustado') }, y: { titulo: T('Residuo') }, referencias: [{ y: 0 }],
       descripcion: T('Residuos condicionales (con los efectos aleatorios) contra los valores ajustados: sin patrón si el modelo es adecuado.'),
       puntos: SP.graficas.adelgazar(aj.map((x, i) => ({ x, y: res[i] })).filter(p => Number.isFinite(p.x) && Number.isFinite(p.y)), 2500) });
@@ -779,7 +882,7 @@
     const g2 = SP.graficas.dispersion({ titulo: T('Gráfico Q-Q de los residuos'), x: { titulo: T('Cuantil normal teórico') }, y: { titulo: T('Residuo') },
       descripcion: T('Residuos ordenados contra los cuantiles de la normal: cerca de una recta si son normales.'),
       puntos: SP.graficas.adelgazar(ord.map((y, i) => ({ x: SP.dist.qnorm((i + 1 - a) / (m + 1 - 2 * a)), y })), 2500) });
-    return g1 + g2;
+    return g0 + g1 + g2;
   }
   function graficaMetodo(r, op) {
     op = op || {};
@@ -912,7 +1015,7 @@
     if (estado.modo !== 'catalogo') { const p = estado.pintores[estado.modo]; if (p) p(c); return; }
     catalogo();
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -1021,7 +1124,13 @@
     } else if (m === 'modelo-lineal') {
       pon(estado.ml, { respuesta: e.respuesta, derecha: op.derecha, comoFactor: op.comoFactor || [], tipoSC: op.tipoSC });
     } else if (m === 'modelo-mixto') {
-      pon(estado.mx, { respuesta: e.respuesta, derecha: op.derecha, comoFactor: op.comoFactor || [], tipoSC: op.tipoSC, gl: op.gl, estimacion: op.reml === false ? 'ml' : op.reml === undefined ? undefined : 'reml' });
+      pon(estado.mx, { respuesta: e.respuesta, derecha: op.derecha, comoFactor: op.comoFactor || [], tipoSC: op.tipoSC, gl: op.gl, estimacion: op.reml === false ? 'ml' : op.reml === undefined ? undefined : 'reml',
+        ajuste: op.ajuste, dentro: op.dentro || '' });
+      estado.mx.compararMx = op.comparar ? [].concat(op.comparar) : null;
+    } else if (MIXTOS_DIS.includes(m)) {
+      pon(estado.mxd, Object.assign({}, e, { tratamientos: e.tratamientos ? [].concat(e.tratamientos) : undefined, subsubparcela: e.subsubparcela || '', bloque: e.bloque || '',
+        gl: op.gl, estimacion: op.reml === false ? 'ml' : op.reml === undefined ? undefined : 'reml', ajuste: op.ajuste, repeticionAleatoria: op.repeticionAleatoria, localidadFija: op.localidadFija }));
+      estado.mxd.compararMx = op.comparar ? [].concat(op.comparar) : null;
     }
     estado.metodo = m;
   }
@@ -1060,8 +1169,8 @@
         estado.cmp.comparar = marcados;
       } else if (el.dataset.campo === 'comparar1') {
         estado.cmp.comparar = el.value ? [el.value] : [];
-      } else if (['predictores', 'covariables', 'variables', 'controles', 'comoFactor'].includes(el.dataset.lista)) {
-        const marcados = [...form.querySelectorAll('[data-lista="' + el.dataset.lista + '"]:checked')].map(x => x.value), max = { covariables: 2, predictores: 15, variables: 30, controles: 10, comoFactor: 30 }[el.dataset.lista];
+      } else if (['predictores', 'covariables', 'variables', 'controles', 'comoFactor', 'compararMx'].includes(el.dataset.lista)) {
+        const marcados = [...form.querySelectorAll('[data-lista="' + el.dataset.lista + '"]:checked')].map(x => x.value), max = { covariables: 2, predictores: 15, variables: 30, controles: 10, comoFactor: 30, compararMx: 6 }[el.dataset.lista];
         if (marcados.length > max) { el.checked = false; L() && L().toast(T('Hasta {k} variables.', { k: max }), { type: 'warning' }); return; }
         estado[el.dataset.grupo][el.dataset.lista] = marcados;
       } else if (el.dataset.lista === 'tratamientos') {

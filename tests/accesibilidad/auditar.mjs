@@ -40,8 +40,14 @@ if (AUDITOR && process.platform === 'win32') {
   for (const [nombre, e] of Object.entries(ESC)) if (nombre.includes(filtro)) for (const ancho of [1280, 360]) tareas.push({ nombre, e, ancho });
   const correr = (t, puerto) => new Promise(ok => {
     const archivo = join(tmp, t.nombre + '.js');
-    /* una preparación asíncrona (espera: true) pone window.__esperando mientras termina: hasta entonces no se mide */
-    writeFileSync(archivo, `(${GUARDA} ? (window.__prep = 1, window.__auditT0 = 0, (${t.e.prep}, null), null) : window.__esperando ? null : ` + MEDICION);
+    /* Antes de preparar: el bloque Análisis en el modo Catálogo (desde el Hito 1.10 abre en el Asistente; los escenarios
+       del asistente y del constructor cambian de modo ellos mismos) y un registro de errores: los de la preparación y los
+       de la página cuentan como falla (el auditor de la suite no escucha la consola).
+       Una preparación asíncrona (espera: true) pone window.__esperando mientras termina: hasta entonces no se mide. */
+    const antes = "(window.__errores = [], addEventListener('error', ev => window.__errores.push(String(ev.message))), " +
+      "addEventListener('unhandledrejection', ev => window.__errores.push(String(ev.reason && ev.reason.message || ev.reason))), SP.app.analisis.modo = 'catalogo')";
+    const prep = '(() => { try { const r = (' + t.e.prep + '); if (r && typeof r.catch === "function") r.catch(e => { window.__errorPrep = String(e && e.message || e); window.__esperando = false; }); } catch (e) { window.__errorPrep = String(e && e.message || e); window.__esperando = false; } })()';
+    writeFileSync(archivo, `(${GUARDA} ? (window.__prep = 1, window.__auditT0 = 0, ${antes}, ${prep}, null) : window.__esperando ? null : ` + MEDICION);
     execFile('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', AUDITOR, '-Url', URL_APP, '-EvalFile', archivo, '-Width', String(t.ancho), '-Port', String(puerto), '-Timeout', t.e.espera ? '150' : '90'],
       { maxBuffer: 1 << 24, timeout: 240000 }, (err, out) => {
         const perfil = join(tmpdir(), 'labg-audit-headless-' + puerto);
@@ -60,6 +66,8 @@ if (AUDITOR && process.platform === 'win32') {
           const R = JSON.parse(j.result);
           corridas++; textos += R.contrastLight.checked + R.contrastDark.checked;
           if (j.errors.length) mal.push('consola: ' + j.errors.slice(0, 2).join(' | '));
+          if (R.errorPrep) mal.push('la preparación falló: ' + R.errorPrep);
+          if (R.erroresPagina && R.erroresPagina.length) mal.push('errores en la página: ' + R.erroresPagina.join(' | '));
           if (R.noName.length) mal.push('botones o enlaces sin nombre: ' + R.noName.join(' '));
           if (R.noAlt) mal.push(R.noAlt + ' imágenes sin alt');
           if (R.dupIds.length) mal.push('ids repetidos: ' + R.dupIds.join(' '));

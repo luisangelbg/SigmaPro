@@ -69,12 +69,14 @@ carpeta.
 ### Datos publicados en los ejemplos
 
 `datos/ejemplos.js` trae nueve conjuntos ficticios generados por `datos/generar-ejemplos.R` (obra propia) y
-tres publicados: los tiempos de supervivencia del cuadro 1 de Box, G. E. P. y Cox, D. R. (1964), *An analysis
+cinco publicados: los tiempos de supervivencia del cuadro 1 de Box, G. E. P. y Cox, D. R. (1964), *An analysis
 of transformations*, J. R. Stat. Soc. B 26: 211–252 (el script los coteja celda por celda con la copia del
 paquete boot de R); los conteos de la F2 dihíbrida del chícharo de Mendel, G. (1866), *Versuche über
 Pflanzen-Hybriden*; y los rendimientos de avena en parcelas divididas de Yates, F. (1935), *Complex experiments*,
-Suppl. J. R. Stat. Soc. 2: 181–247 (cotejados parcela por parcela con la copia del paquete MASS de R). Son datos de
-publicaciones científicas, citados en el archivo y en la app.
+Suppl. J. R. Stat. Soc. 2: 181–247 (cotejados parcela por parcela con la copia del paquete MASS de R); y el alfa-látice
+de 24 genotipos y la avena en 14 ambientes de Olivoto, T. y Lúcio, A. D. (2020), *metan: an R package for
+multi-environment trial analysis*, Methods Ecol. Evol. 11: 783–789 (conjuntos data_alpha y data_ge del paquete metan,
+GPL-3). Son datos de publicaciones científicas, citados en el archivo y en la app.
 
 ### Algoritmos traducidos de código publicado
 
@@ -168,7 +170,8 @@ SOFTWARE.
 Los casos de `tests/casos/` usan además datos publicados que R distribuye en su paquete datasets (PlantGrowth,
 airquality, trees, cars, stackloss, swiss, mtcars, longley, women, chickwts, warpbreaks, HairEyeColor, UCBAdmissions,
 occupationalStatus) o en los paquetes boot
-(poisons), MASS (oats, anorexia), agricolae (frijol) y carData (Soils); cada caso cita la publicación original en su
+(poisons), MASS (oats, anorexia, npk), agricolae (frijol, plots, plrv), carData (Soils), lme4 (sleepstudy, Penicillin),
+nlme (Oats, Machines) y metan (data_alpha, data_ge); cada caso cita la publicación original en su
 campo `fuente`.
 
 ## Que se descargan al usarse (motor R, Fase 2)
@@ -183,6 +186,7 @@ No viajan dentro de esta carpeta: el navegador los descarga la primera vez que s
 | lme4 | 2.0-1 | GPL ≥ 2 | repositorio de webR, <https://repo.r-wasm.org/> | Modelos lineales mixtos |
 | lmerTest | 3.2-1 | GPL ≥ 2 | ídem | Grados de libertad de Satterthwaite y ANOVA de los efectos fijos |
 | pbkrtest | 0.5.5 | GPL ≥ 2 | ídem | Kenward-Roger (solo si se elige) |
+| emmeans | 2.0.3 | GPL-2 o GPL-3 | ídem | Medias marginales y comparaciones de los modelos mixtos |
 | Dependencias de los anteriores (Matrix, minqa, nloptr, numDeriv, MASS, boot, Rcpp, RcppEigen y otras) | las del repositorio de webR | GPL-2, GPL ≥ 2, LGPL ≥ 3 o MIT, según el paquete | ídem | Las instala R junto con los anteriores |
 
 Dos dependencias son solo GPL-2 (minqa, de lme4; numDeriv, de lmerTest): no se enlazan con el código de SigmaPro, que

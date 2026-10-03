@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-03T13:05:37.885Z",
+ "generado": "2026-10-03T15:38:19.079Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 636,
-  "aprobados": 636,
+  "casos": 646,
+  "aprobados": 646,
   "fallidos": 0,
-  "valores": 49168,
+  "valores": 62080,
   "difEscaladaMax": 2.0258232202030768e-7,
-  "objetivos": 130
+  "objetivos": 134
  },
  "casos": [
   {
@@ -16973,6 +16973,343 @@ window.SP_VALIDACION = {
    }
   },
   {
+   "id": "mixto-latice/alfa-latice-repeticiones-aleatorias",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mixto-latice"
+   },
+   "titulo": "El mismo alfa-látice con las repeticiones también aleatorias",
+   "fuente": "Olivoto y Lúcio (2020), Methods in Ecology and Evolution 11: 783-789; conjunto data_alpha de metan (alfa-látice)",
+   "clase": "D",
+   "valores": 2098,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 4.440892098500626e-16,
+   "peor": "medias[0].pares[60].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "modelo <- lmer(rend ~ genotipo + (1 | repeticion) + (1 | repeticion:bloque), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"genotipo\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "mixto-latice/alfa-latice",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mixto-latice"
+   },
+   "titulo": "Alfa-látice de 24 genotipos: repeticiones fijas y bloques incompletos aleatorios",
+   "fuente": "Olivoto y Lúcio (2020), Methods in Ecology and Evolution 11: 783-789; conjunto data_alpha de metan (alfa-látice)",
+   "clase": "D",
+   "valores": 2090,
+   "difMax": 7.105427357601002e-15,
+   "difEscaladaMax": 4.990402344761076e-16,
+   "peor": "anova.sc[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "modelo <- lmer(rend ~ genotipo + repeticion + (1 | repeticion:bloque), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"genotipo\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "mixto-localidades/avena-14-ambientes",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mixto-localidades"
+   },
+   "titulo": "Diez genotipos de avena en 14 ambientes: ambiente, repetición dentro de ambiente y G × A aleatorios",
+   "fuente": "Olivoto y Lúcio (2020), Methods in Ecology and Evolution 11: 783-789; conjunto data_ge de metan (avena en 14 ambientes)",
+   "clase": "D",
+   "valores": 1431,
+   "difMax": 1.3073986337985843e-12,
+   "difEscaladaMax": 1.1174349031257302e-14,
+   "peor": "anova.gl2[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "modelo <- lmer(rend ~ genotipo + (1 | localidad) + (1 | localidad:repeticion) + (1 | genotipo:localidad), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"genotipo\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "mixto-localidades/papa-localidades-fijas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mixto-localidades"
+   },
+   "titulo": "Clones de papa en 6 localidades fijas (genotipo × localidad fijos), repetición numérica dentro de localidad",
+   "fuente": "Centro Internacional de la Papa; conjunto plrv de agricolae (de Mendiburu, 2023): clones de papa en 6 localidades",
+   "clase": "D",
+   "valores": 3585,
+   "difMax": 2.572718358351267e-7,
+   "difEscaladaMax": 4.741856048523032e-9,
+   "peor": "anova.p[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "datos$repeticion <- factor(datos$repeticion); modelo <- lmer(rend ~ genotipo * localidad + (1 | localidad:repeticion), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"genotipo\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "mixto-divididas/avena-divididas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mixto-divididas"
+   },
+   "titulo": "Variedad en parcelas grandes y nitrógeno (numérico, como factor) en subparcelas, con bloques",
+   "fuente": "Yates (1935), Supplement to the Journal of the Royal Statistical Society 2: 181-247; conjunto Oats de nlme",
+   "clase": "D",
+   "valores": 352,
+   "difMax": 5.684341886080802e-14,
+   "difEscaladaMax": 2.6500428373337124e-16,
+   "peor": "anova.cm[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "datos$nitrogeno <- factor(datos$nitrogeno); modelo <- lmer(rendimiento ~ variedad * nitrogeno + (1 | bloque) + (1 | bloque:variedad), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"variedad\" | \"nitrogeno\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "mixto-divididas/parcelas-sin-bloques",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mixto-divididas"
+   },
+   "titulo": "Parcelas grandes sorteadas sin bloques: la repetición identifica cada parcela grande (1 | A:rep)",
+   "fuente": "de Mendiburu (2023), agricolae: Statistical Procedures for Agricultural Research; conjunto plots (parcelas divididas)",
+   "clase": "D",
+   "valores": 172,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "modelo <- lmer(rend ~ A * B + (1 | A:rep), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"A\" | \"B\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "mixto-bloques/maiz-parcelas-perdidas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mixto-bloques"
+   },
+   "titulo": "Tres parcelas perdidas: híbrido × dosis (numérica, como factor) con bloques aleatorios y Kenward-Roger",
+   "fuente": "Ensayo ficticio de maíz de SigmaPro: 3 híbridos × 4 dosis de N en 4 bloques (propuesta/maqueta-maiz.csv)",
+   "clase": "D",
+   "valores": 240,
+   "difMax": 2.220446049250313e-16,
+   "difEscaladaMax": 2.220446049250313e-10,
+   "peor": "medias[1].pares[3].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6",
+     "pbkrtest": "0.5.3"
+    },
+    "codigo": "datos$dosis <- factor(datos$dosis); modelo <- lmer(rend ~ hibrido * dosis + (1 | bloque), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Kenward-Roger\"); summary(modelo, ddf = \"Kenward-Roger\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"hibrido\" | \"dosis\", lmer.df = \"kenward-roger\") y pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "mixto-bloques/npk-bloques-aleatorios",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mixto-bloques"
+   },
+   "titulo": "Factorial 2 × 2 × 2 en bloques aleatorios con N × P × K confundida con los bloques (se recupera entre bloques)",
+   "fuente": "Yates (1935); conjunto npk de MASS (Venables y Ripley, 2002, Modern Applied Statistics with S, 4.ª ed.)",
+   "clase": "D",
+   "valores": 213,
+   "difMax": 7.105427357601002e-15,
+   "difEscaladaMax": 1.4038626027147157e-16,
+   "peor": "medias[1].filas[0].ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "modelo <- lmer(rend ~ N * P * K + (1 | bloque), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"N\" | \"P\" | \"K\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
    "id": "modelo-mixto/avena-kenward-roger",
    "objetivo": {
     "tipo": "metodo",
@@ -16981,29 +17318,38 @@ window.SP_VALIDACION = {
    "titulo": "Las mismas parcelas divididas con grados de libertad de Kenward-Roger",
    "fuente": "Yates (1935), Supplement to the Journal of the Royal Statistical Society 2: 181-247; conjunto Oats de nlme",
    "clase": "D",
-   "valores": 113,
+   "valores": 352,
    "difMax": 1.4210854715202004e-14,
    "difEscaladaMax": 1.3398654974206838e-16,
    "peor": "varianzas.varianza[0]",
    "aprobado": true,
    "error": "",
    "fallas": [],
-   "comparacion": {},
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
    "referencia": {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
      "lme4": "1.1.35.5",
      "lmerTest": "3.2.1",
+     "emmeans": "1.10.6",
      "pbkrtest": "0.5.3"
     },
-    "codigo": "datos$nitrogeno <- factor(datos$nitrogeno); modelo <- lmer(rendimiento ~ variedad * nitrogeno + (1 | bloque/variedad), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Kenward-Roger\"); summary(modelo, ddf = \"Kenward-Roger\"); VarCorr(modelo)"
+    "codigo": "datos$nitrogeno <- factor(datos$nitrogeno); modelo <- lmer(rendimiento ~ variedad * nitrogeno + (1 | bloque/variedad), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Kenward-Roger\"); summary(modelo, ddf = \"Kenward-Roger\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"variedad\" | \"nitrogeno\", lmer.df = \"kenward-roger\") y pairs(adjust = \"tukey\")"
    },
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
     "lme4": "2.0.1",
-    "lmerTest": "3.2.1"
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
    }
   },
   {
@@ -17015,40 +17361,49 @@ window.SP_VALIDACION = {
    "titulo": "Nitrógeno como covariable, ajuste por máxima verosimilitud (REML = FALSE)",
    "fuente": "Yates (1935), Supplement to the Journal of the Royal Statistical Society 2: 181-247; conjunto Oats de nlme",
    "clase": "D",
-   "valores": 58,
+   "valores": 236,
    "difMax": 2.842170943040401e-14,
    "difEscaladaMax": 1.678696234671167e-16,
    "peor": "varianzas.varianza[0]",
    "aprobado": true,
    "error": "",
    "fallas": [],
-   "comparacion": {},
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
    "referencia": {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
      "lme4": "1.1.35.5",
-     "lmerTest": "3.2.1"
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(rendimiento ~ variedad + nitrogeno + (1 | bloque/variedad), data = datos, REML = FALSE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(rendimiento ~ variedad + nitrogeno + (1 | bloque/variedad), data = datos, REML = FALSE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"variedad\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
    },
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
     "lme4": "2.0.1",
-    "lmerTest": "3.2.1"
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
    }
   },
   {
-   "id": "modelo-mixto/avena-parcelas-divididas",
+   "id": "modelo-mixto/avena-nitrogeno-dentro-variedad",
    "objetivo": {
     "tipo": "metodo",
     "nombre": "modelo-mixto"
    },
-   "titulo": "Parcelas divididas como modelo mixto: (1 | bloque/variedad), nitrógeno como factor",
+   "titulo": "Medias del nitrógeno dentro de cada variedad, comparadas con Holm",
    "fuente": "Yates (1935), Supplement to the Journal of the Royal Statistical Society 2: 181-247; conjunto Oats de nlme",
    "clase": "D",
-   "valores": 113,
+   "valores": 435,
    "difMax": 5.684341886080802e-14,
    "difEscaladaMax": 2.6500428373337124e-16,
    "peor": "anova.cm[2]",
@@ -17061,15 +17416,59 @@ window.SP_VALIDACION = {
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
      "lme4": "1.1.35.5",
-     "lmerTest": "3.2.1"
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
     },
-    "codigo": "datos$nitrogeno <- factor(datos$nitrogeno); modelo <- lmer(rendimiento ~ variedad * nitrogeno + (1 | bloque/variedad), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "datos$nitrogeno <- factor(datos$nitrogeno); modelo <- lmer(rendimiento ~ variedad * nitrogeno + (1 | bloque/variedad), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"nitrogeno\", by = \"variedad\", lmer.df = \"satterthwaite\") y pairs(adjust = \"holm\")"
    },
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
     "lme4": "2.0.1",
-    "lmerTest": "3.2.1"
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "modelo-mixto/avena-parcelas-divididas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "Parcelas divididas como modelo mixto: (1 | bloque/variedad), nitrógeno como factor",
+   "fuente": "Yates (1935), Supplement to the Journal of the Royal Statistical Society 2: 181-247; conjunto Oats de nlme",
+   "clase": "D",
+   "valores": 352,
+   "difMax": 5.684341886080802e-14,
+   "difEscaladaMax": 2.6500428373337124e-16,
+   "peor": "anova.cm[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "datos$nitrogeno <- factor(datos$nitrogeno); modelo <- lmer(rendimiento ~ variedad * nitrogeno + (1 | bloque/variedad), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"variedad\" | \"nitrogeno\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
    }
   },
   {
@@ -17081,28 +17480,37 @@ window.SP_VALIDACION = {
    "titulo": "Factorial híbrido × dosis con bloques aleatorios (balanceado: mismas F que el ANOVA de bloques)",
    "fuente": "Ensayo ficticio de maíz de SigmaPro: 3 híbridos × 4 dosis de N en 4 bloques (propuesta/maqueta-maiz.csv)",
    "clase": "D",
-   "valores": 108,
+   "valores": 240,
    "difMax": 7.105427357601002e-15,
    "difEscaladaMax": 4.718447854656915e-16,
    "peor": "anova.p[2]",
    "aprobado": true,
    "error": "",
    "fallas": [],
-   "comparacion": {},
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
    "referencia": {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
      "lme4": "1.1.35.5",
-     "lmerTest": "3.2.1"
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
     },
-    "codigo": "datos$dosis <- factor(datos$dosis); modelo <- lmer(rend ~ hibrido * dosis + (1 | bloque), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "datos$dosis <- factor(datos$dosis); modelo <- lmer(rend ~ hibrido * dosis + (1 | bloque), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"hibrido\" | \"dosis\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
    },
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
     "lme4": "2.0.1",
-    "lmerTest": "3.2.1"
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
    }
   },
   {
@@ -17114,10 +17522,52 @@ window.SP_VALIDACION = {
    "titulo": "El operario como columna numérica: se toma como factor de agrupamiento",
    "fuente": "Milliken y Johnson (1992), Analysis of Messy Data, vol. 1; conjunto Machines de nlme",
    "clase": "D",
-   "valores": 40,
-   "difMax": 3.552713678800501e-15,
-   "difEscaladaMax": 1.7257736691666708e-16,
-   "peor": "varianzas.de[0]",
+   "valores": 121,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 2.220446049250313e-10,
+   "peor": "medias[0].pares[0].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"maquina\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "modelo-mixto/maquinas-bonferroni-kenward-roger",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "modelo-mixto"
+   },
+   "titulo": "Desbalanceado: medias con gl de Kenward-Roger y pares con Bonferroni",
+   "fuente": "Milliken y Johnson (1992), Analysis of Messy Data, vol. 1; conjunto Machines de nlme",
+   "clase": "D",
+   "valores": 223,
+   "difMax": 6.394884621840902e-14,
+   "difEscaladaMax": 6.248245033855723e-14,
+   "peor": "coeficientes.p[0]",
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -17127,15 +17577,18 @@ window.SP_VALIDACION = {
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
      "lme4": "1.1.35.5",
-     "lmerTest": "3.2.1"
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6",
+     "pbkrtest": "0.5.3"
     },
-    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario/maquina), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Kenward-Roger\"); summary(modelo, ddf = \"Kenward-Roger\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"maquina\", lmer.df = \"kenward-roger\") y pairs(adjust = \"bonferroni\")"
    },
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
     "lme4": "2.0.1",
-    "lmerTest": "3.2.1"
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
    }
   },
   {
@@ -17147,28 +17600,37 @@ window.SP_VALIDACION = {
    "titulo": "El mismo diseño desbalanceado con SC tipo I",
    "fuente": "Milliken y Johnson (1992), Analysis of Messy Data, vol. 1; conjunto Machines de nlme",
    "clase": "D",
-   "valores": 45,
+   "valores": 223,
    "difMax": 3.552713678800501e-15,
    "difEscaladaMax": 1.514271063112094e-16,
    "peor": "varianzas.varianza[1]",
    "aprobado": true,
    "error": "",
    "fallas": [],
-   "comparacion": {},
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
    "referencia": {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
      "lme4": "1.1.35.5",
-     "lmerTest": "3.2.1"
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario) + (1 | operario:maquina), data = datos, REML = TRUE); anova(modelo, type = 1, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario) + (1 | operario:maquina), data = datos, REML = TRUE); anova(modelo, type = 1, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"maquina\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
    },
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
     "lme4": "2.0.1",
-    "lmerTest": "3.2.1"
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
    }
   },
   {
@@ -17180,28 +17642,37 @@ window.SP_VALIDACION = {
    "titulo": "Seis datos menos (desbalanceado): gl de Satterthwaite no enteros, SC tipo III",
    "fuente": "Milliken y Johnson (1992), Analysis of Messy Data, vol. 1; conjunto Machines de nlme",
    "clase": "D",
-   "valores": 45,
+   "valores": 223,
    "difMax": 3.552713678800501e-15,
    "difEscaladaMax": 1.8336731441770397e-16,
    "peor": "varianzas.de[1]",
    "aprobado": true,
    "error": "",
    "fallas": [],
-   "comparacion": {},
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
    "referencia": {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
      "lme4": "1.1.35.5",
-     "lmerTest": "3.2.1"
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario/maquina), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario/maquina), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"maquina\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
    },
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
     "lme4": "2.0.1",
-    "lmerTest": "3.2.1"
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
    }
   },
   {
@@ -17213,28 +17684,37 @@ window.SP_VALIDACION = {
    "titulo": "Operario aleatorio y su interacción con la máquina (1 | operario/maquina)",
    "fuente": "Milliken y Johnson (1992), Analysis of Messy Data, vol. 1; conjunto Machines de nlme",
    "clase": "D",
-   "valores": 45,
+   "valores": 223,
    "difMax": 1.7763568394002505e-15,
    "difEscaladaMax": 1.277085695582275e-16,
    "peor": "varianzas.varianza[0]",
    "aprobado": true,
    "error": "",
    "fallas": [],
-   "comparacion": {},
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
    "referencia": {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
      "lme4": "1.1.35.5",
-     "lmerTest": "3.2.1"
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario/maquina), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario/maquina), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"maquina\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
    },
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
     "lme4": "2.0.1",
-    "lmerTest": "3.2.1"
+    "lmerTest": "3.2.1",
+    "emmeans": "2.0.3"
    }
   },
   {
@@ -17246,22 +17726,30 @@ window.SP_VALIDACION = {
    "titulo": "Dos efectos aleatorios cruzados (placa y muestra) y solo el intercepto fijo",
    "fuente": "Davies y Goldsmith (1972), Statistical Methods in Research and Production, 4.ª ed.; conjunto Penicillin de lme4",
    "clase": "D",
-   "valores": 26,
+   "valores": 197,
    "difMax": 1.1102230246251565e-16,
    "difEscaladaMax": 1.1102230246251565e-16,
    "peor": "varianzas.varianza[0]",
    "aprobado": true,
    "error": "",
    "fallas": [],
-   "comparacion": {},
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
    "referencia": {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
      "lme4": "1.1.35.5",
-     "lmerTest": "3.2.1"
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(diametro ~ 1 + (1 | placa) + (1 | muestra), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(diametro ~ 1 + (1 | placa) + (1 | muestra), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE)"
    },
    "motor": {
     "webr": "0.6.0",
@@ -17279,22 +17767,30 @@ window.SP_VALIDACION = {
    "titulo": "Cuatro respuestas faltantes: el modelo usa las 176 filas completas",
    "fuente": "Belenky et al. (2003), Journal of Sleep Research 12: 1-12; conjunto sleepstudy de lme4",
    "clase": "D",
-   "valores": 34,
+   "valores": 138,
    "difMax": 0,
    "difEscaladaMax": 0,
    "peor": null,
    "aprobado": true,
    "error": "",
    "fallas": [],
-   "comparacion": {},
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
    "referencia": {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
      "lme4": "1.1.35.5",
-     "lmerTest": "3.2.1"
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(Reaction ~ Days + (1 | Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(Reaction ~ Days + (1 | Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE)"
    },
    "motor": {
     "webr": "0.6.0",
@@ -17312,22 +17808,30 @@ window.SP_VALIDACION = {
    "titulo": "Intercepto y pendiente aleatorios correlacionados por sujeto (Days | Subject)",
    "fuente": "Belenky et al. (2003), Journal of Sleep Research 12: 1-12; conjunto sleepstudy de lme4",
    "clase": "D",
-   "valores": 44,
+   "valores": 238,
    "difMax": 0,
    "difEscaladaMax": 0,
    "peor": null,
    "aprobado": true,
    "error": "",
    "fallas": [],
-   "comparacion": {},
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
    "referencia": {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
      "lme4": "1.1.35.5",
-     "lmerTest": "3.2.1"
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(Reaction ~ Days + (Days | Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(Reaction ~ Days + (Days | Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE)"
    },
    "motor": {
     "webr": "0.6.0",
@@ -17345,22 +17849,30 @@ window.SP_VALIDACION = {
    "titulo": "Intercepto y pendiente aleatorios sin correlación (Days || Subject)",
    "fuente": "Belenky et al. (2003), Journal of Sleep Research 12: 1-12; conjunto sleepstudy de lme4",
    "clase": "D",
-   "valores": 39,
+   "valores": 240,
    "difMax": 0,
    "difEscaladaMax": 0,
    "peor": null,
    "aprobado": true,
    "error": "",
    "fallas": [],
-   "comparacion": {},
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
    "referencia": {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
      "lme4": "1.1.35.5",
-     "lmerTest": "3.2.1"
+     "lmerTest": "3.2.1",
+     "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(Reaction ~ Days + (Days || Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(Reaction ~ Days + (Days || Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE)"
    },
    "motor": {
     "webr": "0.6.0",

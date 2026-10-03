@@ -35,7 +35,8 @@
     "comoFactor": [],
     "tipoSC": 3,
     "gl": "satterthwaite",
-    "reml": true
+    "reml": true,
+    "ajuste": "tukey"
   },
   "esperado": {
     "anova": {
@@ -68,6 +69,84 @@
       "AIC": 296.8782019777189,
       "BIC": 306.8231222105403,
       "singular": false
+    },
+    "medias": [
+      {
+        "factor": "maquina",
+        "filas": [
+          {
+            "nivel": "A",
+            "media": 52.355555555554908,
+            "ee": 2.2293124467471737,
+            "gl": 5.8331853742969093,
+            "ic": [46.862586223624689, 57.848524887485127]
+          },
+          {
+            "nivel": "B",
+            "media": 60.322222222221633,
+            "ee": 2.229312446747175,
+            "gl": 5.8331853740889228,
+            "ic": [54.829252890242337, 65.815191554200936]
+          },
+          {
+            "nivel": "C",
+            "media": 66.272222222221643,
+            "ee": 2.229312446747175,
+            "gl": 5.8331853740721886,
+            "ic": [60.779252890238396, 71.76519155420489]
+          }
+        ],
+        "pares": [
+          {
+            "contraste": "A - B",
+            "dif": -7.9666666666667272,
+            "ee": 1.0538824763342598,
+            "gl": 46.000000064300536,
+            "t": -7.559350160539096,
+            "p": 3.9700476239801219e-09
+          },
+          {
+            "contraste": "A - C",
+            "dif": -13.916666666666735,
+            "ee": 1.0538824763342598,
+            "gl": 46.000000063659691,
+            "t": -13.205140970816169,
+            "p": 0
+          },
+          {
+            "contraste": "B - C",
+            "dif": -5.9500000000000082,
+            "ee": 1.05388247633426,
+            "gl": 46.000000064750417,
+            "t": -5.6457908102770711,
+            "p": 2.9034486139778437e-06
+          }
+        ]
+      }
+    ],
+    "ranova": {
+      "termino": ["<none>", "(1 | operario)"],
+      "npar": [5, 4],
+      "logLik": [-143.43910098885945, -166.14431129501122],
+      "AIC": [296.8782019777189, 340.28862259002244],
+      "LRT": ["NA", 45.41042061230354],
+      "gl": ["NA", 1],
+      "p": ["NA", 1.5978199549024362e-11]
+    },
+    "blup": {
+      "grupo": ["operario", "operario", "operario", "operario", "operario", "operario"],
+      "termino": ["(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)"],
+      "nivel": ["1", "2", "3", "4", "5", "6"],
+      "valor": [1.2103576875503208, -1.5942596853622952, 6.2117476035047616, -0.069315638493460383, 2.9485806220931194, -8.7071105892889484],
+      "de": [1.0324579522518744, 1.0324579522518744, 1.0324579522518744, 1.0324579522518744, 1.0324579522518744, 1.0324579522518744]
+    }
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+      }
     }
   },
   "referencia": {
@@ -75,8 +154,9 @@
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
       "lme4": "1.1.35.5",
-      "lmerTest": "3.2.1"
+      "lmerTest": "3.2.1",
+      "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"maquina\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
   }
 }

@@ -56,8 +56,10 @@ casos y 48 458 valores.
 
 **Fase 2 en curso** (plan en [`propuesta/FASE2.md`](propuesta/FASE2.md)): el **motor R dentro del navegador** (webR,
 que se descarga solo cuando se necesita; los datos no salen del equipo) y el **modelo lineal mixto** escrito como
-fórmula, con efectos aleatorios como en lme4, grados de libertad de Satterthwaite o Kenward-Roger y componentes de
-varianza, validado en el navegador contra R. En total, 636 casos y 49 168 valores. Lo que falta para publicar y las
+fórmula, con efectos aleatorios como en lme4, grados de libertad de Satterthwaite o Kenward-Roger, componentes de
+varianza, medias marginales con letras, prueba de cada aleatorio y BLUP; y los diseños con efectos aleatorios
+(bloques aleatorios, parcelas divididas, látice y alfa-látice, varias localidades), validados en el navegador
+contra R. En total, 646 casos y 62 080 valores. Lo que falta para publicar y las
 fases 2 y 3 están en
 [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan
 completo está en

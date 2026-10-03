@@ -36,7 +36,8 @@
     "comoFactor": [],
     "tipoSC": 3,
     "gl": "satterthwaite",
-    "reml": true
+    "reml": true,
+    "ajuste": "tukey"
   },
   "esperado": {
     "anova": {
@@ -69,6 +70,31 @@
       "AIC": 338.86058899960437,
       "BIC": 350.73984219790839,
       "singular": false
+    },
+    "medias": [],
+    "ranova": {
+      "termino": ["<none>", "(1 | placa)", "(1 | muestra)"],
+      "npar": [4, 3, 3],
+      "logLik": [-165.43029449980219, -217.95893082227118, -306.62801200360298],
+      "AIC": [338.86058899960437, 441.91786164454237, 619.25602400720595],
+      "LRT": ["NA", 105.057272644938, 282.39543500760158],
+      "gl": ["NA", 1, 1],
+      "p": ["NA", 1.1865615276316557e-24, 2.257340867084336e-63]
+    },
+    "blup": {
+      "grupo": ["placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "placa", "muestra", "muestra", "muestra", "muestra", "muestra", "muestra"],
+      "termino": ["(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)"],
+      "nivel": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "A", "B", "C", "D", "E", "F"],
+      "valor": [0.80454690584096189, 0.80454690584096189, 0.18167188196409659, 0.33739063793331364, 0.025953125994879613, -0.44120314191277166, -1.3755156777280744, 0.80454690584096189, -0.75264065385120582, -0.75264065385120582, 0.96026566181017914, 0.49310939390252795, 1.4274219297178301, 0.49310939390252795, 0.96026566181017914, 0.025953125994879613, -0.28548438594355446, -0.28548438594355446, -1.3755156777280744, 0.96026566181017914, -0.90835940982042018, -0.28548438594355446, -0.59692189788198879, -1.2197969217588545, 2.1870584018302694, -1.0104763502122853, 1.9378998497230617, -0.096894992485846751, -0.013842141783435706, -3.0037447670699793],
+      "de": [0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.27135930259588875, 0.20217068510593772, 0.20217068510593775, 0.20217068510593772, 0.20217068510593778, 0.20217068510593775, 0.20217068510593775]
+    }
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+      }
     }
   },
   "referencia": {
@@ -76,8 +102,9 @@
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
       "lme4": "1.1.35.5",
-      "lmerTest": "3.2.1"
+      "lmerTest": "3.2.1",
+      "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(diametro ~ 1 + (1 | placa) + (1 | muestra), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(diametro ~ 1 + (1 | placa) + (1 | muestra), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE)"
   }
 }

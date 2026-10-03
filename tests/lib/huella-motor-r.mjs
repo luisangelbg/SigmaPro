@@ -16,7 +16,8 @@ export function huellero(raiz) {
   const metodos = readdirSync(join(raiz, 'js', 'metodos')).filter(f => f.endsWith('.js')).map(f => leer(join(raiz, 'js', 'metodos', f)));
   const archivoDe = new Map();
   return function huella(textoCaso, metodo) {
-    if (!archivoDe.has(metodo)) archivoDe.set(metodo, metodos.find(t => t.includes("id: '" + metodo + "'")) || '');
+    /* todo archivo de métodos que nombre el id (la ficha puede declararse con id: '…' o como clave de un objeto) */
+    if (!archivoDe.has(metodo)) archivoDe.set(metodo, metodos.filter(t => t.includes("'" + metodo + "'")).join('\n'));
     return createHash('sha256').update(textoCaso.replace(/\r\n/g, '\n')).update('\0').update(comun).update('\0').update(archivoDe.get(metodo)).digest('hex');
   };
 }

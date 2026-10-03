@@ -35,7 +35,8 @@
     "comoFactor": [],
     "tipoSC": 3,
     "gl": "satterthwaite",
-    "reml": true
+    "reml": true,
+    "ajuste": "tukey"
   },
   "esperado": {
     "anova": {
@@ -68,6 +69,31 @@
       "AIC": 1754.4906943194117,
       "BIC": 1767.1726302995642,
       "singular": false
+    },
+    "medias": [],
+    "ranova": {
+      "termino": ["<none>", "(1 | Subject)"],
+      "npar": [4, 3],
+      "logLik": [-873.24534715970583, -923.46855975515348],
+      "AIC": [1754.4906943194117, 1852.937119510307],
+      "LRT": ["NA", 100.4464251908953],
+      "gl": ["NA", 1],
+      "p": ["NA", 1.2164317665217107e-23]
+    },
+    "blup": {
+      "grupo": ["Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject"],
+      "termino": ["(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)"],
+      "nivel": ["308", "309", "310", "330", "331", "332", "333", "334", "335", "337", "349", "350", "351", "352", "369", "370", "371", "372"],
+      "valor": [38.377419804255268, -77.632561971395177, -62.925965194819419, 8.353181196895898, 10.227730146871499, 8.2374329498211036, 16.49737430278844, -2.9546148531331022, -45.141112720945223, 67.729005670495809, -21.111425089102312, 14.113817181495026, -7.8085046283930559, 36.328931800626819, 7.05534015773428, -4.2036944207925826, -3.251212952287752, 18.108858619889631],
+      "de": [9.9346732726355427, 9.4600475945635178, 9.4600475945635178, 9.9346732726355427, 9.4600475945635178, 9.4600475945635178, 9.4600475945635178, 9.4600475945635178, 9.4600475945635178, 9.9346732726355427, 9.4600475945635178, 9.4600475945635178, 9.4600475945635178, 9.4600475945635178, 9.4600475945635178, 9.9346732726355427, 9.4600475945635178, 9.4600475945635178]
+    }
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+      }
     }
   },
   "referencia": {
@@ -75,8 +101,9 @@
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
       "lme4": "1.1.35.5",
-      "lmerTest": "3.2.1"
+      "lmerTest": "3.2.1",
+      "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(Reaction ~ Days + (1 | Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(Reaction ~ Days + (1 | Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE)"
   }
 }

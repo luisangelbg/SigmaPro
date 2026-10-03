@@ -35,7 +35,8 @@
     "comoFactor": [],
     "tipoSC": 3,
     "gl": "satterthwaite",
-    "reml": true
+    "reml": true,
+    "ajuste": "tukey"
   },
   "esperado": {
     "anova": {
@@ -68,6 +69,31 @@
       "AIC": 1753.669293581481,
       "BIC": 1769.6340778359322,
       "singular": false
+    },
+    "medias": [],
+    "ranova": {
+      "termino": ["<none>", "(1 | Subject)", "Days in (0 + Days | Subject)"],
+      "npar": [5, 4, 4],
+      "logLik": [-871.83464679074052, -883.2625137427849, -893.23254269746053],
+      "AIC": [1753.669293581481, 1774.5250274855698, 1794.4650853949211],
+      "LRT": ["NA", 22.855733904088765, 42.795791813440019],
+      "gl": ["NA", 1, 1],
+      "p": ["NA", 1.7462758967090038e-06, 6.0762730994278274e-11]
+    },
+    "blup": {
+      "grupo": ["Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject"],
+      "termino": ["(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days"],
+      "nivel": ["308", "309", "310", "330", "331", "332", "333", "334", "335", "337", "349", "350", "351", "352", "369", "370", "371", "372", "308", "309", "310", "330", "331", "332", "333", "334", "335", "337", "349", "350", "351", "352", "369", "370", "371", "372"],
+      "valor": [1.5126647686793393, -40.373872827716724, -39.181027903702137, 24.518924396791714, 22.914447030763132, 9.2219758925027335, 17.156124316051518, -7.4517381986268729, 0.57876233971327773, 34.767903028390265, -25.754331231842436, -13.865059805926446, 4.9159912068818192, 20.929033196022747, 3.2586447954054236, -26.475846784123675, 0.90565103320304241, 12.421754747561758, 9.3234970398909471, -8.5991757411360901, -5.3877944265045912, -4.9686502524609457, -3.1939377859760461, -0.30849394560152843, -0.28720782924165328, 1.1159910756149884, -10.90597541515427, 8.6276227901670275, 1.2806892043953129, 6.7564063503512486, -3.075135582084735, 3.5122122807766036, 0.87305135253661603, 4.9837909791460007, -1.0052937719726034, 1.2584036772536216],
+      "de": [12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 12.238941063459635, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628, 2.335463913007628]
+    }
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+      }
     }
   },
   "referencia": {
@@ -75,8 +101,9 @@
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
       "lme4": "1.1.35.5",
-      "lmerTest": "3.2.1"
+      "lmerTest": "3.2.1",
+      "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(Reaction ~ Days + (Days || Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(Reaction ~ Days + (Days || Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE)"
   }
 }

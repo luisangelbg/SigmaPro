@@ -36,7 +36,8 @@
     "comoFactor": [],
     "tipoSC": 3,
     "gl": "satterthwaite",
-    "reml": true
+    "reml": true,
+    "ajuste": "tukey"
   },
   "esperado": {
     "anova": {
@@ -69,6 +70,84 @@
       "AIC": 210.94392998230262,
       "BIC": 222.17113604774997,
       "singular": false
+    },
+    "medias": [
+      {
+        "factor": "maquina",
+        "filas": [
+          {
+            "nivel": "A",
+            "media": 52.527931357837225,
+            "ee": 2.5234292388701531,
+            "gl": 8.5563372108647275,
+            "ic": [46.774098011857717, 58.281764703816734]
+          },
+          {
+            "nivel": "B",
+            "media": 60.331873814432939,
+            "ee": 2.5207841243166782,
+            "gl": 8.520819701115002,
+            "ic": [54.580204028638938, 66.083543600226946]
+          },
+          {
+            "nivel": "C",
+            "media": 66.2445981329479,
+            "ee": 2.5198777357995734,
+            "gl": 8.5085699651265099,
+            "ic": [60.493654411610024, 71.995541854285776]
+          }
+        ],
+        "pares": [
+          {
+            "contraste": "A - B",
+            "dif": -7.8039424565957125,
+            "ee": 2.2139511295017731,
+            "gl": 10.010847444810384,
+            "t": -3.5248937307626611,
+            "p": 0.013832042886998019
+          },
+          {
+            "contraste": "A - C",
+            "dif": -13.716666775110669,
+            "ee": 2.2129138104030965,
+            "gl": 9.9920374514755679,
+            "t": -6.1984640841534127,
+            "p": 0.000272455289919038
+          },
+          {
+            "contraste": "B - C",
+            "dif": -5.9127243185149565,
+            "ee": 2.2098939400939241,
+            "gl": 9.938992220447167,
+            "t": -2.6755692711043211,
+            "p": 0.055904172617555981
+          }
+        ]
+      }
+    ],
+    "ranova": {
+      "termino": ["<none>", "(1 | maquina:operario)", "(1 | operario)"],
+      "npar": [6, 5, 5],
+      "logLik": [-99.47196499115131, -126.44543743850903, -102.24726339193373],
+      "AIC": [210.94392998230262, 262.89087487701806, 214.49452678386746],
+      "LRT": ["NA", 53.946944894715443, 5.5505968015648364],
+      "gl": ["NA", 1, 1],
+      "p": ["NA", 2.0597704644094726e-13, 0.018474386825786972]
+    },
+    "blup": {
+      "grupo": ["maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "maquina:operario", "operario", "operario", "operario", "operario", "operario", "operario"],
+      "termino": ["(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)"],
+      "nivel": ["A:1", "A:2", "A:3", "A:4", "A:5", "A:6", "B:1", "B:2", "B:3", "B:4", "B:5", "B:6", "C:1", "C:2", "C:3", "C:4", "C:5", "C:6", "1", "2", "3", "4", "5", "6"],
+      "valor": [-0.52853690471697556, 1.4239980418211999, 2.0344725969742035, -1.2290038659814464, -3.5352519421322817, 1.8343220740465089, 1.3984953621508884, 0.63823113811622956, 2.1839359071172613, 2.61457576755822, 2.2275073722161904, -9.0627455471561902, -0.17776844117561025, -2.9253963433259895, -0.89099558790305455, -1.4081925003284399, 2.802407192617435, 2.5999456801151828, 1.1372822652084167, -1.4182011929897516, 5.4670070496797498, -0.037166103505434658, 2.4557610675393211, -7.6046830859176229],
+      "de": [2.1202961616750007, 2.0433754074672463, 2.0633470502904312, 2.0462909511580598, 2.0462909511580576, 2.0462909511580598, 2.0547368750818906, 2.0433754074672463, 2.0462909511580585, 2.0633470502904325, 2.0462909511580576, 2.0633470502904325, 2.0547368750818906, 2.0433754074672463, 2.0462909511580585, 2.0462909511580598, 2.0633470502904299, 2.0462909511580598, 2.0202916887057154, 2.0081929795368008, 2.0112982455656256, 2.0112982455656265, 2.0112982455656243, 2.0112982455656265]
+    }
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+      }
     }
   },
   "referencia": {
@@ -76,8 +155,9 @@
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
       "lme4": "1.1.35.5",
-      "lmerTest": "3.2.1"
+      "lmerTest": "3.2.1",
+      "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario/maquina), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(puntaje ~ maquina + (1 | operario/maquina), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE); emmeans(modelo, \"maquina\", lmer.df = \"satterthwaite\") y pairs(adjust = \"tukey\")"
   }
 }

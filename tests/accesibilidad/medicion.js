@@ -98,6 +98,9 @@
   // en modo celular la vista crece con el contenido: se compara con el ancho del dispositivo
   R.width = matchMedia('(pointer: coarse)').matches ? screen.width : innerWidth; R.scrollWidth = Math.max(document.documentElement.scrollWidth, innerWidth);
   R.headerH = Math.round((q('header') || q('.topbar') || document.body).getBoundingClientRect().height);
+  /* errores de la preparación y de la página (los registra la envoltura de auditar.mjs) */
+  R.errorPrep = window.__errorPrep || '';
+  R.erroresPagina = (window.__errores || []).slice(0, 5);
   return JSON.stringify(R);
 })()
 )

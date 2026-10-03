@@ -2,6 +2,37 @@
 
 ## Sin publicar
 
+### Hito 2.1 · Modelos mixtos completos y diseños con efectos aleatorios (3 oct 2026)
+
+- Modelo lineal mixto, ahora con: **medias marginales** de los factores fijos (emmeans, con los grados de libertad de
+  Satterthwaite o Kenward-Roger del modelo) y sus **comparaciones por pares** con Tukey, Bonferroni, Holm, Šidák o sin
+  ajuste, con **letras** (la «a» para la media más alta) y la opción de comparar un factor **dentro de cada nivel** de
+  otro; la **prueba de razón de verosimilitudes de cada efecto aleatorio** (ranova, con la advertencia de que su p es
+  conservador); los **BLUP** con su DE condicional; y el **semáforo de los supuestos** sobre los residuos (Shapiro-Wilk,
+  Levene, normalidad de los BLUP y avisos del ajuste) con qué hacer si fallan.
+- **Cuatro diseños con efectos aleatorios** desde un formulario (familia Modelos mixtos), que arman su fórmula y la
+  muestran: **bloques al azar con bloques aleatorios** (con parcelas perdidas recupera la información entre bloques),
+  **parcelas divididas** (y subdivididas; con bloques, o sin bloques con la repetición de cada parcela grande),
+  **látice y alfa-látice** con bloques incompletos aleatorios (recuperación entre bloques; repeticiones fijas o
+  aleatorias) y **ensayos en varias localidades** (localidad, repetición y genotipo × localidad aleatorios, o
+  localidades fijas). Los papeles se proponen por el nombre de las columnas, sin repetir columna.
+- Gráficas: medias marginales con su IC y letras (o líneas cuando se compara dentro de otro factor), residuos y Q-Q.
+  Párrafo para la tesis con la frase del diseño, las comparaciones con su cita y la prueba de los aleatorios.
+- Dos ejemplos publicados nuevos (Olivoto y Lúcio, 2020, conjuntos de metan): un **alfa-látice** de 24 genotipos y
+  **avena en 14 ambientes**.
+- Validación en el navegador: 22 casos de 5 métodos (13 622 valores; diferencia escalada máxima 4.7 × 10⁻⁹), con los
+  diseños sobre npk (Yates), Oats, plots (agricolae), el alfa-látice y data_ge (metan) y los clones de papa de plrv
+  (agricolae); 646 casos en total. Los p de Tukey menores que 10⁻⁶ se comparan en valor absoluto (1 − ptukey, como en
+  la Fase 1).
+- Auditoría de accesibilidad más estricta: desde el Hito 1.10 el bloque Análisis abre en el Asistente, y 24 escenarios
+  que eligen un método sin cambiar de modo estaban auditando el asistente en lugar de su formulario; ahora cada
+  escenario empieza en el Catálogo, y los errores de la preparación y de la página (excepciones, promesas rechazadas)
+  cuentan como falla. Con eso apareció —y se corrigió antes de publicarse— un choque de nombres en esta entrega que
+  dejaba sin formulario a las comparaciones de medias. 49 escenarios, 98 revisiones, sin fallas.
+- Corregido: la huella de los casos del motor R no incluía el archivo del método cuando la ficha se declara como clave
+  de un objeto; ahora cuenta todo archivo de métodos que nombre el id. El generador de referencias del modelo mixto ya
+  no carga lmerTest con library() (su step() tapaba al de stats en los generadores siguientes).
+
 ### Hito 2.0 · Motor R en el navegador y modelo lineal mixto (3 oct 2026)
 
 - Plan detallado de la Fase 2 en `propuesta/FASE2.md`: decisiones (webR 0.6.0 fijado, paquetes y licencias), qué

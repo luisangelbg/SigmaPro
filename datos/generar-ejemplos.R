@@ -170,12 +170,29 @@ agregar("roya-evaluadores", "Roya: dos evaluadores",
         "Severidad de roya (0 a 3) en 80 hojas calificada por dos técnicos; para la concordancia (kappa simple y ponderada) y para ver si uno califica más alto (Bowker).", d,
         list(evaluador_A = list(tipo = "factor", niveles = niv), evaluador_B = list(tipo = "factor", niveles = niv)))
 
+## 13. Alfa-látice de 24 genotipos (Olivoto y Lúcio, 2020: conjunto data_alpha de metan)
+al <- metan::data_alpha
+d <- data.frame(repeticion = as.character(al$REP), bloque = as.character(al$BLOCK), genotipo = as.character(al$GEN), rendimiento = al$YIELD)
+agregar("alfa-latice", "Alfa-látice: 24 genotipos (Olivoto y Lúcio, 2020)",
+        "Datos publicados: 24 genotipos en 3 repeticiones, cada una con 6 bloques incompletos de 4 parcelas; para el látice con recuperación de la información entre bloques (modelos mixtos).", d,
+        list(repeticion = list(tipo = "factor", niveles = levels(al$REP)), bloque = list(tipo = "factor", niveles = levels(al$BLOCK)),
+             genotipo = list(tipo = "factor", niveles = levels(al$GEN))))
+
+## 14. Avena en 14 ambientes (Olivoto y Lúcio, 2020: conjunto data_ge de metan)
+ge <- metan::data_ge
+d <- data.frame(ambiente = as.character(ge$ENV), genotipo = as.character(ge$GEN), repeticion = as.character(ge$REP), rendimiento = ge$GY)
+agregar("avena-ambientes", "Avena en 14 ambientes (Olivoto y Lúcio, 2020)",
+        "Datos publicados: 10 genotipos de avena en 14 ambientes con 3 repeticiones; rendimiento de grano (t/ha). Para el ensayo en varias localidades (modelos mixtos) y, más adelante, la estabilidad.", d,
+        list(ambiente = list(tipo = "factor", niveles = paste0("E", 1:14)), genotipo = list(tipo = "factor", niveles = paste0("G", 1:10)),
+             repeticion = list(tipo = "factor", niveles = c("1", "2", "3"))))
+
 ## escribir datos/ejemplos.js
 js <- paste0(
   "/* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.\n",
   "   Ficticios y reproducibles, salvo «venenos»: Box, G. E. P. y Cox, D. R. (1964). An analysis of transformations.\n",
   "   J. R. Stat. Soc. B 26: 211-252, cuadro 1; «mendel»: Mendel, G. (1866), Versuche über Pflanzen-Hybriden;\n",
-  "   y «avena»: Yates, F. (1935). Complex experiments. Suppl. J. R. Stat. Soc. 2: 181-247. */\n",
+  "   «avena»: Yates, F. (1935). Complex experiments. Suppl. J. R. Stat. Soc. 2: 181-247; «alfa-latice» y «avena-ambientes»:\n",
+  "   Olivoto, T. y Lúcio, A. D. (2020). metan: an R package for multi-environment trial analysis. Methods Ecol. Evol. 11: 783-789. */\n",
   "window.SP_EJEMPLOS = ",
   jsonlite::toJSON(ejemplos, auto_unbox = TRUE, pretty = TRUE, null = "null"), ";\n")
 salida <- file("datos/ejemplos.js", open = "w", encoding = "UTF-8")

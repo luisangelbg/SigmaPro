@@ -400,8 +400,12 @@ escritorio con el que se calcula la referencia.
   del caso, del puente (`js/nucleo/motor-r.js`), del registro y del archivo que define el método
   (`tests/lib/huella-motor-r.mjs`). Si alguno cambió después de la corrida, el caso queda **sin aprobar** y el método
   no aparece en la app hasta volver a correrlo.
-- **Resultado**: 12 casos, 710 valores, diferencia escalada máxima 4.7 × 10⁻¹⁶, a pesar de que el motor trae lme4
-  2.0-1 y el escritorio 1.1-35.5.
+- **Resultado** (Hito 2.1): 22 casos de 5 métodos, 13 622 valores, diferencia escalada máxima 4.7 × 10⁻⁹, a pesar de que
+  el motor trae lme4 2.0-1 y emmeans 2.0.3 y el escritorio lme4 1.1-35.5 y emmeans 1.10.6. La referencia común está en
+  `tests/r/mixto.R`: ANOVA, coeficientes, componentes de varianza, ajuste, medias marginales y sus pares (emmeans),
+  ranova y BLUP. Los p de Tukey se comparan con un piso absoluto de 1e-12 (son 1 − ptukey, una integral numérica: con 28
+  genotipos hay p de 10⁻¹² que difieren en la cuarta cifra entre R 4.6 en WebAssembly y R 4.4.2 de escritorio). Las
+  letras se calculan en el núcleo JS (ya validado en la Fase 1) a partir de esos p.
 
 | Caso | Qué cubre |
 |---|---|
@@ -409,7 +413,11 @@ escritorio con el que se calcula la referencia.
 | Penicillin (Davies y Goldsmith 1972) | dos aleatorios cruzados y solo el intercepto fijo (ANOVA vacía) |
 | Oats (Yates 1935) | parcelas divididas `(1 \| bloque/variedad)` con Satterthwaite y con Kenward-Roger; nitrógeno como covariable por máxima verosimilitud |
 | Machines (Milliken y Johnson 1992) | operario aleatorio y su interacción con la máquina; desbalanceado (gl no enteros) con SC tipo III y tipo I; el operario como columna numérica |
-| Maíz de los ejemplos | factorial con bloques aleatorios: balanceado, da las mismas F que el ANOVA de bloques del núcleo JS |
+| Maíz de los ejemplos | factorial con bloques aleatorios: balanceado, da las mismas F que el ANOVA de bloques del núcleo JS; con tres parcelas perdidas y Kenward-Roger |
+| npk (Yates 1935) | factorial 2 × 2 × 2 en bloques aleatorios con N × P × K confundida con los bloques: se estima con la información entre bloques |
+| plots (agricolae) | parcelas divididas sin bloques: la repetición identifica cada parcela grande |
+| data_alpha (Olivoto y Lúcio 2020) | alfa-látice de 24 genotipos, con repeticiones fijas y aleatorias |
+| data_ge (Olivoto y Lúcio 2020) y plrv (CIP, agricolae) | ensayos en varias localidades: localidad, repetición y G × L aleatorios; localidades fijas con 28 clones (378 pares de Tukey) |
 
 Las piezas puras del puente (lectura de la salida de R, nombres, columnas, código que se manda) tienen pruebas unitarias
 en node (`tests/unidad/motor-r.test.js`). La prueba de privacidad registra también las peticiones del hilo del motor:

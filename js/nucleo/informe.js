@@ -446,9 +446,17 @@ SP.definir('informe', function (SP) {
     const cf = lista(r.comoFactor), kr = r.gl === 'Kenward-Roger';
     const est = r.reml ? T('máxima verosimilitud restringida (REML; {c})', { c: cita(['patterson1971'], citas) }) : T('máxima verosimilitud');
     const pruebas = kr ? T('Kenward-Roger ({c})', { c: cita(['kenward1997', 'halekoh2014'], citas) }) : T('Satterthwaite ({c})', { c: cita(['satterthwaite1946'], citas) });
-    const metodos = T('Se ajustó el modelo lineal mixto {f} por {e} con lme4 ({l}); los efectos fijos se probaron con sumas de cuadrados tipo {s} y grados de libertad de {g}, calculados con lmerTest ({t}){c}.', {
+    const DIS = { 'mixto-bloques': T('Los datos se analizaron como bloques completos al azar con los bloques como efecto aleatorio. '),
+      'mixto-divididas': T('Los datos se analizaron como parcelas divididas, con los bloques y las parcelas grandes como efectos aleatorios. '),
+      'mixto-latice': T('Los datos se analizaron como un diseño en látice con los bloques incompletos como efecto aleatorio, lo que recupera la información entre bloques. '),
+      'mixto-localidades': T('Los datos se analizaron como un ensayo en varias localidades con los genotipos fijos. ') };
+    const metodos = (DIS[r.diseno] || '') + T('Se ajustó el modelo lineal mixto {f} por {e} con lme4 ({l}); los efectos fijos se probaron con sumas de cuadrados tipo {s} y grados de libertad de {g}, calculados con lmerTest ({t}){c}.', {
       f: r.formula, e: est, l: cita(['bates2015'], citas), s: SC(r.tipoSC), g: pruebas, t: cita(['kuznetsova2017'], citas),
-      c: cf.length ? T('; {v} se {t} como {x}', { v: y(cf), t: cf.length > 1 ? T('trataron') : T('trató'), x: cf.length > 1 ? T('factores') : T('factor') }) : '' });
+      c: cf.length ? T('; {v} se {t} como {x}', { v: y(cf), t: cf.length > 1 ? T('trataron') : T('trató'), x: cf.length > 1 ? T('factores') : T('factor') }) : '' }) +
+      ((r.medias || []).length ? ' ' + T('Las medias marginales ({m}) se estimaron con emmeans con esos mismos grados de libertad y se compararon {a}.', {
+        m: cita(['searle1980'], citas), a: ({ tukey: T('con la prueba de Tukey ({c})', { c: cita(['tukey1949'], citas) }), holm: T('con el ajuste de Holm ({c})', { c: cita(['holm1979'], citas) }),
+          sidak: T('con el ajuste de Šidák ({c})', { c: cita(['sidak1967'], citas) }), bonferroni: T('con el ajuste de Bonferroni'), none: T('por pares sin ajuste') })[r.medias[0].ajuste] || '' }) : '') +
+      (r.ranova && r.ranova.termino.length > 1 ? ' ' + T('Cada efecto aleatorio se probó con una prueba de razón de verosimilitudes.') : '');
     const a = r.anova, alfa = r.alfa || 0.05, frases = [];
     a.termino.forEach((t, i) => {
       if (!Number.isFinite(a.F[i]) || !Number.isFinite(a.p[i])) return;
@@ -466,7 +474,21 @@ SP.definir('informe', function (SP) {
       const partes = vc.grupo.map((g, k) => (g === 'Residual' ? T('la residual, {v}', { v: s4(vc.varianza[k]) }) : T('la de {g}, {v} ({p} % de la variación aleatoria)', { g, v: s4(vc.varianza[k]), p: pct(total > 0 ? 100 * vc.varianza[k] / total : NaN) })));
       varianzas = T('Las varianzas estimadas fueron: {l}.', { l: y(partes) });
     }
-    return { metodos, resultados: [oracion(frases), varianzas, r.ajuste && r.ajuste.singular ? T('El ajuste fue singular: al menos un componente de varianza se estimó en cero.') : ''].filter(Boolean).join(' ') };
+    /* medias: todas si son pocas; si no, la mayor y la menor */
+    const medias = (r.medias || []).filter(md => !md.dentro).map(md => {
+      const fs = md.filas.filter(f => Number.isFinite(f.media)).slice().sort((p, q) => q.media - p.media), con = f => s4(f.media) + (f.letras ? ' ' + f.letras : '');
+      if (!fs.length) return '';
+      return fs.length <= 12
+        ? T('Las medias de {f} fueron: {l}', { f: md.factor, l: fs.map(f => f.nivel + ', ' + con(f)).join('; ') }) + (fs.some(f => f.letras) ? T(' (medias con la misma letra no difieren)') : '') + '.'
+        : T('La media más alta de {f} fue la de {a} ({x}) y la más baja la de {b} ({z}).', { f: md.factor, a: fs[0].nivel, x: con(fs[0]), b: fs[fs.length - 1].nivel, z: con(fs[fs.length - 1]) });
+    }).filter(Boolean);
+    const rv = r.ranova, aleatorios = [];
+    if (rv) rv.termino.forEach((t, i) => {
+      if (t === '<none>' || !Number.isFinite(rv.p[i])) return;
+      const e = `χ²(${rv.gl[i]}) = ${n2(rv.LRT[i])}; ${fp(rv.p[i])}`;
+      aleatorios.push(rv.p[i] < alfa ? T('el efecto aleatorio {t} fue significativo ({e})', { t, e }) : T('el efecto aleatorio {t} no fue significativo ({e})', { t, e }));
+    });
+    return { metodos, resultados: [oracion(frases), varianzas, oracion(aleatorios)].concat(medias).concat([r.ajuste && r.ajuste.singular ? T('El ajuste fue singular: al menos un componente de varianza se estimó en cero.') : '']).filter(Boolean).join(' ') };
   }
 
   /** El párrafo de métodos y el de resultados de un análisis. */
@@ -484,7 +506,7 @@ SP.definir('informe', function (SP) {
     else if (['tabla-contingencia', 'mcnemar', 'mantel-haenszel', 'kappa'].includes(id)) p = contingencia(id, r, e, op, citas);
     else if (id === 'supuestos') p = supuestos(r, rep, citas);
     else if (id === 'modelo-lineal') p = modeloLineal(r, rep, citas);
-    else if (id === 'modelo-mixto') p = mixto(r, rep, citas);
+    else if (id === 'modelo-mixto' || /^mixto-/.test(id)) p = mixto(r, rep, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };

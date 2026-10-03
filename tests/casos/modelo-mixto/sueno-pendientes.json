@@ -35,7 +35,8 @@
     "comoFactor": [],
     "tipoSC": 3,
     "gl": "satterthwaite",
-    "reml": true
+    "reml": true,
+    "ajuste": "tukey"
   },
   "esperado": {
     "anova": {
@@ -68,6 +69,31 @@
       "AIC": 1755.6282719599519,
       "BIC": 1774.7860130652932,
       "singular": false
+    },
+    "medias": [],
+    "ranova": {
+      "termino": ["<none>", "Days in (Days | Subject)"],
+      "npar": [6, 4],
+      "logLik": [-871.81413597997596, -893.23254269746053],
+      "AIC": [1755.6282719599519, 1794.4650853949211],
+      "LRT": ["NA", 42.836813434969145],
+      "gl": ["NA", 2],
+      "p": ["NA", 4.9900414306073543e-10]
+    },
+    "blup": {
+      "grupo": ["Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject", "Subject"],
+      "termino": ["(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "(Intercept)", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days", "Days"],
+      "nivel": ["308", "309", "310", "330", "331", "332", "333", "334", "335", "337", "349", "350", "351", "352", "369", "370", "371", "372", "308", "309", "310", "330", "331", "332", "333", "334", "335", "337", "349", "350", "351", "352", "369", "370", "371", "372"],
+      "valor": [2.2585509499011551, -40.398738078805088, -38.960408957557931, 23.690619566729847, 22.26031258902783, 9.0395678970151323, 16.840508614495121, -7.2326150993488758, -0.33366841456123802, 34.89048682908544, -25.210228605392921, -13.070034152922378, 4.5778641791566672, 20.863678173387544, 3.2754656217070979, -25.612999306730153, 0.80704608710119197, 12.314592107711457, 9.1989757655658995, -8.6196806152432064, -5.4488564697981401, -4.814350320967872, -3.0699116116637724, -0.2721769947983067, -0.22363608314951378, 1.0745816489080005, -10.752165176630315, 8.6282651579667835, 1.1734321707007975, 6.614217808336317, -3.0152620816475659, 3.5360011228772525, 0.87221487216956473, 4.8224849530161311, -0.98815622217549182, 1.2840220765325676],
+      "de": [12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 12.070856950514328, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849, 2.3048390209002849]
+    }
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+      }
     }
   },
   "referencia": {
@@ -75,8 +101,9 @@
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
       "lme4": "1.1.35.5",
-      "lmerTest": "3.2.1"
+      "lmerTest": "3.2.1",
+      "emmeans": "1.10.6"
     },
-    "codigo": "modelo <- lmer(Reaction ~ Days + (Days | Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo)"
+    "codigo": "modelo <- lmer(Reaction ~ Days + (Days | Subject), data = datos, REML = TRUE); anova(modelo, type = 3, ddf = \"Satterthwaite\"); summary(modelo, ddf = \"Satterthwaite\"); VarCorr(modelo); ranova(modelo); ranef(modelo, condVar = TRUE)"
   }
 }

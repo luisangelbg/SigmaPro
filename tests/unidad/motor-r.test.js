@@ -50,6 +50,31 @@ SPT.describir('Motor R · piezas puras', () => {
   });
 });
 
+SPT.describir('Diseños con efectos aleatorios · fórmulas', () => {
+  const n = 24, c = f => Array.from({ length: n }, (_, i) => f(i));
+  const t = () => SP.tabla.crear({ y: c(i => i % 7 + 1.5), a: c(i => 'a' + (i % 2)), b: c(i => 'b' + (i % 3)), bl: c(i => 1 + Math.floor(i / 6)), dosis: c(i => [0, 50][i % 2]),
+    rep: c(i => 'r' + (i % 3)), blq: c(i => 'k' + (i % 4)), loc: c(i => 'L' + (i % 2)) }, { a: { tipo: 'factor' }, b: { tipo: 'factor' }, rep: { tipo: 'factor' }, blq: { tipo: 'factor' }, loc: { tipo: 'factor' } });
+  const formula = (id, e, op) => { const f = SP.metodos[id], o = SP.opcionesCon(f, op || {}); f.validar(t(), e, o); return f.preparar(t(), e, o).codigo.split('\n').find(x => x.startsWith('modelo <-')); };
+  SPT.caso('cada diseño arma su fórmula; los tratamientos numéricos van como factor', () => {
+    SPT.igual(formula('mixto-bloques', { respuesta: 'y', tratamientos: ['a', 'dosis'], bloque: 'bl' }), 'modelo <- lmer(y ~ a * dosis + (1 | bl), data = datos, REML = TRUE)');
+    SPT.igual(formula('mixto-divididas', { respuesta: 'y', parcelaGrande: 'a', subparcela: 'b', bloque: 'bl' }), 'modelo <- lmer(y ~ a * b + (1 | bl) + (1 | bl:a), data = datos, REML = TRUE)');
+    SPT.igual(formula('mixto-divididas', { respuesta: 'y', parcelaGrande: 'a', subparcela: 'b', repeticion: 'rep' }), 'modelo <- lmer(y ~ a * b + (1 | a:rep), data = datos, REML = TRUE)');
+    SPT.igual(formula('mixto-latice', { respuesta: 'y', tratamiento: 'a', repeticion: 'rep', bloque: 'blq' }), 'modelo <- lmer(y ~ a + rep + (1 | rep:blq), data = datos, REML = TRUE)');
+    SPT.igual(formula('mixto-latice', { respuesta: 'y', tratamiento: 'a', repeticion: 'rep', bloque: 'blq' }, { repeticionAleatoria: true }), 'modelo <- lmer(y ~ a + (1 | rep) + (1 | rep:blq), data = datos, REML = TRUE)');
+    SPT.igual(formula('mixto-localidades', { respuesta: 'y', genotipo: 'a', localidad: 'loc', repeticion: 'rep' }), 'modelo <- lmer(y ~ a + (1 | loc) + (1 | loc:rep) + (1 | a:loc), data = datos, REML = TRUE)');
+    SPT.igual(formula('mixto-localidades', { respuesta: 'y', genotipo: 'a', localidad: 'loc', repeticion: 'rep' }, { localidadFija: true }), 'modelo <- lmer(y ~ a * loc + (1 | loc:rep), data = datos, REML = TRUE)');
+    const f = SP.metodos['mixto-bloques'], p = f.preparar(t(), { respuesta: 'y', tratamientos: ['a', 'dosis'], bloque: 'bl' }, SP.opcionesCon(f, {}));
+    SPT.afirmar(p.codigo.includes('datos[["dosis"]] <- factor(datos[["dosis"]])') && p.codigo.includes('medias <- lapply(c("a", "dosis")'), p.codigo);
+  });
+  SPT.caso('los papeles se validan: columnas distintas, bloques o repetición en parcelas divididas', () => {
+    const v = (id, e) => () => SP.metodos[id].validar(t(), e, SP.opcionesCon(SP.metodos[id], {}));
+    SPT.lanza(v('mixto-bloques', { respuesta: 'y', tratamientos: ['a'], bloque: 'a' }), 'columna distinta');
+    SPT.lanza(v('mixto-bloques', { respuesta: 'y', tratamientos: [], bloque: 'bl' }), 'de uno a tres');
+    SPT.lanza(v('mixto-divididas', { respuesta: 'y', parcelaGrande: 'a', subparcela: 'b' }), 'bloques o');
+    SPT.lanza(v('mixto-latice', { respuesta: 'y', tratamiento: 'a', repeticion: 'rep' }), 'bloque incompleto');
+  });
+});
+
 SPT.describir('Modelo mixto · fórmula y trabajo para R', () => {
   const t = () => SP.tabla.crear({ y: [1, 2, 3, 4, 5, 6, 7, 8], trat: ['a', 'b', 'a', 'b', 'a', 'b', 'a', 'b'], bloque: [1, 1, 2, 2, 3, 3, 4, 4], dias: [0, 1, 0, 1, 0, 1, 0, 1], 'mi var': [1, 2, 3, 4, 5, 6, 7, 8] },
     { trat: { tipo: 'factor' } });
@@ -73,7 +98,11 @@ SPT.describir('Modelo mixto · fórmula y trabajo para R', () => {
     SPT.afirmar(p.codigo.includes('datos[["bloque"]] <- factor(datos[["bloque"]])'), 'bloque como factor');
     SPT.afirmar(p.codigo.includes('modelo <- lmer(y ~ trat + (1 | bloque), data = datos, REML = TRUE)'), p.codigo);
     SPT.afirmar(p.codigo.includes('anova(modelo, type = 3, ddf = ddf)') && p.codigo.includes('ddf <- "Satterthwaite"'), 'tipo III con Satterthwaite');
-    SPT.igualJSON(p.paquetes, []);
+    SPT.igualJSON(p.paquetes, ['emmeans']);
+    SPT.afirmar(p.codigo.includes('medias <- lapply(c("trat"), function(f) {') && p.codigo.includes('lmer.df = "satterthwaite"') && p.codigo.includes('adjust = "tukey"'), 'medias de trat');
+    SPT.afirmar(p.codigo.includes('rv <- tryCatch(as.data.frame(ranova(modelo))') && p.codigo.includes('ranef(modelo, condVar = TRUE)'), 'ranova y BLUP');
+    const sin = SP.metodos['modelo-mixto'].preparar(t(), { respuesta: 'y' }, Object.assign(op('trat + (1 | bloque)'), { comparar: [], pruebaAleatorios: false }));
+    SPT.afirmar(!sin.codigo.includes('emmeans') && sin.codigo.includes('ranova = NULL'), 'sin medias ni ranova');
     const kr = SP.metodos['modelo-mixto'].preparar(t(), { respuesta: 'y' }, Object.assign(op('`mi var` + (1 | bloque)'), { gl: 'kenward-roger', tipoSC: 1 }));
     SPT.afirmar(kr.codigo.includes('lmer(y ~ `mi var` + (1 | bloque)') && kr.codigo.includes('ddf <- "Kenward-Roger"') && kr.codigo.includes('type = 1'), kr.codigo);
     SPT.igualJSON(kr.paquetes, ['pbkrtest']);
@@ -100,5 +129,24 @@ SPT.describir('Modelo mixto · fórmula y trabajo para R', () => {
     const rep = SP.metodos['modelo-mixto'].reporte(r);
     SPT.afirmar(rep.conclusiones.some(x => /Variación aleatoria: bloque 25\.0 %, residual 75\.0 %/.test(x)), rep.conclusiones.join(' | '));
     SPT.igualJSON(rep.cuadros.map(c => c.id), ['anova', 'varianzas', 'coeficientes', 'ajuste']);
+    SPT.afirmar(rep.semaforo.some(s => s.nombre === 'Ajuste del modelo' && s.color === 'ambar'), 'semáforo con el ajuste singular');
+  });
+
+  SPT.caso('leer: medias de emmeans con sus pares, letras (la «a» para la mayor), ranova y BLUP', () => {
+    const salida = { anova: {}, coeficientes: {}, varianzas: { grupo: ['bloque', 'Residual'], var1: ['(Intercept)', null], var2: [null, null], varianza: [1, 3], de: [1, 1.7] },
+      ajuste: { n: 8, reml: true }, grupos: { nombre: ['bloque'], niveles: [4] },
+      medias: [{ factor: 'trat', medias: { datos: { trat: ['a', 'b'], emmean: [4, 5.5], SE: [0.5, 0.5], df: [3, 3], 'lower.CL': [2.4, 3.9], 'upper.CL': [5.6, 7.1] } },
+        pares: { datos: { contrast: ['a - b'], estimate: [-1.5], SE: [0.4], df: [3], 't.ratio': [-3.75], 'p.value': [0.033] } } }],
+      ranova: { termino: ['<none>', '(1 | bloque)'], npar: [4, 3], logLik: [-10, -12], AIC: [28, 30], LRT: [NaN, 4], gl: [NaN, 1], p: [NaN, 0.0455] },
+      blup: { grupo: ['bloque', 'bloque', 'bloque', 'bloque'], termino: ['(Intercept)', '(Intercept)', '(Intercept)', '(Intercept)'], nivel: ['1', '2', '3', '4'], valor: [-1, 0.5, 0.2, 0.3], de: [0.4, 0.4, 0.4, 0.4] },
+      filas: [1, 2, 3, 4, 5, 6, 7, 8], residuos: [0.1, -0.2, 0.3, -0.1, 0.05, -0.15, 0.2, -0.2], ajustados: [1, 2, 3, 4, 5, 6, 7, 8] };
+    const r = SP.metodos['modelo-mixto'].leer(salida, [], t(), { respuesta: 'y' }, op('trat + (1 | bloque)'));
+    SPT.igualJSON(r.medias[0].filas.map(f => f.letras), ['b', 'a']);
+    SPT.igual(r.medias[0].pares[0].a, 'a'); SPT.igual(r.medias[0].pares[0].b, 'b');
+    SPT.igual(r.ranova.termino[1], '(1 | bloque)');
+    SPT.igual(r.blup.valor.length, 4);
+    SPT.afirmar(r.supuestos.normalidad && r.supuestos.varianzas && r.supuestos.varianzas.factor === 'trat', 'Shapiro-Wilk y Levene sobre los residuos');
+    const ids = SP.metodos['modelo-mixto'].reporte(r).cuadros.map(c => c.id);
+    SPT.igualJSON(ids, ['anova', 'varianzas', 'aleatorios', 'medias-trat', 'pares-trat', 'coeficientes', 'blup', 'ajuste']);
   });
 });
