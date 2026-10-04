@@ -2,6 +2,25 @@
 
 ## Sin publicar
 
+### Hito 3.2 · Supervivencia (4 oct 2026)
+
+- Familia **Supervivencia y series de tiempo**, con el tiempo hasta un evento (germinar, morir, florecer) y la
+  censura (la unidad terminó el ensayo sin el evento):
+  - **Curvas de Kaplan-Meier** por grupo con su intervalo (log, log-log o lineal), la mediana y los cuartiles con
+    sus intervalos, la tabla de supervivencia (Greenwood) y la comparación de las curvas con **log-rank** o
+    **Peto-Peto**.
+  - **Modelo de riesgos proporcionales de Cox** con factores y covariables, empates de Efron o de Breslow: razones de
+    riesgo con su intervalo, las pruebas de razón de verosimilitudes, Wald y score, la concordancia de Harrell y la
+    **prueba de riesgos proporcionales** (Grambsch y Therneau) por término y global.
+- Gráficas: las curvas escalonadas con las censuras marcadas (y la banda del intervalo con una sola curva) y las
+  razones de riesgo en escala logarítmica; el párrafo del reporte con sus citas y el código R (survival).
+- Ejemplo nuevo: **Frijol: días a la germinación** (tres tratamientos pregerminativos, censura a los 21 días).
+- `tests/correr.mjs` revisa que ninguna referencia del informe tenga la clave repetida (en un objeto literal la
+  última pisa a la primera sin aviso, como pasó en el Hito 3.0). El muestreo estratificado dice en su conclusión
+  cuántas unidades tomar en cada estrato con la asignación de Neyman.
+- Validación: 10 casos contra survfit, quantile, survdiff, coxph (pulido con eps = 1e-12) y cox.zph del paquete
+  survival: 1588 valores, diferencia escalada máxima 4.3 × 10⁻¹². 762 casos en total.
+
 ### Hito 3.1 · Muestreo (4 oct 2026)
 
 - Tres métodos nuevos en la familia **Tamaño de muestra, potencia y muestreo**, con las fórmulas de Cochran (1977):

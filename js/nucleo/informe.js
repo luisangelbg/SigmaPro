@@ -126,6 +126,16 @@ SP.definir('informe', function (SP) {
     cochranCox1957: () => 'Cochran, W. G. y Cox, G. M. (1957). Experimental designs (2.ª ed.). Wiley.',
     champely2020: () => 'Champely, S. (2020). pwr: basic functions for power analysis (versión 1.3-0) [paquete de R].',
     cochran1977: () => 'Cochran, W. G. (1977). Sampling techniques (3.ª ed.). Wiley.',
+    kaplan1958: () => 'Kaplan, E. L. y Meier, P. (1958). Nonparametric estimation from incomplete observations. Journal of the American Statistical Association, 53(282), 457–481.',
+    greenwood1926: () => 'Greenwood, M. (1926). The natural duration of cancer. Reports on Public Health and Medical Subjects, 33, 1–26.',
+    mantel1966: () => 'Mantel, N. (1966). Evaluation of survival data and two new rank order statistics arising in its consideration. Cancer Chemotherapy Reports, 50(3), 163–170.',
+    peto1972: () => 'Peto, R. y Peto, J. (1972). Asymptotically efficient rank invariant test procedures. Journal of the Royal Statistical Society A, 135(2), 185–207.',
+    cox1972: () => 'Cox, D. R. (1972). Regression models and life-tables. Journal of the Royal Statistical Society B, 34(2), 187–220.',
+    efron1977: () => 'Efron, B. (1977). The efficiency of Cox\'s likelihood function for censored data. Journal of the American Statistical Association, 72(359), 557–565.',
+    breslow1974: () => 'Breslow, N. (1974). Covariance analysis of censored survival data. Biometrics, 30(1), 89–99.',
+    grambsch1994: () => 'Grambsch, P. M. y Therneau, T. M. (1994). Proportional hazards tests and diagnostics based on weighted residuals. Biometrika, 81(3), 515–526.',
+    harrell1982: () => 'Harrell, F. E., Califf, R. M., Pryor, D. B., Lee, K. L. y Rosati, R. A. (1982). Evaluating the yield of medical tests. JAMA, 247(18), 2543–2546.',
+    therneau2024: () => 'Therneau, T. M. (2024). A package for survival analysis in R (versión 3.7-0) [paquete de R].',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -152,6 +162,8 @@ SP.definir('informe', function (SP) {
     bartlett1937: 'Bartlett, 1937', finlay1963: 'Finlay y Wilkinson, 1963', eberhart1966: 'Eberhart y Russell, 1966', wricke1962: 'Wricke, 1962', shukla1972: 'Shukla, 1972',
     lin1988: 'Lin y Binns, 1988', gauch1988: 'Gauch, 1988', gollob1968: 'Gollob, 1968', cornelius1992: 'Cornelius et al., 1992', purchase2000: 'Purchase et al., 2000',
     yan2000: 'Yan et al., 2000', yan2003: 'Yan y Kang, 2003', cohen1988: 'Cohen, 1988', cochranCox1957: 'Cochran y Cox, 1957', champely2020: 'Champely, 2020', cochran1977: 'Cochran, 1977',
+    kaplan1958: 'Kaplan y Meier, 1958', greenwood1926: 'Greenwood, 1926', mantel1966: 'Mantel, 1966', peto1972: 'Peto y Peto, 1972', cox1972: 'Cox, 1972',
+    efron1977: 'Efron, 1977', breslow1974: 'Breslow, 1974', grambsch1994: 'Grambsch y Therneau, 1994', harrell1982: 'Harrell et al., 1982', therneau2024: 'Therneau, 2024',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -770,6 +782,35 @@ SP.definir('informe', function (SP) {
     return { metodos: T('Se calculó {q} para {t} ({c}) con las fórmulas exactas de R.', { q: que, t: prueba, c: cita(ref, citas) }), resultados: res };
   }
 
+  function supervivencia(id, r, citas) {
+    const k = Math.round(100 * r.nivel);
+    if (id === 'kaplan-meier') {
+      const conf = { log: T('log'), 'log-log': 'log-log', plain: T('lineales') }[r.conf];
+      let met = T('Las curvas de supervivencia de «{t}» se estimaron con el método de Kaplan y Meier ({c}), con el error estándar de Greenwood ({g}) e intervalos {i} al {k} %',
+        { t: r.tiempo, c: cita(['kaplan1958'], citas), g: cita(['greenwood1926'], citas), i: conf, k });
+      if (r.comparacion) met += T(', y se compararon entre niveles de «{g}» con la prueba {p} ({c})', { g: r.grupo, p: r.rho === 1 ? T('de Peto-Peto') : 'log-rank', c: cita([r.rho === 1 ? 'peto1972' : 'mantel1966'], citas) });
+      met += T(', con las mismas fórmulas que el paquete survival ({c}).', { c: cita(['therneau2024'], citas) });
+      const corto = x => (Number.isFinite(x) ? String(Number((+x).toPrecision(6))) : '—');
+      const meds = r.grupos.map(g => Number.isFinite(g.cuantiles.tiempo[1]) ? T('{g}{m} (IC: {i} a {s})', { g: r.grupo ? g.nombre + ', ' : '', m: corto(g.cuantiles.tiempo[1]), i: corto(g.cuantiles.inf[1]), s: corto(g.cuantiles.sup[1]) })
+        : T('{g}no se alcanzó', { g: r.grupo ? g.nombre + ', ' : '' }));
+      let res = T('La mediana del tiempo hasta el evento fue: {l}.', { l: meds.join('; ') });
+      if (r.comparacion) res += ' ' + (r.comparacion.p < 0.05 ? T('Las curvas difirieron (χ²({g}) = {x}, {p}).', { g: r.comparacion.gl, x: n2(r.comparacion.chi2), p: fp(r.comparacion.p) })
+        : T('Las curvas no difirieron (χ²({g}) = {x}, {p}).', { g: r.comparacion.gl, x: n2(r.comparacion.chi2), p: fp(r.comparacion.p) }));
+      return { metodos: met, resultados: res };
+    }
+    const vars = y(r.factores.map(f => T('el factor «{f}»', { f })).concat(r.covariables.map(v => T('la covariable «{v}»', { v }))));
+    const met = T('Se ajustó un modelo de riesgos proporcionales de Cox ({c}) con {v}, con los empates de {e} ({ce}); el supuesto de riesgos proporcionales se revisó con la prueba de Grambsch y Therneau ({g}) y la discriminación, con la concordancia de Harrell ({h}).',
+      { c: cita(['cox1972'], citas), v: vars, e: r.empates === 'efron' ? 'Efron' : 'Breslow', ce: cita([r.empates === 'efron' ? 'efron1977' : 'breslow1974'], citas), g: cita(['grambsch1994'], citas), h: cita(['harrell1982'], citas) });
+    /* el nombre legible de cada coeficiente: el nivel frente al de referencia, o la covariable por unidad */
+    const etiqueta = (n, j) => { const tm = (r.terminos || []).find(x => x.columnas.includes(j)); return tm && tm.niveles ? T('{nv} frente a {ref}', { nv: n.slice(tm.nombre.length), ref: tm.niveles[0] }) : T('«{v}» (por unidad)', { v: n }); };
+    const sig = r.nombres.map((n, j) => (r.p[j] < 0.05 ? T('{n} (HR = {h}; IC {k} %: {i} a {s}; {p})', { n: etiqueta(n, j), h: s4(r.hr[j]), k, i: s4(r.hr_inf[j]), s: s4(r.hr_sup[j]), p: fp(r.p[j]) }) : null)).filter(Boolean);
+    const pg = r.zph.p[r.zph.p.length - 1];
+    const res = [T('El modelo fue {s} (razón de verosimilitudes χ²({g}) = {x}, {p}; concordancia = {c}).', { s: r.p_lr < 0.05 ? T('significativo') : T('no significativo'), g: r.gl, x: n2(r.lr), p: fp(r.p_lr), c: n3(r.concordancia.C) }),
+      sig.length ? T('Cambiaron el riesgo: {l}.', { l: y(sig) }) : T('Ningún término cambió el riesgo de forma significativa.'),
+      pg >= 0.05 ? T('No hubo evidencia contra los riesgos proporcionales (χ²({g}) = {x}, {p}).', { g: r.zph.gl[r.zph.gl.length - 1], x: n2(r.zph.chi2[r.zph.chi2.length - 1]), p: fp(pg) })
+        : T('Los riesgos no fueron proporcionales (χ²({g}) = {x}, {p}): los HR son un promedio en el tiempo.', { g: r.zph.gl[r.zph.gl.length - 1], x: n2(r.zph.chi2[r.zph.chi2.length - 1]), p: fp(pg) })].join(' ');
+    return { metodos: met, resultados: res };
+  }
   function muestreo(id, r, citas) {
     const c = cita(['cochran1977'], citas), conf = Math.round(100 * r.confianza), dado = x => String(Number((+x).toPrecision(6)));
     if (id === 'tamano-muestra') {
@@ -818,6 +859,7 @@ SP.definir('informe', function (SP) {
     else if (['ensayos-multiambiente', 'estabilidad', 'ammi', 'gge'].includes(id)) p = multiambiente(id, r, citas);
     else if (['potencia-medias', 'potencia-anova', 'potencia-proporciones', 'potencia-correlacion', 'repeticiones'].includes(id)) p = potencia(id, r, citas);
     else if (['tamano-muestra', 'muestreo-simple', 'muestreo-estratificado'].includes(id)) p = muestreo(id, r, citas);
+    else if (id === 'kaplan-meier' || id === 'cox') p = supervivencia(id, r, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };

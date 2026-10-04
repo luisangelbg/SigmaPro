@@ -1,0 +1,79 @@
+{
+  "esquema": 1,
+  "id": "cox/germinacion-cox-efron",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "cox"
+  },
+  "titulo": "Cox con el tratamiento (Efron, muchos empates)",
+  "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "tratamiento": ["Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Escarificada", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Remojo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo"],
+      "dias": [1, 4, 7, 6, 5, 4, 2, 6, 3, 17, 1, 10, 2, 7, 5, 2, 2, 2, 3, 1, 11, 3, 2, 2, 21, 2, 1, 4, 4, 7, 9, 13, 1, 1, 7, 21, 21, 3, 3, 12, 6, 8, 3, 17, 17, 3, 21, 4, 19, 3, 21, 1, 11, 21, 5, 9, 16, 21, 8, 2, 10, 10, 5, 5, 21, 4, 6, 2, 13, 5, 12, 21, 21, 12, 5, 1, 5, 8, 3, 21, 2, 5, 2, 1, 1, 21, 20, 21, 21, 21],
+      "germino": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0]
+    },
+    "tipos": {
+      "tratamiento": {
+        "tipo": "factor",
+        "niveles": ["Escarificada", "Remojo", "Testigo"]
+      },
+      "dias": {
+        "tipo": "numerica"
+      },
+      "germino": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "tiempo": "dias",
+    "evento": "germino",
+    "factores": "tratamiento"
+  },
+  "opciones": {
+    "empates": "efron",
+    "nivel": 0.94999999999999996
+  },
+  "esperado": {
+    "coef": [-0.88671473486270191, -1.010607260643086],
+    "ee": [0.27881824438253194, 0.28938724644649982],
+    "z": [-3.1802608069153129, -3.4922315100362278],
+    "p": [0.0014714255736321708, 0.00047900288513009901],
+    "hr": [0.41200708430610872, 0.36399787086186797],
+    "hr_inf": [0.23854711235419068, 0.20642960073095218],
+    "hr_sup": [0.71159879423054728, 0.6418384258983203],
+    "ll0": -295.60047576708587,
+    "ll": -288.53963034913238,
+    "lr": 14.121690835906975,
+    "score": 16.270651562173548,
+    "wald": 15.239787384009276,
+    "gl": 2,
+    "p_lr": 0.00085805237436704647,
+    "p_score": 0.00029300356520479726,
+    "p_wald": 0.00049059398240365788,
+    "n": 90,
+    "eventos": 77,
+    "concordancia": {
+      "concordantes": 1645,
+      "discordantes": 876,
+      "empates_x": 1180,
+      "C": 0.60389084031342888
+    },
+    "zph": {
+      "chi2": [1.2033458193166047, 1.2033458193166047],
+      "gl": [2, 2],
+      "p": [0.54789429133880874, 0.54789429133880874]
+    },
+    "nombres": ["tratamientoRemojo", "tratamientoTestigo"]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "survival": "3.7.0"
+    },
+    "codigo": "coxph(Surv(dias, germino) ~ tratamiento, ties = \"efron\", control = coxph.control(eps = 1e-12, iter.max = 100)); cox.zph(fit)"
+  }
+}

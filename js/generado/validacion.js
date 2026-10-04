@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.2.0",
- "generado": "2026-10-04T05:58:21.090Z",
+ "generado": "2026-10-04T06:24:29.035Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 752,
-  "aprobados": 752,
+  "casos": 762,
+  "aprobados": 762,
   "fallidos": 0,
-  "valores": 75886,
+  "valores": 77474,
   "difEscaladaMax": 0.000004071746832135441,
-  "objetivos": 161
+  "objetivos": 163
  },
  "casos": [
   {
@@ -21090,6 +21090,266 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "lm(severidad ~ segundo orden, datos codificados); eigen(B); uniroot para la cresta (tests/r/superficie.R)"
+   }
+  },
+  {
+   "id": "cox/bioensayo-cox-breslow-90",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "cox"
+   },
+   "titulo": "El mismo modelo con Breslow e intervalos al 90 %",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "D",
+   "valores": 48,
+   "difMax": 1.7053025658242404e-13,
+   "difEscaladaMax": 8.288104286904194e-14,
+   "peor": "p_lr",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "coxph(Surv(horas, muerto) ~ insecticida + peso, ties = \"breslow\", control = coxph.control(eps = 1e-12, iter.max = 100)); cox.zph(fit)"
+   }
+  },
+  {
+   "id": "cox/bioensayo-cox-factor-covariable",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "cox"
+   },
+   "titulo": "Cox con el insecticida y el peso del insecto (Efron)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "D",
+   "valores": 48,
+   "difMax": 1.7053025658242404e-13,
+   "difEscaladaMax": 8.269778733830307e-14,
+   "peor": "p_lr",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "coxph(Surv(horas, muerto) ~ insecticida + peso, ties = \"efron\", control = coxph.control(eps = 1e-12, iter.max = 100)); cox.zph(fit)"
+   }
+  },
+  {
+   "id": "cox/germinacion-cox-breslow",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "cox"
+   },
+   "titulo": "Cox con el tratamiento (Breslow)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "D",
+   "valores": 37,
+   "difMax": 7.638334409421077e-12,
+   "difEscaladaMax": 5.687668383627616e-13,
+   "peor": "wald",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "coxph(Surv(dias, germino) ~ tratamiento, ties = \"breslow\", control = coxph.control(eps = 1e-12, iter.max = 100)); cox.zph(fit)"
+   }
+  },
+  {
+   "id": "cox/germinacion-cox-efron",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "cox"
+   },
+   "titulo": "Cox con el tratamiento (Efron, muchos empates)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "D",
+   "valores": 37,
+   "difMax": 2.1511681325137033e-11,
+   "difEscaladaMax": 1.4115473387580654e-12,
+   "peor": "wald",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "coxph(Surv(dias, germino) ~ tratamiento, ties = \"efron\", control = coxph.control(eps = 1e-12, iter.max = 100)); cox.zph(fit)"
+   }
+  },
+  {
+   "id": "cox/vivero-dos-covariables",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "cox"
+   },
+   "titulo": "Cox con dos covariables numéricas y riesgos que cambian con el tiempo",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "D",
+   "valores": 40,
+   "difMax": 5.064393349130114e-12,
+   "difEscaladaMax": 4.32720526077901e-12,
+   "peor": "z[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "coxph(Surv(semanas, murio) ~ riego + sombra, ties = \"efron\", control = coxph.control(eps = 1e-12, iter.max = 100)); cox.zph(fit)"
+   }
+  },
+  {
+   "id": "kaplan-meier/bioensayo-tres-grupos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kaplan-meier"
+   },
+   "titulo": "Horas hasta la muerte con dos insecticidas y testigo (faltantes)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "A",
+   "valores": 494,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 1.4694393559018457e-15,
+   "peor": "comparacion.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "survfit(Surv(horas, muerto) ~ insecticida, conf.type = \"log\", conf.int = 0.95); quantile(); survdiff(rho = 0)"
+   }
+  },
+  {
+   "id": "kaplan-meier/germinacion-log-log-peto",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kaplan-meier"
+   },
+   "titulo": "Los mismos datos con intervalos log-log, 90 % y la prueba de Peto-Peto",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "A",
+   "valores": 366,
+   "difMax": 1.0658141036401503e-14,
+   "difEscaladaMax": 8.910127676042051e-16,
+   "peor": "comparacion.chi2",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "survfit(Surv(dias, germino) ~ tratamiento, conf.type = \"log-log\", conf.int = 0.9); quantile(); survdiff(rho = 1)"
+   }
+  },
+  {
+   "id": "kaplan-meier/germinacion-log-rank",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kaplan-meier"
+   },
+   "titulo": "Días hasta germinar con tres tratamientos (empates, censura a los 21 días), log-rank",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "A",
+   "valores": 366,
+   "difMax": 1.7763568394002505e-15,
+   "difEscaladaMax": 1.6653345369377348e-16,
+   "peor": "grupos[0].curva.sup[6]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "survfit(Surv(dias, germino) ~ tratamiento, conf.type = \"log\", conf.int = 0.95); quantile(); survdiff(rho = 0)"
+   }
+  },
+  {
+   "id": "kaplan-meier/mediana-punto-medio",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kaplan-meier"
+   },
+   "titulo": "La curva se queda justo en 0.5: la mediana es el punto medio del tramo",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "A",
+   "valores": 60,
+   "difMax": 6.938893903907228e-18,
+   "difEscaladaMax": 6.938893903907228e-18,
+   "peor": "grupos[0].curva.inf[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "survfit(Surv(t, e) ~ 1, conf.type = \"log\", conf.int = 0.95); quantile(); survdiff(rho = 0)"
+   }
+  },
+  {
+   "id": "kaplan-meier/una-curva-plain-hasta-cero",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kaplan-meier"
+   },
+   "titulo": "Una curva con censuras en medio, intervalo plain, que llega a 0",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "A",
+   "valores": 92,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 1.1102230246251565e-16,
+   "peor": "grupos[0].curva.inf[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "survfit(Surv(t, e) ~ 1, conf.type = \"plain\", conf.int = 0.95); quantile(); survdiff(rho = 0)"
    }
   }
  ]

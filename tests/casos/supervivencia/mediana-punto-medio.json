@@ -1,0 +1,66 @@
+{
+  "esquema": 1,
+  "id": "kaplan-meier/mediana-punto-medio",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kaplan-meier"
+  },
+  "titulo": "La curva se queda justo en 0.5: la mediana es el punto medio del tramo",
+  "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "t": [1, 2, 3, 4, 5, 6],
+      "e": [1, 1, 1, 0, 1, 0]
+    },
+    "tipos": {
+      "t": {
+        "tipo": "numerica"
+      },
+      "e": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "tiempo": "t",
+    "evento": "e"
+  },
+  "opciones": {
+    "conf": "log",
+    "nivel": 0.94999999999999996,
+    "rho": 0
+  },
+  "esperado": {
+    "grupos": [
+      {
+        "nombre": "todos",
+        "n": 6,
+        "eventos": 4,
+        "curva": {
+          "tiempo": [1, 2, 3, 4, 5, 6],
+          "n_riesgo": [6, 5, 4, 3, 2, 1],
+          "eventos": [1, 1, 1, 0, 1, 0],
+          "censuras": [0, 0, 0, 1, 0, 1],
+          "S": [0.83333333333333337, 0.66666666666666674, 0.5, 0.5, 0.25, 0.25],
+          "ee": [0.18257418583505536, 0.28867513459481292, 0.40824829046386302, 0.40824829046386302, 0.81649658092772603, 0.81649658092772603],
+          "inf": [0.58265479547713961, 0.3786064608870951, 0.22463034776926674, 0.22463034776926674, 0.050458793138941714, 0.050458793138941714],
+          "sup": [1, 1, 1, 1, 1, 1]
+        },
+        "cuantiles": {
+          "tiempo": [2, 4, 5.5],
+          "inf": [1, 2, 3],
+          "sup": ["NA", "NA", "NA"]
+        }
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "survival": "3.7.0"
+    },
+    "codigo": "survfit(Surv(t, e) ~ 1, conf.type = \"log\", conf.int = 0.95); quantile(); survdiff(rho = 0)"
+  }
+}

@@ -93,12 +93,15 @@ base común nueva). **La Fase 2 está completa.** Notas:
 
 ## Fase 3
 
-Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia) e Hito 3.1 (muestreo). Notas:
+Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia), Hito 3.1 (muestreo) e Hito 3.2 (supervivencia). Notas:
 
 - Potencia: sin la prueba t de Welch (varianzas distintas), las proporciones con la corrección de continuidad
   (strict), los diseños factoriales ni el tamaño de muestra de modelos mixtos o por simulación.
 - Muestreo: sin muestreo por conglomerados (en una o dos etapas), sistemático, por razón o regresión, ni el tamaño de
   muestra del estratificado con un error dado (sí reparte un total). El tamaño de cada estrato se escribe a mano.
+- Supervivencia: sin estratos en Cox ni en log-rank, covariables que cambian con el tiempo, censura por intervalos
+  (la revisión cada tantos días se trata como tiempo exacto), riesgos competitivos, modelos paramétricos (Weibull,
+  log-normal) ni la gráfica de los residuos de Schoenfeld (sí su prueba). El EE de la concordancia no se calcula.
 
 Lo que dice la propuesta para esta fase:
 

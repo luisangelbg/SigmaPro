@@ -248,6 +248,20 @@ agregar("aguacate-huertas", "Aguacate: muestreo en tres huertas",
         "Ficticio: kilogramos de fruta por árbol y presencia de trips (0/1) en árboles tomados al azar de tres huertas con 420 (Ladera), 900 (Planicie) y 260 (Vega) árboles, con dos pesadas perdidas; para el muestreo estratificado (media y total de la cosecha, asignación de Neyman) y la proporción de árboles con trips.", d,
         list(huerta = list(tipo = "factor", niveles = c("Ladera", "Planicie", "Vega"))))
 
+## 20. Frijol: días a la germinación con tres tratamientos pregerminativos (supervivencia; ficticio)
+set.seed(2020)
+d <- data.frame(tratamiento = rep(c("Testigo", "Remojo", "Escarificada"), each = 40), stringsAsFactors = FALSE)
+d$semilla <- seq_len(nrow(d))
+d$peso_semilla <- round(rnorm(nrow(d), 0.42, 0.05), 3)                 # g por semilla
+tasa <- c(Testigo = 1 / 14, Remojo = 1 / 8, Escarificada = 1 / 4.5)[d$tratamiento] * exp(-4 * (d$peso_semilla - 0.42))
+t <- ceiling(rexp(nrow(d), tasa))
+d$germino <- as.integer(t <= 21)                                        # el ensayo terminó a los 21 días
+d$dias <- pmin(t, 21)
+d <- d[c("tratamiento", "semilla", "peso_semilla", "dias", "germino")]
+agregar("frijol-germinacion", "Frijol: días a la germinación",
+        "Ficticio: días hasta germinar de 120 semillas de frijol con tres tratamientos pregerminativos (testigo, remojo y escarificación), revisadas cada día hasta el día 21; germino = 0 si no germinó (censura). Con el peso de cada semilla; para las curvas de Kaplan-Meier, la prueba log-rank y el modelo de Cox.", d,
+        list(tratamiento = list(tipo = "factor", niveles = c("Testigo", "Remojo", "Escarificada"))))
+
 ## escribir datos/ejemplos.js
 js <- paste0(
   "/* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.\n",

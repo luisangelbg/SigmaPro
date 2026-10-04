@@ -73,7 +73,8 @@ multiambiente**: análisis conjunto, estabilidad (Eberhart-Russell, Wricke, Shuk
 **Fase 3 en curso** (plan en [`propuesta/FASE3.md`](propuesta/FASE3.md)): el **tamaño de muestra y la potencia**
 (medias, ANOVA, proporciones, correlación y las repeticiones de un experimento), sin necesidad de datos; y el
 **muestreo**: el tamaño de muestra para estimar una media o una proporción, y la estimación con muestreo aleatorio
-simple y estratificado (con la asignación de Neyman). En total, 752 casos y 75 886 valores.
+simple y estratificado (con la asignación de Neyman); y la **supervivencia**: curvas de Kaplan-Meier, log-rank y el
+modelo de Cox con su prueba de riesgos proporcionales. En total, 762 casos y 77 474 valores.
 
 Lo que falta para publicar y las fases 2 y 3 están en [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en

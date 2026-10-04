@@ -434,6 +434,20 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
 
+## Supervivencia en el núcleo JS (Hito 3.2)
+
+- **Referencia** (`tests/r/supervivencia.R`): el paquete survival 3.7-0. survfit con conf.type log, log-log o plain
+  y quantile.survfit (la mediana con su regla del punto medio cuando la curva se queda justo en 0.5); survdiff con
+  ρ = 0 y ρ = 1; coxph con ties = "efron" o "breslow" y `coxph.control(eps = 1e-12, toler.chol = 1e-13)` (con su
+  tolerancia por omisión el óptimo de R solo tiene unas 9 cifras); cox.zph con transform = "km". La prueba de Wald
+  se toma de `fit$wald.test`: summary.coxph la redondea a dos decimales.
+- **Resultado**: 10 casos (empates de días enteros, censura al final y en medio, faltantes, una curva que llega a 0 y
+  otra con la mediana en un tramo plano; Cox con un factor, con factor y covariable, y con dos covariables): 1588
+  valores, diferencia escalada máxima 4.3 × 10⁻¹².
+- **Pruebas unitarias** (`tests/unidad/supervivencia.test.js`): Kaplan-Meier sin censura es la proporción empírica,
+  Greenwood a mano, la prueba score de Cox con una covariable binaria y sin empates es el log-rank, la verosimilitud
+  parcial a mano, la concordancia de un orden perfecto e inverso, y los mensajes de error.
+
 ## Muestreo en el núcleo JS (Hito 3.1)
 
 - **Referencia** (`tests/r/muestreo.R`): las fórmulas de Cochran (1977, caps. 2 a 5) en R base, escritas por otro
@@ -583,7 +597,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          53 operaciones con 100 000 filas en el navegador (--motor: el motor R con 20 000) (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      77 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      79 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

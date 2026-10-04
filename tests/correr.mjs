@@ -64,6 +64,16 @@ const unidadEnPagina = scriptsDe(htmlPruebas, /^unidad\//);
 const unidadEnCarpeta = readdirSync(join(TESTS, 'unidad')).filter(f => f.endsWith('.test.js')).map(f => 'unidad/' + f);
 for (const f of unidadEnCarpeta) if (!unidadEnPagina.includes(f)) problemas.push('tests/index.html no carga ' + f);
 for (const f of unidadEnPagina) if (!unidadEnCarpeta.includes(f)) problemas.push('tests/index.html carga ' + f + ', que no existe');
+/* en un objeto literal una clave repetida pisa a la anterior sin aviso: las referencias del informe no deben repetirse */
+{
+  const inf = leer(join(RAIZ, 'js', 'nucleo', 'informe.js'));
+  for (const [nombre, desde, hasta, re] of [['REF', 'const REF = {', 'const CITA = {', /^\s+([A-Za-z0-9]+): \(\)/gm], ['CITA', 'const CITA = {', 'const referencia =', /([A-Za-z0-9]+): '/g]]) {
+    const claves = [...inf.slice(inf.indexOf(desde), inf.indexOf(hasta)).matchAll(re)].map(m => m[1]);
+    const rep = [...new Set(claves.filter((k, i) => claves.indexOf(k) !== i))];
+    if (!claves.length) problemas.push('informe.js: no se encontró el objeto ' + nombre);
+    if (rep.length) problemas.push('informe.js: claves repetidas en ' + nombre + ' (la última pisa a la primera): ' + rep.join(', '));
+  }
+}
 
 // ---------------------------------------------------------------- 3. pruebas unitarias
 for (const f of unidadEnPagina) if (existsSync(join(TESTS, f))) correrEn(join(TESTS, f));

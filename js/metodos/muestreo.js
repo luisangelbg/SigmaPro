@@ -90,7 +90,8 @@ SP.definir('metodos-muestreo', function (SP) {
       filas: [{ m: T('Media'), v: r.media }, { m: T('EE'), v: r.ee }, { m: T('gl efectivos (Satterthwaite)'), v: r.gl }, { m: T('IC inferior'), v: r.ic[0] }, { m: T('IC superior'), v: r.ic[1] },
         { m: T('Total'), v: r.total }, { m: T('EE del total'), v: r.ee_total }] }];
     if (r.asignacion) {
-      c.push(T('Para una muestra de {n}, la asignación de Neyman pone más unidades en los estratos más grandes y variables.', { n: r.asignacion.n }));
+      const lista = r.estratos.map((x, h) => T('{v} en {e}', { v: Math.ceil(r.asignacion.neyman[h] - 1e-9), e: x.estrato }));
+      c.push(T('Para una muestra de {n}, la asignación de Neyman (más unidades en los estratos grandes y variables) toma {l}.', { n: r.asignacion.n, l: lista.slice(0, -1).join(', ') + (lista.length > 1 ? T(' y ') : '') + lista[lista.length - 1] }));
       cuadros.push({ id: 'asignacion', titulo: T('Cómo repartir una muestra de {n}', { n: r.asignacion.n }), columnas: [col('e', r.estrato, 'texto'), col('p', T('Proporcional'), 'forma2'), col('ny', T('Neyman'), 'forma2')],
         filas: r.estratos.map((x, h) => ({ e: x.estrato, p: r.asignacion.proporcional[h], ny: r.asignacion.neyman[h] })), notas: [T('Proporcional: n·N_h/N. Neyman: n·N_h·s_h/Σ N_h·s_h, con las s_h de esta muestra. Redondea hacia arriba.')] });
     }

@@ -1,0 +1,66 @@
+{
+  "esquema": 1,
+  "id": "kaplan-meier/una-curva-plain-hasta-cero",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kaplan-meier"
+  },
+  "titulo": "Una curva con censuras en medio, intervalo plain, que llega a 0",
+  "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "t": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      "e": [1, 1, 1, 0, 1, 1, 0, 1, 0, 1]
+    },
+    "tipos": {
+      "t": {
+        "tipo": "numerica"
+      },
+      "e": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "tiempo": "t",
+    "evento": "e"
+  },
+  "opciones": {
+    "conf": "plain",
+    "nivel": 0.94999999999999996,
+    "rho": 0
+  },
+  "esperado": {
+    "grupos": [
+      {
+        "nombre": "todos",
+        "n": 10,
+        "eventos": 7,
+        "curva": {
+          "tiempo": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          "n_riesgo": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+          "eventos": [1, 1, 1, 0, 1, 1, 0, 1, 0, 1],
+          "censuras": [0, 0, 0, 1, 0, 0, 1, 0, 1, 0],
+          "S": [0.90000000000000002, 0.79999999999999993, 0.69999999999999996, 0.69999999999999996, 0.58333333333333337, 0.46666666666666673, 0.46666666666666673, 0.31111111111111112, 0.31111111111111112, 0],
+          "ee": [0.10540925533894598, 0.15811388300841897, 0.20701966780270625, 0.20701966780270625, 0.27602622373694169, 0.3552329886011098, 0.3552329886011098, 0.541162769282166, 0.541162769282166, "Inf"],
+          "inf": [0.71406149030863164, 0.55208198707817535, 0.4159742349106747, 0.4159742349106747, 0.26774914990074966, 0.14175286356993877, 0.14175286356993877, 0, 0, "NaN"],
+          "sup": [1, 1, 0.98402576508932516, 0.98402576508932516, 0.89891751676591714, 0.79158046976339469, 0.79158046976339469, 0.64109407835417898, 0.64109407835417898, "NaN"]
+        },
+        "cuantiles": {
+          "tiempo": [3, 6, 10],
+          "inf": [1, 3, 6],
+          "sup": [8, "NA", "NA"]
+        }
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "survival": "3.7.0"
+    },
+    "codigo": "survfit(Surv(t, e) ~ 1, conf.type = \"plain\", conf.int = 0.95); quantile(); survdiff(rho = 0)"
+  }
+}

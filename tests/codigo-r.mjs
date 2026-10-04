@@ -202,6 +202,11 @@ const ESCENARIOS = [
   { ej: 'maiz', id: 'potencia-proporciones', e: {}, op: { calcular: 'n', p1: 0.65, p2: 0.8 }, r: 'res$n', js: res => [res.n] },
   { ej: 'maiz', id: 'potencia-correlacion', e: {}, op: { calcular: 'r', n: 40 }, r: 'res$r', js: res => [res.r] },
   { ej: 'maiz', id: 'repeticiones', e: {}, op: { cv: 12, diferencia: 15, tratamientos: 6 }, r: 'c(r, req)', js: res => [res.repeticiones, res.requeridas] },
+  { ej: 'frijol-germinacion', id: 'kaplan-meier', e: { tiempo: 'dias', evento: 'germino', grupo: 'tratamiento' }, op: { conf: 'log', rho: 0 },
+    r: 'c(fit$surv, fit$lower, q$quantile, sd$chisq)', js: res => [...res.grupos.flatMap(g => g.curva.S), ...res.grupos.flatMap(g => g.curva.inf), ...[0, 1, 2].flatMap(k => res.grupos.map(g => g.cuantiles.tiempo[k])), res.comparacion.chi2] },   // quantile() da una matriz grupos × p que c() aplana por columnas
+  { ej: 'frijol-germinacion', id: 'cox', e: { tiempo: 'dias', evento: 'germino', factores: ['tratamiento'], covariables: ['peso_semilla'] }, op: { empates: 'efron' },
+    r: 'c(coef(fit), sqrt(diag(fit$var)), fit$loglik, fit$score, fit$concordance[["concordance"]], zph$table[, "chisq"])',
+    js: res => [...res.coef, ...res.ee, res.ll0, res.ll, res.score, res.concordancia.C, ...res.zph.chi2] },
   { ej: 'aguacate-huertas', id: 'tamano-muestra', e: {}, op: { tipo: 'proporcion', p: 0.3, error: 0.05, N: 900 }, r: 'c(n0, n)', js: res => [res.n0, res.n] },
   { ej: 'aguacate-huertas', id: 'muestreo-simple', e: { respuesta: 'con_trips' }, op: { N: 1580 }, r: 'c(m, ee, m - t * ee, N * m)', js: res => [res.media, res.ee, res.ic[0], res.total] },
   { ej: 'aguacate-huertas', id: 'muestreo-estratificado', e: { respuesta: 'rendimiento_kg', estrato: 'huerta' }, op: { poblaciones: 'Ladera=420; Planicie=900; Vega=260', nTotal: 60 },

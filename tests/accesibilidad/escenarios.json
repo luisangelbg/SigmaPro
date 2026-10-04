@@ -232,6 +232,12 @@
  "pot-anova-con-datos": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.usar('potencia-anova', {}, { calcular: 'n', medias: '4.2, 4.8, 5.1, 5.6', de: 0.6 }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },
+ "sv-kaplan-meier": {
+  "prep": "document.querySelector('#datEjemplos').click(), [...document.querySelectorAll('.sp-menu-item')].find(b => /días a la germinación/.test(b.textContent)).click(), SP.app.ir(4), SP.app.analisis.usar('kaplan-meier', { tiempo: 'dias', evento: 'germino', grupo: 'tratamiento' }, { conf: 'log', rho: 0 }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "sv-cox": {
+  "prep": "document.querySelector('#datEjemplos').click(), [...document.querySelectorAll('.sp-menu-item')].find(b => /días a la germinación/.test(b.textContent)).click(), SP.app.ir(4), SP.app.analisis.usar('cox', { tiempo: 'dias', evento: 'germino', factores: ['tratamiento'], covariables: ['peso_semilla'] }, { empates: 'efron' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
  "mue-tamano-sin-datos": {
   "prep": "SP.app.ir(4), document.querySelector('#anaSinDatos').click(), SP.app.analisis.usar('tamano-muestra', {}, { tipo: 'proporcion', p: 0.3, error: 0.05, N: 900 }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },

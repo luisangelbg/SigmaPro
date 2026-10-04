@@ -73,8 +73,9 @@
     ['hecho', '2.10', 'Cierre de la Fase 2: motor R sin conexión y rendimiento'],
     ['hecho', '3.0', 'Tamaño de muestra y potencia (sin necesidad de datos)'],
     ['hecho', '3.1', 'Muestreo: tamaño de muestra, aleatorio simple y estratificado'],
-    ['actual', '3.2', 'Supervivencia'],
-    ['', '3.3–3.5', 'Series de tiempo, multivariado (MANOVA, discriminante) y cierre de la Fase 3'],
+    ['hecho', '3.2', 'Supervivencia: Kaplan-Meier, log-rank y Cox'],
+    ['actual', '3.3', 'Series de tiempo'],
+    ['', '3.4–3.5', 'Multivariado (MANOVA, discriminante) y cierre de la Fase 3'],
   ];
   function hitos() {
     const ul = $('#hitos');
