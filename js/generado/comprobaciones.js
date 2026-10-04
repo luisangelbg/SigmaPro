@@ -55,14 +55,14 @@ window.SP_COMPROBACIONES = {
  "sin-conexion": {
   "titulo": "Privacidad y uso sin conexión",
   "ok": true,
-  "resumen": "Con datos, 7 análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, 177 peticiones GET sin datos, todas a la propia app; fuera del equipo o del origen solo se piden las letras de la suite (3 archivos .woff2) y el código del motor R para el modelo mixto (43 descargas de webR y sus paquetes), todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo, exporta y verifica las huellas del proyecto.",
+  "resumen": "Con datos, 7 análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, 177 peticiones GET sin datos, todas a la propia app; fuera del equipo o del origen solo se pide el código del motor R para el modelo mixto (43 descargas de webR y sus paquetes), todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo, exporta y verifica las huellas del proyecto.",
   "renglones": [
-   "Doble clic: 168 peticiones; 3 de letras al portal de la suite; 43 descargas del motor R (webR y paquetes).",
+   "Doble clic: 165 peticiones; fuera del equipo, solo 43 descargas del motor R (webR y paquetes).",
    "Servida por http: 177 peticiones GET a 90 archivos de la app, sin parámetros ni cuerpo.",
    "Servicio sin conexión activo con 89 archivos guardados.",
    "Sin red: 6 análisis, reporte, 6 exportaciones y huellas del proyecto verificadas."
   ],
-  "fecha": "2026-10-04T03:45:54.283Z",
+  "fecha": "2026-10-04T04:05:06.773Z",
   "motor": "node v24.19.0"
  },
  "exportar": {
@@ -72,22 +72,22 @@ window.SP_COMPROBACIONES = {
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-10-04T03:44:53.865Z",
+  "fecha": "2026-10-04T04:04:12.010Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {
   "titulo": "El código R equivalente",
   "ok": true,
   "resumen": "64 escenarios de 45 métodos: el código R que muestra la app corre en R y da 901 números iguales a los de la app (tolerancia 1e-6)",
-  "fecha": "2026-10-04T03:44:36.555Z",
+  "fecha": "2026-10-04T04:03:56.717Z",
   "motor": "node v24.19.0"
  },
  "accesibilidad": {
   "titulo": "Accesibilidad (AA)",
   "ok": true,
-  "resumen": "138 revisiones de 69 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 71,344 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 568 paradas en los 8 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
+  "resumen": "144 revisiones de 72 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 72,346 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 568 paradas en los 8 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
   "renglones": [],
-  "fecha": "2026-10-04T03:52:42.915Z",
+  "fecha": "2026-10-04T04:11:37.223Z",
   "motor": "node v24.19.0"
  }
 };

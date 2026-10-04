@@ -2,6 +2,24 @@
 
 ## Sin publicar
 
+### Hito 2.9 · Asistente y constructor para la Fase 2 (3 oct 2026)
+
+- **Asistente**: objetivo nuevo «Comparar genotipos en varios ambientes», que reconoce las columnas de genotipo, ambiente
+  y repetición y lleva al análisis conjunto, la estabilidad, el AMMI o el biplot GGE (y al modelo mixto con BLUP).
+- Conteos → **modelo lineal generalizado** (Poisson o binomial negativa); proporciones con su total o de 0/1 →
+  **binomial**; sin el total, el ANOVA de los porcentajes con el aviso de lo que falta.
+- Pregunta nueva por **bloques aleatorios**: bloques al azar, parcelas divididas y látice pasan al modelo mixto, y los
+  conteos y proporciones al generalizado mixto (motor R, con el aviso de la descarga).
+- **Medidas repetidas** en el tiempo: el modelo mixto con estructura de covarianza, con la pregunta de qué columna
+  identifica cada planta o parcela; las parcelas divididas en el tiempo quedan como aproximación clásica.
+- En «Relación entre variables»: curvas de crecimiento, dosis-respuesta, curva con meseta y la **superficie de
+  respuesta** (combinación óptima); con una dosis numérica, también la curva con meseta entre los pasos siguientes.
+- **Constructor**: zona nueva de **efectos aleatorios** (tecla A) y distribución de la respuesta (normal, conteo o
+  gamma): modelo lineal mixto, generalizado o generalizado mixto, con la parcela grande como (1 | bloque:parcela); la
+  fórmula escrita acepta efectos aleatorios y los explica.
+- Textos que decían «llega en la Fase 2» actualizados en los supuestos, los diseños y el asistente.
+- Pruebas: 3 casos nuevos del asistente y el constructor (las ramas de la Fase 2); 3 escenarios de accesibilidad más.
+
 ### Hito 2.8 · Ensayos multiambiente y estabilidad (3 oct 2026)
 
 - **Familia nueva: Ensayos multiambiente y estabilidad**, en el núcleo JS (js/nucleo/multiambiente.js), adaptada del

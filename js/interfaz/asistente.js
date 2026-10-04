@@ -12,7 +12,7 @@
   const A = () => SP.app.analisis;
   const L = () => window.LABG;
   const est = { r: {}, hoja: null, rec: null, ultimo: null };
-  const CONSTRUIBLES = ['dca', 'dbca', 'cuadro-latino', 'parcelas-divididas', 'parcelas-subdivididas', 'ancova', 'regresion-lineal', 'modelo-lineal'];
+  const CONSTRUIBLES = ['dca', 'dbca', 'cuadro-latino', 'parcelas-divididas', 'parcelas-subdivididas', 'ancova', 'regresion-lineal', 'modelo-lineal', 'mixto-bloques', 'mixto-divididas', 'glm-conteos', 'glmm-bloques'];
 
   function pregunta(p) {
     const id = 'asis-' + p.id;

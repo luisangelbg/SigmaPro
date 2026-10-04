@@ -33,10 +33,8 @@ que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA
   2 500 puntos (todos los marcados mientras no pasen de la mitad) y las cajas, 400 puntos por grupo.
 - **Versiones de R**: las referencias se generaron con R 4.4.2 de escritorio; webR trae R 4.6. Antes de la Fase 2,
   actualizar el R de escritorio, regenerar las referencias (`tests/r/generar-todo.R`) y volver a validar.
-- **Letras con doble clic**: el navegador y el estudio de figuras (módulos comunes de la suite) piden sus letras al
-  portal de la suite, también al abrir con doble clic con internet: tres archivos .woff2, sin datos. Es una decisión de
-  toda la suite; si se quiere que con doble clic ninguna petición salga del equipo, habría que empaquetar las letras
-  junto a cada app (licencia OFL).
+- ~~**Letras con doble clic**~~: resuelto (3 oct 2026). Desde el navegador 1.1.2 y el estudio de figuras 1.5.1 los
+  módulos comunes usan las letras del sistema; con doble clic ninguna petición sale del equipo (salvo el motor R).
 - **Auditoría de accesibilidad**: usa el auditor de la suite (`LABG-Design/labg-audit.ps1`, fuera de este repositorio);
   sin él solo corre la revisión del foco con el teclado.
 - **Idioma**: la interfaz está solo en español.
@@ -48,7 +46,8 @@ desde una fórmula), Hito 2.1 (medias marginales, comparaciones, prueba de los a
 efectos aleatorios), Hito 2.2 (medidas repetidas con estructuras de covarianza), Hito 2.3 (componentes de varianza por
 REML en el núcleo, heredabilidad y repetibilidad) , Hito 2.4 (modelos lineales generalizados en el núcleo), Hito 2.5 (modelos
 lineales generalizados mixtos en el motor R), Hito 2.6 (regresión no lineal en el núcleo), Hito 2.7 (superficies de
-respuesta en el núcleo) e Hito 2.8 (ensayos multiambiente y estabilidad en el núcleo). Notas:
+respuesta en el núcleo), Hito 2.8 (ensayos multiambiente y estabilidad en el núcleo) e Hito 2.9 (asistente y constructor
+para la Fase 2). Notas:
 
 - Con doble clic el motor R necesita internet la primera vez (luego sale de la caché del navegador); sin conexión
   llega en el cierre de la fase (Hito 2.10), con el repositorio propio de paquetes en Pages.

@@ -897,15 +897,15 @@ SP.definir('supuestos', function (SP) {
       rec.push(T('Box-Cox con este modelo estima λ = {l} (IC 95 %: {a} a {b}); sugiere {s}. Transfórmala en el bloque Datos (la columna original no cambia) y vuelve a revisar.',
         { l: f3(r.boxcox.lambda), a: f3(r.boxcox.ic[0]), b: f3(r.boxcox.ic[1]), s: sug }));
     }
-    if ((malo(s.normalidad) || malo(s.varianzas)) && r.respuesta_tipo === 'conteos') rec.push(T('La respuesta son conteos: √(x + 0.5) suele igualar las varianzas; un modelo de Poisson o binomial negativo (Fase 2) los trata directamente.'));
-    if ((malo(s.normalidad) || malo(s.varianzas)) && r.respuesta_tipo === 'porcentajes') rec.push(T('Si la respuesta es un porcentaje, el arcoseno de la raíz lo estabiliza; un modelo binomial (Fase 2) es la opción directa.'));
+    if ((malo(s.normalidad) || malo(s.varianzas)) && r.respuesta_tipo === 'conteos') rec.push(T('La respuesta son conteos: √(x + 0.5) suele igualar las varianzas; un modelo de Poisson o binomial negativo (familia Modelos lineales generalizados) los trata directamente.'));
+    if ((malo(s.normalidad) || malo(s.varianzas)) && r.respuesta_tipo === 'porcentajes') rec.push(T('Si la respuesta es un porcentaje, el arcoseno de la raíz lo estabiliza; un modelo binomial con el total de cada fila (familia Modelos lineales generalizados) es la opción directa.'));
     if (malo(s.varianzas) && r.un_factor) rec.push(T('Con varianzas distintas y un solo factor, el ANOVA de Welch (Hito 1.6) o la prueba de Kruskal-Wallis (Hito 1.5) no suponen varianzas iguales.'));
-    if (malo(s.varianzas) && !r.un_factor && !r.boxcox) rec.push(T('Con varianzas distintas en un diseño de varios factores o con bloques, la vía es transformar la respuesta o un modelo que permita varianzas distintas (Fase 2).'));
+    if (malo(s.varianzas) && !r.un_factor && !r.boxcox) rec.push(T('Con varianzas distintas en un diseño de varios factores o con bloques, la vía es transformar la respuesta o un modelo que permita varianzas distintas (aún no está en SigmaPro).'));
     if (malo(s.normalidad) && !malo(s.varianzas)) rec.push(r.n >= 30
       ? T('Con {n} residuos y varianzas homogéneas, el ANOVA es robusto a esta falta de normalidad; reporta la prueba y una transformación como verificación.', { n: r.n })
       : T('Con pocos residuos, compara con una prueba no paramétrica (Kruskal-Wallis o, con bloques, Friedman; Hito 1.5).'));
     if (malo(s.aditividad)) rec.push(T('Para quitar la no aditividad suele bastar el logaritmo (vuelve aditivo un efecto multiplicativo); con repeticiones dentro de cada bloque, incluye la interacción en el modelo.'));
-    if (malo(s.independencia)) rec.push(T('Revisa el orden: si las filas siguen la posición en el campo, parcelas vecinas se parecen. Considera bloques más chicos o un análisis espacial (Fase 2).'));
+    if (malo(s.independencia)) rec.push(T('Revisa el orden: si las filas siguen la posición en el campo, parcelas vecinas se parecen. Considera bloques más chicos o un análisis espacial (aún no está en SigmaPro).'));
     if (malo(s.atipicos)) rec.push(T('Revisa la fila {f}: primero que no haya un error de captura; si el valor es real, analiza con y sin ella y repórtalo.', { f: r.atipicos.fila }));
     return rec;
   }

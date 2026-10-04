@@ -1,4 +1,6 @@
-/* Pruebas de js/nucleo/asistente.js y js/nucleo/constructor.js: una por rama del árbol de decisión del asistente,
+/* Pruebas de js/nucleo/asistente.js y js/nucleo/constructor.js: una por rama del árbol de decisión del asistente
+   (con las de la Fase 2: conteos, proporciones, bloques aleatorios, medidas repetidas, curvas, superficies y varios
+   ambientes),
    las heurísticas con que propone las respuestas, el paso de los papeles del constructor al método y su fórmula, y la
    lectura de fórmulas escritas a mano (con sus errores). Todo método que recomiendan existe en el registro. */
 SPT.describir('Asistente y constructor de modelos', () => {
@@ -88,9 +90,17 @@ SPT.describir('Asistente y constructor de modelos', () => {
     const m = { bloque: [], trat: [], muestreo: [], y: [] };
     for (const b of ['I', 'II', 'III']) for (const tr of ['A', 'B', 'C']) for (const f of ['15 dds', '30 dds', '45 dds']) { m.bloque.push(b); m.trat.push(tr); m.muestreo.push(f); m.y.push(az() * 10); }
     const tt = R(tab(m), { factores: ['trat'], tiempo: 'si' });
-    SPT.igual(tt.metodo, 'parcelas-divididas');
-    SPT.igualJSON([tt.e.parcelaGrande, tt.e.subparcela], ['trat', 'muestreo']);
-    SPT.afirmar(tt.avisos.length === 1, 'falta el aviso del modelo mixto');
+    SPT.igual(tt.metodo, 'medidas-repetidas');
+    SPT.igualJSON(tt.e, { respuesta: 'y', tiempo: 'muestreo', sujeto: 'bloque', tratamientos: ['trat'], bloque: 'bloque' });
+    SPT.igual(tt.despues[0].metodo, 'parcelas-divididas');
+    SPT.igualJSON([tt.despues[0].e.parcelaGrande, tt.despues[0].e.subparcela], ['trat', 'muestreo']);
+    SPT.afirmar(tt.avisos.some(a => /motor R/.test(a)), 'falta el aviso del motor R');
+    existe(tt);
+    /* sin bloque ni otra columna que identifique la unidad: la aproximación clásica, con su aviso */
+    const m2 = { trat: m.trat, muestreo: m.muestreo, y: m.y };
+    const t2 = R(tab(m2), { factores: ['trat'], tiempo: 'si', bloques: 'no' });
+    SPT.igual(t2.metodo, 'parcelas-divididas');
+    SPT.afirmar(t2.avisos.length === 1, 'falta el aviso del modelo mixto');
     /* bloques incompletos */
     const bi = { rep: [], bloque: [], var: [], y: [] };
     for (const rp of ['R1', 'R2']) for (const bl of ['B1', 'B2', 'B3']) for (const v of ['V1', 'V2', 'V3']) { bi.rep.push(rp); bi.bloque.push(rp + bl); bi.var.push(v); bi.y.push(az()); }
@@ -100,6 +110,85 @@ SPT.describir('Asistente y constructor de modelos', () => {
     SPT.igual(la.metodo, 'latice');
     SPT.igual(la.e.repeticion, 'rep');
     existe(la);
+  });
+
+  SPT.caso('Fase 2: conteos y proporciones → modelo lineal generalizado; bloques aleatorios → modelo mixto', () => {
+    const c = { bloque: [], trat: [], insectos: [], plantas: [], germinadas: [], sembradas: [], emergio: [] };
+    for (const b of ['I', 'II', 'III', 'IV']) for (const tr of ['T1', 'T2', 'T3']) {
+      c.bloque.push(b); c.trat.push(tr); c.insectos.push(Math.floor(az() * 12)); c.plantas.push(90 + Math.round(az() * 20));
+      c.sembradas.push(50); c.germinadas.push(30 + Math.floor(az() * 15)); c.emergio.push(az() < 0.5 ? 0 : 1);
+    }
+    const t = tab(c);
+    const g = R(t, { respuesta: 'insectos', tipoRespuesta: 'conteo', factores: ['trat'] });
+    SPT.igual(g.metodo, 'glm-conteos');
+    SPT.igualJSON(g.e, { respuesta: 'insectos', tratamientos: ['trat'], bloque: 'bloque' });
+    SPT.igual(g.despues[0].metodo, 'glmm-bloques');
+    existe(g);
+    const gm = R(t, { respuesta: 'insectos', tipoRespuesta: 'conteo', factores: ['trat'], aleatorios: 'si' });
+    SPT.igual(gm.metodo, 'glmm-bloques');
+    SPT.igual(gm.op.familia, 'poisson');
+    existe(gm);
+    /* 0/1: binomial sin total; éxitos de n: con el total; porcentaje sin total: ANOVA con aviso */
+    const b = R(t, { respuesta: 'emergio', factores: ['trat'] });
+    SPT.igual(b.metodo, 'glm-proporciones');
+    SPT.afirmar(!b.e.ensayos, 'con 0/1 no hay total');
+    const p = R(t, { respuesta: 'germinadas', tipoRespuesta: 'proporcion', factores: ['trat'], ensayos: 'sembradas' });
+    SPT.igual(p.metodo, 'glm-proporciones');
+    SPT.igual(p.e.ensayos, 'sembradas');
+    existe(p);
+    const pa = R(t, { respuesta: 'germinadas', tipoRespuesta: 'proporcion', factores: ['trat'], ensayos: '' });
+    SPT.igual(pa.metodo, 'dbca');
+    SPT.afirmar(pa.avisos.some(a => /total/.test(a)), 'falta el aviso del total');
+    /* bloques aleatorios con respuesta continua */
+    const e = ensayo();
+    const mb = R(e, { aleatorios: 'si' });
+    SPT.igual(mb.metodo, 'mixto-bloques');
+    SPT.igualJSON(mb.e, { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' });
+    existe(mb);
+    const md = R(e, { parcelas: 'divididas', parcelaGrande: 'hibrido', aleatorios: 'si' });
+    SPT.igual(md.metodo, 'mixto-divididas');
+    SPT.igualJSON([md.e.parcelaGrande, md.e.subparcela, md.e.bloque], ['hibrido', 'dosis', 'bloque']);
+    const bi = { rep: [], bloque: [], var: [], y: [] };
+    for (const rp of ['R1', 'R2']) for (const bl of ['B1', 'B2', 'B3']) for (const v of ['V1', 'V2', 'V3']) { bi.rep.push(rp); bi.bloque.push(rp + bl); bi.var.push(v); bi.y.push(az()); }
+    const ml = R(tab(bi), { factores: ['var'], bloques: 'incompletos', bloque: 'bloque', latice: 'si', repeticion: 'rep', aleatorios: 'si' });
+    SPT.igual(ml.metodo, 'mixto-latice');
+    SPT.igualJSON(ml.e, { respuesta: 'y', tratamiento: 'var', repeticion: 'rep', bloque: 'bloque' });
+    /* dosis numérica: también la curva con meseta */
+    SPT.afirmar(R(e).despues.some(d => d.metodo === 'respuesta-meseta' && d.e.dosis === 'dosis' && d.e.grupo === 'hibrido'), 'falta la curva con meseta');
+    /* las preguntas nuevas aparecen cuando tocan */
+    const inf = SP.asistente.info(t), ids = r => SP.asistente.preguntas(r, inf).map(q => q.id);
+    SPT.afirmar(ids({ respuesta: 'plantas', tipoRespuesta: 'continua', factores: ['trat'] }).includes('aleatorios'));
+    SPT.afirmar(ids({ respuesta: 'germinadas', tipoRespuesta: 'proporcion', factores: ['trat'] }).includes('ensayos'));
+    SPT.afirmar(!ids({ respuesta: 'emergio', factores: ['trat'] }).includes('ensayos'), 'con 0/1 no se pregunta el total');
+    SPT.afirmar(ids({ respuesta: 'plantas', tipoRespuesta: 'continua', factores: ['trat'], bloques: 'no', tiempo: 'si' }).includes('sujeto'));
+  });
+
+  SPT.caso('Fase 2: genotipos en varios ambientes y curvas, superficies en relación', () => {
+    const c = { ambiente: [], genotipo: [], repeticion: [], rendimiento: [] };
+    for (const a of ['A1', 'A2', 'A3', 'A4']) for (const r of ['1', '2', '3']) for (const g of ['G1', 'G2', 'G3', 'G4', 'G5']) { c.ambiente.push(a); c.repeticion.push(r); c.genotipo.push(g); c.rendimiento.push(3 + az()); }
+    const t = tab(c);
+    SPT.igual(SP.asistente.completar({}, SP.asistente.info(t)).objetivo, 'ambientes');
+    const r = R(t);
+    SPT.igual(r.metodo, 'ensayos-multiambiente');
+    SPT.igualJSON(r.e, { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' });
+    SPT.igualJSON(r.despues.map(d => d.metodo), ['estabilidad', 'ammi', 'gge', 'mixto-localidades']);
+    existe(r);
+    for (const [k, m] of [['estabilidad', 'estabilidad'], ['ammi', 'ammi'], ['gge', 'gge']]) SPT.igual(R(t, { interesMA: k }).metodo, m);
+    const sin = R(t, { repMA: '' });
+    SPT.afirmar(!sin.e.repeticion && sin.avisos.length === 1 && !sin.despues.some(d => d.metodo === 'mixto-localidades'));
+    const inf = SP.asistente.info(t);
+    SPT.igualJSON(SP.asistente.preguntas({}, inf).map(q => q.id), ['objetivo', 'respuesta', 'genotipo', 'ambiente', 'repMA', 'interesMA']);
+    /* relación: curvas no lineales y superficie de respuesta */
+    const d = { dosis: [], dds: [], N: [], K: [], y: [] };
+    for (let i = 0; i < 20; i++) { d.dosis.push(i * 10); d.dds.push(i * 7); d.N.push([0, 60, 120, 180][i % 4]); d.K.push([0, 50, 100][i % 3]); d.y.push(az() * 10); }
+    const td = tab(d);
+    SPT.igual(R(td, { objetivo: 'relacion', y: 'y', predictores: ['dds'], forma: 'crecimiento' }).metodo, 'curva-crecimiento');
+    SPT.igualJSON(R(td, { objetivo: 'relacion', y: 'y', predictores: ['dosis'], forma: 'dosis' }).e, { respuesta: 'y', dosis: 'dosis' });
+    SPT.igual(R(td, { objetivo: 'relacion', y: 'y', predictores: ['dosis'], forma: 'meseta' }).metodo, 'respuesta-meseta');
+    const su = R(td, { objetivo: 'relacion', y: 'y', predictores: ['N', 'K'], elegir: 'superficie' });
+    SPT.igual(su.metodo, 'superficie-respuesta');
+    SPT.igualJSON(su.e.factores, ['N', 'K']);
+    existe(su);
   });
 
   SPT.caso('comparar: escalas ordenadas → rangos; dos grupos → t de Welch', () => {
@@ -225,6 +314,29 @@ SPT.describir('Asistente y constructor de modelos', () => {
     /* nombres con espacios van entre comillas invertidas */
     const raro = SP.constructorModelos.modelo({ respuesta: 'peso seco', factores: ['hibrido'] }, { numericas: ['peso seco'], factores: ['hibrido'] });
     SPT.afirmar(/^`peso seco` ~/.test(raro.formula), raro.formula);
+  });
+
+  SPT.caso('constructor, Fase 2: efectos aleatorios y respuestas de conteo o gamma', () => {
+    const info = { numericas: ['rend', 'insectos'], factores: ['bloque', 'hibrido', 'riego', 'localidad'] };
+    const M = r => SP.constructorModelos.modelo(r, info);
+    const mx = M({ respuesta: 'rend', factores: ['hibrido'], aleatorios: ['bloque'] });
+    SPT.igual(mx.metodo, 'modelo-mixto');
+    SPT.igual(mx.formula, 'rend ~ hibrido + (1 | bloque)');
+    const pd = M({ respuesta: 'rend', factores: ['riego', 'hibrido'], parcelaGrande: 'riego', aleatorios: ['bloque'] });
+    SPT.igual(pd.op.derecha, 'riego * hibrido + (1 | bloque) + (1 | bloque:riego)');
+    const gl = M({ respuesta: 'insectos', factores: ['hibrido'], bloques: ['bloque'], familia: 'conteo' });
+    SPT.igual(gl.metodo, 'glm');
+    SPT.igual(gl.op.familia, 'poisson');
+    SPT.igual(gl.op.derecha, 'bloque + hibrido');
+    const gm = M({ respuesta: 'insectos', factores: ['hibrido'], aleatorios: ['localidad', 'bloque'], familia: 'conteo' });
+    SPT.igual(gm.metodo, 'glmm');
+    SPT.igual(gm.op.derecha, 'hibrido + (1 | localidad) + (1 | bloque)');
+    SPT.afirmar(M({ respuesta: 'rend', factores: ['hibrido'], aleatorios: ['bloque'], familia: 'gamma' }).error, 'gamma mixto no existe');
+    SPT.afirmar(M({ respuesta: 'insectos', factores: ['riego', 'hibrido'], parcelaGrande: 'riego', bloques: ['bloque'], familia: 'conteo' }).error, 'parcela grande pide el bloque aleatorio');
+    for (const m of [mx, gl, gm]) SPT.afirmar(SP.metodos[m.metodo], m.metodo);
+    const lec = SP.constructorModelos.interpretar('rend', 'hibrido + (1 | bloque)', info);
+    SPT.afirmar(lec.ok && lec.aleatorios === 1 && /varianza/.test(lec.terminos[1].explicacion), JSON.stringify(lec));
+    SPT.afirmar(!SP.constructorModelos.interpretar('rend', 'hibrido + (1 | parcela)', info).ok, 'columna inexistente');
   });
 
   SPT.caso('fórmulas escritas: cada término explicado y los errores con su arreglo', () => {

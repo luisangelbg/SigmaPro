@@ -69,8 +69,8 @@
     ['hecho', '2.6', 'Regresión no lineal y dosis-respuesta'],
     ['hecho', '2.7', 'Superficies de respuesta'],
     ['hecho', '2.8', 'Ensayos multiambiente y estabilidad'],
-    ['actual', '2.9', 'Asistente y constructor para la Fase 2'],
-    ['', '2.10', 'Cierre de la Fase 2'],
+    ['hecho', '2.9', 'Asistente y constructor para la Fase 2'],
+    ['actual', '2.10', 'Cierre de la Fase 2'],
     ['', '3', 'Fase 3: multivariado con PCAPro y ClusteringPro, potencia y tamaño de muestra'],
   ];
   function hitos() {

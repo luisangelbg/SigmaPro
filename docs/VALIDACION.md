@@ -366,14 +366,14 @@ distintas, el asistente, el constructor, el reporte y seis exportaciones mientra
 
 | Cómo se abre | Qué se comprueba | Resultado |
 |---|---|---|
-| Doble clic (file://) | ninguna petición sale del equipo | solo las 3 letras de la suite (ver abajo) |
+| Doble clic (file://) | ninguna petición sale del equipo | ninguna, salvo el código del motor R (ver abajo) |
 | Servida por http | todas las peticiones son GET, sin parámetros ni cuerpo, a archivos de la propia app | 73 peticiones, todas así |
 | Servida por http | el servicio sin conexión (`sw.js`) queda activo y guarda la app | activo, 75 archivos |
 | Sin red y con el servidor apagado | la app abre, carga datos, calcula, arma el reporte, exporta y verifica las huellas del proyecto | igual que con red |
 
-La única excepción, declarada: el navegador y el estudio de figuras (módulos comunes de la suite) piden sus letras
-«LABG Sans» y «LABG Serif» al portal de la suite, tres archivos .woff2 con GET y sin datos. En GitHub Pages son del
-mismo origen y se guardan para usarse sin conexión; sin red, la app usa las letras del sistema.
+La única excepción, declarada: los métodos del motor R (Fase 2) descargan webR y sus paquetes (código, con GET y sin
+datos). Las letras ya no son excepción: desde el navegador 1.1.2 y el estudio de figuras 1.5.1 los módulos comunes
+usan las del sistema, y una petición de letras al portal hace fallar la prueba.
 
 **Accesibilidad AA** (`tests/accesibilidad/auditar.mjs`). 46 escenarios (cada bloque vacío y con datos, análisis de
 todas las familias, el asistente, el constructor, diálogos, el reporte, las figuras y la exportación) pasan por el
@@ -534,7 +534,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          43 operaciones con 100 000 filas en el navegador (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      69 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      72 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

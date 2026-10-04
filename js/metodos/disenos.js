@@ -147,7 +147,7 @@ SP.definir('disenos', function (SP) {
       const todos = [...new Set(mod.unidades.flat())];
       const c = conteos(t, filas, todos);
       out.balanceado = c.completo && c.igual && c.max === 1;
-      if (!out.balanceado) avisos.push(T('El diseño no está balanceado (faltan o sobran parcelas): con estratos de error las pruebas F dejan de ser exactas y los términos se reparten entre estratos. El análisis correcto es un modelo mixto (llega en la Fase 2).'));
+      if (!out.balanceado) avisos.push(T('El diseño no está balanceado (faltan o sobran parcelas): con estratos de error las pruebas F dejan de ser exactas y los términos se reparten entre estratos. El análisis correcto es un modelo mixto (familia Modelos mixtos del catálogo).'));
       let letra = 0;
       out.estratos = r.estratos.map(s => {
         const et = s.residual ? 'Error ' + 'abcdefgh'[letra++] : null;

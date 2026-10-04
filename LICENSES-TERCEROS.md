@@ -60,11 +60,10 @@ SOFTWARE.
 - **De dónde viene:** portal de la suite, `shared/figure-editor/`; obra del mismo autor, GPL-3.0. No trae íconos ni
   código de terceros.
 
-### Letras de la suite
+### Letras
 
-El navegador y el estudio de figuras usan «LABG Sans» y «LABG Serif» (IBM Plex, SIL Open Font License 1.1),
-servidas desde el portal de la suite; sin conexión se usan las letras del sistema. No viajan dentro de esta
-carpeta.
+La app, el navegador y el estudio de figuras usan las letras del sistema (desde el navegador 1.1.2 y el estudio
+1.5.1): no se piden a internet ni viajan tipografías de terceros en esta carpeta.
 
 ### Datos publicados en los ejemplos
 

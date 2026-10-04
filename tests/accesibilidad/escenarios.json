@@ -213,5 +213,14 @@
  },
  "ma-gge": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[13].click(), SP.app.ir(4), SP.app.analisis.usar('gge', { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, { escala: 'ninguna', particion: 'simetrica', objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "asis-ambientes": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[13].click(), SP.app.ir(4), SP.app.analisis.ponerModo('asistente')"
+ },
+ "asis-conteos": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[4].click(), SP.app.ir(4), SP.app.analisis.ponerModo('asistente')"
+ },
+ "cons-aleatorios": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.constructorUI.desde({ metodo: 'mixto-bloques', e: { respuesta: 'rend', tratamientos: ['hibrido'], bloque: 'bloque' } }), SP.app.analisis.ponerModo('constructor')"
  }
 }

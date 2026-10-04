@@ -1,9 +1,10 @@
 /* SigmaPro — bloque 4: el constructor de modelos (interfaz).
    Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
 
-   Las variables se ponen en zonas (respuesta, bloques, factores, parcela grande, covariables) de tres maneras: se
-   arrastran, se eligen en el menú «Agregar…» de cada zona (también en el celular) o, con una variable enfocada, se
-   pulsa R, F, B, C o P (Supr la quita). SP.constructorModelos.modelo decide el diseño y su fórmula; la fórmula se
+   Las variables se ponen en zonas (respuesta, bloques, efectos aleatorios, factores, parcela grande, covariables) de
+   tres maneras: se arrastran, se eligen en el menú «Agregar…» de cada zona (también en el celular) o, con una variable
+   enfocada, se pulsa R, F, B, A, C o P (Supr la quita). La distribución de la respuesta (normal, conteo o gamma) elige
+   entre el modelo lineal, el generalizado y sus versiones mixtas. SP.constructorModelos.modelo decide el diseño y su fórmula; la fórmula se
    puede editar a mano y entonces va al modelo lineal general, con la explicación de cada término o del error. */
 (function () {
   'use strict';
@@ -15,22 +16,28 @@
   const ZONAS = [
     { id: 'respuesta', titulo: 'Respuesta', tecla: 'R', ayuda: 'La variable numérica que mediste.', max: 1, numerica: true },
     { id: 'bloques', titulo: 'Bloques o repeticiones', tecla: 'B', ayuda: 'Uno: bloques al azar; dos: filas y columnas (cuadro latino).', max: 2 },
+    { id: 'aleatorios', titulo: 'Efectos aleatorios', tecla: 'A', ayuda: 'Bloques, localidades o años vistos como muestra de muchos posibles (modelo mixto, motor R).', max: 3 },
     { id: 'factores', titulo: 'Factores de tratamiento', tecla: 'F', ayuda: 'Se cruzan todos (con sus interacciones).', max: 6 },
     { id: 'parcela', titulo: 'Parcela grande', tecla: 'P', ayuda: 'El factor aplicado a parcelas grandes (parcelas divididas).', max: 1 },
     { id: 'covariables', titulo: 'Covariables', tecla: 'C', ayuda: 'Numéricas medidas antes del tratamiento (ANCOVA) o predictores (regresión).', max: 15, numerica: true },
   ];
-  const TECLAS = { r: 'respuesta', b: 'bloques', f: 'factores', p: 'parcela', c: 'covariables' };
+  const TECLAS = { r: 'respuesta', b: 'bloques', a: 'aleatorios', f: 'factores', p: 'parcela', c: 'covariables' };
+  const FAMILIAS = [['normal', 'Normal (medida continua)'], ['conteo', 'Conteo (Poisson)'], ['gamma', 'Positiva y asimétrica (gamma)']];
 
   const infoDe = c => ({ numericas: c.numericas, factores: c.t.nombres.filter(n => !c.numericas.includes(n) && !c.fechas.includes(n)).concat(c.numFactor) });
   function rolesIniciales(c) {
     const p = c.pap, resp = p.respuestas.length ? p.respuestas[p.respuestas.length - 1] : (c.numericas[0] || '');
     const bloques = p.fila && p.columna ? [p.fila, p.columna] : p.bloque ? [p.bloque] : [];
-    return { respuesta: resp, bloques, factores: p.factores.filter(f => !bloques.includes(f) && f !== resp).slice(0, 2), parcelaGrande: '', covariables: [] };
+    return { respuesta: resp, bloques, factores: p.factores.filter(f => !bloques.includes(f) && f !== resp).slice(0, 2), parcelaGrande: '', covariables: [], aleatorios: [], familia: 'normal' };
   }
   /** Papeles a partir de una recomendación del asistente. */
   function desde(rec) {
-    const e = rec.e || {}, r = { respuesta: e.respuesta || '', bloques: [], factores: [], parcelaGrande: e.parcelaGrande || '', covariables: [] };
-    if (e.fila && e.columna) r.bloques = [e.fila, e.columna]; else if (e.bloque) r.bloques = [e.bloque]; else if (e.repeticion) r.bloques = [e.repeticion];
+    const e = rec.e || {}, r = { respuesta: e.respuesta || '', bloques: [], factores: [], parcelaGrande: e.parcelaGrande || '', covariables: [], aleatorios: [], familia: 'normal' };
+    const mixto = /^mixto-|^glmm/.test(rec.metodo || '');
+    if (e.fila && e.columna) r.bloques = [e.fila, e.columna]; else if (e.bloque) r[mixto ? 'aleatorios' : 'bloques'] = [e.bloque]; else if (e.repeticion) r.bloques = [e.repeticion];
+    if (/conteos|glmm-bloques/.test(rec.metodo || '') && (!rec.op || ['auto', 'poisson'].includes(rec.op.familia))) r.familia = 'conteo';
+    if (rec.metodo === 'glm-gamma') r.familia = 'gamma';
+    if (e.tratamiento) r.factores = [e.tratamiento];
     r.factores = [].concat(e.tratamientos || []).concat([e.parcelaGrande, e.subparcela, e.subsubparcela].filter(Boolean));
     r.factores = r.factores.filter((f, i) => f && r.factores.indexOf(f) === i);
     r.covariables = [].concat(e.covariables || (rec.metodo === 'regresion-lineal' ? e.predictores || [] : []));
@@ -41,7 +48,7 @@
     const r = est.roles;
     if (r.respuesta === v) r.respuesta = '';
     if (r.parcelaGrande === v) r.parcelaGrande = '';
-    for (const z of ['bloques', 'factores', 'covariables']) r[z] = r[z].filter(x => x !== v);
+    for (const z of ['bloques', 'aleatorios', 'factores', 'covariables']) r[z] = (r[z] || []).filter(x => x !== v);
   }
   function asignar(v, z) {
     const r = est.roles, c = est.c, zona = ZONAS.find(x => x.id === z);
@@ -85,7 +92,10 @@
     if (!cont) return;
     est.c = c;
     if (!est.roles || SP.app.datos.hoja !== est.hoja) { est.roles = rolesIniciales(c); est.hoja = SP.app.datos.hoja; est.editando = false; }
-    const r = est.roles, usadas = new Set([r.respuesta, ...r.bloques, ...r.factores, ...r.covariables].filter(Boolean));
+    const r = est.roles;
+    if (!r.aleatorios) r.aleatorios = [];
+    if (!r.familia) r.familia = 'normal';
+    const usadas = new Set([r.respuesta, ...r.bloques, ...r.aleatorios, ...r.factores, ...r.covariables].filter(Boolean));
     const columnas = c.t.nombres.filter(n => !c.fechas.includes(n));
     const tipoDe = n => (c.numFactor.includes(n) ? T('num. (factor)') : c.numericas.includes(n) ? T('numérica') : T('factor'));
     const m = est.modelo = SP.constructorModelos.modelo(r, infoDe(c));
@@ -94,14 +104,14 @@
     const f = document.activeElement && cont.contains(document.activeElement) ? document.activeElement : null;
     const clave = f ? (f.dataset.var ? 'var|' + f.dataset.var : f.dataset.zona ? 'zona|' + f.dataset.zona + '|' + (f.dataset.quitar || '') : f.id ? 'id|' + f.id : '') : '';
     const pool = `<div class="cons-pool" role="list" aria-label="${esc(T('Variables de la tabla'))}">${columnas.map(n => `<button type="button" class="cons-chip${usadas.has(n) ? ' usada' : ''}" draggable="true" data-var="${esc(n)}" role="listitem" aria-describedby="consAyuda">${esc(n)} <span class="cons-tipo">${esc(tipoDe(n))}</span></button>`).join('')}</div>` +
-      `<p class="small muted" id="consAyuda">${esc(T('Arrastra cada variable a su zona, o enfócala y pulsa R (respuesta), F (factor), B (bloque), C (covariable) o P (parcela grande); Supr la quita.'))}</p>`;
+      `<p class="small muted" id="consAyuda">${esc(T('Arrastra cada variable a su zona, o enfócala y pulsa R (respuesta), F (factor), B (bloque), A (aleatorio), C (covariable) o P (parcela grande); Supr la quita.'))}</p>`;
     const zonas = ZONAS.map(z => {
       const vs = enZona(r, z.id), compatibles = columnas.filter(n => !vs.includes(n) && (!z.numerica || c.numericas.includes(n)) && (z.id !== 'parcela' || r.factores.includes(n)));
       const sep = z.id === 'factores' ? '<span class="cons-x" aria-hidden="true">×</span>' : '';
       return `<div class="cons-zona${vs.length ? ' llena' : ''}" data-zona="${z.id}"><div class="cons-zt"><span>${esc(T(z.titulo))}</span><kbd>${z.tecla}</kbd></div>` +
         `<div class="cons-chips">${vs.map(v => `<span class="cons-chip puesta">${esc(v)}<button type="button" class="cons-quitar" data-zona="${z.id}" data-quitar="${esc(v)}" aria-label="${esc(T('Quitar «{v}» de {z}', { v, z: T(z.titulo) }))}">×</button></span>`).join(sep) || `<span class="small muted">${esc(T(z.ayuda))}</span>`}</div>` +
         (compatibles.length && vs.length < z.max ? `<select class="select cons-agregar" data-zona="${z.id}" aria-label="${esc(T('Agregar a {z}', { z: T(z.titulo) }))}"><option value="">${esc(T('Agregar…'))}</option>${compatibles.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('')}</select>` : '') + '</div>';
-    }).join('') + `<div class="cons-zona deshabilitada"><div class="cons-zt"><span>${esc(T('Efectos aleatorios'))}</span><span class="pill gris">${esc(T('Fase 2'))}</span></div><span class="small muted">${esc(T('Modelos mixtos con REML, con el motor R.'))}</span></div>`;
+    }).join('') + `<label class="field cons-familia"><span>${esc(T('Distribución de la respuesta'))}</span><select class="select" id="consFamilia">${FAMILIAS.map(([v, t]) => `<option value="${v}"${r.familia === v ? ' selected' : ''}>${esc(T(t))}</option>`).join('')}</select></label>`;
     /* fórmula */
     let formula;
     if (!est.editando) {
@@ -109,7 +119,7 @@
         (r.respuesta ? `<button type="button" class="btn btn-ghost btn-sm" id="consEditar">${esc(T('Editar la fórmula'))}</button>` : '') + '</div>';
     } else {
       const lec = lectura(c);
-      formula = `<div class="cons-editor"><div class="cons-formula editando"><label class="cons-lbl" for="consDerecha">${esc(r.respuesta)} ~</label><input class="input" type="text" id="consDerecha" spellcheck="false" autocomplete="off" value="${esc(est.derecha)}" aria-describedby="consLectura"></div><div id="consLectura">${lec.html}</div><p class="small muted">${esc(T('Se analiza con el modelo lineal general (sin estratos de error): «a * b» cruza, «a / b» anida b en a, «(a + b + c)^2» deja hasta las interacciones dobles y «- 1» quita la intercepción.'))}</p>` +
+      formula = `<div class="cons-editor"><div class="cons-formula editando"><label class="cons-lbl" for="consDerecha">${esc(r.respuesta)} ~</label><input class="input" type="text" id="consDerecha" spellcheck="false" autocomplete="off" value="${esc(est.derecha)}" aria-describedby="consLectura"></div><div id="consLectura">${lec.html}</div><p class="small muted">${esc(T('Se analiza con el modelo lineal general (sin estratos de error), o con el mixto si escribes efectos aleatorios como (1 | bloque): «a * b» cruza, «a / b» anida b en a, «(a + b + c)^2» deja hasta las interacciones dobles y «- 1» quita la intercepción.'))}</p>` +
         `<div class="btn-row"><button type="button" class="btn btn-primary" id="consUsarFormula"${lec.ok ? '' : ' disabled'}>${esc(T('Usar y calcular esta fórmula'))}</button><button type="button" class="btn btn-ghost" id="consVolver">${esc(T('Volver a la del constructor'))}</button></div></div>`;
     }
     const nombre = m.metodo && SP.metodos[m.metodo] ? SP.metodos[m.metodo].nombre : '';
@@ -143,6 +153,7 @@
       const el = e.target;
       if (el.classList.contains('cons-agregar') && el.value) asignar(el.value, el.dataset.zona);
       else if (el.hasAttribute('data-comofactor')) { est.comoFactor = [...cont.querySelectorAll('[data-comofactor]:checked')].map(x => x.value); releer(); }
+      else if (el.id === 'consFamilia') { est.roles.familia = el.value; est.editando = false; A().calcular(); }
     });
     let espera = 0;
     cont.addEventListener('input', e => {
@@ -158,7 +169,12 @@
       else if (b.id === 'consEditar') { est.editando = true; A().calcular(); const i = $('#consDerecha'); if (i) i.focus(); }
       else if (b.id === 'consVolver') { est.editando = false; A().calcular(); }
       else if (b.id === 'consUsar' && est.modelo && est.modelo.metodo) A().usar(est.modelo.metodo, est.modelo.e, est.modelo.op);
-      else if (b.id === 'consUsarFormula') A().usar('modelo-lineal', { respuesta: est.roles.respuesta }, { derecha: est.derecha, comoFactor: est.comoFactor, tipoSC: 3 });
+      else if (b.id === 'consUsarFormula') {
+        /* la fórmula escrita: con (1 | …), modelo mixto; con conteo o gamma, generalizado */
+        const mixto = /\|/.test(est.derecha), fam = est.roles.familia || 'normal', e = { respuesta: est.roles.respuesta };
+        if (fam === 'normal') A().usar(mixto ? 'modelo-mixto' : 'modelo-lineal', e, { derecha: est.derecha, comoFactor: est.comoFactor, tipoSC: 3 });
+        else A().usar(mixto ? 'glmm' : 'glm', e, Object.assign({ derecha: est.derecha, comoFactor: est.comoFactor, familia: fam === 'conteo' ? 'poisson' : 'gamma', tipo: 2 }, mixto ? { sobredispersion: 'auto' } : {}));
+      }
     });
     A().pintores.constructor = pintar;
     SP.app.constructorUI = { desde, estado: est };
