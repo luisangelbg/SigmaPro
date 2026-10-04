@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · Manual de usuario · Capítulo 5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b5" data-pestana="B5" data-orden="5" style="--acento: var(--b5)">
+  <div class="cap-apertura">
+    <div class="cap-num">5</div>
+    <div class="cap-etiqueta">Bloque 5 · Resultados</div>
+    <h1>Resultados: el Reporte LABG</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Cada análisis que vale la pena conservar va al reporte, donde se junta con los demás en orden, con los cuadros y las figuras numerados de corrido, sus supuestos, un párrafo para la tesis o el artículo, los detalles técnicos y el código R. El reporte no guarda resultados fijos: guarda los pedidos, y se recalcula con los datos que haya, así que corregir un dato corrige todo el reporte.</p>
+    <ul class="cap-contenido">
+      <li><b>5.1</b>Agregar al reporte</li>
+      <li><b>5.2</b>La cabecera y el índice</li>
+      <li><b>5.3</b>Cada análisis del reporte</li>
+      <li><b>5.4</b>El párrafo para la tesis o el artículo</li>
+      <li><b>5.5</b>Detalles técnicos y código R</li>
+      <li><b>5.6</b>Un reporte vivo</li>
+    </ul>
+  </div>
+
+  <!-- 5.1 -->
+  <h2 id="s5-1"><span class="num">5.1</span>Agregar al reporte</h2>
+  <p class="lead">En Explorar y en Análisis, cada resultado trae arriba a la derecha el botón <span class="ui">Agregar al reporte</span>. Al pulsarlo, un aviso confirma cuántos análisis lleva el reporte y el botón cambia a <span class="ui">En el reporte ✓</span>; si se pulsa de nuevo, lleva al bloque Resultados en lugar de repetir el análisis.</p>
+  <p>Lo que se agrega es el <b>pedido</b>: el método, las variables con su papel y las opciones. Si después se cambia una opción en Análisis (otra prueba de comparación, otro nivel de confianza), es otro pedido y se puede agregar también; los dos quedan en el reporte.</p>
+  <p>Con el reporte vacío, el bloque ofrece ir a Análisis o a Explorar, o <span class="ui">Abrir un proyecto .labg</span>: un proyecto guardado trae los datos y el reporte completo (sección 7.5).</p>
+
+  <!-- 5.2 -->
+  <h2 id="s5-2"><span class="num">5.2</span>La cabecera y el índice</h2>
+  <figure>
+    <div class="marco"><img src="../img/b5-cabeza.png" alt="La cabecera del reporte del maíz: el título Ensayo de maíz: híbridos y dosis de nitrógeno, el autor, el resumen 3 análisis, 9 cuadros, 3 figuras y los datos del ejemplo, los botones Copiar todos los párrafos, Ver las figuras y Exportar, el índice con los tres análisis y la barra del primero con las flechas, Abrir en Análisis y Quitar"></div>
+    <figcaption><b>Figura 5.1.</b> La cabecera de un reporte con tres análisis del maíz, su índice y el principio del primer análisis.</figcaption>
+  </figure>
+  <ul>
+    <li><span class="ui">Título del reporte</span> y <span class="ui">Autor o autores</span>: van en la portada del documento exportado. El autor se recuerda en el navegador para el próximo reporte.</li>
+    <li>El <b>resumen</b>: cuántos análisis, cuadros y figuras tiene el reporte y de qué datos salen (y cuántos análisis no se pudieron calcular, si hay alguno).</li>
+    <li><span class="ui">Copiar todos los párrafos</span> (sección 5.4), <span class="ui">Ver las figuras</span> (capítulo 6) y <span class="ui">Exportar</span> (capítulo 7).</li>
+    <li>El <b>índice</b>: un enlace a cada análisis, con su número.</li>
+  </ul>
+
+  <!-- 5.3 -->
+  <h2 id="s5-3"><span class="num">5.3</span>Cada análisis del reporte</h2>
+  <p class="lead">Cada análisis ocupa una tarjeta con su número y su título (el método y la respuesta: «Bloques completos al azar · rend»). La barra de la derecha tiene cuatro acciones:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.5in">Acción</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">↑</span> y <span class="ui">↓</span></td><td>Suben o bajan el análisis en el reporte; los cuadros y las figuras se vuelven a numerar.</td></tr>
+      <tr><td><span class="ui">Abrir en Análisis</span></td><td>Lleva el pedido al bloque de donde vino (Análisis o Explorar), con sus variables y sus opciones, para revisarlo o cambiarlo.</td></tr>
+      <tr><td><span class="ui">Quitar</span></td><td>Lo saca del reporte. Ctrl+Z no lo regresa: se vuelve a agregar desde su bloque.</td></tr>
+    </tbody>
+  </table>
+  <figure class="media">
+    <div class="marco"><img src="../img/b5-item.png" alt="El primer análisis del reporte del maíz: la barra con las flechas, Abrir en Análisis y Quitar; Título y nota abierto, con el título en el reporte y la nota; la conclusión en palabras; y el cuadro 1, el análisis de varianza de bloques completos al azar"></div>
+    <figcaption><b>Figura 5.2.</b> Un análisis del reporte con su título y su nota desplegados, la conclusión y el primer cuadro. Los cuadros del reporte se numeran de corrido, del primer análisis al último.</figcaption>
+  </figure>
+  <p>Debajo de la barra, <span class="ui">Título y nota</span> se despliega para cambiar el <b>título</b> con que el análisis aparece en el reporte (el propuesto queda de guía, en gris) y escribir una <b>nota</b>, que va en los detalles técnicos: de dónde salieron los datos, qué se quitó, qué se decidió y por qué.</p>
+  <p>Luego viene lo mismo que en el bloque de origen: la conclusión en palabras, los cuadros con su botón <span class="ui">Copiar cuadro</span> (lo copia separado por tabuladores, para pegarlo en una hoja de cálculo o en una tabla de un procesador de textos) y las figuras, también numeradas de corrido. En los diseños completamente al azar y de bloques, el reporte agrega por su cuenta los <b>supuestos</b> del mismo modelo, con su semáforo y, si algo falla, el recuadro <span class="ui">Qué hacer</span>.</p>
+
+  <!-- 5.4 -->
+  <h2 id="s5-4"><span class="num">5.4</span>El párrafo para la tesis o el artículo</h2>
+  <p class="lead">Cada análisis trae, en la sección <span class="ui">Para tu tesis o artículo</span>, un párrafo de <b>Métodos</b> y uno de <b>Resultados</b> redactados con sus números y con la cita del método cuando la hay. Son un punto de partida: la app lo dice al lado del botón, y conviene revisar la redacción y agregar la interpretación agronómica.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b5-parrafo.png" alt="El párrafo para la tesis del análisis de varianza del maíz: Métodos, con el diseño, el arreglo factorial 3 × 4, la cita de Gomez y Gomez (1984) y las sumas de cuadrados tipo III; Resultados, con la F, los grados de libertad y el p de cada efecto, la media general, el CV y la R²; el botón Copiar el párrafo; y los detalles técnicos desplegados"></div>
+    <figcaption><b>Figura 5.3.</b> El párrafo de Métodos y Resultados del análisis de varianza del maíz y, debajo, sus detalles técnicos.</figcaption>
+  </figure>
+  <p><span class="ui">Copiar el párrafo</span> copia los dos párrafos de un análisis. <span class="ui">Copiar todos los párrafos</span>, en la cabecera, junta los de todo el reporte en un texto con dos apartados: <b>Métodos</b>, con el de cada análisis y al final una oración que cita SigmaPro y R con sus versiones y el número de casos de la validación; y <b>Resultados</b>, con el de cada análisis numerado. Con el maíz, los resultados de los dos primeros análisis quedan así:</p>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">✎</span>Resultados (texto copiado de SigmaPro)</div>
+    <p>1. El efecto de bloque fue significativo (F(3, 33) = 10.40; p &lt; 0.001); el efecto de hibrido fue significativo (F(2, 33) = 60.63; p &lt; 0.001); el efecto de dosis fue significativo (F(3, 33) = 292.15; p &lt; 0.001); la interacción hibrido × dosis no fue significativa (F(6, 33) = 1.47; p = 0.220). La media general fue 5.938, con un coeficiente de variación de 3.6 % y R² = 0.969.</p>
+    <p>2. Las medias, de mayor a menor, fueron H-66 (6.359 a), H-52 (5.922 b) y H-40 (5.533 c); medias con una letra en común no difieren.</p>
+  </div>
+  <p>Los párrafos usan los nombres de las columnas tal como están en la tabla («rend», «hibrido»): conviene cambiarlos por los nombres completos al pegarlos, o ponerle a las columnas nombres claros desde el bloque Datos (sección 2.7). Las referencias que citan los párrafos van completas en el reporte exportado.</p>
+
+  <!-- 5.5 -->
+  <h2 id="s5-5"><span class="num">5.5</span>Detalles técnicos y código R</h2>
+  <p class="lead">Al final de cada análisis, dos secciones plegadas guardan lo necesario para que otra persona pueda repetirlo.</p>
+  <p>Los <b>Detalles técnicos</b> (figura 5.3) dicen el método con su nombre interno; las entradas (qué columna hizo cada papel); todas las opciones, también las que se dejaron como venían; los datos (su origen, el número de filas y el filtro, si había uno); las filas que de verdad entraron al cálculo; el programa, con la versión de SigmaPro y cuántos casos de la validación contra R cubren ese método (y, si corrió en el motor R, las versiones de R y de sus paquetes); el tiempo de cálculo; y la nota, si se escribió una.</p>
+  <p>El <b>Código R equivalente</b> es el mismo de la sección 4.5: un guion que, con los datos exportados, da en R los mismos números. <span class="ui">Copiar el código</span> lo copia. El proyecto .labg (sección 7.5) junta el código de todo el reporte en un solo guion, con los datos.</p>
+
+  <!-- 5.6 -->
+  <h2 id="s5-6"><span class="num">5.6</span>Un reporte vivo</h2>
+  <p class="lead">Como el reporte guarda pedidos y no resultados, cada análisis se calcula con los datos actuales cada vez que se muestra o se exporta.</p>
+  <ul>
+    <li>Si se corrige un valor de la hoja, se agrega una fila o se activa un <b>filtro</b> (sección 2.10), todos los análisis del reporte se recalculan, y los detalles técnicos dicen el filtro con que se calcularon.</li>
+    <li>Si un análisis ya no se puede calcular (se borró o se renombró una columna que usaba), su tarjeta lo dice con el mensaje del problema y cómo arreglarlo, el resumen de la cabecera lo cuenta, y los demás siguen bien. Al regresar la columna, el análisis vuelve.</li>
+    <li>Los análisis del motor R muestran «Calculando en el motor R…» mientras corren; la exportación los espera.</li>
+  </ul>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>El reporte no se pierde al cerrar</div>
+    <p>El reporte, con los datos, se guarda solo en el navegador mientras se trabaja (sección 7.6) y se puede guardar en un proyecto .labg para llevarlo a otra computadora o compartirlo (sección 7.5).</p>
+  </div>
+</section>
+
+</body>
+</html>

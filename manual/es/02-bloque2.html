@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · Manual de usuario · Capítulo 2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 78%; }
+  figure.media figcaption { margin-left: 11%; margin-right: 11%; }
+  figure.chica .marco { width: 56%; }
+  figure.chica figcaption { margin-left: 22%; margin-right: 22%; }
+  figure.angosta .marco { width: 40%; }
+  figure.angosta figcaption { margin-left: 30%; margin-right: 30%; }
+  table.ejemplos td:first-child { white-space: nowrap; }
+  figure.mitad .marco { width: 50%; margin: 0 auto; }
+  figure.mitad figcaption { margin-left: 25%; margin-right: 25%; }
+  figure.estrecha .marco { width: 70%; margin: 0 auto; }
+  figure.estrecha figcaption { margin-left: 15%; margin-right: 15%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b2" data-pestana="B2" data-orden="2" style="--acento: var(--b2)">
+  <div class="cap-apertura">
+    <div class="cap-num">2</div>
+    <div class="cap-etiqueta">Bloque 2 · Datos</div>
+    <h1>Datos: la tabla del ensayo</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Todo análisis empieza con una tabla bien hecha. En este bloque se importa un archivo, se pega una tabla o se abre un ejemplo; se revisa el tipo de cada variable, que decide cómo se analiza; se crean variables calculadas y transformadas; se filtran filas sin borrarlas; se cambia la forma de la tabla y se lee lo que SigmaPro reconoce del diseño del ensayo. Nada de esto toca el archivo original.</p>
+    <ul class="cap-contenido">
+      <li><b>2.1</b>Cuatro maneras de empezar</li>
+      <li><b>2.2</b>Cómo debe verse la tabla</li>
+      <li><b>2.3</b>Importar un archivo</li>
+      <li><b>2.4</b>Pegar una tabla y la hoja vacía</li>
+      <li><b>2.5</b>Los 22 ejemplos</li>
+      <li><b>2.6</b>La hoja de trabajo</li>
+      <li><b>2.7</b>Los cinco tipos de variable</li>
+      <li><b>2.8</b>Variables calculadas</li>
+      <li><b>2.9</b>Transformar una variable</li>
+      <li><b>2.10</b>Filtrar filas</li>
+      <li><b>2.11</b>Tabla ancha y tabla larga</li>
+      <li><b>2.12</b>Deshacer, rehacer y volver</li>
+      <li><b>2.13</b>Lo que SigmaPro ve en tu ensayo</li>
+    </ul>
+  </div>
+
+  <!-- 2.1 -->
+  <h2 id="s2-1"><span class="num">2.1</span>Cuatro maneras de empezar</h2>
+  <p class="lead">Mientras no hay datos, el bloque muestra su barra de herramientas y, debajo, un recuadro con las tres formas más comunes de empezar. Los botones de la barra hacen lo mismo y siguen a la vista cuando ya hay una tabla cargada.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b2-inicio.png" alt="La barra de herramientas del bloque Datos, con Importar archivo, Pegar tabla, Ejemplos y Hoja vacía activos y las demás herramientas en gris, y el recuadro Empieza con tus datos con tres opciones: importar un archivo, pegar desde una hoja de cálculo y probar con un ejemplo"></div>
+    <figcaption><b>Figura 2.1.</b> El bloque Datos sin datos. Las herramientas de la segunda fila se activan al cargar una tabla.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Botón</th><th>Qué hace</th><th style="width:0.6in">Sección</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Importar archivo…</span></td><td>Abre un archivo de texto (CSV, TSV, TXT) o un libro de hoja de cálculo (.xlsx, .xlsm, .ods). El archivo se lee en la computadora; no se sube a ningún lado.</td><td>2.3</td></tr>
+      <tr><td><span class="ui">Pegar tabla…</span></td><td>Recibe un rango copiado de una hoja de cálculo, con su fila de nombres.</td><td>2.4</td></tr>
+      <tr><td><span class="ui">Ejemplos ▾</span></td><td>Abre uno de los 22 ensayos de ejemplo, cada uno pensado para un tipo de análisis.</td><td>2.5</td></tr>
+      <tr><td><span class="ui">Hoja vacía…</span></td><td>Crea una tabla en blanco con los nombres de columna y el número de filas que se pidan, para capturar a mano.</td><td>2.4</td></tr>
+    </tbody>
+  </table>
+  <p>Cargar datos nuevos reemplaza la tabla anterior. Si la anterior tenía cambios, el reporte y los análisis abiertos se recalculan con los datos nuevos; por eso conviene guardar el proyecto (capítulo 7) antes de cambiar de ensayo.</p>
+
+  <!-- 2.2 -->
+  <h2 id="s2-2"><span class="num">2.2</span>Cómo debe verse la tabla</h2>
+  <p>SigmaPro lee la forma de tabla que piden casi todos los programas de estadística: <b>una fila por unidad experimental</b> (la parcela, la maceta, la planta, el animal) y <b>una columna por variable</b>. Las columnas son de dos clases: las que describen el diseño (bloque, tratamiento, variedad, dosis, fecha) y las que se midieron (rendimiento, altura, número de frutos).</p>
+  <table class="compacta salida" style="width:60%">
+    <caption><b>Cuadro 2.1.</b> Las primeras filas del ejemplo del maíz: una parcela por fila.</caption>
+    <thead><tr><th>bloque</th><th>hibrido</th><th class="n">dosis</th><th class="n">rend</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>H-40</td><td class="n">0</td><td class="n">4.61</td></tr>
+      <tr><td>1</td><td>H-40</td><td class="n">60</td><td class="n">5.71</td></tr>
+      <tr><td>1</td><td>H-40</td><td class="n">120</td><td class="n">6.41</td></tr>
+      <tr><td>1</td><td>H-40</td><td class="n">180</td><td class="n">6.56</td></tr>
+      <tr><td>1</td><td>H-52</td><td class="n">0</td><td class="n">4.80</td></tr>
+    </tbody>
+  </table>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Buenas prácticas para la tabla</div>
+    <table class="compacta">
+      <tbody>
+        <tr><td style="width:2.1in"><b>Una fila de nombres, arriba</b></td><td>Nombres cortos, sin repetir: <code>rend</code>, <code>altura_30dds</code>, <code>peso_seco</code>. Los espacios y acentos se admiten, pero los nombres simples se leen mejor en las fórmulas y en el código R.</td></tr>
+        <tr><td><b>Nada más en la hoja</b></td><td>Sin títulos encima de la tabla, sin totales abajo, sin celdas combinadas ni notas al costado.</td></tr>
+        <tr><td><b>Los faltantes, vacíos</b></td><td>Una celda vacía es un faltante. También se aceptan <code>NA</code>, <code>.</code> y <code>-</code>, o los códigos que se indiquen al importar. Nunca un cero en lugar de un dato perdido.</td></tr>
+        <tr><td><b>Un tipo por columna</b></td><td>Una columna de rendimiento con números solamente; si hay un texto suelto («s/d», «perdida»), se toma como faltante y la app lo avisa.</td></tr>
+        <tr><td><b>Los códigos de grupo, claros</b></td><td>Si el bloque o el tratamiento se escribieron con números (1, 2, 3), revisar que la app los haya tomado como factor (sección 2.7).</td></tr>
+        <tr><td><b>Forma larga</b></td><td>Si la misma variable se midió varias veces (fechas, años, cosechas), una fila por medición. Si la tabla viene ancha (una columna por fecha), el bloque la convierte (sección 2.11).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2.3 -->
+  <h2 id="s2-3"><span class="num">2.3</span>Importar un archivo</h2>
+  <p><span class="ui">Importar archivo…</span> abre el selector de archivos del sistema. SigmaPro acepta:</p>
+  <ul>
+    <li><b>Texto separado</b> (.csv, .tsv, .txt): por comas, punto y coma, tabuladores o barras verticales. La app detecta sola el separador de columnas, el separador decimal y la codificación del texto (UTF-8, UTF-16 o la de Windows en español, Windows-1252), así que los acentos y la ñ llegan bien aunque el archivo venga de una hoja de cálculo antigua.</li>
+    <li><b>Libros de hoja de cálculo</b> (.xlsx, .xlsm y .ods): si el libro tiene varias hojas, se elige cuál importar. Los libros del formato viejo (.xls) no se pueden abrir; se guardan antes como .xlsx o .csv.</li>
+  </ul>
+  <p>Antes de cargar nada, la ventana <b>Importar datos</b> muestra cómo quedará la tabla:</p>
+  <figure>
+    <div class="marco"><img src="../img/b2-importar.png" alt="La ventana Importar datos con un CSV separado por punto y coma y coma decimal: los selectores de separador de columnas y decimal, los códigos de faltante, la casilla de la primera fila con nombres, el resumen de 12 filas y 7 columnas y la vista previa con el tipo elegido y la razón de cada columna: parcela identificador, bloque factor, variedad factor, fecha_siembra fecha, plantas numérica con un texto s/d tomado como faltante, rend numérica, observaciones texto"></div>
+    <figcaption><b>Figura 2.2.</b> La ventana de importar con un archivo separado por punto y coma y con coma decimal. Cada columna trae el tipo que la app propone y la razón; la celda «s/d» de <i>plantas</i> se marca porque quedará como faltante.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Opción</th><th>Para qué</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Separador de columnas</span></td><td>Coma, punto y coma, tabulador o barra vertical (solo en archivos de texto). Si la vista previa muestra todo en una sola columna, el separador no es el correcto.</td></tr>
+      <tr><td><span class="ui">Hoja</span></td><td>En un libro, la hoja que se importa.</td></tr>
+      <tr><td><span class="ui">Separador decimal</span></td><td>Punto (4.25) o coma (4,25). En México lo usual es el punto; los archivos de otros países o de hojas de cálculo configuradas en español de España traen coma.</td></tr>
+      <tr><td><span class="ui">Códigos de faltante</span></td><td>Los textos que significan «sin dato», separados por comas (por omisión <code>NA, ., -</code>). La celda vacía siempre es faltante.</td></tr>
+      <tr><td><span class="ui">La primera fila tiene los nombres</span></td><td>Si se desmarca, las columnas se llaman V1, V2… y la primera fila se toma como datos.</td></tr>
+      <tr><td><b>Tipo de cada columna</b></td><td>El selector arriba de cada columna. Lo que se elija aquí manda; la app solo propone (sección 2.7).</td></tr>
+    </tbody>
+  </table>
+  <p>La vista previa muestra las primeras ocho filas <b>como quedarán</b>: los números con el decimal elegido, las fechas en la forma AAAA-MM-DD y, en otro color, cada celda que no se pueda convertir y se volverá faltante (<i>s/d → faltante</i>). Al pulsar <span class="ui">Importar</span>, la tabla se carga y el bloque pasa a la hoja de trabajo. Si alguna columna numérica tenía textos sueltos, un aviso lo dice, y la explicación de esa variable cuenta cuántos fueron.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>El archivo original no cambia</div>
+    <p>SigmaPro trabaja con una copia en memoria. Ningún cambio del bloque (tipos, columnas nuevas, filtros, celdas editadas) se escribe en el archivo que se importó. Para guardar la tabla con sus cambios se usa el proyecto .labg (sección 7.5), que trae además los datos en CSV.</p>
+  </div>
+
+  <!-- 2.4 -->
+  <h2 id="s2-4"><span class="num">2.4</span>Pegar una tabla y la hoja vacía</h2>
+  <p><span class="ui">Pegar tabla…</span> abre un cuadro de texto donde se pega, con Ctrl+V, un rango copiado de una hoja de cálculo (con su fila de nombres). Al pulsar <span class="ui">Continuar</span> aparece la misma ventana de importar de la sección anterior, con el tabulador como separador. Es la forma más rápida de pasar unos datos sin guardar antes un archivo. También se puede pegar directo sobre la rejilla vacía: la app lo reconoce como una tabla nueva y abre la misma ventana.</p>
+  <p><span class="ui">Hoja vacía…</span> pide los <b>nombres de las columnas</b>, separados por comas (por omisión <code>bloque, tratamiento, rend</code>), y el <b>número de filas</b> (hasta 100 000). Las columnas cuyo nombre indica un factor del diseño (bloque, tratamiento, variedad, repetición, lote…) nacen como factores; las demás, como numéricas. Luego se escribe en la rejilla como en cualquier hoja de cálculo (sección 2.6).</p>
+
+  <!-- 2.5 -->
+  <h2 id="s2-5"><span class="num">2.5</span>Los 22 ejemplos</h2>
+  <p><span class="ui">Ejemplos ▾</span> despliega la lista de los ensayos de ejemplo, con una línea que dice para qué sirve cada uno. Cinco son datos publicados (Mendel, Box y Cox, Yates y dos de un paquete de R para ensayos multiambiente); los demás son ficticios, construidos para que cada análisis tenga un caso claro. Todos los resultados de este manual salen de ellos, así que cualquier número se puede repetir con un clic.</p>
+  <table class="compacta ejemplos">
+    <caption><b>Cuadro 2.2.</b> Los ejemplos de SigmaPro y para qué sirve cada uno.</caption>
+    <thead><tr><th>Ejemplo</th><th class="c">Filas</th><th>Diseño y variables</th><th>Para</th></tr></thead>
+    <tbody>
+      <tr><td>Maíz: híbridos × nitrógeno</td><td class="c">48</td><td>Factorial 3 × 4 en 4 bloques; rendimiento (t/ha)</td><td>ANOVA, comparaciones, polinomios, figuras</td></tr>
+      <tr><td>Frijol: germinación (%)</td><td class="c">20</td><td>5 tratamientos, 4 cajas de 50 semillas</td><td>Arcoseno, modelo binomial</td></tr>
+      <tr><td>Trigo: cuadro latino 5 × 5</td><td class="c">25</td><td>5 variedades, hileras y columnas</td><td>Cuadro latino</td></tr>
+      <tr><td>Jitomate: altura en invernadero</td><td class="c">18</td><td>3 sustratos; altura a 15, 30, 45 y 60 días, en forma ancha</td><td>Ancha → larga, fechas, faltantes</td></tr>
+      <tr><td>Aguacate: trips por brote</td><td class="c">30</td><td>5 tratamientos en 6 bloques; conteos con ceros</td><td>√(x + 0.5), modelos de conteos</td></tr>
+      <tr><td>Venenos × tratamientos</td><td class="c">48</td><td>Box y Cox (1964): 3 venenos × 4 tratamientos</td><td>Transformación de Box-Cox</td></tr>
+      <tr><td>Chícharo: segregación de Mendel</td><td class="c">4</td><td>Mendel (1866): 556 semillas ya contadas</td><td>Bondad de ajuste 9:3:3:1</td></tr>
+      <tr><td>Avena en parcelas divididas</td><td class="c">72</td><td>Yates (1935): 3 variedades × 4 dosis de N, 6 bloques</td><td>Parcelas divididas</td></tr>
+      <tr><td>Sorgo: variedades y plantas</td><td class="c">24</td><td>6 variedades en 4 bloques; plantas cosechadas</td><td>ANCOVA</td></tr>
+      <tr><td>Café: rendimiento y sitio</td><td class="c">40</td><td>40 fincas con 7 variables del sitio</td><td>Regresión múltiple, selección de variables</td></tr>
+      <tr><td>Frijol: semilla tratada en cuatro lotes</td><td class="c">16</td><td>Germinación por lote y tratamiento, ya contada</td><td>Contingencia, Cochran-Mantel-Haenszel</td></tr>
+      <tr><td>Roya: dos evaluadores</td><td class="c">80</td><td>Severidad 0 a 3 calificada por dos técnicos</td><td>Kappa, Bowker</td></tr>
+      <tr><td>Alfa-látice: 24 genotipos</td><td class="c">72</td><td>Olivoto y Lúcio (2020): 3 repeticiones, bloques de 4</td><td>Látice mixto, heredabilidad</td></tr>
+      <tr><td>Avena en 14 ambientes</td><td class="c">420</td><td>Olivoto y Lúcio (2020): 10 genotipos, 3 repeticiones</td><td>Multiambiente, estabilidad, AMMI, GGE</td></tr>
+      <tr><td>Maíz: altura en cinco fechas</td><td class="c">80</td><td>4 dosis en 4 bloques; la misma planta en 5 fechas</td><td>Medidas repetidas</td></tr>
+      <tr><td>Guayabo: 20 árboles, cuatro cosechas</td><td class="c">80</td><td>Kilogramos por árbol y cosecha, con 5 perdidos</td><td>Repetibilidad</td></tr>
+      <tr><td>Herbicidas: peso seco por dosis</td><td class="c">56</td><td>7 dosis de 2 herbicidas, 4 repeticiones</td><td>Dosis-respuesta (DE50)</td></tr>
+      <tr><td>Tomate: nitrógeno × potasio</td><td class="c">13</td><td>Central compuesto rotable con 5 centros</td><td>Superficie de respuesta</td></tr>
+      <tr><td>Aguacate: muestreo en tres huertas</td><td class="c">38</td><td>Árboles al azar de 3 huertas; peso y trips (0/1)</td><td>Muestreo estratificado</td></tr>
+      <tr><td>Frijol: días a la germinación</td><td class="c">120</td><td>3 tratamientos; días hasta germinar, con censura</td><td>Kaplan-Meier, log-rank, Cox</td></tr>
+      <tr><td>Estación: lluvia y temperatura</td><td class="c">96</td><td>Valores mensuales de 2017 a 2024</td><td>Series de tiempo, ARIMA</td></tr>
+      <tr><td>Chile: medidas del fruto</td><td class="c">60</td><td>4 variedades en 3 bloques, 5 frutos por parcela</td><td>MANOVA, discriminante</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 2.6 -->
+  <h2 id="s2-6"><span class="num">2.6</span>La hoja de trabajo</h2>
+  <p>Con una tabla cargada, el bloque se divide en tres partes: la lista de variables a la izquierda, la rejilla con los datos al centro y, debajo de la lista, el detalle de la variable elegida. La figura 2.3 las señala.</p>
+  <figure>
+    <div class="marco"><img src="../img/b2-hoja.png" alt="La hoja de trabajo con el ejemplo del maíz: la barra de herramientas, la lista de variables (bloque, hibrido, dosis, rend con su tipo), el detalle de bloque con la razón de su tipo, el selector de tipo y sus cuatro niveles con 12 observaciones cada uno, la rejilla con las primeras 19 filas y la línea de estado con 48 filas, 4 columnas, sin faltantes"><span class="marca" style="left:55.5%;top:4.5%">1</span><span class="marca" style="left:64.5%;top:9.1%">2</span><span class="marca" style="left:89%;top:9.1%">3</span><span class="marca" style="left:14.5%;top:17.3%">4</span><span class="marca" style="left:11%;top:50%">5</span><span class="marca" style="left:87%;top:17.6%">6</span><span class="marca" style="left:83%;top:92.7%">7</span></div>
+    <figcaption><b>Figura 2.3.</b> La hoja de trabajo con el ejemplo del maíz.</figcaption>
+  </figure>
+  <ul class="leyenda-marcas">
+    <li><span class="n">1</span><b>Cargar</b>: importar, pegar, ejemplos y hoja vacía (2.1).</li>
+    <li><span class="n">2</span><b>Preparar</b>: variable calculada, transformar, filtrar y ancha ⇄ larga (2.8–2.11).</li>
+    <li><span class="n">3</span><b>Deshacer y rehacer</b> (2.12).</li>
+    <li><span class="n">4</span><b>Variables</b>: cada columna con su tipo, sus niveles y sus faltantes. Un clic la elige.</li>
+    <li><span class="n">5</span><b>Detalle</b> de la variable elegida: por qué tiene ese tipo, el selector para cambiarlo y su resumen.</li>
+    <li><span class="n">6</span><b>La rejilla</b>: los datos, con el tipo bajo cada nombre y el menú ⋮ de cada columna.</li>
+    <li><span class="n">7</span><b>Estado</b>: filas, columnas, celdas faltantes y de dónde vienen los datos.</li>
+  </ul>
+  <h3>La lista de variables y el detalle</h3>
+  <p>Cada variable de la lista lleva su tipo en color (<i>factor · 4</i> quiere decir factor con cuatro niveles), las celdas faltantes si las hay (<i>2 falt.</i>) y una marca si es calculada (ƒ) o transformada (↻). Al elegir una, el <b>detalle</b> muestra:</p>
+  <ul>
+    <li>la <b>razón</b> del tipo, en una frase («Son códigos enteros con 4 valores repetidos y el nombre "bloque" indica un factor»), y, si es calculada o transformada, de dónde salió (<i>ƒ = rend / 1000</i>);</li>
+    <li>el selector <span class="ui">Tipo</span>, que cambia el tipo igual que el menú ⋮;</li>
+    <li>en una numérica, n, faltantes, media, desviación estándar, mínimo y máximo, y el botón <span class="ui">Transformar…</span>; en un factor, sus niveles en orden con cuántas filas tiene cada uno y el botón <span class="ui">Ordenar niveles…</span>; en una fecha, el intervalo de fechas.</li>
+  </ul>
+  <p>Si hay un filtro activo (sección 2.10), estos resúmenes se calculan solo con las filas que pasan el filtro.</p>
+  <h3>La rejilla</h3>
+  <p>La rejilla funciona como una hoja de cálculo y se maneja con el teclado. Dibuja solo las filas visibles, así que una tabla de 100 000 filas se recorre igual de rápido que una de 100.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.2in">Teclas</th><th>Qué hacen</th></tr></thead>
+    <tbody>
+      <tr><td>Flechas, Inicio, Fin, RePág, AvPág</td><td>Moverse por la tabla; Ctrl+Inicio y Ctrl+Fin van a la primera y a la última celda. Con Mayús, se selecciona un rango.</td></tr>
+      <tr><td>Doble clic, Intro, F2 o empezar a escribir</td><td>Editar la celda. Intro guarda; Esc cancela.</td></tr>
+      <tr><td>Tab y Mayús+Tab</td><td>Celda siguiente y anterior.</td></tr>
+      <tr><td>Supr o Retroceso</td><td>Vaciar las celdas seleccionadas (quedan como faltantes).</td></tr>
+      <tr><td>Ctrl+C y Ctrl+V</td><td>Copiar y pegar rangos con una hoja de cálculo, separados por tabuladores.</td></tr>
+      <tr><td>Ctrl+Z y Ctrl+Y</td><td>Deshacer y rehacer.</td></tr>
+      <tr><td>Ctrl+A</td><td>Seleccionar toda la tabla.</td></tr>
+    </tbody>
+  </table>
+  <p>Lo que se escribe en una celda se interpreta según el tipo de la columna: en una numérica, un texto que no es número no se acepta y la app explica por qué (para un dato perdido, la celda se deja vacía); en una fecha, se aceptan AAAA-MM-DD y DD/MM/AAAA. Al pegar un rango, las celdas que no son del tipo de su columna se dejan como estaban y un aviso dice cuántas fueron. Cuando la tabla tiene cambios sin guardar, el navegador pregunta antes de cerrar la pestaña.</p>
+
+  <!-- 2.7 -->
+  <h2 id="s2-7"><span class="num">2.7</span>Los cinco tipos de variable</h2>
+  <p class="lead">El tipo de una columna decide cómo entra a los análisis. Es la decisión más importante del bloque: un bloque escrito con números (1, 2, 3, 4) tomado como numérico convierte un análisis de bloques en una regresión sin sentido.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.1in">Tipo</th><th style="width:2.3in">Qué es</th><th>Cómo entra a los análisis</th></tr></thead>
+    <tbody>
+      <tr><td><b>numérica</b></td><td>Una medición: rendimiento, altura, peso, conteo, porcentaje. También una dosis que se quiera estudiar como curva.</td><td>Como respuesta o como covariable. Una dosis numérica con pocos valores repetidos puede usarse además como factor del diseño (el análisis lo ofrece).</td></tr>
+      <tr><td><b>factor</b></td><td>Un grupo: bloque, tratamiento, variedad, lote, sitio, año del ensayo.</td><td>Como factor del diseño; sus niveles tienen un orden que decide el de las medias en cuadros y figuras.</td></tr>
+      <tr><td><b>fecha</b></td><td>Una fecha (siembra, trasplante, cosecha), en AAAA-MM-DD o DD/MM/AAAA.</td><td>Para ordenar series de tiempo y para calcular días entre fechas; nunca como factor del diseño.</td></tr>
+      <tr><td><b>texto</b></td><td>Notas libres, sin valores repetidos.</td><td>No entra, salvo que se use explícitamente; entonces cuenta como factor.</td></tr>
+      <tr><td><b>identificador</b></td><td>La clave de cada unidad: número de parcela, folio, planta.</td><td>No entra a los análisis. Sirve para reconocer cada fila y, en la tabla larga, como sujeto de las medidas repetidas.</td></tr>
+    </tbody>
+  </table>
+  <h3>Cómo propone el tipo la app</h3>
+  <p>Al importar, SigmaPro propone un tipo para cada columna y <b>explica siempre por qué</b>. Las reglas, en orden:</p>
+  <ol>
+    <li>Si todos los valores son números, la columna es <b>numérica</b>, salvo dos casos: si son enteros, cada fila tiene uno distinto y el nombre indica una clave (parcela, id, folio, número, planta…), es <b>identificador</b>; si son enteros con hasta 30 valores que se repiten y el nombre indica un factor del diseño (bloque, rep, tratamiento, variedad, lote, sitio, año…), es <b>factor</b>.</li>
+    <li>Si al menos ocho de cada diez valores son números y el resto son textos sueltos («s/d», «perdida»), es <b>numérica</b> y esos textos quedan como faltantes, con aviso.</li>
+    <li>Si todos son fechas, es <b>fecha</b>.</li>
+    <li>Si son textos que se repiten, es <b>factor</b>. Si cada fila tiene uno distinto, es <b>identificador</b> cuando parecen códigos (P01, P02…), cuando el nombre indica una clave o cuando hay más de 30 filas; si no, es <b>texto</b>.</li>
+  </ol>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Revisa siempre los códigos numéricos</div>
+    <p>Si una columna de enteros con pocos valores no tiene un nombre reconocible (por ejemplo <code>T</code> o <code>grupo2</code>), la app la deja como numérica y lo advierte: «Son números, pero solo hay 4 valores distintos repetidos: si son códigos de grupo, cámbiala a factor». Conviene leer la razón de cada variable una vez, al cargar los datos.</p>
+  </div>
+  <h3>El menú ⋮ de cada columna</h3>
+  <div class="dos flota">
+    <figure class="estrecha">
+      <div class="marco"><img src="../img/b2-menu.png" alt="El menú de la columna dosis: Renombrar, Transformar, Tipo de variable con numérica marcada, factor, fecha, texto, identificador, y Eliminar la columna"></div>
+      <figcaption><b>Figura 2.4.</b> El menú ⋮ de una columna numérica.</figcaption>
+    </figure>
+    <div>
+      <p>El botón ⋮ junto al nombre de cada columna abre su menú:</p>
+      <ul>
+        <li><span class="ui">Renombrar…</span> cambia el nombre (sin repetir uno existente).</li>
+        <li><span class="ui">Transformar…</span> (en numéricas) abre la ventana de la sección 2.9.</li>
+        <li><span class="ui">Ordenar niveles…</span> (en factores) cambia el orden de los niveles.</li>
+        <li><span class="ui">Tipo de variable</span>: los cinco tipos, con el actual marcado.</li>
+        <li><span class="ui">Eliminar la columna</span>. Ctrl+Z la regresa.</li>
+      </ul>
+      <p>Al cambiar a numérica o a fecha, los valores que no se puedan convertir quedan como faltantes y un aviso dice cuántos; el cambio se puede deshacer.</p>
+    </div>
+  </div>
+  <h3>El orden de los niveles</h3>
+  <div class="dos flota">
+    <div>
+      <p>El orden de los niveles decide el de las medias en los cuadros y las figuras, y cuál es el <b>nivel de referencia</b>: el primero, contra el que se comparan los demás en una prueba de Dunnett, en las razones de riesgo de Cox o en los coeficientes de un modelo. Por eso conviene poner primero al testigo.</p>
+      <p>Los botones <span class="ui">Numérico</span>, <span class="ui">Alfabético</span> y <span class="ui">Como aparecen</span> ordenan de una vez; las flechas ↑ y ↓ mueven un nivel. <span class="ui">Aplicar</span> guarda el orden (y se puede deshacer).</p>
+    </div>
+    <figure class="estrecha" style="margin-top:0">
+      <div class="marco"><img src="../img/b2-niveles.png" alt="La ventana Orden de los niveles de tratamiento: botones Numérico, Alfabético y Como aparecen, y la lista de niveles con flechas para subir y bajar cada uno"></div>
+      <figcaption><b>Figura 2.5.</b> El orden de los niveles de un factor. El primero es el nivel de referencia.</figcaption>
+    </figure>
+  </div>
+
+  <!-- 2.8 -->
+  <h2 id="s2-8"><span class="num">2.8</span>Variables calculadas</h2>
+  <p><span class="ui">ƒ Variable calculada…</span> crea una columna nueva a partir de las que ya existen, con una expresión escrita en la misma notación de R. Mientras se escribe, la ventana muestra si la expresión es válida, qué tipo de columna dará y sus primeros valores; un clic en el nombre de una columna o de una función la inserta donde está el cursor.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b2-calculada.png" alt="La ventana Variable calculada con el nombre nivel_N y la expresión ifelse(dosis >= 120, alta, baja); los botones de columnas y funciones; y la vista previa: texto que se guardará como factor, con los primeros valores baja, baja, alta, alta"></div>
+    <figcaption><b>Figura 2.6.</b> Una variable calculada con una condición: dosis de 120 kg/ha o más, «alta»; menos, «baja».</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">Se escribe</th><th>Significa</th></tr></thead>
+    <tbody>
+      <tr><td><code>+ - * / ^</code> y <code>%%</code></td><td>Suma, resta, producto, cociente, potencia y resto de la división.</td></tr>
+      <tr><td><code>== != &lt; &lt;= &gt; &gt;=</code></td><td>Comparaciones (dan verdadero o falso).</td></tr>
+      <tr><td><code>&amp;  |  !</code></td><td>Y, o, no.</td></tr>
+      <tr><td><code>x %in% c("a", "b")</code></td><td>Pertenencia a una lista.</td></tr>
+      <tr><td><code>`peso seco`</code></td><td>Un nombre con espacios, entre comillas invertidas.</td></tr>
+      <tr><td><code>log(x)</code>, <code>log(x, 10)</code>, <code>log10</code>, <code>log2</code>, <code>log1p</code>, <code>exp</code>, <code>sqrt</code>, <code>abs</code></td><td>Logaritmos (natural por omisión), exponencial, raíz y valor absoluto.</td></tr>
+      <tr><td><code>round(x, 2)</code>, <code>floor</code>, <code>ceiling</code>, <code>trunc</code>, <code>sign</code></td><td>Redondeos y signo.</td></tr>
+      <tr><td><code>sin</code>, <code>cos</code>, <code>tan</code>, <code>asin</code>, <code>acos</code>, <code>atan</code></td><td>Funciones trigonométricas (en radianes).</td></tr>
+      <tr><td><code>pmin(a, b)</code>, <code>pmax(a, b)</code></td><td>El menor o el mayor, fila por fila.</td></tr>
+      <tr><td><code>ifelse(cond, sí, no)</code></td><td>Un valor si la condición se cumple y otro si no.</td></tr>
+      <tr><td><code>is.na(x)</code>, <code>as.numeric(x)</code></td><td>¿Falta el dato? · Convertir a número.</td></tr>
+      <tr><td><code>paste(a, b, sep = "-")</code>, <code>paste0</code></td><td>Unir textos (por ejemplo, para combinar dos factores).</td></tr>
+      <tr><td><code>mean</code>, <code>sd</code>, <code>var</code>, <code>median</code>, <code>min</code>, <code>max</code>, <code>sum</code>, <code>length</code></td><td>Resúmenes de toda la columna: dan un solo número, que se repite en cada fila.</td></tr>
+    </tbody>
+  </table>
+  <p>Algunas funciones tienen también nombre en español: <code>raiz</code>, <code>si</code> (= ifelse), <code>media</code>, <code>de</code> (= sd), <code>mediana</code>, <code>minimo</code>, <code>maximo</code>, <code>suma</code>, <code>varianza</code>, <code>redondear</code>, <code>exponencial</code>, <code>absoluto</code> y <code>faltante</code> (= is.na).</p>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">✎</span>Ejemplos</div>
+    <table class="compacta">
+      <tbody>
+        <tr><td style="width:2.9in"><code>rend * 1000 / 10.5</code></td><td>Kilogramos por hectárea de una parcela de 10.5 m² (si <i>rend</i> estuviera en kg/parcela).</td></tr>
+        <tr><td><code>(rend - mean(rend)) / sd(rend)</code></td><td>El rendimiento estandarizado.</td></tr>
+        <tr><td><code>germinadas / sembradas * 100</code></td><td>Porcentaje de germinación.</td></tr>
+        <tr><td><code>ifelse(trips == 0, "sin", "con")</code></td><td>Presencia o ausencia (queda como factor).</td></tr>
+        <tr><td><code>paste(hibrido, dosis, sep = "_")</code></td><td>Un factor con las 12 combinaciones de híbrido y dosis.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>El resultado se guarda según lo que dé la expresión: un número, como columna <b>numérica</b>; un texto, como <b>factor</b>; un verdadero o falso, como factor con los niveles VERDADERO y FALSO. Los faltantes siguen las reglas de R: cualquier operación con un faltante da faltante, y <code>NA &amp; FALSE</code> es FALSE. Una diferencia con R: los resúmenes (<code>mean</code>, <code>sd</code>…) <b>ignoran</b> los faltantes salvo que se escriba <code>na.rm = FALSE</code>, porque casi siempre es lo que se quiere.</p>
+
+  <!-- 2.9 -->
+  <h2 id="s2-9"><span class="num">2.9</span>Transformar una variable</h2>
+  <p>Cuando los residuales de un análisis no tienen varianza constante o no son normales (capítulo 4, los supuestos), una transformación de la respuesta suele resolverlo. <span class="ui">↻ Transformar…</span> crea una <b>columna nueva</b> con la variable transformada; la original no cambia, así que se pueden comparar los dos análisis.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.2in">Transformación</th><th>Cuándo conviene</th></tr></thead>
+    <tbody>
+      <tr><td><b>ln(x)</b></td><td>Datos positivos cuya desviación estándar crece en proporción a la media (pesos, biomasa, cargas de patógeno).</td></tr>
+      <tr><td><b>log₁₀(x)</b></td><td>Lo mismo, en base 10 (más fácil de leer en órdenes de magnitud).</td></tr>
+      <tr><td><b>ln(x + c)</b></td><td>Cuando hay ceros. Se elige la constante <i>c</i> (por omisión 1).</td></tr>
+      <tr><td><b>√x</b></td><td>Conteos cuya varianza es proporcional a la media (distribución de Poisson).</td></tr>
+      <tr><td><b>√(x + 0.5)</b></td><td>Conteos con ceros o con valores pequeños (insectos, malezas, lesiones).</td></tr>
+      <tr><td><b>asin(√p)</b></td><td>Proporciones y porcentajes (germinación, incidencia, mortalidad). La ventana detecta si los datos vienen en porcentaje (0 a 100) y deja elegir el resultado en grados o en radianes.</td></tr>
+      <tr><td><b>1/x</b></td><td>Tiempos (días a floración, a germinación) cuya varianza crece mucho con la media.</td></tr>
+      <tr><td><b>Box-Cox</b></td><td>Cuando no se sabe cuál usar: estima la potencia que mejor estabiliza la varianza y normaliza los residuales.</td></tr>
+      <tr><td><b>(x − media)/DE</b></td><td>Pasar a unidades de desviación estándar (para comparar variables de escalas distintas).</td></tr>
+    </tbody>
+  </table>
+  <h3>Box-Cox</h3>
+  <p>La transformación de Box y Cox (1964) es una familia de potencias, <span class="formula" style="display:inline">x<sup>λ</sup></span>, que incluye a las anteriores como casos particulares: λ = 1 deja los datos como están, λ = 0.5 es la raíz, λ = 0 el logaritmo y λ = −1 el recíproco. El valor de λ se estima por máxima verosimilitud con los <b>residuales del modelo del experimento</b>, no con los datos crudos: lo que debe estabilizarse es la variación dentro de los tratamientos, no la diferencia entre ellos.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b2-boxcox.png" alt="La ventana Transformar una variable con tiempo elegida y Box-Cox marcado: los factores veneno y tratamiento marcados, el botón Estimado, λ igual a −1, el resultado λ̂ = −0.8157 con intervalo de −1.294 a −0.3412, n = 48 y el modelo tiempo ~ veneno * tratamiento, la sugerencia del recíproco, la curva de verosimilitud con su máximo y su intervalo, el nombre bc_tiempo y los primeros valores"></div>
+    <figcaption><b>Figura 2.7.</b> Box-Cox para el tiempo de supervivencia del ejemplo de los venenos. El máximo está en <span class="m"><span class="m">λ̂</span></span> = −0.82; el intervalo de 95 % incluye a −1, así que la app propone el recíproco.</figcaption>
+  </figure>
+  <ol class="pasos">
+    <li>Se elige la variable y se marca <b>Box-Cox</b>.</li>
+    <li>Se marcan los factores (y el bloque) que se usarán en el análisis. La app arma el modelo: los bloques, filas y columnas se suman; los tratamientos se cruzan. En el ejemplo, <code>tiempo ~ veneno * tratamiento</code>.</li>
+    <li><span class="ui">Estimar λ</span> calcula <span class="m"><span class="m">λ̂</span></span>, su intervalo de confianza de 95 % (los λ con 2[L(<span class="m">λ̂</span>) − L(λ)] ≤ χ²<sub>0.95; 1</sub> = 3.84) y la curva de la verosimilitud, con el máximo y el intervalo marcados.</li>
+    <li>La app <b>sugiere una potencia sencilla</b> (ninguna, raíz, logaritmo, recíproco de la raíz, recíproco o cuadrado) si cae dentro del intervalo, porque es más fácil de interpretar que <span class="m"><span class="m">λ̂</span></span> y casi igual de buena. El valor que se use queda en la casilla <b>λ</b>, que se puede cambiar a mano.</li>
+    <li><span class="ui">Crear la columna</span> guarda <i>(x<sup>λ</sup> − 1)/λ</i> (o ln <i>x</i> si λ = 0) con el nombre que se elija; el detalle de la variable recuerda el λ usado.</li>
+  </ol>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Las medias de una variable transformada</div>
+    <p>Las medias y sus diferencias quedan en la escala transformada. Para presentarlas en las unidades originales se aplica la transformación inversa a las medias (por ejemplo, el cuadrado de las medias de √x), sabiendo que el resultado es una mediana, no una media. Una alternativa que evita el problema son los modelos lineales generalizados (sección 4.x), que modelan los conteos y las proporciones en su propia escala.</p>
+  </div>
+
+  <!-- 2.10 -->
+  <h2 id="s2-10"><span class="num">2.10</span>Filtrar filas</h2>
+  <p><span class="ui">Filtrar filas…</span> deja fuera de los análisis las filas que no cumplen una condición, <b>sin borrarlas</b>. Sirve para analizar un solo sitio de un ensayo en varios, quitar un bloque dañado o excluir las parcelas con un problema registrado. La condición se escribe con la notación de la sección 2.8, y la ventana dice al momento cuántas filas pasan.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/b2-filtrar.png" alt="La ventana Filtrar filas con la condición bloque != 4 y dosis > 0, los botones de columnas y operadores, y el resultado: pasan 27 de 48 filas"></div>
+    <figcaption><b>Figura 2.8.</b> Un filtro que quita el bloque 4 y el testigo sin nitrógeno: pasan 27 de las 48 filas.</figcaption>
+  </figure>
+  <div class="dos flota">
+    <div>
+      <p>Con el filtro activo, un aviso arriba de la rejilla lo recuerda, con la condición y cuántas filas pasan, y el botón <span class="ui">Quitar el filtro</span>. Las filas que no pasan siguen en la rejilla, rayadas y con su número tachado; se pueden ver y corregir.</p>
+      <p>Todo lo que viene después usa solo las filas que pasan: los resúmenes del detalle, el diagnóstico de la sección 2.13, Explorar, Análisis y el reporte. El proyecto .labg guarda la condición del filtro.</p>
+      <p>Algunas condiciones útiles:</p>
+      <ul>
+        <li><code>sitio == "Chapingo"</code></li>
+        <li><code>bloque != "4"</code></li>
+        <li><code>!is.na(rend)</code></li>
+        <li><code>hibrido %in% c("H-52", "H-66")</code></li>
+        <li><code>dosis &gt; 0 &amp; dosis &lt; 180</code></li>
+      </ul>
+      <p>Una fila cuyo resultado sea faltante (por ejemplo, <code>rend &gt; 5</code> con <i>rend</i> vacío) no pasa. Un filtro que no deja ninguna fila no se aplica.</p>
+    </div>
+    <figure>
+      <div class="marco"><img src="../img/b2-filtro-activo.png" alt="El aviso Filtro activo con la condición y pasan 27 de 48 filas, el botón Quitar el filtro, y la rejilla con las filas que no pasan rayadas y su número tachado"></div>
+      <figcaption><b>Figura 2.9.</b> El filtro activo: las filas que no pasan quedan rayadas.</figcaption>
+    </figure>
+  </div>
+
+  <!-- 2.11 -->
+  <h2 id="s2-11"><span class="num">2.11</span>Tabla ancha y tabla larga</h2>
+  <p>Una variable medida varias veces en la misma unidad suele capturarse en <b>forma ancha</b>: una fila por planta y una columna por fecha (<code>altura_15dds</code>, <code>altura_30dds</code>…). Los análisis piden la <b>forma larga</b>: una fila por medición, con una columna que dice la fecha y otra con el valor. <span class="ui">Ancha ⇄ larga…</span> hace el cambio en los dos sentidos.</p>
+  <ol class="pasos">
+    <li>En <b>Ancha → larga</b>, se marcan las <b>columnas que identifican cada unidad</b> (las que se repetirán en cada fila nueva: aquí sustrato y planta) y las <b>columnas que se apilan</b> (las mediciones).</li>
+    <li>Se nombran la columna nueva con los nombres de las columnas apiladas (aquí <code>dds</code>, días después del trasplante) y la columna de valores (<code>altura</code>).</li>
+    <li>Si cada columna apilada trae un número en su nombre, la casilla <b>Quedarse con el número de cada nombre</b> guarda solo ese número (altura_15dds → 15), y la columna nueva sale <b>numérica</b>, lista para una curva en el tiempo; sin la casilla, guarda el nombre completo como factor.</li>
+    <li><span class="ui">Cambiar la forma</span> carga la tabla nueva. Los identificadores conservan su tipo; uno que era identificador (una planta por fila) pasa a factor, porque en la tabla larga cada planta se repite: es el sujeto de las medidas repetidas.</li>
+  </ol>
+  <figure class="chica">
+    <div class="marco"><img src="../img/b2-reformar.png" alt="La ventana Cambiar la forma de la tabla en Ancha a larga: sustrato y planta marcadas como identificadores; altura_15dds, altura_30dds, altura_45dds y altura_60dds marcadas para apilarse; dds como nombre de la columna nueva y altura como columna de valores; la casilla Quedarse con el número de cada nombre marcada"></div>
+    <figcaption><b>Figura 2.10.</b> Las alturas del jitomate, de ancha a larga: cada planta pasará a tener cuatro filas, una por fecha.</figcaption>
+  </figure>
+  <figure class="chica">
+    <div class="marco"><img src="../img/b2-larga.png" alt="La tabla del jitomate en forma larga: 72 filas con sustrato, planta como factor de 18 niveles, dds numérica con 15 y altura numérica con 2 faltantes; el botón Volver a la tabla anterior en la barra"></div>
+    <figcaption><b>Figura 2.11.</b> El resultado: 72 filas (18 plantas × 4 fechas). El botón <span class="ui">Volver a la tabla anterior</span> regresa la tabla ancha.</figcaption>
+  </figure>
+  <p>En <b>Larga → ancha</b> se eligen las columnas que identifican cada unidad, la columna cuyos valores darán nombre a las columnas nuevas y la columna con los valores. Si una combinación de identificadores se repite, la app se detiene y lo explica: la tabla ancha no sabría qué valor poner, y hace falta otra columna que distinga esas filas.</p>
+
+  <!-- 2.12 -->
+  <h2 id="s2-12"><span class="num">2.12</span>Deshacer, rehacer y volver</h2>
+  <p>Cada cambio de la hoja (una celda, un pegado, un tipo, una columna nueva o eliminada, un orden de niveles) se puede deshacer con <span class="ui">↶ Deshacer</span> o Ctrl+Z, y rehacer con <span class="ui">↷ Rehacer</span> o Ctrl+Y. Al pasar el puntero sobre los botones se lee qué se va a deshacer («Deshacer: Cambiar "dosis" a factor»).</p>
+  <p>Cambiar la forma de la tabla crea una tabla nueva. Para regresar a la anterior está el botón <span class="ui">Volver a la tabla anterior</span>, que aparece en la barra mientras se pueda volver.</p>
+
+  <!-- 2.13 -->
+  <h2 id="s2-13"><span class="num">2.13</span>Lo que SigmaPro ve en tu ensayo</h2>
+  <p>Al final del bloque, la tarjeta <b>Lo que SigmaPro ve en tu ensayo</b> resume la estructura que la app reconoce en la tabla. Es la misma lectura que usan el asistente y el constructor de modelos (capítulo 4) para proponer el análisis, y conviene revisarla antes de analizar: si algo no corresponde con el diseño real, es momento de corregir un tipo o una columna.</p>
+  <figure>
+    <div class="marco"><img src="../img/b2-estructura.png" alt="La tarjeta Lo que SigmaPro ve en tu ensayo del maíz: dosis numérica tomada como factor del diseño; factorial 3 × 4 balanceado con 4 observaciones por combinación; 4 bloques completos; niveles de dosis igualmente espaciados para polinomios ortogonales; sin columnas de fila y columna de campo"></div>
+    <figcaption><b>Figura 2.12.</b> Lo que SigmaPro ve en el ensayo del maíz: un factorial 3 × 4 balanceado en cuatro bloques completos al azar.</figcaption>
+  </figure>
+  <p>Cada línea lleva un símbolo: <span class="ui">✓</span> lo que está bien, <span class="ui">!</span> lo que merece atención e <span class="ui">i</span> una nota. Lo que se revisa:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2in">Revisión</th><th>Qué puede decir</th></tr></thead>
+    <tbody>
+      <tr><td>La respuesta</td><td>Qué columna se tomó como respuesta y si tiene faltantes (el análisis usará las observaciones completas).</td></tr>
+      <tr><td>Columnas que no son factores</td><td>Un identificador (un valor distinto en cada fila), unas submuestras (el número de fruto o de planta dentro de cada parcela, 1, 2, …, que no es un tratamiento) o una numérica con pocos valores repetidos tomada como factor del diseño (una dosis).</td></tr>
+      <tr><td>Combinaciones y balance</td><td>Si es un factorial y si cada combinación tiene el mismo número de observaciones. Si no, avisa que las sumas de cuadrados tipo I, II y III darán resultados distintos (sección 4.x); si hay combinaciones vacías, que la tipo III no está definida.</td></tr>
+      <tr><td>Bloques</td><td>Si cada bloque tiene todos los tratamientos (bloques completos al azar), cuántos están incompletos y si un tratamiento aparece más de una vez en un bloque.</td></tr>
+      <tr><td>Cuadro latino</td><td>Con columnas de fila y columna, si cada tratamiento aparece una vez en cada fila y en cada columna.</td></tr>
+      <tr><td>Dosis</td><td>Si los niveles de un factor numérico están igualmente espaciados, que se puede estudiar la tendencia con polinomios ortogonales (sección 4.x).</td></tr>
+      <tr><td>El terreno</td><td>Sin columnas de fila y columna de campo no se puede revisar si quedó un gradiente en el terreno.</td></tr>
+    </tbody>
+  </table>
+  <figure>
+    <div class="marco"><img src="../img/b2-estructura-avena.png" alt="La tarjeta del ensayo de avena: nitrógeno numérica tomada como factor; factorial 3 × 4 balanceado con 6 observaciones por combinación; 6 bloques completos; niveles de nitrógeno igualmente espaciados; sin columnas de fila y columna"></div>
+    <figcaption><b>Figura 2.13.</b> El ensayo de avena de Yates: la tarjeta lo lee como un factorial en bloques completos. Que las variedades estén en parcelas grandes no se ve en los datos; hay que indicarlo.</figcaption>
+  </figure>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Lo que los datos no dicen</div>
+    <p>La tarjeta lee la tabla, no el croquis del campo. Un ensayo en <b>parcelas divididas</b> tiene las mismas columnas que un factorial en bloques (figura 2.13): la diferencia está en cómo se aleatorizó, y eso no queda en los datos. Lo mismo pasa con las medidas repetidas sin una columna que diga cuál es la unidad medida. En esos casos el diseño se indica en el asistente, en el catálogo o en el constructor de modelos (capítulo 4); analizar unas parcelas divididas como un factorial en bloques daría pruebas F equivocadas para el factor de la parcela grande.</p>
+  </div>
+</section>
+
+</body>
+</html>

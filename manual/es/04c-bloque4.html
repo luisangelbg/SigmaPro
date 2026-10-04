@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · Manual de usuario · Capítulo 4 (3 de 7)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+  figure.estrecha .marco { width: 72%; margin: 0 auto; }
+  figure.estrecha figcaption { margin-left: 14%; margin-right: 14%; }
+</style>
+</head>
+<body>
+
+<section data-pestana="B4" data-orden="4" style="--acento: var(--b4)">
+
+  <!-- 4.10 -->
+  <h2 id="s4-10"><span class="num">4.10</span>Diseños experimentales</h2>
+  <p class="lead">El análisis de varianza de un diseño experimental separa la variación de la respuesta en la que se debe a los tratamientos, la que se debe a la forma en que se acomodó el ensayo (bloques, filas, columnas, parcelas grandes) y la que queda sin explicar (el error). Cada diseño tiene su modelo y, en algunos, más de un error. SigmaPro trae los nueve más usados en la investigación agrícola.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Diseño</th><th style="width:2.05in">Modelo</th><th>Cuándo</th></tr></thead>
+    <tbody>
+      <tr><td><b>Completamente al azar</b></td><td><code>y ~ A * B * C</code></td><td>Unidades homogéneas (macetas en cámara, cajas de germinación); hasta tres factores cruzados.</td></tr>
+      <tr><td><b>Bloques completos al azar</b></td><td><code>y ~ bloque + A * B * C</code></td><td>El más común en campo: cada bloque tiene todos los tratamientos y agrupa parcelas parecidas.</td></tr>
+      <tr><td><b>Cuadro latino</b></td><td><code>y ~ fila + columna + A * B</code></td><td>Variación en dos direcciones (pendiente y fertilidad); cada tratamiento una vez en cada fila y en cada columna.</td></tr>
+      <tr><td><b>Parcelas divididas</b></td><td><code>Error(bloque/A)</code></td><td>Un factor que solo se puede aplicar a parcelas grandes (riego, labranza, fecha de siembra) y otro dentro de ellas.</td></tr>
+      <tr><td><b>Parcelas subdivididas</b></td><td><code>Error(bloque/A/B)</code></td><td>Tres factores, cada uno en parcelas más chicas que el anterior.</td></tr>
+      <tr><td><b>Parcelas en franjas</b></td><td><code>Error(bloque/(A + B))</code></td><td>Dos factores aplicados en franjas que se cruzan (labranza en un sentido, riego en el otro).</td></tr>
+      <tr><td><b>Bloques incompletos balanceados</b></td><td><code>y ~ bloque + trat</code></td><td>Más tratamientos que parcelas por bloque, con cada par de tratamientos juntos el mismo número de veces.</td></tr>
+      <tr><td><b>Látice y alfa-látice</b></td><td><code>y ~ rep + rep:bloque + trat</code></td><td>Muchos genotipos (mejoramiento): bloques incompletos dentro de repeticiones completas.</td></tr>
+      <tr><td><b>Modelo lineal general</b></td><td>La fórmula que se escriba</td><td>Lo que no encaja en los anteriores: anidados, covariables con interacciones, factores extra.</td></tr>
+    </tbody>
+  </table>
+  <h3>El formulario</h3>
+  <p>Todos piden la <span class="ui">Variable de respuesta</span> y los papeles del diseño: los <span class="ui">Factores de tratamiento</span> (hasta 3, cruzados), los <span class="ui">Bloques</span>, las <span class="ui">Filas</span> y <span class="ui">Columnas</span>, el <span class="ui">Factor de la parcela grande</span> y el <span class="ui">de la subparcela</span>, las <span class="ui">Repeticiones</span>, según el diseño. Una columna numérica con pocos valores (una dosis) aparece marcada «(numérica)» y se usa como factor. Los diseños de un solo error ofrecen además las <span class="ui">Sumas de cuadrados</span> (tipo I, II o III) y todos el <span class="ui">Nivel de significancia</span>. En las parcelas divididas se elige también en qué diseño están las parcelas grandes: en bloques completos, completamente al azar o en cuadro latino.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">Σ</span>Los tres tipos de suma de cuadrados</div>
+    <p>Con datos <b>balanceados</b> (el mismo número de observaciones en cada combinación), los tres tipos dan lo mismo y la nota del cuadro lo dice. Con datos desbalanceados (parcelas perdidas, tratamientos con distinto número de repeticiones), cada tipo prueba una hipótesis distinta:</p>
+    <ul>
+      <li><b>Tipo I</b> (secuencial): cada término ajustado por los que van antes; el orden importa.</li>
+      <li><b>Tipo II</b> (marginalidad): cada término ajustado por los demás que no lo contienen; es la más potente si no hay interacción.</li>
+      <li><b>Tipo III</b> (medias marginales, la opción por omisión): cada término ajustado por todos los demás, con contrastes de suma cero; prueba las medias marginales con pesos iguales, que es lo que casi siempre se quiere en un experimento.</li>
+    </ul>
+  </div>
+  <h3>Lo que trae el resultado</h3>
+  <ul>
+    <li>La <b>conclusión</b> por efecto («hibrido: hay diferencias…») y los indicadores del ensayo: media general, coeficiente de variación (uno por error en las parcelas divididas: CV(a), CV(b)) y R².</li>
+    <li>La <b>gráfica</b>: con un factor, cajas con los puntos de cada tratamiento y su media; con dos o más, la gráfica de interacción, una línea por nivel del segundo factor (figura 4.7).</li>
+    <li>El botón <span class="ui">Comparar las medias de este diseño</span>, que abre la comparación de medias (sección 4.11) con el mismo diseño y las mismas variables.</li>
+    <li>Los <b>cuadros</b>: el análisis de varianza; el resumen del ensayo, con la <b>eficiencia relativa</b> de los bloques (cuánto ganó el ensayo por bloquear: un 160 % en el maíz quiere decir que un diseño completamente al azar habría necesitado 60 % más repeticiones para la misma precisión; Gomez y Gomez, 1984); las <b>medias marginales estimadas</b> de cada factor y de cada combinación, con su error estándar; y, con dos o más factores, los <b>efectos simples</b>: la prueba F de cada factor dentro de cada nivel del otro.</li>
+  </ul>
+  <p>Algunas situaciones se reconocen solas y se explican en un aviso: más de una parcela por tratamiento en cada bloque (bloques generalizados: se estima la interacción bloque × tratamiento), combinaciones de bloque y tratamiento perdidas (las medias se ajustan), celdas vacías (la suma de cuadrados tipo III no existe y se usa la II) o un término confundido con otro.</p>
+  <h3>Parcelas divididas, subdivididas y en franjas</h3>
+  <p>En estos diseños cada factor se aplicó a unidades de distinto tamaño, así que cada uno tiene su propio error: el factor de la parcela grande se prueba contra el <b>error a</b> (bloque × parcela grande) y el de la subparcela y la interacción contra el <b>error b</b> (la variación dentro de las parcelas grandes). El cuadro lo explica en su nota, y los bloques no se prueban porque su estrato no tiene error propio. Analizar estos ensayos como un factorial común usaría un solo error y daría pruebas F falsas, casi siempre a favor del factor de la parcela grande.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-divididas.png" alt="El análisis de las parcelas divididas de la avena de Yates: conclusión con variedad sin evidencia de diferencias, nitrógeno con diferencias e interacción sin evidencia, media general 103.972, CV(a) 23.6 % y CV(b) 12.8 %; la gráfica de interacción y el cuadro del análisis de varianza con bloque, variedad, error a, nitrógeno, variedad × nitrógeno, error b y total"></div>
+    <figcaption><b>Figura 4.15.</b> La avena de Yates (1935) en parcelas divididas: el nitrógeno, en las subparcelas, tiene un efecto claro; las variedades, en las parcelas grandes, se prueban contra el error a, con solo 10 grados de libertad.</figcaption>
+  </figure>
+  <p>Las <b>subdivididas</b> agregan un tercer estrato (<code>Error(bloque/A/B)</code>, con errores a, b y c) y las <b>franjas</b> tienen tres errores: uno para cada factor y otro para su interacción. Con datos desbalanceados (parcelas perdidas), las pruebas F de los estratos dejan de ser exactas y la app lo advierte; en ese caso conviene el modelo mixto de la sección 4.15, que maneja el desbalance.</p>
+  <h3>Bloques incompletos: BIB, látice y alfa-látice</h3>
+  <p>Cuando hay más tratamientos que parcelas caben en un bloque homogéneo, cada bloque recibe solo algunos. El análisis <b>intrabloque</b> compara los tratamientos dentro de los bloques: su suma de cuadrados es secuencial (tipo I), con los tratamientos al final, <b>ajustados por los bloques</b>, y sus medias son medias ajustadas. La nota del cuadro lo recuerda. En los bloques incompletos balanceados, el resultado trae además sus parámetros (tratamientos <i>t</i>, bloques <i>b</i>, tamaño del bloque <i>k</i>, repeticiones <i>r</i>, veces que coincide cada par λ) y su eficiencia; si el diseño no es un BIB exacto, la app lo dice y el análisis intrabloque sigue siendo válido.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-latice.png" alt="El alfa-látice de 24 genotipos: genotipo con diferencias (F = 5.242), media general 4.480, CV 6.4 %, R² 0.902; la gráfica de cajas por genotipo; y el análisis de varianza intrabloque con repetición, repetición × bloque, genotipo, error y total"></div>
+    <figcaption><b>Figura 4.16.</b> El alfa-látice de 24 genotipos (Olivoto y Lúcio, 2020). El genotipo va al final del cuadro, ajustado por los bloques incompletos.</figcaption>
+  </figure>
+  <p>El análisis intrabloque desperdicia la información que hay entre los bloques. Para recuperarla, con los bloques como efecto aleatorio, está <span class="ui">Látice y alfa-látice (recuperación entre bloques)</span>, en los modelos mixtos (sección 4.15); para la heredabilidad de los genotipos, la sección 4.16.</p>
+  <h3>El modelo lineal general</h3>
+  <p>Para los modelos que no son un diseño del catálogo, <span class="ui">Modelo lineal general (fórmula)</span> pide la respuesta y los <span class="ui">Términos del modelo</span> (lo que va después de «~», con la notación de la sección 4.4), las <b>numéricas que son tratamientos</b>, el tipo de suma de cuadrados y los niveles de confianza y significancia. Entrega el análisis de varianza, los <b>coeficientes</b> (con contrastes de tratamiento: cada nivel comparado con el primero), una gráfica de las medias marginales y las medias de cada término. Es también lo que usa el constructor cuando la fórmula se escribe a mano.</p>
+
+  <!-- 4.11 -->
+  <h2 id="s4-11"><span class="num">4.11</span>Comparaciones de medias y contrastes</h2>
+  <p>Un análisis de varianza dice si los tratamientos difieren, no cuáles. Para eso están los cuatro métodos de esta familia, que trabajan sobre el modelo de cualquiera de los diseños de la sección anterior: el formulario empieza por el <span class="ui">Diseño del experimento</span> y sus papeles, y luego pide qué comparar.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Método</th><th>Para qué</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Comparaciones de medias</span></td><td>Todos los tratamientos entre sí (o contra un testigo), con las letras de grupos.</td></tr>
+      <tr><td><span class="ui">Contrastes</span></td><td>Comparaciones planeadas de antemano (el testigo contra el resto, un grupo contra otro).</td></tr>
+      <tr><td><span class="ui">Polinomios ortogonales</span></td><td>La forma de la respuesta a un factor cuantitativo (una dosis): lineal, cuadrática, cúbica, y la dosis óptima.</td></tr>
+      <tr><td><span class="ui">Medias ajustadas</span></td><td>Las medias marginales estimadas con su intervalo de confianza, sin comparar.</td></tr>
+    </tbody>
+  </table>
+  <p>Dos campos son comunes: <span class="ui">Medias de</span> (o <span class="ui">Factor</span>), el factor cuyas medias se comparan, y <span class="ui">Dentro de cada nivel de</span>. Si la interacción es significativa, comparar las medias de un factor promediando sobre el otro puede engañar; entonces se compara un factor <b>dentro de cada nivel</b> del otro (las dosis dentro de cada híbrido), y el resultado trae un cuadro y una gráfica por nivel.</p>
+  <h3>Comparaciones de medias</h3>
+  <figure>
+    <div class="marco"><img src="../img/b4-tukey.png" alt="La comparación de medias de Tukey de los híbridos del maíz: el formulario con el diseño en bloques completos al azar, la respuesta, los factores, el bloque, medias de híbrido, dentro de cada nivel: todos juntos, prueba Tukey y significancia; la conclusión: 3 grupos de medias, c H-40, b H-52, a H-66; la gráfica de medias con su error estándar y sus letras; el cuadro de medias con su grupo y el de comparaciones por pares"></div>
+    <figcaption><b>Figura 4.17.</b> Tukey con los híbridos del maíz: los tres difieren entre sí. Las letras van sobre la gráfica y en el cuadro; medias con una letra en común no difieren.</figcaption>
+  </figure>
+  <p>La <span class="ui">Prueba</span> elige cómo se controla el error de hacer muchas comparaciones a la vez:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Prueba</th><th>Cómo es</th></tr></thead>
+    <tbody>
+      <tr><td><b>Tukey</b></td><td>Todos los pares, con el error de toda la familia de comparaciones controlado. La opción por omisión y la más recomendada para comparar todo contra todo.</td></tr>
+      <tr><td><b>DMS de Fisher</b> y <b>DMS protegida</b></td><td>La diferencia mínima significativa, sin ajuste por multiplicidad (encuentra más diferencias, también falsas). La protegida solo declara diferencias si la F del ANOVA para ese factor fue significativa; si no, todas las medias quedan con la misma letra.</td></tr>
+      <tr><td><b>Duncan</b> y <b>Student-Newman-Keuls</b></td><td>Pruebas por pasos, tradicionales en agronomía; controlan peor el error que Tukey.</td></tr>
+      <tr><td><b>Scheffé</b></td><td>Válida para cualquier contraste, no solo pares; muy conservadora.</td></tr>
+      <tr><td><b>Bonferroni</b>, <b>Šidák</b> y <b>Holm</b></td><td>Ajustes generales del valor <i>p</i>; Holm es el más potente de los tres.</td></tr>
+      <tr><td><b>Dunnett</b></td><td>Cada tratamiento contra un <b>testigo</b>, que se elige en el formulario; más potente que Tukey para esa pregunta.</td></tr>
+      <tr><td><b>Games-Howell</b></td><td>Todos los pares sin suponer varianzas iguales.</td></tr>
+    </tbody>
+  </table>
+  <p>El resultado trae la conclusión con los grupos («c: H-40; b: H-52; a: H-66»), la gráfica de las medias con su error estándar y sus letras, el cuadro de medias con su <b>grupo</b> y el de las <b>comparaciones por pares</b> (diferencia, EE, gl, t, <i>p</i> ajustado y si difieren). Las medias son las marginales estimadas del modelo del diseño y el error es el de ese diseño: en unas parcelas divididas, cada comparación usa el error y los grados de libertad que le corresponden.</p>
+  <h3>Contrastes</h3>
+  <p>Un contraste compara grupos de tratamientos con coeficientes que suman cero. Se escriben en el campo <span class="ui">Contrastes</span>, uno por renglón, con la forma <code>nombre: coeficientes</code> en el orden de los niveles que la ayuda muestra debajo:</p>
+  <pre class="codigo">I y II vs III: 1 1 -2
+I vs II: 1 -1 0</pre>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-contrastes.png" alt="El cuadro de contrastes de veneno: I y II vs III con coeficientes 1 1 −2, estimación 0.609, t 6.67, p menor que 0.001 y su suma de cuadrados; I vs II con 1 −1 0, estimación 0.073, p 0.174"></div>
+    <figcaption><b>Figura 4.18.</b> Dos contrastes ortogonales entre los venenos: el III difiere del promedio de I y II; I y II no difieren.</figcaption>
+  </figure>
+  <p>Cada contraste trae su estimación, EE, gl, t, <i>p</i> y suma de cuadrados. Si los contrastes son <b>ortogonales</b> entre sí (sus coeficientes multiplicados término a término suman cero), sus sumas de cuadrados se reparten sin traslaparse la de los tratamientos, y la nota lo dice. Los contrastes se planean antes de ver los datos; elegidos después, tienen el problema de las comparaciones múltiples.</p>
+  <h3>Polinomios ortogonales</h3>
+  <p>Con un factor cuantitativo (dosis de nitrógeno, densidades, temperaturas), lo interesante no son las diferencias entre dosis sino la <b>forma de la respuesta</b>. Los polinomios ortogonales descomponen la variación entre dosis en un componente lineal, uno cuadrático y uno cúbico, cada uno con su prueba. Se elige el <span class="ui">Factor cuantitativo</span> y el <span class="ui">Grado de la curva</span> (recta, cuadrática con la dosis óptima, o cúbica).</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/b4-polinomios.png" alt="Los polinomios ortogonales de la dosis del maíz: componentes lineal y cuadrático significativos; la curva cuadrática con su máximo en dosis 147.747 y respuesta 6.769; la gráfica de las medias por dosis con la curva ajustada; y el cuadro con los componentes lineal, cuadrático y cúbico"></div>
+    <figcaption><b>Figura 4.19.</b> La respuesta del maíz al nitrógeno es cuadrática; el máximo está en 147.7 kg/ha, con 6.77 t/ha estimadas.</figcaption>
+  </figure>
+  <p>Los coeficientes ortogonales se calculan sobre los niveles reales de la dosis, también si no están igualmente espaciados. Con la curva cuadrática, la app ajusta la ecuación a las medias (<i>y</i> = 4.454 + 0.03133·<i>x</i> − 1.060·10<sup>−4</sup>·<i>x</i>² en el maíz, con su R²) y da la dosis del máximo o del mínimo; si cae fuera de las dosis probadas, lo advierte, porque no conviene extrapolar. Para una respuesta que se estabiliza en una meseta, conviene el modelo lineal-meseta (sección 4.18).</p>
+  <h3>Medias ajustadas</h3>
+  <p>Las <b>medias marginales estimadas</b> son los promedios que predice el modelo para cada nivel, con pesos iguales sobre los demás factores. Con datos balanceados son las medias de siempre; con parcelas perdidas o con covariables, son las que corresponde publicar. El método da, para el factor elegido (y dentro de cada nivel de otro, si se pide), la media, su EE, los grados de libertad y su intervalo de confianza, con una gráfica.</p>
+</section>
+
+</body>
+</html>

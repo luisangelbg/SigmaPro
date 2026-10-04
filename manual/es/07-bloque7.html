@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · Manual de usuario · Capítulo 7</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b7" data-pestana="B7" data-orden="7" style="--acento: var(--b7)">
+  <div class="cap-apertura">
+    <div class="cap-num">7</div>
+    <div class="cap-etiqueta">Bloque 7 · Exportar</div>
+    <h1>Exportar y guardar el trabajo</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">El reporte sale de SigmaPro como documento para editar o imprimir, sus cuadros como hoja de cálculo o LaTeX y sus figuras en un solo archivo comprimido. El proyecto .labg guarda todo el trabajo para reabrirlo, compartirlo o repetirlo en R, y el guardado automático lo cuida mientras se trabaja. Todo se arma en el navegador: nada sale del equipo.</p>
+    <ul class="cap-contenido">
+      <li><b>7.1</b>El bloque Exportar</li>
+      <li><b>7.2</b>El reporte completo</li>
+      <li><b>7.3</b>Los cuadros</li>
+      <li><b>7.4</b>Las figuras</li>
+      <li><b>7.5</b>El proyecto .labg</li>
+      <li><b>7.6</b>El guardado automático</li>
+    </ul>
+  </div>
+
+  <!-- 7.1 -->
+  <h2 id="s7-1"><span class="num">7.1</span>El bloque Exportar</h2>
+  <p class="lead">Un aviso dice cuántos análisis tiene el reporte; debajo hay cinco tarjetas. Cada botón arma su archivo en el navegador y lo descarga; si hay análisis del motor R calculando, los espera.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/b7-bloque.png" alt="El bloque Exportar con el reporte del maíz: el aviso El reporte tiene 3 análisis y cinco tarjetas: Reporte completo, con el tamaño de hoja, las casillas Código R en un anexo y Detalles técnicos en un anexo y los botones Documento .docx, PDF (imprimir) y Página HTML; Cuadros, con Hoja de cálculo .xlsx y LaTeX .tex; Figuras, con la casilla También en TIFF y Todas las figuras (.zip); Proyecto .labg, con Guardar proyecto y Abrir un proyecto; y Guardado automático, con su casilla, la hora del último guardado y Borrar lo guardado"></div>
+    <figcaption><b>Figura 7.1.</b> El bloque Exportar con el reporte del maíz.</figcaption>
+  </figure>
+
+  <!-- 7.2 -->
+  <h2 id="s7-2"><span class="num">7.2</span>El reporte completo</h2>
+  <p class="lead">El reporte sale en tres formatos con el mismo contenido: <span class="ui">Documento .docx</span>, para editarlo en un procesador de textos; <span class="ui">PDF (imprimir)</span>, que abre el cuadro de impresión del navegador con el reporte paginado (ahí se elige «Guardar como PDF»); y <span class="ui">Página HTML</span>, un solo archivo que se abre en cualquier navegador, con las figuras vectoriales.</p>
+  <p>Se elige el <span class="ui">Tamaño de hoja</span> (carta o A4) y si van en anexos el <span class="ui">Código R</span> y los <span class="ui">Detalles técnicos</span> de cada análisis (las dos casillas vienen marcadas). El documento tiene:</p>
+  <ol>
+    <li>Una <b>portada</b> con el título, el autor, la fecha, los datos y la versión de SigmaPro.</li>
+    <li><b>Métodos</b>: el párrafo de métodos de cada análisis, con sus citas, y la oración que cita SigmaPro y R (sección 5.4).</li>
+    <li><b>Resultados</b>: cada análisis con su número y su título, la conclusión, el párrafo de resultados, sus cuadros y sus figuras numerados de corrido y, si los tiene, sus supuestos con el semáforo.</li>
+    <li><b>Referencias</b>: las obras citadas por los métodos, completas.</li>
+    <li><b>Anexos</b>: el código R y los detalles técnicos de cada análisis.</li>
+  </ol>
+  <figure class="chica">
+    <div class="marco"><img src="../img/b7-documento.png" alt="El principio del reporte exportado como página HTML: la portada con el título Ensayo de maíz: híbridos y dosis de nitrógeno, Reporte LABG de SigmaPro, el autor, la fecha, los datos y la versión; y la sección Métodos con los párrafos de los tres análisis y la cita de SigmaPro y R"></div>
+    <figcaption><b>Figura 7.2.</b> El principio del reporte del maíz exportado como página HTML: la portada y los métodos.</figcaption>
+  </figure>
+  <p>Los cuadros del .docx son tablas del procesador de textos, con las reglas horizontales de las revistas, y se pueden editar; las figuras van como imágenes a 300 ppp del ancho elegido en Figuras. La batería de pruebas abre cada .docx con un lector independiente y comprueba que sus partes sean válidas y que el texto de cada cuadro sea exactamente el de la app (capítulo 8).</p>
+
+  <!-- 7.3 -->
+  <h2 id="s7-3"><span class="num">7.3</span>Los cuadros</h2>
+  <ul>
+    <li><span class="ui">Hoja de cálculo .xlsx</span>: cada cuadro del reporte en su propia hoja, con <b>todas sus cifras</b>, sin el redondeo de la pantalla, y una primera hoja con el índice. Sirve para hacer otros cálculos o rearmar un cuadro con otro formato sin volver a teclear un número.</li>
+    <li><span class="ui">LaTeX .tex</span>: los cuadros como tablas de LaTeX con las tres reglas de revista del paquete <code>booktabs</code>, uno por entorno <code>table</code>, con su título y sus notas, listos para pegar en una tesis o un artículo escrito en LaTeX.</li>
+  </ul>
+
+  <!-- 7.4 -->
+  <h2 id="s7-4"><span class="num">7.4</span>Las figuras</h2>
+  <p><span class="ui">Todas las figuras (.zip)</span> descarga un archivo comprimido con cada figura del reporte en SVG, PDF vectorial y PNG a 600 ppp, del ancho elegido en el bloque Figuras y con los cambios del editor ✎, más un índice con el número y la leyenda de cada una. Con <span class="ui">También en TIFF a 600 ppp</span>, agrega el TIFF. Una figura sola se descarga desde su tarjeta en el bloque Figuras (sección 6.3).</p>
+
+  <!-- 7.5 -->
+  <h2 id="s7-5"><span class="num">7.5</span>El proyecto .labg</h2>
+  <p class="lead">El proyecto guarda <b>todo el trabajo</b> en un solo archivo: los datos, el reporte y los ajustes de las figuras. Sirve para seguir otro día, llevarlo a otra computadora, mandarlo a un asesor o a un revisor, o repetir todos los análisis en R.</p>
+  <p><span class="ui">Guardar proyecto</span> descarga un archivo con terminación .labg, que es un ZIP con estos archivos:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">Archivo</th><th>Qué guarda</th></tr></thead>
+    <tbody>
+      <tr><td><code>manifiesto.json</code></td><td>El formato, la versión de SigmaPro y la huella SHA-256 de cada archivo.</td></tr>
+      <tr><td><code>datos/hoja.json</code></td><td>La hoja completa: los tipos de las columnas, los niveles de los factores, las columnas calculadas y el filtro.</td></tr>
+      <tr><td><code>datos/datos.csv</code></td><td>Las filas que usan los análisis, en texto, para R o para cualquier programa.</td></tr>
+      <tr><td><code>analisis.json</code></td><td>El reporte: cada análisis con sus entradas, sus opciones, su título y su nota.</td></tr>
+      <tr><td><code>estilos.json</code></td><td>Los ajustes de las figuras.</td></tr>
+      <tr><td><code>codigo/analisis.R</code></td><td>El código R que repite todo: se descomprime el proyecto y se corre <code>source("codigo/analisis.R")</code> desde su carpeta.</td></tr>
+      <tr><td><code>LEAME.txt</code></td><td>Qué es el archivo y cómo se abre.</td></tr>
+    </tbody>
+  </table>
+  <p>Los <b>resultados no se guardan</b>: se recalculan al abrir, así que salen exactamente los mismos (la batería de pruebas lo comprueba, cuadro por cuadro) y un proyecto nunca trae números viejos.</p>
+  <h3>Abrir un proyecto</h3>
+  <p>Un proyecto se abre con <span class="ui">Abrir un proyecto</span> en Exportar, o con <span class="ui">Abrir un proyecto .labg</span> en Resultados cuando el reporte está vacío. La app comprueba la huella SHA-256 de cada archivo contra el manifiesto. Si coinciden y no hay otro trabajo en la app, lo abre directamente; si hay datos o análisis cargados, pregunta primero, porque abrirlo los reemplaza.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/b7-abrir.png" alt="El diálogo Abrir el proyecto «Ensayo de maíz: híbridos y dosis de nitrógeno»: las huellas SHA-256 de los 6 archivos coinciden con el manifiesto; la fecha y la versión con que se guardó, 48 filas, 4 columnas y 3 análisis; el aviso de que abrirlo reemplaza los datos y el reporte actuales; y los botones Cancelar y Abrir"></div>
+      <figcaption><b>Figura 7.3.</b> Al abrir un proyecto con otro trabajo en la app: las huellas coinciden y la app pide confirmar.</figcaption>
+    </figure>
+    <div>
+      <p>Si algún archivo cambió después de guardarse (alguien editó el CSV o el reporte a mano), su huella no coincide: el diálogo lo dice con el nombre de cada archivo cambiado y el botón cambia a <span class="ui">Abrir de todos modos</span>. Un archivo que no es un proyecto de SigmaPro, o que viene de otra app de la suite o de una versión más nueva de SigmaPro, no se abre, y un aviso dice por qué. Al abrirlo, la app pasa a Resultados con el reporte ya recalculado.</p>
+    </div>
+  </div>
+
+  <!-- 7.6 -->
+  <h2 id="s7-6"><span class="num">7.6</span>El guardado automático</h2>
+  <p class="lead">Mientras se trabaja, los datos (con sus tipos, sus columnas calculadas y su filtro), los análisis del reporte y los ajustes de las figuras se guardan en el almacenamiento del propio navegador, dos segundos después del último cambio y al cambiar de pestaña o cerrarla. Nada sale del equipo. Cómo se recupera un trabajo al volver a abrir SigmaPro está en la sección 1.4.</p>
+  <p>La tarjeta <span class="ui">Guardado automático</span> del bloque Exportar dice cuándo se guardó por última vez y qué («Guardado a las 12:28 p.m.: …, 48 filas y 4 columnas, 3 análisis en el reporte»). Tiene dos controles:</p>
+  <ul>
+    <li><span class="ui">Guardar el trabajo en este navegador</span>: viene marcada. Desmarcarla <b>borra</b> lo guardado y deja de guardar; volver a marcarla guarda de inmediato.</li>
+    <li><span class="ui">Borrar lo guardado</span>: lo borra ahora; se vuelve a guardar con el próximo cambio.</li>
+  </ul>
+  <p>Si el navegador no deja guardar (una ventana privada, el almacenamiento bloqueado o lleno), la app sigue igual y la tarjeta lo dice: en ese caso conviene guardar el proyecto .labg. Si SigmaPro está abierto en dos pestañas, la tarjeta avisa cuando el almacenamiento está ocupado por la otra.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>En una computadora compartida</div>
+    <p>Lo guardado se queda en ese navegador, y la siguiente persona que abra SigmaPro verá el aviso para recuperarlo. En una computadora de laboratorio o de un centro de cómputo, desmarca el guardado automático o usa <span class="ui">Borrar lo guardado</span> al terminar, y lleva tu trabajo en el proyecto .labg.</p>
+  </div>
+</section>
+
+</body>
+</html>

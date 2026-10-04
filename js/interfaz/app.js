@@ -103,8 +103,11 @@
       L().theme.init('sigmapro.theme');
       L().shortcuts([
         { keys: ['R'], es: 'Constructor de modelo: la variable enfocada va a «Respuesta»', en: 'Model builder: focused variable to «Response»' },
+        { keys: ['E'], es: 'Constructor de modelo: … a «Evento (0/1)» (modelo de Cox)', en: 'Model builder: … to «Event (0/1)» (Cox model)' },
+        { keys: ['M'], es: 'Constructor de modelo: … a «Más respuestas» (MANOVA)', en: 'Model builder: … to «More responses» (MANOVA)' },
         { keys: ['F'], es: 'Constructor de modelo: … a «Factores de tratamiento»', en: 'Model builder: … to «Treatment factors»' },
         { keys: ['B'], es: 'Constructor de modelo: … a «Bloques o repeticiones»', en: 'Model builder: … to «Blocks»' },
+        { keys: ['A'], es: 'Constructor de modelo: … a «Efectos aleatorios»', en: 'Model builder: … to «Random effects»' },
         { keys: ['C'], es: 'Constructor de modelo: … a «Covariables»', en: 'Model builder: … to «Covariates»' },
         { keys: ['P'], es: 'Constructor de modelo: … a «Parcela grande»', en: 'Model builder: … to «Main plot»' },
         { keys: ['Supr'], es: 'Constructor de modelo: quitar la variable enfocada de su zona', en: 'Model builder: remove the focused variable' },

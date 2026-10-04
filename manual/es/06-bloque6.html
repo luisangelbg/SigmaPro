@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · Manual de usuario · Capítulo 6</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b6" data-pestana="B6" data-orden="6" style="--acento: var(--b6)">
+  <div class="cap-apertura">
+    <div class="cap-num">6</div>
+    <div class="cap-etiqueta">Bloque 6 · Figuras</div>
+    <h1>Figuras: listas para publicar</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Las gráficas de los análisis del reporte se juntan en este bloque, numeradas y con su leyenda, en el orden del reporte. Desde aquí se eligen las barras de error y el ancho, se descargan en SVG, PDF vectorial, PNG o TIFF a 600 ppp, se retocan con el editor ✎ y, para el tamaño exacto que pide una revista, se abren en el Estudio de figuras.</p>
+    <ul class="cap-contenido">
+      <li><b>6.1</b>Las figuras del reporte</li>
+      <li><b>6.2</b>Barras de error y ancho</li>
+      <li><b>6.3</b>Las descargas</li>
+      <li><b>6.4</b>El editor ✎</li>
+      <li><b>6.5</b>El Estudio de figuras</li>
+    </ul>
+  </div>
+
+  <!-- 6.1 -->
+  <h2 id="s6-1"><span class="num">6.1</span>Las figuras del reporte</h2>
+  <p class="lead">El bloque muestra todas las figuras de los análisis del reporte que tienen gráficas (diseños, comparaciones, regresión, correlación, contingencia y casi todos los demás), en una galería de tarjetas. Si el reporte no tiene ninguna, el bloque lo dice y ofrece ir a Resultados.</p>
+  <figure>
+    <div class="marco"><img src="../img/b6-galeria.png" alt="El bloque Figuras con el reporte del maíz: arriba, el selector de barras de error ± 1 EE o IC 95 % y el ancho en el documento, 16 cm; el resumen 3 figuras de 3 análisis; y las dos primeras tarjetas: la interacción híbrido × dosis del análisis 1 y las medias de los híbridos con sus letras del análisis 2, cada una con su leyenda numerada y los botones Abrir en el estudio, SVG, PDF, PNG 600 ppp y TIFF 600 ppp"></div>
+    <figcaption><b>Figura 6.1.</b> Las figuras del reporte del maíz. Cada tarjeta dice de qué análisis viene y trae su leyenda numerada y sus descargas.</figcaption>
+  </figure>
+  <p>Cada tarjeta dice de qué análisis viene («Del análisis 2: Comparación de medias: Tukey · rend») y trae la figura con su <b>leyenda</b>: el número (el mismo que tiene en el reporte y en el documento exportado), el título y una descripción de lo que muestra, que también es el texto alternativo de la figura para los lectores de pantalla. En las gráficas de medias, la leyenda declara las barras de error («con ± un error estándar»), como piden las revistas.</p>
+
+  <!-- 6.2 -->
+  <h2 id="s6-2"><span class="num">6.2</span>Barras de error y ancho</h2>
+  <p class="lead">Arriba de la galería, dos ajustes valen para todas las figuras del reporte, en la pantalla, en el documento exportado y en las descargas. La app los recuerda en el navegador.</p>
+  <ul>
+    <li><b>Barras de error</b>: <span class="ui">± 1 EE</span> (el error estándar de cada media, la opción por omisión) o <span class="ui">IC 95 %</span> (el intervalo de confianza). Al cambiarlas, las gráficas de medias se redibujan y sus leyendas cambian.</li>
+    <li><span class="ui">Ancho en el documento y en las descargas</span>: 8.5 cm (una columna), 12 cm, 16 cm (ancho de página, la opción por omisión) o 17.5 cm (dos columnas). El alto sale de la proporción de cada figura.</li>
+  </ul>
+
+  <!-- 6.3 -->
+  <h2 id="s6-3"><span class="num">6.3</span>Las descargas</h2>
+  <p class="lead">Cada tarjeta descarga su figura al ancho elegido en cuatro formatos. Todas salen con los colores del tema claro, aunque la app esté en oscuro, y con lo que se haya cambiado con el editor ✎ o el estudio.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.2in">Formato</th><th>Qué es y para qué</th></tr></thead>
+    <tbody>
+      <tr><td><b>SVG</b></td><td>Vectorial, con el tamaño en milímetros. Se abre y se edita en cualquier programa de dibujo vectorial y se amplía sin perder nitidez.</td></tr>
+      <tr><td><b>PDF</b></td><td>Vectorial, con trazos y texto (en Helvetica, una de las letras estándar de PDF): pesa poco, se amplía sin perder nitidez y el texto se puede buscar. Es el formato que prefieren muchas revistas.</td></tr>
+      <tr><td><b>PNG 600 ppp</b></td><td>Imagen a 600 puntos por pulgada, con la resolución escrita dentro del archivo: se inserta en un procesador de textos con su tamaño correcto.</td></tr>
+      <tr><td><b>TIFF 600 ppp</b></td><td>La misma imagen en TIFF, el formato que algunas revistas y editoriales exigen.</td></tr>
+    </tbody>
+  </table>
+  <p>Para descargar todas las figuras a la vez, en un ZIP con los cuatro formatos, está el bloque Exportar (capítulo 7).</p>
+
+  <!-- 6.4 -->
+  <h2 id="s6-4"><span class="num">6.4</span>El editor ✎</h2>
+  <p class="lead">Cada figura de SigmaPro, aquí y en los bloques Explorar y Análisis, tiene en su esquina un botón <span class="ui">✎</span> que abre un panel flotante para retocar <b>esa</b> figura, como en un programa de gráficas.</p>
+  <figure>
+    <div class="marco"><img src="../img/b6-editor.png" alt="El editor ✎ abierto sobre la figura de las medias de los híbridos: el panel Editar esta figura con sus seis pestañas, General, Ejes y rejilla, Series, Leyenda, Textos y Anotaciones; en General, el título, el subtítulo y la nota al pie dentro de la figura, la tipografía, el tamaño de los textos, el color, el grosor de las líneas, el tamaño de los puntos, el fondo y el marco, y los botones Deshacer todo en esta figura y Copiar el estilo a todas las figuras; a la derecha, la figura marcada con un borde discontinuo"></div>
+    <figcaption><b>Figura 6.2.</b> El editor ✎ con la figura de las medias de los híbridos: la figura que se edita queda marcada con un borde discontinuo.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.3in">Pestaña</th><th>Qué se cambia</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">General</span></td><td>Un título, un subtítulo y una nota al pie dentro de la figura; la familia tipográfica, el tamaño y el color de todos los textos; el grosor de las líneas y el tamaño de los puntos; el fondo y un marco.</td></tr>
+      <tr><td><span class="ui">Ejes y rejilla</span></td><td>Los títulos de los ejes, las etiquetas de las marcas, el color y el grosor de los ejes, la rejilla y el recuadro del área de la gráfica.</td></tr>
+      <tr><td><span class="ui">Series</span></td><td>Cada color que usa la figura, con el nombre de su entrada en la leyenda: color, grosor, trazo, opacidad u ocultarla.</td></tr>
+      <tr><td><span class="ui">Leyenda</span></td><td>Mostrarla u ocultarla, ocho posiciones, como está, en fila o en columna, su tamaño y su recuadro; también se arrastra sobre la figura.</td></tr>
+      <tr><td><span class="ui">Textos</span></td><td>Cada texto de la figura uno por uno: su redacción, tamaño, negritas, cursivas, color u ocultarlo.</td></tr>
+      <tr><td><span class="ui">Anotaciones</span></td><td>Notas, flechas, líneas de referencia en un valor de cualquiera de los ejes, bandas sombreadas y la letra del panel (A, B…); las notas y las flechas se arrastran.</td></tr>
+    </tbody>
+  </table>
+  <p>Los cambios se escriben en la propia figura, así que lo que se ve es lo que se exporta. El navegador los recuerda por figura y los vuelve a poner cada vez que la figura se redibuja (al cambiar los datos, las barras de error o el tema). <span class="ui">Deshacer todo en esta figura</span> la regresa a como la dibujó SigmaPro, y <span class="ui">Copiar el estilo a todas las figuras</span> lleva a las demás lo general: la tipografía, los tamaños, el color de los textos, el fondo, el marco y el estilo de los ejes y de la rejilla.</p>
+
+  <!-- 6.5 -->
+  <h2 id="s6-5"><span class="num">6.5</span>El Estudio de figuras</h2>
+  <p class="lead">Para dejar una figura del tamaño exacto que pide una revista, <span class="ui">Abrir en el estudio</span> la lleva al Estudio de figuras LABG, el mismo de todas las apps de la suite: una pantalla dividida con la figura a la izquierda, a escala y con la silueta de su tamaño de salida, y el inspector a la derecha.</p>
+  <figure>
+    <div class="marco"><img src="../img/b6-estudio.png" alt="El Estudio de figuras con la figura de las medias de los híbridos: arriba, la barra con deshacer, rehacer, comparar, zoom, regla, Preajustes, Exportar y Cerrar estudio; a la izquierda, la figura dentro de la silueta de 1.5 columnas, con su tamaño de salida en milímetros, pulgadas, ppp y pixeles; a la derecha, el inspector con el buscador de controles, los ajustes de la figura de SigmaPro (barras de error y ancho) y la edición fina del editor ✎"></div>
+    <figcaption><b>Figura 6.3.</b> El Estudio de figuras: la figura a escala de salida a la izquierda y el inspector a la derecha, con los ajustes que la figura tiene en SigmaPro y el editor ✎ acoplado.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Tamaños de revista</b>: una, una y media o dos columnas, en milímetros o pulgadas, con la letra y el grosor de las líneas pensados para el tamaño de salida. Debajo de la figura, el tamaño final y los pixeles que tendrá.</li>
+    <li><b>Paletas científicas</b>, con una simulación de cómo vería la figura una persona con daltonismo.</li>
+    <li><b>La leyenda</b> dentro de la gráfica (ocho lugares), fuera a la derecha, debajo en fila u oculta, y se arrastra sobre la figura.</li>
+    <li><b>Lo de SigmaPro, dentro</b>: las barras de error y el ancho del bloque Figuras aparecen en el inspector (cada cambio se hace en la app), y el editor ✎ se acopla como «Edición fina de esta figura».</li>
+    <li><b>Trabajo cómodo</b>: deshacer y rehacer, comparar antes y ahora con una cortina (tecla B), zoom, doble clic en un texto para cambiarlo, un buscador de controles, preajustes de un clic (y propios, que se guardan en JSON) y la tecla ? para ver los atajos.</li>
+    <li><b>Exportar</b>: PNG, SVG, PDF y TIFF, a 300, 600 o 1200 ppp, con fondo transparente si se quiere. Para el PDF, el estudio le pide a SigmaPro la figura vectorial en lugar de una imagen.</li>
+  </ul>
+  <p>El estudio recuerda sus ajustes en el navegador y no cambia nada de la app: al cerrarlo, la figura vuelve a su lugar con lo que se le haya hecho. Si por alguna razón no puede abrirse, la app sigue funcionando igual, con el editor ✎ y las descargas del bloque.</p>
+</section>
+
+</body>
+</html>

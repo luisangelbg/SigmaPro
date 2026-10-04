@@ -1360,13 +1360,13 @@
     if (r.tipo === 'seleccion') {
       const xs = r.pasos.map((_, k) => k), ys = r.pasos.map(q => q.aic);
       return SP.graficas.dispersion({
-        titulo: T('AIC en cada paso'), x: { titulo: T('Paso') }, y: { titulo: 'AIC' }, descripcion: T('AIC del modelo después de cada paso de la selección; menor es mejor.'),
+        titulo: T('AIC en cada paso'), x: { titulo: T('Paso'), enteros: true }, y: { titulo: 'AIC' }, descripcion: T('AIC del modelo después de cada paso de la selección; menor es mejor.'),
         puntos: xs.map((x, k) => ({ x, y: ys[k], marca: k === xs.length - 1 })), linea: { x: xs, y: ys },
       });
     }
     const prim = r.filas.filter(f => f.rango === 1), xs = prim.map(f => f.tamano);
     return SP.graficas.dispersion({
-      titulo: T('BIC del mejor modelo de cada tamaño'), x: { titulo: T('Número de predictores') }, y: { titulo: 'BIC' },
+      titulo: T('BIC del mejor modelo de cada tamaño'), x: { titulo: T('Número de predictores'), enteros: true }, y: { titulo: 'BIC' },
       descripcion: T('BIC del mejor modelo con cada número de predictores; el mínimo ({k}) es el elegido.', { k: r.elegido.bic }),
       puntos: prim.map(f => ({ x: f.tamano, y: f.bic, marca: f.tamano === r.elegido.bic })), linea: { x: xs, y: prim.map(f => f.bic) },
     }) + SP.graficas.dispersion({
@@ -1539,8 +1539,9 @@
       const unir = v => (Number.isFinite(ult) ? [r.tiempos[ultimo]].concat(P.tiempos) : P.tiempos), con = v => (Number.isFinite(ult) ? [ult].concat(v) : v);
       out.push(SP.graficas.dispersion({ titulo: T('Serie y pronóstico'), x: { titulo: r.tiempoCol || T('Orden') }, y: { titulo: r.respuesta },
         descripcion: T('La serie observada, el pronóstico del modelo y su intervalo al {k} % (la banda se abre con el horizonte).', { k: Math.round(100 * r.nivel) }),
-        lineas: [Object.assign(tramo(r.tiempos, r.x), { serie: 1 }), { x: unir(), y: con(P.media), serie: 0 }],
-        bandas: [{ x: unir(), inf: con(P.inf), sup: con(P.sup) }], leyenda: { series: [T('Pronóstico'), r.respuesta] } }));
+        /* lo observado, continuo y oscuro; el pronóstico, discontinuo y dorado, como su banda */
+        lineas: [Object.assign(tramo(r.tiempos, r.x), { serie: 0 }), { x: unir(), y: con(P.media), serie: 1 }],
+        bandas: [{ x: unir(), inf: con(P.inf), sup: con(P.sup) }], leyenda: { series: [r.respuesta, T('Pronóstico')] } }));
       const nr = r.residuos.filter(v => v === v).length, banda = SP.dist.qnorm(0.975, 0, 1, true) / Math.sqrt(nr);
       out.push(SP.graficas.dispersion({ titulo: T('Autocorrelación de los residuos'), x: { titulo: T('Rezago') }, y: { titulo: 'ACF' },
         descripcion: T('Si el modelo captó la estructura, las barras quedan dentro de la banda de ± {b}.', { b: SP.formatos.texto(banda, 'forma') }),
@@ -1964,9 +1965,11 @@
 
   /* ---------------- aplicar un pedido (del asistente o del constructor) ---------------- */
   const ROLES_DIS = ['bloque', 'fila', 'columna', 'repeticion', 'parcelaGrande', 'subparcela', 'subsubparcela', 'franjaA', 'franjaB'];
+  const OPC_COMUNES = ['nivel', 'alfa', 'predecir', 'entrada', 'salida', 'alternativa', 'mu', 'exacta', 'correccion', 'continuidad', 'faltantes'];
   function aplicar(m, e, op) {
     e = e || {}; op = op || {};
-    const pon = (s, campos) => { for (const [k, v] of Object.entries(campos)) if (v !== undefined) s[k] = Array.isArray(v) ? v.slice() : v; s._iniciado = true; };
+    let ultimo = null;
+    const pon = (s, campos) => { for (const [k, v] of Object.entries(campos)) if (v !== undefined) s[k] = Array.isArray(v) ? v.slice() : v; s._iniciado = true; ultimo = s; };
     estado.hoja = SP.app.datos.hoja;      // lo aplicado no se vuelve a proponer
     if (DISENOS.includes(m)) {
       const s = estado.dis;
@@ -2047,6 +2050,9 @@
         gl: op.gl, estimacion: op.reml === false ? 'ml' : op.reml === undefined ? undefined : 'reml', ajuste: op.ajuste, repeticionAleatoria: op.repeticionAleatoria, localidadFija: op.localidadFija }));
       estado.mxd.compararMx = op.comparar ? [].concat(op.comparar) : null;
     }
+    /* las opciones que se llaman igual en el pedido y en el formulario (niveles, valores para predecir, pruebas exactas…):
+       un análisis que se reabre desde el reporte, también de un proyecto o de lo recuperado, vuelve con las suyas */
+    if (ultimo) for (const k of OPC_COMUNES) if (op[k] !== undefined && k in ultimo) ultimo[k] = Array.isArray(op[k]) ? op[k].slice() : op[k];
     estado.metodo = m;
   }
   /** Aplica el pedido, pasa al catálogo y calcula. */

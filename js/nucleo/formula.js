@@ -56,7 +56,9 @@ SP.definir('formula', function (SP) {
 
   /* Un «valor» de la expresión es { terminos: [Set de variables], intercepto: true | false | null }.
      intercepto null = no lo menciona. */
-  function analizar(texto) {
+  /** op.conservarOrden: los términos quedan en el orden escrito, como terms(…, keep.order = TRUE) de R (el látice
+      lo necesita para que los tratamientos vayan al final, ajustados por los bloques, en las sumas de cuadrados tipo I). */
+  function analizar(texto, op) {
     const fs = fichas(String(texto || ''));
     let pos = 0;
     const variables = [];          // en orden de primera aparición
@@ -152,9 +154,10 @@ SP.definir('formula', function (SP) {
 
     const v = suma();
     if (pos < fs.length) throw error(T('Sobra «{s}» al final de la fórmula.', { s: fs[pos].v }));
-    /* orden de R: por orden del término (estable), variables en orden de aparición */
+    /* orden de R: por orden del término (estable), variables en orden de aparición; o el escrito, si se pide */
+    const conservar = !!(op && op.conservarOrden);
     const terminos = v.terminos.map((s, i) => ({ vars: [...s].sort((a, b) => a - b), i }))
-      .sort((a, b) => (a.vars.length - b.vars.length) || (a.i - b.i))
+      .sort((a, b) => (conservar ? 0 : a.vars.length - b.vars.length) || (a.i - b.i))
       .map(t => ({ variables: t.vars.map(k => variables[k]), etiqueta: t.vars.map(k => variables[k]).join(':'), orden: t.vars.length }));
     return { respuesta, terminos, intercepto: v.intercepto !== false, variables: variables.filter(x => x !== respuesta) };
   }
@@ -235,7 +238,7 @@ SP.definir('formula', function (SP) {
    */
   function matrizModelo(tabla, f, op) {
     op = op || {};
-    const form = typeof f === 'string' ? analizar(f) : f;
+    const form = typeof f === 'string' ? analizar(f, op) : f;
     const usadas = form.respuesta ? [form.respuesta, ...form.variables] : form.variables;
     for (const v of usadas) tabla.col(v);   // lanza si no existe
 

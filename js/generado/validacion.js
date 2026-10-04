@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
- "version": "0.3.2",
- "generado": "2026-10-04T15:57:06.576Z",
+ "version": "0.3.3",
+ "generado": "2026-10-04T18:38:17.588Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -10824,9 +10824,9 @@ window.SP_VALIDACION = {
    "fuente": "Datos sintéticos con agricolae::design.alpha",
    "clase": "A",
    "valores": 49,
-   "difMax": 5.861977570020827e-14,
-   "difEscaladaMax": 3.940252458075553e-15,
-   "peor": "anova.F[2]",
+   "difMax": 1.7763568394002505e-14,
+   "difEscaladaMax": 3.750662566955657e-15,
+   "peor": "anova.p[1]",
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -10839,7 +10839,7 @@ window.SP_VALIDACION = {
      "car": "3.1.3",
      "emmeans": "1.10.6"
     },
-    "codigo": "anova(lm(y ~ rep/bloque + trat)); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+    "codigo": "anova(lm(terms(y ~ rep + rep:bloque + trat, keep.order = TRUE))); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
    }
   },
   {
@@ -10852,9 +10852,9 @@ window.SP_VALIDACION = {
    "fuente": "Datos sintéticos",
    "clase": "A",
    "valores": 43,
-   "difMax": 1.5987211554602254e-14,
-   "difEscaladaMax": 1.6568537100797907e-15,
-   "peor": "anova.F[2]",
+   "difMax": 5.684341886080802e-14,
+   "difEscaladaMax": 1.836338930007613e-15,
+   "peor": "anova.F[1]",
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -10867,7 +10867,7 @@ window.SP_VALIDACION = {
      "car": "3.1.3",
      "emmeans": "1.10.6"
     },
-    "codigo": "anova(lm(y ~ rep/bloque + trat)); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
+    "codigo": "anova(lm(terms(y ~ rep + rep:bloque + trat, keep.order = TRUE))); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))"
    }
   },
   {

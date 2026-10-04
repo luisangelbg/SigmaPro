@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · Manual de usuario</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../manual.css">
+</head>
+<body>
+
+<section class="page cover" aria-label="Portada">
+  <svg id="cover" viewBox="0 0 850 1100" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="Portada del manual de SigmaPro: arriba, el símbolo sigma en oro sobre negro y el título; al centro, el camino de un ensayo en tres paneles unidos por flechas: el campo con 48 parcelas de tres híbridos y cuatro dosis de nitrógeno repartidas al azar en cuatro bloques, los números con las primeras filas de la tabla y su análisis de varianza, y la conclusión con las medias de los híbridos y sus letras de Tukey y la curva de respuesta a la dosis; debajo, la línea de R que da lo mismo y la marca de la validación; abajo, cuatro viñetas: un cuadro latino, un modelo mixto, curvas de supervivencia y un biplot."></svg>
+</section>
+
+<script>
+/* La portada se dibuja una vez, siempre igual, en gráficos vectoriales: se imprime nítida a cualquier tamaño y cada
+   ilustración es original. Los números son los del ejemplo «Maíz: híbridos × nitrógeno» de la app. */
+(function () {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.getElementById('cover');
+  const el = (tag, attrs, parent, text) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) if (attrs[k] != null) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    (parent || svg).appendChild(n);
+    return n;
+  };
+  const W = 850, H = 1100;
+  const NEGRO = '#111111', INK = '#1f1d18', GRIS = '#625d54', GRIS2 = '#9a948a', LINEA = '#e6e0d3', BLANCO = '#ffffff';
+  const ORO = '#D4A848', ORO_OSC = '#7D5B14', BRONCE = '#9C7128', ORO_CLARO = '#F1DDA8';
+  const TEAL = '#1f6f6a', AZUL = '#2b6aa3', VINO = '#8c2f39', OLIVA = '#55712a', VIOLETA = '#66509a', NARANJA = '#b0601c';
+  const SERIF = "'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif";
+  const SANS = "'Segoe UI', system-ui, Arial, sans-serif";
+  const MONO = "Consolas, 'Cascadia Mono', 'Courier New', monospace";
+  const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
+  const mezcla = (a, b, t) => { const A = hex(a), B = hex(b); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0')).join(''); };
+  const sans = (attrs, parent, text) => el('text', Object.assign({ 'font-family': SANS }, attrs), parent, text);
+  const serif = (attrs, parent, text) => el('text', Object.assign({ 'font-family': SERIF }, attrs), parent, text);
+  /* azar con semilla: la portada sale igual cada vez */
+  let semilla = 20261004;
+  const azar = () => { semilla = (semilla * 1103515245 + 12345) % 2147483648; return semilla / 2147483648; };
+  const barajar = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(azar() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+
+  el('rect', { x: 0, y: 0, width: W, height: H, fill: BLANCO });
+  const defs = el('defs');
+  const halo = el('radialGradient', { id: 'halo', cx: 0.5, cy: 0.5, r: 0.5 }, defs);
+  [[0, '#fbf3df', 1], [0.7, '#fdf9f0', 0.8], [1, '#ffffff', 0]].forEach(([o, c, a]) => el('stop', { offset: o, 'stop-color': c, 'stop-opacity': a }, halo));
+  const flecha = el('marker', { id: 'punta', viewBox: '0 0 10 10', refX: 8, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' }, defs);
+  el('path', { d: 'M0,0 L10,5 L0,10 z', fill: ORO_OSC }, flecha);
+
+  /* ---------------------------------------------------------------- franja superior y título */
+  const franja = [ORO_OSC, TEAL, AZUL, VINO, OLIVA, VIOLETA, NARANJA, '#4f5d78'];
+  franja.forEach((c, i) => el('rect', { x: 60 + i * (730 / 8) + 1, y: 46, width: 730 / 8 - 2, height: 6, fill: c }));
+  sans({ x: W / 2, y: 86, 'text-anchor': 'middle', 'font-size': 10.5, fill: GRIS, 'letter-spacing': 4.2 }, null, 'MANUAL DE USUARIO  ·  USER’S MANUAL');
+
+  el('ellipse', { cx: W / 2, cy: 200, rx: 330, ry: 120, fill: 'url(#halo)' });
+  const logo = el('g', { transform: `translate(${W / 2 - 38}, 112)` });
+  el('rect', { x: 0, y: 0, width: 76, height: 76, rx: 16, fill: NEGRO }, logo);
+  el('text', { x: 38, y: 58, 'text-anchor': 'middle', 'font-family': SANS, 'font-size': 54, 'font-weight': 800, fill: ORO }, logo, 'Σ');
+
+  const titulo = serif({ x: W / 2, y: 268, 'text-anchor': 'middle', 'font-size': 82, 'font-weight': 700, fill: NEGRO, 'letter-spacing': -0.5 });
+  el('tspan', {}, titulo, 'Sigma');
+  el('tspan', { fill: ORO_OSC }, titulo, 'Pro');
+  serif({ x: W / 2, y: 308, 'text-anchor': 'middle', 'font-size': 22, 'font-style': 'italic', fill: INK }, null, 'Estadística para la investigación agronómica y biológica');
+  sans({ x: W / 2, y: 334, 'text-anchor': 'middle', 'font-size': 11.5, fill: GRIS, 'letter-spacing': 1.2 }, null, 'Statistics for agronomic and biological research');
+
+  /* ---------------------------------------------------------------- tres paneles: el campo, los números, la conclusión */
+  const PY = 380, PH = 330;
+  const panel = (x, w, num, rotulo) => {
+    const g = el('g', { transform: `translate(${x}, ${PY})` });
+    el('rect', { x: 0, y: 0, width: w, height: PH, rx: 12, fill: '#fcfbf8', stroke: LINEA, 'stroke-width': 1.2 }, g);
+    el('circle', { cx: 22, cy: 24, r: 11, fill: NEGRO }, g);
+    sans({ x: 22, y: 28.5, 'text-anchor': 'middle', 'font-size': 12, 'font-weight': 600, fill: ORO }, g, String(num));
+    sans({ x: 40, y: 28.5, 'font-size': 10, 'font-weight': 600, fill: INK, 'letter-spacing': 2.2 }, g, rotulo);
+    return g;
+  };
+
+  /* 1 · el campo: 3 híbridos × 4 dosis en cuatro bloques completos al azar (48 parcelas) */
+  const HIB = [{ n: 'H-40', c: TEAL }, { n: 'H-52', c: AZUL }, { n: 'H-66', c: VINO }], DOS = [0, 60, 120, 180];
+  {
+    const g = panel(52, 236, 1, 'EL CAMPO');
+    const x0 = 46, y0 = 56, pw = 14.5, ph = 44, gap = 1.6;
+    ['I', 'II', 'III', 'IV'].forEach((b, k) => {
+      const y = y0 + k * (ph + 12);
+      sans({ x: x0 - 10, y: y + ph / 2 + 4, 'text-anchor': 'end', 'font-size': 9.5, fill: GRIS, 'font-weight': 600 }, g, b);
+      el('rect', { x: x0 - 3, y: y - 3, width: 12 * (pw + gap) + 4.4, height: ph + 6, rx: 4, fill: 'none', stroke: '#d8cfba', 'stroke-dasharray': '3 2' }, g);
+      const parcelas = barajar(HIB.flatMap((h, i) => DOS.map((d, j) => ({ i, j }))));
+      parcelas.forEach((p, m) => {
+        const x = x0 + m * (pw + gap), color = mezcla(BLANCO, HIB[p.i].c, 0.28 + 0.2 * p.j);
+        el('rect', { x, y, width: pw, height: ph, rx: 2, fill: color }, g);
+        /* plantas: más altas con más nitrógeno */
+        const alto = 9 + 6.5 * p.j + (p.i * 2);
+        for (let s = 0; s < 3; s++) {
+          const px = x + 3.5 + s * 3.8, base = y + ph - 4;
+          el('line', { x1: px, y1: base, x2: px, y2: base - alto * (0.85 + 0.15 * azar()), stroke: mezcla(HIB[p.i].c, '#000000', 0.35), 'stroke-width': 1, 'stroke-linecap': 'round' }, g);
+        }
+      });
+    });
+    sans({ x: 118, y: 322, 'text-anchor': 'middle', 'font-size': 9, fill: GRIS }, g, '48 parcelas · factorial 3 × 4 en bloques al azar');
+    /* leyenda de híbridos */
+    HIB.forEach((h, i) => {
+      el('rect', { x: 46 + i * 62, y: 288, width: 9, height: 9, rx: 2, fill: h.c }, g);
+      sans({ x: 58 + i * 62, y: 296, 'font-size': 9, fill: INK }, g, h.n);
+    });
+  }
+
+  /* 2 · los números: las primeras filas de la tabla y el análisis de varianza */
+  {
+    const g = panel(307, 236, 2, 'LOS NÚMEROS');
+    const filas = [['bloque', 'hibrido', 'dosis', 'rend'], ['1', 'H-40', '0', '4.61'], ['1', 'H-40', '60', '5.71'], ['1', 'H-40', '120', '6.41'], ['1', 'H-40', '180', '6.56'], ['1', 'H-52', '0', '4.80'], ['⋮', '⋮', '⋮', '⋮']];
+    const cx = [26, 84, 140, 190];
+    el('rect', { x: 16, y: 46, width: 204, height: 18, rx: 3, fill: NEGRO }, g);
+    filas.forEach((f, r) => f.forEach((v, c) => el('text', { x: cx[c] + (c >= 2 ? 22 : 0), y: 59 + r * 17, 'text-anchor': c >= 2 ? 'end' : 'start', 'font-family': MONO, 'font-size': 10, fill: r === 0 ? ORO_CLARO : INK }, g, v)));
+    for (let r = 1; r < 6; r++) el('line', { x1: 16, x2: 220, y1: 64 + r * 17, y2: 64 + r * 17, stroke: LINEA }, g);
+    /* la flecha a la tabla de análisis */
+    el('path', { d: 'M118,170 L118,186', stroke: ORO_OSC, 'stroke-width': 1.6, 'marker-end': 'url(#punta)' }, g);
+    const av = [['Fuente', 'gl', 'F', 'p'], ['bloque', '3', '10.40', '<0.001'], ['híbrido', '2', '60.63', '<0.001'], ['dosis', '3', '292.15', '<0.001'], ['híb. × dosis', '6', '1.47', '0.220'], ['Error', '33', '', '']];
+    const ax = [20, 112, 162, 214];
+    el('rect', { x: 14, y: 194, width: 208, height: 18, rx: 3, fill: ORO_OSC }, g);
+    av.forEach((f, r) => f.forEach((v, c) => sans({ x: ax[c], y: 207 + r * 18, 'text-anchor': c === 0 ? 'start' : 'end', 'font-size': 10, 'font-weight': r === 0 ? 600 : 400, fill: r === 0 ? BLANCO : (r === 4 && c === 3 ? GRIS : INK) }, g, v)));
+    for (let r = 1; r < 6; r++) el('line', { x1: 14, x2: 222, y1: 212 + r * 18, y2: 212 + r * 18, stroke: LINEA }, g);
+    sans({ x: 118, y: 322, 'text-anchor': 'middle', 'font-size': 9, fill: GRIS }, g, 'Análisis de varianza, CV = 3.6 %');
+  }
+
+  /* 3 · la conclusión: medias de los híbridos con sus letras y la respuesta a la dosis */
+  {
+    const g = panel(562, 236, 3, 'LA CONCLUSIÓN');
+    /* medias de los híbridos (± 1 EE) con las letras de Tukey */
+    const med = [5.533, 5.922, 6.359], ee = 0.053, y = v => 160 - (v - 5.2) * 76;
+    el('line', { x1: 34, x2: 34, y1: 52, y2: 162, stroke: GRIS2 }, g);
+    el('line', { x1: 34, x2: 222, y1: 162, y2: 162, stroke: GRIS2 }, g);
+    [5.5, 6.0, 6.5].forEach(v => { el('line', { x1: 31, x2: 222, y1: y(v), y2: y(v), stroke: LINEA }, g); sans({ x: 28, y: y(v) + 3.5, 'text-anchor': 'end', 'font-size': 8.5, fill: GRIS }, g, v.toFixed(1)); });
+    med.forEach((m, i) => {
+      const x = 74 + i * 56;
+            el('line', { x1: x, x2: x, y1: y(m + ee), y2: y(m - ee), stroke: INK, 'stroke-width': 1.3 }, g);
+      [m + ee, m - ee].forEach(v => el('line', { x1: x - 5, x2: x + 5, y1: y(v), y2: y(v), stroke: INK, 'stroke-width': 1.3 }, g));
+      el('circle', { cx: x, cy: y(m), r: 6.5, fill: HIB[i].c, stroke: BLANCO, 'stroke-width': 1.5 }, g);
+      serif({ x: x + 13, y: y(m) + 5, 'text-anchor': 'start', 'font-size': 14, 'font-style': 'italic', 'font-weight': 600, fill: ORO_OSC }, g, ['c', 'b', 'a'][i]);
+      sans({ x, y: 175, 'text-anchor': 'middle', 'font-size': 9, fill: INK }, g, HIB[i].n);
+    });
+    sans({ x: 128, y: 188, 'text-anchor': 'middle', 'font-size': 8.5, fill: GRIS }, g, 'Rendimiento, t/ha (Tukey, α = 0.05)');
+    /* la curva de respuesta a la dosis: medias y la cuadrática ajustada */
+    const dm = [[0, 4.4725], [60, 5.8975], [120, 6.7417], [180, 6.64]], X = d => 40 + d * 0.95, Y = v => 302 - (v - 4.2) * 36;
+    el('line', { x1: 34, x2: 222, y1: 302, y2: 302, stroke: GRIS2 }, g);
+    el('line', { x1: 34, x2: 34, y1: 204, y2: 302, stroke: GRIS2 }, g);
+    /* cuadrática por mínimos cuadrados sobre las cuatro medias */
+    const n = dm.length, S = k => dm.reduce((s, [d]) => s + d ** k, 0), T = k => dm.reduce((s, [d, v]) => s + v * d ** k, 0);
+    const A = [[n, S(1), S(2)], [S(1), S(2), S(3)], [S(2), S(3), S(4)]], b = [T(0), T(1), T(2)];
+    for (let i = 0; i < 3; i++) for (let j = i + 1; j < 3; j++) { const f = A[j][i] / A[i][i]; for (let k = i; k < 3; k++) A[j][k] -= f * A[i][k]; b[j] -= f * b[i]; }
+    const c = [0, 0, 0]; for (let i = 2; i >= 0; i--) c[i] = (b[i] - [0, 1, 2].filter(k => k > i).reduce((s, k) => s + A[i][k] * c[k], 0)) / A[i][i];
+    let d = ''; for (let k = 0; k <= 60; k++) { const dd = k * 3, v = c[0] + c[1] * dd + c[2] * dd * dd; d += (k ? 'L' : 'M') + X(dd).toFixed(1) + ',' + Y(v).toFixed(1); }
+    el('path', { d, fill: 'none', stroke: ORO, 'stroke-width': 2.6, 'stroke-linecap': 'round' }, g);
+    dm.forEach(([dd, v]) => { el('circle', { cx: X(dd), cy: Y(v), r: 4, fill: NEGRO }, g); sans({ x: X(dd), y: 314, 'text-anchor': 'middle', 'font-size': 8.5, fill: GRIS }, g, String(dd)); });
+    sans({ x: 128, y: 326, 'text-anchor': 'middle', 'font-size': 8.5, fill: GRIS }, g, 'kg N/ha · respuesta cuadrática');
+  }
+  /* flechas entre paneles */
+  [[290, 305], [545, 560]].forEach(([a, b]) => el('path', { d: `M${a},${PY + PH / 2} L${b},${PY + PH / 2}`, stroke: ORO_OSC, 'stroke-width': 2, 'marker-end': 'url(#punta)' }));
+
+  /* ---------------------------------------------------------------- la línea de R y la validación */
+  {
+    const g = el('g', { transform: `translate(52, ${PY + PH + 26})` });
+    el('rect', { x: 0, y: 0, width: 746, height: 46, rx: 10, fill: NEGRO }, g);
+    el('text', { x: 22, y: 29, 'font-family': MONO, 'font-size': 14, fill: '#9a948a' }, g, '>');
+    const code = el('text', { x: 40, y: 29, 'font-family': MONO, 'font-size': 14, fill: '#EEE9DF' }, g);
+    el('tspan', { fill: ORO }, code, 'aov');
+    el('tspan', {}, code, '(rend ~ bloque + hibrido * dosis, data = maiz)');
+    el('circle', { cx: 560, cy: 23, r: 10, fill: ORO }, g);
+    el('path', { d: 'M555,23 L559,27.5 L566,18.5', fill: 'none', stroke: NEGRO, 'stroke-width': 2.2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, g);
+    sans({ x: 578, y: 27.5, 'font-size': 12, fill: ORO_CLARO }, g, '|Δ| ≤ 1 × 10⁻⁶ frente a R');
+  }
+
+  /* ---------------------------------------------------------------- cuatro viñetas */
+  const VY = 818, VW = 172, VH = 150;
+  const vineta = (i, titulo, dibujar) => {
+    const x = 52 + i * (VW + 19.3);
+    const g = el('g', { transform: `translate(${x}, ${VY})` });
+    el('rect', { x: 0, y: 0, width: VW, height: VH, rx: 10, fill: BLANCO, stroke: LINEA, 'stroke-width': 1.2 }, g);
+    dibujar(g);
+    sans({ x: VW / 2, y: VH - 12, 'text-anchor': 'middle', 'font-size': 9.5, 'font-weight': 600, fill: INK, 'letter-spacing': 1.2 }, g, titulo);
+  };
+  /* cuadro latino 4 × 4 */
+  vineta(0, 'CUADRO LATINO', g => {
+    const L = ['A', 'B', 'C', 'D'], col = { A: TEAL, B: AZUL, C: VINO, D: OLIVA }, s = 24, x0 = 38, y0 = 16;
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) {
+      const t = L[(r + c) % 4];
+      el('rect', { x: x0 + c * (s + 2), y: y0 + r * (s + 2), width: s, height: s, rx: 3, fill: mezcla(BLANCO, col[t], 0.32) }, g);
+      sans({ x: x0 + c * (s + 2) + s / 2, y: y0 + r * (s + 2) + s / 2 + 4.5, 'text-anchor': 'middle', 'font-size': 12, 'font-weight': 600, fill: mezcla(col[t], '#000000', 0.2) }, g, t);
+    }
+  });
+  /* modelo mixto: una recta por bloque alrededor de la media */
+  vineta(1, 'MODELOS MIXTOS', g => {
+    el('line', { x1: 22, x2: 22, y1: 14, y2: 114, stroke: GRIS2 }, g); el('line', { x1: 22, x2: 156, y1: 114, y2: 114, stroke: GRIS2 }, g);
+    [-16, -7, 4, 13].forEach((u, k) => {
+      el('line', { x1: 28, y1: 96 + u, x2: 150, y2: 40 + u, stroke: [TEAL, AZUL, VINO, OLIVA][k], 'stroke-width': 1.4, opacity: 0.85 }, g);
+      for (let p = 0; p < 4; p++) { const xx = 38 + p * 34; el('circle', { cx: xx, cy: 96 + u - (xx - 28) * 56 / 122 + (azar() - 0.5) * 8, r: 2.4, fill: [TEAL, AZUL, VINO, OLIVA][k] }, g); }
+    });
+    el('line', { x1: 28, y1: 96, x2: 150, y2: 40, stroke: NEGRO, 'stroke-width': 2.4 }, g);
+  });
+  /* supervivencia: dos curvas de Kaplan-Meier en escalera */
+  vineta(2, 'SUPERVIVENCIA', g => {
+    el('line', { x1: 22, x2: 22, y1: 14, y2: 114, stroke: GRIS2 }, g); el('line', { x1: 22, x2: 156, y1: 114, y2: 114, stroke: GRIS2 }, g);
+    const curva = (tiempos, color) => {
+      let d = 'M22,18', s = 1, x = 22;
+      tiempos.forEach(t => { const nx = 22 + t; d += ` L${nx},${(18 + (1 - s) * 92).toFixed(1)}`; s -= 1 / (tiempos.length + 1); d += ` L${nx},${(18 + (1 - s) * 92).toFixed(1)}`; x = nx; });
+      d += ` L150,${(18 + (1 - s) * 92).toFixed(1)}`;
+      el('path', { d, fill: 'none', stroke: color, 'stroke-width': 2 }, g);
+    };
+    curva([10, 18, 24, 31, 40, 52, 66], ORO_OSC);
+    curva([26, 44, 58, 77, 96, 118], TEAL);
+  });
+  /* multivariado: un biplot con flechas de variables */
+  vineta(3, 'MULTIVARIADO', g => {
+    const cx = 86, cy = 64;
+    el('line', { x1: 18, x2: 154, y1: cy, y2: cy, stroke: LINEA }, g); el('line', { x1: cx, x2: cx, y1: 10, y2: 118, stroke: LINEA }, g);
+    for (let k = 0; k < 26; k++) { const grupo = k % 3, a = azar() * 6.28, r = 12 * azar(); el('circle', { cx: cx + [-34, 6, 36][grupo] + r * Math.cos(a), cy: cy + [18, -24, 14][grupo] + r * Math.sin(a), r: 2.6, fill: [TEAL, AZUL, VINO][grupo], opacity: 0.85 }, g); }
+    [[52, -30], [58, 12], [-14, -48], [-50, 6]].forEach(([dx, dy]) => el('path', { d: `M${cx},${cy} L${cx + dx},${cy + dy}`, stroke: ORO_OSC, 'stroke-width': 1.6, 'marker-end': 'url(#punta)' }, g));
+  });
+
+  /* ---------------------------------------------------------------- autor y edición */
+  const pie = el('g', { 'text-anchor': 'middle' });
+  serif({ x: W / 2, y: 1040, 'font-size': 19, 'font-weight': 600, fill: INK, 'letter-spacing': 0.5 }, pie, 'Luis Ángel Barrera-Guzmán');
+  sans({ x: W / 2, y: 1064, 'font-size': 9.5, fill: GRIS, 'letter-spacing': 2.4 }, pie, 'PRIMERA EDICIÓN · 2026');
+})();
+</script>
+</body>
+</html>

@@ -523,7 +523,8 @@ SP.definir('comparaciones', function (SP) {
     for (const g of r.grupos) {
       const pre = Object.keys(g.dentro).length ? etDentro(g.dentro) + ': ' : '';
       const sig = g.polinomios.filter(x => x.p < a).map(x => x.nombre.toLowerCase());
-      conclusiones.push(sig.length ? T('{pre}la respuesta a {f} tiene componente {c} significativo.', { pre, f: r.factor, c: sig.join(', ') }) : T('{pre}ningún componente polinomial de {f} es significativo (α = {a}).', { pre, f: r.factor, a }));
+      const lista = sig.length > 1 ? sig.slice(0, -1).join(', ') + ' ' + T('y') + ' ' + sig[sig.length - 1] : sig[0];
+      conclusiones.push(sig.length ? (sig.length > 1 ? T('{pre}la respuesta a {f} tiene componentes {c} significativos.', { pre, f: r.factor, c: lista }) : T('{pre}la respuesta a {f} tiene componente {c} significativo.', { pre, f: r.factor, c: lista })) : T('{pre}ningún componente polinomial de {f} es significativo (α = {a}).', { pre, f: r.factor, a }));
       if (g.optimo) {
         conclusiones.push(g.optimo.dentro
           ? T('{pre}la curva cuadrática tiene su {t} en {f} = {x} (respuesta estimada {y}).', { pre, t: g.optimo.tipo === 'maximo' ? T('máximo') : T('mínimo'), f: r.factor, x: f3(g.optimo.x), y: f3(g.optimo.y) })

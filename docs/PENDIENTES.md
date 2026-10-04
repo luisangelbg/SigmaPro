@@ -1,13 +1,13 @@
 # Pendientes de SigmaPro
 
-Estado tras la ampliación de la Fase 3 (Hito 3.9, 4 de octubre de 2026; versión 0.3.2). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
+Estado tras la ampliación de la Fase 3 (Hito 3.9, 4 de octubre de 2026) y los arreglos hallados al escribir el manual (versión 0.3.3). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
 que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA.md`](../propuesta/PROPUESTA.md) §12).
 
 ## Antes de publicar
 
 - **Nombre.** «SigmaPro» se parece al de un programa comercial de gráficas científicas: buscarlo en el IMPI antes de
   publicar con DOI (riesgo 6 de la propuesta).
-- **Versión 1.0.0.** Hoy la app dice 0.3.2 (Fase 3 completa y su ampliación); al publicar, subir a 1.0.0 en `js/nucleo/sp.js`
+- **Versión 1.0.0.** Hoy la app dice 0.3.3 (Fase 3 completa, su ampliación y los arreglos del manual); al publicar, subir a 1.0.0 en `js/nucleo/sp.js`
   (`SP.VERSION`), `sw.js` y el CHANGELOG.
 - **Motor R sin conexión al publicar**: armar `motor-r/` con `node tools/motor-r/armar.mjs --fuentes` y publicarlo
   junto a la app (no va en el repositorio: unos 250 MB con las fuentes).

@@ -5,30 +5,41 @@
           (planta | rend_2024 | rend_2025).
    Larga: una fila por observación (planta | año | rend), la forma que piden los análisis.
 
-     SP.reformar.aLarga({ nombres, columnas }, { ids, medidas, nombreClave, nombreValor })
+     SP.reformar.aLarga({ nombres, columnas }, { ids, medidas, nombreClave, nombreValor, comoNumero })
      SP.reformar.aAncha({ nombres, columnas }, { ids, clave, valor })
+     SP.reformar.numerosDe(medidas) → el número de cada nombre (altura_15dds → 15), o null si no todos traen uno solo
+   Con comoNumero, la columna de los nombres guarda esos números (días, años, dosis) en vez del nombre completo.
    Trabajan con columnas crudas (arreglos), así sirven para la hoja y para las pruebas. */
 SP.definir('reformar', function (SP) {
   'use strict';
   const T = SP.T;
+
+  /** El único número de cada nombre de columna (con decimal de punto o coma), si todos traen uno y son distintos. */
+  function numerosDe(medidas) {
+    if (!medidas || medidas.length < 2) return null;
+    const xs = medidas.map(m => { const k = String(m).match(/\d+(?:[.,]\d+)?/g); return k && k.length === 1 ? Number(k[0].replace(',', '.')) : NaN; });
+    return xs.every(Number.isFinite) && new Set(xs).size === xs.length ? xs : null;
+  }
 
   function aLarga(t, op) {
     const ids = op.ids || [], medidas = op.medidas;
     if (!medidas || !medidas.length) throw new SP.ErrorSP(T('Elige las columnas que se van a apilar.'));
     for (const c of [...ids, ...medidas]) if (!t.columnas[c]) throw new SP.ErrorSP(T('No existe la columna «{c}».', { c }));
     const clave = op.nombreClave || 'variable', valor = op.nombreValor || 'valor';
+    const numeros = op.comoNumero ? numerosDe(medidas) : null;
+    if (op.comoNumero && !numeros) throw new SP.ErrorSP(T('No todos los nombres de las columnas apiladas traen un solo número.'), T('Quita la opción de quedarse con el número.'));
     const n = t.columnas[medidas[0]].length;
     const out = {};
     for (const c of ids) out[c] = [];
     out[clave] = []; out[valor] = [];
     /* como stack()/reshape(): primero todas las filas de la primera medida, luego la segunda … */
-    for (const m of medidas) {
+    medidas.forEach((m, k) => {
       for (let i = 0; i < n; i++) {
         for (const c of ids) out[c].push(t.columnas[c][i]);
-        out[clave].push(m);
+        out[clave].push(numeros ? numeros[k] : m);
         out[valor].push(t.columnas[m][i]);
       }
-    }
+    });
     return { nombres: [...ids, clave, valor], columnas: out };
   }
 
@@ -62,5 +73,5 @@ SP.definir('reformar', function (SP) {
     return { nombres: [...ids, ...niveles], columnas: out };
   }
 
-  SP.reformar = { aLarga, aAncha };
+  SP.reformar = { aLarga, aAncha, numerosDe };
 });

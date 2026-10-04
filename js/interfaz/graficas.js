@@ -6,7 +6,7 @@
 
      SP.graficas.dispersion({
        titulo, descripcion,                         descripcion: texto alternativo (lector de pantalla)
-       x: { titulo }, y: { titulo },
+       x: { titulo, enteros }, y: { titulo },       enteros: el eje x cuenta (pasos, número de predictores) y sus marcas son enteras
        puntos: [{ x, y, marca, etiqueta }],         marca: se resalta; etiqueta: número junto al punto
        banda: { x: [], inf: [], sup: [] },          área sombreada (banda de confianza)
        bandas: [{ x, inf, sup, prediccion }],       varias bandas; la de predicción, más tenue y con borde discontinuo
@@ -56,6 +56,29 @@
   const area = (x, y, w, h, xr, yr) => ` data-plot="${[x, y, w, h].map(v => +(+v).toFixed(2)).join(' ')}"` +
     (xr ? ` data-xr="${xr.map(v => +(+v).toPrecision(10)).join(' ')}"` : '') + (yr ? ` data-yr="${yr.map(v => +(+v).toPrecision(10)).join(' ')}"` : '');
 
+  /* Etiquetas que no se enciman (dos genotipos seleccionados con medias parecidas, los ambientes de un biplot): cada una
+     prueba ocho lugares alrededor de su punto, primero arriba a la derecha, y se queda en el primero que no choca con otra
+     etiqueta ni con un punto ni se sale del área [x0, y0, x1, y1]; si ninguno está libre, en el que menos choca. Devuelve
+     poner(px, py, texto) → { x, y, ancla } para un <text>. */
+  function colocador(area, puntos) {
+    const puestas = [], obst = (puntos || []).map(([x, y]) => [x - 4, y - 4, x + 4, y + 4]);
+    const LUGARES = [[6, -5, 0], [6, 14, 0], [-6, -5, 1], [-6, 14, 1], [0, -10, 0.5], [0, 19, 0.5], [9, 4, 0], [-9, 4, 1]];
+    return (px, py, texto) => {
+      const w = String(texto).length * 6.2 + 2;
+      let mejor = null, menos = Infinity;
+      for (const [dx, dy, ancla] of LUGARES) {
+        const x0 = px + dx - ancla * w, c = [x0, py + dy - 10, x0 + w, py + dy + 2];
+        if (c[0] < area[0] || c[2] > area[2] || c[1] < area[1] || c[3] > area[3]) continue;
+        const choques = puestas.concat(obst).filter(q => c[0] < q[2] && q[0] < c[2] && c[1] < q[3] && q[1] < c[3]).length;
+        if (choques < menos) { menos = choques; mejor = { x: px + dx, y: py + dy, ancla, c }; if (!choques) break; }
+      }
+      if (!mejor) mejor = { x: px + 6, y: py - 5, ancla: 0, c: [px + 6, py - 15, px + 8 + w, py - 3] };
+      puestas.push(mejor.c);
+      return mejor;
+    };
+  }
+  const anclaSVG = l => (l.ancla === 1 ? ' text-anchor="end"' : l.ancla === 0.5 ? ' text-anchor="middle"' : '');
+
   function dispersion(op) {
     const xs = [], ys = [];
     const bandas = (op.bandas || []).concat(op.banda ? [op.banda] : []);
@@ -71,7 +94,9 @@
     const hx = margen(x0, x1, 0.04), hy = margen(y0, y1, 0.06);
     x0 -= hx; x1 += hx; y0 -= hy; y1 += hy;
     const X = v => M.l + (v - x0) / (x1 - x0) * (W - M.l - M.r), Y = v => M.t + (y1 - v) / (y1 - y0) * (H - M.t - M.b);
-    const mx = marcas(x0, x1, 6), my = marcas(y0, y1, 5);
+    let mx = marcas(x0, x1, 6);
+    const my = marcas(y0, y1, 5);
+    if (op.x.enteros) { const p = Math.max(1, Math.ceil(mx.paso)), lista = []; for (let v = Math.ceil(x0 / p) * p; v <= x1; v += p) lista.push(v); mx = { lista, paso: p }; }
     const partes = [];
     partes.push(`<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}" class="gr-fondo"/>`);
     for (const v of mx.lista) partes.push(`<line x1="${X(v).toFixed(1)}" x2="${X(v).toFixed(1)}" y1="${M.t}" y2="${H - M.b}" class="gr-rejilla" data-role="grid"/><text x="${X(v).toFixed(1)}" y="${H - M.b + 16}" text-anchor="middle" class="gr-etq" data-role="xtick" ${TENUE}>${texto(v, mx.paso)}</text>`);
@@ -96,9 +121,13 @@
     for (const p of op.puntos || []) (p.serie !== undefined ? porSerie : p.marca ? marcados : normales).push(p);
     for (const p of porSerie) partes.push(`<g class="gr-marca gr-s${estilo(p.serie)}">${MARCAS[p.serie % 5](+X(p.x).toFixed(1), +Y(p.y).toFixed(1), marcaDe(estilo(p.serie)))}</g>`);
     for (const p of normales) partes.push(`<circle cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="3" class="gr-punto" ${PUNTO}/>`);
+    /* las etiquetas de los puntos resaltados no se enciman entre sí ni tapan otro punto resaltado */
+    const poner = colocador([M.l, 0, W, H - M.b], marcados.map(p => [X(p.x), Y(p.y)]));
     for (const p of marcados) {
       partes.push(`<circle cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="4.2" class="gr-punto marca" ${PUNTO_MARCA}/>`);
-      if (p.etiqueta !== undefined) partes.push(`<text x="${(X(p.x) + 7).toFixed(1)}" y="${(Y(p.y) - 6).toFixed(1)}" class="gr-etq gr-etq-punto" ${LETRA}>${esc(p.etiqueta)}</text>`);
+      if (p.etiqueta === undefined) continue;
+      const l = poner(X(p.x), Y(p.y), p.etiqueta);
+      partes.push(`<text x="${l.x.toFixed(1)}" y="${l.y.toFixed(1)}"${anclaSVG(l)} class="gr-etq gr-etq-punto" ${LETRA}>${esc(p.etiqueta)}</text>`);
     }
     partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${H - M.b}" y2="${H - M.b}" class="gr-eje" data-role="axis"/><line x1="${M.l}" x2="${M.l}" y1="${M.t}" y2="${H - M.b}" class="gr-eje" data-role="axis"/>`);
     partes.push(`<text x="${(M.l + W - M.r) / 2}" y="${H - 10}" text-anchor="middle" class="gr-titulo-eje" data-role="xlab" ${TITULO}>${esc(op.x.titulo)}</text>`);
@@ -305,7 +334,7 @@
     if (div) vmax = 1;
     const largoF = Math.max(...op.filas.map(s => String(s).length)), largoC = Math.max(...op.columnas.map(s => String(s).length));
     const ml = Math.min(150, 14 + largoF * 6.4), celda = Math.max(22, Math.min(54, (W - ml - 16) / C)), girar = largoC * 6.2 > celda - 4;
-    const mt = 12, alto = mt + R * celda, mb = girar ? Math.min(120, 24 + largoC * 4.8) : 26, barra = 46, totalH = alto + mb + barra;
+    const mt = 12, alto = mt + R * celda, mb = girar ? Math.min(120, 16 + largoC * 3.2) : 26, barra = 46, totalH = alto + mb + barra;
     const X = j => ml + j * celda, Y = i => mt + i * celda, partes = [];
     const color = v => (div ? (v >= 0 ? ORO : 'var(--text-muted)') : ORO);
     const opac = v => (Number.isFinite(v) ? Math.min(1, Math.abs(v) / (vmax || 1)) * 0.92 : 0);
@@ -494,7 +523,9 @@
       for (const p of G) { const t = p.x * ux + p.y * uy; partes.push(`<line x1="${X(p.x).toFixed(1)}" y1="${Y(p.y).toFixed(1)}" x2="${X(t * ux).toFixed(1)}" y2="${Y(t * uy).toFixed(1)}" stroke="var(--text-muted)" stroke-dasharray="2 3"/>`); }
     }
     if (op.vectores) for (const p of A) partes.push(`<line x1="${X(0).toFixed(1)}" y1="${Y(0).toFixed(1)}" x2="${X(p.x).toFixed(1)}" y2="${Y(p.y).toFixed(1)}" stroke="${ORO}" stroke-opacity=".7" class="gr-vector"/>`);
-    const etq = (p, color) => `<text x="${(X(p.x) + 6).toFixed(1)}" y="${(Y(p.y) - 5).toFixed(1)}" class="gr-etq gr-etq-punto" fill="${color}" stroke="var(--card-bg)" stroke-width="3" paint-order="stroke">${esc(p.nombre)}</text>`;
+    /* las etiquetas de ambientes y genotipos se apartan unas de otras y de los puntos */
+    const poner = colocador([M.l, M.t, W - M.r, H - M.b], todos.map(p => [X(p.x), Y(p.y)]));
+    const etq = (p, color) => { const l = poner(X(p.x), Y(p.y), p.nombre); return `<text x="${l.x.toFixed(1)}" y="${l.y.toFixed(1)}"${anclaSVG(l)} class="gr-etq gr-etq-punto" fill="${color}" stroke="var(--card-bg)" stroke-width="3" paint-order="stroke">${esc(p.nombre)}</text>`; };
     for (const p of A) { const x = X(p.x), y = Y(p.y); partes.push(`<path d="M${x.toFixed(1)} ${(y - 5).toFixed(1)} L${(x + 5).toFixed(1)} ${y.toFixed(1)} L${x.toFixed(1)} ${(y + 5).toFixed(1)} L${(x - 5).toFixed(1)} ${y.toFixed(1)} Z" fill="${ORO}" class="gr-amb"/>`, etq(p, ORO)); }
     for (const p of G) partes.push(`<circle cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="3.4" class="gr-punto" ${PUNTO}/>`, etq(p, 'var(--text)'));
     partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${H - M.b}" y2="${H - M.b}" class="gr-eje" data-role="axis"/><line x1="${M.l}" x2="${M.l}" y1="${M.t}" y2="${H - M.b}" class="gr-eje" data-role="axis"/>`);

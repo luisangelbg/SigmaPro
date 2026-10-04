@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · Manual de usuario · Capítulo 4 (6 de 7)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+  .dos.angosta { grid-template-columns: 0.85fr 1fr; }
+</style>
+</head>
+<body>
+
+<section data-pestana="B4" data-orden="4" style="--acento: var(--b4)">
+
+  <!-- 4.18 -->
+  <h2 id="s4-18"><span class="num">4.18</span>Modelos no lineales</h2>
+  <p class="lead">El crecimiento que se frena al acercarse a su tamaño final, la respuesta a un herbicida que cae en forma de S o el rendimiento que deja de subir con más fertilizante no son rectas ni parábolas: tienen parámetros con significado biológico (la asíntota, la dosis de 50 % de efecto, la dosis óptima) que solo un modelo no lineal estima directamente.</p>
+  <p>Los tres métodos de la familia comparten el formulario: la <span class="ui">Variable de respuesta</span>, el <span class="ui">Tiempo</span> o la <span class="ui">Dosis</span>, los <span class="ui">Grupos que comparar</span> (opcional: variedades, productos), el <span class="ui">Modelo</span>, cuya ecuación aparece debajo, y los niveles de confianza y de significancia. Corren en el navegador, por mínimos cuadrados no lineales con gradiente analítico, validados contra <code>nls</code> de R. Con grupos se ajusta una curva por grupo y se prueba, con la <i>F</i> de la suma de cuadrados extra, si una curva común basta y si cada parámetro puede ser común.</p>
+
+  <h3>Curvas de crecimiento</h3>
+  <p>Tres modelos: el <b>logístico</b> (simétrico alrededor de su punto de inflexión), el de <b>Gompertz</b> (que se frena más despacio) y el de <b>Weibull</b> (el más flexible). Con la altura del maíz en cinco fechas y una curva logística por dosis de nitrógeno, el modelo explica el 99.1 % de la variación y las curvas difieren (<i>F</i> = 12.40 con 9 y 68 gl).</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/b4-crecimiento.png" alt="Las curvas logísticas de la altura del maíz contra los días después de la siembra, una por dosis de nitrógeno, con los datos de cada planta: N0 queda abajo a partir de los 40 días"></div>
+      <figcaption><b>Figura 4.32.</b> Una curva logística por dosis: el nitrógeno cambia la altura final, no el momento del crecimiento.</figcaption>
+    </figure>
+    <div>
+      <p>La comparación por parámetro dice qué cambió: la <b>asíntota</b> (la altura final) difiere entre dosis (<i>F</i> = 9.46, <i>p</i> &lt; 0.001), de 229.3 sin nitrógeno (N0) a 268.0 con N180; el <b>punto de inflexión</b> (cerca de los 39 días en las cuatro) y la <b>escala</b> no difieren (<i>p</i> = 0.414 y 0.895).</p>
+      <p>El cuadro de parámetros da cada estimado con su EE, su intervalo y su significado, y la gráfica de residuos completa el diagnóstico.</p>
+    </div>
+  </div>
+
+  <h3>Dosis-respuesta</h3>
+  <p>El modelo <b>log-logístico</b> de 4 parámetros (límites superior <i>d</i> e inferior <i>c</i>, pendiente <i>b</i> y la <b>DE50</b> <i>e</i>) es el estándar para herbicidas, fungicidas y tóxicos (Seefeldt y col., 1995); el de 3 parámetros fija el límite inferior en cero. Los valores derivados son las dosis de 10, 50 y 90 % de efecto, con su EE por el método delta.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/b4-dosis.png" alt="Las curvas log-logísticas del peso seco de la maleza contra la dosis de dos herbicidas, glifosato y glufosinato: la del glifosato baja antes"></div>
+      <figcaption><b>Figura 4.33.</b> El peso seco de la maleza con dos herbicidas: el glifosato llega a la mitad del efecto con menos producto.</figcaption>
+    </figure>
+    <div>
+      <p>La DE50 del glifosato es 75.13 (IC 95 %: 63.32 a 86.94) y la del glufosinato 174.2 (121.6 a 226.7): hace falta 2.3 veces más glufosinato para el mismo efecto. Las curvas difieren (<i>F</i> = 52.14), pero solo por la DE50 (<i>F</i> = 29.45); la pendiente y los dos límites pueden ser comunes (<i>p</i> = 0.732, 0.508 y 0.178).</p>
+      <p>La DE90 del glufosinato (752.1) cae fuera de las dosis probadas, y su intervalo es muy ancho (237.9 a 1266): extrapolar la curva cuesta precisión.</p>
+    </div>
+  </div>
+
+  <h3>Respuesta a la dosis con meseta</h3>
+  <p>Para la fertilización y el riego, tres modelos con un máximo: el <b>lineal-meseta</b> (sube en línea recta hasta la dosis <i>x</i><sub>0</sub> y luego se queda plano), el <b>cuadrático-meseta</b> y el de <b>Mitscherlich</b> (que se acerca a su asíntota sin llegar). Con el maíz y una curva por híbrido, el lineal-meseta explica el 93.7 % de la variación y las curvas difieren (<i>F</i> = 12.38 con 6 y 39 gl).</p>
+  <table class="compacta salida" style="width:74%">
+    <caption><b>Cuadro 4.10.</b> La dosis óptima (inicio de la meseta) y el rendimiento en la meseta de cada híbrido, modelo lineal-meseta.</caption>
+    <thead><tr><th>Híbrido</th><th class="n">Dosis óptima <i>x</i><sub>0</sub></th><th class="n">IC 95 %</th><th class="n">Meseta (t/ha)</th><th class="n">IC 95 %</th></tr></thead>
+    <tbody>
+      <tr><td>H-40</td><td class="n">102.1</td><td class="n">74.15 – 130.1</td><td class="n">6.250</td><td class="n">6.051 – 6.449</td></tr>
+      <tr><td>H-52</td><td class="n">84.39</td><td class="n">66.81 – 102.0</td><td class="n">6.631</td><td class="n">6.432 – 6.831</td></tr>
+      <tr><td>H-66</td><td class="n">95.83</td><td class="n">75.25 – 116.4</td><td class="n">7.191</td><td class="n">6.992 – 7.391</td></tr>
+    </tbody>
+  </table>
+  <p>Con la parábola (sección 4.11), el óptimo salía en 147.7 kg/ha; con la meseta, entre 84 y 102. La diferencia es conocida: la parábola obliga a la curva a bajar después del máximo y lo empuja hacia dosis más altas. Cuando los datos se aplanan, como aquí entre 120 y 180 kg, el modelo con meseta suele recomendar menos fertilizante. Ajustar los dos modelos con los mismos grupos y comparar su AIC (los dos cuadros de ajuste lo traen) ayuda a decidir.</p>
+
+  <!-- 4.19 -->
+  <h2 id="s4-19"><span class="num">4.19</span>Superficies de respuesta</h2>
+  <p class="lead">Cuando dos o más factores cuantitativos actúan juntos (nitrógeno y potasio, temperatura y tiempo), la metodología de superficie de respuesta busca la combinación que da la mejor respuesta. Los factores (numéricos, de 2 a 6) se <b>codifican</b> (centro en 0 y paso de 1) para que los coeficientes sean comparables, y la app regresa todo a las unidades originales.</p>
+  <h3>Superficie de segundo orden</h3>
+  <p>Para diseños central compuesto o Box-Behnken. Se eligen la respuesta, los <span class="ui">Factores del diseño</span>, los <span class="ui">Bloques</span> (opcional), el <span class="ui">Modelo</span> (segundo orden o primer orden con interacciones) y si se busca la <span class="ui">máxima</span> o la <span class="ui">mínima</span> respuesta. Con el tomate en un central compuesto de nitrógeno y potasio, el modelo explica el 97.5 % de la variación y no hay falta de ajuste (<i>F</i> = 0.04 con 3 y 4 gl, <i>p</i> = 0.989).</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/b4-superficie.png" alt="Los contornos del rendimiento del tomate en el plano nitrógeno por potasio, con los puntos del diseño, el máximo marcado con un rombo y la cresta de máxima respuesta como línea discontinua desde el centro"></div>
+      <figcaption><b>Figura 4.34.</b> Los contornos del rendimiento del tomate: el máximo (rombo) y la cresta (línea discontinua) que sale del centro del diseño.</figcaption>
+    </figure>
+    <div>
+      <p>El <b>punto estacionario</b> es un máximo en N = 210.8 y K = 166.0, con 63.75 de rendimiento estimado (IC 95 %: 62.61 a 64.89). Está dentro de la región experimental: a 0.61 unidades codificadas del centro, cuando los datos llegan a 1.42.</p>
+      <p>El <b>análisis canónico</b> lo confirma: los dos valores propios son negativos (−2.360 y −4.086); con signos distintos sería un punto de silla, y uno cerca de cero indicaría una cresta, una línea de combinaciones casi igual de buenas.</p>
+    </div>
+  </div>
+  <p>Los cuadros son el ANOVA por grupos de términos (con la falta de ajuste y el error puro), los coeficientes codificados y en unidades originales, la codificación, el punto estacionario, el análisis canónico y la <b>cresta</b>: la mejor combinación a cada distancia del centro, útil si el óptimo cae fuera de la región o es un punto de silla.</p>
+  <h3>Primer orden y ascenso más pronunciado</h3>
+  <p>Lejos del óptimo, basta un factorial con puntos centrales y un modelo de primer orden: el <b>camino de ascenso más pronunciado</b> dice hacia dónde moverse. Con el tomate, el modelo plano tiene falta de ajuste (<i>F</i> = 11.32, <i>p</i> = 0.017): la respuesta se curva y la app aconseja pasar al segundo orden. El camino sube 51.53 kg de N y 25.62 de K por unidad codificada; su cuadro da las combinaciones y la respuesta predicha.</p>
+
+  <!-- 4.20 -->
+  <h2 id="s4-20"><span class="num">4.20</span>Ensayos en varios ambientes</h2>
+  <p class="lead">Los mismos genotipos evaluados en varias localidades o años responden distinto a cada ambiente: es la interacción genotipo × ambiente (G × A). Los cuatro métodos de la familia la miden, la describen y ayudan a elegir genotipos estables o adaptados a cada región. Todos piden los <span class="ui">Genotipos</span>, los <span class="ui">Ambientes</span> y, si los hay, las <span class="ui">Repeticiones</span> (sin ellas, cada fila es la media de un genotipo en un ambiente), y si lo mejor es la mayor o la menor respuesta. Corren en el navegador y se validaron contra <code>lm</code> y <code>svd</code> de R.</p>
+  <h3>Análisis conjunto</h3>
+  <p>Con la avena de Olivoto y Lúcio (2020), 10 genotipos en 14 ambientes con tres repeticiones, el ANOVA conjunto encuentra la interacción (<i>F</i> = 2.76, <i>p</i> &lt; 0.001): el orden de los genotipos cambia entre ambientes. Los genotipos se prueban de dos maneras: contra el error (<i>F</i> = 14.93) y contra la interacción, como corresponde si los ambientes son una muestra de muchos posibles (<i>F</i> = 5.41, la misma del modelo mixto de la sección 4.15). G8 tiene la mayor media general (3.004).</p>
+  <p>El método analiza además cada ambiente por separado (media, CME, CV y la <i>F</i> de los genotipos) y revisa la <b>homogeneidad de los errores</b>: en la avena, el mayor CME es 6.71 veces el menor (Bartlett <i>p</i> &lt; 0.001), así que las pruebas del análisis conjunto son aproximadas, y el semáforo lo dice.</p>
+
+  <h3>Estabilidad</h3>
+  <p>Cuatro maneras de medirla. La <b>regresión sobre el índice ambiental</b> (Finlay y Wilkinson; Eberhart y Russell) da a cada genotipo una pendiente <i>b</i> (1: responde como el promedio; mayor: aprovecha los buenos ambientes; menor: se adapta a los malos) y una varianza de las desviaciones S²<sub>d</sub> (0: su respuesta es predecible). La <b>ecovalencia de Wricke</b> y la <b>varianza de Shukla</b> dicen cuánto aporta cada genotipo a la interacción, y la <b>superioridad de Lin y Binns</b> (Pi) cuánto se aleja del mejor de cada ambiente. La opción <span class="ui">Error estándar de b</span> elige si el EE de la pendiente sale de la regresión de cada genotipo o del error combinado.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/b4-estabilidad.png" alt="La media de cada genotipo de avena contra su pendiente b, con líneas de referencia en la media general y en b = 1: G3 y G8 a la derecha, cerca de b = 1; G9 y G10 arriba a la izquierda"></div>
+      <figcaption><b>Figura 4.35.</b> Media contra pendiente: a la derecha y cerca de la línea de <i>b</i> = 1 están los genotipos buenos en todas partes.</figcaption>
+    </figure>
+    <div>
+      <table class="compacta salida">
+        <caption><b>Cuadro 4.11.</b> Tres genotipos de avena según cada medida de estabilidad.</caption>
+        <thead><tr><th></th><th class="n">G8</th><th class="n">G3</th><th class="n">G10</th></tr></thead>
+        <tbody>
+          <tr><td>Media</td><td class="n">3.004</td><td class="n">2.955</td><td class="n">2.471</td></tr>
+          <tr><td><i>b</i></td><td class="n">1.034</td><td class="n">1.031</td><td class="n">1.122</td></tr>
+          <tr><td><i>p</i> de S²<sub>d</sub> = 0</td><td class="n">0.013</td><td class="n">0.840</td><td class="n">&lt; 0.001</td></tr>
+          <tr><td>Wricke (% de G × A)</td><td class="n">8.23</td><td class="n">2.32</td><td class="n">25.48</td></tr>
+          <tr><td>Lin y Binns Pi</td><td class="n">0.04117</td><td class="n">0.04099</td><td class="n">0.3437</td></tr>
+          <tr><td>ASV (AMMI)</td><td class="n">0.574</td><td class="n">0.113</td><td class="n">1.225</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p>G8 tiene la media más alta pero desviaciones significativas (S²<sub>d</sub> &gt; 0): rinde mucho, aunque no siempre lo esperado. G3, casi igual de productivo, cumple <i>b</i> = 1 y S²<sub>d</sub> = 0, es el más estable por Wricke y el mejor por Lin y Binns: el genotipo ideal de Eberhart y Russell. G10, el de menor media, es también el que más aporta a la interacción.</p>
+
+  <h3>Biplot GGE</h3>
+  <p>El biplot GGE junta el efecto del genotipo y su interacción (G + G × A), que es lo que importa para elegir. Se elige la <span class="ui">Tabla</span> (centrada por ambiente, o además dividida por la desviación de cada uno) y la <span class="ui">Partición del valor singular</span>: simétrica, por genotipo (para comparar genotipos) o por ambiente (para comparar ambientes).</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/b4-gge.png" alt="El biplot GGE quién ganó dónde de la avena: el polígono con vértices en G10, G4, G7, G8 y G9, los rayos desde el origen que dividen el plano en sectores y los ambientes como rombos dorados, la mayoría en el sector de G8"></div>
+      <figcaption><b>Figura 4.36.</b> Quién ganó dónde: el genotipo del vértice de cada sector es el mejor en los ambientes que caen en él.</figcaption>
+    </figure>
+    <div>
+      <p>En <b>quién ganó dónde</b>, el polígono une los genotipos más alejados del origen y los rayos dividen el plano en sectores. En la avena hay 4 <b>megaambientes</b>: G8 gana en nueve ambientes, G9 en E3 y E4, G7 en E7 y E14 y G4 en E9.</p>
+      <p>La segunda gráfica, <b>media contra estabilidad</b>, ordena los genotipos sobre el eje del ambiente promedio: G8 tiene el mejor desempeño y, entre los tres mejores, G3 es el más estable.</p>
+    </div>
+  </div>
+
+  <h3>AMMI</h3>
+  <p>El modelo de efectos principales aditivos e interacción multiplicativa descompone la interacción en <b>ejes</b> (componentes principales de la tabla de interacciones). La app prueba cada eje con la <i>F</i> de Gollob y, con la <i>F</i><sub>R</sub> de Cornelius, la interacción que queda después de <i>n</i> ejes, que es más confiable: en la avena, Cornelius retiene 3 ejes y Gollob 4; los dos primeros explican el 66.22 % de la interacción. Los cuadros dan los puntajes de genotipos y ambientes y el <b>ASV</b> de Purchase (menor, más estable: G3, con 0.11), y las gráficas son los biplots AMMI1 (media contra el eje 1) y AMMI2 (eje 1 contra eje 2).</p>
+</section>
+
+</body>
+</html>

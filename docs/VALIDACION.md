@@ -163,7 +163,7 @@ efecto se escribe con la t no central en R base, sin paquetes, para que dé exac
 | Bloques completos al azar: simple con eficiencia relativa, con parcelas perdidas, generalizado, factorial con dosis numérica, factorial 2³ con N:P:K confundida | lo mismo, y la eficiencia relativa de Gomez y Gomez (1984) | 5 |
 | Cuadro latino 8 × 8 (sin ajuste por gl) y 5 × 5 (con ajuste) | lo mismo, con la eficiencia frente a completamente al azar y a bloques por filas y por columnas | 2 |
 | Bloques incompletos balanceados (t = 7, k = 3, λ = 1) | `anova` intrabloque, `emmeans`, y `agricolae::BIB.test` (medias ajustadas, su EE, CV y factor de eficiencia coinciden) | 1 |
-| Látice simple 3 × 3 y alfa-látice (12 tratamientos, bloques de 3) | `anova` de `y ~ rep/bloque + trat` y `emmeans` | 2 |
+| Látice simple 3 × 3 y alfa-látice (12 tratamientos, bloques de 3) | `anova` de `terms(y ~ rep + rep:bloque + trat, keep.order = TRUE)` (análisis intrabloque: tratamientos al final, ajustados por los bloques) y `emmeans` | 2 |
 | Parcelas divididas, subdivididas y franjas como métodos completos, con CV de cada error | `aov` con estratos y `agricolae::sp.plot`, `ssp.plot`, `strip.plot` (sus errores coinciden) | 5 |
 
 Notas sobre las referencias:
@@ -323,14 +323,14 @@ ejemplo del maíz (bloques al azar, Tukey, polinomios, regresión polinomial y d
 
 | Qué | Con qué lector | Resultado |
 |---|---|---|
-| Hoja de cálculo (.xlsx) | readxl | cada celda idéntica a la de la app (246 números con todas sus cifras y 105 textos) |
+| Hoja de cálculo (.xlsx) | readxl | cada celda idéntica a la de la app (258 números con todas sus cifras y 107 textos) |
 | Los mismos números, contra R | car::Anova (tipo III) y emmeans, calculados desde los datos | gl, SC, F y p del ANOVA y medias y EE de Tukey iguales (24 valores, ≤ 1e-9) |
-| Reporte .docx | xml2 y png | las 9 partes son XML válido; el texto de los 16 cuadros es exacto; 7 figuras a 300 ppp del ancho pedido; campos SEQ; frases clave («F(2, 33) = 60.63», las citas) |
-| Página HTML | xml2 | los 16 cuadros y las 7 figuras vectoriales |
+| Reporte .docx | xml2 y png | las 9 partes son XML válido; el texto de los 17 cuadros es exacto; 7 figuras a 300 ppp del ancho pedido; campos SEQ; frases clave («F(2, 33) = 60.63», las citas) |
+| Página HTML | xml2 | los 17 cuadros y las 7 figuras vectoriales |
 | Figuras | pdftools, png y el lector de imágenes del sistema | cada PDF de una página del tamaño pedido, con su texto en Helvetica y sin caracteres perdidos; cada PNG a 600 ppp; cada TIFF a 600 ppp, del tamaño del PNG e igual a él en todos los píxeles muestreados (44 733) |
 | Proyecto .labg | openssl y R | las 7 huellas SHA-256 del manifiesto; datos.csv idéntico a los datos originales; el código R del proyecto corre de principio a fin |
-| Reabrir el proyecto | la app, en una página nueva | los mismos análisis dan exactamente los mismos cuadros |
-| Guardado automático | la app, en una página nueva | Inicio ofrece recuperar el trabajo (48 filas, 5 análisis) y da exactamente los mismos 16 cuadros; desactivarlo borra lo guardado y activarlo lo guarda otra vez |
+| Reabrir el proyecto | la app, en una página nueva | los mismos análisis dan exactamente los mismos cuadros; «Abrir» desde el reporte devuelve cada análisis con sus opciones (la regresión, con su nivel de 99 % y sus valores para predecir) |
+| Guardado automático | la app, en una página nueva | Inicio ofrece recuperar el trabajo (48 filas, 5 análisis) y da exactamente los mismos 17 cuadros; desactivarlo borra lo guardado y activarlo lo guarda otra vez |
 | LaTeX | revisión estructural (no hay compilador instalado) | un entorno table por cuadro, las tres reglas de booktabs y llaves balanceadas |
 
 Las pruebas unitarias (`tests/unidad/exportar.test.js`) cubren además la huella SHA-256 (los vectores de FIPS 180-4 y

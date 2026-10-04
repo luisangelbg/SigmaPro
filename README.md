@@ -71,7 +71,7 @@ crecimiento, dosis-respuesta con DE50 y respuesta con meseta (dosis óptima), co
 Y las **superficies de respuesta**: punto óptimo, análisis canónico, cresta y ascenso más pronunciado. Y los **ensayos
 multiambiente**: análisis conjunto, estabilidad (Eberhart-Russell, Wricke, Shukla, Lin-Binns), AMMI y biplot GGE.
 
-**Fase 3 completa** (versión 0.3.2, con los Hitos 3.6 a 3.9; plan en [`propuesta/FASE3.md`](propuesta/FASE3.md)): el **tamaño de muestra y la potencia**
+**Fase 3 completa** (versión 0.3.3, con los Hitos 3.6 a 3.9 y los arreglos hallados al escribir el manual; plan en [`propuesta/FASE3.md`](propuesta/FASE3.md)): el **tamaño de muestra y la potencia**
 (medias, ANOVA, proporciones, correlación y las repeticiones de un experimento), sin necesidad de datos; y el
 **muestreo**: el tamaño de muestra para estimar una media o una proporción, y la estimación con muestreo aleatorio
 simple y estratificado (con la asignación de Neyman); y la **supervivencia**: curvas de Kaplan-Meier, log-rank y el

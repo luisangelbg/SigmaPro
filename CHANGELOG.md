@@ -2,6 +2,40 @@
 
 ## Sin publicar
 
+### 0.3.3 · Arreglos encontrados al escribir el manual (4 oct 2026)
+
+Al escribir el manual de usuario, cada resultado se revisó en la pantalla y salieron estos errores:
+
+- **Látice y alfa-látice**: el análisis intrabloque presentaba los tratamientos **sin ajustar** por los bloques. R
+  reordena `rep/bloque + trat` como `rep + trat + rep:bloque`, y la referencia de las pruebas cometía el mismo error. Ahora
+  el modelo es `y ~ rep + rep:bloque + trat` con el orden escrito (`analizar(texto, { conservarOrden })`, como
+  `terms(…, keep.order = TRUE)`): los tratamientos van al final, ajustados por los bloques, y sus medias son ajustadas. El
+  código R usa `keep.order = TRUE`, la referencia `tests/casos/disenos/generar.R` se corrigió, los casos `latice-simple`
+  y `latice-alfa` se regeneraron (el alfa-látice de 24 genotipos pasa de F = 7.333 a 5.242) y la nota del cuadro dice
+  «Análisis intrabloque…» en lugar de «Datos balanceados» (también en los bloques incompletos balanceados).
+- **Reabrir un análisis** desde el reporte, desde un proyecto o desde lo recuperado volvía con sus papeles pero no con
+  todas sus opciones (el nivel de confianza, el de significancia, los valores para predecir, la prueba exacta…): ahora
+  las opciones que se llaman igual en el pedido y en el formulario pasan siempre. `tests/exportar.mjs` lo comprueba.
+- **Regresión no lineal**: el cuadro de parámetros describía la *b* del lineal-meseta como «pendiente en la DE50» y la
+  *c* de Mitscherlich como «límite inferior»; el significado de cada parámetro depende ahora del modelo.
+- **Ancha → larga**: las columnas que identifican cada unidad pasan a factor, y una casilla deja el número de cada
+  nombre de columna como valor numérico (`altura_15dds` → 15) para usar el tiempo como número.
+- **Gráficas**:
+  - la selección paso a paso y los mejores subconjuntos marcaban el eje x con 0.2, 0.4…: ahora con enteros
+    (`dispersion({ x: { enteros: true } })`);
+  - el mapa de calor de las correlaciones dejaba un hueco grande entre los nombres girados y la barra de color;
+  - las etiquetas de los puntos resaltados (BLUP contra BLUE de la heredabilidad) y las de los biplots (GGE, AMMI) se
+    encimaban: cada una busca ahora un lugar libre entre ocho alrededor de su punto, sin tapar otra etiqueta ni otro
+    punto;
+  - en el pronóstico ARIMA, la serie observada salía discontinua y dorada y el pronóstico continuo y negro: ahora al
+    revés, con el pronóstico del color de su banda.
+- **Textos**: los atajos de teclado del constructor no listaban A, E ni M; el estado del desarrollo en Inicio no
+  mencionaba los Hitos 3.6 a 3.9; la conclusión de los polinomios dice «tiene componentes lineal y cuadrático
+  significativos» cuando son varios.
+- La página de pruebas (`tests/index.html`) carga ahora `ui.js` y `graficas.js`, así que las pruebas de las gráficas
+  corren de verdad en el navegador (antes se daban por buenas sin el módulo).
+- Versión 0.3.3. 275 pruebas unitarias en el navegador.
+
 ### 0.3.2 · Hito 3.9 · Guardado automático del trabajo (4 oct 2026)
 
 - Mientras se trabaja, los datos (con sus tipos, columnas derivadas y filtro), los análisis del reporte (con su vista y

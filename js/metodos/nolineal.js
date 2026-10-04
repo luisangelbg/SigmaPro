@@ -34,6 +34,14 @@ SP.definir('metodos-nolineal', function (SP) {
     Drop: T('caída desde la asíntota'), lrc: T('log de la tasa'), pwr: T('potencia del tiempo'), b: T('pendiente en la DE50'), c: T('límite inferior'), d: T('límite superior'),
     e: T('DE50 (dosis de 50 % de efecto)'), a: T('intercepto o máximo'), x0: T('dosis óptima (inicio de la meseta)'),
   };
+  /* a, b y c no significan lo mismo en todos los modelos: en el lineal-meseta, b es la pendiente antes de la meseta, no la
+     del log-logístico en la DE50 */
+  const SENTIDO_MODELO = {
+    'lineal-meseta': { a: T('respuesta sin dosis (intercepto)'), b: T('aumento por unidad de dosis antes de la meseta') },
+    'cuadratico-meseta': { a: T('respuesta sin dosis (intercepto)'), b: T('término lineal'), c: T('término cuadrático (negativo: la curva baja)') },
+    mitscherlich: { a: T('asíntota (respuesta máxima)'), b: T('lo que la dosis puede agregar (a menos la respuesta sin dosis)'), c: T('tasa de acercamiento a la asíntota') },
+  };
+  const sentidoDe = (modelo, par) => (SENTIDO_MODELO[modelo] || {})[par] || SENTIDO[par] || '';
   const NOMBRE_DER = { inflexion: T('Punto de inflexión'), DE10: 'DE10', DE50: 'DE50', DE90: 'DE90', dosis_optima: T('Dosis óptima'), meseta: T('Valor en la meseta') };
 
   /** Datos completos, el grupo y las validaciones del modelo. */
@@ -92,7 +100,7 @@ SP.definir('metodos-nolineal', function (SP) {
     cuadros.push({ id: 'parametros', titulo: T('Parámetros del modelo {m}', { m: NOMBRE[r.modelo] }),
       columnas: [col('par', T('Parámetro'), 'texto')].concat(G > 1 ? [col('grupo', r.grupo, 'texto')] : [], [col('est', T('Estimado'), 'sig'), col('ee', T('EE'), 'sig'),
         col('t', 't', 'forma2'), col('p', 'p', 'pvalor'), col('ic', T('IC {c} %', { c: Math.round(100 * r.nivel) }), 'intervaloSig'), col('sentido', T('Significado'), 'texto')]),
-      filas: P.estimado.map((b, j) => ({ par: P.parametro[j], grupo: P.grupo[j], est: b, ee: P.ee[j], t: P.t[j], p: P.p[j], ic: [P.ic_inf[j], P.ic_sup[j]], sentido: SENTIDO[P.parametro[j]] || '' })),
+      filas: P.estimado.map((b, j) => ({ par: P.parametro[j], grupo: P.grupo[j], est: b, ee: P.ee[j], t: P.t[j], p: P.p[j], ic: [P.ic_inf[j], P.ic_sup[j]], sentido: sentidoDe(r.modelo, P.parametro[j]) })),
       notas: [T('Modelo: {e}. Mínimos cuadrados no lineales; IC de Wald con t de {g} gl.', { e: ECUACION[r.modelo], g: A.gl })] });
     if (r.derivados.length) cuadros.push({ id: 'derivados', titulo: T('Valores derivados'),
       columnas: [col('n', T('Cantidad'), 'texto')].concat(G > 1 ? [col('grupo', r.grupo, 'texto')] : [], [col('v', T('Valor'), 'sig'), col('ee', T('EE'), 'sig'), col('ic', T('IC {c} %', { c: Math.round(100 * r.nivel) }), 'intervaloSig')]),
@@ -138,7 +146,7 @@ SP.definir('metodos-nolineal', function (SP) {
   }
 
   const OPC = d => ({ modelo: { tipo: 'texto', omision: d }, nivel: { tipo: 'numero', omision: 0.95 }, alfa: { tipo: 'numero', omision: 0.05 } });
-  SP.metodosNoLineal = { MODELOS_DE, NOMBRE, ECUACION, SENTIDO, NOMBRE_DER, reporte };
+  SP.metodosNoLineal = { MODELOS_DE, NOMBRE, ECUACION, SENTIDO, sentidoDe, NOMBRE_DER, reporte };
   SP.metodo({
     id: 'curva-crecimiento', familia: 'no-lineal', motor: 'js', orden: 10, nombre: T('Curva de crecimiento'),
     resumen: T('Logístico, Gompertz o Weibull en el tiempo: asíntota, punto de inflexión y comparación de curvas entre grupos.'),

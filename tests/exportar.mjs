@@ -62,7 +62,7 @@ const PAGINA = `(async () => {
   R.agregar({ metodo: 'dbca', e: { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, op: { tipoSC: 3 } });
   R.agregar({ metodo: 'comparaciones-medias', e: Object.assign({ comparar: ['hibrido'] }, dis), op: { metodo: 'tukey' } });
   R.agregar({ metodo: 'polinomios', e: Object.assign({ comparar: ['dosis'] }, dis), op: {} });
-  R.agregar({ metodo: 'regresion-polinomial', e: { respuesta: 'rend', predictores: 'dosis' }, op: { grado: 2 } });
+  R.agregar({ metodo: 'regresion-polinomial', e: { respuesta: 'rend', predictores: 'dosis' }, op: { grado: 2, nivel: 0.99, predecir: '100 150' } });
   R.agregar({ metodo: 'descriptivos', e: { variables: ['rend'], grupos: ['hibrido'] }, op: { nivel: 0.95 }, bloque: 3, ctx: { factoresNumericos: ['dosis'] } });
   SP.app.figuras.pintar();
   const C = SP.app.exportar.construir;
@@ -129,8 +129,13 @@ try {
     const f = SP.app.figuras.lista()[0], N = window.LABG_FIGSTUDIO.nativeExport({ el: f.svg });
     const blob = await N.render('pdf', { wmm: 85, hmm: null });
     const cab = new TextDecoder().decode(new Uint8Array(await blob.arrayBuffer()).subarray(0, 8));
-    return JSON.stringify({ ok: p.verificacion.ok, titulo: SP.app.reporte.titulo, n: SP.app.reporte.items.length, cuadros, estudio: { formatos: N.formats, cabecera: cab, bytes: blob.size } });
+    /* «Abrir» desde el reporte: el análisis vuelve con sus opciones, no solo con sus papeles */
+    const it = SP.app.reporte.items.find(x => x.metodo === 'regresion-polinomial');
+    SP.app.analisis.usar(it.metodo, it.e, it.op);
+    const abierto = { nivel: SP.app.analisis.reg.nivel, predecir: SP.app.analisis.reg.predecir };
+    return JSON.stringify({ ok: p.verificacion.ok, titulo: SP.app.reporte.titulo, n: SP.app.reporte.items.length, cuadros, abierto, estudio: { formatos: N.formats, cabecera: cab, bytes: blob.size } });
   })()`));
+  if (reabierto.abierto.nivel !== 0.99 || reabierto.abierto.predecir !== '100 150') fallasNode.push('reporte: «Abrir» no devolvió las opciones del análisis (' + JSON.stringify(reabierto.abierto) + ')');
   if (!reabierto.ok) fallasNode.push('proyecto reabierto: la huella no coincide');
   if (reabierto.n !== esperado.analisis) fallasNode.push('proyecto reabierto: ' + reabierto.n + ' análisis');
   if (JSON.stringify(reabierto.cuadros) !== JSON.stringify(esperado.cuadros.map(q => ({ cabecera: q.cabecera, filas: q.filas })))) fallasNode.push('proyecto reabierto: los cuadros no son idénticos');

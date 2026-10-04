@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · Manual de usuario · Capítulo 8</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b8" data-pestana="B8" data-orden="8" style="--acento: var(--b8)">
+  <div class="cap-apertura">
+    <div class="cap-num">8</div>
+    <div class="cap-etiqueta">Bloque 8 · Validación</div>
+    <h1>Validación: cada número, contra R</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">SigmaPro no pide que se le crea: cada resultado del programa se compara contra R, con datos publicados o clásicos, y el reporte de esa comparación viene dentro de la app. Este capítulo explica el criterio, cómo se lee el bloque, qué más se comprueba además de los números y cómo repetir toda la validación en otra computadora.</p>
+    <ul class="cap-contenido">
+      <li><b>8.1</b>El criterio</li>
+      <li><b>8.2</b>El bloque Validación</li>
+      <li><b>8.3</b>Cinco clases de resultados</li>
+      <li><b>8.4</b>Más allá de los números</li>
+      <li><b>8.5</b>La regla de liberación</li>
+      <li><b>8.6</b>Cómo repetir la validación</li>
+    </ul>
+  </div>
+
+  <!-- 8.1 -->
+  <h2 id="s8-1"><span class="num">8.1</span>El criterio</h2>
+  <p class="lead">Un <b>caso</b> de validación es un conjunto de datos (de un libro, un artículo o un paquete de R), un cálculo de SigmaPro y la respuesta de R al mismo cálculo. El caso aprueba si <b>cada número</b> que trae la respuesta de R coincide con el de SigmaPro:</p>
+  <p class="formula">|SigmaPro − R| ≤ 10<sup>−6</sup> · máx(1, |R|)</p>
+  <p>Es decir, seis cifras: absolutas para los números menores que 1 y relativas para los mayores. Algunas reglas lo afinan: un valor <i>p</i> diminuto (menor que 10<sup>−6</sup>) debe coincidir además en sus cifras relativas, para que un <i>p</i> de 10<sup>−20</sup> no apruebe solo por ser «casi cero»; los faltantes y los infinitos de R se esperan como faltantes e infinitos; y los textos se comparan exactos. Se comparan todas las claves que trae la respuesta de R, y todas deben existir en el resultado de SigmaPro.</p>
+  <p>Las respuestas de R las calculan guiones de R que están junto a la app (<code>tests/r/</code>), con R 4.4.2 y los paquetes de referencia de cada método (<code>car</code>, <code>emmeans</code>, <code>lme4</code>, <code>survival</code>, <code>agricolae</code> y otros). SigmaPro no usa R para calcular, salvo en los métodos del motor R (sección 4.6): su núcleo es propio, y R es el juez.</p>
+
+  <!-- 8.2 -->
+  <h2 id="s8-2"><span class="num">8.2</span>El bloque Validación</h2>
+  <p class="lead">El bloque muestra el último reporte de validación, el mismo que se genera al correr las pruebas, con su fecha arriba a la derecha.</p>
+  <figure>
+    <div class="marco"><img src="../img/b8-bloque.png" alt="El bloque Validación: las cuatro tejas del resumen, casos aprobados, valores comparados, mayor diferencia y la versión de R; los filtros Todos, Aprobados y Con fallas y el buscador; y el principio del cuadro de los casos, agrupados por función o método, con la fuente de los datos, la clase, los valores, la diferencia máxima y el resultado, uno de ellos con sus detalles abiertos"></div>
+    <figcaption><b>Figura 8.1.</b> El bloque Validación: el resumen, los filtros y los primeros casos, con los detalles de uno abiertos.</figcaption>
+  </figure>
+  <ul>
+    <li>El <b>resumen</b>: cuántos casos aprobaron de cuántos hay, cuántos números se compararon, la mayor diferencia escalada y la versión de R de las referencias.</li>
+    <li>Los <b>filtros</b> <span class="ui">Todos</span>, <span class="ui">Aprobados</span> y <span class="ui">Con fallas</span>, y un buscador por función, método o fuente de los datos.</li>
+    <li>El <b>cuadro de los casos</b>, agrupados por la función o el método que prueban. Cada caso dice qué prueba, de dónde salen sus datos, su clase (sección 8.3), cuántos números compara, la diferencia más grande y si aprobó.</li>
+    <li><span class="ui">Detalles</span> abre lo que hay detrás de cada caso: la función de R y las versiones de sus paquetes, la regla de comparación (con su tolerancia; si el caso tiene tolerancias propias en algunas rutas, lo dice), el valor que más se alejó y el código R que calculó la referencia, para repetirlo.</li>
+  </ul>
+  <p>Debajo del cuadro, una tarjeta resume las <b>otras comprobaciones</b> (sección 8.4), cada una con su fecha, su resultado y su detalle.</p>
+
+  <!-- 8.3 -->
+  <h2 id="s8-3"><span class="num">8.3</span>Cinco clases de resultados</h2>
+  <p class="lead">No todos los números se pueden comparar de la misma manera. Cada caso lleva una clase que dice qué tipo de cálculo es y cómo se valida.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:0.45in" class="c">Clase</th><th style="width:1.9in">Qué es</th><th>Cómo se valida</th></tr></thead>
+    <tbody>
+      <tr><td class="c"><b>A</b></td><td>Fórmula cerrada o algoritmo exacto: sumas de cuadrados, F, t, estimadores, sus valores <i>p</i>.</td><td>Contra R, con 10<sup>−6</sup>.</td></tr>
+      <tr><td class="c"><b>B</b></td><td>R usa una aproximación publicada: el <i>p</i> de Shapiro-Wilk, los cuantiles del rango estudentizado.</td><td>Se programa el mismo algoritmo publicado. Si R mismo es menos preciso por diseño, la referencia se calcula en R con más precisión y el hallazgo se documenta.</td></tr>
+      <tr><td class="c"><b>C</b></td><td>R usa azar: Dunnett por omisión, la prueba de Fisher simulada.</td><td>Una referencia sin azar, por integración numérica de alta precisión; el valor por omisión de R, aparte, con la tolerancia de su propio error.</td></tr>
+      <tr><td class="c"><b>D</b></td><td>Optimización iterativa: Box-Cox, REML, modelos generalizados, no lineales, ARIMA.</td><td>Los dos programas con criterios de convergencia ajustados; 10<sup>−6</sup> sobre el resultado convergido, o la tolerancia documentada de la ruta cuando el propio R no da más cifras.</td></tr>
+      <tr><td class="c"><b>E</b></td><td>Cuadros de libros y artículos, impresos con 2 a 4 decimales.</td><td>Media unidad del último dígito impreso. Se cita el libro o el artículo, no el programa con que se calculó.</td></tr>
+    </tbody>
+  </table>
+  <p>Cuando la tolerancia de una ruta no es 10<sup>−6</sup>, el motivo está escrito en el caso y aparece en el reporte de validación publicado; nunca se afloja una tolerancia sin decir por qué. Los hallazgos de la clase B (funciones de R que, por diseño o por redondeo, dan menos cifras que las que se piden) están descritos uno por uno en el documento de validación que acompaña a la app.</p>
+
+  <!-- 8.4 -->
+  <h2 id="s8-4"><span class="num">8.4</span>Más allá de los números</h2>
+  <p class="lead">Además de los casos contra R, la batería de pruebas comprueba otras cinco cosas, cada una con su programa independiente.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Comprobación</th><th>Qué se revisa</th></tr></thead>
+    <tbody>
+      <tr><td><b>El código R equivalente</b></td><td>El código que muestra la app (sección 4.5) se corre en R, escenario por escenario, y debe dar los mismos números que la app.</td></tr>
+      <tr><td><b>Las exportaciones</b></td><td>La hoja de cálculo se lee con R celda por celda; el .docx, con un lector de XML; los PDF, los PNG y los TIFF, con lectores de imágenes; el proyecto, con sus huellas, su código R corrido completo y reabierto con los mismos cuadros; y el guardado automático, recuperado en una página nueva.</td></tr>
+      <tr><td><b>Rendimiento</b></td><td>Con cerca de 100 000 filas, cada análisis común dentro de su meta de tiempo.</td></tr>
+      <tr><td><b>Privacidad y uso sin conexión</b></td><td>Con datos, análisis y exportaciones, ningún dato sale del navegador; sin red, la app abre, calcula y exporta.</td></tr>
+      <tr><td><b>Accesibilidad</b></td><td>Cada bloque y los análisis de todas las familias, a lo ancho de una pantalla y de un teléfono, en claro y en oscuro: contraste AA de los textos, nombres y etiquetas para lectores de pantalla, sin desborde lateral y con el teclado.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 8.5 -->
+  <h2 id="s8-5"><span class="num">8.5</span>La regla de liberación</h2>
+  <p>Un método <b>no aparece en la app</b> hasta que tiene casos de validación y todos aprueban. La app lo comprueba sola al abrir, con el reporte de validación que trae: si un caso de un método fallara, el método dejaría de aparecer en el catálogo y, si el asistente lo propusiera, la app diría que todavía no tiene su validación aprobada en lugar de calcularlo. Por eso todo lo que este manual describe está validado.</p>
+
+  <!-- 8.6 -->
+  <h2 id="s8-6"><span class="num">8.6</span>Cómo repetir la validación</h2>
+  <p class="lead">La validación no depende de quien la hizo: con R y node instalados, cualquiera puede regenerar las referencias con su propio R y volver a comparar.</p>
+  <p>Hacen falta R (4.4 o posterior) con los paquetes que pide cada caso y node (20 o posterior; no hace falta instalar nada con npm). Desde la carpeta de SigmaPro:</p>
+  <pre class="codigo">Rscript tests/r/generar-todo.R      # regenera las referencias con tu R
+node tests/correr.mjs               # compara y escribe los reportes
+node tests/navegador.mjs            # lo mismo en el navegador, por file://
+node tests/codigo-r.mjs             # el código R de la app da lo mismo en R
+node tests/exportar.mjs             # las exportaciones, con lectores independientes</pre>
+  <p>En Windows, <code>tests/pruebas.ps1</code> busca R, node y el navegador y corre las pruebas; con <code>-Completo</code>, también las exportaciones, la privacidad, el rendimiento y la accesibilidad. <code>correr.mjs</code> escribe el reporte que muestra el bloque Validación y una versión para publicar, en HTML y en CSV.</p>
+</section>
+
+</body>
+</html>

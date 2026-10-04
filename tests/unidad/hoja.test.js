@@ -203,4 +203,17 @@ SPT.describir('Datos · estructura del ensayo y formas de tabla', () => {
     SPT.igualJSON(otra.columnas, ancha.columnas);
     SPT.lanza(() => SP.reformar.aAncha({ columnas: { id: [1, 1], k: ['a', 'a'], v: [1, 2] } }, { ids: ['id'], clave: 'k', valor: 'v' }), 'se repiten');
   });
+  SPT.caso('ancha → larga con el número de cada nombre (altura_15dds → 15)', () => {
+    SPT.igualJSON(SP.reformar.numerosDe(['altura_15dds', 'altura_30dds', 'altura_45dds']), [15, 30, 45]);
+    SPT.igualJSON(SP.reformar.numerosDe(['r2024', 'r2025']), [2024, 2025]);
+    SPT.igualJSON(SP.reformar.numerosDe(['dosis_0,5', 'dosis_1,5']), [0.5, 1.5]);
+    SPT.igual(SP.reformar.numerosDe(['alto', 'ancho']), null);                 // sin números
+    SPT.igual(SP.reformar.numerosDe(['t1_2024', 't2_2024']), null);           // dos números en cada nombre
+    SPT.igual(SP.reformar.numerosDe(['a_1', 'b_1']), null);                   // números repetidos
+    const ancha = { nombres: ['planta', 'h_15', 'h_30'], columnas: { planta: ['p1', 'p2'], h_15: [3, 4], h_30: [5, 6] } };
+    const larga = SP.reformar.aLarga(ancha, { ids: ['planta'], medidas: ['h_15', 'h_30'], nombreClave: 'dds', nombreValor: 'altura', comoNumero: true });
+    SPT.igualJSON(larga.columnas.dds, [15, 15, 30, 30]);
+    SPT.igualJSON(larga.columnas.altura, [3, 4, 5, 6]);
+    SPT.lanza(() => SP.reformar.aLarga(ancha, { ids: ['planta'], medidas: ['planta', 'h_15'], comoNumero: true }), 'un solo número');
+  });
 });

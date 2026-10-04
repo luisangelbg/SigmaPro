@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · Manual de usuario · Capítulo 4 (1 de 7)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b4" data-pestana="B4" data-orden="4" style="--acento: var(--b4)">
+  <div class="cap-apertura">
+    <div class="cap-num">4</div>
+    <div class="cap-etiqueta">Bloque 4 · Análisis</div>
+    <h1>Análisis: del diseño a la conclusión</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">El corazón de SigmaPro: 70 análisis en 17 familias, del análisis de varianza de un diseño experimental a los modelos mixtos, la supervivencia y las series de tiempo. Se eligen con el asistente, en el catálogo o en el constructor de modelos, y todos responden igual: conclusión en palabras, cuadros, gráficas, supuestos y el código R que da los mismos números.</p>
+    <ul class="cap-contenido">
+      <li><b>4.1</b>Tres maneras de elegir un análisis</li>
+      <li><b>4.2</b>El asistente</li>
+      <li><b>4.3</b>El catálogo</li>
+      <li><b>4.4</b>El constructor de modelos</li>
+      <li><b>4.5</b>Cómo se lee un resultado</li>
+      <li><b>4.6</b>El motor R dentro del navegador</li>
+      <li><b>4.7–4.11</b>Supuestos, pruebas, diseños y medias</li>
+      <li><b>4.12–4.17</b>Regresión, contingencia, mixtos y generalizados</li>
+      <li><b>4.18–4.24</b>No lineal, multiambiente, multivariado, muestreo, supervivencia y series</li>
+    </ul>
+  </div>
+
+  <!-- 4.1 -->
+  <h2 id="s4-1"><span class="num">4.1</span>Tres maneras de elegir un análisis</h2>
+  <p class="lead">Arriba del bloque, tres botones eligen cómo se llega al análisis. Las tres llevan al mismo lugar (el mismo método con las mismas opciones) y se puede pasar de una a otra en cualquier momento.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Manera</th><th>Para quién</th><th style="width:0.6in">Sección</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Asistente</span></td><td>Para quien sabe qué quiere saber de su ensayo pero no qué análisis usar. Unas cuantas preguntas en lenguaje del campo (¿qué mediste?, ¿agrupaste en bloques?, ¿algún factor se aplicó a parcelas grandes?) y una recomendación con sus razones. Es el modo con que abre el bloque.</td><td>4.2</td></tr>
+      <tr><td><span class="ui">Catálogo</span></td><td>Para quien ya sabe qué análisis quiere: la lista completa, agrupada por familias, con el formulario de cada método.</td><td>4.3</td></tr>
+      <tr><td><span class="ui">Constructor de modelo</span></td><td>Para quien piensa en términos de modelo: se arrastran las variables a sus papeles (respuesta, factores, bloques, aleatorios, covariables…) y la app escribe la fórmula y elige el análisis. La fórmula también se puede escribir a mano.</td><td>4.4</td></tr>
+    </tbody>
+  </table>
+  <p>Sin datos cargados, el bloque ofrece ir a Datos; los cálculos que no necesitan datos (tamaño de muestra, potencia, repeticiones) se abren desde Explorar con <span class="ui">Calcular un tamaño de muestra o una potencia</span> (sección 4.22). Si en Datos hay un filtro activo, todo el bloque trabaja con las filas que lo pasan.</p>
+
+  <!-- 4.2 -->
+  <h2 id="s4-2"><span class="num">4.2</span>El asistente</h2>
+  <p>El asistente hace las preguntas que haría un estadístico al ver un ensayo por primera vez, en orden, y solo las que hacen falta: cada respuesta decide la siguiente pregunta. A la derecha, la <b>recomendación</b> se actualiza con cada respuesta. Las respuestas vienen ya propuestas a partir de los datos (lo que la tarjeta de la sección 2.13 reconoce), así que muchas veces basta con revisarlas.</p>
+  <figure>
+    <div class="marco"><img src="../img/b4-asistente-arriba.png" alt="El asistente con el ejemplo del maíz: a la izquierda las preguntas numeradas (qué quieres saber, qué mediste, qué clase de dato es, qué factores aplicaste) con las respuestas propuestas; a la derecha la tarjeta de recomendación: Factorial en bloques completos al azar, con el porqué, lo que se revisará, qué hacer si los supuestos fallan, los botones Usar y calcular y Ajustar en el constructor, y los análisis para después"></div>
+    <figcaption><b>Figura 4.1.</b> El asistente con el ensayo del maíz. Con las respuestas propuestas recomienda un factorial en bloques completos al azar.</figcaption>
+  </figure>
+  <h3>Las preguntas</h3>
+  <p>La primera pregunta, <b>¿Qué quieres saber?</b>, abre uno de diez caminos:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.35in">Objetivo</th><th>Qué pregunta después y qué suele recomendar</th></tr></thead>
+    <tbody>
+      <tr><td>Comparar tratamientos o grupos</td><td>La respuesta y su clase (continua, conteo, porcentaje, escala ordenada), los factores (hasta 3), los bloques (ninguno, en una dirección, en dos, incompletos), si hubo parcelas grandes o franjas, si hay una covariable medida antes del tratamiento, si se midió la misma unidad en varias fechas, si los bloques son aleatorios y cómo comparar (todos contra todos, contra un testigo, contrastes, o la curva de una dosis). Recomienda el diseño que corresponde (secciones 4.10 y 4.11), una ANCOVA, unas medidas repetidas, un modelo mixto, un modelo generalizado o una prueba no paramétrica.</td></tr>
+      <tr><td>Comparar genotipos en varios ambientes</td><td>Respuesta, genotipo, ambiente, repeticiones y qué interesa: el análisis conjunto, la estabilidad, AMMI o GGE (sección 4.20).</td></tr>
+      <tr><td>Relación entre variables numéricas</td><td>Si hay una respuesta que explicar: con un predictor, la forma (recta, curva, crecimiento, dosis-respuesta, meseta); con varios, todos, paso a paso, todas las combinaciones o una superficie de respuesta. Sin respuesta: una correlación, parcial si se descuentan otras variables (secciones 4.12, 4.13, 4.18 y 4.19).</td></tr>
+      <tr><td>Asociación entre categorías</td><td>Si son casos distintos, el mismo caso clasificado dos veces, dos evaluadores o una asociación en varios lotes, y si los datos ya vienen contados (sección 4.14).</td></tr>
+      <tr><td>Tiempo hasta un evento</td><td>El tiempo, el evento (1 sí, 0 censura), si se comparan grupos y si hay covariables: Kaplan-Meier o Cox (sección 4.23).</td></tr>
+      <tr><td>Una variable medida en el tiempo</td><td>La serie, el tiempo y qué interesa: tendencia, ciclo o autocorrelación (sección 4.24).</td></tr>
+      <tr><td>Varias respuestas a la vez</td><td>MANOVA o discriminante (sección 4.21).</td></tr>
+      <tr><td>Estimar la media o el total de una población muestreada</td><td>La variable y si hubo estratos (sección 4.22).</td></tr>
+      <tr><td>Planear un ensayo</td><td>Qué variable se medirá, para tomar su variación de los datos cargados: número de repeticiones o potencia (sección 4.22).</td></tr>
+      <tr><td>Solo describir los datos</td><td>Lleva al bloque Explorar (capítulo 3).</td></tr>
+    </tbody>
+  </table>
+  <h3>La recomendación</h3>
+  <p>La tarjeta de la derecha trae el análisis recomendado y todo lo necesario para decidir si se acepta:</p>
+  <ul>
+    <li>el <b>título</b> y, debajo, con qué nombre aparece en el catálogo;</li>
+    <li>una frase con lo que se va a analizar (<i>2 factores cruzados (híbrido × dosis) sobre «rend»</i>);</li>
+    <li><b>Por qué</b>: las razones, en términos del ensayo (<i>la variación entre bloques sale del error</i>; <i>«dosis» es numérica: se descompone en lineal y cuadrática</i>);</li>
+    <li><b>Se revisará</b>: los supuestos que el análisis pone a prueba, y un recuadro con <b>qué hacer si fallan</b>;</li>
+    <li>avisos, cuando algo de los datos merece atención;</li>
+    <li>los botones <span class="ui">Usar y calcular</span>, que abre el análisis en el catálogo ya con sus variables, y, cuando aplica, <span class="ui">Ajustar en el constructor</span>, que lo lleva al constructor de modelos (sección 4.4);</li>
+    <li><b>Después</b>: los análisis que suelen seguir (la comparación de medias, la curva de la dosis, la revisión de los supuestos), cada uno como un botón que lo abre directamente.</li>
+  </ul>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-asistente-tiempo.png" alt="El asistente con el ejemplo de los días a la germinación y el objetivo tiempo hasta un evento: las preguntas del tiempo, el evento, los grupos y las covariables, y la recomendación Modelo de riesgos proporcionales de Cox con su porqué, lo que se revisará y, después, las curvas de Kaplan-Meier por tratamiento"></div>
+    <figcaption><b>Figura 4.2.</b> Otro camino: tiempo hasta un evento. Con una covariable (el peso de la semilla), el asistente recomienda el modelo de Cox y deja las curvas de Kaplan-Meier para después.</figcaption>
+  </figure>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Las preguntas que más cambian el análisis</div>
+    <p>Dos preguntas merecen especial cuidado, porque los datos no las contestan (sección 2.13): si <b>algún factor se aplicó a parcelas grandes</b> (riego, labranza, fecha de siembra: entonces son parcelas divididas o franjas, y cada factor tiene su propio error) y si <b>la misma unidad se midió varias veces</b> (medidas repetidas). Responderlas mal no produce un error visible, sino pruebas F equivocadas.</p>
+  </div>
+
+  <!-- 4.3 -->
+  <h2 id="s4-3"><span class="num">4.3</span>El catálogo</h2>
+  <p>El catálogo muestra todos los análisis del bloque, agrupados por familia. Un clic en un método lo abre: debajo de la lista aparecen, a la izquierda, su formulario (el <b>modelo del experimento</b>: qué columna es la respuesta, cuáles son los tratamientos, el bloque y las opciones) y, a la derecha, el resultado, que se recalcula al cambiar cualquier campo. El método abierto va resaltado en la lista.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-catalogo.png" alt="El catálogo de análisis: las 17 familias con sus métodos como botones, de Supuestos del modelo, Pruebas t y Pruebas no paramétricas a Supervivencia y series de tiempo"></div>
+    <figcaption><b>Figura 4.3.</b> El catálogo completo. Los descriptivos, frecuencias, proporciones y la bondad de ajuste están en Explorar (capítulo 3).</figcaption>
+  </figure>
+  <p>Al abrir un método, la app propone las variables de su formulario a partir de los datos (la respuesta, los factores, el bloque que reconoce), igual que el asistente. Con otra tabla, las propuestas se rehacen; con cambios en la misma tabla, se respetan las elecciones hechas.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Solo se ofrece lo que está validado</div>
+    <p>Un método aparece en el catálogo solo si todos sus casos de validación contra R pasaron (capítulo 8). Si por alguna razón uno no estuviera validado, en su lugar se lee «Este análisis todavía no tiene su validación contra R aprobada». Es la regla de exactitud de la sección 1.2 aplicada a la interfaz.</p>
+  </div>
+  <p>Las secciones 4.7 a 4.24 recorren las familias en el orden del catálogo. Para cada método se explica para qué sirve, qué pide el formulario, qué entrega y cuál es su equivalente en R.</p>
+
+  <!-- 4.4 -->
+  <h2 id="s4-4"><span class="num">4.4</span>El constructor de modelos</h2>
+  <p>El constructor parte de una idea sencilla: un análisis es un modelo, y un modelo dice qué papel tiene cada variable. A la izquierda están las <b>variables</b> de la tabla; a la derecha, ocho <b>zonas</b>, una por papel. Debajo, la <b>fórmula</b> que resulta y el <b>análisis</b> que la app eligió para ella.</p>
+  <figure>
+    <div class="marco"><img src="../img/b4-constructor.png" alt="El constructor de modelo con el maíz: la lista de variables a la izquierda; las zonas Respuesta con rend, Evento, Más respuestas, Bloques o repeticiones con bloque, Efectos aleatorios, Factores de tratamiento con hibrido por dosis, Parcela grande y Covariables; el selector de distribución de la respuesta; la fórmula rend ~ bloque + hibrido * dosis con el botón Editar la fórmula; y el análisis elegido, Bloques completos al azar, con el botón Usar y calcular"></div>
+    <figcaption><b>Figura 4.4.</b> El constructor con el maíz. La app ya puso cada variable en su zona: la fórmula es <code>rend ~ bloque + hibrido * dosis</code> y el análisis, bloques completos al azar.</figcaption>
+  </figure>
+  <h3>Poner cada variable en su zona</h3>
+  <p>Hay tres formas, para que funcione con ratón, con teclado y en el celular:</p>
+  <ul>
+    <li><b>arrastrar</b> la variable de la lista a la zona;</li>
+    <li>elegirla en el menú <span class="ui">Agregar…</span> de cada zona;</li>
+    <li>con la variable enfocada (con Tab o un clic), pulsar la <b>tecla</b> de la zona: R, E, M, B, A, F, P o C. Supr la quita de su zona.</li>
+  </ul>
+  <p>Una variable ya usada se ve atenuada en la lista; la ✕ de cada ficha la regresa. Las zonas que solo admiten numéricas (respuesta, evento, más respuestas, covariables) solo ofrecen esas en su menú.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.65in">Zona</th><th style="width:0.35in" class="c">Tecla</th><th>Para qué</th></tr></thead>
+    <tbody>
+      <tr><td><b>Respuesta</b></td><td class="c">R</td><td>La variable que se midió (o el tiempo hasta un evento).</td></tr>
+      <tr><td><b>Evento (0/1)</b></td><td class="c">E</td><td>Con tiempo hasta un evento: 1 si ocurrió (germinó, murió), 0 si no (censura). Arma el modelo de Cox.</td></tr>
+      <tr><td><b>Más respuestas</b></td><td class="c">M</td><td>Otras variables medidas en las mismas unidades, para analizarlas juntas (MANOVA).</td></tr>
+      <tr><td><b>Bloques o repeticiones</b></td><td class="c">B</td><td>Uno (bloques completos), o dos (filas y columnas: cuadro latino).</td></tr>
+      <tr><td><b>Efectos aleatorios</b></td><td class="c">A</td><td>Bloques, localidades o años vistos como muestra de muchos posibles: modelo mixto, en el motor R.</td></tr>
+      <tr><td><b>Factores de tratamiento</b></td><td class="c">F</td><td>Los factores que se aplicaron; varios se cruzan (×).</td></tr>
+      <tr><td><b>Parcela grande</b></td><td class="c">P</td><td>El factor que se aplicó a parcelas grandes (parcelas divididas); debe estar también en los factores.</td></tr>
+      <tr><td><b>Covariables</b></td><td class="c">C</td><td>Numéricas medidas antes del tratamiento (ANCOVA) o predictores (regresión).</td></tr>
+    </tbody>
+  </table>
+  <p>El selector <span class="ui">Distribución de la respuesta</span> dice cómo es la respuesta: <b>Normal</b> (una medida continua), <b>Conteo</b> (Poisson) o <b>Positiva y asimétrica</b> (gamma). Las dos últimas llevan a los modelos lineales generalizados (sección 4.17).</p>
+  <h3>Qué análisis elige</h3>
+  <p>La app lee las zonas y elige el análisis del catálogo que corresponde, con la misma lógica que un estadístico:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.9in">Si las zonas tienen…</th><th>…el análisis es</th></tr></thead>
+    <tbody>
+      <tr><td>Factores, sin bloques</td><td>Completamente al azar (factorial si son varios)</td></tr>
+      <tr><td>Factores y un bloque</td><td>Bloques completos al azar</td></tr>
+      <tr><td>Factores y dos bloques (fila y columna)</td><td>Cuadro latino (hasta dos factores)</td></tr>
+      <tr><td>Dos factores, uno en parcela grande, y un bloque</td><td>Parcelas divididas (con dos bloques, en cuadro latino)</td></tr>
+      <tr><td>Tres factores, uno en parcela grande, y un bloque</td><td>Parcelas subdivididas</td></tr>
+      <tr><td>Solo covariables</td><td>Regresión lineal (con bloques, el modelo lineal general)</td></tr>
+      <tr><td>Factores y covariables (hasta 2 y 2, con un bloque como máximo)</td><td>ANCOVA</td></tr>
+      <tr><td>Algún efecto aleatorio</td><td>Modelo lineal mixto (motor R); con parcela grande, también su error <code>(1 | bloque:parcela)</code></td></tr>
+      <tr><td>Distribución de conteo o gamma</td><td>Modelo lineal generalizado; con aleatorios, el generalizado mixto de Poisson</td></tr>
+      <tr><td>Un evento</td><td>Modelo de Cox (el bloque como estrato); sin factores ni covariables, Kaplan-Meier</td></tr>
+      <tr><td>Más respuestas</td><td>MANOVA (con el bloque y los factores cruzados)</td></tr>
+      <tr><td>Cualquier otra combinación (más de tres factores, covariables con parcelas…)</td><td>El modelo lineal general, con un aviso</td></tr>
+    </tbody>
+  </table>
+  <p>Debajo de la fórmula, el recuadro del análisis lo nombra, explica la decisión («Factorial en bloques completos al azar: hibrido × dosis cruzados») y trae <span class="ui">Usar y calcular</span>, que lo abre en el catálogo con todo ya puesto.</p>
+  <h3>Escribir la fórmula a mano</h3>
+  <p><span class="ui">Editar la fórmula</span> cambia la fórmula por un campo de texto con la notación de R. Mientras se escribe, la app explica cada término: qué variable es, si es un factor o una covariable, si es una interacción o un efecto anidado.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-constructor-editar.png" alt="La fórmula en edición: rend ~ bloque + hibrido * dosis, con la lectura de cada término: bloque, hibrido y dosis son efectos de factores e hibrido × dosis es la interacción; la casilla dosis en Numéricas que son tratamientos; la explicación de la notación y los botones Usar y calcular esta fórmula y Volver a la del constructor"></div>
+    <figcaption><b>Figura 4.5.</b> La fórmula escrita a mano, con la lectura de cada término.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">Se escribe</th><th>Significa</th></tr></thead>
+    <tbody>
+      <tr><td><code>a + b</code></td><td>Los efectos principales de <i>a</i> y <i>b</i>.</td></tr>
+      <tr><td><code>a * b</code></td><td>Cruza: <i>a</i>, <i>b</i> y su interacción <i>a</i> × <i>b</i>.</td></tr>
+      <tr><td><code>a:b</code></td><td>Solo la interacción.</td></tr>
+      <tr><td><code>a / b</code></td><td>Anida <i>b</i> dentro de <i>a</i>.</td></tr>
+      <tr><td><code>(a + b + c)^2</code></td><td>Los efectos principales y todas las interacciones dobles.</td></tr>
+      <tr><td><code>- 1</code></td><td>Quita la intercepción.</td></tr>
+      <tr><td><code>(1 | bloque)</code></td><td>Un efecto aleatorio: la fórmula se ajusta con el modelo mixto en el motor R.</td></tr>
+    </tbody>
+  </table>
+  <p>Las casillas <b>Numéricas que son tratamientos (factor)</b> dicen qué columnas numéricas se tratan como factor (una dosis con cuatro niveles) y cuáles como covariable. <span class="ui">Usar y calcular esta fórmula</span> la analiza con el modelo lineal general (sin estratos de error: para unas parcelas divididas conviene el método propio) o, si tiene efectos aleatorios, con el modelo mixto; con distribución de conteo o gamma, con el modelo generalizado. <span class="ui">Volver a la del constructor</span> deshace lo escrito. Con un evento o con varias respuestas, la fórmula sale de las zonas y no se edita a mano.</p>
+  <h3>Cuando el modelo no se puede armar</h3>
+  <p>Si las zonas piden algo que ningún análisis de SigmaPro hace, el recuadro no ofrece un análisis sino el <b>problema y su arreglo</b>:</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-constructor-error.png" alt="El constructor con varias respuestas, un factor, un bloque y una covariable: la fórmula vacía y el aviso La MANOVA de SigmaPro no admite covariables (MANCOVA), con el arreglo: Quita las covariables, o analiza cada respuesta con su ANCOVA"></div>
+    <figcaption><b>Figura 4.6.</b> Varias respuestas con una covariable: la app explica que no hace MANCOVA y propone el arreglo.</figcaption>
+  </figure>
+
+  <!-- 4.5 -->
+  <h2 id="s4-5"><span class="num">4.5</span>Cómo se lee un resultado</h2>
+  <p>Los resultados del bloque Análisis tienen las partes de los de Explorar (sección 3.2) y algunas más. La figura 4.7 muestra la parte de arriba del análisis del maíz en bloques completos al azar.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-resultado.png" alt="El resultado del análisis de bloques completos al azar del maíz: el título con el tiempo de cálculo y Agregar al reporte; la conclusión: híbrido y dosis con diferencias, la interacción sin evidencia, media general 5.938, CV 3.6 % y R² 0.969; la gráfica de interacción híbrido × dosis con una línea por dosis; y el botón Comparar las medias de este diseño"></div>
+    <figcaption><b>Figura 4.7.</b> La parte de arriba de un resultado: título, conclusión, gráfica y el siguiente paso.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Parte</th><th>Qué es</th></tr></thead>
+    <tbody>
+      <tr><td><b>Título</b></td><td>El análisis, con el tiempo de cálculo y <span class="ui">Agregar al reporte</span>.</td></tr>
+      <tr><td><b>Conclusión</b></td><td>Una frase por efecto o por resultado clave, con su estadístico y su valor <i>p</i>: «hibrido: hay diferencias (F = 60.635, p &lt; 0.001)». Al final, los indicadores de ajuste (media general, CV, R²).</td></tr>
+      <tr><td><b>Semáforo de los supuestos</b></td><td>En las pruebas que dependen de supuestos (pruebas t, correlación, regresión…), un renglón por supuesto en verde, ámbar o rojo, con la prueba que lo decide (sección 4.7). En los diseños, el análisis de varianza no trae semáforo: sus supuestos se revisan con <span class="ui">Revisar los supuestos del modelo</span> (sección 4.7), y en el reporte se revisan solos.</td></tr>
+      <tr><td><b>Gráficas</b></td><td>Las que corresponden al análisis: la interacción de dos factores, las medias con su error estándar, la recta de regresión con sus bandas, el diagnóstico de los residuos, las curvas de supervivencia… Cada una tiene su leyenda y el botón ✎ del editor de figuras (capítulo 6).</td></tr>
+      <tr><td><b>Siguiente paso</b></td><td>Botones que llevan al análisis que suele seguir: <span class="ui">Comparar las medias de este diseño</span> en los diseños, <span class="ui">Analizar el modelo elegido</span> tras una selección de variables, el CSV para otras apps en el multivariado.</td></tr>
+      <tr><td><b>Cuadros</b></td><td>Numerados, cada uno con <span class="ui">Copiar cuadro</span>: el análisis de varianza, el resumen del ensayo, las medias, las comparaciones…</td></tr>
+      <tr><td><b>Código R equivalente</b></td><td>Plegado al final, con <span class="ui">Copiar el código</span>.</td></tr>
+    </tbody>
+  </table>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-resultado-cuadros.png" alt="Los cuadros del mismo resultado: el análisis de varianza con fuente de variación, gl, SC, CM, F y p; el resumen del ensayo con media general, observaciones, CV, R² y eficiencia relativa; las medias de híbrido y de dosis con su error estándar"></div>
+    <figcaption><b>Figura 4.8.</b> Los dos primeros cuadros del mismo análisis: el ANOVA y el resumen del ensayo. Siguen las medias marginales de cada factor y de sus combinaciones.</figcaption>
+  </figure>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>El párrafo para la tesis está en el reporte</div>
+    <p>En el bloque Análisis el resultado se explora: se cambian opciones, se prueban modelos. Al agregarlo al reporte (capítulo 5), SigmaPro le suma lo que pide un documento: el párrafo de métodos y resultados con la cita de cada prueba, los detalles técnicos y la numeración de cuadros y figuras de todo el reporte.</p>
+  </div>
+
+  <!-- 4.6 -->
+  <h2 id="s4-6"><span class="num">4.6</span>El motor R dentro del navegador</h2>
+  <p>Casi todos los análisis de SigmaPro están programados en el propio núcleo de la app, en JavaScript, y validados contra R. Unos cuantos, los que piden la maquinaria de ajuste de los modelos mixtos, corren en un <b>R completo que funciona dentro del navegador</b> (webR, R compilado a WebAssembly): los modelos lineales mixtos y sus diseños (sección 4.15), las medidas repetidas y los modelos lineales generalizados mixtos (sección 4.17). Los datos tampoco salen del equipo: R corre en la misma pestaña.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-motor.png" alt="El aviso Este análisis usa el motor R dentro de tu navegador: la primera vez se descargan R y sus paquetes, unos 25 MB, con internet; después quedan en la caché del navegador; tus datos no salen del equipo; botón Cargar el motor R y calcular"></div>
+    <figcaption><b>Figura 4.9.</b> La primera vez que se usa un análisis del motor R, la app pide permiso antes de descargarlo.</figcaption>
+  </figure>
+  <ol class="pasos">
+    <li>La primera vez, en lugar del resultado aparece el aviso de la figura 4.9. <span class="ui">Cargar el motor R y calcular</span> descarga R y sus paquetes (unos 25 MB) y calcula.</li>
+    <li>Mientras tanto, arriba del resultado se lee cada paso («Descargando el motor R (la primera vez tarda más)…», «Instalando lme4 en el motor R (solo la primera vez)…», «Calculando en el motor R…») y un botón <span class="ui">Cancelar</span>. La primera carga tarda de unos segundos a un par de minutos, según la conexión; un cálculo, unos segundos.</li>
+    <li>Después, el motor queda en la caché del navegador: ya no hace falta internet ni vuelve a preguntar.</li>
+  </ol>
+  <p>Cuando SigmaPro se usa publicado en una página web (no con doble clic), trae su propio repositorio del motor R y funciona sin internet desde la primera visita (introducción I.7).</p>
+</section>
+
+</body>
+</html>

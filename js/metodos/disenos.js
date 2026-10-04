@@ -11,7 +11,8 @@
      parcelas-subdivididas tres estratos: Error(bloque/A/B)
      franjas               A y B en franjas cruzadas: Error(bloque/(A + B))
      bib                   bloques incompletos balanceados, análisis intrabloque (tratamientos ajustados)
-     latice                látice y alfa-látice, análisis intrabloque: y ~ rep + rep:bloque + trat
+     latice                látice y alfa-látice, análisis intrabloque: y ~ rep + rep:bloque + trat, en ese orden (como
+                           terms(…, keep.order = TRUE)): los tratamientos al final, ajustados por los bloques
    Además: media, CV (uno por cada error), R², eficiencia relativa de los bloques y del cuadro latino (Gomez y
    Gomez, 1984), medias marginales estimadas con su EE (SP.medias) y efectos simples cuando hay dos o más factores
    (pruebas conjuntas, como emmeans::joint_tests). */
@@ -77,7 +78,7 @@ SP.definir('disenos', function (SP) {
           unidades: [[e.bloque, e.franjaA], [e.bloque, e.franjaB], [e.bloque, e.franjaA, e.franjaB]] };
       }
       case 'bib': return { formula: `${y} ~ ${q(e.bloque)} + ${q(tr[0])}`, factores: [tr[0]], bloques: [e.bloque], intrabloque: true };
-      case 'latice': return { formula: `${y} ~ ${q(e.repeticion)}/${q(e.bloque)} + ${q(tr[0])}`, factores: [tr[0]], bloques: [e.repeticion, e.bloque], intrabloque: true };
+      case 'latice': return { formula: `${y} ~ ${q(e.repeticion)} + ${q(e.repeticion)}:${q(e.bloque)} + ${q(tr[0])}`, factores: [tr[0]], bloques: [e.repeticion, e.bloque], intrabloque: true, conservarOrden: true };
       default: throw new SP.ErrorSP(T('Diseño desconocido: {d}.', { d: diseno }));
     }
   }
@@ -180,17 +181,19 @@ SP.definir('disenos', function (SP) {
     }
     out.formula = formula;
     let tablaA;
-    try { tablaA = SP.lineal.anova(t, formula, { tipo }); }
+    const orden = { conservarOrden: !!mod.conservarOrden };
+    try { tablaA = SP.lineal.anova(t, formula, Object.assign({ tipo }, orden)); }
     catch (err) {
       if (tipo !== 3) throw err;
-      tipo = 2; tablaA = SP.lineal.anova(t, formula, { tipo });
+      tipo = 2; tablaA = SP.lineal.anova(t, formula, Object.assign({ tipo }, orden));
       avisos.push(T('Las sumas de cuadrados tipo III no existen con celdas vacías; se usaron las de tipo II.'));
     }
-    const a = SP.lineal.ajustar(t, formula);
-    const tipo1 = tipo === 1 ? tablaA : SP.lineal.anova(t, formula, { tipo: 1 });
+    const a = SP.lineal.ajustar(t, formula, orden);
+    const tipo1 = tipo === 1 ? tablaA : SP.lineal.anova(t, formula, Object.assign({ tipo: 1 }, orden));
     const confundidos = a.modelo.terminos.map(x => x.etiqueta).filter(x => !tablaA.fuente.includes(x));
     if (confundidos.length) avisos.push(T('{t} no tiene grados de libertad propios: está confundido con otro término (por ejemplo, con los bloques) y no se puede probar.', { t: confundidos.map(etiqueta).join(', ') }));
     out.tipoSC = tipo;
+    out.intrabloque = !!mod.intrabloque;
     const sinInt = k => tablaA.fuente[k] !== '(Intercepto)';
     const idx = tablaA.fuente.map((_, k) => k).filter(sinInt);
     out.anova = { fuente: idx.map(k => tablaA.fuente[k]), gl: idx.map(k => tablaA.gl[k]), sc: idx.map(k => tablaA.sc[k]), cm: idx.map(k => tablaA.cm[k]), F: idx.map(k => tablaA.F[k]), p: idx.map(k => tablaA.p[k]) };
@@ -325,7 +328,9 @@ SP.definir('disenos', function (SP) {
       if (r.bloques.length) notas.push(T('Los bloques no se prueban: su estrato no tiene error propio.'));
     } else {
       filas = r.anova.fuente.map((f, k) => ({ fuente: f === 'Residuales' ? T('Error') : etiqueta(f), gl: r.anova.gl[k], sc: r.anova.sc[k], cm: r.anova.cm[k], F: r.anova.F[k], p: r.anova.p[k] }));
-      notas.push(r.balanceado ? T('Datos balanceados: las sumas de cuadrados tipo I, II y III coinciden.')
+      /* bloques incompletos: tipo I a propósito, con los tratamientos al final (no se compara con los otros tipos) */
+      if (r.intrabloque) notas.push(T('Análisis intrabloque: sumas de cuadrados secuenciales (tipo I) en el orden del cuadro; los tratamientos van al final, ajustados por los bloques, y sus medias son ajustadas.'));
+      else notas.push(r.balanceado ? T('Datos balanceados: las sumas de cuadrados tipo I, II y III coinciden.')
         : T('Datos desbalanceados: sumas de cuadrados tipo {t}. {x}', { t: ['', 'I', 'II', 'III'][r.tipoSC], x: [
           '', T('Tipo I: cada término ajustado por los anteriores (el orden importa).'),
           T('Tipo II: cada término ajustado por los demás que no lo contienen; es la más potente si no hay interacción.'),
@@ -386,7 +391,8 @@ SP.definir('disenos', function (SP) {
       }
       const generalizado = diseno === 'dbca' && !!(ctx && ctx.resultado && ctx.resultado.generalizado);
       const f = generalizado ? `${q(e.respuesta)} ~ ${q(e.bloque)} * (${mod.factores.map(q).join(' * ')})` : mod.formula;
-      L.push(`modelo <- lm(${f}, data = datos${tipo === 3 && !mod.intrabloque ? ', contrasts = ' + 'list(' + facs.map(x => `${q(x)} = contr.sum`).join(', ') + ')' : ''})`);
+      /* el látice conserva el orden escrito (los tratamientos al final): terms(…, keep.order = TRUE) */
+      L.push(`modelo <- lm(${mod.conservarOrden ? `terms(${f}, keep.order = TRUE)` : f}, data = datos${tipo === 3 && !mod.intrabloque ? ', contrasts = ' + 'list(' + facs.map(x => `${q(x)} = contr.sum`).join(', ') + ')' : ''})`);
       if (mod.intrabloque || tipo === 1) L.push('anova(modelo)   # tipo I: los tratamientos al final, ajustados por los bloques');
       else L.push(`car::Anova(modelo, type = ${tipo})`);
       L.push(`media <- mean(datos$${q(e.respuesta)}, na.rm = TRUE); 100 * sigma(modelo) / media   # CV`, 'summary(modelo)$r.squared   # R²');

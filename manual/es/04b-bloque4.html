@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · Manual de usuario · Capítulo 4 (2 de 7)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+</style>
+</head>
+<body>
+
+<section data-pestana="B4" data-orden="4" style="--acento: var(--b4)">
+
+  <!-- 4.7 -->
+  <h2 id="s4-7"><span class="num">4.7</span>Los supuestos del modelo</h2>
+  <p class="lead">El análisis de varianza, las comparaciones de medias y la regresión descansan en supuestos sobre los <b>residuos</b> (lo que el modelo no explica): que se distribuyan como una normal, que tengan la misma varianza en todos los tratamientos, que sean independientes entre sí y que ninguno sea extremo. <span class="ui">Revisar los supuestos del modelo</span>, el primer método del catálogo, los pone a prueba todos a la vez y dice qué hacer si alguno falla.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Opción</th><th>Qué decide</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Variable de respuesta</span></td><td>La respuesta del modelo.</td></tr>
+      <tr><td><span class="ui">Tratamientos (hasta 3, cruzados)</span></td><td>Los factores; las varianzas se comparan entre sus combinaciones.</td></tr>
+      <tr><td><span class="ui">Bloques</span></td><td>El bloque, si lo hay. Con bloques se revisa además la aditividad bloque × tratamiento.</td></tr>
+      <tr><td><span class="ui">Orden para la independencia</span></td><td>En qué orden se buscan residuos vecinos parecidos: el de las filas o el de una columna (la posición en el campo, la fecha de medición).</td></tr>
+      <tr><td><span class="ui">Nivel de significancia</span></td><td>El α de las pruebas.</td></tr>
+    </tbody>
+  </table>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-sup-verde.png" alt="La revisión de los supuestos del maíz: el modelo rend ~ bloque + hibrido * dosis con n = 48; el semáforo en verde con normalidad, varianzas iguales, aditividad, independencia y valores atípicos en BIEN, cada uno con su prueba; qué hacer; y las tres gráficas: Q-Q normal de los residuos con su banda, residuos contra valores ajustados y residuos en el orden de las filas"></div>
+    <figcaption><b>Figura 4.10.</b> Los supuestos del ensayo del maíz se cumplen: los cinco renglones del semáforo en verde.</figcaption>
+  </figure>
+  <h3>El semáforo</h3>
+  <p>Arriba del resultado, un renglón por supuesto, cada uno con su color, su estado y una frase con la prueba que lo decide. El color global es el del peor renglón: <b>Los supuestos se cumplen</b>, <b>Hay supuestos que revisar</b> o <b>Hay supuestos que no se cumplen</b>.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.85in">Supuesto</th><th style="width:1.9in">Prueba que decide</th><th>También se calculan</th></tr></thead>
+    <tbody>
+      <tr><td>Normalidad de los residuos</td><td>Shapiro-Wilk</td><td>Lilliefors, Anderson-Darling; la asimetría G₁ y la curtosis G₂</td></tr>
+      <tr><td>Varianzas iguales entre tratamientos</td><td>Brown-Forsythe (Levene con la mediana)</td><td>Levene, Bartlett (sensible a la falta de normalidad), Fligner-Killeen (por rangos); cuántas veces es la mayor varianza la menor</td></tr>
+      <tr><td>Aditividad bloque × tratamiento</td><td>No aditividad de Tukey (con bloques)</td><td>—</td></tr>
+      <tr><td>Independencia de los residuos</td><td>Durbin-Watson, con su <i>p</i> exacto</td><td>Rachas</td></tr>
+      <tr><td>Valores atípicos</td><td>El mayor residuo estudentizado, con <i>p</i> de Bonferroni</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p>Los colores siguen el valor <i>p</i> de la prueba principal: <b>verde</b> si <i>p</i> ≥ 0.05 (BIEN), <b>ámbar</b> entre 0.01 y 0.05 (REVISAR), <b>rojo</b> si <i>p</i> &lt; 0.01 (PROBLEMA). Un renglón en gris dice NO APLICA (por ejemplo, la aditividad sin bloques) o que faltan datos.</p>
+  <h3>Qué hacer</h3>
+  <p>Debajo del semáforo, el recuadro <b>Qué hacer</b> traduce el resultado en acciones concretas. Con los venenos de Box y Cox, por ejemplo, la normalidad y las varianzas fallan y hay un residuo atípico (figura 4.11): la app estima la transformación de Box-Cox con ese mismo modelo (λ = −0.816, intervalo de −1.294 a −0.341), sugiere el recíproco y recuerda que la columna original no cambia; para la fila atípica, propone revisar primero que no sea un error de captura y, si el valor es real, analizar con y sin ella y reportarlo.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-sup-rojo.png" alt="Los supuestos de los venenos: Hay supuestos que no se cumplen; normalidad PROBLEMA (Shapiro-Wilk p = 0.002); varianzas PROBLEMA (Brown-Forsythe p menor que 0.001, la mayor 678.6 veces la menor); aditividad NO APLICA; independencia BIEN; valores atípicos REVISAR (fila 24); y Qué hacer: transformar con Box-Cox, λ = −0.816, el recíproco, y revisar la fila 24"></div>
+    <figcaption><b>Figura 4.11.</b> El caso contrario: los tiempos de supervivencia de los venenos no cumplen los supuestos, y la app propone el recíproco.</figcaption>
+  </figure>
+  <h3>Las gráficas y el cuadro</h3>
+  <ul>
+    <li><b>Q-Q normal de los residuos estandarizados</b>: si los residuos son normales, los puntos siguen la diagonal. La banda sombreada es la región de confianza; los puntos que salen de ella van marcados y los más alejados llevan su número de fila.</li>
+    <li><b>Residuos contra valores ajustados</b>: debe verse una nube sin forma. Un embudo (más dispersión con valores mayores) delata varianzas desiguales; las líneas en ±2 señalan los residuos grandes.</li>
+    <li><b>Residuos en el orden</b> de las filas o de la columna elegida: rachas largas de un mismo signo delatan dependencia (parcelas vecinas parecidas).</li>
+  </ul>
+  <p>El cuadro 1 trae todas las pruebas, con su estadístico, sus grados de libertad, su <i>p</i> y qué revisa; la principal de cada supuesto va marcada. En <span class="ui">Varianza de los residuos por tratamiento</span> (plegado) está la varianza de cada combinación, para ver cuál es la que se aparta.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-sup-cuadro.png" alt="El cuadro de las pruebas de los supuestos de los venenos: Shapiro-Wilk, Lilliefors, Anderson-Darling, Brown-Forsythe, Levene, Bartlett, Fligner-Killeen, Durbin-Watson, rachas y el residuo estudentizado con Bonferroni, cada una con estadístico, valor, gl, p y qué revisa"></div>
+    <figcaption><b>Figura 4.12.</b> El cuadro de las pruebas, con la principal de cada supuesto marcada.</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">Σ</span>Por qué Brown-Forsythe y no Bartlett</div>
+    <p>La prueba de Bartlett es muy sensible a la falta de normalidad: con residuos de colas pesadas rechaza la igualdad de varianzas aunque las varianzas sean iguales. La de Brown-Forsythe (la de Levene con la mediana en lugar de la media) es robusta a eso, y por eso decide el renglón; Bartlett queda en el cuadro como referencia. Por la misma razón, con datos muy grandes conviene mirar las gráficas además de los valores <i>p</i>: con miles de residuos, desviaciones mínimas de la normal ya resultan significativas.</p>
+  </div>
+
+  <!-- 4.8 -->
+  <h2 id="s4-8"><span class="num">4.8</span>Pruebas t</h2>
+  <p>La <span class="ui">Prueba t</span> compara medias en tres situaciones, que elige <span class="ui">Tipo de comparación</span>:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Tipo</th><th>Qué pide</th><th style="width:1.6in">Ejemplo</th></tr></thead>
+    <tbody>
+      <tr><td><b>Dos grupos independientes</b></td><td>La respuesta, la columna de los grupos y los dos niveles que se comparan (si el factor tiene más).</td><td>Tiempo de supervivencia con los tratamientos A y B.</td></tr>
+      <tr><td><b>Mediciones pareadas</b></td><td>Dos columnas medidas en las mismas unidades; se compara primera − segunda.</td><td>Altura de la misma planta a los 15 y a los 30 días.</td></tr>
+      <tr><td><b>Una muestra contra un valor</b></td><td>La variable y el valor de referencia (μ₀).</td><td>¿La germinación media difiere del 50 %?</td></tr>
+    </tbody>
+  </table>
+  <p>Las demás opciones: la <span class="ui">Diferencia bajo H₀</span> (normalmente 0), la <span class="ui">Hipótesis alternativa</span> (bilateral ≠, menor &lt; o mayor &gt;), el <span class="ui">Nivel de confianza</span> del intervalo y, con dos grupos, la casilla <span class="ui">Suponer varianzas iguales (t de Student)</span>. Sin marcar, se usa la <b>t de Welch</b>, que no supone varianzas iguales y es la recomendada: con varianzas iguales da casi lo mismo que la de Student, y con varianzas distintas sigue siendo válida.</p>
+  <figure>
+    <div class="marco"><img src="../img/b4-t.png" alt="La prueba t de Welch con los venenos, tratamientos A y B: el formulario con tipo de comparación, variable de respuesta tiempo, grupos A y B, diferencia bajo H0, hipótesis bilateral, confianza 95 % y la casilla de varianzas iguales sin marcar; el resultado: la media de A (0.314) difiere de la de B (0.677), diferencia −0.362, t = −3.729, gl = 13.21, p = 0.002; tamaño del efecto grande, g de Hedges −1.470; el semáforo de normalidad y varianzas; y la gráfica de cajas de los dos grupos con sus puntos"></div>
+    <figcaption><b>Figura 4.13.</b> La t de Welch: el tratamiento B prolonga la supervivencia frente a A. La gráfica muestra cada valor, la caja de cuartiles y la media (rombo).</figcaption>
+  </figure>
+  <p>El resultado trae:</p>
+  <ul>
+    <li>la <b>conclusión</b> con las dos medias, la diferencia y su intervalo, y t, gl y <i>p</i>;</li>
+    <li>el <b>tamaño del efecto</b> en palabras (pequeño, mediano, grande, según la guía de Cohen: 0.2, 0.5 y 0.8): la <i>d</i> de Cohen y la <i>g</i> de Hedges (la <i>d</i> corregida por el sesgo de las muestras chicas), con intervalos por la t no central (Steiger y Fouladi, 1997);</li>
+    <li>el <b>semáforo</b>: la normalidad de cada grupo (o de las diferencias, en pareadas) por Shapiro-Wilk y, con dos grupos, la comparación de varianzas (prueba F), que avisa si conviene Welch;</li>
+    <li>la <b>gráfica</b> de los valores por grupo (o de las diferencias pareadas);</li>
+    <li>los <b>cuadros</b>: la prueba elegida (con la otra t como referencia), las medias y desviaciones, y el tamaño del efecto.</li>
+  </ul>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Una prueba t no es para más de dos tratamientos</div>
+    <p>Con tres tratamientos o más, comparar de dos en dos con pruebas t infla la probabilidad de encontrar diferencias que no existen. El camino es el análisis de varianza del diseño (sección 4.10) seguido de una comparación de medias que controle ese error (sección 4.11).</p>
+  </div>
+
+  <!-- 4.9 -->
+  <h2 id="s4-9"><span class="num">4.9</span>Pruebas no paramétricas</h2>
+  <p>Cuando los datos no cumplen la normalidad y una transformación no la logra, o cuando la respuesta es una escala ordenada (daño de 1 a 5, una calificación), las pruebas de rangos comparan grupos sin suponer una distribución. Ordenan todos los valores y trabajan con su posición. SigmaPro calcula sus <b>distribuciones exactas</b> cuando el tamaño lo permite, como R.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Prueba</th><th style="width:1.7in">Equivale a</th><th>Cuándo</th></tr></thead>
+    <tbody>
+      <tr><td><b>Wilcoxon y Mann-Whitney</b></td><td>La prueba t</td><td>Dos grupos independientes (suma de rangos, Mann-Whitney), dos mediciones pareadas o una muestra contra un valor (rangos con signo).</td></tr>
+      <tr><td><b>Kruskal-Wallis</b></td><td>El ANOVA completamente al azar</td><td>Tres o más tratamientos sin bloques.</td></tr>
+      <tr><td><b>Friedman</b></td><td>El ANOVA en bloques</td><td>Tres o más tratamientos con un dato de cada uno en cada bloque (parcela, juez, fecha).</td></tr>
+    </tbody>
+  </table>
+  <h3>Wilcoxon y Mann-Whitney</h3>
+  <p>El formulario es el de la prueba t, con dos opciones más: <span class="ui">Valor p</span> (<b>Exacto si se puede</b>, el exacto, o la aproximación normal: el exacto se usa con menos de 50 datos por grupo y sin empates, como en R) y <span class="ui">Corrección por continuidad</span> para la aproximación normal. El resultado da el estadístico (W o V), el <i>p</i> y, como medida del efecto, el <b>estimador de Hodges-Lehmann</b> del desplazamiento entre los grupos (la mediana de todas las diferencias entre un valor de cada grupo) con su intervalo, más un cuadro de medianas y cuartiles.</p>
+  <h3>Kruskal-Wallis</h3>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-kruskal.png" alt="Kruskal-Wallis con los venenos: al menos un tratamiento difiere (H = 25.584, gl = 2, p menor que 0.001); η² de H = 0.524; comparaciones de Dunn con Holm: 2 de 3 pares difieren; la gráfica de tiempo por veneno con las letras a, a y b; y el cuadro de tratamientos ordenados por rango medio con mediana, cuartiles y grupo"></div>
+    <figcaption><b>Figura 4.14.</b> Kruskal-Wallis con los tres venenos: el veneno III acorta la supervivencia frente a I y II (letras distintas).</figcaption>
+  </figure>
+  <p>Se eligen la respuesta, los tratamientos, el método de <span class="ui">Comparaciones por pares</span> (Dunn, Conover-Iman o Nemenyi) y el <span class="ui">Ajuste de los valores p</span> por las comparaciones múltiples (Holm, Bonferroni, Benjamini-Hochberg o sin ajuste). El resultado da H con sus grados de libertad y su <i>p</i> (corregido por empates), el tamaño del efecto η² de H, y las comparaciones: un cuadro con cada par y otro con los tratamientos ordenados por su rango medio y sus <b>letras</b> (tratamientos con una letra en común no difieren), que también aparecen sobre la gráfica.</p>
+  <h3>Friedman</h3>
+  <p>Pide además la columna de los <span class="ui">Bloques</span>, con un dato por tratamiento en cada bloque. Las comparaciones por pares pueden ser de Conover, Nemenyi o Wilcoxon pareada, y el ajuste incluye Tukey (un paso). Además de χ² y su <i>p</i>, da la <b>W de Kendall</b>, la concordancia entre bloques (de 0, ninguna, a 1, todos los bloques ordenan igual a los tratamientos). Un bloque con algún dato faltante queda fuera, como en R, y la app lo dice.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Lo que se pierde con los rangos</div>
+    <p>Las pruebas de rangos dicen si un grupo tiende a tener valores más altos que otro, no cuánto difieren sus medias, y con datos normales tienen algo menos de potencia que el ANOVA. Antes de recurrir a ellas conviene intentar la transformación que sugiere la revisión de los supuestos, o un modelo lineal generalizado si la respuesta es un conteo o una proporción (sección 4.17).</p>
+  </div>
+</section>
+
+</body>
+</html>

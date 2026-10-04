@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · Manual de usuario · Capítulo 4 (7 de 7)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+  .dos.angosta { grid-template-columns: 0.85fr 1fr; }
+</style>
+</head>
+<body>
+
+<section data-pestana="B4" data-orden="4" style="--acento: var(--b4)">
+
+  <!-- 4.21 -->
+  <h2 id="s4-21"><span class="num">4.21</span>Análisis multivariado</h2>
+  <p class="lead">Cuando en cada unidad se miden varias variables a la vez (el largo, el ancho, el peso y la pared de un fruto), analizarlas una por una repite pruebas y desperdicia la relación entre ellas. La MANOVA prueba los tratamientos sobre el conjunto, y el análisis discriminante busca la combinación de variables que mejor separa los grupos. Los dos corren en el navegador, validados contra <code>manova</code> y <code>lda</code> de R.</p>
+  <h3>MANOVA</h3>
+  <p>Se eligen las <span class="ui">Variables respuesta</span> (de 2 a 10), los <span class="ui">Factores de tratamiento</span> (hasta 3, cruzados), los <span class="ui">Bloques</span> (opcional) y la <span class="ui">Prueba principal</span>: Pillai, la más robusta y la que se usa por omisión; Wilks; Hotelling-Lawley; o Roy, que da una cota superior de <i>F</i> y un <i>p</i> optimista. El cuadro principal trae las cuatro.</p>
+  <p>Con cuatro variedades de chile en tres bloques, cinco frutos por parcela, la variedad cambia el conjunto de las cuatro medidas (Pillai = 2.668, <i>F</i>(12, 159) = 106.40, <i>p</i> &lt; 0.001). El bloque queda en el límite: Pillai da <i>p</i> = 0.063, y Roy, con su <i>p</i> optimista, 0.005; por eso conviene decidir con la prueba principal y no con la más favorable. El semáforo revisa que haya suficientes grados de libertad del error para el número de respuestas (54 para 4) y la igualdad de las matrices de covarianza con la <b>prueba M de Box</b> (χ²(30) = 30.13, <i>p</i> = 0.459). Los otros cuadros dan el ANOVA de cada respuesta por separado y las medias; la gráfica muestra el perfil de las medias estandarizadas. Dos botones bajan las variables con su grupo en CSV para abrirlas en PCAPro (componentes principales) o en ClusteringPro (conglomerados), las apps de la suite para esos análisis.</p>
+
+  <h3>Análisis discriminante lineal</h3>
+  <p>Se eligen los <span class="ui">Grupos que se quieren separar</span> y las <span class="ui">Variables que los describen</span> (de 2 a 15). El resultado da las funciones discriminantes con la proporción de la separación que explica cada una, sus coeficientes, los centroides de los grupos y la <b>clasificación con validación cruzada</b>: cada unidad se clasifica con la función ajustada sin ella, lo que da una tasa de acierto honesta (la que usa los mismos datos del ajuste es optimista).</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/b4-discriminante.png" alt="Los frutos de chile en las dos primeras funciones discriminantes, LD1 con 66.8 % y LD2 con 28.9 %: las cuatro variedades, Ancho, Guajillo, Jalapeño y Serrano, forman cuatro nubes separadas en las cuatro esquinas"></div>
+      <figcaption><b>Figura 4.37.</b> Los 60 frutos en las dos primeras funciones discriminantes: cuatro nubes sin traslape.</figcaption>
+    </figure>
+    <div>
+      <p>Con los chiles hay tres funciones; la primera explica el 66.8 % de la separación y la segunda el 28.9 %. Con validación cruzada, los 60 frutos quedan en su variedad (100 %).</p>
+      <p>Los coeficientes no están estandarizados: solo se comparan entre variables de escalas parecidas. La app lo advierte al nombrar las variables de más peso en la primera función.</p>
+    </div>
+  </div>
+
+  <!-- 4.22 -->
+  <h2 id="s4-22"><span class="num">4.22</span>Potencia, repeticiones y muestreo</h2>
+  <p class="lead">Antes del ensayo: cuántas repeticiones, cuántas plantas o cuántas semillas hacen falta para detectar una diferencia que importa o para estimar con el error que se acepta. Seis de los ocho métodos de la familia no necesitan datos; con la hoja vacía se abren desde Explorar, con <span class="ui">Calcular un tamaño de muestra o una potencia</span>, y con datos cargados están en el catálogo como cualquier otro.</p>
+  <p>Los cálculos de potencia preguntan <span class="ui">¿Qué quieres calcular?</span>: el tamaño de muestra, la potencia de un tamaño dado o la diferencia que se puede detectar. Usan las mismas fórmulas que R (<code>power.t.test</code>, <code>power.anova.test</code>, <code>power.prop.test</code> y <code>pwr</code>) y dibujan la potencia según el tamaño de muestra.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-potencia.png" alt="El cálculo del tamaño de muestra de una prueba t sin datos: el formulario con la diferencia de 0.5, la desviación estándar de 0.4, la potencia de 0.8 y α = 0.05; la conclusión, 12 unidades por grupo (n exacta 11.09); la curva de la potencia según el tamaño de muestra, con las líneas en 0.8 y en 11.09; y el cuadro de parámetros con la d de Cohen de 1.25"></div>
+    <figcaption><b>Figura 4.38.</b> Para detectar una diferencia de 0.5 con una desviación estándar de 0.4, hacen falta 12 unidades por grupo.</figcaption>
+  </figure>
+  <table class="compacta salida">
+    <caption><b>Cuadro 4.12.</b> Los seis cálculos sin datos, con un ejemplo de cada uno.</caption>
+    <thead><tr><th style="width:1.75in">Método</th><th>Con</th><th>Resultado</th></tr></thead>
+    <tbody>
+      <tr><td>Medias (prueba t)</td><td>Diferencia 0.5, DE 0.4, potencia 0.8</td><td>12 unidades por grupo (11.09)</td></tr>
+      <tr><td>ANOVA de varios tratamientos</td><td>Medias 4.2, 4.8, 5.1 y 5.6; DE del error 0.6</td><td>5 repeticiones por tratamiento (4.915)</td></tr>
+      <tr><td>Dos proporciones</td><td>65 % contra 80 %</td><td>138 unidades por grupo (137.9)</td></tr>
+      <tr><td>Correlación</td><td>40 pares, potencia 0.8</td><td>Se detecta una correlación de 0.4265</td></tr>
+      <tr><td>Repeticiones de un experimento</td><td>CV 12 %, diferencia de 15 % de la media, 6 tratamientos en bloques</td><td>11 repeticiones</td></tr>
+      <tr><td>Tamaño de muestra para estimar</td><td>Proporción 0.3 con error ± 0.05, población de 900</td><td>238 unidades (323 sin la población finita)</td></tr>
+    </tbody>
+  </table>
+  <p>Las <b>repeticiones de un experimento</b> usan la fórmula de Cochran y Cox (1957), con el CV de ensayos anteriores y la diferencia en porcentaje de la media; los grados de libertad del error dependen de las repeticiones, así que la app las busca hasta que la fórmula se cumple y lo muestra en una gráfica. El <b>tamaño de muestra para estimar</b> una media o una proporción usa las fórmulas de Cochran (1977), con la corrección por población finita cuando se da su tamaño.</p>
+  <h3>Estimar con una muestra</h3>
+  <p>Los otros dos métodos analizan una muestra ya tomada. El <b>muestreo aleatorio simple</b> estima la media (o la proporción, si la columna es 0/1) y, con el tamaño de la población, el total, con la corrección por población finita. El <b>muestreo estratificado</b> pide además los estratos y el tamaño de la población de cada uno (N<sub>h</sub>), y con un tamaño total propone cómo repartir una muestra nueva: proporcional y de Neyman.</p>
+  <p>Con el aguacate de tres huertas (1580 árboles), la estimación simple da una media de 51.89 kg por árbol (EE = 1.975) y la estratificada 54.32, con un error estándar bastante menor (1.142). La diferencia tiene explicación: la muestra tomó 16 árboles de la Planicie, que tiene el 57 % de los árboles y los más productivos, y 20 de las otras dos huertas, que tienen el 43 %; la estimación simple los pesa igual y se va hacia abajo, la estratificada pesa cada huerta por su tamaño. Para una muestra nueva de 60, Neyman toma 17 en la Ladera, 29 en la Planicie y 16 en la Vega: más en los estratos grandes y en los variables.</p>
+
+  <!-- 4.23 -->
+  <h2 id="s4-23"><span class="num">4.23</span>Análisis de supervivencia</h2>
+  <p class="lead">Cuando la respuesta es el tiempo hasta que algo ocurre (germinar, florecer, morir) y en algunas unidades no ocurrió antes de terminar el ensayo, esas unidades están <b>censuradas</b>: se sabe que su tiempo es mayor que el observado, pero no cuánto. Promediar los días sin ellas, o con ellas como si hubieran germinado el último día, sesga el resultado; el análisis de supervivencia las usa correctamente. Los dos métodos se validaron contra el paquete <code>survival</code> de R.</p>
+  <p>Ambos piden el <span class="ui">Tiempo hasta el evento</span> (o hasta la censura) y el <span class="ui">Evento</span> (1 si ocurrió, 0 si la unidad terminó sin él o se perdió). Los <span class="ui">Estratos</span> (opcional: lotes, sitios, fechas) dan a cada estrato su propio riesgo base, y los grupos se comparan dentro de ellos.</p>
+  <h3>Curvas de Kaplan-Meier</h3>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/b4-km.png" alt="Las curvas de Kaplan-Meier de la proporción de semillas de frijol sin germinar contra los días, para testigo, remojo y escarificada: la escarificada baja primero y llega casi a cero; el testigo baja despacio y termina en 0.30 a los 21 días"></div>
+      <figcaption><b>Figura 4.39.</b> La proporción de semillas sin germinar en el tiempo: la escarificación acelera la germinación.</figcaption>
+    </figure>
+    <div>
+      <p>Con 120 semillas de frijol en tres tratamientos, revisadas cada día hasta el día 21, la mediana de los días a germinar es 17 en el testigo, 5.5 con remojo y 4 con escarificación, y las curvas difieren (log-rank χ²(2) = 37.89, <i>p</i> &lt; 0.001). 17 semillas (14.2 %) no germinaron: están censuradas.</p>
+      <p>La línea discontinua marca el 0.5: donde la cruza cada curva está su mediana.</p>
+    </div>
+  </div>
+  <p>Las opciones son el <span class="ui">Intervalo de la curva</span> (log, el de <code>survival</code>; log-log; o lineal) y la <span class="ui">Prueba para comparar las curvas</span>: log-rank, con el mismo peso a todos los tiempos, o Peto-Peto, que pesa más los tiempos tempranos. Los cuadros dan la mediana y los cuartiles de cada grupo con su intervalo, la tabla de la prueba (eventos observados contra esperados) y la tabla de supervivencia en cada tiempo con eventos.</p>
+  <h3>Modelo de Cox</h3>
+  <p>El modelo de riesgos proporcionales de Cox mide el efecto de los <span class="ui">Factores</span> y de las <span class="ui">Covariables numéricas</span> sobre el riesgo instantáneo del evento, como una <b>razón de riesgos</b> (HR): mayor que 1, el evento llega antes. Los <span class="ui">Tiempos empatados</span> se tratan con Efron (el de <code>survival</code>, mejor con días enteros) o con Breslow.</p>
+  <p>Con el frijol, el tratamiento y el peso de la semilla, estratificado por lote: la escarificación multiplica el riesgo de germinar por 4.459 (IC 95 %: 2.628 a 7.568) y el remojo por 2.096, frente al testigo. El HR del peso es 0.02058 <b>por gramo</b>; como las semillas pesan alrededor de 0.4 g, conviene leerlo por décima de gramo: 0.02058<sup>0.1</sup> = 0.678, un tercio menos de riesgo por cada 0.1 g más. El semáforo revisa la <b>proporcionalidad de los riesgos</b> (como <code>cox.zph</code>: <i>p</i> = 0.753, sin evidencia de que los efectos cambien con el tiempo) y que haya al menos 10 eventos por coeficiente (aquí, 34). Los cuadros incluyen las tres pruebas globales y la concordancia C de Harrell (0.690).</p>
+
+  <!-- 4.24 -->
+  <h2 id="s4-24"><span class="num">4.24</span>Series de tiempo</h2>
+  <p class="lead">Una serie de tiempo es una variable medida a intervalos iguales (cada mes, cada semana, cada año), donde los valores cercanos se parecen. Los cuatro métodos piden la <span class="ui">Variable medida en el tiempo</span> y la <span class="ui">Columna del tiempo</span> que ordena las filas, y se validaron contra R (<code>acf</code>, <code>decompose</code>, <code>arima</code> y el paquete <code>trend</code>). El ejemplo es una estación meteorológica con la lluvia y la temperatura de cada mes de 2017 a 2024.</p>
+  <ul>
+    <li><b>Autocorrelación</b>: la ACF y la PACF con su banda, y las pruebas de Ljung-Box y Box-Pierce. La lluvia mensual está muy autocorrelacionada (Ljung-Box <i>Q</i>(12) = 427.37, <i>p</i> &lt; 0.001), con el ciclo anual a la vista: positiva a 1 mes, negativa a 6.</li>
+    <li><b>Descomposición</b>: separa la tendencia (media móvil de un ciclo), el componente estacional y el residuo, aditiva o multiplicativa, con la <span class="ui">frecuencia</span> del ciclo (12 para meses). En la temperatura, la estacionalidad explica el 96.01 % de la variación sin tendencia.</li>
+    <li><b>Tendencia monótona</b>: la prueba de Mann-Kendall (no supone normalidad) y la pendiente de Sen, resistente a valores extremos. La temperatura no muestra tendencia en los ocho años (τ = 0.058, <i>p</i> = 0.403).</li>
+  </ul>
+  <h3>ARIMA y pronóstico</h3>
+  <p>El modelo ARIMA describe la serie con sus valores pasados (autorregresivos, <i>p</i>), sus errores pasados (medias móviles, <i>q</i>) y las diferencias que la vuelven estable (<i>d</i>), con su versión estacional (<i>P</i>, <i>D</i>, <i>Q</i> y el periodo). El <span class="ui">Orden del modelo</span> se escribe, o se pide <span class="ui">Buscar el de menor AIC</span> (<i>p</i>, <i>q</i> de 0 a 2 y <i>P</i>, <i>Q</i> de 0 a 1, con las diferencias que se pongan), y se eligen los <span class="ui">Pasos a pronosticar</span>.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/b4-arima.png" alt="La lluvia mensual de ocho años como línea continua y el pronóstico de los doce meses siguientes como línea discontinua dorada con su banda de 95 %, que repite el pico de lluvias de verano"></div>
+      <figcaption><b>Figura 4.40.</b> La lluvia mensual y su pronóstico a doce meses con el ARIMA(1, 0, 0)(0, 1, 1)<sub>12</sub>.</figcaption>
+    </figure>
+    <div>
+      <p>Con la lluvia, el ARIMA(1, 0, 0)(0, 1, 1)<sub>12</sub> deja residuos sin autocorrelación (Ljung-Box <i>Q</i>(22) = 15.46, <i>p</i> = 0.842): el semáforo en verde. El pronóstico repite el pico del verano, cerca de 157 mm.</p>
+      <p>Los límites inferiores de algunos meses secos son negativos (−10.33 mm en el primero): el modelo no sabe que la lluvia no baja de cero. Para respetarlo, conviene modelar una transformación de la variable (sección 2.9).</p>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

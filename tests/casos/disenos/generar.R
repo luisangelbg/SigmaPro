@@ -113,9 +113,11 @@ jt_caso("simples-con-bloques", "Factorial en bloques: efectos simples con el err
 # ======================= los métodos de diseño =======================
 # Un estrato: anova (tipo I) o car::Anova (tipo II, y III con contrastes de suma cero), CV, R², eficiencia relativa
 # (fórmulas de Gomez y Gomez, 1984), medias marginales (emmeans) y efectos simples (joint_tests).
-anova_r <- function(datos, formula, tipo) {
+# orden = TRUE: los términos en el orden escrito, terms(…, keep.order = TRUE) (el látice: los tratamientos al final)
+anova_r <- function(datos, formula, tipo, orden = FALSE) {
   facs <- names(datos)[sapply(datos, is.factor)]
-  m <- if (tipo == 3) lm(as.formula(formula), data = datos, contrasts = setNames(rep(list(contr.sum), length(facs)), facs)) else lm(as.formula(formula), data = datos)
+  fo <- if (orden) terms(as.formula(formula), keep.order = TRUE) else as.formula(formula)
+  m <- if (tipo == 3) lm(fo, data = datos, contrasts = setNames(rep(list(contr.sum), length(facs)), facs)) else lm(fo, data = datos)
   a <- if (tipo == 1) anova(m) else car::Anova(m, type = tipo)
   a <- a[trimws(rownames(a)) != "(Intercept)" & a$Df > 0, ]   # car::Anova lista con 0 gl los términos confundidos; SigmaPro los explica en un aviso
   list(fuente = I(sub("^Residuals$", "Residuales", trimws(rownames(a)))), gl = I(a$Df), sc = I(a$`Sum Sq`), F = I(a$`F value`), p = I(a$`Pr(>F)`))
@@ -143,10 +145,10 @@ ef_latino <- function(cmf, cmc, cme, t) {
   e1 <- (cmf + cmc + (t - 1) * cme) / ((t + 1) * cme); e2 <- (cmf + (t - 1) * cme) / (t * cme); e3 <- (cmc + (t - 1) * cme) / (t * cme)
   list(list(relativa = e1, ajustada = e1 * k(t * (t - 1))), list(relativa = e2, ajustada = e2 * k((t - 1)^2)), list(relativa = e3, ajustada = e3 * k((t - 1)^2)))
 }
-metodo_un <- function(nombre, diseno, titulo, fuente, datos, entradas, formula, tipo = 3, factores, eficiencia = NULL, tipo_usado = tipo, extra = list()) {
-  m <- lm(as.formula(formula), data = datos)
+metodo_un <- function(nombre, diseno, titulo, fuente, datos, entradas, formula, tipo = 3, factores, eficiencia = NULL, tipo_usado = tipo, extra = list(), orden = FALSE) {
+  m <- lm(if (orden) terms(as.formula(formula), keep.order = TRUE) else as.formula(formula), data = datos)
   y <- model.response(model.frame(m)); media <- mean(y)
-  esp <- list(anova = anova_r(datos, formula, tipo_usado), tipoSC = tipo_usado,
+  esp <- list(anova = anova_r(datos, formula, tipo_usado, orden), tipoSC = tipo_usado,
     resumen = list(media = media, cv = 100 * sigma(m) / media, r2 = summary(m)$r.squared, n = length(y)),
     medias = lapply(factores, function(f) { e <- as.data.frame(emmeans(m, f)); list(filas = lapply(seq_len(nrow(e)), function(i) list(emm = e$emmean[i], ee = e$SE[i]))) }))
   if (length(factores) > 1) esp$simples <- simples_r(m, datos, factores)
@@ -155,7 +157,7 @@ metodo_un <- function(nombre, diseno, titulo, fuente, datos, entradas, formula, 
   sp_caso(nombre, objetivo = diseno, tipo = "metodo", titulo = titulo, fuente = fuente, datos = datos, entradas = entradas,
     opciones = list(tipoSC = tipo), esperado = esp, clase = if (length(factores) > 1) "B" else "A",
     paquetes = c("stats", "car", "emmeans"),
-    codigo = sprintf("%s(lm(%s)%s); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))", if (tipo_usado == 1) "anova" else "car::Anova", formula, if (tipo_usado == 1) "" else sprintf(", type = %d", tipo_usado)))
+    codigo = sprintf("%s(lm(%s)%s); CV = 100 * sigma / media; emmeans; joint_tests (F exacta = qf(p))", if (tipo_usado == 1) "anova" else "car::Anova", if (orden) sprintf("terms(%s, keep.order = TRUE)", formula) else formula, if (tipo_usado == 1) "" else sprintf(", type = %d", tipo_usado)))
 }
 cm_de <- function(m, termino) { a <- anova(m); a[trimws(rownames(a)) == termino, "Mean Sq"] }
 
@@ -234,7 +236,7 @@ ef_b <- rnorm(6, 0, 0.6)
 lt$y <- round(5 + as.integer(lt$trat) * 0.2 + ef_b[(as.integer(lt$rep) - 1) * 3 + as.integer(lt$bloque)] + rnorm(18, 0, 0.3), 3)
 lt <- lt[c("y", "rep", "bloque", "trat")]
 metodo_un("latice-simple", "latice", "Látice simple 3 × 3 con dos repeticiones (intrabloque)", "Datos sintéticos", lt,
-  list(respuesta = "y", tratamientos = "trat", bloque = "bloque", repeticion = "rep"), "y ~ rep/bloque + trat", tipo = 1, factores = "trat")
+  list(respuesta = "y", tratamientos = "trat", bloque = "bloque", repeticion = "rep"), "y ~ rep + rep:bloque + trat", tipo = 1, factores = "trat", orden = TRUE)
 invisible(capture.output(al0 <- agricolae::design.alpha(trt = paste0("L", 1:12), k = 3, r = 3, seed = 37)$book))
 al <- data.frame(rep = factor(al0$replication), bloque = factor(al0$block), trat = factor(as.character(al0[[4]]), levels = paste0("L", 1:12)))
 set.seed(37)
@@ -242,7 +244,7 @@ ef_a <- rnorm(nlevels(al$bloque), 0, 0.7)
 al$y <- round(8 + as.integer(al$trat) * 0.15 + ef_a[as.integer(al$bloque)] + rnorm(nrow(al), 0, 0.4), 3)
 al <- al[c("y", "rep", "bloque", "trat")]
 metodo_un("latice-alfa", "latice", "Alfa-látice: 12 tratamientos, bloques de 3, tres repeticiones", "Datos sintéticos con agricolae::design.alpha", al,
-  list(respuesta = "y", tratamientos = "trat", bloque = "bloque", repeticion = "rep"), "y ~ rep/bloque + trat", tipo = 1, factores = "trat")
+  list(respuesta = "y", tratamientos = "trat", bloque = "bloque", repeticion = "rep"), "y ~ rep + rep:bloque + trat", tipo = 1, factores = "trat", orden = TRUE)
 
 # ---- con estratos de error
 metodo_est <- function(nombre, diseno, titulo, fuente, datos, entradas, formula, error, respuesta, agri = NULL) {

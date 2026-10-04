@@ -417,7 +417,8 @@
         `<div data-panel="larga"><p class="small">${T('Una fila por unidad y una columna por medición (rend_2024, rend_2025) → una fila por observación. Es la forma que piden los análisis.')}</p>` +
         `<fieldset><legend>${T('Columnas que identifican cada unidad')}</legend><div class="chips">${casillas('reId', n => !numericas.has(n))}</div></fieldset>` +
         `<fieldset><legend>${T('Columnas que se apilan')}</legend><div class="chips">${casillas('reMed', n => numericas.has(n))}</div></fieldset>` +
-        `<div class="btn-row"><label class="field"><span>${T('Nombre de la columna nueva con los nombres')}</span><input id="reClave" value="variable"></label><label class="field"><span>${T('Nombre de la columna de valores')}</span><input id="reValor" value="valor"></label></div></div>` +
+        `<div class="btn-row"><label class="field"><span>${T('Nombre de la columna nueva con los nombres')}</span><input id="reClave" value="variable"></label><label class="field"><span>${T('Nombre de la columna de valores')}</span><input id="reValor" value="valor"></label></div>` +
+        `<label class="imp-check" id="reNumeroCaja" hidden><input type="checkbox" id="reNumero" checked> <span id="reNumeroTexto"></span></label></div>` +
         `<div data-panel="ancha" hidden><p class="small">${T('Una fila por observación → una columna por cada valor de la columna elegida.')}</p>` +
         `<fieldset><legend>${T('Columnas que identifican cada unidad')}</legend><div class="chips">${casillas('reIdA', () => false)}</div></fieldset>` +
         `<div class="btn-row"><label class="field"><span>${T('Columna con los nombres de las columnas nuevas')}</span><select id="reClaveA">${h.nombres.map(n => `<option>${esc(n)}</option>`).join('')}</select></label>` +
@@ -426,15 +427,21 @@
         const q = s => [...d.el.querySelectorAll(s)].map(x => x.value);
         const dir = d.el.querySelector('[data-dir][aria-pressed="true"]').dataset.dir;
         let r;
-        /* las columnas de identificación conservan su tipo y sus niveles; lo nuevo se infiere */
+        /* las columnas de identificación conservan su tipo y sus niveles; lo nuevo se infiere. Un identificador (una
+           planta por fila) se repite en la tabla larga: pasa a factor, en el orden en que aparece (el sujeto de las
+           medidas repetidas) */
         const tipos = {};
-        const conservar = ids => ids.forEach(n => { const c = h.cols[h.indice(n)]; tipos[n] = c.tipo === 'factor' ? { tipo: 'factor', niveles: c.niveles } : c.tipo; });
+        const conservar = ids => ids.forEach(n => {
+          const c = h.cols[h.indice(n)];
+          tipos[n] = c.tipo === 'factor' ? { tipo: 'factor', niveles: c.niveles } : c.tipo === 'id' && dir === 'larga' ? { tipo: 'factor', niveles: SP.tipos.ordenarNiveles(c.datos.filter(v => v !== null && v !== ''), 'aparicion').map(String) } : c.tipo;
+        });
         if (dir === 'larga') {
           const ids = q('.reId:checked'), medidas = q('.reMed:checked');
           const clave = d.el.querySelector('#reClave').value.trim() || 'variable';
-          r = SP.reformar.aLarga(crudos(), { ids, medidas, nombreClave: clave, nombreValor: d.el.querySelector('#reValor').value.trim() || 'valor' });
+          const comoNumero = !d.el.querySelector('#reNumeroCaja').hidden && d.el.querySelector('#reNumero').checked;
+          r = SP.reformar.aLarga(crudos(), { ids, medidas, nombreClave: clave, nombreValor: d.el.querySelector('#reValor').value.trim() || 'valor', comoNumero });
           conservar(ids);
-          tipos[clave] = { tipo: 'factor', niveles: medidas };      // en el orden de las columnas, no alfabético
+          tipos[clave] = comoNumero ? 'numerica' : { tipo: 'factor', niveles: medidas };      // en el orden de las columnas, no alfabético
         } else {
           const ids = q('.reIdA:checked');
           r = SP.reformar.aAncha(crudos(), { ids, clave: d.el.querySelector('#reClaveA').value, valor: d.el.querySelector('#reValorA').value });
@@ -444,6 +451,14 @@
         L() && L().toast(T('Tabla nueva de {n} filas; «Volver a la tabla anterior» la regresa.', { n: r.columnas[r.nombres[0]].length }), { type: 'success' });
       } }],
       alAbrir(d) {
+        /* si cada columna apilada trae un solo número en su nombre (altura_15dds, rend_2024), se ofrece quedarse con él */
+        const numeros = () => {
+          const medidas = [...d.el.querySelectorAll('.reMed:checked')].map(x => x.value), xs = SP.reformar.numerosDe(medidas);
+          d.el.querySelector('#reNumeroCaja').hidden = !xs;
+          if (xs) d.el.querySelector('#reNumeroTexto').textContent = T('Quedarse con el número de cada nombre ({a} → {b}): la columna nueva sale numérica, lista para una curva en el tiempo o una dosis.', { a: medidas[0], b: SP.tipos.numeroATexto(xs[0]) });
+        };
+        d.el.addEventListener('change', e => { if (e.target.classList.contains('reMed')) numeros(); });
+        numeros();
         d.el.addEventListener('click', e => {
           const b = e.target.closest('[data-dir]');
           if (!b) return;

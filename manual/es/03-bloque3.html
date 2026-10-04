@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · Manual de usuario · Capítulo 3</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b3" data-pestana="B3" data-orden="3" style="--acento: var(--b3)">
+  <div class="cap-apertura">
+    <div class="cap-num">3</div>
+    <div class="cap-etiqueta">Bloque 3 · Explorar</div>
+    <h1>Explorar: mirar los datos antes de analizarlos</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Antes de probar hipótesis conviene conocer los datos: dónde está el centro, cuánto varían, si hay valores raros, cuántas observaciones tiene cada grupo. Explorar ofrece cuatro resúmenes (descriptivos, frecuencias, proporciones y bondad de ajuste), cada uno con su intervalo de confianza, su conclusión en palabras y el código R que da lo mismo. Todo lo que aquí se calcula también puede ir al reporte.</p>
+    <ul class="cap-contenido">
+      <li><b>3.1</b>Los cuatro resúmenes</li>
+      <li><b>3.2</b>Cómo se lee un resultado</li>
+      <li><b>3.3</b>Estadísticos descriptivos</li>
+      <li><b>3.4</b>Tablas de frecuencias</li>
+      <li><b>3.5</b>Proporciones e intervalos</li>
+      <li><b>3.6</b>Bondad de ajuste</li>
+    </ul>
+  </div>
+
+  <!-- 3.1 -->
+  <h2 id="s3-1"><span class="num">3.1</span>Los cuatro resúmenes</h2>
+  <p class="lead">Arriba del bloque, cuatro botones eligen el resumen. A la izquierda quedan sus opciones y a la derecha el resultado, que se recalcula al cambiar cualquier opción.</p>
+  <figure>
+    <div class="marco"><img src="../img/b3-desc.png" alt="El bloque Explorar con Descriptivos elegido: a la izquierda las opciones (variables, agrupar por, confianza, media recortada, definición de los cuartiles, asimetría y curtosis, percentiles adicionales); a la derecha el título Estadísticos descriptivos de rend por hibrido, la conclusión en palabras y el cuadro con n, media, DE, EE, CV, intervalo de la media, mínimo, cuartiles, mediana y máximo de cada híbrido"></div>
+    <figcaption><b>Figura 3.1.</b> Descriptivos del rendimiento del maíz por híbrido. Al cargar datos, el bloque propone la primera respuesta numérica agrupada por el primer factor de tratamiento.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.4in">Resumen</th><th>Para qué</th><th style="width:0.6in">Sección</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Descriptivos</span></td><td>Centro, dispersión y forma de variables numéricas, en total o por grupos, con el intervalo de la media, de la mediana y de la varianza.</td><td>3.3</td></tr>
+      <tr><td><span class="ui">Frecuencias</span></td><td>Cuántas observaciones hay de cada nivel de un factor, o de cada combinación de dos (tabla cruzada), en conteos o porcentajes.</td><td>3.4</td></tr>
+      <tr><td><span class="ui">Proporciones</span></td><td>Una proporción (germinación, incidencia, mortalidad) con su intervalo de confianza, por grupo, con seis métodos de intervalo.</td><td>3.5</td></tr>
+      <tr><td><span class="ui">Bondad de ajuste</span></td><td>Si unas frecuencias observadas siguen una proporción esperada (por ejemplo, la segregación 9:3:3:1).</td><td>3.6</td></tr>
+    </tbody>
+  </table>
+  <p>Si en el bloque Datos hay un filtro activo, una nota arriba de las opciones lo recuerda: «Con el filtro del bloque Datos: se usan 27 de 48 filas». Sin datos cargados, el bloque ofrece ir a Datos y, para quien está planeando un ensayo, el botón <span class="ui">Calcular un tamaño de muestra o una potencia</span>, que no necesita datos (sección 4.x).</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Explorar describe; Análisis decide</div>
+    <p>Los resúmenes de este bloque dicen cómo son los datos, no si las diferencias entre grupos son reales. Que el híbrido H-66 tenga la media más alta es una descripción; que sea significativamente mayor que H-52 lo dice un análisis de varianza con su comparación de medias, en el bloque Análisis (capítulo 4). Por eso las conclusiones de Explorar terminan, cuando hay grupos, con «Si las diferencias son reales se prueba en el bloque Análisis».</p>
+  </div>
+
+  <!-- 3.2 -->
+  <h2 id="s3-2"><span class="num">3.2</span>Cómo se lee un resultado</h2>
+  <p>Todos los resultados de SigmaPro, aquí y en Análisis, tienen las mismas partes y en el mismo orden. Conviene conocerlas una vez:</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/b3-extras.png" alt="Un resultado completo de descriptivos: el título con el tiempo de cálculo y el botón Agregar al reporte, la conclusión en palabras, el Cuadro 1 con sus notas al pie, el botón Copiar cuadro, la sección abierta Más estadísticos en el cuadro con casillas, y la sección abierta Código R equivalente con el código y el botón Copiar el código"></div>
+    <figcaption><b>Figura 3.2.</b> Un resultado con sus dos secciones plegables abiertas: más estadísticos y el código R.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Parte</th><th>Qué es</th></tr></thead>
+    <tbody>
+      <tr><td><b>Título</b></td><td>Qué se calculó y sobre qué variables. Junto a él, el tiempo de cálculo en milisegundos.</td></tr>
+      <tr><td><span class="ui">Agregar al reporte</span></td><td>Lleva el resultado al bloque Resultados (capítulo 5). El botón cambia a <span class="ui">En el reporte ✓</span>; el reporte guarda el análisis, no los números, y lo recalcula si los datos cambian.</td></tr>
+      <tr><td><b>Conclusión</b></td><td>El resultado en palabras, con las cifras que lo sostienen. Es lo primero que conviene leer.</td></tr>
+      <tr><td><b>Cuadro</b></td><td>Numerado y con sus notas al pie, en el formato de una revista: líneas solo arriba, abajo y bajo los encabezados; cifras alineadas; decimales según la precisión de los datos. Si es más ancho que la pantalla, se desplaza a los lados.</td></tr>
+      <tr><td>Botones de vista</td><td>Cuando un resultado tiene varios cuadros, unos botones eligen cuál se ve (por ejemplo, frecuencias o porcentajes).</td></tr>
+      <tr><td><span class="ui">Copiar cuadro</span></td><td>Copia el cuadro con todas sus cifras, listo para pegarse en una hoja de cálculo o en un procesador de textos.</td></tr>
+      <tr><td><span class="ui">Más estadísticos en el cuadro</span></td><td>(En descriptivos.) Casillas que agregan columnas al cuadro.</td></tr>
+      <tr><td><span class="ui">Código R equivalente</span></td><td>El código que da los mismos números en R, con el botón <span class="ui">Copiar el código</span>. Empieza con un comentario sobre cómo leer los datos y los paquetes que pide.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 3.3 -->
+  <h2 id="s3-3"><span class="num">3.3</span>Estadísticos descriptivos</h2>
+  <p>Describen una o varias variables numéricas, en total o por grupos. Las opciones:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Opción</th><th>Qué decide</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Variables</span></td><td>Las columnas numéricas que se describen; una fila del cuadro por variable y grupo.</td></tr>
+      <tr><td><span class="ui">Agrupar por (hasta 3)</span></td><td>Los factores que forman los grupos. Una columna numérica con pocos valores repetidos (una dosis) se agrupa por cada valor. Con dos o tres factores, los grupos son sus combinaciones presentes.</td></tr>
+      <tr><td><span class="ui">Confianza</span></td><td>El nivel de los intervalos (90, 95 o 99 %).</td></tr>
+      <tr><td><span class="ui">Media recortada</span></td><td>La fracción que se quita de cada extremo para la media recortada (5, 10, 20 o 25 %).</td></tr>
+      <tr><td><span class="ui">Definición de los cuartiles</span></td><td>Las nueve definiciones de Hyndman y Fan (1996). La 7 (interpolación lineal) es la de R y de las hojas de cálculo; la 6 es la de muchos libros de texto. Con muestras grandes coinciden; con pocas observaciones pueden diferir un poco.</td></tr>
+      <tr><td><span class="ui">Asimetría y curtosis</span></td><td>Tres definiciones (Joanes y Gill, 1998): G₁ y G₂, insesgadas bajo normalidad y las de uso común; g₁ y g₂, de momentos; b₁ y b₂, corregidas por (<i>n</i> − 1)/<i>n</i>.</td></tr>
+      <tr><td><span class="ui">Percentiles adicionales</span></td><td>Otros percentiles que se agregan al cuadro, en por ciento y separados por comas (por ejemplo <code>5, 95</code>).</td></tr>
+    </tbody>
+  </table>
+  <h3>Lo que trae el cuadro</h3>
+  <p>El cuadro principal tiene, para cada variable y grupo: <b>n</b>, <b>media</b>, <b>desviación estándar</b> (DE), <b>error estándar de la media</b> (EE), <b>coeficiente de variación</b> (CV, en %), el <b>intervalo de confianza de la media</b>, el <b>mínimo</b>, los <b>cuartiles</b> Q1 y Q3, la <b>mediana</b> y el <b>máximo</b>. En <span class="ui">Más estadísticos en el cuadro</span> se pueden agregar: faltantes, moda (y cuántas modas hay y su frecuencia), varianza, rango, rango intercuartílico (RIC), media recortada, media geométrica, media armónica, asimetría y curtosis con sus errores estándar, el intervalo de la mediana con su confianza real, y los intervalos de la varianza y de la DE.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">Σ</span>Las fórmulas</div>
+    <p>Con <i>n</i> observaciones de media <i>x̄</i> y desviación estándar <i>s</i>:</p>
+    <p class="formula">EE = <i>s</i> / √<i>n</i>  ·  CV = 100 <i>s</i> / <i>x̄</i>  ·  IC de la media: <i>x̄</i> ± <i>t</i><sub>1−α/2; n−1</sub> · EE</p>
+    <p>El intervalo de la <b>mediana</b> se forma con dos observaciones ordenadas, <i>x</i><sub>(k)</sub> y <i>x</i><sub>(n−k+1)</sub>, con <i>k</i> tomado de la distribución binomial (<i>n</i>, ½); por eso su confianza real («Confianza real (%)») es la primera que alcanza o supera la pedida, no exactamente ella. El de la <b>varianza</b> sale de la ji cuadrada, (<i>n</i> − 1)<i>s</i>² / χ²; supone normalidad, y el de la DE es su raíz.</p>
+  </div>
+  <h3>Las conclusiones</h3>
+  <p>Sin grupos, la conclusión resume la variable: «rend (n = 48): media 5.938 (IC 95 %: 5.644 a 6.232), desviación estándar 1.013 y coeficiente de variación 17.1 %». Con grupos, dice cuál tiene la media más alta y cuál la más baja. Además, avisa en dos casos: cuando en un grupo de ocho o más observaciones la <b>asimetría es mayor que el doble de su error estándar</b> (señal de valores atípicos o de que conviene una transformación, sección 2.9), y cuando algunas filas quedaron fuera por no tener nivel en un factor de agrupación.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>El CV en experimentos agrícolas</div>
+    <p>El CV de un grupo describe la variación de los datos crudos; mezcla la variación entre bloques y la del error. El CV que se publica para un ensayo es otro: el del análisis de varianza, calculado con el cuadrado medio del error (en el maíz, 3.6 % contra el 16 % de los datos crudos por híbrido). Ese lo da el análisis del diseño en el bloque Análisis.</p>
+  </div>
+
+  <!-- 3.4 -->
+  <h2 id="s3-4"><span class="num">3.4</span>Tablas de frecuencias</h2>
+  <p>Cuentan cuántas observaciones hay de cada nivel de un factor (<span class="ui">Variable</span>) o, con <span class="ui">Cruzar con</span>, de cada combinación de dos. La casilla <span class="ui">Contar los faltantes como una categoría</span> agrega una fila y una columna para las celdas vacías. Las columnas numéricas con pocos valores aparecen en las listas con la marca «(numérica)».</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b3-frec.png" alt="La tabla de frecuencias de evaluador_A por evaluador_B en el ejemplo de la roya: la conclusión con 80 observaciones en 4 por 4 celdas y 7 celdas vacías, los botones Frecuencias, por ciento por fila, por columna y del total, y el cuadro con las calificaciones 0 sana a 3 severa de cada evaluador y sus totales"></div>
+    <figcaption><b>Figura 3.3.</b> Las calificaciones de roya de los dos evaluadores, cruzadas. Las celdas de la diagonal son las hojas en que coincidieron.</figcaption>
+  </figure>
+  <p>Una tabla cruzada tiene cuatro vistas, que eligen sus botones: <span class="ui">Frecuencias</span>, <span class="ui">% por fila</span> (cada fila suma 100), <span class="ui">% por columna</span> y <span class="ui">% del total</span>. La conclusión dice el tamaño de la tabla y cuántas celdas no tienen ninguna observación. Una tabla de un solo factor trae, además del conteo, el porcentaje y los acumulados.</p>
+  <p>La tabla de frecuencias describe; para <b>probar</b> si dos factores están asociados (por ejemplo, si la germinación depende del tratamiento), o si dos evaluadores concuerdan, están la tabla de contingencia, la prueba de McNemar y Bowker y el kappa de Cohen, en el bloque Análisis (sección 4.x).</p>
+
+  <!-- 3.5 -->
+  <h2 id="s3-5"><span class="num">3.5</span>Proporciones e intervalos</h2>
+  <p>Una proporción se puede pedir de dos maneras, que eligen los botones de arriba de las opciones:</p>
+  <ul>
+    <li><span class="ui">Categorías de un factor</span>: la proporción de cada nivel de una variable categórica (por ejemplo, qué fracción de las hojas tiene cada grado de roya).</li>
+    <li><span class="ui">Éxitos sobre ensayos</span>: dos columnas numéricas, una con los éxitos (semillas germinadas, plantas muertas, frutos dañados) y otra con los ensayos (semillas sembradas, plantas observadas). Las filas se suman dentro de cada grupo.</li>
+  </ul>
+  <p><span class="ui">Por grupo</span> calcula una proporción por nivel de un factor, y <span class="ui">Confianza</span> fija el nivel de los intervalos. En <span class="ui">Intervalos</span> se marcan los métodos que se quieren ver, una columna cada uno.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b3-prop.png" alt="Proporciones de germinación del frijol por tratamiento, en modo Éxitos sobre ensayos con germinadas y sembradas: la conclusión con el porcentaje de cada tratamiento y su intervalo de Wilson, y el cuadro con éxitos, n, proporción e intervalos de Wilson y de Clopper-Pearson para Testigo, Remojo 24 h, GA3 100 ppm, GA3 250 ppm y Escarificación"></div>
+    <figcaption><b>Figura 3.4.</b> La germinación de cinco tratamientos (200 semillas cada uno), con los intervalos de Wilson y de Clopper-Pearson.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Intervalo</th><th>Cómo es</th></tr></thead>
+    <tbody>
+      <tr><td><b>Wilson</b></td><td>Invierte la prueba de puntaje (Wilson, 1927). Su cobertura real queda muy cerca de la pedida aun con pocos ensayos o proporciones extremas. <b>Recomendado.</b></td></tr>
+      <tr><td><b>Wilson con corrección</b></td><td>El de Wilson con corrección de continuidad: más ancho y conservador.</td></tr>
+      <tr><td><b>Clopper-Pearson (exacto)</b></td><td>Por la distribución beta. Garantiza al menos la confianza pedida, a cambio de ser más ancho de lo necesario.</td></tr>
+      <tr><td><b>Agresti-Coull</b></td><td>El de Wald con dos éxitos y dos fracasos agregados (Agresti y Coull, 1998); fácil de calcular a mano.</td></tr>
+      <tr><td><b>Jeffreys</b></td><td>El intervalo bayesiano con la previa beta(½, ½). <b>Recomendado</b>, con propiedades parecidas a las del de Wilson.</td></tr>
+      <tr><td><b>Wald</b></td><td>La aproximación normal de los libros, <i>p̂</i> ± <i>z</i>√(<i>p̂</i>(1 − <i>p̂</i>)/<i>n</i>). Solo como referencia: con menos de 30 ensayos o proporciones cercanas a 0 o 1 falla, y la app lo advierte.</td></tr>
+    </tbody>
+  </table>
+  <p>La recomendación de Wilson y Jeffreys viene de la revisión de Brown, Cai y DasGupta (2001), que compararon la cobertura real de estos intervalos. La conclusión muestra las primeras cuatro proporciones en palabras, con el intervalo de Wilson, y avisa cuántas más hay en el cuadro.</p>
+
+  <!-- 3.6 -->
+  <h2 id="s3-6"><span class="num">3.6</span>Bondad de ajuste</h2>
+  <p>La prueba ji cuadrada de bondad de ajuste dice si unas frecuencias observadas son compatibles con una proporción esperada. El caso clásico en agronomía es la segregación mendeliana: en la F<sub>2</sub> de un dihíbrido se esperan los fenotipos en proporción 9:3:3:1.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b3-bondad.png" alt="La bondad de ajuste con los datos de Mendel: categorías fenotipo, conteos semillas, proporción esperada 9:3:3:1; la conclusión: las frecuencias observadas son compatibles con la proporción 9:3:3:1 (ji cuadrada 0.470, 3 grados de libertad, p 0.925); el cuadro con observado, proporción esperada, esperado, residuo estandarizado y contribución a la ji cuadrada de redonda amarilla, redonda verde, rugosa amarilla y rugosa verde"></div>
+    <figcaption><b>Figura 3.5.</b> Las 556 semillas de Mendel (1866) contra la proporción 9:3:3:1: χ² = 0.470 con 3 grados de libertad, <i>p</i> = 0.925.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Opción</th><th>Qué decide</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Categorías</span></td><td>La variable con las categorías (los fenotipos).</td></tr>
+      <tr><td><span class="ui">Conteos</span></td><td>Si cada fila ya trae cuántas observaciones tiene su categoría (como en el ejemplo de Mendel, con cuatro filas), la columna de los conteos. Si cada fila es una observación, se deja en «una fila por observación».</td></tr>
+      <tr><td><span class="ui">Proporción esperada</span></td><td>Una proporción por categoría, en el orden de los niveles que la ayuda muestra debajo, separadas por dos puntos: <code>9:3:3:1</code>, <code>3:1</code>, <code>1:2:1</code>. También se aceptan decimales (<code>0.5625:0.1875:0.1875:0.0625</code>). Vacía, se prueban proporciones iguales.</td></tr>
+      <tr><td><span class="ui">Nivel de significancia</span></td><td>El α con el que la conclusión decide (0.05, 0.01 o 0.10).</td></tr>
+    </tbody>
+  </table>
+  <p>El cuadro tiene, por categoría, lo <b>observado</b>, la <b>proporción esperada</b>, lo <b>esperado</b> (<i>n</i> × proporción), el <b>residuo estandarizado</b> y la <b>contribución a χ²</b>:</p>
+  <p class="formula">χ² = Σ (O − E)² / E,   gl = k − 1,   residuo = (O − E) / √(n p (1 − p))</p>
+  <p>Un residuo mayor que 2 en valor absoluto señala la categoría que más se aleja de lo esperado; cuando la prueba rechaza, la conclusión la nombra. Si alguna categoría espera menos de cinco observaciones, la aproximación ji cuadrada puede no ser buena, y la app lo advierte: conviene juntar categorías o usar una prueba exacta.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>«Compatible» no es «demostrado»</div>
+    <p>Un valor <i>p</i> alto dice que los datos no contradicen la proporción esperada, no que la prueben. Con pocas observaciones, la prueba no tiene poder para rechazar casi nada. Las 556 semillas de Mendel bastan para distinguir 9:3:3:1 de proporciones muy distintas, no de proporciones parecidas.</p>
+  </div>
+</section>
+
+</body>
+</html>

@@ -63,4 +63,16 @@ SPT.describir('Regresión no lineal · métodos', () => {
     const poco = SP.tabla.crear({ d: [1, 2, 3, 4], y: [5, 4, 3, 2] }, {});
     SPT.lanza(() => SP.ejecutar('dosis-respuesta', poco, { respuesta: 'y', dosis: 'd' }, { modelo: 'll4' }), 'Faltan datos');
   });
+  SPT.caso('El significado de cada parámetro depende del modelo (b del lineal-meseta no es la pendiente en la DE50)', () => {
+    const s = SP.metodosNoLineal.sentidoDe;
+    SPT.igual(s('ll4', 'b'), 'pendiente en la DE50');
+    SPT.igual(s('lineal-meseta', 'b'), 'aumento por unidad de dosis antes de la meseta');
+    SPT.igual(s('lineal-meseta', 'x0'), 'dosis óptima (inicio de la meseta)');
+    SPT.igual(s('mitscherlich', 'c'), 'tasa de acercamiento a la asíntota');
+    SPT.igual(s('ll4', 'c'), 'límite inferior');
+    const d = [0, 0, 50, 50, 100, 100, 150, 150, 200, 200], y = [4.1, 4.3, 5.9, 6.1, 7.2, 7.4, 7.3, 7.5, 7.2, 7.4];
+    const r = SP.ejecutar('respuesta-meseta', SP.tabla.crear({ d, y }, {}), { respuesta: 'y', dosis: 'd' }, { modelo: 'lineal-meseta' });
+    const filas = SP.metodos['respuesta-meseta'].reporte(r.resultado).cuadros.find(c => c.id === 'parametros').filas;
+    SPT.igual(filas.find(f => f.par === 'b').sentido, 'aumento por unidad de dosis antes de la meseta');
+  });
 });

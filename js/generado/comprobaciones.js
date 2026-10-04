@@ -80,34 +80,32 @@ window.SP_COMPROBACIONES = {
    "Servicio sin conexión activo con 146 archivos guardados.",
    "Sin red: 7 análisis, reporte, 6 exportaciones y huellas del proyecto verificadas."
   ],
-  "fecha": "2026-10-04T15:59:52.556Z",
+  "fecha": "2026-10-04T18:40:18.553Z",
   "motor": "node v24.19.0"
  },
  "exportar": {
   "titulo": "Las exportaciones, leídas con lectores independientes",
   "ok": true,
-  "resumen": "Hoja de cálculo: 246 números idénticos a la app y 24 valores del ANOVA y las medias iguales a R; .docx válido con 16 cuadros exactos y 7 figuras a 300 ppp; 7 PDF vectoriales y 7 PNG a 600 ppp; TIFF iguales al PNG; proyecto .labg con 7 huellas SHA-256 iguales, su código R corrido completo y reabierto con los mismos cuadros; el guardado automático recupera el trabajo con los mismos cuadros",
+  "resumen": "Hoja de cálculo: 258 números idénticos a la app y 24 valores del ANOVA y las medias iguales a R; .docx válido con 17 cuadros exactos y 7 figuras a 300 ppp; 7 PDF vectoriales y 7 PNG a 600 ppp; TIFF iguales al PNG; proyecto .labg con 7 huellas SHA-256 iguales, su código R corrido completo y reabierto con los mismos cuadros; el guardado automático recupera el trabajo con los mismos cuadros",
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-10-04T15:58:39.385Z",
+  "fecha": "2026-10-04T18:39:30.262Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {
   "titulo": "El código R equivalente",
   "ok": true,
   "resumen": "83 escenarios de 61 métodos: el código R que muestra la app corre en R y da 1,230 números iguales a los de la app (tolerancia 1e-6)",
-  "fecha": "2026-10-04T15:58:22.420Z",
+  "fecha": "2026-10-04T18:39:16.016Z",
   "motor": "node v24.19.0"
  },
  "accesibilidad": {
   "titulo": "Accesibilidad (AA)",
-  "ok": false,
-  "resumen": "173 revisiones de 87 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 90,076 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 575 paradas en los 8 bloques (1280 px en claro y 360 px en oscuro).",
-  "renglones": [
-   "mixto-resultado a 360 px: la medición no terminó"
-  ],
-  "fecha": "2026-10-04T16:08:57.779Z",
+  "ok": true,
+  "resumen": "174 revisiones de 87 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 91,068 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 575 paradas en los 8 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
+  "renglones": [],
+  "fecha": "2026-10-04T18:47:50.517Z",
   "motor": "node v24.19.0"
  }
 };

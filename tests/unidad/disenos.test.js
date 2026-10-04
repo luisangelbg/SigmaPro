@@ -66,11 +66,40 @@ SPT.describir('Diseños experimentales · reportes, avisos y anidamiento', () =>
     SPT.afirmar(SP.medias.emm(t, a, ['g']).every(m => m.estimable));
   });
 
+  SPT.caso('látice: los tratamientos al final, ajustados por los bloques (como terms(…, keep.order = TRUE))', () => {
+    const c = { y: [], rep: [], bloque: [], g: [] };
+    for (let r = 1; r <= 2; r++) for (let b = 1; b <= 3; b++) for (let j = 1; j <= 3; j++) { c.rep.push('R' + r); c.bloque.push('b' + ((r - 1) * 3 + b)); c.g.push('G' + (r === 1 ? (b - 1) * 3 + j : (j - 1) * 3 + b)); c.y.push(4 + j * 0.3 + b * 0.45 + r * 0.1 + ((j * b) % 4) * 0.05); }
+    const t = SP.tabla.crear(c, { rep: { tipo: 'factor' }, bloque: { tipo: 'factor' }, g: { tipo: 'factor' } });
+    const r = SP.ejecutar('latice', t, { respuesta: 'y', tratamientos: 'g', bloque: 'bloque', repeticion: 'rep' }, SP.opcionesCon(SP.metodos.latice, {})).resultado;
+    SPT.igualJSON(r.anova.fuente.slice(0, 3), ['rep', 'rep:bloque', 'g']);
+    const aj = SP.lineal.anova(t, 'y ~ rep + rep:bloque + g', { tipo: 1, conservarOrden: true }), sin = SP.lineal.anova(t, 'y ~ rep/bloque + g', { tipo: 1 });
+    SPT.cerca(r.anova.sc[2], aj.sc[aj.fuente.indexOf('g')], 1e-10);
+    SPT.afirmar(Math.abs(aj.sc[aj.fuente.indexOf('g')] - sin.sc[sin.fuente.indexOf('g')]) > 1e-6, 'la ajustada no es la de los tratamientos sin ajustar');
+    SPT.afirmar(/keep\.order = TRUE/.test(SP.metodos.latice.codigoR({ respuesta: 'y', tratamientos: 'g', bloque: 'bloque', repeticion: 'rep' }, SP.opcionesCon(SP.metodos.latice, {}), { resultado: r })), 'código R con keep.order');
+    SPT.afirmar(/intrabloque/.test(SP.metodos.latice.reporte(r).cuadros[0].notas.join(' ')), 'la nota del análisis intrabloque');
+  });
+
   SPT.caso('la gráfica de interacción dibuja una línea y un marcador distinto por serie, con leyenda', () => {
     const svg = SP.graficas ? SP.graficas.lineas({ titulo: 'x', x: { titulo: 'A', niveles: ['a1', 'a2', 'a3'] }, y: { titulo: 'y' }, leyenda: 'B',
       series: [{ nombre: 'b1', valores: [1, 2, 3] }, { nombre: 'b2', valores: [2, NaN, 4] }] }) : '<polyline class="gr-serie gr-s0"/><polyline class="gr-serie gr-s1"/>b1b2';
     SPT.afirmar(/gr-s0/.test(svg) && /gr-s1/.test(svg));
     SPT.afirmar(svg.includes('b1') && svg.includes('b2'));
+  }, { navegador: true });
+
+  SPT.caso('un eje x que cuenta (pasos de la selección) lleva marcas enteras, no 0.2, 0.4…', () => {
+    const svg = SP.graficas.dispersion({ titulo: 'AIC', x: { titulo: 'Paso', enteros: true }, y: { titulo: 'AIC' }, puntos: [{ x: 0, y: 54.19 }, { x: 1, y: 52.73 }] });
+    const marcas = [...svg.matchAll(/data-role="xtick"[^>]*>([^<]*)</g)].map(m => m[1]);
+    SPT.igualJSON(marcas, ['0', '1']);
+  }, { navegador: true });
+
+  SPT.caso('las etiquetas de dos puntos resaltados muy juntos no se enciman', () => {
+    const svg = SP.graficas.dispersion({ titulo: 'BLUP', x: { titulo: 'BLUE' }, y: { titulo: 'BLUP' },
+      puntos: [{ x: 3.5, y: 3.6 }, { x: 5.037, y: 4.954, marca: true, etiqueta: 'G05' }, { x: 5.108, y: 4.981, marca: true, etiqueta: 'G01' }] });
+    const pos = [...svg.matchAll(/<text x="([\d.]+)" y="([\d.]+)"(?: text-anchor="(end|middle)")? class="gr-etq gr-etq-punto"[^>]*>(G0\d)</g)].map(m => ({ x: +m[1], y: +m[2], ancla: m[3] === 'end' ? 1 : m[3] === 'middle' ? 0.5 : 0 }));
+    SPT.igual(pos.length, 2);
+    const caja = p => [p.x - p.ancla * 20.6, p.x - p.ancla * 20.6 + 20.6];
+    const [a, b] = pos.map(caja);
+    SPT.afirmar(Math.abs(pos[0].y - pos[1].y) >= 12 || a[1] <= b[0] || b[1] <= a[0], 'las dos etiquetas quedan separadas');
   }, { navegador: true });
 
   SPT.caso('con submuestras, el ajuste por celdas da las mismas sumas de cuadrados que el completo (lineal y estratos)', () => {
