@@ -595,7 +595,7 @@ SP.definir('dist', function (SP) {
     const mitad = w * 0.5;
     if (mitad >= 8) return 1;
     let pr = 2 * pnorm(mitad) - 1;            // P(|Z| < w/2)
-    pr = pr >= 1 ? 1 : pow(pr, k);
+    pr = pr >= exp(-50 / k) ? pow(pr, k) : 0;  // si pr^k < 2e-22 se toma 0
     const tramos = w > 3 ? 2 : 3;
     let inf = mitad;
     const paso = (8 - mitad) / tramos;

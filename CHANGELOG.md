@@ -2,6 +2,12 @@
 
 ## Sin publicar
 
+### Arreglo · rango estudentizado (4 oct 2026)
+
+- `ptukey`: el primer término de la integral interna (`probRango`) usa ahora el umbral exp(−50/k) del algoritmo
+  clásico; antes se elevaba a la k sin umbral. Solo cambian valores menores de 2e-22, así que ningún resultado se
+  mueve: 266 pruebas unitarias y 795 casos contra R siguen aprobados.
+
 ### 0.3.1 · Hito 3.8 · Cox y MANOVA desde el constructor (4 oct 2026)
 
 - El constructor de modelos arma también los métodos de la Fase 3:
