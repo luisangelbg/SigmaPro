@@ -1,0 +1,861 @@
+{
+ "webr": {
+  "version": "0.6.0",
+  "base": "https://webr.r-wasm.org/v0.6.0/",
+  "fuente": "https://github.com/r-wasm/webr/archive/refs/tags/v0.6.0.tar.gz",
+  "licencia": "GPL-3 (binarios de webR y de R) y MIT (scripts de webR)",
+  "archivos": [
+   {
+    "ruta": "webr.mjs",
+    "bytes": 66672,
+    "sha256": "4c04d3240de6cd3e7f59e081756168faa8566f8a8b97251400770939815c344a"
+   },
+   {
+    "ruta": "webr-worker.js",
+    "bytes": 134029,
+    "sha256": "c64282f5e15b51ef473e26548203313f868208c8988b2c7bdfc22c5730de418b"
+   },
+   {
+    "ruta": "R.js",
+    "bytes": 785875,
+    "sha256": "162adb529111d739b37ef1b9f889eb7afbe4fb3288f8a58166cd6d0b04fd7376"
+   },
+   {
+    "ruta": "R.wasm",
+    "bytes": 18062845,
+    "sha256": "5df459fb222d332e358cf08e4019c0e114398579ed8c62242bfcceeda81222ba"
+   },
+   {
+    "ruta": "libRblas.so",
+    "bytes": 198205,
+    "sha256": "d831496cc1d1e2748519439a0ea509ba966b56db10d13132db52331a270aac74"
+   },
+   {
+    "ruta": "libRlapack.so",
+    "bytes": 1769888,
+    "sha256": "df8ca333754f0dd95715df437f6e6d633e4ffbff0176bcb11c15fe3e5dd4e387"
+   },
+   {
+    "ruta": "vfs/usr/lib/R/library/parallel.data.gz",
+    "bytes": 349042,
+    "sha256": "25256757440bb6dd77b2cbdd5668b85aed5d2b8ebae58d039408f1d8b4fe5b95"
+   },
+   {
+    "ruta": "vfs/usr/lib/R/library/parallel.js.metadata",
+    "bytes": 1238,
+    "sha256": "82f79a072159d48f4c9d2b984ee7660c7c15327d14534d9e89b3271268b0a768"
+   },
+   {
+    "ruta": "vfs/usr/lib/R/library/tcltk.data.gz",
+    "bytes": 132160,
+    "sha256": "fd62d4cf44534ca784cbc0ab26e65eb1c6f882269709fced5a1ac459f8550026"
+   },
+   {
+    "ruta": "vfs/usr/lib/R/library/tcltk.js.metadata",
+    "bytes": 2019,
+    "sha256": "785dc003a43233094a6845f5804fa097fb680ccae0c0aad6fd0784e9582f0ab9"
+   },
+   {
+    "ruta": "vfs/usr/lib/R/library/translations.data.gz",
+    "bytes": 3061528,
+    "sha256": "c8cac5071b8691cb1c960389b370b5007c5b8df752d98a5860bce505c234b9c2"
+   },
+   {
+    "ruta": "vfs/usr/lib/R/library/translations.js.metadata",
+    "bytes": 35184,
+    "sha256": "f62b1fa37f7cdff9aa0c9b7046366254411b7df6bb35d2017cbb531fd6ee3d4a"
+   },
+   {
+    "ruta": "vfs/usr/lib/R/library/translations/DESCRIPTION",
+    "bytes": 238,
+    "sha256": "ba7da3ac60466f5f466c4f706f50bcafbb924f94b0888d333bb410451b41afd2"
+   }
+  ]
+ },
+ "repo": {
+  "base": "https://repo.r-wasm.org/",
+  "contrib": "bin/emscripten/contrib/4.6/",
+  "fuentes": "https://repo.r-wasm.org/src/contrib/",
+  "raices": [
+   "lme4",
+   "lmerTest",
+   "nlme",
+   "car",
+   "emmeans",
+   "pbkrtest"
+  ],
+  "paquetes": [
+   {
+    "paquete": "abind",
+    "version": "1.4-8",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "abind_1.4-8.tgz",
+    "bytes": 45211,
+    "md5": "2c5bf999c682fe7fba68124c8cbc5a5c",
+    "sha256": "a36034ed857449005e0ada292afa6d059bf963ff89402190dd38fd756d2c3bb2",
+    "fuente": "abind_1.4-8.tar.gz",
+    "dcf": "Package: abind\nVersion: 1.4-8\nDepends: R (>= 1.5.0)\nImports: methods, utils\nLicense: MIT + file LICENSE\nMD5sum: 2c5bf999c682fe7fba68124c8cbc5a5c\nBuilt: R 4.6.0; ; 2026-05-12 14:42:53 UTC; unix\nFile: abind_1.4-8.tgz"
+   },
+   {
+    "paquete": "backports",
+    "version": "1.5.1",
+    "licencia": "GPL-2 | GPL-3",
+    "archivo": "backports_1.5.1.tgz",
+    "bytes": 91246,
+    "md5": "a42352c3977e6158b09a56d982874c82",
+    "sha256": "5d69010c0f924e56e2ee1f9caff212ac351b2a00f821f97ca48b2e4c5d926fa8",
+    "fuente": "backports_1.5.1.tar.gz",
+    "dcf": "Package: backports\nVersion: 1.5.1\nDepends: R (>= 3.0.0)\nLicense: GPL-2 | GPL-3\nMD5sum: a42352c3977e6158b09a56d982874c82\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-12 16:29:34 UTC;\n        unix\nFile: backports_1.5.1.tgz"
+   },
+   {
+    "paquete": "boot",
+    "version": "1.3-32",
+    "licencia": "Unlimited",
+    "archivo": "boot_1.3-32.tgz",
+    "bytes": 510819,
+    "md5": "065265208bf9aeeec1f77bee67b1cff6",
+    "sha256": "8ffe8cb4b051ae4d1d01753b25b84e0133cc2311bf68c42afe172e2482d851dd",
+    "fuente": "boot_1.3-32.tar.gz",
+    "dcf": "Package: boot\nVersion: 1.3-32\nPriority: recommended\nDepends: R (>= 3.0.0), graphics, stats\nSuggests: MASS, survival\nLicense: Unlimited\nMD5sum: 065265208bf9aeeec1f77bee67b1cff6\nBuilt: R 4.6.0; ; 2026-05-12 18:23:31 UTC; unix\nFile: boot_1.3-32.tgz"
+   },
+   {
+    "paquete": "broom",
+    "version": "1.0.13",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "broom_1.0.13.tgz",
+    "bytes": 1428717,
+    "md5": "897c4f300454b17e033ffcbbd992329d",
+    "sha256": "5e9c62e1a56a8a20dd80806e9c9771bf741f3097b616d6165458966863b4cfa7",
+    "fuente": "broom_1.0.13.tar.gz",
+    "dcf": "Package: broom\nVersion: 1.0.13\nDepends: R (>= 4.1)\nImports: backports, cli, dplyr (>= 1.0.0), generics (>= 0.0.2), glue,\n        lifecycle, purrr, rlang (>= 1.1.0), stringr, tibble (>= 3.0.0),\n        tidyr (>= 1.0.0)\nSuggests: AER, AUC, bbmle, betareg (>= 3.2-1), biglm, binGroup, boot,\n        btergm (>= 1.10.6), car (>= 3.1-2), carData, caret, cluster,\n        cmprsk, coda, covr, drc, e1071, emmeans, epiR (>= 2.0.85), ergm\n        (>= 3.10.4), fixest (>= 0.9.0), gam (>= 1.15), gee, geepack,\n        ggplot2, glmnet, glmnetUtils, gmm, Hmisc, interp, irlba,\n        joineRML, Kendall, knitr, ks, Lahman, lavaan (>= 0.6.18),\n        leaps, lfe, lm.beta, lme4, lmodel2, lmtest (>= 0.9.38),\n        lsmeans, maps, margins, MASS, mclust, mediation, metafor, mfx,\n        mgcv, mlogit, modeldata, modeltests (>= 0.1.6), muhaz,\n        multcomp, network, nnet, ordinal, plm, poLCA, psych, quantreg,\n        rmarkdown, robust, robustbase, rsample, sandwich, spatialreg,\n        spdep (>= 1.1), speedglm, spelling, stats4, survey, survival\n        (>= 3.6-4), systemfit, testthat (>= 3.0.0), tseries, vars, zoo\nLicense: MIT + file LICENSE\nMD5sum: 897c4f300454b17e033ffcbbd992329d\nBuilt: R 4.6.0; ; 2026-05-14 13:40:53 UTC; unix\nFile: broom_1.0.13.tgz"
+   },
+   {
+    "paquete": "car",
+    "version": "3.1-5",
+    "licencia": "GPL (>= 2)",
+    "archivo": "car_3.1-5.tgz",
+    "bytes": 896192,
+    "md5": "7863ab220ad6ecd6ba7c433e173bf81b",
+    "sha256": "38761d29d9132b58ce5bc3e4dba07558fccb549c0c412966e8e7914543f3f1ad",
+    "fuente": "car_3.1-5.tar.gz",
+    "dcf": "Package: car\nVersion: 3.1-5\nDepends: R (>= 3.5.0), carData (>= 3.0-0)\nImports: abind, Formula, MASS, mgcv, nnet, pbkrtest (>= 0.4-4),\n        quantreg, grDevices, utils, stats, graphics, lme4 (>=\n        1.1-27.1), nlme, scales\nSuggests: alr4, boot, coxme, effects, knitr, leaps, lmtest, Matrix,\n        MatrixModels, ordinal, plotrix, mvtnorm, rgl (>= 0.111.3), rio,\n        sandwich, SparseM, survival, survey\nLicense: GPL (>= 2)\nMD5sum: 7863ab220ad6ecd6ba7c433e173bf81b\nBuilt: R 4.6.0; ; 2026-05-12 19:09:35 UTC; unix\nFile: car_3.1-5.tgz"
+   },
+   {
+    "paquete": "carData",
+    "version": "3.0-6",
+    "licencia": "GPL (>= 2)",
+    "archivo": "carData_3.0-6.tgz",
+    "bytes": 1709888,
+    "md5": "731c52eb2798f96aaed151c657dc08f6",
+    "sha256": "085048ed58cea41d053f12514f881be3d7507ae4dd96a1e9f32d3f25c8ff1e01",
+    "fuente": "carData_3.0-6.tar.gz",
+    "dcf": "Package: carData\nVersion: 3.0-6\nDepends: R (>= 3.5.0)\nSuggests: car (>= 3.0-0)\nLicense: GPL (>= 2)\nMD5sum: 731c52eb2798f96aaed151c657dc08f6\nBuilt: R 4.6.0; ; 2026-05-12 19:11:37 UTC; unix\nFile: carData_3.0-6.tgz"
+   },
+   {
+    "paquete": "cli",
+    "version": "3.6.6",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "cli_3.6.6.tgz",
+    "bytes": 967089,
+    "md5": "9969e89a653cbd6adab0f2272549f629",
+    "sha256": "efa9c2b12c2da09cccb0a27d2e7a079ebd4c38fc1d03560d599f7634eb7f9932",
+    "fuente": "cli_3.6.6.tar.gz",
+    "dcf": "Package: cli\nVersion: 3.6.6\nDepends: R (>= 3.4)\nImports: utils\nSuggests: callr, covr, crayon, digest, glue (>= 1.6.0), grDevices,\n        htmltools, htmlwidgets, knitr, methods, processx, ps (>=\n        1.3.4.9000), rlang (>= 1.0.2.9003), rmarkdown, rprojroot,\n        rstudioapi, testthat (>= 3.2.0), tibble, whoami, withr\nLicense: MIT + file LICENSE\nMD5sum: 9969e89a653cbd6adab0f2272549f629\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-12 20:13:34 UTC;\n        unix\nFile: cli_3.6.6.tgz"
+   },
+   {
+    "paquete": "colorspace",
+    "version": "2.1-2",
+    "licencia": "BSD_3_clause + file LICENSE",
+    "archivo": "colorspace_2.1-2.tgz",
+    "bytes": 2441883,
+    "md5": "0c67e216f6088bdebb35879224f269ff",
+    "sha256": "b2481881e899771c68ac8284d7884b2ad772f06be2be08b5ea38d47615cdcde7",
+    "fuente": "colorspace_2.1-2.tar.gz",
+    "dcf": "Package: colorspace\nVersion: 2.1-2\nDepends: R (>= 3.0.0), methods\nImports: graphics, grDevices, stats\nSuggests: datasets, utils, KernSmooth, MASS, kernlab, mvtnorm, vcd,\n        tcltk, shiny, shinyjs, ggplot2, dplyr, scales, grid, png, jpeg,\n        knitr, rmarkdown, RColorBrewer, rcartocolor, scico, viridis,\n        wesanderson\nLicense: BSD_3_clause + file LICENSE\nMD5sum: 0c67e216f6088bdebb35879224f269ff\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-12 20:53:12 UTC;\n        unix\nFile: colorspace_2.1-2.tgz"
+   },
+   {
+    "paquete": "cowplot",
+    "version": "1.2.0",
+    "licencia": "GPL-2",
+    "archivo": "cowplot_1.2.0.tgz",
+    "bytes": 1343961,
+    "md5": "19e12ad9953489eb9697426b6ed20ff5",
+    "sha256": "9dd8412ad8b9b65866a6072b5729a12e0f46cac4495370b388a320073f4e5355",
+    "fuente": "cowplot_1.2.0.tar.gz",
+    "dcf": "Package: cowplot\nVersion: 1.2.0\nDepends: R (>= 3.5.0)\nImports: ggplot2 (>= 3.5.2), grid, gtable, grDevices, methods, rlang,\n        scales\nSuggests: Cairo, covr, dplyr, forcats, gridGraphics (>= 0.4-0), knitr,\n        lattice, magick, maps, PASWR, patchwork, rmarkdown, ragg,\n        testthat (>= 1.0.0), tidyr, vdiffr (>= 0.3.0), VennDiagram\nLicense: GPL-2\nMD5sum: 19e12ad9953489eb9697426b6ed20ff5\nBuilt: R 4.6.0; ; 2026-05-12 21:39:03 UTC; unix\nFile: cowplot_1.2.0.tgz"
+   },
+   {
+    "paquete": "Deriv",
+    "version": "4.2.0",
+    "licencia": "GPL (>= 3)",
+    "archivo": "Deriv_4.2.0.tgz",
+    "bytes": 68556,
+    "md5": "33c6a9cef0036aa5bc360127b4133949",
+    "sha256": "4830c6127e3fb485386a6b097b343bde0d9e50961b7490f0c588e4baf1d2e845",
+    "fuente": "Deriv_4.2.0.tar.gz",
+    "dcf": "Package: Deriv\nVersion: 4.2.0\nImports: methods\nSuggests: testthat (>= 0.11.0)\nLicense: GPL (>= 3)\nMD5sum: 33c6a9cef0036aa5bc360127b4133949\nBuilt: R 4.6.0; ; 2026-05-12 23:09:10 UTC; unix\nFile: Deriv_4.2.0.tgz"
+   },
+   {
+    "paquete": "doBy",
+    "version": "4.7.1",
+    "licencia": "GPL (>= 2)",
+    "archivo": "doBy_4.7.1.tgz",
+    "bytes": 4671825,
+    "md5": "1677e306c798e8f5ded21de7e7bb36d1",
+    "sha256": "4c804bb7d54e8d273d725c4ac4422486f210c34a74853b12bb34f7e8ab0ca9e0",
+    "fuente": "doBy_4.7.1.tar.gz",
+    "dcf": "Package: doBy\nVersion: 4.7.1\nDepends: R (>= 4.2.0), methods\nImports: boot, broom, cowplot, Deriv, dplyr, forecast, ggplot2, MASS,\n        Matrix, modelr, microbenchmark, rlang, purrr, tibble, tidyr,\nSuggests: geepack, knitr, lme4, markdown, rmarkdown, multcomp, pbkrtest\n        (>= 0.5.2), survival, testthat (>= 2.1.0)\nLicense: GPL (>= 2)\nMD5sum: 1677e306c798e8f5ded21de7e7bb36d1\nBuilt: R 4.6.0; ; 2026-05-12 23:52:47 UTC; unix\nFile: doBy_4.7.1.tgz"
+   },
+   {
+    "paquete": "dplyr",
+    "version": "1.2.1",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "dplyr_1.2.1.tgz",
+    "bytes": 1130500,
+    "md5": "743bd7ab74a190fe3a5c63b8b054fade",
+    "sha256": "58c606c81e4539318c705f6d40a640b4cc9121e60aac3e3632d0029cf6841d08",
+    "fuente": "dplyr_1.2.1.tar.gz",
+    "dcf": "Package: dplyr\nVersion: 1.2.1\nDepends: R (>= 4.1.0)\nImports: cli (>= 3.6.2), generics, glue (>= 1.3.2), lifecycle (>=\n        1.0.5), magrittr (>= 1.5), methods, pillar (>= 1.9.0), R6,\n        rlang (>= 1.1.7), tibble (>= 3.2.0), tidyselect (>= 1.2.0),\n        utils, vctrs (>= 0.7.1)\nSuggests: broom, covr, DBI, dbplyr (>= 2.2.1), ggplot2, knitr, Lahman,\n        lobstr, nycflights13, purrr, rmarkdown, RSQLite, stringi (>=\n        1.7.6), testthat (>= 3.1.5), tidyr (>= 1.3.0), withr\nLicense: MIT + file LICENSE\nMD5sum: 743bd7ab74a190fe3a5c63b8b054fade\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 00:01:17 UTC;\n        unix\nFile: dplyr_1.2.1.tgz"
+   },
+   {
+    "paquete": "emmeans",
+    "version": "2.0.3",
+    "licencia": "GPL-2 | GPL-3",
+    "archivo": "emmeans_2.0.3.tgz",
+    "bytes": 1793437,
+    "md5": "9beebccbaded85962ba6a8bd5e4b9519",
+    "sha256": "b8f9c0d8e5f4eaa22cba2f06057a57afc727261252fc626d7af252f6944f7a59",
+    "fuente": "emmeans_2.0.3.tar.gz",
+    "dcf": "Package: emmeans\nVersion: 2.0.3\nDepends: R (>= 4.1.0)\nImports: estimability (>= 1.4.1), graphics, methods, mvtnorm, numDeriv,\n        rlang, stats, utils\nSuggests: bayesplot, bayestestR, biglm, brms, car, coda (>= 0.17),\n        compositions, ggplot2 (>= 4.0.0), knitr, lattice, lme4,\n        lmerTest (>= 2.0.32), logspline, MASS, mediation, mgcv,\n        multcomp, multcompView, MuMIn, nlme, ordinal (>= 2014.11-12),\n        pbkrtest (>= 0.4-1), rmarkdown, robmixglm, rsm, sandwich,\n        scales, splines, testthat, tibble, xtable (>= 1.8-2)\nEnhances: CARBayes, coxme, gee, geepack, MCMCglmm, MCMCpack, mice,\n        nnet, pscl, rstanarm, sommer, survival\nLicense: GPL-2 | GPL-3\nMD5sum: 9beebccbaded85962ba6a8bd5e4b9519\nBuilt: R 4.6.0; ; 2026-05-13 01:25:32 UTC; unix\nFile: emmeans_2.0.3.tgz"
+   },
+   {
+    "paquete": "estimability",
+    "version": "1.5.1",
+    "licencia": "GPL (>= 3)",
+    "archivo": "estimability_1.5.1.tgz",
+    "bytes": 45329,
+    "md5": "3841a5b72c86e544d66908a0a312bde0",
+    "sha256": "654f0935194efbc1adccf60af2da0932c29df31247c317edea28a338e71447e9",
+    "fuente": "estimability_1.5.1.tar.gz",
+    "dcf": "Package: estimability\nVersion: 1.5.1\nDepends: stats, R(>= 4.1.0)\nSuggests: knitr, rmarkdown\nLicense: GPL (>= 3)\nMD5sum: 3841a5b72c86e544d66908a0a312bde0\nBuilt: R 4.6.0; ; 2026-05-13 01:57:48 UTC; unix\nFile: estimability_1.5.1.tgz"
+   },
+   {
+    "paquete": "farver",
+    "version": "2.1.2",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "farver_2.1.2.tgz",
+    "bytes": 1317442,
+    "md5": "d4d2197542b63048e6d99dcefef59a43",
+    "sha256": "f7555f2c1926f88d431ff1919c81cff48ff6eadc09de4471610312695be6cea8",
+    "fuente": "farver_2.1.2.tar.gz",
+    "dcf": "Package: farver\nVersion: 2.1.2\nSuggests: covr, testthat (>= 3.0.0)\nLicense: MIT + file LICENSE\nMD5sum: d4d2197542b63048e6d99dcefef59a43\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 02:35:54 UTC;\n        unix\nFile: farver_2.1.2.tgz"
+   },
+   {
+    "paquete": "forecast",
+    "version": "9.0.2",
+    "licencia": "GPL-3",
+    "archivo": "forecast_9.0.2.tgz",
+    "bytes": 1000703,
+    "md5": "9ab9f9666985ad4121d52591ce4d278c",
+    "sha256": "edbe2743886690358bb049065e12c8218abb12ed07a54a5572c582a0f26999df",
+    "fuente": "forecast_9.0.2.tar.gz",
+    "dcf": "Package: forecast\nVersion: 9.0.2\nDepends: R (>= 4.1.0)\nImports: colorspace, fracdiff, generics (>= 0.1.2), ggplot2 (>= 3.4.0),\n        graphics, lmtest, magrittr, nnet, parallel, Rcpp (>= 0.12.4),\n        stats, timeDate, urca, withr, zoo\nLinkingTo: Rcpp (>= 0.12.4), RcppArmadillo (>= 0.2.35)\nSuggests: forecTheta, knitr, methods, rmarkdown, rticles, scales,\n        seasonal, testthat (>= 3.3.0), uroot\nLicense: GPL-3\nMD5sum: 9ab9f9666985ad4121d52591ce4d278c\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 03:46:28 UTC;\n        unix\nFile: forecast_9.0.2.tgz"
+   },
+   {
+    "paquete": "Formula",
+    "version": "1.2-5",
+    "licencia": "GPL-2 | GPL-3",
+    "archivo": "Formula_1.2-5.tgz",
+    "bytes": 145125,
+    "md5": "8074cb03f1036ccc00dcfb9d61e8c415",
+    "sha256": "1d2791a3f8a4696b18505f250f0e579484f1036b6851c6d02d15df00a9085d6b",
+    "fuente": "Formula_1.2-5.tar.gz",
+    "dcf": "Package: Formula\nVersion: 1.2-5\nDepends: R (>= 2.0.0), stats\nLicense: GPL-2 | GPL-3\nMD5sum: 8074cb03f1036ccc00dcfb9d61e8c415\nBuilt: R 4.6.0; ; 2026-05-13 03:51:36 UTC; unix\nFile: Formula_1.2-5.tgz"
+   },
+   {
+    "paquete": "fracdiff",
+    "version": "1.5-4",
+    "licencia": "GPL (>= 2)",
+    "archivo": "fracdiff_1.5-4.tgz",
+    "bytes": 68655,
+    "md5": "ce82c01f1cc93616642082533bcd4508",
+    "sha256": "fb19f02419e5522ebff889a8a2c67686d65ed8fe621c8146c76e157ff36f747d",
+    "fuente": "fracdiff_1.5-4.tar.gz",
+    "dcf": "Package: fracdiff\nVersion: 1.5-4\nImports: stats\nSuggests: longmemo, forecast, urca\nLicense: GPL (>= 2)\nMD5sum: ce82c01f1cc93616642082533bcd4508\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 03:56:17 UTC;\n        unix\nFile: fracdiff_1.5-4.tgz"
+   },
+   {
+    "paquete": "generics",
+    "version": "0.1.4",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "generics_0.1.4.tgz",
+    "bytes": 75687,
+    "md5": "218be80e8ad1725dfe54cb3c3412d23b",
+    "sha256": "a9c7ca26beaef02a95fb0c971a9a1a5b8e09db3d99baf17796537d2bf9a396bc",
+    "fuente": "generics_0.1.4.tar.gz",
+    "dcf": "Package: generics\nVersion: 0.1.4\nDepends: R (>= 3.6)\nImports: methods\nSuggests: covr, pkgload, testthat (>= 3.0.0), tibble, withr\nLicense: MIT + file LICENSE\nMD5sum: 218be80e8ad1725dfe54cb3c3412d23b\nBuilt: R 4.6.0; ; 2026-05-13 04:47:17 UTC; unix\nFile: generics_0.1.4.tgz"
+   },
+   {
+    "paquete": "ggplot2",
+    "version": "4.0.3",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "ggplot2_4.0.3.tgz",
+    "bytes": 7481119,
+    "md5": "853c8cabb5f13906af19a92c26210247",
+    "sha256": "1a299608d88c92d5741666229c1125848e4c210b0624ebd0012af97957976ae6",
+    "fuente": "ggplot2_4.0.3.tar.gz",
+    "dcf": "Package: ggplot2\nVersion: 4.0.3\nDepends: R (>= 4.1)\nImports: cli, grDevices, grid, gtable (>= 0.3.6), isoband, lifecycle (>\n        1.0.1), rlang (>= 1.1.0), S7, scales (>= 1.4.0), stats, vctrs\n        (>= 0.6.0), withr (>= 2.5.0)\nSuggests: broom, covr, dplyr, ggplot2movies, hexbin, Hmisc, hms, knitr,\n        mapproj, maps, MASS, mgcv, multcomp, munsell, nlme, profvis,\n        quantreg, quarto, ragg (>= 1.2.6), RColorBrewer, roxygen2,\n        rpart, sf (>= 0.7-3), svglite (>= 2.1.2), testthat (>= 3.1.5),\n        tibble, vdiffr (>= 1.0.6), xml2\nEnhances: sp\nLicense: MIT + file LICENSE\nMD5sum: 853c8cabb5f13906af19a92c26210247\nBuilt: R 4.6.0; ; 2026-05-13 05:28:23 UTC; unix\nFile: ggplot2_4.0.3.tgz"
+   },
+   {
+    "paquete": "glue",
+    "version": "1.8.1",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "glue_1.8.1.tgz",
+    "bytes": 152905,
+    "md5": "4e61fadc9bdd09c8b66fe9b1f8532127",
+    "sha256": "3b025aa5fd067ad9b87fecd219e561d4537d488b33581af8beabe2b06024d44d",
+    "fuente": "glue_1.8.1.tar.gz",
+    "dcf": "Package: glue\nVersion: 1.8.1\nDepends: R (>= 4.1)\nImports: methods\nSuggests: crayon, DBI (>= 1.2.0), dplyr, knitr, rlang, rmarkdown,\n        RSQLite, testthat (>= 3.2.0), vctrs (>= 0.3.0), waldo (>=\n        0.5.3), withr\nLicense: MIT + file LICENSE\nMD5sum: 4e61fadc9bdd09c8b66fe9b1f8532127\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 06:00:42 UTC;\n        unix\nFile: glue_1.8.1.tgz"
+   },
+   {
+    "paquete": "gtable",
+    "version": "0.3.6",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "gtable_0.3.6.tgz",
+    "bytes": 184798,
+    "md5": "e7fbf6603a3ff216ddcf38249bfaf3b4",
+    "sha256": "dae6408ed2ed1d759e50c5fb7e45f81348ff3f4f914cb418ac12bdeaae2ee80b",
+    "fuente": "gtable_0.3.6.tar.gz",
+    "dcf": "Package: gtable\nVersion: 0.3.6\nDepends: R (>= 4.0)\nImports: cli, glue, grid, lifecycle, rlang (>= 1.1.0), stats\nSuggests: covr, ggplot2, knitr, profvis, rmarkdown, testthat (>= 3.0.0)\nLicense: MIT + file LICENSE\nMD5sum: e7fbf6603a3ff216ddcf38249bfaf3b4\nBuilt: R 4.6.0; ; 2026-05-13 06:49:40 UTC; unix\nFile: gtable_0.3.6.tgz"
+   },
+   {
+    "paquete": "isoband",
+    "version": "0.3.0",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "isoband_0.3.0.tgz",
+    "bytes": 1627614,
+    "md5": "b622cf2a0d972e4e9d867e360a484692",
+    "sha256": "bc7494f286084e8861331256df0f6ab27e519e1797e807ec100db1116d3e7a8e",
+    "fuente": "isoband_0.3.0.tar.gz",
+    "dcf": "Package: isoband\nVersion: 0.3.0\nImports: cli, grid, rlang, utils\nLinkingTo: cpp11\nSuggests: covr, ggplot2, knitr, magick, bench, rmarkdown, sf, testthat\n        (>= 3.0.0), xml2\nLicense: MIT + file LICENSE\nMD5sum: b622cf2a0d972e4e9d867e360a484692\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 09:19:24 UTC;\n        unix\nFile: isoband_0.3.0.tgz"
+   },
+   {
+    "paquete": "labeling",
+    "version": "0.4.3",
+    "licencia": "MIT + file LICENSE | Unlimited",
+    "archivo": "labeling_0.4.3.tgz",
+    "bytes": 42861,
+    "md5": "8716cde95fcede366579cc56d8952769",
+    "sha256": "1d89f92c8b15aee3b4f9c8c6c0e7697f79c515558c274279fddfd03a34a6d63d",
+    "fuente": "labeling_0.4.3.tar.gz",
+    "dcf": "Package: labeling\nVersion: 0.4.3\nImports: stats, graphics\nLicense: MIT + file LICENSE | Unlimited\nMD5sum: 8716cde95fcede366579cc56d8952769\nBuilt: R 4.6.0; ; 2026-05-13 10:18:30 UTC; unix\nFile: labeling_0.4.3.tgz"
+   },
+   {
+    "paquete": "lattice",
+    "version": "0.22-9",
+    "licencia": "GPL (>= 2)",
+    "archivo": "lattice_0.22-9.tgz",
+    "bytes": 1002014,
+    "md5": "d83a204f2467c0fbbaa589b78ce1aac6",
+    "sha256": "2797c655d7bd06c7bd212a6dd6eeb1b3c672a8bac43d09a406e1a2190264f79b",
+    "fuente": "lattice_0.22-9.tar.gz",
+    "dcf": "Package: lattice\nVersion: 0.22-9\nPriority: recommended\nDepends: R (>= 4.0.0)\nImports: grid, grDevices, graphics, stats, utils\nSuggests: KernSmooth, MASS, latticeExtra, colorspace\nEnhances: chron, zoo\nLicense: GPL (>= 2)\nMD5sum: d83a204f2467c0fbbaa589b78ce1aac6\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 10:29:50 UTC;\n        unix\nFile: lattice_0.22-9.tgz"
+   },
+   {
+    "paquete": "lifecycle",
+    "version": "1.0.5",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "lifecycle_1.0.5.tgz",
+    "bytes": 102893,
+    "md5": "56e8354c9d8473374c6139f2ed97be80",
+    "sha256": "c2f8c5905f58b4526c3b68c6163f891b9a12f81d7e50347ad49a70b1f6592527",
+    "fuente": "lifecycle_1.0.5.tar.gz",
+    "dcf": "Package: lifecycle\nVersion: 1.0.5\nDepends: R (>= 3.6)\nImports: cli (>= 3.4.0), rlang (>= 1.1.0)\nSuggests: covr, knitr, lintr (>= 3.1.0), rmarkdown, testthat (>=\n        3.0.1), tibble, tidyverse, tools, vctrs, withr, xml2\nLicense: MIT + file LICENSE\nMD5sum: 56e8354c9d8473374c6139f2ed97be80\nBuilt: R 4.6.0; ; 2026-05-13 10:59:31 UTC; unix\nFile: lifecycle_1.0.5.tgz"
+   },
+   {
+    "paquete": "lme4",
+    "version": "2.0-1",
+    "licencia": "GPL (>= 2)",
+    "archivo": "lme4_2.0-1.tgz",
+    "bytes": 3982643,
+    "md5": "bba7d655dd644918b095a62ff86124b2",
+    "sha256": "edf8b6a90baede4d266688723dcf978e30acaa28bc44ac6f17087b4421ef021b",
+    "fuente": "lme4_2.0-1.tar.gz",
+    "dcf": "Package: lme4\nVersion: 2.0-1\nDepends: R (>= 3.6), Matrix, methods, stats\nImports: MASS, Rdpack, boot, graphics, grid, lattice, minqa (>=\n        1.1.15), nlme (>= 3.1-123), nloptr (>= 1.0.4), parallel,\n        reformulas (>= 0.4.3.1), rlang, splines, utils\nLinkingTo: Matrix (>= 1.5-0), Rcpp (>= 0.10.5), RcppEigen (>=\n        0.3.3.9.4)\nSuggests: HSAUR3, MEMSS, car, dfoptim, gamm4, ggplot2, glmmTMB, knitr,\n        merDeriv, mgcv, mlmRev, numDeriv, optimx (>= 2013.8.6),\n        pbkrtest, rmarkdown, rr2, semEff, statmod, testthat (>= 0.8.1),\n        tibble\nEnhances: DHARMa, performance\nLicense: GPL (>= 2)\nMD5sum: bba7d655dd644918b095a62ff86124b2\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 11:19:14 UTC;\n        unix\nFile: lme4_2.0-1.tgz"
+   },
+   {
+    "paquete": "lmerTest",
+    "version": "3.2-1",
+    "licencia": "GPL (>= 2)",
+    "archivo": "lmerTest_3.2-1.tgz",
+    "bytes": 382606,
+    "md5": "5333482422e83bb4016b419ff08526dc",
+    "sha256": "0523f0ff1e2875cd112f89d2291d20fa0b9201eb1cabfb60a38935cbb21dc273",
+    "fuente": "lmerTest_3.2-1.tar.gz",
+    "dcf": "Package: lmerTest\nVersion: 3.2-1\nDepends: R (>= 3.2.5), lme4 (>= 1.1-10), stats, methods\nImports: numDeriv, MASS, ggplot2, reformulas\nSuggests: pbkrtest (>= 0.4-3), tools\nLicense: GPL (>= 2)\nMD5sum: 5333482422e83bb4016b419ff08526dc\nBuilt: R 4.6.0; ; 2026-05-13 11:19:59 UTC; unix\nFile: lmerTest_3.2-1.tgz"
+   },
+   {
+    "paquete": "lmtest",
+    "version": "0.9-40",
+    "licencia": "GPL-2 | GPL-3",
+    "archivo": "lmtest_0.9-40.tgz",
+    "bytes": 334286,
+    "md5": "1986857597832a731f21c68772c2456e",
+    "sha256": "ed0c0ff0caa1cab87b420102ea80cc515f35228c6e17d80ac515cbab8f62653e",
+    "fuente": "lmtest_0.9-40.tar.gz",
+    "dcf": "Package: lmtest\nVersion: 0.9-40\nDepends: R (>= 3.0.0), stats, zoo\nImports: graphics\nSuggests: car, strucchange, sandwich, dynlm, stats4, survival, AER\nLicense: GPL-2 | GPL-3\nMD5sum: 1986857597832a731f21c68772c2456e\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 11:22:34 UTC;\n        unix\nFile: lmtest_0.9-40.tgz"
+   },
+   {
+    "paquete": "magrittr",
+    "version": "2.0.5",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "magrittr_2.0.5.tgz",
+    "bytes": 218148,
+    "md5": "b8de5e142ae82a1e9ebdcc8cc60bc885",
+    "sha256": "ff7c81a6839f611a9a7d16b2e03ba6e99859992128012f8e9d3d7a8ef1ad5588",
+    "fuente": "magrittr_2.0.5.tar.gz",
+    "dcf": "Package: magrittr\nVersion: 2.0.5\nDepends: R (>= 3.4.0)\nSuggests: covr, knitr, rlang, rmarkdown, testthat\nLicense: MIT + file LICENSE\nMD5sum: b8de5e142ae82a1e9ebdcc8cc60bc885\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 11:55:50 UTC;\n        unix\nFile: magrittr_2.0.5.tgz"
+   },
+   {
+    "paquete": "MASS",
+    "version": "7.3-65",
+    "licencia": "GPL-2 | GPL-3",
+    "archivo": "MASS_7.3-65.tgz",
+    "bytes": 874568,
+    "md5": "4f9edbfdfe796b7a29a7964ae621a04a",
+    "sha256": "9cb66dfbaf017f74e4408117128c04a859697ad8ff49cffad0537b2b15f0d846",
+    "fuente": "MASS_7.3-65.tar.gz",
+    "dcf": "Package: MASS\nVersion: 7.3-65\nPriority: recommended\nDepends: R (>= 4.4.0), grDevices, graphics, stats, utils\nImports: methods\nSuggests: lattice, nlme, nnet, survival\nLicense: GPL-2 | GPL-3\nMD5sum: 4f9edbfdfe796b7a29a7964ae621a04a\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 12:17:32 UTC;\n        unix\nFile: MASS_7.3-65.tgz"
+   },
+   {
+    "paquete": "Matrix",
+    "version": "1.7-5",
+    "licencia": "GPL (>= 2) | file LICENCE",
+    "archivo": "Matrix_1.7-5.tgz",
+    "bytes": 2937115,
+    "md5": "55f37d7af610957165cefe11a6bfbc95",
+    "sha256": "52f76ce63e3421b0a0381d8983e7f18bebf492ddf5dde71f57a50ee4d27782d8",
+    "fuente": "Matrix_1.7-5.tar.gz",
+    "dcf": "Package: Matrix\nVersion: 1.7-5\nPriority: recommended\nDepends: R (>= 4.4), methods\nImports: grDevices, graphics, grid, lattice, stats, utils\nSuggests: MASS, datasets, sfsmisc, tools\nEnhances: SparseM, graph\nLicense: GPL (>= 2) | file LICENCE\nMD5sum: 55f37d7af610957165cefe11a6bfbc95\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 12:22:38 UTC;\n        unix\nFile: Matrix_1.7-5.tgz"
+   },
+   {
+    "paquete": "MatrixModels",
+    "version": "0.5-4",
+    "licencia": "GPL (>= 2)",
+    "archivo": "MatrixModels_0.5-4.tgz",
+    "bytes": 348866,
+    "md5": "9dd38440ad08252153b697d5293bd5a9",
+    "sha256": "35b4409b8507af68e6fee7ef8032329b7c524c4f29fe359ab60f3796f03d1c4e",
+    "fuente": "MatrixModels_0.5-4.tar.gz",
+    "dcf": "Package: MatrixModels\nVersion: 0.5-4\nDepends: R (>= 3.6.0)\nImports: stats, methods, Matrix (>= 1.6-0), Matrix(< 1.8-0)\nLicense: GPL (>= 2)\nMD5sum: 9dd38440ad08252153b697d5293bd5a9\nBuilt: R 4.6.0; ; 2026-05-13 12:25:15 UTC; unix\nFile: MatrixModels_0.5-4.tgz"
+   },
+   {
+    "paquete": "mgcv",
+    "version": "1.9-4",
+    "licencia": "GPL (>= 2)",
+    "archivo": "mgcv_1.9-4.tgz",
+    "bytes": 1724694,
+    "md5": "af2dbd29efb26b586c9c6a0491e8ad95",
+    "sha256": "719ca805aaf34eaf142990bc9d9b81862682950d3b19ed95475212ef8e02c8da",
+    "fuente": "mgcv_1.9-4.tar.gz",
+    "dcf": "Package: mgcv\nVersion: 1.9-4\nPriority: recommended\nDepends: R (>= 4.4.0), nlme (>= 3.1-64)\nImports: methods, stats, graphics, Matrix, splines, utils\nSuggests: parallel, survival, MASS\nLicense: GPL (>= 2)\nMD5sum: af2dbd29efb26b586c9c6a0491e8ad95\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 13:21:42 UTC;\n        unix\nFile: mgcv_1.9-4.tgz"
+   },
+   {
+    "paquete": "microbenchmark",
+    "version": "1.5.0",
+    "licencia": "BSD_2_clause + file LICENSE",
+    "archivo": "microbenchmark_1.5.0.tgz",
+    "bytes": 50572,
+    "md5": "737fa85630fb8fcf6fee89f37e8fced3",
+    "sha256": "c665f801b3ba7c7f42ee824c7a242be4321ee9e55130366970fe2d616c313f96",
+    "fuente": "microbenchmark_1.5.0.tar.gz",
+    "dcf": "Package: microbenchmark\nVersion: 1.5.0\nDepends: R (>= 3.2.0)\nImports: graphics, stats\nSuggests: ggplot2, multcomp, RUnit\nLicense: BSD_2_clause + file LICENSE\nMD5sum: 737fa85630fb8fcf6fee89f37e8fced3\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 13:31:25 UTC;\n        unix\nFile: microbenchmark_1.5.0.tgz"
+   },
+   {
+    "paquete": "minqa",
+    "version": "1.2.8",
+    "licencia": "GPL-2",
+    "archivo": "minqa_1.2.8.tgz",
+    "bytes": 85538,
+    "md5": "be3969af07ea65295f136cba270c8f86",
+    "sha256": "717a589602cd8600369631ed65de78421b693df66ace2dc1af8ed99607ee4639",
+    "fuente": "minqa_1.2.8.tar.gz",
+    "dcf": "Package: minqa\nVersion: 1.2.8\nImports: Rcpp (>= 0.9.10)\nLinkingTo: Rcpp\nLicense: GPL-2\nMD5sum: be3969af07ea65295f136cba270c8f86\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 13:48:36 UTC;\n        unix\nFile: minqa_1.2.8.tgz"
+   },
+   {
+    "paquete": "modelr",
+    "version": "0.1.11",
+    "licencia": "GPL-3",
+    "archivo": "modelr_0.1.11.tgz",
+    "bytes": 182559,
+    "md5": "edd34281c6dfe2e54a1b3512703ee3b8",
+    "sha256": "467a9805adf9793a808cd5b0833f03ddfa77e86f096556014064f767b987e37c",
+    "fuente": "modelr_0.1.11.tar.gz",
+    "dcf": "Package: modelr\nVersion: 0.1.11\nDepends: R (>= 3.2)\nImports: broom, magrittr, purrr (>= 0.2.2), rlang (>= 1.0.6), tibble,\n        tidyr (>= 0.8.0), tidyselect, vctrs\nSuggests: compiler, covr, ggplot2, testthat (>= 3.0.0)\nLicense: GPL-3\nMD5sum: edd34281c6dfe2e54a1b3512703ee3b8\nBuilt: R 4.6.0; ; 2026-05-13 14:44:08 UTC; unix\nFile: modelr_0.1.11.tgz"
+   },
+   {
+    "paquete": "mvtnorm",
+    "version": "1.2-4",
+    "licencia": "GPL-2",
+    "archivo": "mvtnorm_1.2-4.tgz",
+    "bytes": 652763,
+    "md5": "69a5b0b6e92772ed57947dfac26bc1a3",
+    "sha256": "ae2c5c562144af25eabce27ebaba8f80767c104a28d9977599cf19f1efa9df45",
+    "fuente": "mvtnorm_1.2-4.tar.gz",
+    "dcf": "Package: mvtnorm\nVersion: 1.2-4\nDepends: R(>= 3.5.0)\nImports: stats\nSuggests: qrng, numDeriv\nLicense: GPL-2\nMD5sum: 69a5b0b6e92772ed57947dfac26bc1a3\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-28 10:36:11 UTC;\n        unix\nFile: mvtnorm_1.2-4.tgz"
+   },
+   {
+    "paquete": "nlme",
+    "version": "3.1-169",
+    "licencia": "GPL (>= 2)",
+    "archivo": "nlme_3.1-169.tgz",
+    "bytes": 1751404,
+    "md5": "5a550c8ae355b143335b06c0b38c6b11",
+    "sha256": "7918af1e887b98d1162cf7a2afe63936a54ad4e87cb2f0bead665bbe101194da",
+    "fuente": "nlme_3.1-169.tar.gz",
+    "dcf": "Package: nlme\nVersion: 3.1-169\nPriority: recommended\nDepends: R (>= 3.6.0)\nImports: graphics, stats, utils, lattice\nSuggests: MASS, SASmixed\nLicense: GPL (>= 2)\nMD5sum: 5a550c8ae355b143335b06c0b38c6b11\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 16:41:00 UTC;\n        unix\nFile: nlme_3.1-169.tgz"
+   },
+   {
+    "paquete": "nloptr",
+    "version": "2.2.1.9000",
+    "licencia": "LGPL (>= 3)",
+    "archivo": "nloptr_2.2.1.9000.tgz",
+    "bytes": 364263,
+    "md5": "7feccba0177b0c478c6c4cc49b93a429",
+    "sha256": "ff7eef53f2ae539a878b12b54ab06f01345b0313297284185c579d4fdb30efa3",
+    "fuente": "nloptr_2.2.1.9000.tar.gz",
+    "dcf": "Package: nloptr\nVersion: 2.2.1.9000\nSuggests: knitr, rmarkdown, covr, tinytest\nLicense: LGPL (>= 3)\nMD5sum: 7feccba0177b0c478c6c4cc49b93a429\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-20 09:17:42 UTC;\n        unix\nFile: nloptr_2.2.1.9000.tgz"
+   },
+   {
+    "paquete": "nnet",
+    "version": "7.3-20",
+    "licencia": "GPL-2 | GPL-3",
+    "archivo": "nnet_7.3-20.tgz",
+    "bytes": 66823,
+    "md5": "8fdec6a007af3733c9167a4026e0251f",
+    "sha256": "8ae55d5413509cbd77d287b8026d261d14a4999df57618447ff9ddb8b28ff3ed",
+    "fuente": "nnet_7.3-20.tar.gz",
+    "dcf": "Package: nnet\nVersion: 7.3-20\nPriority: recommended\nDepends: R (>= 3.0.0), stats, utils\nSuggests: MASS\nLicense: GPL-2 | GPL-3\nMD5sum: 8fdec6a007af3733c9167a4026e0251f\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 16:49:12 UTC;\n        unix\nFile: nnet_7.3-20.tgz"
+   },
+   {
+    "paquete": "numDeriv",
+    "version": "2016.8-1.1",
+    "licencia": "GPL-2",
+    "archivo": "numDeriv_2016.8-1.1.tgz",
+    "bytes": 103011,
+    "md5": "4cedc70ba377c654e2d1a3c863ba0006",
+    "sha256": "f5161c0658fcd60e45e70ffe83e2976b182128dcd5c9e4d0fb2a1466bf38a5c6",
+    "fuente": "numDeriv_2016.8-1.1.tar.gz",
+    "dcf": "Package: numDeriv\nVersion: 2016.8-1.1\nDepends: R (>= 2.11.1)\nLicense: GPL-2\nMD5sum: 4cedc70ba377c654e2d1a3c863ba0006\nBuilt: R 4.6.0; ; 2026-05-13 17:09:10 UTC; unix\nFile: numDeriv_2016.8-1.1.tgz"
+   },
+   {
+    "paquete": "pbkrtest",
+    "version": "0.5.5",
+    "licencia": "GPL (>= 2)",
+    "archivo": "pbkrtest_0.5.5.tgz",
+    "bytes": 153712,
+    "md5": "65bcc0aca8b8af8ea10cc78fdc95bb3e",
+    "sha256": "ae1f74c8106bee2234cd4046cbe2e744322240ca2f1f258883ad130c9e56e8d6",
+    "fuente": "pbkrtest_0.5.5.tar.gz",
+    "dcf": "Package: pbkrtest\nVersion: 0.5.5\nDepends: R (>= 4.2.0), lme4 (>= 1.1.31)\nImports: broom, dplyr, MASS, methods, numDeriv, Matrix (>= 1.2.3), doBy\n        (>= 4.6.22)\nSuggests: nlme, markdown, knitr\nLicense: GPL (>= 2)\nMD5sum: 65bcc0aca8b8af8ea10cc78fdc95bb3e\nBuilt: R 4.6.0; ; 2026-05-13 18:40:44 UTC; unix\nFile: pbkrtest_0.5.5.tgz"
+   },
+   {
+    "paquete": "pillar",
+    "version": "1.11.1",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "pillar_1.11.1.tgz",
+    "bytes": 497042,
+    "md5": "8f3914dfbf8e31befcb5be91e82bb7b0",
+    "sha256": "40c9fcfbfd39a0aa3e7ea784b73abcd7a0a1d4677628bb394ab0c56a0aad9be6",
+    "fuente": "pillar_1.11.1.tar.gz",
+    "dcf": "Package: pillar\nVersion: 1.11.1\nImports: cli (>= 2.3.0), glue, lifecycle, rlang (>= 1.0.2), utf8 (>=\n        1.1.0), utils, vctrs (>= 0.5.0)\nSuggests: bit64, DBI, debugme, DiagrammeR, dplyr, formattable, ggplot2,\n        knitr, lubridate, nanotime, nycflights13, palmerpenguins,\n        rmarkdown, scales, stringi, survival, testthat (>= 3.1.1),\n        tibble, units (>= 0.7.2), vdiffr, withr\nLicense: MIT + file LICENSE\nMD5sum: 8f3914dfbf8e31befcb5be91e82bb7b0\nBuilt: R 4.6.0; ; 2026-05-13 19:27:56 UTC; unix\nFile: pillar_1.11.1.tgz"
+   },
+   {
+    "paquete": "pkgconfig",
+    "version": "2.0.3",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "pkgconfig_2.0.3.tgz",
+    "bytes": 18480,
+    "md5": "d4c1433142b2533b9243ec4b41e45505",
+    "sha256": "fc97bdb16f209e9e79fc8e64234a1bb1263035f5f244ea8b748885b28e3c5d97",
+    "fuente": "pkgconfig_2.0.3.tar.gz",
+    "dcf": "Package: pkgconfig\nVersion: 2.0.3\nImports: utils\nSuggests: covr, testthat, disposables (>= 1.0.3)\nLicense: MIT + file LICENSE\nMD5sum: d4c1433142b2533b9243ec4b41e45505\nBuilt: R 4.6.0; ; 2026-05-13 19:32:25 UTC; unix\nFile: pkgconfig_2.0.3.tgz"
+   },
+   {
+    "paquete": "purrr",
+    "version": "1.2.2",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "purrr_1.2.2.tgz",
+    "bytes": 447884,
+    "md5": "82b3d19fd069af28bb2c02b9ad6327a8",
+    "sha256": "bd87e3e08ace87d8d6be7a47f4d2620843f15beb2f6e54f28eb90b1bdbb731e0",
+    "fuente": "purrr_1.2.2.tar.gz",
+    "dcf": "Package: purrr\nVersion: 1.2.2\nDepends: R (>= 4.1)\nImports: cli (>= 3.6.1), lifecycle (>= 1.0.3), magrittr (>= 1.5.0),\n        rlang (>= 1.1.1), vctrs (>= 0.6.3)\nLinkingTo: cli\nSuggests: carrier (>= 0.3.0), covr, dplyr (>= 0.7.8), httr, knitr,\n        lubridate, mirai (>= 2.5.1), rmarkdown, testthat (>= 3.0.0),\n        tibble, tidyselect\nLicense: MIT + file LICENSE\nMD5sum: 82b3d19fd069af28bb2c02b9ad6327a8\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 21:16:40 UTC;\n        unix\nFile: purrr_1.2.2.tgz"
+   },
+   {
+    "paquete": "quantreg",
+    "version": "6.1",
+    "licencia": "GPL (>= 2)",
+    "archivo": "quantreg_6.1.tgz",
+    "bytes": 1171254,
+    "md5": "bfdce7484bc0b5a50febff57b213c87f",
+    "sha256": "9a767d236d7cf0d6f979ceb92b05d1b79bdbb19b732989b037872dbbca4150bd",
+    "fuente": "quantreg_6.1.tar.gz",
+    "dcf": "Package: quantreg\nVersion: 6.1\nDepends: R (>= 3.5), stats, SparseM\nImports: methods, graphics, Matrix, MatrixModels, survival, MASS\nSuggests: interp, rgl, logspline, nor1mix, Formula, zoo, R.rsp, conquer\nLicense: GPL (>= 2)\nMD5sum: bfdce7484bc0b5a50febff57b213c87f\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 21:47:19 UTC;\n        unix\nFile: quantreg_6.1.tgz"
+   },
+   {
+    "paquete": "R6",
+    "version": "2.6.1",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "R6_2.6.1.tgz",
+    "bytes": 67949,
+    "md5": "2e7090562ea49b1d39c450c6377b6977",
+    "sha256": "134d30277b1c64afe9ae31a4a52857822bc21d32db46479eb3ea2f3a7397c8d6",
+    "fuente": "R6_2.6.1.tar.gz",
+    "dcf": "Package: R6\nVersion: 2.6.1\nDepends: R (>= 3.6)\nSuggests: lobstr, testthat (>= 3.0.0)\nLicense: MIT + file LICENSE\nMD5sum: 2e7090562ea49b1d39c450c6377b6977\nBuilt: R 4.6.0; ; 2026-05-13 22:00:12 UTC; unix\nFile: R6_2.6.1.tgz"
+   },
+   {
+    "paquete": "rbibutils",
+    "version": "2.4.1",
+    "licencia": "GPL-2",
+    "archivo": "rbibutils_2.4.1.tgz",
+    "bytes": 1070443,
+    "md5": "9e36d3a9fc20b8ca948d9f0af4529338",
+    "sha256": "f9be998342d3075d87254c78c968a45ea018bbf9c7d7c9de8b57d4554f0f0143",
+    "fuente": "rbibutils_2.4.1.tar.gz",
+    "dcf": "Package: rbibutils\nVersion: 2.4.1\nDepends: R (>= 2.10)\nImports: utils, tools\nSuggests: testthat\nLicense: GPL-2\nMD5sum: 9e36d3a9fc20b8ca948d9f0af4529338\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 22:33:05 UTC;\n        unix\nFile: rbibutils_2.4.1.tgz"
+   },
+   {
+    "paquete": "RColorBrewer",
+    "version": "1.1-3",
+    "licencia": "Apache License 2.0",
+    "archivo": "RColorBrewer_1.1-3.tgz",
+    "bytes": 26996,
+    "md5": "504f10e0d20f54951e847f0b5d53e145",
+    "sha256": "cf5564fee1b54d547dd5656afbea17e34d48f74ef97b376e495dd4e223ecafc9",
+    "fuente": "RColorBrewer_1.1-3.tar.gz",
+    "dcf": "Package: RColorBrewer\nVersion: 1.1-3\nDepends: R (>= 2.0.0)\nLicense: Apache License 2.0\nMD5sum: 504f10e0d20f54951e847f0b5d53e145\nBuilt: R 4.6.0; ; 2026-05-13 22:52:51 UTC; unix\nFile: RColorBrewer_1.1-3.tgz"
+   },
+   {
+    "paquete": "Rcpp",
+    "version": "1.1.1-1.1",
+    "licencia": "GPL (>= 2)",
+    "archivo": "Rcpp_1.1.1-1.1.tgz",
+    "bytes": 2078437,
+    "md5": "b08eadd5aca2874c7728c4478764a701",
+    "sha256": "5f9c1ad21212c6621cf6a24fb71bcef03a97ca86ce76da1304bab51d1a3a0fa3",
+    "fuente": "Rcpp_1.1.1-1.1.tar.gz",
+    "dcf": "Package: Rcpp\nVersion: 1.1.1-1.1\nDepends: R (>= 3.5.0)\nImports: methods, utils\nSuggests: tinytest, inline, rbenchmark, pkgKitten (>= 0.1.2)\nLicense: GPL (>= 2)\nMD5sum: b08eadd5aca2874c7728c4478764a701\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-13 22:55:00 UTC;\n        unix\nFile: Rcpp_1.1.1-1.1.tgz"
+   },
+   {
+    "paquete": "Rdpack",
+    "version": "2.6.6",
+    "licencia": "GPL (>= 2)",
+    "archivo": "Rdpack_2.6.6.tgz",
+    "bytes": 525340,
+    "md5": "ba7cdd4f50290ac42c728ad48b84ef8e",
+    "sha256": "98a070922d7ffc9036152a73f8a0e5feb0915105b3384eb6f777eb2235f7baf0",
+    "fuente": "Rdpack_2.6.6.tar.gz",
+    "dcf": "Package: Rdpack\nVersion: 2.6.6\nDepends: R (>= 2.15.0), methods\nImports: tools, utils, rbibutils (> 2.4)\nSuggests: grDevices, testthat, rstudioapi, rprojroot, gbRd\nLicense: GPL (>= 2)\nMD5sum: ba7cdd4f50290ac42c728ad48b84ef8e\nBuilt: R 4.6.0; ; 2026-05-13 23:14:44 UTC; unix\nFile: Rdpack_2.6.6.tgz"
+   },
+   {
+    "paquete": "reformulas",
+    "version": "0.4.4",
+    "licencia": "GPL-3",
+    "archivo": "reformulas_0.4.4.tgz",
+    "bytes": 120851,
+    "md5": "d119ca16b1912ea936b42b442196a211",
+    "sha256": "aec634511cc48030c90777fa5f04a1cb879a65f73a09f5f0d799fb9d907412dc",
+    "fuente": "reformulas_0.4.4.tar.gz",
+    "dcf": "Package: reformulas\nVersion: 0.4.4\nImports: stats, methods, Matrix, Rdpack\nSuggests: lme4, tinytest, glmmTMB, Formula\nLicense: GPL-3\nMD5sum: d119ca16b1912ea936b42b442196a211\nBuilt: R 4.6.0; ; 2026-05-13 23:35:46 UTC; unix\nFile: reformulas_0.4.4.tgz"
+   },
+   {
+    "paquete": "rlang",
+    "version": "1.2.0",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "rlang_1.2.0.tgz",
+    "bytes": 1139868,
+    "md5": "12b48695300c7537fad90dc1bf7e93ec",
+    "sha256": "6e8cf0cfedf6238f14dd588f44aabb0654da0883dc2dbb7f96e4a718170a1eb4",
+    "fuente": "rlang_1.2.0.tar.gz",
+    "dcf": "Package: rlang\nVersion: 1.2.0\nDepends: R (>= 4.0.0)\nImports: utils\nSuggests: cli (>= 3.1.0), covr, crayon, desc, fs, glue, knitr,\n        magrittr, methods, pillar, pkgload, rmarkdown, stats, testthat\n        (>= 3.3.2), tibble, usethis, vctrs (>= 0.2.3), withr\nEnhances: winch\nLicense: MIT + file LICENSE\nMD5sum: 12b48695300c7537fad90dc1bf7e93ec\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 00:38:39 UTC;\n        unix\nFile: rlang_1.2.0.tgz"
+   },
+   {
+    "paquete": "S7",
+    "version": "0.2.2",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "S7_0.2.2.tgz",
+    "bytes": 225283,
+    "md5": "d5ae73c0b21af2b5fba3fd0be60007a7",
+    "sha256": "76b7d1dcbab977c592a2d951a07336f509243c34fa0d56f6c2c56f2b71c3aec4",
+    "fuente": "S7_0.2.2.tar.gz",
+    "dcf": "Package: S7\nVersion: 0.2.2\nDepends: R (>= 3.5.0)\nImports: utils\nSuggests: bench, callr, covr, knitr, methods, rmarkdown, testthat (>=\n        3.2.0), tibble\nLicense: MIT + file LICENSE\nMD5sum: d5ae73c0b21af2b5fba3fd0be60007a7\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 02:35:52 UTC;\n        unix\nFile: S7_0.2.2.tgz"
+   },
+   {
+    "paquete": "scales",
+    "version": "1.4.0",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "scales_1.4.0.tgz",
+    "bytes": 620880,
+    "md5": "c6a768d2e66ef32d1933e7f2541240a2",
+    "sha256": "1e3fd9c44c6bba3ea2911ee8a2ee9a8cf5a47013a2ca6db8862cb10a1512ba96",
+    "fuente": "scales_1.4.0.tar.gz",
+    "dcf": "Package: scales\nVersion: 1.4.0\nDepends: R (>= 4.1)\nImports: cli, farver (>= 2.0.3), glue, labeling, lifecycle, R6,\n        RColorBrewer, rlang (>= 1.1.0), viridisLite\nSuggests: bit64, covr, dichromat, ggplot2, hms (>= 0.5.0), stringi,\n        testthat (>= 3.0.0)\nLicense: MIT + file LICENSE\nMD5sum: c6a768d2e66ef32d1933e7f2541240a2\nBuilt: R 4.6.0; ; 2026-05-14 02:57:52 UTC; unix\nFile: scales_1.4.0.tgz"
+   },
+   {
+    "paquete": "SparseM",
+    "version": "1.84-2",
+    "licencia": "GPL (>= 2)",
+    "archivo": "SparseM_1.84-2.tgz",
+    "bytes": 786871,
+    "md5": "577e8b36d6598d192b24a4baddcf0d61",
+    "sha256": "79bcada5eb3c067599933b76cbc9b4277eab57ea9a925a300a5c7d9774a75d8c",
+    "fuente": "SparseM_1.84-2.tar.gz",
+    "dcf": "Package: SparseM\nVersion: 1.84-2\nDepends: R (>= 2.15), methods\nImports: graphics, stats, utils\nSuggests: knitr\nLicense: GPL (>= 2)\nMD5sum: 577e8b36d6598d192b24a4baddcf0d61\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 05:43:06 UTC;\n        unix\nFile: SparseM_1.84-2.tgz"
+   },
+   {
+    "paquete": "stringi",
+    "version": "1.8.7",
+    "licencia": "file LICENSE",
+    "archivo": "stringi_1.8.7.tgz",
+    "bytes": 14081982,
+    "md5": "79d35b2f9003adfd8488ac8f5e904f39",
+    "sha256": "689311a42b413a58e912bea584b8f24cfed41c4831ad638a721c1c7b596e4e1a",
+    "fuente": "stringi_1.8.7.tar.gz",
+    "dcf": "Package: stringi\nVersion: 1.8.7\nDepends: R (>= 3.4)\nImports: tools, utils, stats\nLicense: file LICENSE\nLicense_is_FOSS: yes\nMD5sum: 79d35b2f9003adfd8488ac8f5e904f39\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 07:11:47 UTC;\n        unix\nFile: stringi_1.8.7.tgz"
+   },
+   {
+    "paquete": "stringr",
+    "version": "1.6.0",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "stringr_1.6.0.tgz",
+    "bytes": 279560,
+    "md5": "b291c4a51e4742f58ca3d8111557661f",
+    "sha256": "be6e72ef1c8ddecbf44aa42a7ba7c7a333645e218ab57f92992a8a5b7a4030f3",
+    "fuente": "stringr_1.6.0.tar.gz",
+    "dcf": "Package: stringr\nVersion: 1.6.0\nDepends: R (>= 4.1.0)\nImports: cli, glue (>= 1.6.1), lifecycle (>= 1.0.3), magrittr, rlang\n        (>= 1.0.0), stringi (>= 1.5.3), vctrs (>= 0.4.0)\nSuggests: covr, dplyr, gt, htmltools, htmlwidgets, knitr, rmarkdown,\n        testthat (>= 3.0.0), tibble\nLicense: MIT + file LICENSE\nMD5sum: b291c4a51e4742f58ca3d8111557661f\nBuilt: R 4.6.0; ; 2026-05-14 07:14:55 UTC; unix\nFile: stringr_1.6.0.tgz"
+   },
+   {
+    "paquete": "survival",
+    "version": "3.8-6",
+    "licencia": "LGPL (>= 2)",
+    "archivo": "survival_3.8-6.tgz",
+    "bytes": 7760573,
+    "md5": "0dc4dc88557c934b1ba295ddc5a03b72",
+    "sha256": "925e35820900c4c0f1762dee8b0fac59d69dee33e597d2de8bc7724d075507ba",
+    "fuente": "survival_3.8-6.tar.gz",
+    "dcf": "Package: survival\nVersion: 3.8-6\nPriority: recommended\nDepends: R (>= 3.5.0)\nImports: graphics, Matrix, methods, splines, stats, utils\nLicense: LGPL (>= 2)\nMD5sum: 0dc4dc88557c934b1ba295ddc5a03b72\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 07:35:50 UTC;\n        unix\nFile: survival_3.8-6.tgz"
+   },
+   {
+    "paquete": "tibble",
+    "version": "3.3.1",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "tibble_3.3.1.tgz",
+    "bytes": 534486,
+    "md5": "2158baadd4be00f1e9b7daafd1f46ee3",
+    "sha256": "b7f65a179045923b66d9e749aac9c9183b32eef1c4b1a7242eb889f07b948578",
+    "fuente": "tibble_3.3.1.tar.gz",
+    "dcf": "Package: tibble\nVersion: 3.3.1\nDepends: R (>= 3.4.0)\nImports: cli, lifecycle (>= 1.0.0), magrittr, methods, pillar (>=\n        1.8.1), pkgconfig, rlang (>= 1.0.2), utils, vctrs (>= 0.5.0)\nSuggests: bench, bit64, blob, brio, callr, DiagrammeR, dplyr, evaluate,\n        formattable, ggplot2, here, hms, htmltools, knitr, lubridate,\n        nycflights13, pkgload, purrr, rmarkdown, stringi, testthat (>=\n        3.0.2), tidyr, withr\nLicense: MIT + file LICENSE\nMD5sum: 2158baadd4be00f1e9b7daafd1f46ee3\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 08:46:36 UTC;\n        unix\nFile: tibble_3.3.1.tgz"
+   },
+   {
+    "paquete": "tidyr",
+    "version": "1.3.2",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "tidyr_1.3.2.tgz",
+    "bytes": 1024746,
+    "md5": "d5c6eabd452cb4801269076e116cdfb3",
+    "sha256": "78ce1111b32640d981f9e5ff92095c7b3d21fb7ef1a39238fb1643f3359ace95",
+    "fuente": "tidyr_1.3.2.tar.gz",
+    "dcf": "Package: tidyr\nVersion: 1.3.2\nDepends: R (>= 4.1.0)\nImports: cli (>= 3.4.1), dplyr (>= 1.1.0), glue, lifecycle (>= 1.0.3),\n        magrittr, purrr (>= 1.0.1), rlang (>= 1.1.1), stringr (>=\n        1.5.0), tibble (>= 2.1.1), tidyselect (>= 1.2.1), utils, vctrs\n        (>= 0.5.2)\nLinkingTo: cpp11 (>= 0.4.0)\nSuggests: covr, data.table, knitr, readr, repurrrsive (>= 1.1.0),\n        rmarkdown, testthat (>= 3.0.0)\nLicense: MIT + file LICENSE\nMD5sum: d5c6eabd452cb4801269076e116cdfb3\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 08:58:42 UTC;\n        unix\nFile: tidyr_1.3.2.tgz"
+   },
+   {
+    "paquete": "tidyselect",
+    "version": "1.2.1",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "tidyselect_1.2.1.tgz",
+    "bytes": 166200,
+    "md5": "420fa2dbdf489ac69846156133226212",
+    "sha256": "df3668720dcce42a097cdef7e92d344dfd069a913647cbc1c0fa19ed0704285b",
+    "fuente": "tidyselect_1.2.1.tar.gz",
+    "dcf": "Package: tidyselect\nVersion: 1.2.1\nDepends: R (>= 3.4)\nImports: cli (>= 3.3.0), glue (>= 1.3.0), lifecycle (>= 1.0.3), rlang\n        (>= 1.0.4), vctrs (>= 0.5.2), withr\nSuggests: covr, crayon, dplyr, knitr, magrittr, rmarkdown, stringr,\n        testthat (>= 3.1.1), tibble (>= 2.1.3)\nLicense: MIT + file LICENSE\nMD5sum: 420fa2dbdf489ac69846156133226212\nBuilt: R 4.6.0; ; 2026-05-14 08:59:59 UTC; unix\nFile: tidyselect_1.2.1.tgz"
+   },
+   {
+    "paquete": "timeDate",
+    "version": "4052.112",
+    "licencia": "GPL (>= 2)",
+    "archivo": "timeDate_4052.112.tgz",
+    "bytes": 894888,
+    "md5": "e1dda38e51bb2e149f13646c6c72d806",
+    "sha256": "0c4641d076a52df03bbd53b192080102b8668b3135f52c85b8ae20c32065c882",
+    "fuente": "timeDate_4052.112.tar.gz",
+    "dcf": "Package: timeDate\nVersion: 4052.112\nDepends: R (>= 3.6.0), methods\nImports: graphics, utils, stats\nSuggests: RUnit\nLicense: GPL (>= 2)\nMD5sum: e1dda38e51bb2e149f13646c6c72d806\nBuilt: R 4.6.0; ; 2026-05-14 09:06:39 UTC; unix\nFile: timeDate_4052.112.tgz"
+   },
+   {
+    "paquete": "urca",
+    "version": "1.3-4",
+    "licencia": "GPL (>= 2)",
+    "archivo": "urca_1.3-4.tgz",
+    "bytes": 952908,
+    "md5": "0615fea4689331ded59b8f431bde516f",
+    "sha256": "20d2cf77f431da64549fc3773aa4dd2d46abd5207ee24378c67b9257f497dead",
+    "fuente": "urca_1.3-4.tar.gz",
+    "dcf": "Package: urca\nVersion: 1.3-4\nDepends: R (>= 2.0.0), methods\nImports: nlme, graphics, stats\nLicense: GPL (>= 2)\nMD5sum: 0615fea4689331ded59b8f431bde516f\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 10:40:43 UTC;\n        unix\nFile: urca_1.3-4.tgz"
+   },
+   {
+    "paquete": "utf8",
+    "version": "1.2.6",
+    "licencia": "Apache License (== 2.0) | file LICENSE",
+    "archivo": "utf8_1.2.6.tgz",
+    "bytes": 120303,
+    "md5": "5bfeac36a8dfb027caf5a2457f4c83f8",
+    "sha256": "51702a5960a8e85bca8a9064c37ec2f006f9f2655b1e8f35b7c6ef18362340c3",
+    "fuente": "utf8_1.2.6.tar.gz",
+    "dcf": "Package: utf8\nVersion: 1.2.6\nDepends: R (>= 2.10)\nSuggests: cli, covr, knitr, rlang, rmarkdown, testthat (>= 3.0.0),\n        withr\nLicense: Apache License (== 2.0) | file LICENSE\nMD5sum: 5bfeac36a8dfb027caf5a2457f4c83f8\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 10:44:55 UTC;\n        unix\nFile: utf8_1.2.6.tgz"
+   },
+   {
+    "paquete": "vctrs",
+    "version": "0.7.3",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "vctrs_0.7.3.tgz",
+    "bytes": 1433335,
+    "md5": "0987e2b4d65141176b517116bbf51b20",
+    "sha256": "42cc19d325e7de2160490273d97099049f261e8b6c3e6736391d96e43923798d",
+    "fuente": "vctrs_0.7.3.tar.gz",
+    "dcf": "Package: vctrs\nVersion: 0.7.3\nDepends: R (>= 4.0.0)\nImports: cli (>= 3.4.0), glue, lifecycle (>= 1.0.3), rlang (>= 1.1.7)\nSuggests: bit64, covr, crayon, dplyr (>= 0.8.5), generics, knitr,\n        pillar (>= 1.4.4), pkgdown (>= 2.0.1), rmarkdown, testthat (>=\n        3.0.0), tibble (>= 3.1.3), waldo (>= 0.2.0), withr, xml2,\n        zeallot\nLicense: MIT + file LICENSE\nMD5sum: 0987e2b4d65141176b517116bbf51b20\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 10:58:38 UTC;\n        unix\nFile: vctrs_0.7.3.tgz"
+   },
+   {
+    "paquete": "viridisLite",
+    "version": "0.4.3",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "viridisLite_0.4.3.tgz",
+    "bytes": 1295884,
+    "md5": "83445396fcda8e37120348484c244f63",
+    "sha256": "cbb327d9e0efe61bfa40ba89c9af3dc05fc5bd76ea69fc485ef3f64fe1785983",
+    "fuente": "viridisLite_0.4.3.tar.gz",
+    "dcf": "Package: viridisLite\nVersion: 0.4.3\nDepends: R (>= 2.10)\nSuggests: hexbin (>= 1.27.0), ggplot2 (>= 1.0.1), testthat, covr\nLicense: MIT + file LICENSE\nMD5sum: 83445396fcda8e37120348484c244f63\nBuilt: R 4.6.0; ; 2026-05-14 11:12:30 UTC; unix\nFile: viridisLite_0.4.3.tgz"
+   },
+   {
+    "paquete": "withr",
+    "version": "3.0.2",
+    "licencia": "MIT + file LICENSE",
+    "archivo": "withr_3.0.2.tgz",
+    "bytes": 185760,
+    "md5": "3cb37859c8254eb029869ddfc1c0bc68",
+    "sha256": "60dce3c8fa7b42a81a05d99c675fd82c57b8d2dca7233a6ba7d1ee543707b21c",
+    "fuente": "withr_3.0.2.tar.gz",
+    "dcf": "Package: withr\nVersion: 3.0.2\nDepends: R (>= 3.6.0)\nImports: graphics, grDevices\nSuggests: callr, DBI, knitr, methods, rlang, rmarkdown (>= 2.12),\n        RSQLite, testthat (>= 3.0.0)\nLicense: MIT + file LICENSE\nMD5sum: 3cb37859c8254eb029869ddfc1c0bc68\nBuilt: R 4.6.0; ; 2026-05-14 11:58:25 UTC; unix\nFile: withr_3.0.2.tgz"
+   },
+   {
+    "paquete": "zoo",
+    "version": "1.8-15",
+    "licencia": "GPL-2 | GPL-3",
+    "archivo": "zoo_1.8-15.tgz",
+    "bytes": 874368,
+    "md5": "014fa1f44fa62ffff1873559178343ee",
+    "sha256": "59900b9cc02c4950c22db6ad48e0c6ca2fe9777ee67e285aaad188a2d8d17453",
+    "fuente": "zoo_1.8-15.tar.gz",
+    "dcf": "Package: zoo\nVersion: 1.8-15\nDepends: R (>= 3.1.0), stats\nImports: utils, graphics, grDevices, lattice (>= 0.20-27)\nSuggests: AER, coda, chron, ggplot2 (>= 3.5.0), mondate, scales,\n        stinepack, strucchange, timeDate, timeSeries, tinyplot, tis,\n        tseries, xts\nLicense: GPL-2 | GPL-3\nMD5sum: 014fa1f44fa62ffff1873559178343ee\nBuilt: R 4.6.0; wasm32-unknown-emscripten; 2026-05-14 12:36:37 UTC;\n        unix\nFile: zoo_1.8-15.tgz"
+   }
+  ]
+ },
+ "fecha": "2026-10-04"
+}

@@ -1,5 +1,5 @@
 {
- "fecha": "2026-10-03T04:16:28.521Z",
+ "fecha": "2026-10-04T04:44:08.685Z",
  "navegador": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0",
  "n": 99941,
  "grupos": [
@@ -7,32 +7,32 @@
    "titulo": "Datos",
    "medidas": [
     {
-     "nombre": "Crear la hoja (23 columnas)",
-     "primera": 294.79999999701977,
-     "mediana": 233,
+     "nombre": "Crear la hoja (25 columnas)",
+     "primera": 245.89999999850988,
+     "mediana": 213,
      "meta": 1500
     },
     {
-     "nombre": "Leer un CSV de 9.4 MB",
-     "primera": 696.3999999910593,
-     "mediana": 855.6000000089407,
+     "nombre": "Leer un CSV de 9.8 MB",
+     "primera": 725.5,
+     "mediana": 824.3999999985099,
      "meta": 1500
     },
     {
      "nombre": "Filtrar con una expresión",
-     "primera": 18.5,
-     "mediana": 11.799999997019768,
+     "primera": 19.600000001490116,
+     "mediana": 12.600000001490116,
      "meta": 500
     },
     {
      "nombre": "Tabla de análisis (todas las columnas)",
-     "primera": 99.29999999701977,
+     "primera": 97.79999999701977,
      "mediana": 0,
      "meta": 500
     },
     {
      "nombre": "Cargar en la app (rejilla y estructura)",
-     "primera": 207.5,
+     "primera": 213.19999999552965,
      "meta": 1500
     }
    ]
@@ -42,27 +42,27 @@
    "medidas": [
     {
      "nombre": "Descriptivos de 10 variables",
-     "primera": 105.09999999403954,
-     "mediana": 89.59999999403954,
+     "primera": 126.59999999403954,
+     "mediana": 112.10000000149012,
      "meta": 150,
      "plan": true
     },
     {
      "nombre": "Descriptivos de 10 variables en 20 grupos (trat × A)",
-     "primera": 189.40000000596046,
-     "mediana": 167.3999999910593,
+     "primera": 181.30000000447035,
+     "mediana": 172.80000000447035,
      "meta": 800
     },
     {
      "nombre": "Frecuencias trat × bloque",
-     "primera": 2,
-     "mediana": 0.699999988079071,
+     "primera": 1.8999999985098839,
+     "mediana": 0.6000000014901161,
      "meta": 200
     },
     {
      "nombre": "Bondad de ajuste de trat",
-     "primera": 1.3999999910593033,
-     "mediana": 0.20000000298023224,
+     "primera": 3.2999999970197678,
+     "mediana": 0.29999999701976776,
      "meta": 200
     }
    ]
@@ -72,26 +72,26 @@
    "medidas": [
     {
      "nombre": "Supuestos del modelo bloques + tratamientos",
-     "primera": 445.40000000596046,
-     "mediana": 415.40000000596046,
+     "primera": 487.79999999701977,
+     "mediana": 462.70000000298023,
      "meta": 2000
     },
     {
      "nombre": "Prueba t de Welch",
-     "primera": 20.5,
-     "mediana": 19.899999991059303,
+     "primera": 28.200000002980232,
+     "mediana": 26,
      "meta": 300
     },
     {
      "nombre": "Mann-Whitney con Hodges-Lehmann",
-     "primera": 74,
-     "mediana": 63.900000005960464,
+     "primera": 75.20000000298023,
+     "mediana": 68.79999999701977,
      "meta": 1500
     },
     {
      "nombre": "Kruskal-Wallis con Dunn",
-     "primera": 85.90000000596046,
-     "mediana": 79,
+     "primera": 104.90000000596046,
+     "mediana": 82.69999999552965,
      "meta": 800
     }
    ]
@@ -101,46 +101,46 @@
    "medidas": [
     {
      "nombre": "ANOVA de una vía + Tukey",
-     "primera": 82.29999999701977,
-     "mediana": 70.79999999701977,
+     "primera": 85.30000000447035,
+     "mediana": 73.70000000298023,
      "meta": 250,
      "plan": true
     },
     {
      "nombre": "Bloques al azar (5 tratamientos, 10 bloques)",
-     "primera": 209.79999999701977,
-     "mediana": 185,
+     "primera": 241.39999999850988,
+     "mediana": 191.60000000149012,
      "meta": 500
     },
     {
      "nombre": "Factorial 4 × 3 × 2 desbalanceado, SC tipo III",
-     "primera": 142,
-     "mediana": 124,
+     "primera": 140.5,
+     "mediana": 131.89999999850988,
      "meta": 1500,
      "plan": true
     },
     {
      "nombre": "Factorial en bloques con dosis numérica (tipo III)",
-     "primera": 628.6000000089407,
-     "mediana": 640.5,
+     "primera": 681,
+     "mediana": 672.1999999955297,
      "meta": 1500
     },
     {
      "nombre": "Parcelas divididas (A en parcelas grandes, B)",
-     "primera": 206.6000000089407,
-     "mediana": 200.3999999910593,
+     "primera": 163.20000000298023,
+     "mediana": 169.10000000149012,
      "meta": 3000
     },
     {
      "nombre": "Tukey de A dentro de cada B (factorial)",
-     "primera": 122.19999998807907,
-     "mediana": 125.59999999403954,
+     "primera": 134.79999999701977,
+     "mediana": 130.30000000447035,
      "meta": 1500
     },
     {
      "nombre": "Polinomios ortogonales de la dosis",
-     "primera": 173,
-     "mediana": 172.29999999701977,
+     "primera": 166.10000000149012,
+     "mediana": 163.39999999850988,
      "meta": 1000
     }
    ]
@@ -150,38 +150,38 @@
    "medidas": [
     {
      "nombre": "ANCOVA en bloques (5 tratamientos, 1 covariable)",
-     "primera": 245.6000000089407,
-     "mediana": 248.80000001192093,
+     "primera": 308.29999999701977,
+     "mediana": 242.10000000149012,
      "meta": 3000
     },
     {
      "nombre": "Regresión múltiple con 10 predictores y diagnóstico",
-     "primera": 715.5,
-     "mediana": 660.5,
+     "primera": 805.3000000044703,
+     "mediana": 754,
      "meta": 2000
     },
     {
      "nombre": "Regresión polinomial de grado 2",
-     "primera": 236.79999999701977,
-     "mediana": 209.29999999701977,
+     "primera": 227.80000000447035,
+     "mediana": 207.69999999552965,
      "meta": 1500
     },
     {
      "nombre": "Selección paso a paso (AIC) entre 10 predictores",
-     "primera": 129.20000000298023,
-     "mediana": 97.69999998807907,
+     "primera": 129.10000000149012,
+     "mediana": 126.70000000298023,
      "meta": 1500
     },
     {
      "nombre": "Mejores subconjuntos de 10 predictores (1 023 modelos)",
-     "primera": 47.6000000089407,
-     "mediana": 54.599999994039536,
+     "primera": 71.5,
+     "mediana": 69.5,
      "meta": 1500
     },
     {
      "nombre": "Modelo lineal general bloque + A * B + covariable",
-     "primera": 210.09999999403954,
-     "mediana": 194.8999999910593,
+     "primera": 253.20000000298023,
+     "mediana": 214,
      "meta": 3000
     }
    ]
@@ -191,64 +191,132 @@
    "medidas": [
     {
      "nombre": "Correlación de Pearson",
-     "primera": 167.20000000298023,
-     "mediana": 158.90000000596046,
+     "primera": 138.10000000149012,
+     "mediana": 134.69999999552965,
      "meta": 200
     },
     {
      "nombre": "Correlación de Spearman",
-     "primera": 196.20000000298023,
-     "mediana": 195.29999999701977,
+     "primera": 168.10000000149012,
+     "mediana": 173.60000000149012,
      "meta": 600
     },
     {
      "nombre": "Correlación de Kendall (τ-b de Knight)",
-     "primera": 217.20000000298023,
-     "mediana": 218.29999999701977,
+     "primera": 192,
+     "mediana": 193.10000000149012,
      "meta": 800
     },
     {
      "nombre": "Matriz de Pearson de 10 variables",
-     "primera": 148,
-     "mediana": 131.5,
+     "primera": 236.39999999850988,
+     "mediana": 236.5,
      "meta": 500
     },
     {
      "nombre": "Matriz de Kendall de 10 variables (45 pares)",
-     "primera": 2941.5,
-     "mediana": 2646,
+     "primera": 3018.2000000029802,
+     "mediana": 3005.2999999970198,
      "meta": 8000,
      "nota": "O(n log n) por par"
     },
     {
      "nombre": "Correlación parcial con 3 controles",
-     "primera": 59.29999999701977,
-     "mediana": 55.29999999701977,
+     "primera": 82.89999999850988,
+     "mediana": 81.70000000298023,
      "meta": 500
     },
     {
      "nombre": "Tabla de contingencia trat × l",
-     "primera": 3.1000000089406967,
-     "mediana": 0.7999999970197678,
+     "primera": 3.8000000044703484,
+     "mediana": 1.5,
      "meta": 500
     },
     {
      "nombre": "McNemar-Bowker de dos evaluaciones",
-     "primera": 1.4000000059604645,
-     "mediana": 0.30000001192092896,
+     "primera": 1.5,
+     "mediana": 0.5,
      "meta": 300
     },
     {
      "nombre": "Cochran-Mantel-Haenszel grupo × resp × l",
-     "primera": 1.6000000089406967,
-     "mediana": 1.2000000029802322,
+     "primera": 3.5999999940395355,
+     "mediana": 1.4000000059604645,
      "meta": 500
     },
     {
      "nombre": "Kappa de Cohen",
-     "primera": 1.1000000089406967,
-     "mediana": 0.4000000059604645,
+     "primera": 0.8999999985098839,
+     "mediana": 0.3999999985098839,
      "meta": 300
+    }
+   ]
+  },
+  {
+   "titulo": "Fase 2: generalizados, REML, no lineal, superficies y multiambiente",
+   "medidas": [
+    {
+     "nombre": "Conteos (Poisson o binomial negativa) en bloques",
+     "primera": 1132.3000000044703,
+     "mediana": 1080.8999999985099,
+     "meta": 3000
+    },
+    {
+     "nombre": "Proporciones 0/1 (binomial) en bloques",
+     "primera": 1105.8999999985099,
+     "mediana": 1116.2000000029802,
+     "meta": 3000
+    },
+    {
+     "nombre": "Componentes de varianza por REML (bloque y l aleatorios, trat fijo)",
+     "primera": 583,
+     "mediana": 557.7000000029802,
+     "meta": 5000
+    },
+    {
+     "nombre": "Respuesta con meseta (cuadrático-meseta) por A",
+     "primera": 108.29999999701977,
+     "mediana": 90.60000000149012,
+     "meta": 3000
+    },
+    {
+     "nombre": "Superficie de respuesta dosis × plantas",
+     "primera": 99,
+     "mediana": 86.89999999850988,
+     "meta": 3000
+    },
+    {
+     "nombre": "Ensayo en varios ambientes (5 genotipos × 6 ambientes, bloques)",
+     "primera": 191.5,
+     "mediana": 184.69999999552965,
+     "meta": 3000
+    },
+    {
+     "nombre": "AMMI de 5 genotipos en 6 ambientes",
+     "primera": 204,
+     "mediana": 192.60000000149012,
+     "meta": 3000
+    }
+   ]
+  },
+  {
+   "titulo": "Fase 2: motor R (20 000 filas)",
+   "medidas": [
+    {
+     "nombre": "Arrancar el motor R y cargar lme4",
+     "primera": 9266.69999999553,
+     "meta": 120000,
+     "nota": "con la caché del navegador vacía: descarga"
+    },
+    {
+     "nombre": "Modelo mixto rend ~ trat * A + (1 | bloque)",
+     "primera": 4331.80000000447,
+     "meta": 30000
+    },
+    {
+     "nombre": "Bloques al azar con bloques aleatorios",
+     "primera": 1535.6000000014901,
+     "meta": 30000
     }
    ]
   },
@@ -257,38 +325,38 @@
    "medidas": [
     {
      "nombre": "Bloque Análisis: factorial en bloques, calculado y pintado",
-     "primera": 725.6999999880791,
+     "primera": 1082,
      "meta": 2500
     },
     {
      "nombre": "Reporte de 5 análisis: calculado y pintado (bloque 5)",
-     "primera": 2967.1000000089407,
+     "primera": 3281.7999999970198,
      "meta": 5000
     },
     {
      "nombre": "Figuras del reporte (bloque 6)",
-     "primera": 158,
+     "primera": 154.39999999850988,
      "meta": 1500
     },
     {
      "nombre": "Hoja de cálculo de los cuadros",
-     "primera": 3.8999999910593033,
+     "primera": 6.200000002980232,
      "meta": 1500
     },
     {
      "nombre": "Documento .docx (figuras a 300 ppp)",
-     "primera": 991.7999999970198,
+     "primera": 1164.3000000044703,
      "meta": 3000
     },
     {
      "nombre": "Proyecto .labg (datos completos, comprimido)",
-     "primera": 1661.4000000059605,
+     "primera": 1946.9000000059605,
      "meta": 3000,
-     "nota": "5.1 MB"
+     "nota": "5.3 MB"
     },
     {
      "nombre": "Abrir el .labg y verificar sus huellas",
-     "primera": 460.79999999701977,
+     "primera": 937.6000000014901,
      "meta": 2000
     }
    ]

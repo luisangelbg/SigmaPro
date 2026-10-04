@@ -11,7 +11,9 @@
 //    Sin excepciones para las letras: desde el navegador 1.1.2 y el estudio de figuras 1.5.1 los módulos comunes usan
 //    las del sistema; una petición de letras al portal (.woff2) cuenta como salida del equipo y hace fallar la prueba.
 //    Con un método del motor R (Fase 2) se registran también las peticiones de su hilo: solo pueden ser descargas de
-//    código (GET sin parámetros ni cuerpo) de webR fijado y de su repositorio de paquetes.
+//    código (GET sin parámetros ni cuerpo) de webR fijado y de su repositorio de paquetes. Con el repositorio propio
+//    (motor-r/, armado con tools/motor-r/armar.mjs), servida por http el motor sale del mismo origen: ninguna petición
+//    externa, y sin red el modelo mixto también se calcula (el servicio guardó webR y los paquetes).
 // 2. Sin conexión: comprueba que el servicio (sw.js) quedó activo, apaga el servidor, recarga la página y vuelve a
 //    cargar datos, calcular y exportar sin red (sin el motor R, que sin conexión llega al cierre de la Fase 2).
 
@@ -31,7 +33,7 @@ const exe = [process.env.SIGMAPRO_NAVEGADOR, 'C:/Program Files (x86)/Microsoft/E
 if (!exe) { console.error('No encontré Edge ni Chrome.'); process.exit(2); }
 
 /* servidor propio: solo la carpeta de la app */
-const TIPOS = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.svg': 'image/svg+xml', '.png': 'image/png' };
+const TIPOS = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.wasm': 'application/wasm', '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.svg': 'image/svg+xml', '.png': 'image/png' };
 const servidas = [];
 const servidor = createServer(async (q, r) => {
   servidas.push(q.method + ' ' + q.url);
@@ -47,6 +49,7 @@ const servidor = createServer(async (q, r) => {
 });
 await new Promise(ok => servidor.listen(0, '127.0.0.1', ok));
 const ORIGEN = 'http://127.0.0.1:' + servidor.address().port;
+const PROPIO = existsSync(join(RAIZ, 'motor-r', 'listo.json'));
 
 const PUERTO = 9560 + Math.floor(Math.random() * 40);
 const perfil = mkdtempSync(join(tmpdir(), 'sigmapro-red-'));
@@ -92,7 +95,7 @@ const USO = conMotorR => `(async () => {
   const C = SP.app.exportar.construir, tam = {};
   for (const k of ['docx', 'html', 'xlsx', 'latex', 'figuras', 'proyecto']) { const r = await C[k](true); tam[k] = (r.datos.length || r.datos.size || 0); }
   const p = SP.proyecto.abrir((await C.proyecto()).datos);
-  return JSON.stringify({ analisis: R.items.length, tam, huellas: p.verificacion.ok, version: SP.VERSION, motor: SP.motorR ? SP.motorR.estado().r : '' });
+  return JSON.stringify({ analisis: R.items.length, tam, huellas: p.verificacion.ok, version: SP.VERSION, motor: SP.motorR ? SP.motorR.estado().r : '', origen: SP.motorR ? SP.motorR.estado().origen : '' });
 })()`;
 
 let codigo = 1;
@@ -138,12 +141,18 @@ try {
   const motorHttp = peticiones.filter(esMotorR).length;
   const http = peticiones.filter(p => /^https?:/.test(p.url) && !esMotorR(p));
   const ajenas = http.filter(p => !p.url.startsWith(ORIGEN + '/'));
-  const noGet = http.filter(p => p.metodo !== 'GET' || p.cuerpo);
+  /* webR comprueba con HEAD que exista un archivo de su repositorio: se admite solo ahí, sin cuerpo */
+  const noGet = http.filter(p => (p.metodo !== 'GET' && !(p.metodo === 'HEAD' && /\/motor-r\//.test(p.url))) || p.cuerpo);
   const conDatos = http.filter(p => /\?/.test(p.url.replace(/#.*$/, '')));
   if (ajenas.length) fallas.push('http: peticiones a otro origen: ' + ajenas.slice(0, 5).map(p => p.url).join(', '));
   if (noGet.length) fallas.push('http: peticiones que envían algo: ' + noGet.slice(0, 5).map(p => p.metodo + ' ' + p.url).join(', '));
   if (conDatos.length) fallas.push('http: peticiones con parámetros: ' + conDatos.slice(0, 5).map(p => p.url).join(', '));
   const archivosApp = [...new Set(http.map(p => new URL(p.url).pathname))];
+  const motorPropio = http.filter(p => /\/motor-r\//.test(p.url)).length;
+  if (PROPIO) {
+    if (motorHttp) fallas.push('http: con el repositorio propio, el motor R aún pidió ' + motorHttp + ' archivos al repositorio público');
+    if (!motorPropio || uso.origen !== 'propio') fallas.push('http: el motor R no salió del repositorio propio (origen: ' + uso.origen + ')');
+  }
 
   /* ---- 2. sin conexión ---- */
   let activo = false;
@@ -151,6 +160,8 @@ try {
   if (!activo) fallas.push('el servicio sin conexión no quedó activo');
   /* una recarga con el servicio controlando la página, para que guarde lo que la app pide después */
   await enviar('Page.reload', { ignoreCache: false }); await esperarApp(); await dormir(800);
+  /* con el repositorio propio, el motor se arranca ya con el servicio activo, que guarda webR y los paquetes */
+  if (PROPIO) await evaluar("SP.motorR.asegurar(['lme4', 'lmerTest']).then(() => true)");
   const guardados = await evaluar("caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('sigmapro-')).map(k => caches.open(k).then(c => c.keys())))).then(ls => ls.flat().length)");
   /* el navegador mantiene conexiones abiertas: se cierran todas antes de apagar el servidor */
   const apagado = new Promise(ok => servidor.close(ok));
@@ -163,18 +174,19 @@ try {
   const abrio = await esperarApp();
   let usoSin = null;
   if (!abrio) fallas.push('sin conexión: la app no abrió');
-  else usoSin = JSON.parse(await evaluar(USO(false)));
-  if (usoSin && (!usoSin.huellas || usoSin.analisis !== uso.analisis - 1)) fallas.push('sin conexión: el uso no dio lo mismo');
+  else usoSin = JSON.parse(await evaluar(USO(PROPIO)));
+  if (usoSin && (!usoSin.huellas || usoSin.analisis !== uso.analisis - (PROPIO ? 0 : 1))) fallas.push('sin conexión: el uso no dio lo mismo');
+  if (PROPIO && usoSin && usoSin.origen !== 'propio') fallas.push('sin conexión: el motor R no salió del repositorio propio');
   if (servidas.length !== antes) fallas.push('sin conexión: el servidor apagado recibió peticiones');
 
   console.log('\nSigmaPro · privacidad y uso sin conexión');
   console.log('  doble clic (file://): ' + nArchivo + ' peticiones; fuera del equipo solo ' + motorArchivo + ' descargas del motor R (código, sin datos); ' + usoArchivo.analisis + ' análisis (uno en ' + usoArchivo.motor + '), reporte y 6 exportaciones');
-  console.log('  servida por http: ' + http.length + ' peticiones, todas GET sin datos a ' + archivosApp.length + ' archivos de la propia app; fuera del origen solo ' + motorHttp + ' descargas del motor R');
+  console.log('  servida por http: ' + http.length + ' peticiones, todas GET sin datos a ' + archivosApp.length + ' archivos de la propia app' + (PROPIO ? ' (' + motorPropio + ' del motor R propio)' : '') + '; fuera del origen solo ' + motorHttp + ' descargas del motor R');
   console.log('  servicio sin conexión: ' + (activo ? 'activo' : 'NO activo') + ', ' + guardados + ' archivos guardados');
-  console.log('  sin red y con el servidor apagado: ' + (usoSin ? 'abre, carga datos, calcula ' + usoSin.analisis + ' análisis, arma el reporte, exporta y verifica las huellas del proyecto' : 'no abrió'));
+  console.log('  sin red y con el servidor apagado: ' + (usoSin ? 'abre, carga datos, calcula ' + usoSin.analisis + ' análisis' + (PROPIO ? ' (el modelo mixto en el motor R guardado)' : '') + ', arma el reporte, exporta y verifica las huellas del proyecto' : 'no abrió'));
   if (consola.length) fallas.push(...consola.map(x => 'consola: ' + x));
   guardar('sin-conexion', { titulo: 'Privacidad y uso sin conexión', ok: !fallas.length,
-    resumen: 'Con datos, ' + uso.analisis + ' análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, ' + http.length + ' peticiones GET sin datos, todas a la propia app; fuera del equipo o del origen solo se pide el código del motor R para el modelo mixto (' + Math.max(motorArchivo, motorHttp) + ' descargas de webR y sus paquetes), todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo, exporta y verifica las huellas del proyecto.',
+    resumen: 'Con datos, ' + uso.analisis + ' análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, ' + http.length + ' peticiones GET sin datos, todas a la propia app; con doble clic, fuera del equipo solo se pide el código del motor R para el modelo mixto (' + motorArchivo + ' descargas de webR y sus paquetes)' + (PROPIO ? '; servida por http con su repositorio propio, ni eso: el motor sale del mismo origen' : '') + ', todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo' + (PROPIO ? ' y el modelo mixto en el motor R guardado' : '') + ', exporta y verifica las huellas del proyecto.',
     renglones: ['Doble clic: ' + nArchivo + ' peticiones; fuera del equipo, solo ' + motorArchivo + ' descargas del motor R (webR y paquetes).', 'Servida por http: ' + http.length + ' peticiones GET a ' + archivosApp.length + ' archivos de la app, sin parámetros ni cuerpo.', 'Servicio sin conexión activo con ' + guardados + ' archivos guardados.', 'Sin red: ' + (usoSin ? usoSin.analisis + ' análisis, reporte, 6 exportaciones y huellas del proyecto verificadas.' : 'no abrió.')] });
   if (fallas.length) { console.log('\nFALLAS:'); fallas.forEach(f => console.log('  ✗ ' + f)); } else console.log('\nTODO APROBADO');
   codigo = fallas.length ? 1 : 0;

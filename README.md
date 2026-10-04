@@ -54,8 +54,9 @@ medidas dentro de su meta, la prueba de **privacidad** (ningún dato sale del na
 accesibilidad AA** en claro y oscuro, a 1280 y 360 px, con el foco revisado tecla por tecla. Validado contra R en 624
 casos y 48 458 valores.
 
-**Fase 2 en curso** (plan en [`propuesta/FASE2.md`](propuesta/FASE2.md)): el **motor R dentro del navegador** (webR,
-que se descarga solo cuando se necesita; los datos no salen del equipo) y el **modelo lineal mixto** escrito como
+**Fase 2 completa** (versión 0.2.0; plan en [`propuesta/FASE2.md`](propuesta/FASE2.md)): el **motor R dentro del
+navegador** (webR, que se descarga solo cuando se necesita; los datos no salen del equipo; servida por http con su
+repositorio propio funciona también sin internet) y el **modelo lineal mixto** escrito como
 fórmula, con efectos aleatorios como en lme4, grados de libertad de Satterthwaite o Kenward-Roger, componentes de
 varianza, medias marginales con letras, prueba de cada aleatorio y BLUP; y los diseños con efectos aleatorios
 (bloques aleatorios, parcelas divididas, látice y alfa-látice, varias localidades) y las **medidas repetidas en el
@@ -84,10 +85,16 @@ node tests/navegador.mjs          # las mismas pruebas en el navegador
 node tests/codigo-r.mjs           # el código R que muestra la app corre en R y da lo mismo
 node tests/exportar.mjs           # cada exportación, leída con lectores independientes (R y el sistema)
 node tests/sin-conexion.mjs       # privacidad y uso sin conexión
-node tests/rendimiento/medir.mjs  # rendimiento con 100 000 filas
+node tests/rendimiento/medir.mjs  # rendimiento con 100 000 filas (--motor: también el motor R con 20 000)
 node tests/accesibilidad/auditar.mjs  # accesibilidad AA
 node tests/motor-r.mjs            # los métodos del motor R, en el navegador (necesita internet)
+node tools/motor-r/armar.mjs      # arma motor-r/: webR y sus 70 paquetes, verificados (--fuentes: con su código)
 ```
+
+**Publicar con el motor R sin conexión.** El repositorio propio del motor (`motor-r/`, unos 100 MB y 250 MB con
+las fuentes) no va en el repositorio de la app: se arma con `node tools/motor-r/armar.mjs --fuentes` y se publica
+junto a la app (por ejemplo, en la rama de GitHub Pages). Sin él, la app funciona igual y el motor R sale del
+repositorio público de webR.
 
 O abre `tests/index.html` con doble clic. Detalles en [`docs/VALIDACION.md`](docs/VALIDACION.md).
 

@@ -9,3 +9,6 @@ CLAUDE.md
 
 # gráficas que R abre solo al generar referencias
 Rplots.pdf
+
+# repositorio propio del motor R (se arma con node tools/motor-r/armar.mjs; ~100 MB, ~250 MB con fuentes)
+/motor-r/

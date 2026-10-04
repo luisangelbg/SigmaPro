@@ -112,11 +112,22 @@ SP.definir('superficie', function (SP) {
       desde += g;
     }
     fila(T('Residuo'), gl, scr, NaN, NaN);
-    /* falta de ajuste contra el error puro */
-    const clave = Array.from({ length: n }, (_, r) => o.x.map(x => x[r]).join('|')), combos = [...new Set(clave)];
-    const mapa = new Map(combos.map((c, h) => [c, h]));
-    const cpe = [uno].concat(bloques, combos.slice(1).map((_, h) => Float64Array.from(clave, c => (mapa.get(c) === h + 1 ? 1 : 0))));
-    const mpe = ajustarLM(cpe, n, y), glpe = n - mpe.qr.rango, scpe = mpe.scResidual, gllof = gl - glpe;
+    /* falta de ajuste contra el error puro de y ~ [bloque +] combinación de x. Sin bloques es la suma de cuadrados
+       dentro de cada combinación (una pasada); con bloques, el modelo por celdas de SP.lineal (que agrupa las filas
+       iguales). Con más de 5000 combinaciones y bloques casi no hay repeticiones: la prueba se omite. */
+    const clave = Array.from({ length: n }, (_, r) => o.x.map(x => x[r]).join('|')), mapa = new Map();
+    for (const c of clave) if (!mapa.has(c)) mapa.set(c, mapa.size);
+    let glpe = 0, scpe = 0;
+    if (!o.bloque) {
+      const G = mapa.size, sum = new Float64Array(G), cnt = new Float64Array(G), cod = clave.map(c => mapa.get(c));
+      for (let r = 0; r < n; r++) { sum[cod[r]] += y[r]; cnt[cod[r]]++; }
+      for (let r = 0; r < n; r++) scpe += (y[r] - sum[cod[r]] / cnt[cod[r]]) ** 2;
+      glpe = n - G;
+    } else if (mapa.size <= 5000) {
+      const mpe = SP.lineal.ajustar(SP.tabla.crear({ y: Array.from(y), c: clave, b: Array.from(o.bloque.codigos, k => 'b' + k) }, { c: { tipo: 'factor' }, b: { tipo: 'factor' } }), 'y ~ b + c');
+      glpe = mpe.glResidual; scpe = mpe.scResidual;
+    }
+    const gllof = gl - glpe;
     let falta = null;
     if (glpe > 0 && gllof > 0) {
       const F = ((scr - scpe) / gllof) / (scpe / glpe);

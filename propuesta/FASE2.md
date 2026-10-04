@@ -118,6 +118,10 @@ con sus citas, detalles y el código R equivalente; entra al asistente, al const
 | 2.9 | Asistente y constructor para la Fase 2 (aleatorios, medidas repetidas, conteos y proporciones, curvas, multiambiente); párrafos y citas de los métodos nuevos |
 | 2.10 | Cierre: repositorio propio de paquetes en Pages (binarios y fuentes), motor R sin conexión, rendimiento, accesibilidad, capturas y pendientes |
 
+**Fase 2 completa (3 de octubre de 2026, versión 0.2.0).** El repositorio propio quedó como una carpeta que se arma
+(`tools/motor-r/armar.mjs`, con versiones y huellas fijas en su manifiesto) y se publica junto a la app; no va en el
+repositorio por su tamaño (unos 100 MB; 250 MB con las fuentes).
+
 ## 7. Riesgos
 
 1. **Tiempo de la primera vez**: R (unos 20 MB) más los paquetes tardan decenas de segundos en una conexión lenta; se

@@ -434,6 +434,32 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
 
+## Cierre de la Fase 2: motor R sin conexión y rendimiento (Hito 2.10)
+
+- **Repositorio propio del motor R** (`tools/motor-r/armar.mjs`): el manifiesto fija webR 0.6.0 (13 archivos, 23.5 MB)
+  y los 70 paquetes que piden los métodos del motor y sus dependencias (79.1 MB), con el MD5 del índice de webR y un
+  SHA-256 propio de cada archivo; el armado verifica todo y escribe el índice `PACKAGES.rds` con R. Los archivos de webR
+  se midieron con el navegador (las peticiones del hilo del motor al cargar los seis paquetes).
+- **Motor R sin conexión** (`tests/sin-conexion.mjs`, con `motor-r/` armado): servida por http, el motor sale del
+  mismo origen (87 peticiones a `motor-r/`, ninguna externa) y el servicio sin conexión lo guarda; con la red cortada y
+  el servidor apagado, la app abre y calcula los siete análisis del uso, el modelo mixto incluido.
+- **Rendimiento** (`tests/rendimiento/medir.mjs --motor`): 53 operaciones, todas en meta. Con 100 000 filas: conteos
+  (Poisson) en 1.1 s, binomial 0/1 en 1.1 s, REML con dos aleatorios en 0.6 s, cuadrático-meseta por grupo en 0.1 s,
+  superficie de respuesta en 0.1 s, ensayo multiambiente en 0.2 s y AMMI en 0.2 s; con 20 000 filas en el motor R, el
+  modelo mixto en 4.3 s y los bloques aleatorios en 1.5 s (arrancar el motor y cargar lme4 con la caché vacía: 9.3 s).
+- **Hallazgos al medir**, corregidos sin cambiar ningún número de los casos (se volvieron a generar las referencias y
+  salieron idénticas):
+  1. La familia automática del GLM tomaba por sobredispersión una razón de 1.008 (p = 0.03 con 100 000 filas) y la
+     binomial negativa, con datos de Poisson, no convergía (θ crece sin fin): seis minutos. Ahora pide además razón >
+     1.1 (igual en el efecto por observación del GLMM y en las referencias de R), reusa el ajuste de la familia base y
+     detiene θ en 10⁸ con un aviso.
+  2. IRLS solo paraba cuando la devianza cambiaba menos de 1e-14 relativo, que con decenas de miles de filas queda
+     debajo de su redondeo (el modelo nulo tardaba 60 iteraciones); ahora también cuando los coeficientes no cambian.
+  3. Las curvas no lineales se ajustaban sobre todas las filas: ahora sobre la media de cada celda (x, grupo) pesada
+     por su número de filas, que da el mismo óptimo, la misma J'J y la misma suma de cuadrados (4.2 s → 0.1 s).
+  4. La falta de ajuste de las superficies armaba una matriz de indicadoras de filas × combinaciones; ahora la suma de
+     cuadrados dentro de cada combinación (con bloques, el ajuste por celdas de SP.lineal).
+
 ## Ensayos multiambiente y estabilidad en el núcleo JS (Hito 2.8)
 
 - **Referencia** (`tests/r/multiambiente.R`, solo R base): tapply y un lm por ambiente para la tabla de medias y el
@@ -533,7 +559,7 @@ tests/
 ├─ codigo-r.mjs                   el código R que muestra la app, corrido en R contra los números de la app
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
-├─ rendimiento/medir.mjs          43 operaciones con 100 000 filas en el navegador (pagina.js: lo que corre en la página)
+├─ rendimiento/medir.mjs          53 operaciones con 100 000 filas en el navegador (--motor: el motor R con 20 000) (pagina.js: lo que corre en la página)
 ├─ accesibilidad/auditar.mjs      72 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo

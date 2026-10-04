@@ -4,7 +4,7 @@
 #   del ajuste interno tolPwrss = 1e-12: con las de omisión, glmer se queda hasta 1e-5 del óptimo y su log-verosimilitud
 #   se desvía 3e-6 por el ajuste interno sin converger);
 # - el efecto por observación para la sobredispersión: «si», «no» o «auto» (si la prueba de Pearson del modelo sin él da
-#   p < 0.05, con conteos o proporciones agrupadas);
+#   p < 0.05 y razón > 1.1, como en el GLM; con conteos o proporciones agrupadas);
 # - los EE de la hessiana de la verosimilitud de Laplace (lo de omisión de lme4) y, con la binomial negativa o un ajuste
 #   singular, de RX (lme4 2.0 no calcula ahí la hessiana; la 1.1 del escritorio sí: se fija RX en los dos lados);
 # - las pruebas χ² de Wald de los efectos fijos (car::Anova tipo II; el III con contrastes de suma cero, reajustado desde
@@ -47,7 +47,7 @@ ref_glmm <- function(datos, y, derecha, familia, enlace, ensayos = "", exposicio
     m0 <- gm_ajusta(forma(FALSE), d, familia, enlace)
     pr <- sum(stats::residuals(m0, type = "pearson")^2); gl <- stats::df.residual(m0)
     prueba <- list(razon = pr / gl, p = stats::pchisq(pr, gl, lower.tail = FALSE))
-    usaObs <- prueba$p < 0.05
+    usaObs <- prueba$p < 0.05 && prueba$razon > 1.1
   }
   f <- forma(usaObs)
   m <- gm_ajusta(f, d, familia, enlace)

@@ -1,14 +1,16 @@
 # Pendientes de SigmaPro
 
-Estado al cerrar la Fase 1 (Hito 1.12, 2 de octubre de 2026). Lo que falta para publicar, los límites conocidos de lo
+Estado al cerrar la Fase 2 (Hito 2.10, 3 de octubre de 2026; versión 0.2.0). Antes, al cerrar la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
 que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA.md`](../propuesta/PROPUESTA.md) §12).
 
 ## Antes de publicar
 
 - **Nombre.** «SigmaPro» se parece al de un programa comercial de gráficas científicas: buscarlo en el IMPI antes de
   publicar con DOI (riesgo 6 de la propuesta).
-- **Versión 1.0.0.** Hoy la app dice 0.1.0; al publicar, subir a 1.0.0 en `js/nucleo/sp.js` (`SP.VERSION`),
-  `sw.js` y el CHANGELOG.
+- **Versión 1.0.0.** Hoy la app dice 0.2.0 (Fase 2 completa); al publicar, subir a 1.0.0 en `js/nucleo/sp.js`
+  (`SP.VERSION`), `sw.js` y el CHANGELOG.
+- **Motor R sin conexión al publicar**: armar `motor-r/` con `node tools/motor-r/armar.mjs --fuentes` y publicarlo
+  junto a la app (no va en el repositorio: unos 250 MB con las fuentes).
 - **Manual de usuario** en español, en PDF, con un capítulo por bloque.
 - **Publicación**: repositorio en GitHub, GitHub Pages (ahí funciona el servicio sin conexión), su ficha en el
   catálogo del portal de la suite y registro en Zenodo con DOI.
@@ -47,14 +49,16 @@ efectos aleatorios), Hito 2.2 (medidas repetidas con estructuras de covarianza),
 REML en el núcleo, heredabilidad y repetibilidad) , Hito 2.4 (modelos lineales generalizados en el núcleo), Hito 2.5 (modelos
 lineales generalizados mixtos en el motor R), Hito 2.6 (regresión no lineal en el núcleo), Hito 2.7 (superficies de
 respuesta en el núcleo), Hito 2.8 (ensayos multiambiente y estabilidad en el núcleo) e Hito 2.9 (asistente y constructor
-para la Fase 2). Notas:
+para la Fase 2) e Hito 2.10 (cierre: repositorio propio del motor R, motor R sin conexión, rendimiento de la Fase 2,
+base común nueva). **La Fase 2 está completa.** Notas:
 
-- Con doble clic el motor R necesita internet la primera vez (luego sale de la caché del navegador); sin conexión
-  llega en el cierre de la fase (Hito 2.10), con el repositorio propio de paquetes en Pages.
+- Con doble clic el motor R necesita internet la primera vez (luego sale de la caché del navegador): el navegador no
+  deja al hilo del motor leer archivos locales. Servida por http(s) con su repositorio propio (`motor-r/`), funciona
+  sin internet desde la primera visita (`tests/sin-conexion.mjs` lo comprueba con el servidor apagado).
 - `tests/codigo-r.mjs` corre en node y no cubre los métodos del motor R; su código R es el mismo que corre en el
   motor y lo validan sus casos (`tests/motor-r.mjs`).
-- El asistente y el constructor todavía no proponen los modelos mixtos, las medidas repetidas ni la heredabilidad
-  (Hito 2.9); se eligen en el catálogo.
+- El asistente no propone la heredabilidad ni los componentes de varianza (se eligen en el catálogo); el constructor
+  no arma estructuras de covarianza de medidas repetidas ni la binomial con ensayos (están en el catálogo).
 - Regresión no lineal: los intervalos son de Wald (los de verosimilitud perfilada quedan pendientes), no hay elección
   automática del modelo por AIC ni pesos, y lineal-meseta no tiene la prueba de cada parámetro común (sí la global).
   Faltan Michaelis-Menten, Brain-Cousens (hormesis), la dosis económica óptima con precios y el eje logarítmico de la
@@ -81,14 +85,11 @@ para la Fase 2). Notas:
 - webR deja en el registro del navegador «Refused to get unsafe header "Content-Encoding"» al descargar (su servidor
   no expone ese encabezado); no afecta el cálculo.
 
-Sigue:
-
-- GLM y GLMM con sobredispersión; modelos no lineales (logístico, Gompertz, dosis-respuesta, meseta); superficies de
-  respuesta.
-- Ensayos multiambiente: AMMI, GGE, Eberhart-Russell y Finlay-Wilkinson desde el código ya validado de BreedingPro;
-  heredabilidad y repetibilidad.
-- Repositorio propio de paquetes de R en GitHub Pages (solo paquetes con licencia compatible) y su descarga diferida;
-  con doble clic, el motor R necesita internet.
+- Rendimiento (`tests/rendimiento/medir.mjs --motor`): los métodos de la Fase 2 en el núcleo con 100 000 filas y el
+  modelo mixto del motor R con 20 000, todos en meta. El GLM de conteos tardaba minutos con 100 000 filas: la familia
+  automática tomaba por sobredispersión una razón de 1.008 (p = 0.03) y la binomial negativa no convergía (θ → ∞);
+  ahora pide razón > 1.1, reusa el ajuste y detiene θ en 10⁸. Las curvas no lineales y la falta de ajuste de las
+  superficies trabajan por celdas.
 
 ## Fase 3
 

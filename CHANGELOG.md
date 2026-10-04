@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### 0.2.0 · Hito 2.10 · Cierre de la Fase 2 (3 oct 2026)
+
+- **La Fase 2 está completa**: versión 0.2.0 (`SP.VERSION` y el servicio sin conexión).
+- **Repositorio propio del motor R**: `tools/motor-r/armar.mjs` arma `motor-r/` con webR 0.6.0 y los 70 paquetes de R
+  que usan los métodos del motor (lme4, lmerTest, pbkrtest, nlme, emmeans, car y sus dependencias), con versiones y
+  huellas fijas en `tools/motor-r/manifiesto.json`, el índice `PACKAGES.rds` y, con `--fuentes`, el código fuente
+  exacto de webR y de cada paquete (GPL). No va en el repositorio por su tamaño: se arma y se publica junto a la app.
+- **Motor R sin conexión**: servida por http(s) con su repositorio propio, la app toma webR y los paquetes del mismo
+  origen; el servicio sin conexión los guarda en un almacén aparte (sin volver a la red y respondiendo también a las
+  comprobaciones HEAD de webR). La prueba de privacidad lo comprueba: ninguna petición externa, y con la red cortada
+  y el servidor apagado se calcula el modelo mixto. Con doble clic sigue el repositorio público de webR.
+- **Rendimiento de la Fase 2** (`tests/rendimiento/medir.mjs --motor`): siete métodos del núcleo con 100 000 filas y el
+  modelo mixto del motor R con 20 000; 53 operaciones, todas en meta. Correcciones que salieron de medir (sin cambiar
+  ningún número de los casos): la familia automática del GLM pide una sobredispersión que importe (razón > 1.1, también
+  en el efecto por observación del GLMM), reusa el ajuste de la familia base y detiene la θ de la binomial negativa en
+  10⁸ con un aviso; IRLS también para cuando los coeficientes ya no cambian; las curvas no lineales se ajustan sobre
+  las medias de cada celda (x, grupo) pesadas; la falta de ajuste de las superficies ya no arma una matriz densa.
+- **Base común nueva** (`css/labg-base.css`): el nombre de la app no se encima con las herramientas en el celular.
+- Documentación: pendientes, validación, licencias de terceros (los 70 paquetes y sus fuentes) y el README con cómo
+  publicar el motor R sin conexión.
+
 ### Hito 2.9 · Asistente y constructor para la Fase 2 (3 oct 2026)
 
 - **Asistente**: objetivo nuevo «Comparar genotipos en varios ambientes», que reconoce las columnas de genotipo, ambiente

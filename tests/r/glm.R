@@ -131,9 +131,9 @@ ref_glm <- function(datos, y, derecha, familia, enlace, ensayos = "", exposicion
 }
 
 #' Familia automática: con conteos (Poisson) o proporciones agrupadas (binomial), si la prueba de Pearson muestra
-#' sobredispersión (p < 0.05), binomial negativa o cuasibinomial; con 0/1 se queda la binomial.
+#' sobredispersión que importa (p < 0.05 y razón > 1.1), binomial negativa o cuasibinomial; con 0/1 se queda la binomial.
 gl_auto <- function(datos, y, derecha, base, enlace, ensayos = "", exposicion = "", comoFactor = character(0)) {
   r <- ref_glm(datos, y, derecha, base, enlace, ensayos, exposicion, comoFactor)
   binaria <- base == "binomial" && !nzchar(ensayos)
-  if (!binaria && r$ajuste$p_sobredispersion < 0.05) if (base == "poisson") "binomial-negativa" else "cuasibinomial" else base
+  if (!binaria && r$ajuste$p_sobredispersion < 0.05 && r$ajuste$sobredispersion > 1.1) if (base == "poisson") "binomial-negativa" else "cuasibinomial" else base
 }

@@ -8,8 +8,9 @@
      logit, probit o log-log complementario.
    - glm-gamma: respuestas positivas y asimétricas (tiempos, concentraciones), gamma con enlace log, inverso o identidad.
    - glm: cualquier familia desde una fórmula escrita (como el modelo lineal general).
-   «Automática» elige por la prueba de Pearson: con sobredispersión (p < 0.05), binomial negativa en conteos y
-   cuasibinomial en proporciones agrupadas; con 0/1 se queda la binomial.
+   «Automática» elige por la prueba de Pearson: con sobredispersión que importa (p < 0.05 y razón de dispersión mayor
+   que 1.1: con decenas de miles de filas, una razón de 1.01 ya es significativa sin cambiar nada), binomial negativa en
+   conteos y cuasibinomial en proporciones agrupadas; con 0/1 se queda la binomial.
    Da el análisis de devianza tipo I (secuencial, como anova.glm), II o III (como car::Anova; el III con contrastes de
    suma cero): χ² = ΔD/φ con la dispersión fija y F = ΔD/(gl·φ̂) con la de Pearson (cuasi y gamma); los coeficientes
    con contrastes de tratamiento y su z (o t), las razones de momios o de tasas con su intervalo de Wald, la dispersión y
@@ -105,14 +106,17 @@ SP.definir('generalizados', function (SP) {
       const base = op.base || 'poisson', enl = op.enlace || G().ENLACE_OMISION[base];
       revisarRespuesta(P, base, e);
       const r0 = ajustarFam(P, base, enl), binaria = base === 'binomial' && !e.ensayos;
-      familia = !binaria && r0.st.pSobredispersion < 0.05 ? (base === 'poisson' ? 'binomial-negativa' : 'cuasibinomial') : base;
-      auto = { base, razon: r0.st.sobredispersion, p: r0.st.pSobredispersion, binaria };
+      familia = !binaria && r0.st.pSobredispersion < 0.05 && r0.st.sobredispersion > 1.1 ? (base === 'poisson' ? 'binomial-negativa' : 'cuasibinomial') : base;
+      auto = { base, razon: r0.st.sobredispersion, p: r0.st.pSobredispersion, binaria, ajuste: familia === base && (op.enlace || G().ENLACE_OMISION[base]) === enl ? r0 : null };
     }
     const enlace = op.enlace || G().ENLACE_OMISION[familia];
     exigir(G().FAMILIAS[familia], T('Familia desconocida: {f}.', { f: familia }));
     exigir(G().FAMILIAS[familia].enlaces.includes(enlace), T('El enlace {e} no es de la familia {f}.', { e: NOMBRE_ENL[enlace] || enlace, f: NOMBRE_FAM[familia] }));
     revisarRespuesta(P, familia, e);
-    const A = ajustarFam(P, familia, enlace), { o, fit, st } = A, F = G().FAMILIAS[familia];
+    /* con la familia automática que se queda en la base, el ajuste ya está hecho */
+    const A = auto && auto.ajuste ? auto.ajuste : ajustarFam(P, familia, enlace), { o, fit, st } = A, F = G().FAMILIAS[familia];
+    if (auto) delete auto.ajuste;
+    if (fit.thetaLimite) avisos.push(T('La θ de la binomial negativa pasó de 10⁸: no hay sobredispersión y el modelo coincide con el de Poisson.'));
     if (!fit.convergio) avisos.push(T('El ajuste no convergió en 100 iteraciones; los resultados pueden no ser confiables.'));
     const n = o.n, p = o.p, phi = st.dispersion, gl = st.gl, fija = F.dispFija;
     /* coeficientes */

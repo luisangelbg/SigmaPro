@@ -2,7 +2,9 @@
    Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
    Un ensayo sintético de 100 000 filas, con semilla fija: rendimiento con efectos de tratamiento, bloque, tres factores,
    dosis y una covariable; diez variables numéricas correlacionadas; categorías para contingencia y evaluadores. Un 7 %
-   de las filas se quita al azar para que el factorial quede desbalanceado. */
+   de las filas se quita al azar para que el factorial quede desbalanceado. Para la Fase 2, con otra semilla (los datos
+   de la Fase 1 no cambian): un conteo de Poisson y una respuesta 0/1. El modelo mixto del motor R se mide con las
+   primeras 20 000 filas (la meta de la Fase 2) si se pide con --motor. */
 (async () => {
   const N0 = 107527;
   let s = 20261002;
@@ -23,6 +25,18 @@
     for (let v = 0; v < 10; v++) c['v' + v].push(Math.round((y * (v % 3) * 0.2 + z * 0.3 + normal()) * 100) / 100);
   }
   const n = c.rend.length;
+  {
+    let s2 = 20261003;
+    const az2 = () => (s2 = (s2 * 16807) % 2147483647) / 2147483647;
+    c.insectos = []; c.germino = [];
+    for (let i = 0; i < n; i++) {
+      const t = +c.trat[i].slice(1) - 1, b = +c.bloque[i].slice(1) - 1, lam = Math.exp(1 + 0.2 * t + 0.05 * b);
+      let k = 0, p = Math.exp(-lam), F = p;
+      const u = az2();
+      while (u > F && k < 200) { k++; p *= lam / k; F += p; }
+      c.insectos.push(k); c.germino.push(az2() < 0.3 + 0.08 * t ? 1 : 0);
+    }
+  }
   const FACT = ['trat', 'bloque', 'A', 'B', 'C', 'grupo', 'l', 'resp', 'e1', 'e2'];
   const tipos = Object.fromEntries(FACT.map(k => [k, { tipo: 'factor' }]));
   const espera = ms => new Promise(r => setTimeout(r, ms));
@@ -48,7 +62,7 @@
 
   /* ---------------- datos ---------------- */
   titulo('Datos');
-  const hoja = await medir('Crear la hoja (23 columnas)', () => SP.hoja.crear({ nombres: Object.keys(c), columnas: c, tipos }), 1500);
+  const hoja = await medir('Crear la hoja (25 columnas)', () => SP.hoja.crear({ nombres: Object.keys(c), columnas: c, tipos }), 1500);
   const csv = [Object.keys(c).join(',')].concat(Array.from({ length: n }, (_, i) => Object.keys(c).map(k => c[k][i]).join(','))).join('\n');
   await medir('Leer un CSV de ' + (csv.length / 1048576).toFixed(1) + ' MB', () => SP.csv.leerColumnas(csv, { delimitador: ',', decimal: '.' }), 1500);
   await medir('Filtrar con una expresión', () => SP.expresiones.filtrar(hoja, 'rend > 5 & trat != "T1"'), 500);
@@ -105,6 +119,26 @@
   await M('McNemar-Bowker de dos evaluaciones', 'mcnemar', { antes: 'e1', despues: 'e2' }, {}, 300);
   await M('Cochran-Mantel-Haenszel grupo × resp × l', 'mantel-haenszel', { fila: 'grupo', columna: 'resp', estrato: 'l' }, {}, 500);
   await M('Kappa de Cohen', 'kappa', { evaluador1: 'e1', evaluador2: 'e2' }, {}, 300);
+
+  /* ---------------- Fase 2 en el núcleo ---------------- */
+  titulo('Fase 2: generalizados, REML, no lineal, superficies y multiambiente');
+  await M('Conteos (Poisson o binomial negativa) en bloques', 'glm-conteos', { respuesta: 'insectos', tratamientos: ['trat'], bloque: 'bloque' }, {}, 3000);
+  await M('Proporciones 0/1 (binomial) en bloques', 'glm-proporciones', { respuesta: 'germino', tratamientos: ['trat'], bloque: 'bloque' }, {}, 3000);
+  await M('Componentes de varianza por REML (bloque y l aleatorios, trat fijo)', 'componentes-varianza', { respuesta: 'rend', aleatorios: ['bloque', 'l'], fijos: ['trat'] }, {}, 5000);
+  await M('Respuesta con meseta (cuadrático-meseta) por A', 'respuesta-meseta', { respuesta: 'rend', dosis: 'dosis', grupo: 'A' }, { modelo: 'cuadratico-meseta' }, 3000);
+  await M('Superficie de respuesta dosis × plantas', 'superficie-respuesta', { respuesta: 'rend', factores: ['dosis', 'plantas'] }, {}, 3000);
+  await M('Ensayo en varios ambientes (5 genotipos × 6 ambientes, bloques)', 'ensayos-multiambiente', { respuesta: 'rend', genotipo: 'trat', ambiente: 'l', repeticion: 'bloque' }, {}, 3000);
+  await M('AMMI de 5 genotipos en 6 ambientes', 'ammi', { respuesta: 'rend', genotipo: 'trat', ambiente: 'l', repeticion: 'bloque' }, {}, 3000);
+  if (window.__motor) {
+    titulo('Fase 2: motor R (20 000 filas)');
+    const c20 = Object.fromEntries(Object.entries(c).map(([k, v]) => [k, v.slice(0, 20000)]));
+    const t20 = SP.tabla.crear(c20, tipos);
+    try { localStorage.setItem('sigmapro.motorR.usado', '1'); } catch (e) { /* nada */ }
+    await medir('Arrancar el motor R y cargar lme4', () => SP.motorR.asegurar(['lme4', 'lmerTest']), 120000, { unaVez: true, nota: 'con la caché del navegador vacía: descarga' });
+    const MX = (nombre, id, e, op, meta) => medir(nombre, async () => { const r = await SP.ejecutarAsync(id, t20, e, SP.opcionesCon(SP.metodos[id], op || {})); SP.metodos[id].reporte(r.resultado || r, {}); return r; }, meta, { unaVez: true });
+    await MX('Modelo mixto rend ~ trat * A + (1 | bloque)', 'modelo-mixto', { respuesta: 'rend' }, { derecha: 'trat * A + (1 | bloque)' }, 30000);
+    await MX('Bloques al azar con bloques aleatorios', 'mixto-bloques', { respuesta: 'rend', tratamientos: ['trat'], bloque: 'bloque' }, {}, 30000);
+  }
 
   /* ---------------- la interfaz ---------------- */
   titulo('Interfaz: análisis, reporte y exportaciones');

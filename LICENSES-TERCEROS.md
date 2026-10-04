@@ -176,8 +176,12 @@ transcritos en `tests/casos/generalizados/generar.R`.
 
 ## Que se descargan al usarse (motor R, Fase 2)
 
-No viajan dentro de esta carpeta: el navegador los descarga la primera vez que se usa un método del motor R
-(`js/nucleo/motor-r.js`) y los guarda en su caché. Corren dentro de la página; los datos no salen del equipo.
+No viajan dentro del repositorio de la app: el navegador los descarga la primera vez que se usa un método del motor R
+(`js/nucleo/motor-r.js`) y los guarda en su caché. Corren dentro de la página; los datos no salen del equipo. Con
+doble clic salen del repositorio público de webR; servida por http(s) junto a su **repositorio propio** (`motor-r/`,
+armado con `node tools/motor-r/armar.mjs` desde `tools/motor-r/manifiesto.json`, que fija la versión y la huella de
+cada archivo), salen del mismo origen y el servicio sin conexión los guarda. La lista exacta de los 70 paquetes, con su
+versión y su licencia, está en el manifiesto y en `motor-r/LEEME.md`.
 
 | Componente | Versión | Licencia | De dónde se descarga | Uso |
 |---|---|---|---|---|
@@ -187,14 +191,15 @@ No viajan dentro de esta carpeta: el navegador los descarga la primera vez que s
 | lmerTest | 3.2-1 | GPL ≥ 2 | ídem | Grados de libertad de Satterthwaite y ANOVA de los efectos fijos |
 | pbkrtest | 0.5.5 | GPL ≥ 2 | ídem | Kenward-Roger (solo si se elige) |
 | emmeans | 2.0.3 | GPL-2 o GPL-3 | ídem | Medias marginales y comparaciones de los modelos mixtos |
-| nlme | 3.1-169 | GPL ≥ 2 | con webR (paquete recomendado de R) | Medidas repetidas con estructuras de covarianza |
+| nlme | 3.1-169 | GPL ≥ 2 | repositorio de webR | Medidas repetidas con estructuras de covarianza |
 | car | 3.1-5 | GPL ≥ 2 | repositorio de webR | Pruebas χ² de Wald de los modelos lineales generalizados mixtos |
 | carData, Formula, mgcv, quantreg, SparseM, MatrixModels, survival, abind | las del repositorio de webR | GPL ≥ 2, GPL-2 o GPL-3, LGPL ≥ 2 o MIT, según el paquete | ídem | Dependencias de car |
-| Dependencias de los anteriores (Matrix, minqa, nloptr, numDeriv, MASS, boot, Rcpp, RcppEigen y otras) | las del repositorio de webR | GPL-2, GPL ≥ 2, LGPL ≥ 3 o MIT, según el paquete | ídem | Las instala R junto con los anteriores |
+| Dependencias de los anteriores (Matrix, minqa, nloptr, numDeriv, MASS, boot, Rcpp, doBy, ggplot2 y otras, 70 paquetes en total) | las del repositorio de webR | GPL-2, GPL ≥ 2, GPL-3, LGPL, MIT, BSD o Apache 2.0, según el paquete | ídem | Las instala R junto con los anteriores |
 
-Dos dependencias son solo GPL-2 (minqa, de lme4; numDeriv, de lmerTest): no se enlazan con el código de SigmaPro, que
-se comunica con el motor por mensajes; si se publican en un repositorio propio (cierre de la Fase 2), irán con su
-código fuente, como pide la GPL-2. Cada resultado del motor R registra la versión de R y de sus paquetes (detalles
+Cinco dependencias son solo GPL-2 (minqa, numDeriv, mvtnorm, cowplot y rbibutils): no se enlazan con el código de
+SigmaPro, que se comunica con el motor por mensajes. Al publicar el repositorio propio, van con su código fuente, como
+pide la GPL: `node tools/motor-r/armar.mjs --fuentes` descarga el código fuente exacto con que webR compiló cada paquete
+(<https://repo.r-wasm.org/src/contrib/>) y el de webR 0.6.0 (<https://github.com/r-wasm/webr>). Cada resultado del motor R registra la versión de R y de sus paquetes (detalles
 técnicos del reporte y `tests/generado/motor-r.json`).
 
 ## Solo para generar referencias de validación (no se distribuyen)

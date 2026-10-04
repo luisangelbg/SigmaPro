@@ -5,7 +5,7 @@
    lme4::glmer (binomial y Poisson) o glmer.nb (binomial negativa), con el control estricto (bobyqa con rhoend = 1e-12
    y tolPwrss = 1e-12): con el de omisión glmer se queda hasta 1e-5 del óptimo. La sobredispersión se modela con un
    efecto aleatorio por observación (Harrison 2014): «sí», «no» o «automática» (si la prueba de Pearson del modelo sin
-   él da p < 0.05; solo con conteos o proporciones agrupadas). Da las pruebas χ² de Wald de los efectos fijos
+   él da p < 0.05 y la razón pasa de 1.1, como en el GLM; solo con conteos o proporciones agrupadas). Da las pruebas χ² de Wald de los efectos fijos
    (car::Anova tipo II, o III con contrastes de suma cero reajustado desde las θ del modelo), los coeficientes con sus
    EE (de la hessiana por diferencias finitas, lo de omisión de lme4; en la binomial negativa, de RX, que es lo que da
    lme4 2.0: la 1.1 usaba la hessiana) y sus
@@ -75,7 +75,7 @@ SP.definir('glmm', function (SP) {
       'forma <- function(obs) as.formula(paste(' + R.textoR(izq + ' ~ ' + m.derechaR) + ', if (obs) "+ (1 | .obs)" else "", ' + R.textoR(off) + '))',
       'prueba <- NULL', 'usaObs <- ' + (olre === 'si' ? 'TRUE' : 'FALSE'));
     if (olre === 'auto') L.push('m0 <- ajusta(forma(FALSE))', 'pr0 <- sum(residuals(m0, type = "pearson")^2); gl0 <- df.residual(m0)',
-      'prueba <- list(razon = pr0 / gl0, p = pchisq(pr0, gl0, lower.tail = FALSE))', 'usaObs <- prueba$p < 0.05');
+      'prueba <- list(razon = pr0 / gl0, p = pchisq(pr0, gl0, lower.tail = FALSE))', 'usaObs <- prueba$p < 0.05 && prueba$razon > 1.1');
     L.push('f <- forma(usaObs)', 'modelo <- ajusta(f)');
     /* EE: la hessiana (lo de omisión de lme4), salvo con la binomial negativa o un ajuste singular, que van con RX: es lo que hace
        lme4 2.0 (no calcula la hessiana ahí) y en la frontera la hessiana por diferencias finitas no es confiable */

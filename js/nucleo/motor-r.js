@@ -28,6 +28,22 @@ SP.definir('motor-r', function (SP) {
   /* versión fijada (propuesta/FASE2.md §1); en GitHub Pages se podrá apuntar a una copia propia con SP_MOTOR_R */
   const CONFIG = { webr: 'https://webr.r-wasm.org/v0.6.0/', repo: 'https://repo.r-wasm.org/', version: '0.6.0' };
   const config = () => Object.assign({}, CONFIG, (typeof globalThis !== 'undefined' && globalThis.SP_MOTOR_R) || {});
+  /* Servida por http(s) junto a su repositorio propio (motor-r/, armado con tools/motor-r/armar.mjs), webR y los
+     paquetes salen del mismo origen y el servicio sin conexión los guarda: el motor funciona sin internet. Con doble
+     clic (file://) el hilo del motor no puede leer archivos locales: se usa el repositorio público de webR. */
+  let local = null;
+  async function configLocal() {
+    if (local !== null) return local;
+    local = false;
+    try {
+      if (typeof location !== 'undefined' && /^https?:$/.test(location.protocol)) {
+        const r = await fetch('motor-r/listo.json', { cache: 'no-cache' });
+        const j = r.ok ? await r.json() : null;
+        if (j && j.webr === CONFIG.version) local = { webr: new URL('motor-r/webr/', location.href).href, repo: new URL('motor-r/repo/', location.href).href, propio: true };
+      }
+    } catch (e) { /* sin repositorio propio */ }
+    return local;
+  }
 
   /* ---------------- funciones de R que se definen al arrancar ----------------
      (String.raw: las barras invertidas van tal cual a R) */
@@ -184,7 +200,7 @@ SP.definir('motor-r', function (SP) {
   }
 
   /* ---------------- el motor ---------------- */
-  const est = { fase: 'apagado', paso: '', version: '', r: '', error: '' };
+  const est = { fase: 'apagado', paso: '', version: '', r: '', error: '', origen: '' };
   const oyentes = new Set();
   function avisar(cambios) {
     Object.assign(est, cambios);
@@ -208,7 +224,8 @@ SP.definir('motor-r', function (SP) {
     cargando = (async () => {
       avisar({ fase: 'cargando', paso: T('Descargando el motor R (la primera vez tarda más)…'), error: '' });
       try {
-        const cfg = config();
+        const propio = await configLocal();
+        const cfg = Object.assign({}, CONFIG, propio || {}, (typeof globalThis !== 'undefined' && globalThis.SP_MOTOR_R) || {});
         const mod = await import(cfg.webr + 'webr.mjs');
         const op = { baseUrl: cfg.webr, repoUrl: cfg.repo };
         if (mod.ChannelType && mod.ChannelType.PostMessage !== undefined) op.channelType = mod.ChannelType.PostMessage;
@@ -224,7 +241,7 @@ SP.definir('motor-r', function (SP) {
         if (gen !== generacion) { try { nuevo.close(); } catch (e) { /* ya cerrado */ } throw new SP.ErrorSP(T('Cálculo cancelado.')); }
         w = nuevo;
         instalados = new Set();
-        avisar({ fase: 'listo', paso: '', version: cfg.version, r: r.replace(/^R version /, 'R ').replace(/ \(.*$/, '') });
+        avisar({ fase: 'listo', paso: '', version: cfg.version, r: r.replace(/^R version /, 'R ').replace(/ \(.*$/, ''), origen: cfg.propio ? 'propio' : 'publico' });
         return w;
       } catch (e) {
         avisar({ fase: 'error', paso: '', error: (e && e.message) || String(e) });
@@ -310,7 +327,7 @@ SP.definir('motor-r', function (SP) {
   SP.motorR = {
     CONFIG, PRELUDIO, config, nombreR, textoR, columnas, envolver, leerSalida, puede,
     estado: () => Object.assign({}, est),
-    /** Avisa cada cambio de estado ({ fase: 'apagado' | 'cargando' | 'listo' | 'ocupado' | 'error', paso, version, r, error }). */
+    /** Avisa cada cambio de estado ({ fase: 'apagado' | 'cargando' | 'listo' | 'ocupado' | 'error', paso, version, r, error, origen: 'propio' | 'publico' }). */
     al(fn) { oyentes.add(fn); return () => oyentes.delete(fn); },
     iniciar, asegurar, ejecutar, reiniciar, cancelar: reiniciar, versiones,
   };

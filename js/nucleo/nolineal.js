@@ -8,7 +8,10 @@
    intervalo entre dosis observadas, x0 por el método de Brent con a y b por mínimos cuadrados) y luego se pule igual.
    Con grupos, cada parámetro puede ser común o uno por grupo (en el orden de nls: por parámetro y, dentro, por grupo);
    así se comparan curvas con la prueba F de la suma de cuadrados extra.
-   EE: σ²·(J'J)⁻¹ con σ² = SCR/(n − p), como summary.nls; log L = −n/2·(log 2π + 1 − log n + log SCR), como logLik.nls. */
+   EE: σ²·(J'J)⁻¹ con σ² = SCR/(n − p), como summary.nls; log L = −n/2·(log 2π + 1 − log n + log SCR), como logLik.nls.
+   Con filas repetidas (la misma x en el mismo grupo, como las repeticiones de un ensayo) el ajuste se hace sobre la
+   media de cada celda pesada por su número de filas: el mismo óptimo, la misma J'J y la misma SCR (más la de dentro
+   de las celdas); con 100 000 filas y pocas dosis, milisegundos en lugar de segundos. */
 SP.definir('nolineal', function (SP) {
   'use strict';
   const T = SP.T;
@@ -113,7 +116,7 @@ SP.definir('nolineal', function (SP) {
    * @param {boolean[]} porGrupo  por parámetro
    * @returns {(th) => { v: Float64Array, J: Float64Array (n × q por columnas) }}
    */
-  function evaluador(modelo, x, g, G, porGrupo) {
+  function evaluador(modelo, x, g, G, porGrupo, raiz) {
     const M = MODELOS[modelo], P = M.par.length, n = x.length, cols = porGrupo.map(pg => (pg ? G : 1)), ini = [];
     let q = 0;
     cols.forEach(c => { ini.push(q); q += c; });
@@ -123,9 +126,9 @@ SP.definir('nolineal', function (SP) {
         const v = new Float64Array(n), J = new Float64Array(n * q), p = new Array(P);
         for (let i = 0; i < n; i++) {
           for (let k = 0; k < P; k++) p[k] = th[ini[k] + (porGrupo[k] ? g[i] : 0)];
-          const [val, gr] = M.f(x[i], p);
-          v[i] = val;
-          for (let k = 0; k < P; k++) J[i + (ini[k] + (porGrupo[k] ? g[i] : 0)) * n] = gr[k];
+          const [val, gr] = M.f(x[i], p), w = raiz ? raiz[i] : 1;
+          v[i] = val * w;
+          for (let k = 0; k < P; k++) J[i + (ini[k] + (porGrupo[k] ? g[i] : 0)) * n] = gr[k] * w;
         }
         return { v, J };
       },
@@ -206,21 +209,29 @@ SP.definir('nolineal', function (SP) {
    */
   function analizar(modelo, x, y, g, niveles, nivel) {
     const M = MODELOS[modelo], P = M.par.length, G = g ? niveles.length : 1, gg = g || new Int32Array(x.length), n = x.length;
+    /* las celdas (x, grupo): con al menos dos filas por celda en promedio, el ajuste va sobre sus medias pesadas */
+    const K = celdas(x, y, gg), X0 = K ? K.x : x, Y0 = K ? K.y : y, G0 = K ? K.g : gg, R0 = K ? K.raiz : null, dentro = K ? K.dentro : 0;
+    const sub = (a, i) => i.map(k => a[k]);
     const dosConGrupo = porGrupo => {
       let ini;
       if (modelo === 'lineal-meseta') {
-        ini = porGrupo.some(Boolean) ? (() => { const pg = niveles.map((_, h) => { const i = idxDe(gg, h); return perfilMeseta(i.map(k => x[k]), i.map(k => y[k])); }); return M.par.map((_, k) => pg.map(v => v[k])); })()
+        ini = porGrupo.some(Boolean) ? (() => { const pg = niveles.map((_, h) => { const i = idxDe(gg, h); return perfilMeseta(sub(x, i), sub(y, i)); }); return M.par.map((_, k) => pg.map(v => v[k])); })()
           : inicio(modelo, x, y).map(v => [v]);
       } else if (porGrupo.some(Boolean)) {
-        const pg = niveles.map((_, h) => { const i = idxDe(gg, h), xs = i.map(k => x[k]), ys = i.map(k => y[k]); return ajustar(evaluador(modelo, xs, new Int32Array(xs.length), 1, M.par.map(() => false)), ys, inicio(modelo, xs, ys)).th; });
+        const pg = niveles.map((_, h) => {
+          const i = idxDe(gg, h), c = idxDe(G0, h);
+          return ajustar(evaluador(modelo, sub(X0, c), new Int32Array(c.length), 1, M.par.map(() => false), R0 ? sub(R0, c) : null), sub(Y0, c), inicio(modelo, sub(x, i), sub(y, i))).th;
+        });
         ini = M.par.map((_, k) => (porGrupo[k] ? pg.map(v => v[k]) : [pg.reduce((s, v) => s + v[k], 0) / G]));
       } else ini = inicio(modelo, x, y).map(v => [v]);
-      const ev = evaluador(modelo, x, gg, G, porGrupo);
-      return ajustar(ev, y, ini.flat());
+      const r = ajustar(evaluador(modelo, X0, G0, G, porGrupo, R0), Y0, ini.flat());
+      return Object.assign(r, { rss: r.rss + dentro });
     };
     const pgCompleto = M.par.map(() => G > 1), C = dosConGrupo(pgCompleto), q = C.q, gl = n - q;
     exigir(gl > 0, T('Hay tantos parámetros como observaciones: faltan datos para la curva.'));
-    const s2 = C.rss / gl, V = covarianza(C.J, n, q, s2), ct = SP.dist.qt(1 - (1 - nivel) / 2, gl);
+    const s2 = C.rss / gl, V = covarianza(C.J, X0.length, q, s2), ct = SP.dist.qt(1 - (1 - nivel) / 2, gl);
+    const parDe = h => M.par.map((_, k) => C.th[G > 1 ? k * G + h : k]);
+    const ajustados = K ? (() => { const ph = Array.from({ length: G }, (_, h) => parDe(h)); return Array.from(x, (v, i) => M.f(v, ph[gg[i]])[0]); })() : Array.from(C.v);
     const ee = C.th.map((_, j) => sqrt(V[j * q + j])), tv = C.th.map((b, j) => b / ee[j]);
     let my = 0; for (const v of y) my += v; my /= n;
     let tss = 0; for (const v of y) tss += (v - my) ** 2;
@@ -229,7 +240,7 @@ SP.definir('nolineal', function (SP) {
       parametros: { estimado: C.th, ee, t: tv, p: tv.map(t => 2 * SP.dist.pt(abs(t), gl, false)), ic_inf: C.th.map((b, j) => b - ct * ee[j]), ic_sup: C.th.map((b, j) => b + ct * ee[j]),
         nombre: G > 1 ? M.par.flatMap(pn => niveles.map(h => pn + '.' + h)) : M.par.slice(), parametro: G > 1 ? M.par.flatMap(pn => niveles.map(() => pn)) : M.par.slice(), grupo: G > 1 ? M.par.flatMap(() => niveles.slice()) : M.par.map(() => '') },
       ajuste: { n, gl, rss: C.rss, sigma: sqrt(s2), r2: 1 - C.rss / tss, logLik: ll, AIC: -2 * ll + 2 * (q + 1), BIC: -2 * ll + log(n) * (q + 1), convergio: C.convergio },
-      ajustados: Array.from(C.v),
+      ajustados,
     };
     out.derivados = [];
     for (let h = 0; h < G; h++) {
@@ -252,6 +263,20 @@ SP.definir('nolineal', function (SP) {
     return out;
   }
   const idxDe = (g, h) => { const r = []; for (let i = 0; i < g.length; i++) if (g[i] === h) r.push(i); return r; };
+  /** Las celdas (x, grupo) con su número de filas, √n·media y la suma de cuadrados dentro; null si casi no se repiten. */
+  function celdas(x, y, g) {
+    const n = x.length, mapa = new Map(), cod = new Int32Array(n);
+    for (let i = 0; i < n; i++) { const k = g[i] + '|' + x[i]; let c = mapa.get(k); if (c === undefined) { c = mapa.size; mapa.set(k, c); } cod[i] = c; }
+    const m = mapa.size;
+    if (m > n / 2) return null;
+    const cx = new Float64Array(m), cg = new Int32Array(m), cn = new Float64Array(m), cs = new Float64Array(m);
+    for (let i = 0; i < n; i++) { const c = cod[i]; cx[c] = x[i]; cg[c] = g[i]; cn[c]++; cs[c] += y[i]; }
+    const media = Float64Array.from(cs, (v, c) => v / cn[c]);
+    let dentro = 0;
+    for (let i = 0; i < n; i++) dentro += (y[i] - media[cod[i]]) ** 2;
+    const raiz = Float64Array.from(cn, sqrt);
+    return { x: cx, g: cg, raiz, y: Float64Array.from(media, (v, c) => v * raiz[c]), dentro };
+  }
 
   SP.nolineal = { MODELOS, inicio, perfilMeseta, brentMin, ajustar, evaluador, analizar, derivados };
 });

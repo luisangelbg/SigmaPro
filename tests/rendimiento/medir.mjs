@@ -5,6 +5,7 @@
 //       node tests/rendimiento/medir.mjs --json     además escribe tests/rendimiento/resultados.json
 //       --avance        muestra cada medida al empezar y al terminar
 //       --solo=Interfaz solo los grupos cuyo título empieza así (no guarda resultados)
+//       --motor         mide también el motor R con 20 000 filas (necesita internet la primera vez)
 //
 // En node los cálculos son mucho más lentos que en la página (las búsquedas de globales dentro de vm), así que se mide
 // donde corre la app. Cada método se mide como lo usa la app (SP.ejecutar + reporte): la primera vez (en frío) y la
@@ -57,6 +58,7 @@ try {
   const t0 = Date.now();
   const solo = (process.argv.find(a => a.startsWith('--solo=')) || '').slice(7);
   if (solo) await evaluar('window.__soloGrupo = ' + JSON.stringify(solo));
+  if (process.argv.includes('--motor')) await evaluar('window.__motor = true');
   const r = JSON.parse(await evaluar(PAGINA));
   const ua = await evaluar('navigator.userAgent');
   const fmt = x => (x >= 1000 ? (x / 1000).toFixed(2) + ' s' : Math.round(x) + ' ms');

@@ -136,8 +136,12 @@ SP.definir('glm', function (SP) {
       if (!Number.isFinite(dv) || !validos(r.e, r.m)) throw new SP.ErrorSP(T('El ajuste no encontró coeficientes válidos para esta familia y enlace.'),
         T('Prueba otro enlace (por ejemplo, log en lugar de identidad o inverso) o revisa que la respuesta sea válida para la familia.'));
       const cambio = abs(dv - devAnt) / (abs(dv) + 0.1);
+      /* con decenas de miles de filas el redondeo de la devianza no baja de 1e-14: también basta que los coeficientes ya
+         no cambien (1e-12 relativo) */
+      let quieto = !!coef;
+      if (coef) for (let j = 0; j < p && quieto; j++) if (abs(nuevo[j] - coef[j]) > 1e-12 * max(1, abs(nuevo[j]))) quieto = false;
       eta = r.e; mu = r.m; coef = nuevo; coefAnt = nuevo; devAnt = dv;
-      if (cambio < 1e-14) { convergio = true; break; }
+      if (cambio < 1e-14 || quieto) { convergio = true; break; }
     }
     /* pesos y QR en el óptimo (la covarianza de los coeficientes) */
     const pesos = new Float64Array(n);
@@ -160,6 +164,7 @@ SP.definir('glm', function (SP) {
     for (let k = 0; k < 200; k++) {
       const del = scoreTheta(th, mu, y, w) / infoTheta(th, mu, y, w);
       th = abs(th + del);
+      if (th > 1e8) return th;   // sin sobredispersión θ crece sin fin: la binomial negativa ya es la de Poisson
       if (!Number.isFinite(th)) throw new SP.ErrorSP(T('La θ de la binomial negativa no converge: los datos no muestran sobredispersión.'), T('Usa la familia de Poisson.'));
       if (abs(del) < 1e-15 * th) break;
     }
@@ -173,10 +178,10 @@ SP.definir('glm', function (SP) {
       total += fit.iteraciones;
       const th0 = th;
       th = thetaML(o.y, fit.mu, o.w, th);
-      if (abs(th - th0) < 1e-13 * th) break;
+      if (abs(th - th0) < 1e-13 * th || th > 1e8) break;
     }
     const ee = sqrt(1 / infoTheta(th, fit.mu, o.y, o.w));
-    return Object.assign(fit, { theta: th, eeTheta: ee, iteraciones: total });
+    return Object.assign(fit, { theta: th, eeTheta: ee, iteraciones: total, thetaLimite: th > 1e8 });
   }
 
   /** Ajuste completo de una familia (la binomial negativa estima θ si no se da). */
