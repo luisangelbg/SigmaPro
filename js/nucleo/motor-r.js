@@ -240,11 +240,11 @@ SP.definir('motor-r', function (SP) {
     for (const p of paquetes || []) {
       if (!/^[A-Za-z][A-Za-z0-9.]*$/.test(p)) throw new Error('Nombre de paquete no válido: ' + p);
       if (instalados.has(p)) continue;
-      let ok = await m.evalRBoolean('requireNamespace(' + textoR(p) + ', quietly = TRUE)');
+      let ok = await m.evalRBoolean('suppressMessages(requireNamespace(' + textoR(p) + ', quietly = TRUE))');
       for (let k = 0; !ok && k < 3; k++) {
         avisar({ fase: 'cargando', paso: T('Instalando {p} en el motor R (solo la primera vez)…', { p }) });
         try { await m.installPackages([p], { quiet: true }); } catch (e) { /* se reintenta */ }
-        ok = await m.evalRBoolean('requireNamespace(' + textoR(p) + ', quietly = TRUE)');
+        ok = await m.evalRBoolean('suppressMessages(requireNamespace(' + textoR(p) + ', quietly = TRUE))');
         if (!ok) await espera(1000 * (k + 1));
       }
       if (!ok) {

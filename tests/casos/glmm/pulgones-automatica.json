@@ -1,0 +1,227 @@
+{
+  "esquema": 1,
+  "id": "glmm-bloques/pulgones-automatica",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm-bloques"
+  },
+  "titulo": "Pulgones por planta en bloques numerados: la automática agrega el efecto por observación",
+  "fuente": "Datos sintéticos (generados en este archivo)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "bloque": [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6],
+      "trat": ["Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Imidacloprid", "Imidacloprid", "Imidacloprid", "Imidacloprid", "Imidacloprid", "Imidacloprid", "Spinosad", "Spinosad", "Spinosad", "Spinosad", "Spinosad", "Spinosad", "Neem", "Neem", "Neem", "Neem", "Neem", "Neem", "Jabón", "Jabón", "Jabón", "Jabón", "Jabón", "Jabón"],
+      "pulgones": [38, 27, 28, 19, 10, 15, 37, 80, 15, 27, 25, 59, 27, 15, 22, 21, 18, 28, 5, 9, 4, 7, 4, 12, 16, 7, 11, 12, 17, 12]
+    },
+    "tipos": {
+      "bloque": {
+        "tipo": "numerica"
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["Imidacloprid", "Jabón", "Neem", "Spinosad", "Testigo"]
+      },
+      "pulgones": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "pulgones",
+    "tratamientos": ["trat"],
+    "bloque": "bloque"
+  },
+  "opciones": {
+    "familia": "poisson",
+    "enlace": "log",
+    "sobredispersion": "auto",
+    "tipo": 2,
+    "comparar": ["trat"],
+    "dentro": "",
+    "ajuste": "tukey"
+  },
+  "esperado": {
+    "obs": {
+      "usado": true,
+      "razon": 3.131771391012578,
+      "p": 3.5195255487304763e-07
+    },
+    "wald": {
+      "termino": ["trat"],
+      "chi2": [52.23821033922362],
+      "gl": [4],
+      "p": [1.2299631722005171e-10]
+    },
+    "coeficientes": {
+      "nombre": ["(Intercept)", "tratJabón", "tratNeem", "tratSpinosad", "tratTestigo"],
+      "estimado": [3.5918148810632835, -1.1010664923210773, -1.7197839459363446, -0.53627730460975187, -0.52299689511828806],
+      "ee": [0.15463892214076899, 0.23456906002164438, 0.25762205584202824, 0.22182603661279379, 0.2216112682071687],
+      "z": [23.227107582873781, -4.6939971205898967, -6.6756083453929982, -2.4175579783082242, -2.3599742889850495],
+      "p": [2.4239690311550003e-119, 2.6791780503036379e-06, 2.4620868904701464e-11, 0.015625044562650316, 0.018276201689439824]
+    },
+    "varianzas": {
+      "grupo": [".obs", "bloque"],
+      "varianza": [0.10923232744007087, 0.0039246414696556802]
+    },
+    "ajuste": {
+      "n": 30,
+      "logLik": -100.21745768849652,
+      "AIC": 214.43491537699305,
+      "BIC": 224.24329704862814,
+      "pearson": 8.2075864822522231,
+      "gl": 23,
+      "dispersion": 0.35685158618487928
+    },
+    "razones": {
+      "razon": [36.299896174615448, 0.33251626848088989, 0.17910484006006006, 0.58492168961914359, 0.5927414993847967],
+      "ic_inf": [26.80874561120018, 0.20996521562804588, 0.10809834146978141, 0.37868583569967768, 0.3839100497132531],
+      "ic_sup": [49.151216599159298, 0.52659707691927982, 0.29675333864310188, 0.90347552174686452, 0.91516876246234968]
+    },
+    "medias": [
+      {
+        "factor": "trat",
+        "filas": [
+          {
+            "nivel": "Imidacloprid",
+            "eta": 3.5918148810632835,
+            "ee_eta": 0.15463892214076899,
+            "respuesta": 36.299896174615448,
+            "ee": 5.6133768182643564,
+            "ic": [26.80874561120018, 49.151216599159298]
+          },
+          {
+            "nivel": "Jabón",
+            "eta": 2.4907483887422064,
+            "ee_eta": 0.18062779742468271,
+            "respuesta": 12.070306022226859,
+            "ee": 2.1802327910367207,
+            "ic": [8.4716425135751248, 17.197643460137257]
+          },
+          {
+            "nivel": "Neem",
+            "eta": 1.8720309351269389,
+            "ee_eta": 0.21018551534945121,
+            "respuesta": 6.5014870985512863,
+            "ee": 1.3665184163468105,
+            "ic": [4.3062820351319235, 9.8157376009706478]
+          },
+          {
+            "nivel": "Spinosad",
+            "eta": 3.0555375764535317,
+            "ee_eta": 0.163482348047222,
+            "respuesta": 21.232596603455555,
+            "ee": 3.4711547478723848,
+            "ic": [15.411562851123675, 29.252267461778047]
+          },
+          {
+            "nivel": "Testigo",
+            "eta": 3.0688179859449956,
+            "ee_eta": 0.16380805558812547,
+            "respuesta": 21.51645488605401,
+            "ee": 3.524568638034129,
+            "ic": [15.607633111643755, 29.66227022073047]
+          }
+        ],
+        "pares": [
+          {
+            "dif": 1.1010664923210773,
+            "ee": 0.23456906002164438,
+            "estadistico": 4.6939971205898967,
+            "p": 2.6404950756120371e-05,
+            "razon": 3.0073716530277714
+          },
+          {
+            "dif": 1.7197839459363446,
+            "ee": 0.25762205584202824,
+            "estadistico": 6.6756083453929982,
+            "p": 2.4618096450268467e-10,
+            "razon": 5.5833220345394645
+          },
+          {
+            "dif": 0.53627730460975187,
+            "ee": 0.22182603661279379,
+            "estadistico": 2.4175579783082242,
+            "p": 0.11056296672729449,
+            "razon": 1.7096305672151153
+          },
+          {
+            "dif": 0.52299689511828806,
+            "ee": 0.2216112682071687,
+            "estadistico": 2.3599742889850495,
+            "p": 0.12644590409458056,
+            "razon": 1.6870760711674393
+          },
+          {
+            "dif": 0.61871745361526731,
+            "ee": 0.2744669124543791,
+            "estadistico": 2.2542515164486661,
+            "p": 0.16003106455680505,
+            "razon": 1.8565454086521929
+          },
+          {
+            "dif": -0.56478918771132547,
+            "ee": 0.24079999621563328,
+            "estadistico": -2.3454700854960318,
+            "p": 0.13070822319235809,
+            "razon": 0.56847997669123729
+          },
+          {
+            "dif": -0.57806959720278928,
+            "ee": 0.2407879027198275,
+            "estadistico": -2.4007418590102971,
+            "p": 0.11503238150965989,
+            "razon": 0.56098023982799716
+          },
+          {
+            "dif": -1.1835066413265927,
+            "ee": 0.26357304915727886,
+            "estadistico": -4.4902414913460014,
+            "p": 6.9698015670027758e-05,
+            "razon": 0.30620310930285305
+          },
+          {
+            "dif": -1.1967870508180565,
+            "ee": 0.26343758192262734,
+            "estadistico": -4.5429624812209122,
+            "p": 5.4436625703591091e-05,
+            "razon": 0.30216348989559877
+          },
+          {
+            "dif": -0.013280409491463807,
+            "ee": 0.22837408927604122,
+            "estadistico": -0.058151997599917994,
+            "p": 0.99999741322574132,
+            "razon": 0.98680738606328511
+          }
+        ]
+      }
+    ]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 1e-10,
+        "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      },
+      "coeficientes.p[*]": {
+        "absoluto": 1e-10,
+        "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      },
+      "wald.p[*]": {
+        "absoluto": 1e-10,
+        "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "lme4": "1.1.35.5",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(pulgones ~ trat + (1 | bloque), family = poisson(link = \"log\")) con el efecto por observación «auto»; car::Anova(type = 2); emmeans"
+  }
+}

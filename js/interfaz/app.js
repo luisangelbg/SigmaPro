@@ -65,8 +65,9 @@
     ['hecho', '2.2', 'Medidas repetidas en el tiempo con estructuras de covarianza'],
     ['hecho', '2.3', 'Componentes de varianza por REML, heredabilidad, repetibilidad y BLUP de genotipos'],
     ['hecho', '2.4', 'Modelos lineales generalizados en el núcleo: binomial, Poisson, gamma, cuasi y binomial negativa'],
-    ['actual', '2.5', 'Modelos lineales generalizados mixtos en el motor R, con sobredispersión'],
-    ['', '2.6–2.10', 'No lineales, superficies de respuesta y ensayos multiambiente'],
+    ['hecho', '2.5', 'Modelos lineales generalizados mixtos en el motor R, con sobredispersión'],
+    ['actual', '2.6', 'Regresión no lineal y dosis-respuesta'],
+    ['', '2.7–2.10', 'Superficies de respuesta, ensayos multiambiente, asistente y cierre'],
     ['', '3', 'Fase 3: multivariado con PCAPro y ClusteringPro, potencia y tamaño de muestra'],
   ];
   function hitos() {

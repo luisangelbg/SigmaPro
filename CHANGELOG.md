@@ -2,6 +2,30 @@
 
 ## Sin publicar
 
+### Hito 2.5 · Modelos lineales generalizados mixtos (3 oct 2026)
+
+- **Dos métodos nuevos en la familia Modelos lineales generalizados, en el motor R** (lme4, car y emmeans):
+  **Conteos o proporciones en bloques aleatorios** (desde un formulario) y **Modelo lineal generalizado mixto desde una
+  fórmula** con términos aleatorios como en lme4. Binomial (con ensayos o 0/1), Poisson (con exposición) y binomial
+  negativa (glmer.nb); enlaces logit, probit, log-log complementario, log e identidad.
+- **Sobredispersión con un efecto aleatorio por observación** (Harrison 2014): sí, no o automático (si la prueba de
+  Pearson del modelo sin él da p < 0.05, con conteos o proporciones agrupadas).
+- Pruebas χ² de Wald de los efectos fijos tipo II o III (car::Anova; el III con contrastes de suma cero), coeficientes
+  con razones de momios o de tasas, varianzas de los efectos aleatorios, ajuste (log-verosimilitud de Laplace, AIC,
+  BIC, Pearson χ²/gl), medias en la escala de la respuesta con pares y letras, semáforo (sobredispersión, atípicos,
+  ajuste singular), las gráficas del GLM, el párrafo para tesis con tres referencias nuevas y el código R.
+- **Control estricto de glmer** (bobyqa con rhoend = 1e-12 y tolPwrss = 1e-12): con el de omisión, glmer se queda hasta
+  1.4 × 10⁻⁴ del óptimo en los coeficientes (el ajuste interno sin converger desvía la verosimilitud 3 × 10⁻⁶).
+- **EE**: de la hessiana de la verosimilitud de Laplace (lo de omisión de lme4), salvo con la binomial negativa o un
+  ajuste singular, que van con RX: lme4 2.0 (el del motor) ya no calcula ahí la hessiana y la 1.1 del escritorio sí
+  (hasta 2 % de diferencia); se fija la regla en los dos lados.
+- Validación en el navegador: 8 casos (cbpp de Lesnoff et al. 2004 con y sin el efecto por observación, grouseticks
+  de Elston et al. 2001 con dos agrupamientos y una covariable, el aguacate de los ejemplos con un ajuste singular y
+  ensayos sintéticos con probit, binomial negativa con dos factores y tipo III, y exposición): 907 valores, diferencia
+  escalada máxima 4.1 × 10⁻⁶ (grouseticks, con 5 cifras documentadas en los EE; los demás, 8.6 × 10⁻⁷). 692 casos en total.
+- Motor R: al comprobar los paquetes instalados se callan sus mensajes (car avisa al cargarse que reemplaza un método de
+  lme4 y la consola lo mostraba).
+
 ### Hito 2.4 · Modelos lineales generalizados (3 oct 2026)
 
 - **Familia nueva: Modelos lineales generalizados**, en el núcleo JS (sin internet, al instante). Mínimos cuadrados

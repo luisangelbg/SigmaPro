@@ -189,6 +189,8 @@ No viajan dentro de esta carpeta: el navegador los descarga la primera vez que s
 | pbkrtest | 0.5.5 | GPL ≥ 2 | ídem | Kenward-Roger (solo si se elige) |
 | emmeans | 2.0.3 | GPL-2 o GPL-3 | ídem | Medias marginales y comparaciones de los modelos mixtos |
 | nlme | 3.1-169 | GPL ≥ 2 | con webR (paquete recomendado de R) | Medidas repetidas con estructuras de covarianza |
+| car | 3.1-5 | GPL ≥ 2 | repositorio de webR | Pruebas χ² de Wald de los modelos lineales generalizados mixtos |
+| carData, Formula, mgcv, quantreg, SparseM, MatrixModels, survival, abind | las del repositorio de webR | GPL ≥ 2, GPL-2 o GPL-3, LGPL ≥ 2 o MIT, según el paquete | ídem | Dependencias de car |
 | Dependencias de los anteriores (Matrix, minqa, nloptr, numDeriv, MASS, boot, Rcpp, RcppEigen y otras) | las del repositorio de webR | GPL-2, GPL ≥ 2, LGPL ≥ 3 o MIT, según el paquete | ídem | Las instala R junto con los anteriores |
 
 Dos dependencias son solo GPL-2 (minqa, de lme4; numDeriv, de lmerTest): no se enlazan con el código de SigmaPro, que

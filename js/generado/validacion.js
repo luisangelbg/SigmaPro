@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-03T22:20:40.774Z",
+ "generado": "2026-10-04T02:00:44.058Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 684,
-  "aprobados": 684,
+  "casos": 692,
+  "aprobados": 692,
   "fallidos": 0,
-  "valores": 67907,
-  "difEscaladaMax": 2.0258232202030768e-7,
-  "objetivos": 142
+  "valores": 68814,
+  "difEscaladaMax": 0.000004071746832135441,
+  "objetivos": 144
  },
  "casos": [
   {
@@ -17948,6 +17948,446 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "lmer(travel ~ 1 + (1 | Rail), REML = TRUE) pulido; r = σ²i/(σ²i + σ²e); R² = m·r/(1 + (m − 1)·r); η = R²(1 − r)/((1 − R²)r)"
+   }
+  },
+  {
+   "id": "glmm/garrapatas-poisson",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm"
+   },
+   "titulo": "Garrapatas por pollo: Poisson con nidada y localidad aleatorias y una covariable",
+   "fuente": "Elston et al. (2001), Parasitology 122: 563-569; conjunto grouseticks de lme4 (altura centrada y escalada)",
+   "clase": "D",
+   "valores": 91,
+   "difMax": 0.0001436029605841327,
+   "difEscaladaMax": 0.000004071746832135441,
+   "peor": "coeficientes.z[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-10,
+      "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "coeficientes.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "wald.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "coeficientes.ee[*]": {
+      "tol": 0.00001,
+      "motivo": "EE de la hessiana por diferencias finitas evaluada en óptimos que difieren 1e-7 entre lme4 2.0-1 y 1.1-35.5 (dos agrupamientos con 118 y 63 niveles): 5 cifras"
+     },
+     "coeficientes.z[*]": {
+      "tol": 0.00001,
+      "motivo": "EE de la hessiana por diferencias finitas evaluada en óptimos que difieren 1e-7 entre lme4 2.0-1 y 1.1-35.5 (dos agrupamientos con 118 y 63 niveles): 5 cifras"
+     },
+     "razones.ic_inf[*]": {
+      "tol": 0.00001,
+      "motivo": "EE de la hessiana por diferencias finitas evaluada en óptimos que difieren 1e-7 entre lme4 2.0-1 y 1.1-35.5 (dos agrupamientos con 118 y 63 niveles): 5 cifras"
+     },
+     "razones.ic_sup[*]": {
+      "tol": 0.00001,
+      "motivo": "EE de la hessiana por diferencias finitas evaluada en óptimos que difieren 1e-7 entre lme4 2.0-1 y 1.1-35.5 (dos agrupamientos con 118 y 63 niveles): 5 cifras"
+     },
+     "wald.chi2[*]": {
+      "tol": 0.00001,
+      "motivo": "EE de la hessiana por diferencias finitas evaluada en óptimos que difieren 1e-7 entre lme4 2.0-1 y 1.1-35.5 (dos agrupamientos con 118 y 63 niveles): 5 cifras"
+     },
+     "medias[*].filas[*].ee": {
+      "tol": 0.00001,
+      "motivo": "EE de la hessiana por diferencias finitas evaluada en óptimos que difieren 1e-7 entre lme4 2.0-1 y 1.1-35.5 (dos agrupamientos con 118 y 63 niveles): 5 cifras"
+     },
+     "medias[*].filas[*].ee_eta": {
+      "tol": 0.00001,
+      "motivo": "EE de la hessiana por diferencias finitas evaluada en óptimos que difieren 1e-7 entre lme4 2.0-1 y 1.1-35.5 (dos agrupamientos con 118 y 63 niveles): 5 cifras"
+     },
+     "medias[*].filas[*].ic[*]": {
+      "tol": 0.00001,
+      "motivo": "EE de la hessiana por diferencias finitas evaluada en óptimos que difieren 1e-7 entre lme4 2.0-1 y 1.1-35.5 (dos agrupamientos con 118 y 63 niveles): 5 cifras"
+     },
+     "medias[*].pares[*].ee": {
+      "tol": 0.00001,
+      "motivo": "EE de la hessiana por diferencias finitas evaluada en óptimos que difieren 1e-7 entre lme4 2.0-1 y 1.1-35.5 (dos agrupamientos con 118 y 63 niveles): 5 cifras"
+     },
+     "medias[*].pares[*].estadistico": {
+      "tol": 0.00001,
+      "motivo": "EE de la hessiana por diferencias finitas evaluada en óptimos que difieren 1e-7 entre lme4 2.0-1 y 1.1-35.5 (dos agrupamientos con 118 y 63 niveles): 5 cifras"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(TICKS ~ YEAR + altura + (1 | BROOD) + (1 | LOCATION), family = poisson(link = \"log\"), control = glmerControl(optimizer = \"bobyqa\", tolPwrss = 1e-12, optCtrl = list(rhoend = 1e-12))); car::Anova(type = 2); emmeans(type = \"response\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "car": "3.1.5",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "glmm/vacas-binomial",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm"
+   },
+   "titulo": "Incidencia de pleuroneumonía por periodo con los hatos aleatorios (binomial con ensayos; la automática no agrega el efecto por observación)",
+   "fuente": "Lesnoff et al. (2004), Journal of Applied Ecology 41: 31-41; conjunto cbpp de lme4",
+   "clase": "D",
+   "valores": 107,
+   "difMax": 0.000009463306351875644,
+   "difEscaladaMax": 6.13060139418007e-7,
+   "peor": "coeficientes.z[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-10,
+      "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "coeficientes.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "wald.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(incidence ~ period + (1 | herd), family = binomial(link = \"logit\"), control = glmerControl(optimizer = \"bobyqa\", tolPwrss = 1e-12, optCtrl = list(rhoend = 1e-12))); car::Anova(type = 2); emmeans(type = \"response\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "car": "3.1.5",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "glmm/vacas-observacion-tipo3",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm"
+   },
+   "titulo": "La misma con el efecto por observación pedido y pruebas de Wald tipo III",
+   "fuente": "Lesnoff et al. (2004), Journal of Applied Ecology 41: 31-41; conjunto cbpp de lme4",
+   "clase": "D",
+   "valores": 109,
+   "difMax": 0.000002702903899809428,
+   "difEscaladaMax": 8.59724330791052e-7,
+   "peor": "coeficientes.z[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-10,
+      "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "coeficientes.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "wald.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(incidence ~ period + (1 | herd), family = binomial(link = \"logit\"), control = glmerControl(optimizer = \"bobyqa\", tolPwrss = 1e-12, optCtrl = list(rhoend = 1e-12))); car::Anova(type = 3); emmeans(type = \"response\")"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "car": "3.1.5",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "glmm-bloques/germinacion-probit",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm-bloques"
+   },
+   "titulo": "Germinadas de 40 en bloques aleatorios, enlace probit",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 89,
+   "difMax": 0.0000023717479180618284,
+   "difEscaladaMax": 7.099690313427942e-8,
+   "peor": "coeficientes.z[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-10,
+      "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "coeficientes.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "wald.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(germinadas ~ trat + (1 | bloque), family = binomial(link = \"probit\")) con el efecto por observación «auto»; car::Anova(type = 2); emmeans"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "car": "3.1.5",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "glmm-bloques/larvas-binomial-negativa",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm-bloques"
+   },
+   "titulo": "Larvas con dos factores cruzados, binomial negativa, tipo III y variedad dentro de cada riego",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 146,
+   "difMax": 0.0000058607192201520775,
+   "difEscaladaMax": 5.846696697342502e-7,
+   "peor": "coeficientes.z[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-10,
+      "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "coeficientes.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "wald.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(larvas ~ variedad * riego + (1 | bloque), family = binomial-negativa(link = \"log\")) con el efecto por observación «auto»; car::Anova(type = 3); emmeans"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "car": "3.1.5",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "glmm-bloques/malezas-exposicion",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm-bloques"
+   },
+   "titulo": "Malezas en áreas muestreadas distintas (exposición) sin el efecto por observación",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 77,
+   "difMax": 0.0000034838596292274815,
+   "difEscaladaMax": 4.232156126212661e-8,
+   "peor": "coeficientes.z[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-10,
+      "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "coeficientes.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "wald.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(malezas ~ trat + (1 | bloque), family = poisson(link = \"log\")) con el efecto por observación «no»; car::Anova(type = 2); emmeans"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "car": "3.1.5",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "glmm-bloques/pulgones-automatica",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm-bloques"
+   },
+   "titulo": "Pulgones por planta en bloques numerados: la automática agrega el efecto por observación",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 144,
+   "difMax": 0.000007929025677810841,
+   "difEscaladaMax": 2.250630013294564e-7,
+   "peor": "medias[0].filas[0].ee",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-10,
+      "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "coeficientes.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "wald.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(pulgones ~ trat + (1 | bloque), family = poisson(link = \"log\")) con el efecto por observación «auto»; car::Anova(type = 2); emmeans"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "car": "3.1.5",
+    "emmeans": "2.0.3"
+   }
+  },
+  {
+   "id": "glmm-bloques/trips-aguacate-singular",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm-bloques"
+   },
+   "titulo": "Trips del ejemplo del aguacate: efecto por observación automático y bloques con varianza en cero (ajuste singular, EE de RX)",
+   "fuente": "Ejemplo ficticio de SigmaPro «Aguacate» (datos/generar-ejemplos.R)",
+   "clase": "D",
+   "valores": 144,
+   "difMax": 1.1203370720025418e-7,
+   "difEscaladaMax": 5.290165969988903e-8,
+   "peor": "obs.razon",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-10,
+      "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "coeficientes.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     },
+     "wald.p[*]": {
+      "absoluto": 1e-10,
+      "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "lme4": "1.1.35.5",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(trips ~ tratamiento + (1 | bloque), family = poisson(link = \"log\")) con el efecto por observación «auto»; car::Anova(type = 2); emmeans"
+   },
+   "motor": {
+    "webr": "0.6.0",
+    "R": "4.6.0",
+    "lme4": "2.0.1",
+    "car": "3.1.5",
+    "emmeans": "2.0.3"
    }
   },
   {

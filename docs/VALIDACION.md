@@ -420,6 +420,7 @@ escritorio con el que se calcula la referencia.
 | data_alpha (Olivoto y Lúcio 2020) | alfa-látice de 24 genotipos, con repeticiones fijas y aleatorias |
 | Orthodont (Potthoff y Roy 1964), BodyWeight (Crowder y Hand 1990), sleepstudy y el maíz de los ejemplos | medidas repetidas: siete estructuras de covarianza con elección por AIC y BIC, la no estructurada pedida, fechas desiguales (AR(1) continua), faltantes, bloques, sin tratamientos (`tests/r/repetidas.R`) |
 | Dyestuff, Dyestuff2, Penicillin y Pastes (Davies y Goldsmith 1972; Box y Tiao 1973), Rail y ergoStool (Pinheiro y Bates 2000), data_alpha, data_ge y data_ge2 (Olivoto y Lúcio 2020) | componentes de varianza cruzados, anidados y con interacción, frontera, desbalance; heredabilidad en completamente al azar, bloques, alfa-látice y varios ambientes; repetibilidad con y sin efectos fijos (`tests/r/geneticos.R`) |
+| cbpp (Lesnoff et al. 2004), grouseticks (Elston et al. 2001) y el aguacate de los ejemplos | modelos lineales generalizados mixtos: binomial con ensayos, Poisson con dos agrupamientos y exposición, binomial negativa, efecto por observación, ajuste singular, Wald tipo II y III (`tests/r/glmm.R`) |
 | InsectSprays (Beall 1942), warpbreaks, snails, quine, Insurance y birthwt (MASS), escarabajos de Bliss (1935), coagulación (McCullagh y Nelder 1989) | modelos lineales generalizados: seis familias, cinco enlaces, exposición, familia automática, tipos I a III, medias y pares en la escala de la respuesta (`tests/r/glm.R`) |
 | data_ge (Olivoto y Lúcio 2020) y plrv (CIP, agricolae) | ensayos en varias localidades: localidad, repetición y G × L aleatorios; localidades fijas con 28 clones (378 pares de Tukey) |
 
@@ -429,6 +430,19 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
+
+## Modelos lineales generalizados mixtos (Hito 2.5, motor R)
+
+- **Referencia** (`tests/r/glmm.R`): glmer o glmer.nb en el R de escritorio con el mismo control estricto que la app
+  (bobyqa con rhoend = 1e-12 y tolPwrss = 1e-12; con el de omisión, glmer se queda hasta 1.4 × 10⁻⁴ del óptimo), el
+  efecto por observación con la misma regla, car::Anova (Wald) y emmeans con la misma covarianza.
+- **Versiones**: el motor trae lme4 2.0-1 y car 3.1-5; el escritorio, lme4 1.1-35.5 y car 3.1-3. lme4 2.0 ya no calcula
+  la hessiana con glmer.nb ni en un ajuste singular (la 1.1 sí, y los EE difieren hasta 2 %): en esos dos casos los EE
+  salen de RX en los dos lados; en los demás, de la hessiana, que coincide en 7 cifras.
+- **Tolerancias**: los p menores que 1e-6 de los coeficientes, de Wald y de los pares se comparan en absoluto (1e-10):
+  la diferencia de 1e-7 en los EE se amplifica en ellos (dp/p ≈ z²·dEE/EE). En grouseticks (118 nidadas y 63
+  localidades) la hessiana se evalúa en óptimos que difieren 1e-7 y los EE coinciden en 5 cifras (tolerancia 1e-5).
+- **Resultado**: 8 casos de 2 métodos, 907 valores, diferencia escalada máxima 4.1 × 10⁻⁶ (sin grouseticks, 8.6 × 10⁻⁷).
 
 ## Componentes de varianza y heredabilidad en el núcleo JS (Hito 2.3)
 
@@ -484,7 +498,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          43 operaciones con 100 000 filas en el navegador (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      58 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      60 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

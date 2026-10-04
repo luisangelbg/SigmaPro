@@ -98,6 +98,9 @@ SP.definir('informe', function (SP) {
     venables2002: () => 'Venables, W. N. y Ripley, B. D. (2002). Modern applied statistics with S (4.ª ed.). Springer.',
     wedderburn1974: () => 'Wedderburn, R. W. M. (1974). Quasi-likelihood functions, generalized linear models, and the Gauss-Newton method. Biometrika, 61(3), 439–447.',
     lenth2016: () => 'Lenth, R. V. (2016). Least-squares means: the R package lsmeans. Journal of Statistical Software, 69(1), 1–33.',
+    bolker2009: () => 'Bolker, B. M., Brooks, M. E., Clark, C. J., Geange, S. W., Poulsen, J. R., Stevens, M. H. H. y White, J.-S. S. (2009). Generalized linear mixed models: a practical guide for ecology and evolution. Trends in Ecology and Evolution, 24(3), 127–135.',
+    harrison2014: () => 'Harrison, X. A. (2014). Using observation-level random effects to model overdispersion in count data in ecology and evolution. PeerJ, 2, e616.',
+    fox2019: () => 'Fox, J. y Weisberg, S. (2019). An R companion to applied regression (3.ª ed.). Sage.',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -118,7 +121,7 @@ SP.definir('informe', function (SP) {
     henderson1975: 'Henderson, 1975', gilmour1995: 'Gilmour et al., 1995', self1987: 'Self y Liang, 1987', holland2003: 'Holland et al., 2003',
     cullis2006: 'Cullis et al., 2006', piepho2007: 'Piepho y Möhring, 2007', schmidt2019: 'Schmidt et al., 2019', falconer1996: 'Falconer y Mackay, 1996',
     cruz2012: 'Cruz et al., 2012', nelder1972: 'Nelder y Wedderburn, 1972', mccullagh1989: 'McCullagh y Nelder, 1989', venables2002: 'Venables y Ripley, 2002',
-    wedderburn1974: 'Wedderburn, 1974', lenth2016: 'Lenth, 2016',
+    wedderburn1974: 'Wedderburn, 1974', lenth2016: 'Lenth, 2016', bolker2009: 'Bolker et al., 2009', harrison2014: 'Harrison, 2014', fox2019: 'Fox y Weisberg, 2019',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -607,6 +610,35 @@ SP.definir('informe', function (SP) {
     return { metodos, resultados: [oracion(frases)].concat(medias, [extra]).filter(Boolean).join(' ') };
   }
 
+  /** Modelos lineales generalizados mixtos (motor R). */
+  function generalizadoMixto(r, citas) {
+    const FAM = { binomial: T('binomial'), poisson: T('de Poisson'), 'binomial-negativa': T('binomial negativa') };
+    const ENL = { logit: 'logit', probit: 'probit', cloglog: T('log-log complementario'), log: T('logarítmico'), identidad: T('identidad') };
+    const aleat = r.aleatorios.filter(a => !/\.obs/.test(a)).map(a => a.replace(/^\(1 \| (.*)\)$/, '$1'));
+    const metodos = T('Se ajustó un modelo lineal generalizado mixto ({c}) con distribución {f}, enlace {e} y {a} como {x}, por aproximación de Laplace con lme4 ({l}): {fm}.', {
+      c: cita(['bolker2009'], citas), f: FAM[r.familia], e: ENL[r.enlace], a: y(aleat), x: aleat.length > 1 ? T('efectos aleatorios') : T('efecto aleatorio'), l: cita(['bates2015'], citas), fm: r.formula }) +
+      (r.obs.usado ? ' ' + T('La sobredispersión se modeló con un efecto aleatorio por observación ({h}){p}.', { h: cita(['harrison2014'], citas),
+        p: Number.isFinite(r.obs.p) ? T(', agregado porque la prueba de Pearson del modelo sin él la mostró (χ²/gl = {v}; {q})', { v: n2(r.obs.razon), q: fp(r.obs.p) }) : '' }) : '') +
+      ' ' + T('Los efectos fijos se probaron con pruebas χ² de Wald tipo {t} ({c}).', { t: r.tipoDev === 3 ? 'III' : 'II', c: cita(['fox2019'], citas) }) +
+      (r.medias.length ? ' ' + T('Las medias marginales ({m}) se estimaron en la escala de la respuesta y se compararon {a}.', { m: cita(['lenth2016'], citas),
+        a: ({ tukey: T('con la prueba de Tukey ({c})', { c: cita(['tukey1949'], citas) }), holm: T('con el ajuste de Holm ({c})', { c: cita(['holm1979'], citas) }), sidak: T('con el ajuste de Šidák ({c})', { c: cita(['sidak1967'], citas) }),
+          bonferroni: T('con el ajuste de Bonferroni'), none: T('por pares sin ajuste') })[r.medias[0].ajuste] || '' }) : '');
+    const frases = r.wald.termino.map((t, k) => {
+      const e = `χ²(${r.wald.gl[k]}) = ${n2(r.wald.chi2[k])}; ${fp(r.wald.p[k])}`, nombre = String(t), sig = r.wald.p[k] < (r.alfa || 0.05);
+      return nombre.includes(':') ? (sig ? T('la interacción {t} fue significativa ({e})', { t: nombre.replace(/:/g, ' × '), e }) : T('la interacción {t} no fue significativa ({e})', { t: nombre.replace(/:/g, ' × '), e }))
+        : (sig ? T('el efecto de {t} fue significativo ({e})', { t: nombre, e }) : T('el efecto de {t} no fue significativo ({e})', { t: nombre, e }));
+    });
+    const vc = r.varianzas, partes = vc.grupo.map((g, k) => (vc.var2[k] ? '' : T('{g}, {v}', { g: g === '.obs' ? T('la de cada observación') : T('la de {x}', { x: g }), v: s4(Math.abs(vc.varianza[k]) < 1e-10 ? 0 : vc.varianza[k]) }))).filter(Boolean);
+    const ESC = { probabilidad: T('probabilidades'), tasa: T('tasas'), media: T('medias') };
+    const medias = r.medias.filter(m => !m.dentro).map(m => {
+      const fs = m.filas.slice().sort((p, q) => q.respuesta - p.respuesta), con = x => s4(x.respuesta) + (x.letras ? ' ' + x.letras : '');
+      return fs.length <= 12 ? T('Las {e} estimadas de {f} fueron: {l} (niveles con la misma letra no difieren).', { e: ESC[m.escala], f: m.factor, l: fs.map(x => x.nivel + ', ' + con(x)).join('; ') })
+        : T('La más alta de {f} fue {a} ({x}) y la más baja {b} ({z}).', { f: m.factor, a: fs[0].nivel, x: con(fs[0]), b: fs[fs.length - 1].nivel, z: con(fs[fs.length - 1]) });
+    });
+    return { metodos, resultados: [oracion(frases), partes.length ? T('Las varianzas de los efectos aleatorios (escala del enlace) fueron: {l}.', { l: y(partes) }) : ''].concat(medias,
+      [r.theta !== undefined ? T('El parámetro de forma de la binomial negativa fue θ = {t}.', { t: s4(r.theta) }) : '', r.ajuste.singular ? T('El ajuste fue singular: al menos un componente de varianza se estimó en cero.') : '']).filter(Boolean).join(' ') };
+  }
+
   /** El párrafo de métodos y el de resultados de un análisis. */
   function parrafo(id, r, rep, e, op) {
     e = e || {}; op = op || {};
@@ -626,6 +658,7 @@ SP.definir('informe', function (SP) {
     else if (id === 'medidas-repetidas') p = repetidas(r, rep, citas);
     else if (['componentes-varianza', 'heredabilidad', 'repetibilidad'].includes(id)) p = genetico(id, r, citas);
     else if (['glm-conteos', 'glm-proporciones', 'glm-gamma', 'glm'].includes(id)) p = generalizado(r, citas);
+    else if (id === 'glmm-bloques' || id === 'glmm') p = generalizadoMixto(r, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };

@@ -1,0 +1,214 @@
+{
+  "esquema": 1,
+  "id": "glmm-bloques/larvas-binomial-negativa",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm-bloques"
+  },
+  "titulo": "Larvas con dos factores cruzados, binomial negativa, tipo III y variedad dentro de cada riego",
+  "fuente": "Datos sintéticos (generados en este archivo)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "bloque": ["B1", "B2", "B3", "B4", "B5", "B1", "B2", "B3", "B4", "B5", "B1", "B2", "B3", "B4", "B5", "B1", "B2", "B3", "B4", "B5", "B1", "B2", "B3", "B4", "B5", "B1", "B2", "B3", "B4", "B5"],
+      "variedad": ["V1", "V1", "V1", "V1", "V1", "V2", "V2", "V2", "V2", "V2", "V3", "V3", "V3", "V3", "V3", "V1", "V1", "V1", "V1", "V1", "V2", "V2", "V2", "V2", "V2", "V3", "V3", "V3", "V3", "V3"],
+      "riego": ["Riego", "Riego", "Riego", "Riego", "Riego", "Riego", "Riego", "Riego", "Riego", "Riego", "Riego", "Riego", "Riego", "Riego", "Riego", "Temporal", "Temporal", "Temporal", "Temporal", "Temporal", "Temporal", "Temporal", "Temporal", "Temporal", "Temporal", "Temporal", "Temporal", "Temporal", "Temporal", "Temporal"],
+      "larvas": [10, 4, 32, 8, 18, 13, 1, 18, 6, 17, 25, 11, 29, 8, 25, 35, 6, 22, 15, 26, 16, 6, 16, 5, 30, 53, 6, 19, 6, 61]
+    },
+    "tipos": {
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["B1", "B2", "B3", "B4", "B5"]
+      },
+      "variedad": {
+        "tipo": "factor",
+        "niveles": ["V1", "V2", "V3"]
+      },
+      "riego": {
+        "tipo": "factor",
+        "niveles": ["Riego", "Temporal"]
+      },
+      "larvas": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "larvas",
+    "tratamientos": ["variedad", "riego"],
+    "bloque": "bloque"
+  },
+  "opciones": {
+    "familia": "binomial-negativa",
+    "enlace": "log",
+    "sobredispersion": "auto",
+    "tipo": 3,
+    "comparar": ["variedad"],
+    "dentro": "riego",
+    "ajuste": "bonferroni"
+  },
+  "esperado": {
+    "obs": {
+      "usado": false,
+      "razon": "NA",
+      "p": "NA"
+    },
+    "wald": {
+      "termino": ["variedad", "riego", "variedad:riego"],
+      "chi2": [12.842476820191925, 4.9995494354284347, 0.14930839762308648],
+      "gl": [2, 1, 2],
+      "p": [0.0016266405388509824, 0.025353918079763296, 0.92806435660417219]
+    },
+    "coeficientes": {
+      "nombre": ["(Intercept)", "variedadV2", "variedadV3", "riegoTemporal", "variedadV2:riegoTemporal", "variedadV3:riegoTemporal"],
+      "estimado": [2.5021910160337071, -0.30015256073300128, 0.33832166240670486, 0.39239350694631725, -0.10055640887769381, -0.1237950145921612],
+      "ee": [0.33814759193085986, 0.26305550609301009, 0.24458942018601862, 0.24342908409799885, 0.35855426436900184, 0.334975294957647],
+      "z": [7.3997008281085837, -1.1410236766793795, 1.3832227990458446, 1.6119417628353268, -0.2804496247022944, -0.36956461104934135],
+      "p": [1.3649165363505252e-13, 0.25386007029868213, 0.16659656107472265, 0.10697461315112815, 0.77913256888351301, 0.711706923363704]
+    },
+    "varianzas": {
+      "grupo": ["bloque"],
+      "varianza": [0.40892168366675063]
+    },
+    "ajuste": {
+      "n": 30,
+      "logLik": -100.47916004641405,
+      "AIC": 216.9583200928281,
+      "BIC": 228.16789914612534,
+      "pearson": 23.664883082189228,
+      "gl": 22,
+      "dispersion": 1.075676503735874
+    },
+    "razones": {
+      "razon": [12.209215263013068, 0.74070520953170105, 1.4025915918393905, 1.4805201917693611, 0.90433409850240842, 0.88356093942035552],
+      "ic_inf": [6.2929748900076916, 0.44231548762573963, 0.86843304222439188, 0.91877067006766733, 0.4478442095683568, 0.45825268711370032],
+      "ic_sup": [23.687515037646847, 1.2403911298073977, 2.2653020760928624, 2.3857314013684712, 1.8261264614817705, 1.703601431311806]
+    },
+    "theta": 12.560052606419395,
+    "medias": [
+      {
+        "factor": "variedad",
+        "filas": [
+          {
+            "nivel": "V1",
+            "eta": 2.5021910160337071,
+            "ee_eta": 0.33814759193085986,
+            "respuesta": 12.209215263013068,
+            "ee": 4.1285167405533683,
+            "ic": [6.2929748900076916, 23.687515037646847]
+          },
+          {
+            "nivel": "V2",
+            "eta": 2.202038455300706,
+            "ee_eta": 0.34577552395579397,
+            "respuesta": 9.043429349607738,
+            "ee": 3.1269965217178206,
+            "ic": [4.5920699026865348, 17.809749445124989]
+          },
+          {
+            "nivel": "V3",
+            "eta": 2.8405126784404118,
+            "ee_eta": 0.3315680546651002,
+            "respuesta": 17.124542670859277,
+            "ee": 5.6779513004063098,
+            "ic": [8.9410339143469013, 32.798216011184955]
+          },
+          {
+            "nivel": "V1",
+            "eta": 2.8945845229800242,
+            "ee_eta": 0.33067941444806742,
+            "respuesta": 18.075989722549515,
+            "ee": 5.977357697021958,
+            "ic": [9.4542538230943869, 34.56025304202938]
+          },
+          {
+            "nivel": "V2",
+            "eta": 2.4938755533693291,
+            "ee_eta": 0.33833404028816672,
+            "respuesta": 12.108110936545158,
+            "ee": 4.0965860934186615,
+            "ic": [6.2385826656114611, 23.499945149370742]
+          },
+          {
+            "nivel": "V3",
+            "eta": 3.1091111707945678,
+            "ee_eta": 0.32752746505547631,
+            "respuesta": 22.40112477555039,
+            "ee": 7.3369836121274448,
+            "ic": [11.789026431299407, 42.565889060821043]
+          }
+        ],
+        "pares": [
+          {
+            "dif": 0.30015256073300128,
+            "ee": 0.26305550609301009,
+            "estadistico": 1.1410236766793795,
+            "p": 0.76158021089604633,
+            "razon": 1.3500647587347656
+          },
+          {
+            "dif": -0.33832166240670486,
+            "ee": 0.24458942018601862,
+            "estadistico": -1.3832227990458446,
+            "p": 0.49978968322416795,
+            "razon": 0.71296591667755349
+          },
+          {
+            "dif": -0.63847422313970614,
+            "ee": 0.25483977154593995,
+            "estadistico": -2.505394739865431,
+            "p": 0.036694439782679819,
+            "razon": 0.52809756870160862
+          },
+          {
+            "dif": 0.40070896961069508,
+            "ee": 0.24368239185097165,
+            "estadistico": 1.6443903335278975,
+            "p": 0.30028680163797072,
+            "razon": 1.4928827310288244
+          },
+          {
+            "dif": -0.21452664781454367,
+            "ee": 0.22890244140427948,
+            "estadistico": -0.93719685337761083,
+            "p": 1,
+            "razon": 0.80692330870271622
+          },
+          {
+            "dif": -0.61523561742523869,
+            "ee": 0.23957273337568966,
+            "estadistico": -2.5680535875526682,
+            "p": 0.030681403406075825,
+            "razon": 0.54051352589940049
+          }
+        ]
+      }
+    ]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 1e-10,
+        "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      },
+      "coeficientes.p[*]": {
+        "absoluto": 1e-10,
+        "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      },
+      "wald.p[*]": {
+        "absoluto": 1e-10,
+        "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "lme4": "1.1.35.5",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(larvas ~ variedad * riego + (1 | bloque), family = binomial-negativa(link = \"log\")) con el efecto por observación «auto»; car::Anova(type = 3); emmeans"
+  }
+}

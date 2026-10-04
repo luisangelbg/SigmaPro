@@ -1,0 +1,186 @@
+{
+  "esquema": 1,
+  "id": "glmm-bloques/germinacion-probit",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm-bloques"
+  },
+  "titulo": "Germinadas de 40 en bloques aleatorios, enlace probit",
+  "fuente": "Datos sintéticos (generados en este archivo)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "bloque": ["B1", "B2", "B3", "B4", "B5", "B1", "B2", "B3", "B4", "B5", "B1", "B2", "B3", "B4", "B5", "B1", "B2", "B3", "B4", "B5"],
+      "trat": ["T1", "T1", "T1", "T1", "T1", "T2", "T2", "T2", "T2", "T2", "T3", "T3", "T3", "T3", "T3", "T4", "T4", "T4", "T4", "T4"],
+      "semillas": [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40],
+      "germinadas": [22, 15, 18, 21, 31, 25, 27, 20, 29, 37, 33, 34, 20, 30, 33, 32, 38, 31, 36, 37]
+    },
+    "tipos": {
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["B1", "B2", "B3", "B4", "B5"]
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["T1", "T2", "T3", "T4"]
+      },
+      "semillas": {
+        "tipo": "numerica"
+      },
+      "germinadas": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "germinadas",
+    "tratamientos": ["trat"],
+    "bloque": "bloque",
+    "ensayos": "semillas"
+  },
+  "opciones": {
+    "familia": "binomial",
+    "enlace": "probit",
+    "sobredispersion": "auto",
+    "tipo": 2,
+    "comparar": ["trat"],
+    "dentro": "",
+    "ajuste": "tukey"
+  },
+  "esperado": {
+    "obs": {
+      "usado": false,
+      "razon": 1.3414472935922508,
+      "p": 0.16731332321864995
+    },
+    "wald": {
+      "termino": ["trat"],
+      "chi2": [57.079752801531974],
+      "gl": [3],
+      "p": [2.4710883336410861e-12]
+    },
+    "coeficientes": {
+      "nombre": ["(Intercept)", "tratT2", "tratT3", "tratT4"],
+      "estimado": [0.094263405677746256, 0.42896644376592469, 0.60876667115694083, 1.0771413484574839],
+      "ee": [0.16050183431853776, 0.13090261419962629, 0.13343374128559005, 0.14625688570958617],
+      "z": [0.58730422663374482, 3.2769891295811062, 4.5623143388746721, 7.3647223050838173],
+      "p": [0.55699940298301454, 0.0010492040873484483, 5.059282578929579e-06, 1.7751600293596964e-13]
+    },
+    "varianzas": {
+      "grupo": ["bloque"],
+      "varianza": [0.08814221928107388]
+    },
+    "ajuste": {
+      "n": 20,
+      "logLik": -55.17727525274146,
+      "AIC": 120.35455050548292,
+      "BIC": 125.33321187325288,
+      "pearson": 20.121709403883763,
+      "gl": 15,
+      "dispersion": 1.3414472935922508
+    },
+    "medias": [
+      {
+        "factor": "trat",
+        "filas": [
+          {
+            "nivel": "T1",
+            "eta": 0.094263405677746256,
+            "ee_eta": 0.16050183431853776,
+            "respuesta": 0.53755004076107082,
+            "ee": 0.063747122339747733,
+            "ic": [0.41281314952634018, 0.6586719062335924]
+          },
+          {
+            "nivel": "T2",
+            "eta": 0.5232298494436709,
+            "ee_eta": 0.1633313035960221,
+            "respuesta": 0.69959284415927825,
+            "ee": 0.056823922311508415,
+            "ic": [0.58047405619583137, 0.80048456529478584]
+          },
+          {
+            "nivel": "T3",
+            "eta": 0.7030300768346871,
+            "ee_eta": 0.16533679607191393,
+            "respuesta": 0.75898149702936002,
+            "ee": 0.05151744067119688,
+            "ic": [0.64764712399787294, 0.84780960106799796]
+          },
+          {
+            "nivel": "T4",
+            "eta": 1.1714047541352302,
+            "ee_eta": 0.17591563780783523,
+            "respuesta": 0.879281938888546,
+            "ee": 0.03533844508776679,
+            "ic": [0.79577275180506291, 0.93526472988111065]
+          }
+        ],
+        "pares": [
+          {
+            "dif": -0.42896644376592469,
+            "ee": 0.13090261419962629,
+            "estadistico": -3.2769891295811062,
+            "p": 0.0057848644081875955
+          },
+          {
+            "dif": -0.60876667115694083,
+            "ee": 0.13343374128559005,
+            "estadistico": -4.5623143388746721,
+            "p": 2.9984628796553281e-05
+          },
+          {
+            "dif": -1.0771413484574839,
+            "ee": 0.14625688570958617,
+            "estadistico": -7.3647223050838173,
+            "p": 1.0927925231385416e-12
+          },
+          {
+            "dif": -0.17980022739101614,
+            "ee": 0.13652457758339007,
+            "estadistico": -1.3169806534006161,
+            "p": 0.55203180696844667
+          },
+          {
+            "dif": -0.64817490469155925,
+            "ee": 0.1488782413341638,
+            "estadistico": -4.3537248887612927,
+            "p": 7.8922668699354936e-05
+          },
+          {
+            "dif": -0.46837467730054305,
+            "ee": 0.15108405852596313,
+            "estadistico": -3.1000932981956857,
+            "p": 0.010436594639908536
+          }
+        ]
+      }
+    ]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 1e-10,
+        "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      },
+      "coeficientes.p[*]": {
+        "absoluto": 1e-10,
+        "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      },
+      "wald.p[*]": {
+        "absoluto": 1e-10,
+        "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "lme4": "1.1.35.5",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(germinadas ~ trat + (1 | bloque), family = binomial(link = \"probit\")) con el efecto por observación «auto»; car::Anova(type = 2); emmeans"
+  }
+}

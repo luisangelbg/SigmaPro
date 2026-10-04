@@ -1,0 +1,168 @@
+{
+  "esquema": 1,
+  "id": "glmm-bloques/malezas-exposicion",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm-bloques"
+  },
+  "titulo": "Malezas en áreas muestreadas distintas (exposición) sin el efecto por observación",
+  "fuente": "Datos sintéticos (generados en este archivo)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "bloque": ["B1", "B2", "B3", "B4", "B1", "B2", "B3", "B4", "B1", "B2", "B3", "B4"],
+      "trat": ["A", "A", "A", "A", "B", "B", "B", "B", "C", "C", "C", "C"],
+      "m2": [0.56999999999999995, 1.74, 0.56999999999999995, 1.98, 0.63, 1.73, 1.9099999999999999, 1.4299999999999999, 1.26, 1.3799999999999999, 1.0600000000000001, 0.59999999999999998],
+      "malezas": [22, 38, 25, 74, 10, 28, 51, 31, 61, 63, 72, 43]
+    },
+    "tipos": {
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["B1", "B2", "B3", "B4"]
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["A", "B", "C"]
+      },
+      "m2": {
+        "tipo": "numerica"
+      },
+      "malezas": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "malezas",
+    "tratamientos": ["trat"],
+    "bloque": "bloque",
+    "exposicion": "m2"
+  },
+  "opciones": {
+    "familia": "poisson",
+    "enlace": "log",
+    "sobredispersion": "no",
+    "tipo": 2,
+    "comparar": ["trat"],
+    "dentro": "",
+    "ajuste": "tukey"
+  },
+  "esperado": {
+    "obs": {
+      "usado": false,
+      "razon": "NA",
+      "p": "NA"
+    },
+    "wald": {
+      "termino": ["trat"],
+      "chi2": [83.490027124600545],
+      "gl": [2],
+      "p": [7.4194371951075905e-19]
+    },
+    "coeficientes": {
+      "nombre": ["(Intercept)", "tratB", "tratC"],
+      "estimado": [3.4914585334209609, -0.47780188828769282, 0.5422589661171987],
+      "ee": [0.12330176497120052, 0.1236033684756405, 0.10707716035218193],
+      "z": [28.316371093604847, -3.8656057207846808, 5.0641888926983389],
+      "p": [2.1729064189040007e-176, 0.00011081383389673706, 4.1014282572303836e-07]
+    },
+    "varianzas": {
+      "grupo": ["bloque"],
+      "varianza": [0.033469237141106001]
+    },
+    "ajuste": {
+      "n": 12,
+      "logLik": -39.990449841586816,
+      "AIC": 87.980899683173632,
+      "BIC": 89.920526282325639,
+      "pearson": 4.4584543987937018,
+      "gl": 8,
+      "dispersion": 0.55730679984921272
+    },
+    "razones": {
+      "razon": [32.83380199675689, 0.62014504280930338, 1.7198876451717728],
+      "ic_inf": [25.784963574697553, 0.48672303278290568, 1.3942987326394098],
+      "ic_sup": [41.809582179131766, 0.79014110329249165, 2.1215062760725467]
+    },
+    "medias": [
+      {
+        "factor": "trat",
+        "filas": [
+          {
+            "nivel": "A",
+            "eta": 3.4914585334209609,
+            "ee_eta": 0.12330176497120052,
+            "respuesta": 32.83380199675689,
+            "ee": 4.0484657369150518,
+            "ic": [25.784963574697553, 41.809582179131766]
+          },
+          {
+            "nivel": "B",
+            "eta": 3.0136566451332683,
+            "ee_eta": 0.13071734789508624,
+            "respuesta": 20.361719544870994,
+            "ee": 2.6616299774890786,
+            "ic": [15.759689005859766, 26.307601797841635]
+          },
+          {
+            "nivel": "C",
+            "eta": 4.0337174995381595,
+            "ee_eta": 0.11239288578452399,
+            "respuesta": 56.470450398238448,
+            "ee": 6.3468768818098411,
+            "ic": [45.305638334184877, 70.38664248934667]
+          }
+        ],
+        "pares": [
+          {
+            "dif": 0.47780188828769282,
+            "ee": 0.1236033684756405,
+            "estadistico": 3.8656057207846808,
+            "p": 0.00032618499630832076,
+            "razon": 1.6125259914518149
+          },
+          {
+            "dif": -0.5422589661171987,
+            "ee": 0.10707716035218193,
+            "estadistico": -5.0641888926983389,
+            "p": 1.2272829187365275e-06,
+            "razon": 0.58143332955922566
+          },
+          {
+            "dif": -1.0200608544048915,
+            "ee": 0.11395574446027347,
+            "estadistico": -8.95137721434042,
+            "p": 2.0872192862952943e-14,
+            "razon": 0.3605729970502618
+          }
+        ]
+      }
+    ]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 1e-10,
+        "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      },
+      "coeficientes.p[*]": {
+        "absoluto": 1e-10,
+        "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      },
+      "wald.p[*]": {
+        "absoluto": 1e-10,
+        "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "lme4": "1.1.35.5",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(malezas ~ trat + (1 | bloque), family = poisson(link = \"log\")) con el efecto por observación «no»; car::Anova(type = 2); emmeans"
+  }
+}
