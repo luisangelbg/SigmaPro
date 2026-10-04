@@ -64,3 +64,11 @@ k$proteina <- round(20 + c(1.5, 0, -1, 0.5)[k$region] + rnorm(38, 0, 0.9), 2)
 k$humedad <- round(9 + c(0, 0.6, 0.2, 1.3)[k$region] + rnorm(38, 0, 0.5), 2)
 k$aceite[c(5, 30)] <- NA
 caso_lda("cuatro-regiones", "Cuatro regiones de tamaños distintos y faltantes (tres funciones)", k, c("aceite", "proteina", "humedad"), "region")
+
+# ---- 7. un grupo con menos unidades que variables: queda fuera de la M de Box (como en heplots), no del discriminante
+set.seed(347)
+isla <- data.frame(region = factor(rep(c("Norte", "Centro", "Sur", "Isla"), c(10, 9, 11, 3)), levels = c("Norte", "Centro", "Sur", "Isla")))
+isla$aceite <- round(42 + c(0, 2, 3.5, 1)[isla$region] + rnorm(33, 0, 1.2), 2)
+isla$proteina <- round(20 + c(1.5, 0, -1, 0.5)[isla$region] + rnorm(33, 0, 0.9), 2)
+isla$humedad <- round(9 + c(0, 0.6, 0.2, 1.3)[isla$region] + rnorm(33, 0, 0.5), 2)
+suppressWarnings(caso_lda("grupo-chico-box", "Un grupo de 3 con 3 variables: fuera de la M de Box (heplots), dentro del discriminante", isla, c("aceite", "proteina", "humedad"), "region"))

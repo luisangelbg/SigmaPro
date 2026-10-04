@@ -58,8 +58,24 @@ SPT.describir('Supervivencia · métodos', () => {
       for (const k of p.citas) SPT.afirmar(SP.informe.referencia(k).length > 20, id + ': cita sin referencia ' + k);
     }
   });
+  SPT.caso('Estratos: log-rank suma los estratos, Cox con un solo estrato es el de sin estratos, la concordancia solo cuenta pares del mismo estrato', () => {
+    const K = SP.supervivencia, t = [2, 3, 5, 7, 8, 11, 12, 15, 17, 20, 22, 25], ev = [1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1], g = [0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1], s = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1];
+    const a = K.logrank(t.slice(0, 6), ev.slice(0, 6), g.slice(0, 6), 2, 0), b = K.logrank(t.slice(6), ev.slice(6), g.slice(6), 2, 0), e = K.logrank(t, ev, g, 2, 0, s);
+    SPT.cerca(e.observados[1], a.observados[1] + b.observados[1], 1e-14);
+    SPT.cerca(e.esperados[0], a.esperados[0] + b.esperados[0], 1e-14);
+    SPT.cerca(e.varianza[1][1], a.varianza[1][1] + b.varianza[1][1], 1e-14);
+    const X = g.map(v => [v]), uno = K.cox(t, ev, X, { empates: 'efron', estratos: t.map(() => 0) }), sin = K.cox(t, ev, X, { empates: 'efron' });
+    SPT.cerca(uno.coef[0], sin.coef[0], 1e-12); SPT.cerca(uno.ll, sin.ll, 1e-12);
+    /* con estratos, el log-verosímil parcial es la suma de los de cada estrato */
+    const est = K.cox(t, ev, X, { empates: 'efron', estratos: s });
+    const ll = K.evaluar(t.slice(0, 6), ev.slice(0, 6), X.slice(0, 6), est.coef, true).ll + K.evaluar(t.slice(6), ev.slice(6), X.slice(6), est.coef, true).ll;
+    SPT.cerca(est.ll, ll, 1e-12);
+    const lp = t.map((_, i) => -i), cE = K.concordancia(t, ev, lp, s), c1 = K.concordancia(t.slice(0, 6), ev.slice(0, 6), lp.slice(0, 6)), c2 = K.concordancia(t.slice(6), ev.slice(6), lp.slice(6));
+    SPT.igual(cE.concordantes + cE.discordantes, c1.concordantes + c1.discordantes + c2.concordantes + c2.discordantes);
+  });
   SPT.caso('Mensajes de error', () => {
     const t = tabla(), op = id => SP.opcionesCon(SP.metodos[id], {});
+    SPT.lanza(() => SP.ejecutar('kaplan-meier', SP.tabla.crear({ d: [1, 2, 3, 4], e: [1, 1, 0, 1], l: ['a', 'a', 'b', 'b'] }, { l: { tipo: 'factor' } }), { tiempo: 'd', evento: 'e', estrato: 'l' }, op('kaplan-meier')), 'elige también los grupos');
     SPT.lanza(() => SP.ejecutar('kaplan-meier', t, { tiempo: 'dias', evento: 'peso' }, op('kaplan-meier')), '1 (ocurrió el evento');
     SPT.lanza(() => SP.ejecutar('cox', t, { tiempo: 'dias', evento: 'germino' }, op('cox')), 'al menos un factor');
     const sinEventos = SP.tabla.crear({ t: [1, 2, 3], e: [0, 0, 0] }, {});

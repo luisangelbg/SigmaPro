@@ -53,6 +53,16 @@ SPT.describir('Multivariado · métodos', () => {
     SPT.igualJSON(M.asignacion, [0, 1, 2, 2, 3, 3]);
     SPT.igualJSON(M.X[3], [1, 1, 1, 0, 1, 0]);   // fila 4: A = b, B = y → (1, Ab, By, Bz, Ab:By, Ab:Bz)
   });
+  SPT.caso('M de Box: grupos con la misma covarianza dan χ² = 0; la prueba sale en el reporte, el código R y el párrafo', () => {
+    const base = [[1, 2], [2, 1], [3, 4], [4, 6], [5, 3]], Y = base.concat(base.map(f => [f[0] + 10, f[1] - 5])), g = [0, 0, 0, 0, 0, 1, 1, 1, 1, 1];
+    const B = SP.multivariado.boxM(Y, g, 2);
+    SPT.cerca(B.chi2, 0, 1e-12); SPT.cerca(B.p, 1, 1e-12); SPT.igual(B.gl, 3);
+    const t = tabla(), f = SP.metodos.discriminante, op = SP.opcionesCon(f, {}), e = { variables: ['y1', 'y2', 'y3'], grupo: 'trat' };
+    const r = SP.ejecutar('discriminante', t, e, op).resultado, rep = f.reporte(r);
+    SPT.afirmar(rep.cuadros.some(q => q.id === 'box') && rep.semaforo.some(s => /Box/.test(s.nombre)), 'cuadro y semáforo de la M de Box');
+    SPT.afirmar(f.codigoR(e, op, { resultado: r }).includes('boxM'), 'código R con boxM');
+    SPT.afirmar(/M de Box \(Box, 1949\)/.test(SP.informe.parrafo('discriminante', r, rep, e, op).resultados), 'párrafo con la M de Box');
+  });
   SPT.caso('Mensajes de error', () => {
     const t = tabla(), op = id => SP.opcionesCon(SP.metodos[id], {});
     SPT.lanza(() => SP.ejecutar('manova', t, { respuestas: ['y1'], tratamientos: ['trat'] }, op('manova')), 'al menos dos variables respuesta');

@@ -6,6 +6,7 @@
      con la base ortonormal de las columnas del modelo en su orden (las columnas que dependen de las anteriores se
      omiten, como el pivoteo de qr); E = R'R de los residuos; valores propios de E⁻¹H (por Cholesky, simétricos) y las
      cuatro pruebas con sus F aproximadas: Pillai, Wilks, Hotelling-Lawley y Roy (la cota superior);
+   - la prueba M de Box de igualdad de covarianzas (heplots::boxM, aproximación χ²);
    - discriminante lineal (MASS::lda, method = "moment", previas = proporciones): escalado por la DE dentro de grupos,
      SVD de la matriz dentro (con 1/(n − g)) y de la matriz entre medias (con n·previa/(g − 1)), las funciones
      discriminantes con su proporción de la traza, la clasificación por la regla de plug-in (predict.lda) y la
@@ -172,5 +173,28 @@ SP.definir('multivariado', function (SP) {
     return { posterior, clase: posterior.map(ps => ps.indexOf(max(...ps))) };
   }
 
-  SP.multivariado = { propios, manova, pruebas, lda };
+  /**
+   * Prueba M de Box de igualdad de las matrices de covarianza (heplots::boxM, aproximación χ² de Box, 1949):
+   * −2 log M = Σ(n_i − 1)·log|S_p| − Σ(n_i − 1)·log|S_i|, con S_p la combinada; χ² = −2 log M·(1 − c) con
+   * c = (2p² + 3p − 1)/(6(p + 1)(g − 1))·(Σ 1/(n_i − 1) − 1/Σ(n_i − 1)) y p(p + 1)(g − 1)/2 gl. Los grupos con menos
+   * observaciones que variables (n_i − 1 < p) quedan fuera de las sumas (pero no de S_p), como en heplots.
+   */
+  function boxM(Y, g, k) {
+    const p = Y[0].length, logdet = A => { try { return cholesky(A).reduce((s, f, i) => s + 2 * log(f[i]), 0); } catch (e) { return -Infinity; } };
+    const grupos = Array.from({ length: k }, () => []);
+    Y.forEach((f, i) => grupos[g[i]].push(f));
+    const dfs = grupos.map(G => G.length - 1), covs = grupos.map(G => {
+      const m = G[0].map((_, j) => G.reduce((s, f) => s + f[j], 0) / G.length);
+      return m.map((_, a) => m.map((__, b) => G.reduce((s, f) => s + (f[a] - m[a]) * (f[b] - m[b]), 0) / (G.length - 1)));
+    });
+    const sdf = dfs.reduce((a, b) => a + b, 0), pooled = Array.from({ length: p }, (_, a) => Array.from({ length: p }, (__, b) => covs.reduce((s, S, h) => s + dfs[h] * S[a][b], 0) / sdf));
+    const validos = dfs.map(d => d >= p), lds = covs.map((S, h) => (validos[h] ? logdet(S) : -Infinity)), ldp = logdet(pooled);
+    const dv = dfs.filter((_, h) => validos[h]), gv = dv.length, sdv = dv.reduce((a, b) => a + b, 0);
+    const menos2logM = gv ? sdv * ldp - lds.reduce((s, l, h) => s + (validos[h] ? l * dfs[h] : 0), 0) : NaN;
+    const c = ((2 * p * p + 3 * p - 1) / (6 * (p + 1) * (gv - 1))) * (dv.reduce((s, d) => s + 1 / d, 0) - 1 / sdv);
+    const chi2 = menos2logM * (1 - c), gl = (p * (p - 1) / 2 + p) * (gv - 1);
+    return { chi2, gl, p: D().pchisq(chi2, gl, false), menos2logM, c, logdet: lds, logdet_combinada: ldp, excluidos: validos.filter(v => !v).length };
+  }
+
+  SP.multivariado = { propios, manova, pruebas, lda, boxM };
 });

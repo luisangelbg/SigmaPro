@@ -2,6 +2,25 @@
 
 ## Sin publicar
 
+### Hito 3.6 · Estratos en supervivencia y prueba M de Box (4 oct 2026)
+
+- **Estratos** en la supervivencia, como `strata()` de survival: cada estrato (lote, sitio, fecha de siembra) con su
+  propio riesgo base.
+  - **Log-rank y Peto-Peto estratificados**: cada estrato compara sus grupos y se suman los observados, los esperados
+    y la varianza (survdiff con strata).
+  - **Cox estratificado**: los conjuntos de riesgo se forman dentro de cada estrato, el estrato no tiene coeficiente,
+    la concordancia cuenta solo pares del mismo estrato y la prueba de riesgos proporcionales usa la escala de tiempo
+    de todos (como cox.zph).
+- **Prueba M de Box** de igualdad de las matrices de covarianza, como supuesto de la MANOVA (entre las combinaciones
+  de tratamientos) y del discriminante (entre los grupos): χ² de Box con su cuadro de log |S| por grupo, el semáforo
+  (verde, ámbar entre 0.001 y 0.05 porque la prueba es muy sensible, rojo con su consejo) y el párrafo del reporte.
+  Los grupos con menos unidades que variables quedan fuera, como en heplots.
+- La escala de tiempo de la prueba de riesgos proporcionales se busca por bisección (antes, O(n · tiempos)).
+- El ejemplo del frijol trae el lote de semilla, para estratificar.
+- Validación: 4 casos nuevos de supervivencia con estratos contra survival y la M de Box en los 8 casos del
+  multivariado contra heplots::boxM (uno con un grupo más chico que el número de variables): supervivencia 2357
+  valores (4.3 × 10⁻¹²), multivariado 3052 valores (2.5 × 10⁻¹²). 785 casos en total.
+
 ### 0.3.0 · Hito 3.5 · Cierre de la Fase 3 (4 oct 2026)
 
 - **La Fase 3 está completa**: versión 0.3.0 (`SP.VERSION` y el servicio sin conexión).

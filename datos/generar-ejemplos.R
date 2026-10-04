@@ -257,10 +257,11 @@ tasa <- c(Testigo = 1 / 14, Remojo = 1 / 8, Escarificada = 1 / 4.5)[d$tratamient
 t <- ceiling(rexp(nrow(d), tasa))
 d$germino <- as.integer(t <= 21)                                        # el ensayo terminó a los 21 días
 d$dias <- pmin(t, 21)
-d <- d[c("tratamiento", "semilla", "peso_semilla", "dias", "germino")]
+d$lote <- c("L1", "L2", "L3")[(d$semilla - 1) %% 3 + 1]                       # el lote de semilla (para estratificar)
+d <- d[c("tratamiento", "lote", "semilla", "peso_semilla", "dias", "germino")]
 agregar("frijol-germinacion", "Frijol: días a la germinación",
-        "Ficticio: días hasta germinar de 120 semillas de frijol con tres tratamientos pregerminativos (testigo, remojo y escarificación), revisadas cada día hasta el día 21; germino = 0 si no germinó (censura). Con el peso de cada semilla; para las curvas de Kaplan-Meier, la prueba log-rank y el modelo de Cox.", d,
-        list(tratamiento = list(tipo = "factor", niveles = c("Testigo", "Remojo", "Escarificada"))))
+        "Ficticio: días hasta germinar de 120 semillas de frijol con tres tratamientos pregerminativos (testigo, remojo y escarificación), revisadas cada día hasta el día 21; germino = 0 si no germinó (censura). Con el lote de semilla y el peso de cada semilla; para las curvas de Kaplan-Meier, la prueba log-rank y el modelo de Cox.", d,
+        list(tratamiento = list(tipo = "factor", niveles = c("Testigo", "Remojo", "Escarificada")), lote = list(tipo = "factor", niveles = c("L1", "L2", "L3"))))
 
 ## 21. Estación meteorológica: lluvia y temperatura mensuales de 8 años (series de tiempo; ficticio)
 set.seed(2121)

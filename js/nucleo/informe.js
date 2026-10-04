@@ -148,6 +148,7 @@ SP.definir('informe', function (SP) {
     hotelling1951: () => 'Hotelling, H. (1951). A generalized T test and measure of multivariate dispersion. En J. Neyman (ed.), Proceedings of the Second Berkeley Symposium on Mathematical Statistics and Probability (pp. 23–41). University of California Press.',
     roy1953: () => 'Roy, S. N. (1953). On a heuristic method of test construction and its use in multivariate analysis. The Annals of Mathematical Statistics, 24(2), 220–238.',
     fisher1936: () => 'Fisher, R. A. (1936). The use of multiple measurements in taxonomic problems. Annals of Eugenics, 7(2), 179–188.',
+    box1949: () => 'Box, G. E. P. (1949). A general distribution theory for a class of likelihood criteria. Biometrika, 36(3–4), 317–346.',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -177,7 +178,7 @@ SP.definir('informe', function (SP) {
     kaplan1958: 'Kaplan y Meier, 1958', greenwood1926: 'Greenwood, 1926', mantel1966: 'Mantel, 1966', peto1972: 'Peto y Peto, 1972', cox1972: 'Cox, 1972',
     efron1977: 'Efron, 1977', breslow1974: 'Breslow, 1974', grambsch1994: 'Grambsch y Therneau, 1994', harrell1982: 'Harrell et al., 1982', therneau2024: 'Therneau, 2024',
     box1970: 'Box y Pierce, 1970', ljung1978: 'Ljung y Box, 1978', kendall1983: 'Kendall y Stuart, 1983', mann1945: 'Mann, 1945', kendall1975: 'Kendall, 1975', sen1968: 'Sen, 1968', pohlert2023: 'Pohlert, 2023',
-    pillai1955: 'Pillai, 1955', wilks1932: 'Wilks, 1932', hotelling1951: 'Hotelling, 1951', roy1953: 'Roy, 1953', fisher1936: 'Fisher, 1936',
+    pillai1955: 'Pillai, 1955', wilks1932: 'Wilks, 1932', hotelling1951: 'Hotelling, 1951', roy1953: 'Roy, 1953', fisher1936: 'Fisher, 1936', box1949: 'Box, 1949',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -797,17 +798,19 @@ SP.definir('informe', function (SP) {
   }
 
   function multivariado(id, r, citas) {
+    /* la M de Box: la igualdad de covarianzas, como supuesto */
+    const box = r.boxM && Number.isFinite(r.boxM.p) ? ' ' + T('La igualdad de las matrices de covarianza se revisó con la prueba M de Box ({c}): χ²({g}) = {x}, {p}.', { c: cita(['box1949'], citas), g: r.boxM.gl, x: n2(r.boxM.chi2), p: fp(r.boxM.p) }) : '';
     if (id === 'manova') {
       const nombre = { pillai: 'Pillai', wilks: 'Wilks', hotelling: 'Hotelling-Lawley', roy: 'Roy' }[r.prueba];
       const met = T('Las respuestas {y} se analizaron en conjunto con un análisis de varianza multivariado (MANOVA){d}, con la traza de {n} ({c}) y sumas de cuadrados secuenciales; después, cada respuesta con su ANOVA.',
         { y: y(r.respuestas.map(v => '«' + v + '»')), d: r.bloque ? T(' en bloques') : '', n: nombre, c: cita([{ pillai: 'pillai1955', wilks: 'wilks1932', hotelling: 'hotelling1951', roy: 'roy1953' }[r.prueba]], citas) });
       const res = r.terminos.filter(t => t.pruebas).map(t => { const x = t.pruebas[r.prueba]; return T('{t}: {n} = {v}, F({a}, {b}) = {f}, {p}', { t: t.termino, n: nombre, v: n3(x.estadistico), a: gl(x.gl1), b: gl(x.gl2), f: n2(x.F), p: fp(x.p) }); });
-      return { metodos: met, resultados: T('Resultados de la MANOVA: {l}.', { l: res.join('; ') }) };
+      return { metodos: met, resultados: T('Resultados de la MANOVA: {l}.', { l: res.join('; ') }) + box };
     }
     const pct = x => F.fijo(100 * x, 1);
     return { metodos: T('Los grupos de «{g}» se describieron con {v} mediante un análisis discriminante lineal ({c}) con previas iguales a las proporciones de los grupos, como lda de MASS ({m}); la clasificación se evaluó con validación cruzada dejando uno fuera.',
       { g: r.grupo, v: y(r.variables.map(v => '«' + v + '»')), c: cita(['fisher1936'], citas), m: cita(['venables2002'], citas) }),
-      resultados: T('La primera función discriminante explicó el {a} % de la separación entre grupos; con validación cruzada se clasificó correctamente el {b} % de las unidades.', { a: pct(r.proporcion[0]), b: pct(r.acierto_cv) }) };
+      resultados: T('La primera función discriminante explicó el {a} % de la separación entre grupos; con validación cruzada se clasificó correctamente el {b} % de las unidades.', { a: pct(r.proporcion[0]), b: pct(r.acierto_cv) }) + box };
   }
   function series(id, r, citas) {
     if (id === 'autocorrelacion') {
@@ -837,7 +840,8 @@ SP.definir('informe', function (SP) {
       const conf = { log: T('log'), 'log-log': 'log-log', plain: T('lineales') }[r.conf];
       let met = T('Las curvas de supervivencia de «{t}» se estimaron con el método de Kaplan y Meier ({c}), con el error estándar de Greenwood ({g}) e intervalos {i} al {k} %',
         { t: r.tiempo, c: cita(['kaplan1958'], citas), g: cita(['greenwood1926'], citas), i: conf, k });
-      if (r.comparacion) met += T(', y se compararon entre niveles de «{g}» con la prueba {p} ({c})', { g: r.grupo, p: r.rho === 1 ? T('de Peto-Peto') : 'log-rank', c: cita([r.rho === 1 ? 'peto1972' : 'mantel1966'], citas) });
+      if (r.comparacion) met += T(', y se compararon entre niveles de «{g}» con la prueba {p} ({c}){s}', { g: r.grupo, p: r.rho === 1 ? T('de Peto-Peto') : 'log-rank', c: cita([r.rho === 1 ? 'peto1972' : 'mantel1966'], citas),
+        s: r.estrato ? T(' estratificada por «{e}»', { e: r.estrato }) : '' });
       met += T(', con las mismas fórmulas que el paquete survival ({c}).', { c: cita(['therneau2024'], citas) });
       const corto = x => (Number.isFinite(x) ? String(Number((+x).toPrecision(6))) : '—');
       const meds = r.grupos.map(g => Number.isFinite(g.cuantiles.tiempo[1]) ? T('{g}{m} (IC: {i} a {s})', { g: r.grupo ? g.nombre + ', ' : '', m: corto(g.cuantiles.tiempo[1]), i: corto(g.cuantiles.inf[1]), s: corto(g.cuantiles.sup[1]) })
@@ -848,8 +852,8 @@ SP.definir('informe', function (SP) {
       return { metodos: met, resultados: res };
     }
     const vars = y(r.factores.map(f => T('el factor «{f}»', { f })).concat(r.covariables.map(v => T('la covariable «{v}»', { v }))));
-    const met = T('Se ajustó un modelo de riesgos proporcionales de Cox ({c}) con {v}, con los empates de {e} ({ce}); el supuesto de riesgos proporcionales se revisó con la prueba de Grambsch y Therneau ({g}) y la discriminación, con la concordancia de Harrell ({h}).',
-      { c: cita(['cox1972'], citas), v: vars, e: r.empates === 'efron' ? 'Efron' : 'Breslow', ce: cita([r.empates === 'efron' ? 'efron1977' : 'breslow1974'], citas), g: cita(['grambsch1994'], citas), h: cita(['harrell1982'], citas) });
+    const met = T('Se ajustó un modelo de riesgos proporcionales de Cox ({c}) con {v}{s}, con los empates de {e} ({ce}); el supuesto de riesgos proporcionales se revisó con la prueba de Grambsch y Therneau ({g}) y la discriminación, con la concordancia de Harrell ({h}).',
+      { c: cita(['cox1972'], citas), v: vars, s: r.estrato ? T(', estratificado por «{e}» (un riesgo base por estrato)', { e: r.estrato }) : '', e: r.empates === 'efron' ? 'Efron' : 'Breslow', ce: cita([r.empates === 'efron' ? 'efron1977' : 'breslow1974'], citas), g: cita(['grambsch1994'], citas), h: cita(['harrell1982'], citas) });
     /* el nombre legible de cada coeficiente: el nivel frente al de referencia, o la covariable por unidad */
     const etiqueta = (n, j) => { const tm = (r.terminos || []).find(x => x.columnas.includes(j)); return tm && tm.niveles ? T('{nv} frente a {ref}', { nv: n.slice(tm.nombre.length), ref: tm.niveles[0] }) : T('«{v}» (por unidad)', { v: n }); };
     const sig = r.nombres.map((n, j) => (r.p[j] < 0.05 ? T('{n} (HR = {h}; IC {k} %: {i} a {s}; {p})', { n: etiqueta(n, j), h: s4(r.hr[j]), k, i: s4(r.hr_inf[j]), s: s4(r.hr_sup[j]), p: fp(r.p[j]) }) : null)).filter(Boolean);

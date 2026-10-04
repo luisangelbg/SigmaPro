@@ -60,10 +60,10 @@
     pot: { calcular: 'n', n: 10, diferencia: 1, de: 1, tipo: 'dos', alternativa: 'bilateral', alfa: 0.05, potencia: 0.8, grupos: 4, medias: '', varEntre: 1, p1: 0.5, p2: 0.7, r: 0.3,
       cv: 12, difPct: 20, tratamientos: 5, diseno: 'dbca' },
     mue: { que: 'media', escala: 'absoluto', de: 1, errorAbs: 0.25, cv: 20, errorPct: 10, p: 0.5, errorProp: 0.05, N: 0, confianza: 0.95, respuesta: '', estrato: '', tipoSimple: 'auto', nTotal: 0, _iniciado: false },
-    mueN: {},
+    mueN: {},   // el tamaño de la población de cada estrato, por el nombre del nivel
     mv: { respuestas: [], tratamientos: [], bloque: '', prueba: 'pillai', alfa: 0.05, variables: [], grupo: '', _iniciado: false },
     ts: { respuesta: '', tiempo: '', rezagos: 0, lagBox: 0, fitdf: 0, nivel: 0.95, frecuencia: 12, tipo: 'aditiva', _iniciado: false },
-    sv: { tiempo: '', evento: '', grupo: '', conf: 'log', nivel: 0.95, rho: 0, factoresSv: [], covariablesSv: [], empates: 'efron', _iniciado: false },   // el tamaño de la población de cada estrato, por el nombre del nivel
+    sv: { tiempo: '', evento: '', grupo: '', estrato: '', conf: 'log', nivel: 0.95, rho: 0, factoresSv: [], covariablesSv: [], empates: 'efron', _iniciado: false },
     sinDatos: false,
     gen: { respuesta: '', aleatorios: [], fijos: [], estructura: 'cruzados', genotipo: '', repeticion: '', bloque: '', ambiente: '', seleccion: 0.1, direccion: 'mayor',
       individuo: '', fijosRep: [], _iniciado: false },
@@ -968,11 +968,17 @@
       h += campo('sv', 'grupo', T('Grupos que se comparan (opcional)'), [['', T('— una sola curva —')]].concat(lista(agr.filter(libres))), s.grupo);
       h += campo('sv', 'conf', T('Intervalo de la curva'), [['log', T('log (el de survival)')], ['log-log', 'log-log'], ['plain', T('lineal (plain)')]], s.conf);
       if (s.grupo) h += campo('sv', 'rho', T('Prueba para comparar las curvas'), [['0', T('Log-rank (mismo peso a todos los tiempos)')], ['1', T('Peto-Peto (más peso a los tiempos tempranos)')]], String(s.rho));
+      if (s.estrato && (!agr.includes(s.estrato) || !libres(s.estrato) || s.estrato === s.grupo)) s.estrato = '';
+      if (s.grupo) h += campo('sv', 'estrato', T('Estratos (opcional)'), [['', T('— sin estratos —')]].concat(lista(agr.filter(n => libres(n) && n !== s.grupo))), s.estrato,
+        T('Lotes, sitios o fechas con distinto riesgo base: los grupos se comparan dentro de cada estrato.'));
     } else {
       s.factoresSv = s.factoresSv.filter(n => agr.includes(n) && libres(n));
       s.covariablesSv = s.covariablesSv.filter(n => num.includes(n) && libres(n));
       h += casillas('sv', 'factoresSv', T('Factores (tratamientos, variedades)'), agr.filter(libres), s.factoresSv, n => n, T('No hay factores en la tabla.'));
       h += casillas('sv', 'covariablesSv', T('Covariables numéricas'), num.filter(libres), s.covariablesSv, n => n, T('No hay más columnas numéricas.'));
+      if (s.estrato && (!agr.includes(s.estrato) || !libres(s.estrato) || s.factoresSv.includes(s.estrato))) s.estrato = '';
+      h += campo('sv', 'estrato', T('Estratos (opcional)'), [['', T('— sin estratos —')]].concat(lista(agr.filter(n => libres(n) && !s.factoresSv.includes(n)))), s.estrato,
+        T('Cada estrato (lote, sitio, fecha de siembra) tiene su propio riesgo base, sin coeficiente: los HR se estiman dentro de los estratos.'));
       h += campo('sv', 'empates', T('Tiempos empatados'), [['efron', T('Efron (el de survival)')], ['breslow', 'Breslow']], s.empates, T('Con tiempos en días enteros hay muchos empates: Efron los trata mejor.'));
     }
     h += '<p class="small muted">' + esc(T('Corre en tu navegador (validado contra survfit, survdiff, coxph y cox.zph del paquete survival de R).')) + '</p>';
@@ -1086,9 +1092,10 @@
     }
     if (SUPERVIVENCIA.includes(m)) {
       const s = estado.sv, e = { tiempo: s.tiempo, evento: s.evento };
-      if (m === 'kaplan-meier') { if (s.grupo) e.grupo = s.grupo; return { e, op: { conf: s.conf, nivel: +s.nivel, rho: +s.rho } }; }
+      if (m === 'kaplan-meier') { if (s.grupo) { e.grupo = s.grupo; if (s.estrato) e.estrato = s.estrato; } return { e, op: { conf: s.conf, nivel: +s.nivel, rho: +s.rho } }; }
       if (s.factoresSv.length) e.factores = s.factoresSv.slice();
       if (s.covariablesSv.length) e.covariables = s.covariablesSv.slice();
+      if (s.estrato) e.estrato = s.estrato;
       return { e, op: { empates: s.empates, nivel: +s.nivel } };
     }
     if (MUESTREO.includes(m)) {
@@ -1977,7 +1984,7 @@
     } else if (SERIES.includes(m)) {
       pon(estado.ts, { respuesta: e.respuesta, tiempo: e.tiempo || '', rezagos: op.rezagos, lagBox: op.lagBox, fitdf: op.fitdf, nivel: op.nivel, frecuencia: op.frecuencia, tipo: op.tipo });
     } else if (SUPERVIVENCIA.includes(m)) {
-      pon(estado.sv, { tiempo: e.tiempo, evento: e.evento, grupo: m === 'kaplan-meier' ? e.grupo || '' : undefined, conf: op.conf, nivel: op.nivel, rho: op.rho, empates: op.empates,
+      pon(estado.sv, { tiempo: e.tiempo, evento: e.evento, grupo: m === 'kaplan-meier' ? e.grupo || '' : undefined, estrato: e.estrato || '', conf: op.conf, nivel: op.nivel, rho: op.rho, empates: op.empates,
         factoresSv: m === 'cox' ? [].concat(e.factores || []) : undefined, covariablesSv: m === 'cox' ? [].concat(e.covariables || []) : undefined });
     } else if (MUESTREO.includes(m)) {
       const s = estado.mue;

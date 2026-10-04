@@ -7,8 +7,8 @@ suppressPackageStartupMessages(library(survival))
 
 na_a_texto <- function(v) { v <- as.numeric(v); ifelse(is.na(v), NA, v) }
 
-ref_km <- function(datos, tiempo, evento, grupo = "", conf = "log", nivel = 0.95, rho = 0) {
-  d <- datos[!is.na(datos[[tiempo]]) & !is.na(datos[[evento]]) & (if (nzchar(grupo)) !is.na(datos[[grupo]]) else TRUE), ]
+ref_km <- function(datos, tiempo, evento, grupo = "", conf = "log", nivel = 0.95, rho = 0, estrato = "") {
+  d <- datos[!is.na(datos[[tiempo]]) & !is.na(datos[[evento]]) & (if (nzchar(grupo)) !is.na(datos[[grupo]]) else TRUE) & (if (nzchar(estrato)) !is.na(datos[[estrato]]) else TRUE), ]
   f <- if (nzchar(grupo)) as.formula(sprintf("Surv(%s, %s) ~ %s", tiempo, evento, grupo)) else as.formula(sprintf("Surv(%s, %s) ~ 1", tiempo, evento))
   fit <- survfit(f, data = d, conf.type = conf, conf.int = nivel)
   q <- quantile(fit, c(0.25, 0.5, 0.75))
@@ -25,19 +25,21 @@ ref_km <- function(datos, tiempo, evento, grupo = "", conf = "log", nivel = 0.95
   })
   out <- list(grupos = grupos)
   if (nzchar(grupo)) {
-    sd <- survdiff(as.formula(sprintf("Surv(%s, %s) ~ %s", tiempo, evento, grupo)), data = d, rho = rho)
-    gl <- sum(sd$exp > 0) - 1
-    out$comparacion <- list(observados = unname(sd$obs), esperados = unname(sd$exp), varianza = unname(sd$var), chi2 = sd$chisq, gl = gl,
+    sd <- survdiff(as.formula(sprintf("Surv(%s, %s) ~ %s%s", tiempo, evento, grupo, if (nzchar(estrato)) sprintf(" + strata(%s)", estrato) else "")), data = d, rho = rho)
+    # con estratos, survdiff da observados y esperados por grupo × estrato: la prueba usa la suma de cada grupo
+    obs <- if (is.matrix(sd$obs)) rowSums(sd$obs) else sd$obs; esp <- if (is.matrix(sd$exp)) rowSums(sd$exp) else sd$exp
+    gl <- sum(esp > 0) - 1
+    out$comparacion <- list(observados = unname(obs), esperados = unname(esp), varianza = unname(sd$var), chi2 = sd$chisq, gl = gl,
                             p = pchisq(sd$chisq, gl, lower.tail = FALSE))
   }
   out
 }
 
-ref_cox <- function(datos, tiempo, evento, factores = character(0), covariables = character(0), empates = "efron", nivel = 0.95) {
+ref_cox <- function(datos, tiempo, evento, factores = character(0), covariables = character(0), empates = "efron", nivel = 0.95, estrato = "") {
   vars <- c(factores, covariables)
-  d <- datos[stats::complete.cases(datos[, c(tiempo, evento, vars)]), ]
+  d <- datos[stats::complete.cases(datos[, c(tiempo, evento, vars, if (nzchar(estrato)) estrato)]), ]
   for (f in factores) d[[f]] <- factor(d[[f]])
-  form <- as.formula(sprintf("Surv(%s, %s) ~ %s", tiempo, evento, paste(vars, collapse = " + ")))
+  form <- as.formula(sprintf("Surv(%s, %s) ~ %s%s", tiempo, evento, paste(vars, collapse = " + "), if (nzchar(estrato)) sprintf(" + strata(%s)", estrato) else ""))
   fit <- coxph(form, data = d, ties = empates, control = coxph.control(eps = 1e-12, toler.chol = 1e-13, iter.max = 100))
   s <- summary(fit, conf.int = nivel)
   z <- qnorm(1 - (1 - nivel) / 2)

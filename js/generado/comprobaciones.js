@@ -80,7 +80,7 @@ window.SP_COMPROBACIONES = {
    "Servicio sin conexión activo con 143 archivos guardados.",
    "Sin red: 7 análisis, reporte, 6 exportaciones y huellas del proyecto verificadas."
   ],
-  "fecha": "2026-10-04T07:57:54.097Z",
+  "fecha": "2026-10-04T13:29:41.393Z",
   "motor": "node v24.19.0"
  },
  "exportar": {
@@ -90,22 +90,24 @@ window.SP_COMPROBACIONES = {
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-10-04T07:56:55.713Z",
+  "fecha": "2026-10-04T13:13:04.162Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {
   "titulo": "El código R equivalente",
   "ok": true,
-  "resumen": "79 escenarios de 60 métodos: el código R que muestra la app corre en R y da 1,200 números iguales a los de la app (tolerancia 1e-6)",
-  "fecha": "2026-10-04T07:56:40.917Z",
+  "resumen": "82 escenarios de 60 métodos: el código R que muestra la app corre en R y da 1,218 números iguales a los de la app (tolerancia 1e-6)",
+  "fecha": "2026-10-04T13:12:41.319Z",
   "motor": "node v24.19.0"
  },
  "accesibilidad": {
   "titulo": "Accesibilidad (AA)",
-  "ok": true,
-  "resumen": "168 revisiones de 84 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 88,346 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 569 paradas en los 8 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
-  "renglones": [],
-  "fecha": "2026-10-04T08:05:22.672Z",
+  "ok": false,
+  "resumen": "167 revisiones de 84 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 86,286 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 569 paradas en los 8 bloques (1280 px en claro y 360 px en oscuro).",
+  "renglones": [
+   "mixto-resultado a 1280 px: la medición no terminó"
+  ],
+  "fecha": "2026-10-04T13:28:26.898Z",
   "motor": "node v24.19.0"
  }
 };

@@ -434,6 +434,18 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
 
+## Estratos en supervivencia y prueba M de Box (Hito 3.6)
+
+- **Referencia**: survdiff y coxph con `strata()` (survival 3.7-0), con la concordancia y cox.zph del modelo
+  estratificado; heplots::boxM 1.8.5 para la M de Box (en la MANOVA, con `interaction()` de los tratamientos).
+- **Resultado**: 4 casos nuevos (log-rank y Peto-Peto estratificados, Cox estratificado con Efron y con covariable y
+  Breslow) y la M de Box agregada a los 7 casos del multivariado, más uno con un grupo de 3 unidades y 3 variables
+  (fuera de la prueba, como en heplots): supervivencia 14 casos y 2357 valores (4.3 × 10⁻¹²), multivariado 8 casos y
+  3052 valores (2.5 × 10⁻¹²).
+- **Pruebas unitarias**: el log-rank estratificado es la suma de los estratos, Cox con un solo estrato es el de sin
+  estratos y su log-verosímil con estratos es la suma de los de cada estrato, la concordancia solo cuenta pares del
+  mismo estrato, y la M de Box de grupos con la misma covarianza vale 0.
+
 ## Cierre de la Fase 3 (Hito 3.5)
 
 - **Asistente** (`tests/unidad/asistente.test.js`): una prueba por objetivo nuevo (tiempo hasta un evento con y

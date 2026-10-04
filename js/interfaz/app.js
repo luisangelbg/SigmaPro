@@ -77,6 +77,9 @@
     ['hecho', '3.3', 'Series de tiempo: autocorrelación, descomposición y tendencia'],
     ['hecho', '3.4', 'Multivariado: MANOVA y discriminante; CSV para PCAPro y ClusteringPro'],
     ['hecho', '3.5', 'Asistente para la Fase 3; cierre (0.3.0)'],
+    ['hecho', '3.6', 'Estratos en log-rank y Cox; prueba M de Box'],
+    ['', '3.7', 'Modelos ARIMA: ajuste, diagnóstico y pronóstico'],
+    ['', '3.8', 'Cox y MANOVA desde el constructor de modelos'],
     ['actual', '1.0', 'Publicación: manual, revisión del nombre, repositorio y DOI (versión 1.0.0)'],
   ];
   function hitos() {

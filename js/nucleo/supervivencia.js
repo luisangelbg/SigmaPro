@@ -12,7 +12,10 @@
      paso si la verosimilitud baja, pulido hasta que el paso relativo sea menor que 1e-13; razón de verosimilitudes,
      Wald y la prueba score en β = 0; la concordancia de Harrell como concordance; y la prueba de riesgos
      proporcionales de cox.zph (prueba score de agregar x·g(t), con g = 1 − S(t−) de Kaplan-Meier, centrada en los
-     eventos). */
+     eventos);
+   - estratos (strata() de survival): cada estrato con su propio riesgo base. En log-rank, los observados, esperados y
+     la varianza de cada estrato se suman; en Cox, los conjuntos de riesgo se forman dentro de cada estrato y la
+     concordancia cuenta solo pares del mismo estrato; la escala de tiempo de cox.zph sigue siendo la de todos. */
 SP.definir('supervivencia', function (SP) {
   'use strict';
   const T = SP.T;
@@ -114,8 +117,32 @@ SP.definir('supervivencia', function (SP) {
   }
 
   /* ---------------- log-rank ---------------- */
-  /** survdiff: t, ev, g (códigos 0..k−1), k grupos, rho (0: log-rank; 1: Peto-Peto). */
-  function logrank(t, ev, g, k, rho) {
+  /** Los índices de cada estrato (códigos 0..m−1), o un solo grupo con todos si no hay estratos. */
+  function porEstrato(n, estr) {
+    if (!estr) return [[...Array(n).keys()]];
+    const grupos = new Map();
+    for (let i = 0; i < n; i++) { if (!grupos.has(estr[i])) grupos.set(estr[i], []); grupos.get(estr[i]).push(i); }
+    return [...grupos.keys()].sort((a, b) => a - b).map(h => grupos.get(h));
+  }
+  /** survdiff: t, ev, g (códigos 0..k−1), k grupos, rho (0: log-rank; 1: Peto-Peto), estr (códigos del estrato, opcional). */
+  function logrank(t, ev, g, k, rho, estr) {
+    const obs = new Float64Array(k), esp = new Float64Array(k), V = Array.from({ length: k }, () => new Float64Array(k));
+    for (const idx of porEstrato(t.length, estr)) {
+      const r = logrankUno(idx.map(i => t[i]), idx.map(i => ev[i]), idx.map(i => g[i]), k, rho);
+      for (let a = 0; a < k; a++) { obs[a] += r.obs[a]; esp[a] += r.esp[a]; for (let b = 0; b < k; b++) V[a][b] += r.V[a][b]; }
+    }
+    const usar = [...Array(k).keys()].filter(h => esp[h] > 0);
+    let chi = 0;
+    if (usar.length >= 2) {
+      const idx = usar.slice(1), u = idx.map(h => obs[h] - esp[h]), M = idx.map(a => idx.map(b => V[a][b]));
+      const x = resolver(M, u);
+      chi = x.reduce((s, v, i) => s + v * u[i], 0);
+    }
+    const gl = usar.length - 1;
+    return { observados: Array.from(obs), esperados: Array.from(esp), varianza: V.map(f => Array.from(f)), chi2: chi, gl, p: gl > 0 ? D().pchisq(chi, gl, false) : NaN };
+  }
+  /** Los observados, esperados y la varianza de un estrato (el lazo de survdiff2). */
+  function logrankUno(t, ev, g, k, rho) {
     const n = t.length, ord = t.map((_, i) => i).sort((a, b) => (t[a] - t[b]) || (ev[b] - ev[a]));
     /* la curva conjunta continua por la izquierda (solo hace falta con rho ≠ 0) */
     const kap = new Float64Array(n);
@@ -145,21 +172,13 @@ SP.definir('supervivencia', function (SP) {
         }
       }
     }
-    const usar = [...Array(k).keys()].filter(h => esp[h] > 0);
-    let chi = 0;
-    if (usar.length >= 2) {
-      const idx = usar.slice(1), u = idx.map(h => obs[h] - esp[h]), M = idx.map(a => idx.map(b => V[a][b]));
-      const x = resolver(M, u);
-      chi = x.reduce((s, v, i) => s + v * u[i], 0);
-    }
-    const gl = usar.length - 1;
-    return { observados: Array.from(obs), esperados: Array.from(esp), varianza: V.map(f => Array.from(f)), chi2: chi, gl, p: gl > 0 ? D().pchisq(chi, gl, false) : NaN };
+    return { obs, esp, V };
   }
 
   /* ---------------- Cox ---------------- */
   /** Las sumas de cada tiempo con eventos, de mayor a menor tiempo: S0, S1, S2 del conjunto de riesgo y de los eventos. */
-  function porTiempo(t, ev, X, beta, efron, cb) {
-    const n = t.length, p = beta.length, ord = t.map((_, i) => i).sort((a, b) => t[b] - t[a]);
+  function porTiempo(t, ev, X, beta, efron, cb, estr) {
+    const n = t.length, p = beta.length, ord = t.map((_, i) => i).sort(estr ? (a, b) => (estr[a] - estr[b]) || (t[b] - t[a]) : (a, b) => t[b] - t[a]);
     let s0 = 0;
     const s1 = new Float64Array(p), s2 = Array.from({ length: p }, () => new Float64Array(p));
     const r = new Float64Array(n), eta = new Float64Array(n);
@@ -168,10 +187,12 @@ SP.definir('supervivencia', function (SP) {
     const em = eta.reduce((a, b) => max(a, b), -Infinity);
     for (let i = 0; i < n; i++) r[i] = exp(eta[i] - (em > 50 ? em - 50 : 0));
     for (let k = 0; k < n;) {
-      const tt = t[ord[k]], muertos = [];
+      /* un estrato nuevo empieza con su conjunto de riesgo vacío */
+      if (estr && k > 0 && estr[ord[k]] !== estr[ord[k - 1]]) { s0 = 0; s1.fill(0); for (const f of s2) f.fill(0); }
+      const tt = t[ord[k]], h = estr ? estr[ord[k]] : 0, muertos = [];
       let d0 = 0;
       const d1 = new Float64Array(p), d2 = Array.from({ length: p }, () => new Float64Array(p));
-      for (; k < n && t[ord[k]] === tt; k++) {
+      for (; k < n && t[ord[k]] === tt && (!estr || estr[ord[k]] === h); k++) {
         const i = ord[k], xi = X[i], ri = r[i];
         s0 += ri;
         for (let a = 0; a < p; a++) { s1[a] += ri * xi[a]; for (let b = 0; b <= a; b++) s2[a][b] += ri * xi[a] * xi[b]; }
@@ -191,7 +212,7 @@ SP.definir('supervivencia', function (SP) {
     }
   }
   /** Verosimilitud parcial, gradiente e información en beta. */
-  function evaluar(t, ev, X, beta, efron) {
+  function evaluar(t, ev, X, beta, efron, estr) {
     const p = beta.length;
     let ll = 0;
     const U = new Float64Array(p), I = Array.from({ length: p }, () => new Float64Array(p));
@@ -205,13 +226,13 @@ SP.definir('supervivencia', function (SP) {
           for (let b = 0; b < p; b++) I[a][b] += S2[a][b] / S0 - ma * S1[b] / S0;
         }
       }
-    });
+    }, estr);
     return { ll, U: Array.from(U), I: I.map(f => Array.from(f)) };
   }
-  /** Ajuste del modelo de Cox. X: filas de covariables (sin intercepto). op = { empates: 'efron' | 'breslow' }. */
+  /** Ajuste del modelo de Cox. X: filas de covariables (sin intercepto). op = { empates: 'efron' | 'breslow', estratos: códigos o null }. */
   function cox(t, ev, X, op) {
-    const p = X[0].length, efron = (op && op.empates) !== 'breslow';
-    let beta = new Array(p).fill(0), e = evaluar(t, ev, X, beta, efron);
+    const p = X[0].length, efron = (op && op.empates) !== 'breslow', estr = (op && op.estratos) || null;
+    let beta = new Array(p).fill(0), e = evaluar(t, ev, X, beta, efron, estr);
     const e0 = e;
     const score0 = cuadratica(e0.I, e0.U);
     let iter = 0, convergio = false;
@@ -220,7 +241,7 @@ SP.definir('supervivencia', function (SP) {
       let lam = 1, nb, ne;
       for (let h = 0; h < 40; h++) {
         nb = beta.map((b, j) => b + lam * paso[j]);
-        ne = evaluar(t, ev, X, nb, efron);
+        ne = evaluar(t, ev, X, nb, efron, estr);
         if (Number.isFinite(ne.ll) && ne.ll >= e.ll - 1e-12 * abs(e.ll)) break;
         lam /= 2;
       }
@@ -243,7 +264,16 @@ SP.definir('supervivencia', function (SP) {
    * (o censurados en el mismo tiempo) son comparables; es concordante si el evento tenía el mayor riesgo predicho.
    * En O(n log n): los tiempos de mayor a menor y un árbol de Fenwick con los rangos del predictor de los que ya entraron.
    */
-  function concordancia(t, ev, lp) {
+  function concordancia(t, ev, lp, estr) {
+    if (estr) {
+      /* con estratos solo se comparan pares del mismo estrato: se suman los conteos */
+      const tot = { concordantes: 0, discordantes: 0, empates_x: 0, empates_y: 0 };
+      for (const idx of porEstrato(t.length, estr)) {
+        const c = concordancia(idx.map(i => t[i]), idx.map(i => ev[i]), idx.map(i => lp[i]));
+        for (const k of Object.keys(tot)) tot[k] += c[k];
+      }
+      return Object.assign(tot, { C: (tot.concordantes + tot.empates_x / 2) / (tot.concordantes + tot.discordantes + tot.empates_x) });
+    }
     const n = t.length, porLp = [...Array(n).keys()].sort((a, b) => lp[a] - lp[b]), rango = new Int32Array(n);
     let r = 0;
     for (let k = 0; k < n; k++) { if (k > 0 && lp[porLp[k]] !== lp[porLp[k - 1]]) r++; rango[porLp[k]] = r + 1; }
@@ -271,11 +301,11 @@ SP.definir('supervivencia', function (SP) {
   }
 
   /** Prueba de riesgos proporcionales (cox.zph con transform = "km"): χ² de cada variable (o de cada término) y global. */
-  function zph(t, ev, X, beta, efron, terminos) {
+  function zph(t, ev, X, beta, efron, terminos, estr) {
     const n = t.length, p = beta.length;
-    /* g(t) = 1 − S(t−) de Kaplan-Meier de todos, centrada en los tiempos con evento */
-    const curva = km(t, ev, { tipo: 'log', nivel: 0.95 });
-    const Sizq = tt => { let s = 1; for (let k = 0; k < curva.tiempo.length && curva.tiempo[k] < tt; k++) s = curva.S[k]; return s; };
+    /* g(t) = 1 − S(t−) de Kaplan-Meier de todos (también con estratos), centrada en los tiempos con evento */
+    const curva = km(t, ev, { tipo: 'log', nivel: 0.95 }), T0 = curva.tiempo;
+    const Sizq = tt => { let a = 0, b = T0.length; while (a < b) { const m = (a + b) >> 1; if (T0[m] < tt) a = m + 1; else b = m; } return a ? curva.S[a - 1] : 1; };
     const gt = t.map(tt => 1 - Sizq(tt));
     let sg = 0, ne = 0;
     for (let i = 0; i < n; i++) if (ev[i]) { sg += gt[i]; ne++; }
@@ -293,7 +323,7 @@ SP.definir('supervivencia', function (SP) {
           }
         }
       }
-    });
+    }, estr);
     const prueba = cols => {
       const kk = [...Array(p).keys()].concat(cols.map(c => c + p));
       const M = kk.map(a => kk.map(b => I[a][b])), u = kk.map(a => (a < p ? 0 : U2[a - p]));
@@ -304,5 +334,5 @@ SP.definir('supervivencia', function (SP) {
     return { terminos: filas, global: prueba([...Array(p).keys()]) };
   }
 
-  SP.supervivencia = { km, confianza, cuantiles, findq, logrank, cox, evaluar, concordancia, zph };
+  SP.supervivencia = { km, confianza, cuantiles, findq, logrank, cox, evaluar, concordancia, zph, porEstrato };
 });

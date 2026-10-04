@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.3.0",
- "generado": "2026-10-04T07:55:37.480Z",
+ "generado": "2026-10-04T13:46:00.781Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,10 +11,10 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 780,
-  "aprobados": 780,
+  "casos": 785,
+  "aprobados": 785,
   "fallidos": 0,
-  "valores": 80646,
+  "valores": 81921,
   "difEscaladaMax": 0.000004071746832135441,
   "objetivos": 168
  },
@@ -20217,7 +20217,7 @@ window.SP_VALIDACION = {
    "titulo": "Cuatro regiones de tamaños distintos y faltantes (tres funciones)",
    "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::manova y MASS::lda",
    "clase": "A",
-   "valores": 500,
+   "valores": 508,
    "difMax": 1.2045919817182948e-14,
    "difEscaladaMax": 1.2045919817182948e-14,
    "peor": "puntajes[25][2]",
@@ -20243,10 +20243,36 @@ window.SP_VALIDACION = {
    "titulo": "Dos orígenes de una especie (una función discriminante)",
    "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::manova y MASS::lda",
    "clase": "A",
-   "valores": 189,
-   "difMax": 3.608224830031759e-15,
+   "valores": 195,
+   "difMax": 5.329070518200751e-15,
    "difEscaladaMax": 3.608224830031759e-15,
    "peor": "cv.posterior[2][0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "MASS": "7.3.61"
+    },
+    "codigo": "MASS::lda(x, g); predict(); lda(CV = TRUE) (tests/r/multivariado.R)"
+   }
+  },
+  {
+   "id": "discriminante/grupo-chico-box",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "discriminante"
+   },
+   "titulo": "Un grupo de 3 con 3 variables: fuera de la M de Box (heplots), dentro del discriminante",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::manova y MASS::lda",
+   "clase": "A",
+   "valores": 469,
+   "difMax": 1.27675647831893e-14,
+   "difEscaladaMax": 1.27675647831893e-14,
+   "peor": "sv[2]",
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -20269,7 +20295,7 @@ window.SP_VALIDACION = {
    "titulo": "Iris: tres especies con cuatro medidas de la flor",
    "fuente": "Anderson (1935) y Fisher (1936), datasets::iris de R; referencia: MASS::lda",
    "clase": "A",
-   "valores": 1528,
+   "valores": 1535,
    "difMax": 1.4210854715202004e-14,
    "difEscaladaMax": 1.1324274851176597e-14,
    "peor": "puntajes[106][1]",
@@ -20295,10 +20321,10 @@ window.SP_VALIDACION = {
    "titulo": "Una vía con cuatro respuestas y cuatro tratamientos (q = 3 < p = 4)",
    "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::manova y MASS::lda",
    "clase": "A",
-   "valores": 68,
-   "difMax": 2.4868995751603507e-14,
-   "difEscaladaMax": 6.329303953604208e-15,
-   "peor": "E[1][2]",
+   "valores": 72,
+   "difMax": 1.4779288903810084e-12,
+   "difEscaladaMax": 2.247010124485538e-14,
+   "peor": "boxM.chi2",
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -20321,7 +20347,7 @@ window.SP_VALIDACION = {
    "titulo": "Factorial riego × variedad con faltantes (sumas secuenciales)",
    "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::manova y MASS::lda",
    "clase": "A",
-   "valores": 102,
+   "valores": 106,
    "difMax": 8.739675649849232e-13,
    "difEscaladaMax": 9.445662549990151e-14,
    "peor": "terminos[0].pruebas.pillai.p",
@@ -20347,7 +20373,7 @@ window.SP_VALIDACION = {
    "titulo": "Iris: MANOVA de las cuatro medidas por especie",
    "fuente": "Anderson (1935) y Fisher (1936), datasets::iris de R; referencia: stats::manova",
    "clase": "A",
-   "valores": 68,
+   "valores": 72,
    "difMax": 3.865352482534945e-12,
    "difEscaladaMax": 2.5130575112245065e-12,
    "peor": "terminos[0].pruebas.pillai.p",
@@ -20373,7 +20399,7 @@ window.SP_VALIDACION = {
    "titulo": "Tres híbridos en bloques con rendimiento, altura y peso de grano",
    "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::manova y MASS::lda",
    "clase": "A",
-   "valores": 91,
+   "valores": 95,
    "difMax": 3.922195901395753e-12,
    "difEscaladaMax": 6.486719639228925e-14,
    "peor": "terminos[0].H[1][2]",
@@ -21665,6 +21691,58 @@ window.SP_VALIDACION = {
    }
   },
   {
+   "id": "cox/lotes-cox-estratos-covariable-breslow",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "cox"
+   },
+   "titulo": "Cox con tratamiento, peso y estratos por lote (Breslow)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "D",
+   "valores": 48,
+   "difMax": 1.1368683772161603e-13,
+   "difEscaladaMax": 4.315294188005291e-14,
+   "peor": "z[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "coxph(Surv(dias, germino) ~ tratamiento + peso + strata(lote), ties = \"breslow\", control = coxph.control(eps = 1e-12, iter.max = 100)); cox.zph(fit)"
+   }
+  },
+  {
+   "id": "cox/lotes-cox-estratos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "cox"
+   },
+   "titulo": "Cox con el tratamiento y estratos por lote (Efron)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "D",
+   "valores": 37,
+   "difMax": 1.9968471320908066e-12,
+   "difEscaladaMax": 1.4432870866648177e-12,
+   "peor": "z[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "coxph(Surv(dias, germino) ~ tratamiento + strata(lote), ties = \"efron\", control = coxph.control(eps = 1e-12, iter.max = 100)); cox.zph(fit)"
+   }
+  },
+  {
    "id": "cox/vivero-dos-covariables",
    "objetivo": {
     "tipo": "metodo",
@@ -21766,6 +21844,58 @@ window.SP_VALIDACION = {
      "survival": "3.7.0"
     },
     "codigo": "survfit(Surv(dias, germino) ~ tratamiento, conf.type = \"log\", conf.int = 0.95); quantile(); survdiff(rho = 0)"
+   }
+  },
+  {
+   "id": "kaplan-meier/lotes-log-rank-estratificado",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kaplan-meier"
+   },
+   "titulo": "Log-rank estratificado por lote (cada lote con su riesgo base)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "A",
+   "valores": 342,
+   "difMax": 7.105427357601002e-15,
+   "difEscaladaMax": 3.7428193103523837e-16,
+   "peor": "comparacion.varianza[0][0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "survfit(Surv(dias, germino) ~ tratamiento, conf.type = \"log\", conf.int = 0.95); quantile(); survdiff(rho = 0)"
+   }
+  },
+  {
+   "id": "kaplan-meier/lotes-peto-estratificado",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "kaplan-meier"
+   },
+   "titulo": "Peto-Peto estratificada por lote, intervalos log-log",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: paquete survival de R (Therneau, 2024)",
+   "clase": "A",
+   "valores": 342,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 4.4263975787898207e-16,
+   "peor": "comparacion.varianza[1][1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "survival": "3.7.0"
+    },
+    "codigo": "survfit(Surv(dias, germino) ~ tratamiento, conf.type = \"log-log\", conf.int = 0.95); quantile(); survdiff(rho = 1)"
    }
   },
   {

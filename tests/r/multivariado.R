@@ -1,5 +1,6 @@
 # SigmaPro — referencia del multivariado (Hito 3.4): manova y summary.manova (las cuatro pruebas) y summary.aov de
-# stats; lda y predict.lda de MASS (Venables y Ripley, 2002), con la validación cruzada de lda(CV = TRUE).
+# stats; lda y predict.lda de MASS (Venables y Ripley, 2002), con la validación cruzada de lda(CV = TRUE); y la prueba M
+# de Box de heplots::boxM (en la MANOVA, entre las celdas de los tratamientos).
 # El signo de cada función discriminante lo fija LAPACK: se normaliza como en la app (el coeficiente de mayor valor
 # absoluto, positivo).
 # Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
@@ -25,7 +26,9 @@ ref_manova <- function(datos, respuestas, tratamientos, bloque = "") {
   })
   ua <- summary.aov(fit)
   univariados <- lapply(seq_along(respuestas), function(k) { a <- ua[[k]]; list(F = I(unname(a[["F value"]][seq_len(nt)])), p = I(unname(a[["Pr(>F)"]][seq_len(nt)]))) })
-  list(terminos = terminos, E = unname(s$pillai$SS[["Residuals"]]), glE = fit$df.residual, n = nrow(d), univariados = univariados)
+  bm <- heplots::boxM(as.matrix(d[, respuestas]), interaction(d[tratamientos], drop = TRUE))
+  boxM <- list(chi2 = unname(bm$statistic), gl = unname(bm$parameter), p = bm$p.value, logdet_combinada = unname(bm$logDet[["pooled"]]))
+  list(terminos = terminos, E = unname(s$pillai$SS[["Residuals"]]), glE = fit$df.residual, n = nrow(d), univariados = univariados, boxM = boxM)
 }
 
 ref_lda <- function(datos, variables, grupo) {
@@ -39,5 +42,7 @@ ref_lda <- function(datos, variables, grupo) {
   cv <- MASS::lda(x, g, CV = TRUE)
   list(n = nrow(d), escala = unname(sc), sv = I(fit$svd), proporcion = I(fit$svd^2 / sum(fit$svd^2)), medias = unname(fit$means), previa = unname(fit$prior),
        puntajes = unname(sweep(pr$x, 2, sgn, "*")), posterior = unname(pr$posterior), clase = as.integer(pr$class) - 1L,
-       cv = list(posterior = unname(cv$posterior), clase = as.integer(cv$class) - 1L))
+       cv = list(posterior = unname(cv$posterior), clase = as.integer(cv$class) - 1L),
+       boxM = (function(bm) list(chi2 = unname(bm$statistic), gl = unname(bm$parameter), p = bm$p.value, logdet = unname(bm$logDet[levels(g)]),
+                                 logdet_combinada = unname(bm$logDet[["pooled"]])))(heplots::boxM(x, g)))
 }
