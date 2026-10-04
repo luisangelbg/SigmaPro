@@ -166,5 +166,17 @@
  },
  "gen-repetibilidad": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[15].click(), SP.app.ir(4), SP.app.analisis.usar('repetibilidad', { respuesta: 'rendimiento', individuo: 'arbol', fijos: ['cosecha'] }, {}), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "glm-conteos": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[4].click(), SP.app.ir(4), SP.app.analisis.usar('glm-conteos', { respuesta: 'trips', tratamientos: ['tratamiento'], bloque: 'bloque' }, { familia: 'auto' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "glm-proporciones": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[1].click(), SP.app.ir(4), SP.app.analisis.usar('glm-proporciones', { respuesta: 'germinadas', ensayos: 'sembradas', tratamientos: ['tratamiento'] }, { familia: 'auto', enlace: 'logit' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "glm-gamma": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[5].click(), SP.app.ir(4), SP.app.analisis.usar('glm-gamma', { respuesta: 'tiempo', tratamientos: ['veneno', 'tratamiento'] }, { familia: 'gamma', enlace: 'log', comparar: ['tratamiento'], dentro: 'veneno' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "glm-formula": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[4].click(), SP.app.ir(4), SP.app.analisis.usar('glm', { respuesta: 'trips' }, { derecha: 'bloque + tratamiento', comoFactor: ['bloque'], familia: 'cuasipoisson', tipo: 1, comparar: ['tratamiento'] }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  }
 }

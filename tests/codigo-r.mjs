@@ -166,6 +166,15 @@ const ESCENARIOS = [
     r: 'c(s2g, s2e, H2, H2_cullis, H2_piepho)', js: res => [res.componentes[0].sigma2, res.componentes[2].sigma2, res.heredabilidad.estandar, res.heredabilidad.cullis, res.heredabilidad.piepho] },
   { ej: 'avena-ambientes', id: 'heredabilidad', e: { respuesta: 'rendimiento', genotipo: 'genotipo', repeticion: 'repeticion', ambiente: 'ambiente' }, op: { seleccion: 0.2, direccion: 'mayor' },
     r: 'c(s2g, s2ga, s2e, H2, H2_cullis, H2_piepho)', js: res => [res.componentes[0].sigma2, res.componentes[1].sigma2, res.componentes[2].sigma2, res.heredabilidad.estandar, res.heredabilidad.cullis, res.heredabilidad.piepho] },
+  /* Hito 2.4: modelos lineales generalizados (la familia automática la decide la app y el código usa la elegida) */
+  { ej: 'aguacate', id: 'glm-conteos', e: { respuesta: 'trips', tratamientos: ['tratamiento'], bloque: 'bloque' }, op: { familia: 'auto' },
+    r: 'c(coef(m), deviance(m), as.data.frame(em)[, 2])', js: res => [...res.coeficientes.estimado, res.ajuste.devianza, ...res.medias[0].filas.map(f => f.respuesta)] },
+  { ej: 'frijol', id: 'glm-proporciones', e: { respuesta: 'germinadas', ensayos: 'sembradas', tratamientos: ['tratamiento'] }, op: { familia: 'auto' },
+    r: 'c(coef(m), as.data.frame(em)[, 2], as.data.frame(pairs(em, adjust = "tukey"))$p.value)', js: res => [...res.coeficientes.estimado, ...res.medias[0].filas.map(f => f.respuesta), ...res.medias[0].pares.map(x => x.p)] },
+  { ej: 'venenos', id: 'glm-gamma', e: { respuesta: 'tiempo', tratamientos: ['veneno', 'tratamiento'] }, op: { familia: 'gamma', enlace: 'log' },
+    r: 'c(coef(m), sum(residuals(m, type = "pearson")^2) / df.residual(m), as.data.frame(em)[, 2])', js: res => [...res.coeficientes.estimado, res.ajuste.dispersion, ...res.medias[1].filas.map(f => f.respuesta)] },
+  { ej: 'aguacate', id: 'glm', e: { respuesta: 'trips' }, op: { derecha: 'bloque + tratamiento', comoFactor: ['bloque'], familia: 'cuasipoisson', tipo: 1, comparar: ['tratamiento'] },
+    r: 'c(coef(m), anova(m, test = "F")[-1, "F"])', js: res => [...res.coeficientes.estimado, ...res.devianza.map(x => x.estadistico)] },
   { ej: 'guayabo-cosechas', id: 'repetibilidad', e: { respuesta: 'rendimiento', individuo: 'arbol', fijos: ['cosecha'] }, op: {},
     r: 'c(r, mh * r / (1 + (mh - 1) * r), R2 * (1 - r) / ((1 - R2) * r))', js: res => [res.repetibilidad.r, res.repetibilidad.R2, ...res.necesarias.map(x => x.medidas)] },
 ];

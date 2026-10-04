@@ -44,9 +44,9 @@ que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA
 ## Fase 2 · motor R en el navegador (webR)
 
 Plan detallado en [`propuesta/FASE2.md`](../propuesta/FASE2.md). Hecho: Hito 2.0 (el motor R y el modelo lineal mixto
-desde una fórmula) e Hito 2.1 (medias marginales, comparaciones, prueba de los aleatorios, BLUP y los diseños con
-efectos aleatorios), Hito 2.2 (medidas repetidas con estructuras de covarianza) e Hito 2.3 (componentes de varianza por
-REML en el núcleo, heredabilidad y repetibilidad). Notas:
+desde una fórmula), Hito 2.1 (medias marginales, comparaciones, prueba de los aleatorios, BLUP y los diseños con
+efectos aleatorios), Hito 2.2 (medidas repetidas con estructuras de covarianza), Hito 2.3 (componentes de varianza por
+REML en el núcleo, heredabilidad y repetibilidad) e Hito 2.4 (modelos lineales generalizados en el núcleo). Notas:
 
 - Con doble clic el motor R necesita internet la primera vez (luego sale de la caché del navegador); sin conexión
   llega en el cierre de la fase (Hito 2.10), con el repositorio propio de paquetes en Pages.
@@ -54,6 +54,9 @@ REML en el núcleo, heredabilidad y repetibilidad). Notas:
   motor y lo validan sus casos (`tests/motor-r.mjs`).
 - El asistente y el constructor todavía no proponen los modelos mixtos, las medidas repetidas ni la heredabilidad
   (Hito 2.9); se eligen en el catálogo.
+- GLM: los intervalos de las razones son de Wald (confint.default); los de verosimilitud perfilada quedan pendientes.
+  Con separación completa en la binomial (una probabilidad ajustada en 0 o 1) la app avisa, pero no corrige (Firth).
+  Faltan la gaussiana inversa, los enlaces de potencia y la binomial negativa con otros enlaces que log e identidad.
 - Heredabilidad: los testigos (genotipos fijos dentro de un ensayo de genotipos aleatorios), las matrices de
   parentesco (modelo animal, como en BreedingPro) y los intervalos de confianza de H² quedan pendientes. El REML del
   núcleo admite hasta 2500 incógnitas fuera del término mayor; para modelos más grandes, el modelo mixto del motor R.

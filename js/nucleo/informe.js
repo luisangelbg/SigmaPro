@@ -93,6 +93,11 @@ SP.definir('informe', function (SP) {
     schmidt2019: () => 'Schmidt, P., Hartung, J., Rath, J. y Piepho, H.-P. (2019). Estimating broad-sense heritability with unbalanced data from agricultural cultivar trials. Crop Science, 59(2), 525–536.',
     falconer1996: () => 'Falconer, D. S. y Mackay, T. F. C. (1996). Introduction to quantitative genetics (4.ª ed.). Longman.',
     cruz2012: () => 'Cruz, C. D., Regazzi, A. J. y Carneiro, P. C. S. (2012). Modelos biométricos aplicados ao melhoramento genético (4.ª ed., vol. 1). Editora UFV.',
+    nelder1972: () => 'Nelder, J. A. y Wedderburn, R. W. M. (1972). Generalized linear models. Journal of the Royal Statistical Society A, 135(3), 370–384.',
+    mccullagh1989: () => 'McCullagh, P. y Nelder, J. A. (1989). Generalized linear models (2.ª ed.). Chapman and Hall.',
+    venables2002: () => 'Venables, W. N. y Ripley, B. D. (2002). Modern applied statistics with S (4.ª ed.). Springer.',
+    wedderburn1974: () => 'Wedderburn, R. W. M. (1974). Quasi-likelihood functions, generalized linear models, and the Gauss-Newton method. Biometrika, 61(3), 439–447.',
+    lenth2016: () => 'Lenth, R. V. (2016). Least-squares means: the R package lsmeans. Journal of Statistical Software, 69(1), 1–33.',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -112,7 +117,8 @@ SP.definir('informe', function (SP) {
     halekoh2014: 'Halekoh y Højsgaard, 2014', patterson1971: 'Patterson y Thompson, 1971', pinheiro2000: 'Pinheiro y Bates, 2000', wolfinger1993: 'Wolfinger, 1993',
     henderson1975: 'Henderson, 1975', gilmour1995: 'Gilmour et al., 1995', self1987: 'Self y Liang, 1987', holland2003: 'Holland et al., 2003',
     cullis2006: 'Cullis et al., 2006', piepho2007: 'Piepho y Möhring, 2007', schmidt2019: 'Schmidt et al., 2019', falconer1996: 'Falconer y Mackay, 1996',
-    cruz2012: 'Cruz et al., 2012',
+    cruz2012: 'Cruz et al., 2012', nelder1972: 'Nelder y Wedderburn, 1972', mccullagh1989: 'McCullagh y Nelder, 1989', venables2002: 'Venables y Ripley, 2002',
+    wedderburn1974: 'Wedderburn, 1974', lenth2016: 'Lenth, 2016',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -570,6 +576,37 @@ SP.definir('informe', function (SP) {
     return { metodos, resultados: resultados.filter(Boolean).join(' ') };
   }
 
+  /** Modelos lineales generalizados (núcleo JS). */
+  function generalizado(r, citas) {
+    const FAM = { binomial: T('binomial'), cuasibinomial: T('cuasibinomial'), poisson: T('de Poisson'), cuasipoisson: T('cuasi-Poisson'), 'binomial-negativa': T('binomial negativa'), gamma: T('gamma') };
+    const ENL = { logit: 'logit', probit: 'probit', cloglog: T('log-log complementario'), log: T('logarítmico'), inverso: T('inverso'), identidad: T('identidad') };
+    const ref = r.familia === 'binomial-negativa' ? ['venables2002'] : /cuasi/.test(r.familia) ? ['wedderburn1974'] : [];
+    const autoTxt = r.auto && !r.auto.binaria ? ' ' + (r.familia === r.auto.base ? T('La familia se eligió después de comprobar con la prueba de Pearson que no había sobredispersión (χ²/gl = {v}).', { v: n2(r.auto.razon) })
+      : T('Se usó esta familia porque el modelo {b} mostró sobredispersión (Pearson χ²/gl = {v}; {p}).', { b: FAM[r.auto.base], v: n2(r.auto.razon), p: fp(r.auto.p) })) : '';
+    const fija = r.prueba === 'chi2';
+    const metodos = T('Se ajustó un modelo lineal generalizado ({c}) con distribución {f} y enlace {e}: {fm}.', { c: cita(['nelder1972', 'mccullagh1989'].concat(ref), citas), f: FAM[r.familia], e: ENL[r.enlace], fm: r.formula }) + autoTxt + ' ' +
+      T('Los efectos se probaron con un análisis de devianza tipo {t} ({s}).', { t: ['', 'I', 'II', 'III'][r.tipoDev], s: fija ? T('razón de verosimilitudes, χ²') : T('prueba F con la dispersión estimada por Pearson') }) +
+      (r.medias.length ? ' ' + T('Las medias marginales ({m}) se estimaron en la escala de la respuesta y se compararon {a}.', { m: cita(['lenth2016'], citas),
+        a: ({ tukey: T('con la prueba de Tukey ({c})', { c: cita(['tukey1949'], citas) }), holm: T('con el ajuste de Holm ({c})', { c: cita(['holm1979'], citas) }), sidak: T('con el ajuste de Šidák ({c})', { c: cita(['sidak1967'], citas) }),
+          bonferroni: T('con el ajuste de Bonferroni'), none: T('por pares sin ajuste') })[r.medias[0].ajuste] || '' }) : '');
+    const frases = [];
+    for (const x of r.devianza) {
+      if (!Number.isFinite(x.p)) continue;
+      const e = fija ? `χ²(${x.gl}) = ${n2(x.estadistico)}; ${fp(x.p)}` : `F(${x.gl}, ${r.ajuste.gl}) = ${n2(x.estadistico)}; ${fp(x.p)}`, nombre = x.termino;
+      frases.push(nombre.includes(':') ? (x.p < (r.alfa || 0.05) ? T('la interacción {t} fue significativa ({e})', { t: nombre.replace(/:/g, ' × '), e }) : T('la interacción {t} no fue significativa ({e})', { t: nombre.replace(/:/g, ' × '), e }))
+        : (x.p < (r.alfa || 0.05) ? T('el efecto de {t} fue significativo ({e})', { t: nombre, e }) : T('el efecto de {t} no fue significativo ({e})', { t: nombre, e })));
+    }
+    const ESC = { probabilidad: T('probabilidades'), tasa: T('tasas'), media: T('medias') };
+    const medias = r.medias.filter(m => !m.dentro).map(m => {
+      const fs = m.filas.slice().sort((p, q) => q.respuesta - p.respuesta), con = x => s4(x.respuesta) + (x.letras ? ' ' + x.letras : '');
+      return fs.length <= 12 ? T('Las {e} estimadas de {f} fueron: {l} (niveles con la misma letra no difieren).', { e: ESC[m.escala], f: m.factor, l: fs.map(x => x.nivel + ', ' + con(x)).join('; ') })
+        : T('La más alta de {f} fue {a} ({x}) y la más baja {b} ({z}).', { f: m.factor, a: fs[0].nivel, x: con(fs[0]), b: fs[fs.length - 1].nivel, z: con(fs[fs.length - 1]) });
+    });
+    const extra = r.familia === 'binomial-negativa' ? T('El parámetro de forma de la binomial negativa fue θ = {t} (EE = {e}).', { t: s4(r.theta), e: s4(r.ee_theta) })
+      : !fija ? T('La dispersión estimada fue φ = {f}.', { f: s4(r.ajuste.dispersion) }) : '';
+    return { metodos, resultados: [oracion(frases)].concat(medias, [extra]).filter(Boolean).join(' ') };
+  }
+
   /** El párrafo de métodos y el de resultados de un análisis. */
   function parrafo(id, r, rep, e, op) {
     e = e || {}; op = op || {};
@@ -588,6 +625,7 @@ SP.definir('informe', function (SP) {
     else if (id === 'modelo-mixto' || /^mixto-/.test(id)) p = mixto(r, rep, citas);
     else if (id === 'medidas-repetidas') p = repetidas(r, rep, citas);
     else if (['componentes-varianza', 'heredabilidad', 'repetibilidad'].includes(id)) p = genetico(id, r, citas);
+    else if (['glm-conteos', 'glm-proporciones', 'glm-gamma', 'glm'].includes(id)) p = generalizado(r, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };

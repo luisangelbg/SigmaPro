@@ -24,6 +24,7 @@
   const CONTING = ['tabla-contingencia', 'mcnemar', 'mantel-haenszel', 'kappa'];
   const MIXTOS_DIS = ['mixto-bloques', 'mixto-divididas', 'mixto-latice', 'mixto-localidades'];
   const GENETICOS = ['componentes-varianza', 'heredabilidad', 'repetibilidad'];
+  const GLMS = ['glm-conteos', 'glm-proporciones', 'glm-gamma', 'glm'];
   const AJUSTES_MX = () => [['tukey', 'Tukey'], ['bonferroni', 'Bonferroni'], ['holm', 'Holm'], ['sidak', 'Šidák'], ['none', T('Sin ajuste (DMS)')]];
   const estado = SP.app.analisis = {
     metodo: 'supuestos', pendiente: true, turno: 0, modo: (() => { try { const m = localStorage.getItem('sigmapro.analisis.modo'); return MODOS.includes(m) ? m : 'asistente'; } catch (e) { return 'asistente'; } })(),
@@ -45,6 +46,8 @@
     rep: { respuesta: '', tiempo: '', sujeto: '', tratamientos: [], bloque: '', estructura: 'auto', criterio: 'aic', compararMx: null, dentro: '', ajuste: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
     gen: { respuesta: '', aleatorios: [], fijos: [], estructura: 'cruzados', genotipo: '', repeticion: '', bloque: '', ambiente: '', seleccion: 0.1, direccion: 'mayor',
       individuo: '', fijosRep: [], _iniciado: false },
+    glm: { respuesta: '', tratamientos: [], bloque: '', covariables: [], ensayos: '', exposicion: '', familia: '', enlace: '', tipo: 2, compararMx: null, dentro: '', ajuste: 'tukey',
+      nivel: 0.95, alfa: 0.05, derecha: '', comoFactor: [], metodo: '', _iniciado: false },
     motorAceptado: false,
   };
 
@@ -659,7 +662,78 @@
     }
     return h + '<p class="small muted">' + esc(T('Corre en tu navegador (REML por información promedio, validado contra lme4).')) + '</p>';
   }
+  /** Modelos lineales generalizados: papeles propuestos por el nombre de las columnas; familia y enlace según el método. */
+  const FAM_GLM = () => ({ auto: T('Automática (por la sobredispersión)'), binomial: T('Binomial'), cuasibinomial: T('Cuasibinomial (con sobredispersión)'), poisson: 'Poisson',
+    cuasipoisson: T('Cuasi-Poisson (con sobredispersión)'), 'binomial-negativa': T('Binomial negativa'), gamma: T('Gamma') });
+  const ENL_GLM = () => ({ logit: 'logit', probit: 'probit', cloglog: T('log-log complementario'), log: T('logaritmo'), inverso: T('inverso'), identidad: T('identidad') });
+  const RESP_GLM = { 'glm-conteos': /(conteo|count|insect|trips|plant|larva|numero|número|lesion|lesión|fruto|mosca|huevo|adulto)/i, 'glm-proporciones': /(germin|muert|enferm|viva|exito|éxito|positiv|dead|kill)/i,
+    'glm-gamma': /(tiempo|dias|días|time|conc|dura)/i, glm: /./ };
+  function sanearGlm(c, m) {
+    const s = estado.glm, med = c.numericas, agr = c.agrupables.filter(n => nivelesDe(c, n).length >= 2);
+    if (!s._iniciado) {
+      s._iniciado = true;
+      s.respuesta = med.find(n => RESP_GLM[m].test(n)) || ultimaRespuesta(c);   // los conteos suelen parecer factores numéricos: no se excluyen
+      s.ensayos = med.find(n => /(sembrad|total|ensayo|semillas|evaluad|^n$)/i.test(n) && n !== s.respuesta) || '';
+      s.exposicion = '';
+      s.bloque = c.pap.bloque && agr.includes(c.pap.bloque) ? c.pap.bloque : '';
+      s.tratamientos = c.pap.factores.filter(n => agr.includes(n) && n !== s.bloque && n !== s.respuesta).slice(0, 2);
+      s.covariables = [];
+      s.derecha = [s.bloque, s.tratamientos.join(' * ')].filter(Boolean).join(' + ');
+      s.comoFactor = c.numFactor.filter(n => s.derecha.split(/[^\p{L}\p{N}_.]+/u).includes(n));
+      s.compararMx = null; s.metodo = '';
+    }
+    if (s.metodo !== m) {
+      s.metodo = m;
+      /* cada método propone su respuesta (conteo, éxitos, tiempo) y, en proporciones, sus ensayos */
+      const r0 = m !== 'glm' && med.find(n => RESP_GLM[m].test(n));
+      if (r0) s.respuesta = r0;
+      if (m === 'glm-proporciones' && !s.ensayos) s.ensayos = med.find(n => /(sembrad|total|ensayo|semillas|evaluad|^n$)/i.test(n) && n !== s.respuesta) || '';
+      s.familia = m === 'glm-gamma' ? 'gamma' : m === 'glm' ? (s.ensayos ? 'binomial' : 'poisson') : 'auto';
+      s.enlace = '';
+    }
+    if (!med.includes(s.respuesta)) s.respuesta = ultimaRespuesta(c);
+    s.tratamientos = s.tratamientos.filter(n => agr.includes(n) && n !== s.respuesta && n !== s.bloque).slice(0, 3);
+    if (s.bloque && (!agr.includes(s.bloque) || s.bloque === s.respuesta)) s.bloque = '';
+    s.covariables = s.covariables.filter(n => med.includes(n) && n !== s.respuesta && !s.tratamientos.includes(n) && n !== s.bloque).slice(0, 2);
+    for (const k of ['ensayos', 'exposicion']) if (s[k] && (!med.includes(s[k]) || s[k] === s.respuesta)) s[k] = '';
+    return { med, agr };
+  }
+  function formGlm(c, m) {
+    const s = estado.glm, { med, agr } = sanearGlm(c, m), marca = n => (c.numFactor.includes(n) ? T('{c} (numérica)', { c: n }) : n), G = SP.glm;
+    let h = campo('glm', 'respuesta', m === 'glm-proporciones' ? T('Respuesta: éxitos (germinadas, enfermas) o 0/1') : m === 'glm-conteos' ? T('Respuesta: el conteo') : T('Variable de respuesta'), lista(med), s.respuesta);
+    let principales;
+    if (m === 'glm') {
+      h += '<label class="field"><span>' + esc(T('Términos del modelo (lo que va después de «~»)')) + '</span><input type="text" data-grupo="glm" data-campo="derecha" spellcheck="false" autocomplete="off" value="' + esc(s.derecha) + '" placeholder="bloque + variedad * dosis">' +
+        '<span class="field-help">' + esc(T('+ suma términos, * cruza con su interacción, : solo la interacción, / anida; las numéricas entran como covariables, salvo las que marques como factor.')) + '</span></label>';
+      const usadas = s.derecha.split(/[^\p{L}\p{N}_.]+/u);
+      h += casillas('glm', 'comoFactor', T('Numéricas que son factor (dosis, bloque numerado)'), c.numFactor.filter(n => usadas.includes(n)), s.comoFactor, n => n, T('Ninguna columna numérica del modelo parece factor.'));
+      let vars = [];
+      try { vars = SP.modeloLineal.leerFormula(s.respuesta, s.derecha).variables; } catch (err) { /* fórmula incompleta */ }
+      principales = vars.filter(v => c.factores.includes(v) || s.comoFactor.includes(v));
+    } else {
+      h += casillas('glm', 'tratamientos', T('Factores de tratamiento (hasta 3, cruzados)'), agr.filter(n => n !== s.respuesta && n !== s.bloque), s.tratamientos, marca, T('No hay factores en la tabla.'));
+      h += campo('glm', 'bloque', T('Bloques'), [['', T('— sin bloques —')]].concat(agr.filter(n => n !== s.respuesta && !s.tratamientos.includes(n)).map(n => [n, marca(n)])), s.bloque);
+      h += casillas('glm', 'covariables', T('Covariables (opcional, hasta 2)'), med.filter(n => n !== s.respuesta && !s.tratamientos.includes(n) && n !== s.bloque && n !== s.ensayos && n !== s.exposicion && !c.numFactor.includes(n)), s.covariables, n => n, T('No hay más columnas numéricas.'));
+      principales = s.tratamientos.slice();
+    }
+    const fams = m === 'glm' ? ['binomial', 'cuasibinomial', 'poisson', 'cuasipoisson', 'binomial-negativa', 'gamma'] : SP.generalizados.FAMILIAS_DE[m];
+    if (!fams.includes(s.familia)) s.familia = fams[0];
+    const base = s.familia === 'auto' ? SP.generalizados.BASE_DE[m] : s.familia, enlaces = G.FAMILIAS[base].enlaces;
+    if (!enlaces.includes(s.enlace)) s.enlace = m === 'glm-gamma' ? 'log' : G.ENLACE_OMISION[base];
+    const binomial = base === 'binomial' || base === 'cuasibinomial';
+    if (binomial) h += campo('glm', 'ensayos', T('Ensayos de cada fila (semillas sembradas, plantas evaluadas)'), [['', T('— la respuesta es 0/1 —')]].concat(med.filter(n => n !== s.respuesta).map(n => [n, n])), s.ensayos);
+    else if (base !== 'gamma') h += campo('glm', 'exposicion', T('Exposición (opcional: área o tiempo muestreado)'), [['', T('— todas las unidades iguales —')]].concat(med.filter(n => n !== s.respuesta).map(n => [n, n])), s.exposicion,
+      T('Con exposición, las medias son tasas por unidad (por m², por día).'));
+    if (fams.length > 1) h += campo('glm', 'familia', T('Familia'), fams.map(k => [k, FAM_GLM()[k]]), s.familia);
+    if (enlaces.length > 1) h += campo('glm', 'enlace', T('Enlace'), enlaces.map(k => [k, ENL_GLM()[k]]), s.enlace);
+    h += campo('glm', 'tipo', T('Análisis de devianza'), [[2, T('Tipo II (cada término ajustado por los que no lo contienen)')], [3, T('Tipo III (suma cero)')], [1, T('Tipo I (secuencial)')]], s.tipo);
+    if (s.compararMx === null) s.compararMx = principales.slice(0, 3);
+    h += formCompararMx('glm', s, principales, true);
+    h += '<p class="small muted">' + esc(T('Corre en tu navegador (mínimos cuadrados iterativamente reponderados, validado contra glm y glm.nb de R).')) + '</p>';
+    return h + campo('glm', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('glm', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+  }
   function formulario(c) {
+    if (GLMS.includes(estado.metodo)) return formGlm(c, estado.metodo);
     if (GENETICOS.includes(estado.metodo)) return formGenetico(c, estado.metodo);
     if (estado.metodo === 'medidas-repetidas') return formRepetidas(c);
     if (estado.metodo === 'modelo-mixto') return formMixto(c);
@@ -685,6 +759,17 @@
       const s = estado.mx;
       return { e: { respuesta: s.respuesta }, op: Object.assign({ derecha: s.derecha, comoFactor: s.comoFactor.slice(), tipoSC: +s.tipoSC, gl: s.gl, reml: s.estimacion !== 'ml', ajuste: s.ajuste, alfa: +s.alfa, nivel: +s.nivel },
         s.compararMx ? { comparar: s.compararMx.slice() } : {}, s.dentro ? { dentro: s.dentro } : {}) };
+    }
+    if (GLMS.includes(m)) {
+      const s = estado.glm, binomial = ['binomial', 'cuasibinomial'].includes(s.familia) || (s.familia === 'auto' && m === 'glm-proporciones');
+      const e = { respuesta: s.respuesta };
+      if (m !== 'glm') { e.tratamientos = s.tratamientos.slice(); if (s.bloque) e.bloque = s.bloque; if (s.covariables.length) e.covariables = s.covariables.slice(); }
+      if (binomial && s.ensayos) e.ensayos = s.ensayos;
+      if (!binomial && s.familia !== 'gamma' && s.exposicion) e.exposicion = s.exposicion;
+      const op = { familia: s.familia, enlace: s.enlace, tipo: +s.tipo, comparar: (s.compararMx || []).slice(), dentro: s.dentro || '', ajuste: s.ajuste, nivel: +s.nivel, alfa: +s.alfa };
+      if (m === 'glm') Object.assign(op, { derecha: s.derecha, comoFactor: s.comoFactor.slice() });
+      if (s.compararMx === null) delete op.comparar;
+      return { e, op };
     }
     if (GENETICOS.includes(m)) {
       const s = estado.gen;
@@ -993,6 +1078,29 @@
     }
     return out.join('');
   }
+  /** GLM: las medias en la escala de la respuesta (con su intervalo y letras, o una línea por nivel del otro factor) y los
+      residuos de Pearson contra los valores ajustados. */
+  function graficasGlm(r) {
+    const out = [], md = r.medias[0], ESC = { probabilidad: T('Probabilidad'), tasa: T('Tasa'), media: T('Media') };
+    if (md && md.filas.length) {
+      const ytit = ESC[md.escala] + (r.exposicion ? T(' por unidad de {x}', { x: r.exposicion }) : '');
+      if (md.dentro) {
+        const niv = [...new Set(md.filas.map(x => x.nivel))], por = [...new Set(md.filas.map(x => x.por))];
+        const valor = (a, b) => { const x = md.filas.find(z => z.nivel === a && z.por === b); return x ? x.respuesta : NaN; };
+        out.push(SP.graficas.lineas({ titulo: T('{e} de «{f}» en cada nivel de «{d}»', { e: ESC[md.escala], f: md.factor, d: md.dentro }), x: { titulo: md.factor, niveles: niv }, y: { titulo: ytit }, leyenda: md.dentro,
+          descripcion: T('Medias marginales en la escala de la respuesta de «{f}», una línea por cada nivel de «{d}».', { f: md.factor, d: md.dentro }), series: por.map(b => ({ nombre: b, valores: niv.map(a => valor(a, b)) })) }));
+      } else {
+        out.push(SP.graficas.medias({ titulo: T('{e} estimada por nivel de «{f}»', { e: ESC[md.escala], f: md.factor }), y: { titulo: ytit },
+          descripcion: T('Medias marginales en la escala de la respuesta con su intervalo de confianza; niveles con una letra en común no difieren.'),
+          grupos: md.filas.map(x => ({ nombre: x.nivel, media: x.respuesta, inf: x.ic[0], sup: x.ic[1], letra: x.letras })) }));
+      }
+    }
+    const v = r.valores;
+    out.push(SP.graficas.dispersion({ titulo: T('Residuos de Pearson contra valores ajustados'), x: { titulo: T('Valor ajustado') }, y: { titulo: T('Residuo de Pearson') },
+      descripcion: T('Con la familia adecuada, los residuos de Pearson quedan sin forma y casi todos entre −2 y 2; una nube que se abre indica que la varianza crece más que la de la familia.'),
+      puntos: SP.graficas.adelgazar(v.ajustados.map((x, i) => ({ x, y: v.pearson[i], marca: Math.abs(v.pearson[i]) > 3 })), 2500), referencias: [{ y: 0 }, { y: 2, discontinua: true }, { y: -2, discontinua: true }] }));
+    return out.join('');
+  }
   function graficasRepetidas(r) {
     let g0 = '';
     const md = (r.medias || [])[0];
@@ -1042,6 +1150,7 @@
     if (r.tipo === 'mixto') return graficasMixto(r);
     if (r.tipo === 'repetidas') return graficasRepetidas(r);
     if (r.tipo === 'componentes' || r.tipo === 'heredabilidad' || r.tipo === 'repetibilidad') return graficasGeneticos(r);
+    if (r.tipo === 'glm') return graficasGlm(r);
     if (r.tipo === 'modelo') {
       if (r.celdas) {
         const [A, B] = r.celdas.factores, nivA = [], nivB = [];
@@ -1170,7 +1279,7 @@
     if (estado.modo !== 'catalogo') { const p = estado.pintores[estado.modo]; if (p) p(c); return; }
     catalogo();
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -1287,6 +1396,12 @@
       pon(estado.rep, { respuesta: e.respuesta, tiempo: e.tiempo, sujeto: e.sujeto, tratamientos: [].concat(e.tratamientos || []), bloque: e.bloque || '',
         estructura: op.estructura, criterio: op.criterio, ajuste: op.ajuste, dentro: op.dentro === undefined ? undefined : op.dentro });
       estado.rep.compararMx = op.comparar ? [].concat(op.comparar) : null;
+    } else if (GLMS.includes(m)) {
+      estado.glm.metodo = m;
+      pon(estado.glm, { respuesta: e.respuesta, tratamientos: e.tratamientos ? [].concat(e.tratamientos) : undefined, bloque: e.bloque || '', covariables: [].concat(e.covariables || []),
+        ensayos: e.ensayos || '', exposicion: e.exposicion || '', familia: op.familia, enlace: op.enlace, tipo: op.tipo, dentro: op.dentro || '', ajuste: op.ajuste,
+        derecha: op.derecha, comoFactor: op.comoFactor ? [].concat(op.comoFactor) : undefined });
+      estado.glm.compararMx = op.comparar && op.comparar.length ? [].concat(op.comparar) : null;
     } else if (GENETICOS.includes(m)) {
       pon(estado.gen, m === 'componentes-varianza' ? { respuesta: e.respuesta, aleatorios: [].concat(e.aleatorios || []), fijos: [].concat(e.fijos || []), estructura: op.estructura }
         : m === 'heredabilidad' ? { respuesta: e.respuesta, genotipo: e.genotipo, repeticion: e.repeticion || '', bloque: e.bloque || '', ambiente: e.ambiente || '', seleccion: op.seleccion, direccion: op.direccion }

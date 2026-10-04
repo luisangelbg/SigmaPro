@@ -1,0 +1,184 @@
+{
+  "esquema": 1,
+  "id": "glm-proporciones/germinacion-probit-tipo3",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm-proporciones"
+  },
+  "titulo": "Germinadas de 50 con enlace probit, binomial y tipo III",
+  "fuente": "Datos sintéticos (generados en este archivo)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "bloque": ["B1", "B2", "B3", "B4", "B1", "B2", "B3", "B4", "B1", "B2", "B3", "B4", "B1", "B2", "B3", "B4"],
+      "trat": ["Testigo", "Testigo", "Testigo", "Testigo", "Fungicida", "Fungicida", "Fungicida", "Fungicida", "Imbibición", "Imbibición", "Imbibición", "Imbibición", "Ambos", "Ambos", "Ambos", "Ambos"],
+      "sembradas": [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
+      "germinadas": [35, 35, 41, 42, 38, 40, 30, 22, 40, 38, 18, 29, 37, 26, 27, 26]
+    },
+    "tipos": {
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["B1", "B2", "B3", "B4"]
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["Ambos", "Fungicida", "Imbibición", "Testigo"]
+      },
+      "sembradas": {
+        "tipo": "numerica"
+      },
+      "germinadas": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "germinadas",
+    "tratamientos": ["trat"],
+    "bloque": "bloque",
+    "ensayos": "sembradas"
+  },
+  "opciones": {
+    "familia": "binomial",
+    "enlace": "probit",
+    "tipo": 3,
+    "comparar": ["trat"],
+    "dentro": "",
+    "ajuste": "tukey"
+  },
+  "esperado": {
+    "coeficientes": {
+      "nombre": ["(Intercept)", "bloqueB2", "bloqueB3", "bloqueB4", "tratFungicida", "tratImbibición", "tratTestigo"],
+      "estimado": [0.47085898353659783, -0.16071133448237374, -0.46856047748814972, -0.42917699421502337, 0.18902166309436474, 0.1224564409847205, 0.51571148548240764],
+      "ee": [0.12310556431819486, 0.13465960610747635, 0.13217511509153554, 0.1323651826276763, 0.12845320117432846, 0.12788918787090325, 0.13302325327230083],
+      "estadistico": [3.824839162586946, -1.1934635718012172, -3.5449976885865122, -3.24237073296106, 1.4715216231772741, 0.95751988908032792, 3.8768521502532911],
+      "p": [0.00013085748707779163, 0.23268787064716356, 0.00039261652903915464, 0.0011853971020079012, 0.1411501041779922, 0.33830491252596384, 0.00010581661470262333]
+    },
+    "devianza": [
+      {
+        "termino": "bloque",
+        "gl": 3,
+        "devianza": 17.331140900752047,
+        "estadistico": 17.331140900752047,
+        "p": 0.00060412233800413153
+      },
+      {
+        "termino": "trat",
+        "gl": 3,
+        "devianza": 16.573553740319639,
+        "estadistico": 16.573553740319639,
+        "p": 0.00086478611873571905
+      }
+    ],
+    "ajuste": {
+      "n": 16,
+      "devianza": 38.878383606661778,
+      "gl": 9,
+      "devianza_nula": 73.263906665487383,
+      "gl_nula": 15,
+      "dispersion": 1,
+      "pearson": 39.096653109374707,
+      "sobredispersion": 4.3440725677083005,
+      "p_sobredispersion": 1.1067315942511325e-05,
+      "aic": 119.45925767762259,
+      "bic": 124.86737873330105
+    },
+    "medias": [
+      {
+        "factor": "trat",
+        "filas": [
+          {
+            "nivel": "Ambos",
+            "eta": 0.20624678199021113,
+            "ee_eta": 0.089913799045526321,
+            "respuesta": 0.58170092672252893,
+            "ee": 0.035115548943690261,
+            "ic": [0.51197403959620469, 0.64894531340773842]
+          },
+          {
+            "nivel": "Fungicida",
+            "eta": 0.39526844508457587,
+            "ee_eta": 0.091783704029538934,
+            "respuesta": 0.65367760775012118,
+            "ee": 0.033864851947257246,
+            "ic": [0.58526278940196508, 0.71740885933583587]
+          },
+          {
+            "nivel": "Imbibición",
+            "eta": 0.3287032229749316,
+            "ee_eta": 0.090985426895840896,
+            "respuesta": 0.62880999099767609,
+            "ee": 0.034389040107500497,
+            "ic": [0.55976564286186847, 0.69393360055310516]
+          },
+          {
+            "nivel": "Testigo",
+            "eta": 0.72195826747261882,
+            "ee_eta": 0.098111053391153849,
+            "respuesta": 0.76483993214674661,
+            "ee": 0.030160997969439773,
+            "ic": [0.70182759115424331, 0.81970788164619113]
+          }
+        ],
+        "pares": [
+          {
+            "dif": -0.18902166309436474,
+            "ee": 0.12845320117432846,
+            "estadistico": -1.4715216231772741,
+            "p": 0.45481097830282402
+          },
+          {
+            "dif": -0.1224564409847205,
+            "ee": 0.12788918787090325,
+            "estadistico": -0.95751988908032792,
+            "p": 0.77356516961345456
+          },
+          {
+            "dif": -0.51571148548240764,
+            "ee": 0.13302325327230083,
+            "estadistico": -3.8768521502532911,
+            "p": 0.00061215655152713211
+          },
+          {
+            "dif": 0.066565222109644245,
+            "ee": 0.12918846068964779,
+            "estadistico": 0.51525671684838248,
+            "p": 0.95547531251161399
+          },
+          {
+            "dif": -0.32668982238804289,
+            "ee": 0.13424842628508693,
+            "estadistico": -2.4334722680047789,
+            "p": 0.070912317076213149
+          },
+          {
+            "dif": -0.39325504449768711,
+            "ee": 0.13372017432347577,
+            "estadistico": -2.9408804354859988,
+            "p": 0.017246010723357297
+          }
+        ]
+      }
+    ],
+    "familia": "binomial"
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "MASS": "7.3.61",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "glm(germinadas ~ bloque + trat, family = binomial(link = probit)) [MASS::glm.nb con la binomial negativa]; car::Anova / anova; emmeans(type = \"response\", offset = 0); pairs(adjust = \"tukey\")"
+  }
+}

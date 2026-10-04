@@ -420,6 +420,7 @@ escritorio con el que se calcula la referencia.
 | data_alpha (Olivoto y Lúcio 2020) | alfa-látice de 24 genotipos, con repeticiones fijas y aleatorias |
 | Orthodont (Potthoff y Roy 1964), BodyWeight (Crowder y Hand 1990), sleepstudy y el maíz de los ejemplos | medidas repetidas: siete estructuras de covarianza con elección por AIC y BIC, la no estructurada pedida, fechas desiguales (AR(1) continua), faltantes, bloques, sin tratamientos (`tests/r/repetidas.R`) |
 | Dyestuff, Dyestuff2, Penicillin y Pastes (Davies y Goldsmith 1972; Box y Tiao 1973), Rail y ergoStool (Pinheiro y Bates 2000), data_alpha, data_ge y data_ge2 (Olivoto y Lúcio 2020) | componentes de varianza cruzados, anidados y con interacción, frontera, desbalance; heredabilidad en completamente al azar, bloques, alfa-látice y varios ambientes; repetibilidad con y sin efectos fijos (`tests/r/geneticos.R`) |
+| InsectSprays (Beall 1942), warpbreaks, snails, quine, Insurance y birthwt (MASS), escarabajos de Bliss (1935), coagulación (McCullagh y Nelder 1989) | modelos lineales generalizados: seis familias, cinco enlaces, exposición, familia automática, tipos I a III, medias y pares en la escala de la respuesta (`tests/r/glm.R`) |
 | data_ge (Olivoto y Lúcio 2020) y plrv (CIP, agricolae) | ensayos en varias localidades: localidad, repetición y G × L aleatorios; localidades fijas con 28 clones (378 pares de Tukey) |
 
 Las piezas puras del puente (lectura de la salida de R, nombres, columnas, código que se manda) tienen pruebas unitarias
@@ -449,6 +450,22 @@ Henderson), así que se valida como los métodos de la Fase 1, en node, con `tes
 - **Pruebas unitarias** (`tests/unidad/geneticos.test.js`): absorber el término mayor (aleatorio, o un factor fijo de
   indicadoras) da lo mismo que el cálculo denso, la frontera y los mensajes de error.
 
+## Modelos lineales generalizados en el núcleo JS (Hito 2.4)
+
+- **Referencia** (`tests/r/glm.R`): glm con `epsilon = 1e-14` (con el 1e-8 de omisión, la dispersión de Pearson que usa
+  anova.glm sale de los pesos de la penúltima iteración y difiere 2 × 10⁻⁶); la binomial negativa parte de glm.nb y se
+  pule (θ por Newton hasta el óptimo y glm con esa θ, hasta que θ no cambie; su EE, en el óptimo: glm.nb lo evalúa en la
+  iteración anterior y difiere 10⁻⁶). Las tablas de devianza siguen el algoritmo de anova.glm (tipo I) y de car::Anova
+  (tipos II y III, con glm.fit sobre las columnas de la matriz del modelo), cotejado contra los dos; con la binomial
+  negativa θ queda fija. Las medias, con emmeans (offset = 0: tasa por unidad de exposición; gl infinitos salvo en la
+  gamma, como emmeans).
+- **Resultado**: 15 casos de 4 métodos, 2 006 valores, diferencia escalada máxima 7.4 × 10⁻⁸ (una p de Tukey, con piso
+  absoluto de 1e-12 como en la Fase 1).
+- **El código R** de la app (glm o glm.nb con convergencia estricta, car::Anova o anova y emmeans) se corre en R en 4
+  escenarios de `tests/codigo-r.mjs`.
+- **Pruebas unitarias** (`tests/unidad/generalizados.test.js`): digamma y trigamma, enlaces y sus límites, columnas
+  colineales, la familia automática, θ como punto fijo y los mensajes de error.
+
 ## Dónde está cada cosa
 
 ```
@@ -467,7 +484,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          43 operaciones con 100 000 filas en el navegador (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      54 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      58 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

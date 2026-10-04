@@ -1,0 +1,132 @@
+{
+  "esquema": 1,
+  "id": "glm-gamma/coagulacion-inverso",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm-gamma"
+  },
+  "titulo": "Tiempo de coagulación con la concentración (log) como covariable, enlace inverso",
+  "fuente": "McCullagh y Nelder (1989), Generalized Linear Models, sección 8.4.2: tiempos de coagulación",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "lote": ["lote1", "lote1", "lote1", "lote1", "lote1", "lote1", "lote1", "lote1", "lote1", "lote2", "lote2", "lote2", "lote2", "lote2", "lote2", "lote2", "lote2", "lote2"],
+      "log_u": [1.6094379124341003, 2.3025850929940459, 2.7080502011022101, 2.9957322735539909, 3.4011973816621555, 3.6888794541139363, 4.0943445622221004, 4.3820266346738812, 4.6051701859880918, 1.6094379124341003, 2.3025850929940459, 2.7080502011022101, 2.9957322735539909, 3.4011973816621555, 3.6888794541139363, 4.0943445622221004, 4.3820266346738812, 4.6051701859880918],
+      "tiempo": [118, 58, 42, 35, 27, 25, 21, 19, 18, 69, 35, 26, 21, 18, 16, 13, 12, 12]
+    },
+    "tipos": {
+      "lote": {
+        "tipo": "factor",
+        "niveles": ["lote1", "lote2"]
+      },
+      "log_u": {
+        "tipo": "numerica"
+      },
+      "tiempo": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "tiempo",
+    "tratamientos": ["lote"],
+    "covariables": ["log_u"]
+  },
+  "opciones": {
+    "familia": "gamma",
+    "enlace": "inverso",
+    "tipo": 2,
+    "comparar": ["lote"],
+    "dentro": "",
+    "ajuste": "tukey"
+  },
+  "esperado": {
+    "coeficientes": {
+      "nombre": ["(Intercept)", "log_u", "lotelote2"],
+      "estimado": [-0.02144968284942609, 0.017756364229549591, 0.010868459346272346],
+      "ee": [0.002187042713310636, 0.0010228015349255126, 0.0019498118258736781],
+      "estadistico": [-9.8076195397924497, 17.360517777129395, 5.5741067943325104],
+      "p": [6.448101990548412e-08, 2.4265202154454499e-11, 5.3156571890192203e-05]
+    },
+    "devianza": [
+      {
+        "termino": "log_u",
+        "gl": 1,
+        "devianza": 6.330962657623501,
+        "estadistico": 323.24594388142049,
+        "p": 1.4681578744318148e-11
+      },
+      {
+        "termino": "lote",
+        "gl": 1,
+        "devianza": 0.71783947984028817,
+        "estadistico": 36.651408761179439,
+        "p": 2.2068557514752018e-05
+      }
+    ],
+    "ajuste": {
+      "n": 18,
+      "devianza": 0.30042072984397328,
+      "gl": 15,
+      "devianza_nula": 7.7086674971879328,
+      "gl_nula": 17,
+      "dispersion": 0.019585590407117222,
+      "pearson": 0.29378385610675833,
+      "sobredispersion": 0.019585590407117222,
+      "p_sobredispersion": 0.99999999996459588,
+      "aic": 103.07485655684232,
+      "bic": 106.63634358842698
+    },
+    "medias": [
+      {
+        "factor": "lote",
+        "filas": [
+          {
+            "nivel": "lote1",
+            "eta": 0.037318799889998894,
+            "ee_eta": 0.0016155819352807431,
+            "respuesta": 26.796145721395266,
+            "ee": 1.1600418312014975,
+            "ic": [24.532453586446604, 29.520061213892511]
+          },
+          {
+            "nivel": "lote2",
+            "eta": 0.048187259236271242,
+            "ee_eta": 0.001919713186521129,
+            "respuesta": 20.752373466538344,
+            "ee": 0.82674560924888141,
+            "ic": [19.128128050518558, 22.678057509238773]
+          }
+        ],
+        "pares": [
+          {
+            "dif": -0.010868459346272346,
+            "ee": 0.0019498118258733368,
+            "estadistico": -5.5741067943334857,
+            "p": 5.3156571890095587e-05
+          }
+        ]
+      }
+    ],
+    "familia": "gamma"
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "MASS": "7.3.61",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "glm(tiempo ~ log_u + lote, family = gamma(link = inverso)) [MASS::glm.nb con la binomial negativa]; car::Anova / anova; emmeans(type = \"response\", offset = 0); pairs(adjust = \"tukey\")"
+  }
+}

@@ -64,8 +64,9 @@
     ['hecho', '2.1', 'Modelos mixtos completos: medias marginales, comparaciones y diseños con efectos aleatorios'],
     ['hecho', '2.2', 'Medidas repetidas en el tiempo con estructuras de covarianza'],
     ['hecho', '2.3', 'Componentes de varianza por REML, heredabilidad, repetibilidad y BLUP de genotipos'],
-    ['actual', '2.4', 'Modelos lineales generalizados en el núcleo: binomial, Poisson, gamma, cuasi y binomial negativa'],
-    ['', '2.5–2.10', 'GLMM, no lineales, superficies de respuesta y ensayos multiambiente'],
+    ['hecho', '2.4', 'Modelos lineales generalizados en el núcleo: binomial, Poisson, gamma, cuasi y binomial negativa'],
+    ['actual', '2.5', 'Modelos lineales generalizados mixtos en el motor R, con sobredispersión'],
+    ['', '2.6–2.10', 'No lineales, superficies de respuesta y ensayos multiambiente'],
     ['', '3', 'Fase 3: multivariado con PCAPro y ClusteringPro, potencia y tamaño de muestra'],
   ];
   function hitos() {

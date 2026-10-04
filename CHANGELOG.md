@@ -2,6 +2,32 @@
 
 ## Sin publicar
 
+### Hito 2.4 · Modelos lineales generalizados (3 oct 2026)
+
+- **Familia nueva: Modelos lineales generalizados**, en el núcleo JS (sin internet, al instante). Mínimos cuadrados
+  iterativamente reponderados como glm.fit de R (con los mismos límites de los enlaces y la reducción del paso), hasta
+  un cambio relativo de devianza de 1e-14. Binomial, cuasibinomial, Poisson, cuasi-Poisson, binomial negativa (θ por
+  máxima verosimilitud alternada con el ajuste, como MASS::glm.nb, con su EE) y gamma; enlaces logit, probit, log-log
+  complementario, log, inverso e identidad.
+- Cuatro métodos: **Conteos** (Poisson y binomial negativa, con la exposición —área o tiempo muestreado— como
+  desplazamiento log), **Proporciones** (éxitos de n ensayos o respuestas 0/1), **Respuestas positivas asimétricas**
+  (gamma) y **Modelo lineal generalizado desde una fórmula**. La familia automática elige por la prueba de Pearson:
+  con sobredispersión, binomial negativa en conteos y cuasibinomial en proporciones agrupadas.
+- Análisis de devianza tipo I, II o III (χ² con la dispersión fija; F con la de Pearson en las cuasi y la gamma),
+  coeficientes con z o t, razones de momios, de tasas o de medias con su intervalo de Wald, dispersión y prueba de
+  sobredispersión, AIC y BIC, y las **medias en la escala de la respuesta** (probabilidades, tasas por unidad o medias)
+  con su intervalo, sus pares (razones con los enlaces log y logit) y letras, también dentro de los niveles de otro
+  factor. Reutiliza la rejilla de referencia y las comparaciones de la Fase 1.
+- Semáforo (sobredispersión, atípicos, convergencia y separación en la binomial), gráficas de las medias y de los
+  residuos de Pearson, párrafo para tesis con cinco referencias nuevas y el código R equivalente (glm o glm.nb, car,
+  emmeans), con convergencia estricta para que dé las mismas cifras.
+- Validación: 15 casos (InsectSprays, warpbreaks, snails, quine, Insurance y birthwt; los escarabajos de Bliss y la
+  coagulación de McCullagh y Nelder; ensayos sintéticos con bloques, sobredispersión, exposición y dosis numéricas)
+  contra glm, glm.nb (con θ pulida), anova.glm, car::Anova y emmeans: 2 006 valores, diferencia escalada máxima
+  7.4 × 10⁻⁸. 684 casos en total. El código R se corre en R en 4 escenarios más.
+- Auditoría de accesibilidad: los escenarios del motor R (que descargan R en cada perfil nuevo) los corre un solo
+  auditor, uno tras otro; tres descargas a la vez agotaban el tiempo. Cuatro escenarios nuevos (58 en total).
+
 ### Hito 2.3 · Componentes de varianza por REML, heredabilidad y repetibilidad (3 oct 2026)
 
 - **Familia nueva: Componentes de varianza y heredabilidad**, en el núcleo JS (sin internet, al instante). REML por

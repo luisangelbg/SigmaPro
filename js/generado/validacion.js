@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-03T21:31:03.182Z",
+ "generado": "2026-10-03T22:20:40.774Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 669,
-  "aprobados": 669,
+  "casos": 684,
+  "aprobados": 684,
   "fallidos": 0,
-  "valores": 65901,
+  "valores": 67907,
   "difEscaladaMax": 2.0258232202030768e-7,
-  "objetivos": 138
+  "objetivos": 142
  },
  "casos": [
   {
@@ -16970,6 +16970,525 @@ window.SP_VALIDACION = {
      "emmeans": "1.10.6"
     },
     "codigo": "lm(captacion ~ origen * tratamiento + factor(conc)); car::Anova(type = 3) con contr.sum; summary(m); confint(emmeans(m, factor))"
+   }
+  },
+  {
+   "id": "glm-proporciones/bajo-peso-binaria",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm-proporciones"
+   },
+   "titulo": "Respuesta 0/1 con dos factores numéricos y una covariable (la automática se queda en binomial)",
+   "fuente": "Hosmer y Lemeshow (1989), Applied Logistic Regression; conjunto birthwt de MASS",
+   "clase": "D",
+   "valores": 125,
+   "difMax": 0.000001348996477190667,
+   "difEscaladaMax": 7.409759751967725e-8,
+   "peor": "razones.ic_sup[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(bajo ~ peso_madre + raza * fuma, family = binomial(link = logit)) [MASS::glm.nb con la binomial negativa]; car::Anova / anova; emmeans(type = \"response\", offset = 0); pairs(adjust = \"tukey\")"
+   }
+  },
+  {
+   "id": "glm-proporciones/germinacion-automatica",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm-proporciones"
+   },
+   "titulo": "Germinadas de 50 en bloques: la automática pasa a cuasibinomial",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 137,
+   "difMax": 8.091305403468141e-13,
+   "difEscaladaMax": 3.5743770305144997e-13,
+   "peor": "medias[0].pares[2].estadistico",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(germinadas ~ bloque + trat, family = cuasibinomial(link = logit)) [MASS::glm.nb con la binomial negativa]; car::Anova / anova; emmeans(type = \"response\", offset = 0); pairs(adjust = \"tukey\")"
+   }
+  },
+  {
+   "id": "glm-proporciones/germinacion-probit-tipo3",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm-proporciones"
+   },
+   "titulo": "Germinadas de 50 con enlace probit, binomial y tipo III",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 110,
+   "difMax": 2.3169208773765604e-9,
+   "difEscaladaMax": 5.976294136533389e-10,
+   "peor": "coeficientes.estadistico[6]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(germinadas ~ bloque + trat, family = binomial(link = probit)) [MASS::glm.nb con la binomial negativa]; car::Anova / anova; emmeans(type = \"response\", offset = 0); pairs(adjust = \"tukey\")"
+   }
+  },
+  {
+   "id": "glm/caracoles-binomial",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm"
+   },
+   "titulo": "Mortalidad de caracoles: binomial con ensayos, factores numéricos y una covariable",
+   "fuente": "Venables y Ripley (2002), Modern Applied Statistics with S; conjunto snails de MASS (exposición de 2 a 4 semanas)",
+   "clase": "D",
+   "valores": 116,
+   "difMax": 2.913225216616411e-13,
+   "difEscaladaMax": 9.916928761900114e-13,
+   "peor": "coeficientes.p[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(Deaths ~ Species + Exposure + Rel.Hum + Temp, family = binomial(link = logit)); tipo 2; emmeans"
+   }
+  },
+  {
+   "id": "glm/escarabajos-cloglog",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm"
+   },
+   "titulo": "Dosis-respuesta con enlace log-log complementario",
+   "fuente": "Bliss (1935), Annals of Applied Biology 22: 134-167: mortalidad de escarabajos con disulfuro de carbono",
+   "clase": "D",
+   "valores": 27,
+   "difMax": 7.005951374594588e-11,
+   "difEscaladaMax": 2.6672975089977713e-10,
+   "peor": "coeficientes.p[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(muertos ~ dosis, family = binomial(link = cloglog)); tipo 2; emmeans"
+   }
+  },
+  {
+   "id": "glm/quine-binomial-negativa",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm"
+   },
+   "titulo": "Días de ausencia escolar: cuatro factores, binomial negativa, tipo II",
+   "fuente": "Aitkin (1978), J. R. Stat. Soc. A 141: 195-223; conjunto quine de MASS (Venables y Ripley 2002)",
+   "clase": "D",
+   "valores": 149,
+   "difMax": 2.724220848904224e-11,
+   "difEscaladaMax": 5.843277665162661e-11,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(Days ~ Eth + Sex + Age + Lrn, family = binomial-negativa(link = log)); tipo 2; emmeans"
+   }
+  },
+  {
+   "id": "glm/roturas-cuasipoisson-tipo1",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm"
+   },
+   "titulo": "Análisis de devianza secuencial (tipo I) con cuasi-Poisson y la interacción",
+   "fuente": "Tippett (1950), Technological Applications of Statistics; conjunto warpbreaks de R",
+   "clase": "D",
+   "valores": 148,
+   "difMax": 4.887823479293729e-11,
+   "difEscaladaMax": 5.8100053413360534e-11,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(breaks ~ wool * tension, family = cuasipoisson(link = log)); tipo 1; emmeans"
+   }
+  },
+  {
+   "id": "glm/seguros-exposicion",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm"
+   },
+   "titulo": "Reclamaciones por asegurado: Poisson con el número de asegurados como exposición",
+   "fuente": "Baxter, Coutts y Ross (1980); conjunto Insurance de MASS (factores ordenados tomados como nominales)",
+   "clase": "D",
+   "valores": 166,
+   "difMax": 7.105427357601002e-13,
+   "difEscaladaMax": 1.1102230246251565e-10,
+   "peor": "medias[0].pares[1].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(Claims ~ District + Group + Age, family = poisson(link = log)); tipo 2; emmeans"
+   }
+  },
+  {
+   "id": "glm-gamma/coagulacion-inverso",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm-gamma"
+   },
+   "titulo": "Tiempo de coagulación con la concentración (log) como covariable, enlace inverso",
+   "fuente": "McCullagh y Nelder (1989), Generalized Linear Models, sección 8.4.2: tiempos de coagulación",
+   "clase": "D",
+   "valores": 56,
+   "difMax": 1.893596390800667e-12,
+   "difEscaladaMax": 1.025441432873725e-12,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(tiempo ~ log_u + lote, family = gamma(link = inverso)) [MASS::glm.nb con la binomial negativa]; car::Anova / anova; emmeans(type = \"response\", offset = 0); pairs(adjust = \"tukey\")"
+   }
+  },
+  {
+   "id": "glm-gamma/dias-germinacion-log",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm-gamma"
+   },
+   "titulo": "Días a germinación en bloques, gamma con enlace log (razones de medias)",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 145,
+   "difMax": 7.105427357601002e-14,
+   "difEscaladaMax": 4.910126158443813e-15,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(dias ~ bloque + trat, family = gamma(link = log)) [MASS::glm.nb con la binomial negativa]; car::Anova / anova; emmeans(type = \"response\", offset = 0); pairs(adjust = \"tukey\")"
+   }
+  },
+  {
+   "id": "glm-conteos/insectos-automatica",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm-conteos"
+   },
+   "titulo": "Seis insecticidas: la familia automática pasa a binomial negativa por la sobredispersión",
+   "fuente": "Beall (1942), Biometrika 32: 243-262; conjunto InsectSprays de R",
+   "clase": "D",
+   "valores": 185,
+   "difMax": 1.858779796748422e-11,
+   "difEscaladaMax": 1.1102230246251565e-10,
+   "peor": "medias[0].pares[2].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(count ~ spray, family = binomial-negativa(link = log)) [MASS::glm.nb con la binomial negativa]; car::Anova / anova; emmeans(type = \"response\", offset = 0); pairs(adjust = \"tukey\")"
+   }
+  },
+  {
+   "id": "glm-conteos/insectos-cuasipoisson",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm-conteos"
+   },
+   "titulo": "Seis insecticidas con cuasi-Poisson (pruebas F y dispersión de Pearson), Holm",
+   "fuente": "Beall (1942), Biometrika 32: 243-262; conjunto InsectSprays de R",
+   "clase": "D",
+   "valores": 183,
+   "difMax": 2.823519196226698e-12,
+   "difEscaladaMax": 2.288440252914879e-11,
+   "peor": "medias[0].pares[11].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(count ~ spray, family = cuasipoisson(link = log)) [MASS::glm.nb con la binomial negativa]; car::Anova / anova; emmeans(type = \"response\", offset = 0); pairs(adjust = \"holm\")"
+   }
+  },
+  {
+   "id": "glm-conteos/plantulas-exposicion",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm-conteos"
+   },
+   "titulo": "Plántulas por parcela con área muestreada distinta (desplazamiento log) en bloques; la automática se queda en Poisson",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 172,
+   "difMax": 1.1368683772161603e-13,
+   "difEscaladaMax": 3.1009772262943356e-13,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(plantulas ~ bloque + trat, family = poisson(link = log)) [MASS::glm.nb con la binomial negativa]; car::Anova / anova; emmeans(type = \"response\", offset = 0); pairs(adjust = \"tukey\")"
+   }
+  },
+  {
+   "id": "glm-conteos/roturas-poisson-tipo3",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm-conteos"
+   },
+   "titulo": "Dos factores con interacción, Poisson, tipo III y tensión dentro de cada lana (Bonferroni)",
+   "fuente": "Tippett (1950), Technological Applications of Statistics; conjunto warpbreaks de R",
+   "clase": "D",
+   "valores": 148,
+   "difMax": 2.502247298252769e-10,
+   "difEscaladaMax": 2.0930617502596207e-10,
+   "peor": "medias[0].pares[1].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(breaks ~ wool * tension, family = poisson(link = log)) [MASS::glm.nb con la binomial negativa]; car::Anova / anova; emmeans(type = \"response\", offset = 0); pairs(adjust = \"bonferroni\")"
+   }
+  },
+  {
+   "id": "glm-conteos/trips-dosis-numericas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm-conteos"
+   },
+   "titulo": "Trips con la dosis y el bloque numéricos tomados como factores, binomial negativa",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 139,
+   "difMax": 1.2278178473934531e-11,
+   "difEscaladaMax": 1.8111766472672054e-11,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "medias[*].pares[*].p": {
+      "absoluto": 1e-12,
+      "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "MASS": "7.3.61",
+     "car": "3.1.3",
+     "emmeans": "1.10.6"
+    },
+    "codigo": "glm(trips ~ bloque + dosis, family = binomial-negativa(link = log)) [MASS::glm.nb con la binomial negativa]; car::Anova / anova; emmeans(type = \"response\", offset = 0); pairs(adjust = \"tukey\")"
    }
   },
   {

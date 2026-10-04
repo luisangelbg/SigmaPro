@@ -1,0 +1,86 @@
+{
+  "esquema": 1,
+  "id": "glm/escarabajos-cloglog",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm"
+  },
+  "titulo": "Dosis-respuesta con enlace log-log complementario",
+  "fuente": "Bliss (1935), Annals of Applied Biology 22: 134-167: mortalidad de escarabajos con disulfuro de carbono",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "dosis": [1.6907000000000001, 1.7242, 1.7552000000000001, 1.7842, 1.8112999999999999, 1.8369, 1.861, 1.8838999999999999],
+      "n": [59, 60, 62, 56, 63, 59, 62, 60],
+      "muertos": [6, 13, 18, 28, 52, 53, 61, 60]
+    },
+    "tipos": {
+      "dosis": {
+        "tipo": "numerica"
+      },
+      "n": {
+        "tipo": "numerica"
+      },
+      "muertos": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "muertos",
+    "ensayos": "n"
+  },
+  "opciones": {
+    "derecha": "dosis",
+    "comoFactor": [],
+    "familia": "binomial",
+    "enlace": "cloglog",
+    "tipo": 2,
+    "comparar": [],
+    "dentro": "",
+    "ajuste": "tukey"
+  },
+  "esperado": {
+    "coeficientes": {
+      "nombre": ["(Intercept)", "dosis"],
+      "estimado": [-39.572310606137791, 22.041169820757883],
+      "ee": [3.2402726196663161, 1.7993551909776226],
+      "estadistico": [-12.212648517893212, 12.249482443087022],
+      "p": [2.6608399384859595e-34, 1.6907143948054749e-34]
+    },
+    "devianza": [
+      {
+        "termino": "dosis",
+        "gl": 1,
+        "devianza": 280.75601074780701,
+        "estadistico": 280.75601074780701,
+        "p": 5.1386504762525067e-63
+      }
+    ],
+    "ajuste": {
+      "n": 8,
+      "devianza": 3.4464387330243769,
+      "gl": 6,
+      "devianza_nula": 284.20244948083143,
+      "gl_nula": 7,
+      "dispersion": 1,
+      "pearson": 3.2946938337338798,
+      "sobredispersion": 0.54911563895564663,
+      "p_sobredispersion": 0.7710535902791007,
+      "aic": 33.644476950116868,
+      "bic": 33.803360033476537
+    },
+    "familia": "binomial"
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "MASS": "7.3.61",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "glm(muertos ~ dosis, family = binomial(link = cloglog)); tipo 2; emmeans"
+  }
+}

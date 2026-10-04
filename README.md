@@ -61,8 +61,9 @@ varianza, medias marginales con letras, prueba de cada aleatorio y BLUP; y los d
 (bloques aleatorios, parcelas divididas, látice y alfa-látice, varias localidades) y las **medidas repetidas en el
 tiempo** con la comparación de estructuras de covarianza (simetría compuesta, AR(1), no estructurada…), validados en
 el navegador contra R. Y, en el propio núcleo (sin internet), los **componentes de varianza por REML**, la
-**heredabilidad** (en medias, de Cullis y de Piepho) con BLUP, BLUE y ganancia por selección, y la **repetibilidad**.
-En total, 669 casos y 65 901 valores. Lo que falta para publicar y las
+**heredabilidad** (en medias, de Cullis y de Piepho) con BLUP, BLUE y ganancia por selección, la **repetibilidad** y los
+**modelos lineales generalizados** (conteos con Poisson o binomial negativa, proporciones, gamma), con las medias en la
+escala de la respuesta. En total, 684 casos y 67 907 valores. Lo que falta para publicar y las
 fases 2 y 3 están en
 [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan
 completo está en

@@ -70,10 +70,14 @@ if (AUDITOR && process.platform === 'win32') {
     await soltarPerfil(puerto);
     return salida;
   };
-  let i = 0;
-  const trabajador = async puerto => {
-    while (i < tareas.length) {
-      const t = tareas[i++], salida = await correr(t, puerto), mal = [];
+  /* los escenarios del motor R (espera: true) descargan R y sus paquetes en cada perfil nuevo: tres a la vez se agotan
+     (la medición no termina en 180 s); los corre un solo auditor, uno tras otro, y los demás se reparten */
+  const lentas = tareas.filter(t => t.e.espera), rapidas = tareas.filter(t => !t.e.espera);
+  let il = 0, ir = 0;
+  const siguiente = conLentas => (conLentas && il < lentas.length ? lentas[il++] : ir < rapidas.length ? rapidas[ir++] : conLentas || lentas.length === 0 ? null : undefined);
+  const trabajador = async (puerto, k) => {
+    for (let t = siguiente(k === 0); t; t = siguiente(k === 0)) {
+      const salida = await correr(t, puerto), mal = [];
       try {
         const j = JSON.parse(salida.trim().split('\n').pop());
         if (j.result === 'SIN RESULTADO') mal.push('la medición no terminó');

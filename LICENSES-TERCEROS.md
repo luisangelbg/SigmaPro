@@ -170,9 +170,10 @@ SOFTWARE.
 Los casos de `tests/casos/` usan además datos publicados que R distribuye en su paquete datasets (PlantGrowth,
 airquality, trees, cars, stackloss, swiss, mtcars, longley, women, chickwts, warpbreaks, HairEyeColor, UCBAdmissions,
 occupationalStatus) o en los paquetes boot
-(poisons), MASS (oats, anorexia, npk), agricolae (frijol, plots, plrv), carData (Soils), lme4 (sleepstudy, Penicillin, Dyestuff, Dyestuff2, Pastes),
+(poisons), MASS (oats, anorexia, npk, snails, quine, Insurance, birthwt), agricolae (frijol, plots, plrv), carData (Soils), lme4 (sleepstudy, Penicillin, Dyestuff, Dyestuff2, Pastes),
 nlme (Oats, Machines, Orthodont, BodyWeight, Rail, ergoStool) y metan (data_alpha, data_ge, data_ge2); cada caso cita la publicación original en su
-campo `fuente`.
+campo `fuente`. Los escarabajos de Bliss (1935) y los tiempos de coagulación de McCullagh y Nelder (1989) van
+transcritos en `tests/casos/generalizados/generar.R`.
 
 ## Que se descargan al usarse (motor R, Fase 2)
 
