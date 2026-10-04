@@ -1,0 +1,43 @@
+{
+  "esquema": 1,
+  "id": "potencia-anova/anova-varianza-detectable",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-anova"
+  },
+  "titulo": "Varianza entre medias detectable con 6 repeticiones de 3 tratamientos",
+  "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+  "clase": "A",
+  "entradas": {},
+  "opciones": {
+    "alfa": 0.050000000000000003,
+    "potencia": 0.84999999999999998,
+    "grupos": 3,
+    "medias": "",
+    "varEntre": 1,
+    "de": 1.2,
+    "n": 6,
+    "calcular": "varEntre"
+  },
+  "esperado": {
+    "grupos": 3,
+    "n": 6,
+    "varEntre": 1.6135346600690184,
+    "varDentro": 1.4399999999999999,
+    "alfa": 0.050000000000000003,
+    "potencia": 0.84999999999999998,
+    "f": 0.86429554382108786,
+    "curva": {
+      "n": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      "potencia": [0.20147741102563324, 0.41995309312559675, 0.61057774272177601, 0.75289663129614082, 0.85000137482882965, 0.91219105675342826, 0.95013972942644009, 0.97241706346615298, 0.98508298359161639, 0.99209202970538823, 0.99588135198949423]
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "ref_potencia_anova con los valores por omisión de R (tests/r/potencia.R)"
+  }
+}

@@ -1,4 +1,4 @@
-Generado: 2026-10-03 22:46:34 CST
+Generado: 2026-10-03 23:27:34 CST
 
 R version 4.4.2 (2024-10-31 ucrt)
 Platform: x86_64-w64-mingw32/x64
@@ -43,13 +43,13 @@ loaded via a namespace (and not attached):
 [37] ggforce_0.5.0       proxy_0.4-27        splines_4.4.2      
 [40] parallel_4.4.2      cellranger_1.1.0    vctrs_0.7.1        
 [43] boot_1.3-31         Matrix_1.7-1        sandwich_3.1-1     
-[46] patchwork_1.3.2     pbkrtest_0.5.3      ggrepel_0.9.6      
-[49] Formula_1.2-5       BWStest_0.2.3       tidyr_1.3.1        
-[52] glue_1.8.0          nloptr_2.2.1        ggstats_0.10.0     
-[55] codetools_0.2-20    gtable_0.3.6        lme4_1.1-35.5      
-[58] gmp_0.7-5           lmerTest_3.2-1      tibble_3.3.1       
-[61] pillar_1.10.1       R6_2.6.1            Rdpack_2.6.6       
-[64] lattice_0.22-6      backports_1.5.0     rbibutils_2.4.1    
-[67] broom_1.0.7         memoise_2.0.1       class_7.3-22       
-[70] Rcpp_1.1.2          coda_0.19-4.1       nlme_3.1-166       
-[73] kSamples_1.2-10     pkgconfig_2.0.3    
+[46] pwr_1.3-0           patchwork_1.3.2     pbkrtest_0.5.3     
+[49] ggrepel_0.9.6       Formula_1.2-5       BWStest_0.2.3      
+[52] tidyr_1.3.1         glue_1.8.0          nloptr_2.2.1       
+[55] ggstats_0.10.0      codetools_0.2-20    gtable_0.3.6       
+[58] lme4_1.1-35.5       gmp_0.7-5           lmerTest_3.2-1     
+[61] tibble_3.3.1        pillar_1.10.1       R6_2.6.1           
+[64] Rdpack_2.6.6        lattice_0.22-6      backports_1.5.0    
+[67] rbibutils_2.4.1     broom_1.0.7         memoise_2.0.1      
+[70] class_7.3-22        Rcpp_1.1.2          coda_0.19-4.1      
+[73] nlme_3.1-166        kSamples_1.2-10     pkgconfig_2.0.3    

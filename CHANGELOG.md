@@ -2,6 +2,22 @@
 
 ## Sin publicar
 
+### Hito 3.0 · Tamaño de muestra y potencia (3 oct 2026)
+
+- **Empieza la Fase 3** (plan en `propuesta/FASE3.md`): potencia, muestreo, supervivencia, series de tiempo y
+  multivariado, todo en el núcleo JS.
+- Familia nueva **Tamaño de muestra, potencia y muestreo**, con cinco métodos que **no necesitan datos** (todo va en
+  las opciones; el bloque Análisis los ofrece también sin datos cargados): medias con la prueba t (dos grupos,
+  pareada o contra un valor), ANOVA de k tratamientos (con las medias esperadas o la varianza entre medias), dos
+  proporciones, correlación, y el **número de repeticiones** de un experimento con el CV esperado y la diferencia que
+  interesa (Cochran y Cox), en completamente al azar o en bloques.
+- Cada uno calcula lo que falta: la potencia, el tamaño de muestra o el efecto detectable; con la curva de potencia
+  según n, el párrafo con sus citas (Cohen 1988; Cochran y Cox 1957; Champely 2020) y el código R.
+- Las mismas fórmulas que R y la misma búsqueda de la raíz (el zeroin2 de uniroot, con su intervalo y su tolerancia
+  por omisión), así que hasta el n «exacto» coincide; la F no central es la de R (pnbeta).
+- Validación: 14 casos contra power.t.test, power.anova.test, power.prop.test (stats) y pwr.r.test (pwr): 1020
+  valores, diferencia escalada máxima 3.5 × 10⁻¹⁴. 741 casos en total.
+
 ### 0.2.0 · Hito 2.10 · Cierre de la Fase 2 (3 oct 2026)
 
 - **La Fase 2 está completa**: versión 0.2.0 (`SP.VERSION` y el servicio sin conexión).

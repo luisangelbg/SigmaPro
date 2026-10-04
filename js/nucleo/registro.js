@@ -47,7 +47,7 @@ SP.definir('registro', function (SP) {
     { id: 'multiambiente', nombre: 'Ensayos multiambiente y estabilidad', fase: 2 },
     { id: 'geneticos', nombre: 'Componentes de varianza y heredabilidad', fase: 2 },
     { id: 'multivariado', nombre: 'Análisis multivariado', fase: 3 },
-    { id: 'potencia', nombre: 'Tamaño de muestra y potencia', fase: 3 },
+    { id: 'potencia', nombre: 'Tamaño de muestra, potencia y muestreo', fase: 3 },
     { id: 'supervivencia', nombre: 'Supervivencia y series de tiempo', fase: 3 },
   ];
 
@@ -87,7 +87,8 @@ SP.definir('registro', function (SP) {
     if (!SP.familias.some(x => x.id === f.familia)) mal('familia desconocida: ' + f.familia);
     if (typeof f.nombre !== 'string' || !f.nombre.trim()) mal('falta el nombre');
     if (f.motor !== 'js' && f.motor !== 'r') mal('motor debe ser «js» o «r»');
-    if (!f.entradas || typeof f.entradas !== 'object' || !Object.keys(f.entradas).length) mal('faltan las entradas');
+    /* sinDatos: los métodos que todo lo toman de sus opciones (potencia y tamaño de muestra) */
+    if (!f.entradas || typeof f.entradas !== 'object' || (!Object.keys(f.entradas).length && !f.sinDatos)) mal('faltan las entradas');
     for (const [rol, e] of Object.entries(f.entradas)) {
       if (!e || !TIPOS_ENTRADA.has(e.tipo)) mal('la entrada «' + rol + '» tiene un tipo no válido');
     }

@@ -197,6 +197,11 @@ const ESCENARIOS = [
     r: 'c(sc, F, scr / glr / cme)', js: res => [...res.ammi.ejes.sc, ...res.ammi.ejes.F, ...res.ammi.fr.F] },
   { ej: 'avena-ambientes', id: 'gge', e: { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, op: {},
     r: '(100 * s$d^2 / sum(s$d^2))[1:4]', js: res => res.gge.pct.slice(0, 4) },
+  { ej: 'maiz', id: 'potencia-medias', e: {}, op: { calcular: 'n', diferencia: 0.5, de: 0.4 }, r: 'c(res$n, res$power)', js: res => [res.n, res.potencia] },
+  { ej: 'maiz', id: 'potencia-anova', e: {}, op: { calcular: 'potencia', medias: '4.2, 4.8, 5.1, 5.6', de: 0.6, n: 4 }, r: 'c(res$power, res$between.var)', js: res => [res.potencia, res.varEntre] },
+  { ej: 'maiz', id: 'potencia-proporciones', e: {}, op: { calcular: 'n', p1: 0.65, p2: 0.8 }, r: 'res$n', js: res => [res.n] },
+  { ej: 'maiz', id: 'potencia-correlacion', e: {}, op: { calcular: 'r', n: 40 }, r: 'res$r', js: res => [res.r] },
+  { ej: 'maiz', id: 'repeticiones', e: {}, op: { cv: 12, diferencia: 15, tratamientos: 6 }, r: 'c(r, req)', js: res => [res.repeticiones, res.requeridas] },
 ];
 const efectoDe = res => [res.efecto.d, ...res.efecto.ic_d, res.efecto.g, ...res.efecto.ic_g];
 /* aggregate() de R deja el primer factor cambiando más rápido; la app, el último */

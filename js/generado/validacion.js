@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.2.0",
- "generado": "2026-10-04T04:50:51.554Z",
+ "generado": "2026-10-04T05:33:29.553Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 727,
-  "aprobados": 727,
+  "casos": 741,
+  "aprobados": 741,
   "fallidos": 0,
-  "valores": 74649,
+  "valores": 75669,
   "difEscaladaMax": 0.000004071746832135441,
-  "objetivos": 153
+  "objetivos": 158
  },
  "casos": [
   {
@@ -20180,6 +20180,370 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "nls(altura ~ <modelo mitscherlich con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "potencia-anova/anova-medias-n",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-anova"
+   },
+   "titulo": "Repeticiones para cuatro híbridos con medias esperadas 4.2, 4.8, 5.1 y 5.6 t/ha",
+   "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+   "clase": "A",
+   "valores": 25,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 5.7822999590048505e-15,
+   "peor": "n",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_potencia_anova con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "potencia-anova/anova-potencia",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-anova"
+   },
+   "titulo": "Potencia con 5 tratamientos y 4 repeticiones",
+   "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+   "clase": "A",
+   "valores": 25,
+   "difMax": 6.8833827526759706e-15,
+   "difEscaladaMax": 6.8833827526759706e-15,
+   "peor": "curva.potencia[7]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_potencia_anova con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "potencia-anova/anova-varianza-detectable",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-anova"
+   },
+   "titulo": "Varianza entre medias detectable con 6 repeticiones de 3 tratamientos",
+   "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+   "clase": "A",
+   "valores": 29,
+   "difMax": 5.10702591327572e-15,
+   "difEscaladaMax": 3.165116956990108e-15,
+   "peor": "varEntre",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_potencia_anova con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "potencia-proporciones/prop-n",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-proporciones"
+   },
+   "titulo": "Semillas por lote para distinguir 65 % de 80 % de germinación",
+   "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+   "clase": "A",
+   "valores": 118,
+   "difMax": 5.684341886080802e-14,
+   "difEscaladaMax": 4.1216343838470952e-16,
+   "peor": "n",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_potencia_prop con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "potencia-proporciones/prop-potencia-unilateral",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-proporciones"
+   },
+   "titulo": "Potencia unilateral con 120 por grupo",
+   "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+   "clase": "A",
+   "valores": 126,
+   "difMax": 2.220446049250313e-16,
+   "difEscaladaMax": 2.220446049250313e-16,
+   "peor": "curva.potencia[26]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_potencia_prop con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "potencia-correlacion/r-detectable",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-correlacion"
+   },
+   "titulo": "Correlación detectable con 40 pares",
+   "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+   "clase": "A",
+   "valores": 80,
+   "difMax": 2.220446049250313e-15,
+   "difEscaladaMax": 2.220446049250313e-15,
+   "peor": "curva.potencia[5]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "pwr": "1.3.0"
+    },
+    "codigo": "ref_potencia_r con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "potencia-correlacion/r-n",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-correlacion"
+   },
+   "titulo": "Pares para detectar r = 0.35",
+   "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+   "clase": "A",
+   "valores": 122,
+   "difMax": 3.410605131648481e-13,
+   "difEscaladaMax": 5.597107457008815e-15,
+   "peor": "n",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "pwr": "1.3.0"
+    },
+    "codigo": "ref_potencia_r con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "potencia-correlacion/r-potencia-unilateral",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-correlacion"
+   },
+   "titulo": "Potencia unilateral con 25 pares y r = 0.4",
+   "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+   "clase": "A",
+   "valores": 96,
+   "difMax": 9.992007221626409e-16,
+   "difEscaladaMax": 9.992007221626409e-16,
+   "peor": "curva.potencia[41]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "pwr": "1.3.0"
+    },
+    "codigo": "ref_potencia_r con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "repeticiones/repeticiones-bloques",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "repeticiones"
+   },
+   "titulo": "Bloques con 6 tratamientos, CV 12 % y diferencia de 15 %",
+   "fuente": "Cochran, W. G. y Cox, G. M. (1957), Experimental Designs, 2.ª ed.: r ≥ 2(t₁ + t₂)²(CV/d)²",
+   "clase": "A",
+   "valores": 55,
+   "difMax": 6.039613253960852e-14,
+   "difEscaladaMax": 5.721346922062873e-15,
+   "peor": "iteraciones[7].requeridas",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_repeticiones con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "repeticiones/repeticiones-dca-potencia-alta",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "repeticiones"
+   },
+   "titulo": "Completamente al azar, CV 8 %, diferencia 10 %, potencia 90 %",
+   "fuente": "Cochran, W. G. y Cox, G. M. (1957), Experimental Designs, 2.ª ed.: r ≥ 2(t₁ + t₂)²(CV/d)²",
+   "clase": "A",
+   "valores": 70,
+   "difMax": 8.171241461241152e-14,
+   "difEscaladaMax": 5.777184143523299e-15,
+   "peor": "iteraciones[9].requeridas",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_repeticiones con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "potencia-medias/t-dos-muestras-n",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-medias"
+   },
+   "titulo": "Repeticiones por grupo para detectar 1.5 t/ha con DE 2.1",
+   "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+   "clase": "A",
+   "valores": 69,
+   "difMax": 9.343636975245317e-13,
+   "difEscaladaMax": 2.9422142429165035e-14,
+   "peor": "n",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_potencia_t con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "potencia-medias/t-dos-muestras-unilateral-n",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-medias"
+   },
+   "titulo": "n por grupo con alternativa unilateral y α = 0.01",
+   "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+   "clase": "A",
+   "valores": 71,
+   "difMax": 4.760636329592671e-13,
+   "difEscaladaMax": 3.530509218307998e-14,
+   "peor": "curva.potencia[32]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_potencia_t con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "potencia-medias/t-pareada-potencia",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-medias"
+   },
+   "titulo": "Potencia de una prueba pareada con 12 pares",
+   "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+   "clase": "A",
+   "valores": 51,
+   "difMax": 2.9976021664879227e-15,
+   "difEscaladaMax": 2.9976021664879227e-15,
+   "peor": "curva.potencia[20]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_potencia_t con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "potencia-medias/t-una-muestra-diferencia",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-medias"
+   },
+   "titulo": "Diferencia detectable contra un valor, unilateral, 90 % de potencia",
+   "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+   "clase": "A",
+   "valores": 83,
+   "difMax": 5.10702591327572e-15,
+   "difEscaladaMax": 5.10702591327572e-15,
+   "peor": "curva.potencia[34]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_potencia_t con los valores por omisión de R (tests/r/potencia.R)"
    }
   },
   {

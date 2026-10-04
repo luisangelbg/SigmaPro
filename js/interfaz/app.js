@@ -71,7 +71,9 @@
     ['hecho', '2.8', 'Ensayos multiambiente y estabilidad'],
     ['hecho', '2.9', 'Asistente y constructor para la Fase 2'],
     ['hecho', '2.10', 'Cierre de la Fase 2: motor R sin conexión y rendimiento'],
-    ['actual', '3', 'Fase 3: multivariado con PCAPro y ClusteringPro, potencia y tamaño de muestra'],
+    ['hecho', '3.0', 'Tamaño de muestra y potencia (sin necesidad de datos)'],
+    ['actual', '3.1', 'Muestreo'],
+    ['', '3.2–3.5', 'Supervivencia, series de tiempo, multivariado (MANOVA, discriminante) y cierre de la Fase 3'],
   ];
   function hitos() {
     const ul = $('#hitos');

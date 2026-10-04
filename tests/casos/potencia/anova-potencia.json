@@ -1,0 +1,43 @@
+{
+  "esquema": 1,
+  "id": "potencia-anova/anova-potencia",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-anova"
+  },
+  "titulo": "Potencia con 5 tratamientos y 4 repeticiones",
+  "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+  "clase": "A",
+  "entradas": {},
+  "opciones": {
+    "alfa": 0.050000000000000003,
+    "potencia": 0.80000000000000004,
+    "grupos": 5,
+    "medias": "",
+    "varEntre": 0.29999999999999999,
+    "de": 0.80000000000000004,
+    "n": 4,
+    "calcular": "potencia"
+  },
+  "esperado": {
+    "grupos": 5,
+    "n": 4,
+    "varEntre": 0.29999999999999999,
+    "varDentro": 0.64000000000000012,
+    "alfa": 0.050000000000000003,
+    "potencia": 0.43684184182885588,
+    "f": 0.61237243569579447,
+    "curva": {
+      "n": [2, 3, 4, 5, 6, 7, 8, 9, 10],
+      "potencia": [0.15192226712915591, 0.2923670582337119, 0.43684184182885588, 0.56931451282382672, 0.68168408665210534, 0.7716032407662321, 0.84032078296474344, 0.89089611316622963, 0.92696211781980176]
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "ref_potencia_anova con los valores por omisión de R (tests/r/potencia.R)"
+  }
+}

@@ -68,8 +68,11 @@ escala de la respuesta; y, en el motor R, los **modelos lineales generalizados m
 bloques aleatorios y el efecto por observación para la sobredispersión). Y la **regresión no lineal**: curvas de
 crecimiento, dosis-respuesta con DE50 y respuesta con meseta (dosis óptima), con la comparación de curvas entre grupos.
 Y las **superficies de respuesta**: punto óptimo, análisis canónico, cresta y ascenso más pronunciado. Y los **ensayos
-multiambiente**: análisis conjunto, estabilidad (Eberhart-Russell, Wricke, Shukla, Lin-Binns), AMMI y biplot GGE. En
-total, 727 casos y 74 649 valores. Lo que falta para publicar y las
+multiambiente**: análisis conjunto, estabilidad (Eberhart-Russell, Wricke, Shukla, Lin-Binns), AMMI y biplot GGE.
+
+**Fase 3 en curso** (plan en [`propuesta/FASE3.md`](propuesta/FASE3.md)): el **tamaño de muestra y la potencia**
+(medias, ANOVA, proporciones, correlación y las repeticiones de un experimento), sin necesidad de datos. En total, 741
+casos y 75 669 valores. Lo que falta para publicar y las
 fases 2 y 3 están en
 [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan
 completo está en

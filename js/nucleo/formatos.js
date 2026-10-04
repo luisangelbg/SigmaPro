@@ -48,6 +48,7 @@ SP.definir('formatos', function (SP) {
       case 'prop': s = fijo(v, 4); break;
       case 'pvalor': s = !Number.isFinite(v) ? '—' : v < 0.001 ? '< 0.001' : fijo(v, 3); break;
       case 'sig': s = signif(v, 4); break;
+      case 'sigEnt': s = Number.isInteger(v) ? String(v) : signif(v, 4); break;   // cuadros de parámetros: los enteros (n, N, grupos) sin decimales
       case 'auto4': s = Number.isFinite(v) ? (Number.isInteger(v) ? String(v) : fijo(v, 4)) : '—'; break;
       case 'num': s = Number.isFinite(v) ? (Number.isInteger(v) ? String(v) : fijo(v, 2)) : '—'; break;
       default:

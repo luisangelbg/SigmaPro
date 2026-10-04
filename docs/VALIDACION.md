@@ -434,6 +434,17 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
 
+## Tamaño de muestra y potencia en el núcleo JS (Hito 3.0)
+
+- **Referencia** (`tests/r/potencia.R`): las funciones de R con sus valores por omisión (power.t.test,
+  power.anova.test y power.prop.test de stats; pwr.r.test de pwr) y el lazo de Cochran y Cox en R base. La app busca
+  las raíces con SP.num.raizR, que es el zeroin2 de uniroot paso por paso, con el mismo intervalo y la misma tolerancia:
+  el n que da R con su tolerancia por omisión (ε^¼) coincide a 1e-14, no solo a la tolerancia.
+- **Resultado**: 14 casos de 5 métodos (las tres incógnitas de cada función, bilateral y unilateral), 1020 valores,
+  diferencia escalada máxima 3.5 × 10⁻¹⁴.
+- **Pruebas unitarias** (`tests/unidad/potencia.test.js`): la F no central contra pf(q, gl1, gl2, ncp) de R (1e-13),
+  la ida y vuelta (con el n calculado, la potencia pedida) y el lazo de Cochran y Cox.
+
 ## Cierre de la Fase 2: motor R sin conexión y rendimiento (Hito 2.10)
 
 - **Repositorio propio del motor R** (`tools/motor-r/armar.mjs`): el manifiesto fija webR 0.6.0 (13 archivos, 23.5 MB)
@@ -560,7 +571,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          53 operaciones con 100 000 filas en el navegador (--motor: el motor R con 20 000) (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      72 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      75 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

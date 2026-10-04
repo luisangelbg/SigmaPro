@@ -122,6 +122,9 @@ SP.definir('informe', function (SP) {
     purchase2000: () => 'Purchase, J. L., Hatting, H. y van Deventer, C. S. (2000). Genotype × environment interaction of winter wheat (Triticum aestivum L.) in South Africa: II. Stability analysis of yield performance. South African Journal of Plant and Soil, 17(3), 101–107.',
     yan2000: () => 'Yan, W., Hunt, L. A., Sheng, Q. y Szlavnics, Z. (2000). Cultivar evaluation and mega-environment investigation based on the GGE biplot. Crop Science, 40(3), 597–605.',
     yan2003: () => 'Yan, W. y Kang, M. S. (2003). GGE biplot analysis: a graphical tool for breeders, geneticists, and agronomists. CRC Press.',
+    cohen1988: () => 'Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2.ª ed.). Lawrence Erlbaum.',
+    cochranCox1957: () => 'Cochran, W. G. y Cox, G. M. (1957). Experimental designs (2.ª ed.). Wiley.',
+    champely2020: () => 'Champely, S. (2020). pwr: basic functions for power analysis (versión 1.3-0) [paquete de R].',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -147,7 +150,7 @@ SP.definir('informe', function (SP) {
     box1951: 'Box y Wilson, 1951', myers2016: 'Myers et al., 2016', hoerl1959: 'Hoerl, 1959', draper1963: 'Draper, 1963',
     bartlett1937: 'Bartlett, 1937', finlay1963: 'Finlay y Wilkinson, 1963', eberhart1966: 'Eberhart y Russell, 1966', wricke1962: 'Wricke, 1962', shukla1972: 'Shukla, 1972',
     lin1988: 'Lin y Binns, 1988', gauch1988: 'Gauch, 1988', gollob1968: 'Gollob, 1968', cornelius1992: 'Cornelius et al., 1992', purchase2000: 'Purchase et al., 2000',
-    yan2000: 'Yan et al., 2000', yan2003: 'Yan y Kang, 2003',
+    yan2000: 'Yan et al., 2000', yan2003: 'Yan y Kang, 2003', cohen1988: 'Cohen, 1988', cochranCox1957: 'Cochran y Cox, 1957', champely2020: 'Champely, 2020',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -749,6 +752,23 @@ SP.definir('informe', function (SP) {
       T('El mejor desempeño promedio fue el de {g}.', { g: G[orden[0]] })].join(' ') };
   }
 
+  function potencia(id, r, citas) {
+    if (id === 'repeticiones') return {
+      metodos: T('El número de repeticiones se calculó con la fórmula de Cochran y Cox ({c}), r ≥ 2(t₁ + t₂)²(CV/d)², con un CV esperado de {cv} %, una diferencia de {d} % de la media, α = {a} y una potencia de {p} %, en un diseño {dis} con {k} tratamientos.',
+        { c: cita(['cochranCox1957'], citas), cv: n2(r.cv), d: n2(r.diferencia), a: r.alfa, p: pct(100 * r.potencia), dis: SP.metodosPotencia.DISENOS[r.diseno], k: r.tratamientos }),
+      resultados: T('Se requieren {r} repeticiones ({q} según la fórmula con {g} grados de libertad del error).', { r: r.repeticiones, q: n2(r.requeridas), g: r.gl }) };
+    const que = { potencia: T('la potencia'), n: T('el tamaño de muestra'), diferencia: T('la diferencia detectable'), varEntre: T('la variación detectable entre medias'), r: T('la correlación detectable') }[r.calcular];
+    const prueba = { 'potencia-medias': T('una prueba t'), 'potencia-anova': T('un análisis de varianza de una vía'), 'potencia-proporciones': T('la comparación de dos proporciones'), 'potencia-correlacion': T('la prueba de una correlación') }[id];
+    const ref = id === 'potencia-correlacion' ? ['cohen1988', 'champely2020'] : ['cohen1988'];
+    const u = { 'potencia-medias': r.tipoT === 'pareada' ? T('pares') : r.tipoT === 'una' ? T('observaciones') : T('unidades por grupo'), 'potencia-anova': T('repeticiones por tratamiento'),
+      'potencia-proporciones': T('unidades por grupo'), 'potencia-correlacion': T('pares de observaciones') }[id];
+    const nn = Number.isInteger(r.n) ? String(r.n) : s4(r.n);
+    const res = r.calcular === 'n' ? T('Se necesitan {n} {u} (valor exacto {x}) para una potencia de {p} % con α = {a}.', { n: Math.ceil(r.n - 1e-9), u, x: n2(r.n), p: pct(100 * r.potencia), a: r.alfa })
+      : r.calcular === 'potencia' ? T('La potencia es de {p} % con {n} {u} y α = {a}.', { p: pct(100 * r.potencia), n: nn, u, a: r.alfa })
+        : T('Con {n} {u} y una potencia de {p} % se detecta {q} de {v}.', { n: nn, u, p: pct(100 * r.potencia), q: que, v: s4(r.calcular === 'r' ? r.r : r.calcular === 'diferencia' ? r.diferencia : r.varEntre) });
+    return { metodos: T('Se calculó {q} para {t} ({c}) con las fórmulas exactas de R.', { q: que, t: prueba, c: cita(ref, citas) }), resultados: res };
+  }
+
   /** El párrafo de métodos y el de resultados de un análisis. */
   function parrafo(id, r, rep, e, op) {
     e = e || {}; op = op || {};
@@ -772,6 +792,7 @@ SP.definir('informe', function (SP) {
     else if (['curva-crecimiento', 'dosis-respuesta', 'respuesta-meseta'].includes(id)) p = noLineal(r, citas);
     else if (['superficie-respuesta', 'ascenso-pronunciado'].includes(id)) p = superficie(r, citas);
     else if (['ensayos-multiambiente', 'estabilidad', 'ammi', 'gge'].includes(id)) p = multiambiente(id, r, citas);
+    else if (['potencia-medias', 'potencia-anova', 'potencia-proporciones', 'potencia-correlacion', 'repeticiones'].includes(id)) p = potencia(id, r, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };

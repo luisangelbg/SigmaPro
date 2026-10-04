@@ -189,6 +189,8 @@ SPT.describir('Exportaciones · reporte, documentos, hojas, imágenes y proyecto
       SPT.afirmar(debe.test(todo), id + ': no trae ' + debe + ' en «' + p.resultados + '»');
       for (const k of p.citas) SPT.afirmar(claves.has(k) && SP.informe.referencia(k).length > 20, id + ': cita sin referencia ' + k);
     }
+    /* una clave repetida en las referencias se pisa sin aviso: la del ANCOVA (Cochran, 1957) y la de las repeticiones (Cochran y Cox, 1957) */
+    SPT.afirmar(/Analysis of covariance/.test(SP.informe.referencia('cochran1957')) && /Experimental designs/.test(SP.informe.referencia('cochranCox1957')), 'las dos referencias de Cochran de 1957');
     const sw = SP.informe.software();
     SPT.afirmar(sw.texto.includes(SP.VERSION) && sw.citas.includes('rcore'));
   });

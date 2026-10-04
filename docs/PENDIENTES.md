@@ -93,6 +93,13 @@ base común nueva). **La Fase 2 está completa.** Notas:
 
 ## Fase 3
 
+Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia). Notas:
+
+- Potencia: sin la prueba t de Welch (varianzas distintas), las proporciones con la corrección de continuidad
+  (strict), los diseños factoriales ni el tamaño de muestra de modelos mixtos o por simulación.
+
+Lo que dice la propuesta para esta fase:
+
 - Multivariado enlazando con PCAPro y ClusteringPro en lugar de duplicarlos («Abrir en PCAPro» por el almacenamiento
   local del navegador cuando comparten origen en GitHub Pages).
 - Potencia y tamaño de muestra; muestreo; supervivencia y series de tiempo básicas.

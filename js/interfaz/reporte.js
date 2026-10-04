@@ -95,12 +95,11 @@
     if (c && c.datos === versionDatos && c.clave === clave(it) + it.titulo && c.barras === est.opciones.barras) return c.res;
     const res = { error: null };
     try {
-      const t = SP.app.tablaAnalisis();
-      if (!t) throw new SP.ErrorSP(T('No hay datos cargados.'));
-      const ficha = SP.metodos[it.metodo];
+      const t = SP.app.tablaAnalisis(), ficha = SP.metodos[it.metodo];
+      if (!t && !(ficha && ficha.sinDatos)) throw new SP.ErrorSP(T('No hay datos cargados.'));
       if (!ficha) throw new SP.ErrorSP(T('Este análisis ya no existe en SigmaPro: «{m}».', { m: it.metodo }));
       const opciones = SP.opcionesCon(ficha, it.op || {});
-      const numFactor = t.nombres.filter(n => t.col(n).tipo === 'numerica' && !t.col(n).fecha && SP.estructura.pareceFactorNumerico(t.col(n), t.n));
+      const numFactor = !t ? [] : t.nombres.filter(n => t.col(n).tipo === 'numerica' && !t.col(n).fecha && SP.estructura.pareceFactorNumerico(t.col(n), t.n));
       const { resultado, ms } = ejecutarItem(it, ficha, t, opciones);
       const ctx = Object.assign({ factoresNumericos: numFactor }, it.ctx || {});
       let rep = it.bloque === 3 ? ficha.reporte(resultado, ctx) : ficha.reporte(resultado);

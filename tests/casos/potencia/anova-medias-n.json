@@ -1,0 +1,43 @@
+{
+  "esquema": 1,
+  "id": "potencia-anova/anova-medias-n",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "potencia-anova"
+  },
+  "titulo": "Repeticiones para cuatro híbridos con medias esperadas 4.2, 4.8, 5.1 y 5.6 t/ha",
+  "fuente": "Fórmulas de R (stats::power.t.test, power.anova.test y power.prop.test; pwr::pwr.r.test, Champely 2020)",
+  "clase": "A",
+  "entradas": {},
+  "opciones": {
+    "alfa": 0.050000000000000003,
+    "potencia": 0.80000000000000004,
+    "grupos": 4,
+    "medias": "4.2, 4.8, 5.1, 5.6",
+    "varEntre": 1,
+    "de": 0.59999999999999998,
+    "n": 5,
+    "calcular": "n"
+  },
+  "esperado": {
+    "grupos": 4,
+    "n": 4.9152948881772405,
+    "varEntre": 0.34249999999999975,
+    "varDentro": 0.35999999999999999,
+    "alfa": 0.050000000000000003,
+    "potencia": 0.80000000000000004,
+    "f": 0.84471395552972028,
+    "curva": {
+      "n": [2, 3, 4, 5, 6, 7, 8, 9, 10],
+      "potencia": [0.22484125944487582, 0.46651364576442206, 0.66889766940145512, 0.80964196513731146, 0.89695922888106949, 0.94689891497865886, 0.973736389102004, 0.98745703413132524, 0.99418850723966146]
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "ref_potencia_anova con los valores por omisión de R (tests/r/potencia.R)"
+  }
+}

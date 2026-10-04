@@ -14,7 +14,7 @@
   const $ = s => document.querySelector(s);
   const L = () => window.LABG;
   /* familias de la Fase 2 que todavía no tienen métodos: el hito en que llegan (propuesta/FASE2.md §6) */
-  const HITO = { mixtos: '2.1', geneticos: '2.3', generalizados: '2.4', 'no-lineal': '2.6', superficies: '2.7', multiambiente: '2.8' };
+  const HITO = { mixtos: '2.1', geneticos: '2.3', generalizados: '2.4', 'no-lineal': '2.6', superficies: '2.7', multiambiente: '2.8', potencia: '3.0', supervivencia: '3.2', multivariado: '3.4' };
   const MOTOR_USADO = 'sigmapro.motorR.usado';
   const DISENOS = ['dca', 'dbca', 'cuadro-latino', 'parcelas-divididas', 'parcelas-subdivididas', 'franjas', 'bib', 'latice'];
   const MODOS = ['asistente', 'catalogo', 'constructor'];
@@ -28,6 +28,9 @@
   const NOLINEAL = ['curva-crecimiento', 'dosis-respuesta', 'respuesta-meseta'];
   const SUPERFICIES = ['superficie-respuesta', 'ascenso-pronunciado'];
   const MULTI = ['ensayos-multiambiente', 'estabilidad', 'ammi', 'gge'];
+  const POTENCIA = ['potencia-medias', 'potencia-anova', 'potencia-proporciones', 'potencia-correlacion', 'repeticiones'];
+  /* sin datos cargados, los métodos que no los necesitan (potencia y tamaño de muestra) corren con estas columnas vacías */
+  const SIN_DATOS = { t: null, pap: { respuestas: [], factores: [], bloque: null }, numericas: [], fechas: [], factores: [], numFactor: [], agrupables: [], sinDatos: true };
   const AJUSTES_MX = () => [['tukey', 'Tukey'], ['bonferroni', 'Bonferroni'], ['holm', 'Holm'], ['sidak', 'Šidák'], ['none', T('Sin ajuste (DMS)')]];
   const estado = SP.app.analisis = {
     metodo: 'supuestos', pendiente: true, turno: 0, modo: (() => { try { const m = localStorage.getItem('sigmapro.analisis.modo'); return MODOS.includes(m) ? m : 'asistente'; } catch (e) { return 'asistente'; } })(),
@@ -50,6 +53,9 @@
     nl: { respuesta: '', x: '', grupo: '', modelo: '', nivel: 0.95, alfa: 0.05, metodo: '', _iniciado: false },
     srf: { respuesta: '', factores: [], bloque: '', orden: 'segundo', objetivo: 'maximo', nivel: 0.95, alfa: 0.05, _iniciado: false },
     ma: { respuesta: '', genotipo: '', ambiente: '', repeticion: '', eeb: 'propio', objetivo: 'maximo', escala: 'ninguna', particion: 'simetrica', alfa: 0.05, _iniciado: false },
+    pot: { calcular: 'n', n: 10, diferencia: 1, de: 1, tipo: 'dos', alternativa: 'bilateral', alfa: 0.05, potencia: 0.8, grupos: 4, medias: '', varEntre: 1, p1: 0.5, p2: 0.7, r: 0.3,
+      cv: 12, difPct: 20, tratamientos: 5, diseno: 'dbca' },
+    sinDatos: false,
     gen: { respuesta: '', aleatorios: [], fijos: [], estructura: 'cruzados', genotipo: '', repeticion: '', bloque: '', ambiente: '', seleccion: 0.1, direccion: 'mayor',
       individuo: '', fijosRep: [], _iniciado: false },
     glm: { respuesta: '', tratamientos: [], bloque: '', covariables: [], ensayos: '', exposicion: '', familia: '', enlace: '', tipo: 2, compararMx: null, dentro: '', ajuste: 'tukey',
@@ -58,9 +64,10 @@
   };
 
   /* ---------------- catálogo ---------------- */
-  function catalogo() {
-    const fams = SP.familias.filter(f => f.fase <= 2 && f.id !== 'descriptiva');
-    if (!SP.metodoDisponible(estado.metodo)) estado.metodo = 'supuestos';
+  function catalogo(c) {
+    const vacio = c && c.sinDatos;
+    const fams = SP.familias.filter(f => f.fase <= 3 && f.id !== 'descriptiva' && (!vacio || f.id === 'potencia'));
+    if (!SP.metodoDisponible(estado.metodo) || (vacio && !POTENCIA.includes(estado.metodo))) estado.metodo = vacio ? 'potencia-medias' : 'supuestos';
     $('#anaCatalogo').innerHTML = fams.map(f => {
       const metodos = SP.listaMetodos(f.id).filter(m => SP.metodoDisponible(m.id));
       const items = metodos.length
@@ -836,7 +843,44 @@
     h += '<p class="small muted">' + esc(T('Corre en tu navegador (validado contra lm y svd de R).')) + '</p>';
     return h + campo('ma', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
+  /** Potencia y tamaño de muestra: números en lugar de columnas; se elige qué calcular y se dan los demás. */
+  const numero = (grupo, nombre, etiqueta, valor, ayuda, extra) => `<label class="field"><span>${esc(etiqueta)}</span><input type="number" class="input" step="any" data-grupo="${grupo}" data-campo="${nombre}" value="${esc(String(valor))}"${extra || ''}>` +
+    (ayuda ? `<span class="field-help">${esc(ayuda)}</span>` : '') + '</label>';
+  function formPotencia(c, m) {
+    const s = estado.pot, CALC = { 'potencia-medias': ['n', 'potencia', 'diferencia'], 'potencia-anova': ['n', 'potencia', 'varEntre'], 'potencia-proporciones': ['n', 'potencia'], 'potencia-correlacion': ['n', 'potencia', 'r'] }[m];
+    const NOM = { n: T('El tamaño de muestra'), potencia: T('La potencia'), diferencia: T('La diferencia que se puede detectar'), varEntre: T('La variación entre medias que se puede detectar'), r: T('La correlación que se puede detectar') };
+    let h = c.sinDatos ? '<p class="small muted">' + esc(T('No hace falta cargar datos: todo se calcula con los valores de abajo.')) + '</p>' : '';
+    if (m === 'repeticiones') {
+      h += numero('pot', 'cv', T('Coeficiente de variación esperado (%)'), s.cv, T('El de ensayos anteriores del mismo cultivo y variable.'), ' min="0"');
+      h += numero('pot', 'difPct', T('Diferencia que interesa detectar (% de la media)'), s.difPct, '', ' min="0"');
+      h += numero('pot', 'tratamientos', T('Tratamientos'), s.tratamientos, '', ' min="2" step="1"');
+      h += campo('pot', 'diseno', T('Diseño'), [['dbca', T('Bloques completos al azar')], ['dca', T('Completamente al azar')]], s.diseno);
+    } else {
+      if (!CALC.includes(s.calcular)) s.calcular = 'n';
+      h += campo('pot', 'calcular', T('¿Qué quieres calcular?'), CALC.map(k => [k, NOM[k]]), s.calcular);
+      if (m === 'potencia-medias') {
+        h += campo('pot', 'tipo', T('Comparación'), [['dos', T('Dos grupos independientes')], ['pareada', T('Pares (antes y después, la misma unidad)')], ['una', T('Una media contra un valor')]], s.tipo);
+        if (s.calcular !== 'diferencia') h += numero('pot', 'diferencia', T('Diferencia entre medias que interesa'), s.diferencia, T('En las unidades de la variable (por ejemplo, 0.5 t/ha).'));
+        h += numero('pot', 'de', T('Desviación estándar'), s.de, T('La del error, de un ensayo anterior o de la literatura.'), ' min="0"');
+      } else if (m === 'potencia-anova') {
+        h += `<label class="field"><span>${esc(T('Medias esperadas de los tratamientos (opcional)'))}</span><input type="text" class="input" data-grupo="pot" data-campo="medias" value="${esc(s.medias)}" placeholder="4.2, 4.8, 5.1, 5.6"><span class="field-help">${esc(T('Separadas por comas. Si las das, ya no hacen falta el número de tratamientos ni la varianza de las medias.'))}</span></label>`;
+        if (!String(s.medias).trim()) {
+          h += numero('pot', 'grupos', T('Tratamientos'), s.grupos, '', ' min="2" step="1"');
+          if (s.calcular !== 'varEntre') h += numero('pot', 'varEntre', T('Varianza de las medias de los tratamientos'), s.varEntre, '', ' min="0"');
+        }
+        h += numero('pot', 'de', T('Desviación estándar del error'), s.de, '', ' min="0"');
+      } else if (m === 'potencia-proporciones') {
+        h += numero('pot', 'p1', T('Proporción en el grupo 1 (0 a 1)'), s.p1, '', ' min="0" max="1"') + numero('pot', 'p2', T('Proporción en el grupo 2 (0 a 1)'), s.p2, '', ' min="0" max="1"');
+      } else if (s.calcular !== 'r') h += numero('pot', 'r', T('Correlación que interesa detectar'), s.r, '', ' min="-1" max="1"');
+      if (s.calcular !== 'n') h += numero('pot', 'n', m === 'potencia-anova' ? T('Repeticiones por tratamiento') : m === 'potencia-correlacion' ? T('Pares de observaciones') : T('Tamaño de muestra (por grupo)'), s.n, '', ' min="2"');
+      if (m !== 'potencia-anova') h += campo('pot', 'alternativa', T('Hipótesis alternativa'), [['bilateral', T('Bilateral (≠)')], ['unilateral', T('Unilateral (en una dirección)')]], s.alternativa);
+    }
+    if (s.calcular !== 'potencia' || m === 'repeticiones') h += numero('pot', 'potencia', T('Potencia deseada (0 a 1)'), s.potencia, T('Lo usual: 0.8 o 0.9.'), ' min="0" max="1"');
+    h += numero('pot', 'alfa', T('Nivel de significancia'), s.alfa, '', ' min="0" max="1"');
+    return h + '<p class="small muted">' + esc(T('Corre en tu navegador con las mismas fórmulas que R (validado contra power.t.test, power.anova.test, power.prop.test y pwr).')) + '</p>';
+  }
   function formulario(c) {
+    if (POTENCIA.includes(estado.metodo)) return formPotencia(c, estado.metodo);
     if (MULTI.includes(estado.metodo)) return formMultiambiente(c, estado.metodo);
     if (SUPERFICIES.includes(estado.metodo)) return formSuperficie(c, estado.metodo);
     if (NOLINEAL.includes(estado.metodo)) return formNoLineal(c, estado.metodo);
@@ -866,6 +910,16 @@
       const s = estado.mx;
       return { e: { respuesta: s.respuesta }, op: Object.assign({ derecha: s.derecha, comoFactor: s.comoFactor.slice(), tipoSC: +s.tipoSC, gl: s.gl, reml: s.estimacion !== 'ml', ajuste: s.ajuste, alfa: +s.alfa, nivel: +s.nivel },
         s.compararMx ? { comparar: s.compararMx.slice() } : {}, s.dentro ? { dentro: s.dentro } : {}) };
+    }
+    if (POTENCIA.includes(m)) {
+      const s = estado.pot, n = k => +s[k], base = { alfa: n('alfa'), potencia: n('potencia') };
+      if (m === 'repeticiones') return { e: {}, op: Object.assign(base, { cv: n('cv'), diferencia: n('difPct'), tratamientos: n('tratamientos'), diseno: s.diseno }) };
+      const op = Object.assign(base, { calcular: s.calcular, n: n('n') });
+      if (m === 'potencia-medias') Object.assign(op, { diferencia: n('diferencia'), de: n('de'), tipo: s.tipo, alternativa: s.alternativa });
+      else if (m === 'potencia-anova') Object.assign(op, { grupos: n('grupos'), medias: String(s.medias || ''), varEntre: n('varEntre'), de: n('de') });
+      else if (m === 'potencia-proporciones') Object.assign(op, { p1: n('p1'), p2: n('p2'), alternativa: s.alternativa });
+      else Object.assign(op, { r: n('r'), alternativa: s.alternativa });
+      return { e: {}, op };
     }
     if (MULTI.includes(m)) {
       const s = estado.ma, e = { respuesta: s.respuesta, genotipo: s.genotipo, ambiente: s.ambiente };
@@ -1239,6 +1293,18 @@
       puntos: SP.graficas.adelgazar(r.ajustados.map((x, i) => ({ x, y: v.residuos[i], marca: Math.abs(v.residuos[i]) > 3 * r.ajuste.sigma })), 2500), referencias: [{ y: 0 }] }));
     return out.join('');
   }
+  function graficasPotencia(r) {
+    if (r.metodo === 'repeticiones') {
+      const it = r.iteraciones;
+      return SP.graficas.dispersion({ titulo: T('Repeticiones requeridas contra puestas'), x: { titulo: T('Repeticiones puestas') }, y: { titulo: T('Repeticiones requeridas') }, diagonal: true,
+        descripcion: T('Para cada número de repeticiones, las que pide la fórmula de Cochran y Cox con sus gl; la respuesta es la primera que queda por debajo de la diagonal.'),
+        puntos: it.map(x => ({ x: x.r, y: x.requeridas, marca: x.r === r.repeticiones })), linea: { x: it.map(x => x.r), y: it.map(x => x.requeridas) } });
+    }
+    if (!r.curva || !r.curva.n.length) return '';
+    return SP.graficas.dispersion({ titulo: T('Potencia según el tamaño de muestra'), x: { titulo: T('Tamaño de muestra') }, y: { titulo: T('Potencia') },
+      descripcion: T('La potencia para cada tamaño de muestra con el mismo efecto; la línea vertical es el tamaño calculado o dado y la horizontal, la potencia.'),
+      linea: { x: r.curva.n, y: r.curva.potencia }, referencias: [{ y: r.potencia, discontinua: true }], verticales: [{ x: r.n, discontinua: true }] });
+  }
   function graficasMultiambiente(r) {
     const Gn = r.genotipos, An = r.ambientes_nombre, out = [], f1 = v => SP.formatos.texto(v, 'forma2');
     if (r.metodo === 'ensayos-multiambiente' && Gn.length <= 12) {
@@ -1365,6 +1431,7 @@
     if (r.tipo === 'nolineal') return graficasNoLineal(r);
     if (r.tipo === 'superficie') return graficasSuperficie(r);
     if (r.tipo === 'multiambiente') return graficasMultiambiente(r);
+    if (r.tipo === 'potencia') return graficasPotencia(r);
     if (r.tipo === 'modelo') {
       if (r.celdas) {
         const [A, B] = r.celdas.factores, nivA = [], nivB = [];
@@ -1482,7 +1549,10 @@
 
   function calcular() {
     estado.pendiente = false;
-    const c = columnas();
+    const datos = columnas();
+    if (datos) estado.sinDatos = false;
+    const c = datos || (estado.sinDatos ? SIN_DATOS : null);
+    if (c && c.sinDatos) estado.modo = 'catalogo';
     $('#anaVacio').hidden = !!c;
     $('#anaTrabajo').hidden = !c;
     if (!c) return;
@@ -1491,7 +1561,7 @@
     $('#anaAsistente').hidden = estado.modo !== 'asistente';
     $('#anaConstructor').hidden = estado.modo !== 'constructor';
     if (estado.modo !== 'catalogo') { const p = estado.pintores[estado.modo]; if (p) p(c); return; }
-    catalogo();
+    catalogo(c);
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
     if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = estado.srf._iniciado = estado.ma._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
@@ -1532,7 +1602,7 @@
     /* con tablas grandes (hasta ~2 s con 100 000 filas y muchos tratamientos), primero se avisa y se deja pintar.
        Un hilo de trabajo resultó más lento: arranca sin el código optimizado y con menos prioridad (Hito 1.12). */
     /* el REML de los métodos genéticos itera: con más de 1500 filas también se avisa antes */
-    if (c.t.n >= 20000 || (GENETICOS.includes(id) && c.t.n >= 1500)) {
+    if (c.t && (c.t.n >= 20000 || (GENETICOS.includes(id) && c.t.n >= 1500))) {
       const r0 = $('#anaResultado');
       r0.classList.add('calculando');
       if (!r0.querySelector('.ana-espera')) r0.insertAdjacentHTML('afterbegin', `<p class="ana-espera small" role="status">${esc(T('Calculando con {n} filas…', { n: c.t.n.toLocaleString('es-MX') }))}</p>`);
@@ -1610,6 +1680,9 @@
       pon(estado.rep, { respuesta: e.respuesta, tiempo: e.tiempo, sujeto: e.sujeto, tratamientos: [].concat(e.tratamientos || []), bloque: e.bloque || '',
         estructura: op.estructura, criterio: op.criterio, ajuste: op.ajuste, dentro: op.dentro === undefined ? undefined : op.dentro });
       estado.rep.compararMx = op.comparar ? [].concat(op.comparar) : null;
+    } else if (POTENCIA.includes(m)) {
+      pon(estado.pot, m === 'repeticiones' ? { cv: op.cv, difPct: op.diferencia, tratamientos: op.tratamientos, diseno: op.diseno, alfa: op.alfa, potencia: op.potencia }
+        : { calcular: op.calcular, n: op.n, diferencia: op.diferencia, de: op.de, tipo: op.tipo, alternativa: op.alternativa, grupos: op.grupos, medias: op.medias, varEntre: op.varEntre, p1: op.p1, p2: op.p2, r: op.r, alfa: op.alfa, potencia: op.potencia });
     } else if (MULTI.includes(m)) {
       pon(estado.ma, { respuesta: e.respuesta, genotipo: e.genotipo, ambiente: e.ambiente, repeticion: e.repeticion || '', eeb: op.eeb, objetivo: op.objetivo, escala: op.escala, particion: op.particion });
     } else if (SUPERFICIES.includes(m)) {
@@ -1658,6 +1731,9 @@
     const panel = $('#panel-4');
     const form = $('#anaOpciones');
     $('#anaModos').addEventListener('click', e => { const b = e.target.closest('[data-modo]'); if (b) ponerModo(b.dataset.modo); });
+    /* sin datos: los cálculos que no los necesitan (potencia y tamaño de muestra) */
+    const sd = $('#anaSinDatos');
+    if (sd) sd.addEventListener('click', () => { estado.sinDatos = true; estado.metodo = 'potencia-medias'; ponerModo('catalogo'); });
     form.addEventListener('submit', e => e.preventDefault());
     form.addEventListener('change', e => {
       const el = e.target;
