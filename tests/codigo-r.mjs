@@ -175,6 +175,13 @@ const ESCENARIOS = [
     r: 'c(coef(m), sum(residuals(m, type = "pearson")^2) / df.residual(m), as.data.frame(em)[, 2])', js: res => [...res.coeficientes.estimado, res.ajuste.dispersion, ...res.medias[1].filas.map(f => f.respuesta)] },
   { ej: 'aguacate', id: 'glm', e: { respuesta: 'trips' }, op: { derecha: 'bloque + tratamiento', comoFactor: ['bloque'], familia: 'cuasipoisson', tipo: 1, comparar: ['tratamiento'] },
     r: 'c(coef(m), anova(m, test = "F")[-1, "F"])', js: res => [...res.coeficientes.estimado, ...res.devianza.map(x => x.estadistico)] },
+  /* Hito 2.6: regresión no lineal (el código arranca en los valores de la app y nls converge al mismo óptimo) */
+  { ej: 'herbicida-dosis', id: 'dosis-respuesta', e: { respuesta: 'peso_seco', dosis: 'dosis', grupo: 'herbicida' }, op: { modelo: 'll4' },
+    r: 'c(coef(m), deviance(m), anova(m0, m)$F[2])', js: res => [...res.parametros.estimado, res.ajuste.rss, res.comparacion.global.F] },
+  { ej: 'maiz-altura', id: 'curva-crecimiento', e: { respuesta: 'altura', x: 'dds' }, op: { modelo: 'logistico' },
+    r: 'c(coef(m), summary(m)$coefficients[, 2], AIC(m))', js: res => [...res.parametros.estimado, ...res.parametros.ee, res.ajuste.AIC] },
+  { ej: 'maiz', id: 'respuesta-meseta', e: { respuesta: 'rend', dosis: 'dosis' }, op: { modelo: 'cuadratico-meseta' },
+    r: 'c(coef(m), summary(m)$sigma)', js: res => [...res.parametros.estimado, res.ajuste.sigma] },
   { ej: 'guayabo-cosechas', id: 'repetibilidad', e: { respuesta: 'rendimiento', individuo: 'arbol', fijos: ['cosecha'] }, op: {},
     r: 'c(r, mh * r / (1 + (mh - 1) * r), R2 * (1 - r) / ((1 - R2) * r))', js: res => [res.repetibilidad.r, res.repetibilidad.R2, ...res.necesarias.map(x => x.medidas)] },
 ];

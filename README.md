@@ -64,7 +64,9 @@ el navegador contra R. Y, en el propio núcleo (sin internet), los **componentes
 **heredabilidad** (en medias, de Cullis y de Piepho) con BLUP, BLUE y ganancia por selección, la **repetibilidad** y los
 **modelos lineales generalizados** (conteos con Poisson o binomial negativa, proporciones, gamma), con las medias en la
 escala de la respuesta; y, en el motor R, los **modelos lineales generalizados mixtos** (conteos y proporciones con
-bloques aleatorios y el efecto por observación para la sobredispersión). En total, 692 casos y 68 814 valores. Lo que falta para publicar y las
+bloques aleatorios y el efecto por observación para la sobredispersión). Y la **regresión no lineal**: curvas de
+crecimiento, dosis-respuesta con DE50 y respuesta con meseta (dosis óptima), con la comparación de curvas entre grupos.
+En total, 702 casos y 69 386 valores. Lo que falta para publicar y las
 fases 2 y 3 están en
 [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan
 completo está en

@@ -46,8 +46,8 @@ que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA
 Plan detallado en [`propuesta/FASE2.md`](../propuesta/FASE2.md). Hecho: Hito 2.0 (el motor R y el modelo lineal mixto
 desde una fórmula), Hito 2.1 (medias marginales, comparaciones, prueba de los aleatorios, BLUP y los diseños con
 efectos aleatorios), Hito 2.2 (medidas repetidas con estructuras de covarianza), Hito 2.3 (componentes de varianza por
-REML en el núcleo, heredabilidad y repetibilidad) , Hito 2.4 (modelos lineales generalizados en el núcleo) e Hito 2.5 (modelos
-lineales generalizados mixtos en el motor R). Notas:
+REML en el núcleo, heredabilidad y repetibilidad) , Hito 2.4 (modelos lineales generalizados en el núcleo), Hito 2.5 (modelos
+lineales generalizados mixtos en el motor R) e Hito 2.6 (regresión no lineal en el núcleo). Notas:
 
 - Con doble clic el motor R necesita internet la primera vez (luego sale de la caché del navegador); sin conexión
   llega en el cierre de la fase (Hito 2.10), con el repositorio propio de paquetes en Pages.
@@ -55,6 +55,10 @@ lineales generalizados mixtos en el motor R). Notas:
   motor y lo validan sus casos (`tests/motor-r.mjs`).
 - El asistente y el constructor todavía no proponen los modelos mixtos, las medidas repetidas ni la heredabilidad
   (Hito 2.9); se eligen en el catálogo.
+- Regresión no lineal: los intervalos son de Wald (los de verosimilitud perfilada quedan pendientes), no hay elección
+  automática del modelo por AIC ni pesos, y lineal-meseta no tiene la prueba de cada parámetro común (sí la global).
+  Faltan Michaelis-Menten, Brain-Cousens (hormesis), la dosis económica óptima con precios y el eje logarítmico de la
+  dosis en la gráfica.
 - GLMM: solo aproximación de Laplace (nAGQ = 1); la cuadratura adaptativa de Gauss-Hermite, la familia gamma mixta y la
   prueba de razón de verosimilitudes de cada efecto aleatorio quedan pendientes.
 - GLM: los intervalos de las razones son de Wald (confint.default); los de verosimilitud perfilada quedan pendientes.

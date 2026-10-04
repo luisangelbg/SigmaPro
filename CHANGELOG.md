@@ -2,6 +2,25 @@
 
 ## Sin publicar
 
+### Hito 2.6 · Regresión no lineal y dosis-respuesta (3 oct 2026)
+
+- **Familia nueva: Regresión no lineal**, en el núcleo JS (js/nucleo/nolineal.js): mínimos cuadrados no lineales por
+  Levenberg-Marquardt con el gradiente analítico de cada modelo, valores iniciales por linealización y pasos finales de
+  Gauss-Newton hasta un paso relativo de 1e-13. Lineal-meseta (no derivable en el quiebre) se ajusta por perfil (Brent
+  en cada intervalo entre dosis) y luego se pule igual.
+- Tres métodos: **Curva de crecimiento** (logístico, Gompertz con su punto de inflexión, Weibull), **Dosis-respuesta**
+  (log-logístico de 4 y de 3 parámetros, con DE10, DE50 y DE90; admite la dosis cero) y **Respuesta a la dosis con
+  meseta** (lineal-meseta y cuadrático-meseta con la dosis óptima y el valor en la meseta, y Mitscherlich).
+- Con un factor de grupo (variedades, herbicidas, híbridos): un juego de parámetros por grupo y la **comparación de
+  curvas** con la prueba F de la suma de cuadrados extra, contra una curva común y contra cada parámetro común.
+- Parámetros con EE, t, p e intervalo de Wald con t; derivados por el método delta; ajuste (SCR, σ, R², AIC, BIC);
+  gráfica de los datos con la curva de cada grupo y de los residuos; párrafo con cinco referencias nuevas; código R
+  con nls que arranca en los valores de la app.
+- Ejemplo nuevo (ficticio): **herbicidas, peso seco por dosis**.
+- Validación: 10 casos (Orange por árbol, ChickWeight, DNase, Loblolly y ensayos sintéticos de herbicidas, tóxico y
+  nitrógeno con meseta) contra nls con el mismo gradiente y el óptimo pulido: 572 valores, diferencia escalada máxima
+  3.3 × 10⁻¹³. 702 casos en total. El código R se corre en R en 3 escenarios más.
+
 ### Hito 2.5 · Modelos lineales generalizados mixtos (3 oct 2026)
 
 - **Dos métodos nuevos en la familia Modelos lineales generalizados, en el motor R** (lme4, car y emmeans):

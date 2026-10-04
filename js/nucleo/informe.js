@@ -101,6 +101,11 @@ SP.definir('informe', function (SP) {
     bolker2009: () => 'Bolker, B. M., Brooks, M. E., Clark, C. J., Geange, S. W., Poulsen, J. R., Stevens, M. H. H. y White, J.-S. S. (2009). Generalized linear mixed models: a practical guide for ecology and evolution. Trends in Ecology and Evolution, 24(3), 127–135.',
     harrison2014: () => 'Harrison, X. A. (2014). Using observation-level random effects to model overdispersion in count data in ecology and evolution. PeerJ, 2, e616.',
     fox2019: () => 'Fox, J. y Weisberg, S. (2019). An R companion to applied regression (3.ª ed.). Sage.',
+    bates1988: () => 'Bates, D. M. y Watts, D. G. (1988). Nonlinear regression analysis and its applications. Wiley.',
+    archontoulis2015: () => 'Archontoulis, S. V. y Miguez, F. E. (2015). Nonlinear regression models and applications in agricultural research. Agronomy Journal, 107(2), 786–798.',
+    ritz2015: () => 'Ritz, C., Baty, F., Streibig, J. C. y Gerhard, D. (2015). Dose-response analysis using R. PLoS ONE, 10(12), e0146021.',
+    seefeldt1995: () => 'Seefeldt, S. S., Jensen, J. E. y Fuerst, E. P. (1995). Log-logistic analysis of herbicide dose-response relationships. Weed Technology, 9(2), 218–227.',
+    cerrato1990: () => 'Cerrato, M. E. y Blackmer, A. M. (1990). Comparison of models for describing corn yield response to nitrogen fertilizer. Agronomy Journal, 82(1), 138–143.',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -122,6 +127,7 @@ SP.definir('informe', function (SP) {
     cullis2006: 'Cullis et al., 2006', piepho2007: 'Piepho y Möhring, 2007', schmidt2019: 'Schmidt et al., 2019', falconer1996: 'Falconer y Mackay, 1996',
     cruz2012: 'Cruz et al., 2012', nelder1972: 'Nelder y Wedderburn, 1972', mccullagh1989: 'McCullagh y Nelder, 1989', venables2002: 'Venables y Ripley, 2002',
     wedderburn1974: 'Wedderburn, 1974', lenth2016: 'Lenth, 2016', bolker2009: 'Bolker et al., 2009', harrison2014: 'Harrison, 2014', fox2019: 'Fox y Weisberg, 2019',
+    bates1988: 'Bates y Watts, 1988', archontoulis2015: 'Archontoulis y Miguez, 2015', ritz2015: 'Ritz et al., 2015', seefeldt1995: 'Seefeldt et al., 1995', cerrato1990: 'Cerrato y Blackmer, 1990',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -639,6 +645,23 @@ SP.definir('informe', function (SP) {
       [r.theta !== undefined ? T('El parámetro de forma de la binomial negativa fue θ = {t}.', { t: s4(r.theta) }) : '', r.ajuste.singular ? T('El ajuste fue singular: al menos un componente de varianza se estimó en cero.') : '']).filter(Boolean).join(' ') };
   }
 
+  /** Regresión no lineal (núcleo JS). */
+  function noLineal(r, citas) {
+    const NL = SP.metodosNoLineal, A = r.ajuste, G = r.niveles.length;
+    const nom = z => { const n = NL.NOMBRE_DER[z]; return /^DE\d/.test(n) ? n : n.charAt(0).toLowerCase() + n.slice(1); };
+    const ref = r.modelo.startsWith('ll') ? ['seefeldt1995', 'ritz2015'] : /meseta/.test(r.modelo) ? ['cerrato1990'] : ['archontoulis2015'];
+    const metodos = T('Se ajustó el modelo {m} ({e}) por mínimos cuadrados no lineales ({c}){g}.', { m: NL.NOMBRE[r.modelo], e: NL.ECUACION[r.modelo], c: cita(['bates1988'].concat(ref), citas),
+      g: G ? T(', con un juego de parámetros para cada nivel de {f}', { f: r.grupo }) : '' }) +
+      (r.derivados.length ? ' ' + T('Los valores derivados ({d}) y sus errores estándar se obtuvieron por el método delta; los intervalos son de Wald con t de {g} grados de libertad.', { d: y([...new Set(r.derivados.map(z => nom(z.nombre)))]), g: A.gl })
+        : ' ' + T('Los intervalos de los parámetros son de Wald con t de {g} grados de libertad.', { g: A.gl })) +
+      (r.comparacion ? ' ' + T('Las curvas se compararon con la prueba F de la suma de cuadrados extra ({c}).', { c: cita(['bates1988'], citas) }) : '');
+    const der = r.derivados.map(z => T('{n}{g} = {v} (IC: {i} a {s})', { n: nom(z.nombre), g: z.grupo ? T(' de {x}', { x: z.grupo }) : '', v: s4(z.valor), i: s4(z.ic[0]), s: s4(z.ic[1]) }));
+    const c = r.comparacion, comp = c ? (c.global.p < (r.alfa || 0.05) ? T('Las curvas de {f} difirieron (F({a}, {b}) = {v}; {p}).', { f: r.grupo, a: c.global.gl1, b: c.global.gl2, v: n2(c.global.F), p: fp(c.global.p) })
+      : T('Las curvas de {f} no difirieron (F({a}, {b}) = {v}; {p}).', { f: r.grupo, a: c.global.gl1, b: c.global.gl2, v: n2(c.global.F), p: fp(c.global.p) })) : '';
+    return { metodos, resultados: [T('El modelo explicó el {p} % de la variación (R² = {r}; error estándar residual = {s}).', { p: pct(100 * A.r2), r: n3(A.r2), s: s4(A.sigma) }),
+      der.length ? fin(may(y(der))) : '', comp].filter(Boolean).join(' ') };
+  }
+
   /** El párrafo de métodos y el de resultados de un análisis. */
   function parrafo(id, r, rep, e, op) {
     e = e || {}; op = op || {};
@@ -659,6 +682,7 @@ SP.definir('informe', function (SP) {
     else if (['componentes-varianza', 'heredabilidad', 'repetibilidad'].includes(id)) p = genetico(id, r, citas);
     else if (['glm-conteos', 'glm-proporciones', 'glm-gamma', 'glm'].includes(id)) p = generalizado(r, citas);
     else if (id === 'glmm-bloques' || id === 'glmm') p = generalizadoMixto(r, citas);
+    else if (['curva-crecimiento', 'dosis-respuesta', 'respuesta-meseta'].includes(id)) p = noLineal(r, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };

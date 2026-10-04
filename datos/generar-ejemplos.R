@@ -216,6 +216,17 @@ agregar("guayabo-cosechas", "Guayabo: 20 árboles en cuatro cosechas",
         "Ficticio: kilogramos de fruta por árbol en cuatro cosechas (2022 a 2025), con cinco registros perdidos; para la repetibilidad, el número de cosechas que hay que medir y el valor permanente de cada árbol.", d,
         list(arbol = list(tipo = "factor", niveles = sprintf("G%02d", 1:20)), cosecha = list(tipo = "factor", niveles = c("2022", "2023", "2024", "2025"))))
 
+## 17. Herbicidas: peso seco de maleza por dosis (dosis-respuesta; ficticio)
+set.seed(1717)
+d <- expand.grid(rep = 1:4, dosis = c(0, 15, 30, 60, 120, 240, 480), herbicida = c("Glifosato", "Glufosinato"), stringsAsFactors = FALSE)[, 3:1]
+de50 <- c(Glifosato = 70, Glufosinato = 160)
+d$peso_seco <- round(0.3 + (6 - 0.3) / (1 + exp(1.7 * (log(d$dosis) - log(de50[d$herbicida])))) + rnorm(nrow(d), 0, 0.3), 2)
+d$peso_seco <- pmax(d$peso_seco, 0.05)
+d <- d[c("herbicida", "rep", "dosis", "peso_seco")]
+agregar("herbicida-dosis", "Herbicidas: peso seco por dosis",
+        "Ficticio: peso seco de maleza (g por maceta) con siete dosis (g i.a./ha) de dos herbicidas y cuatro repeticiones; para la dosis-respuesta log-logística (DE50 y comparación entre herbicidas).", d,
+        list(herbicida = list(tipo = "factor", niveles = c("Glifosato", "Glufosinato"))))
+
 ## escribir datos/ejemplos.js
 js <- paste0(
   "/* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.\n",

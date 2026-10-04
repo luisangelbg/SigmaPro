@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-04T02:00:44.058Z",
+ "generado": "2026-10-04T02:38:56.160Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 692,
-  "aprobados": 692,
+  "casos": 702,
+  "aprobados": 702,
   "fallidos": 0,
-  "valores": 68814,
+  "valores": 69386,
   "difEscaladaMax": 0.000004071746832135441,
-  "objetivos": 144
+  "objetivos": 147
  },
  "casos": [
   {
@@ -19530,6 +19530,266 @@ window.SP_VALIDACION = {
     "R": "4.6.0",
     "lme4": "2.0.1",
     "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "curva-crecimiento/dnasa-gompertz",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "curva-crecimiento"
+   },
+   "titulo": "Gompertz con su punto de inflexión",
+   "fuente": "Davidian y Giltinan (1995), Nonlinear Models for Repeated Measurement Data; conjunto DNase de R (corrida 1, log de la concentración)",
+   "clase": "D",
+   "valores": 32,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 1.4277849947289266e-14,
+   "peor": "parametros.p[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "nls(densidad ~ <modelo gompertz con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "curva-crecimiento/naranjos-logistico",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "curva-crecimiento"
+   },
+   "titulo": "Logístico de los cinco naranjos juntos",
+   "fuente": "Draper y Smith (1998), Applied Regression Analysis; conjunto Orange de R (Pinheiro y Bates 2000)",
+   "clase": "D",
+   "valores": 26,
+   "difMax": 3.979039320256561e-12,
+   "difEscaladaMax": 2.1817642879764947e-13,
+   "peor": "parametros.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "nls(circunferencia ~ <modelo logistico con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "curva-crecimiento/naranjos-por-arbol",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "curva-crecimiento"
+   },
+   "titulo": "Logístico por árbol con la comparación de curvas y de cada parámetro",
+   "fuente": "Draper y Smith (1998), Applied Regression Analysis; conjunto Orange de R (Pinheiro y Bates 2000)",
+   "clase": "D",
+   "valores": 117,
+   "difMax": 1.1368683772161603e-12,
+   "difEscaladaMax": 4.116961644120597e-14,
+   "peor": "parametros.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "nls(circunferencia ~ <modelo logistico con gradiente analítico> por arbol) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "curva-crecimiento/pollo-weibull",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "curva-crecimiento"
+   },
+   "titulo": "Weibull del peso de un pollo",
+   "fuente": "Crowder y Hand (1990), Analysis of Repeated Measures; conjunto ChickWeight de R (pollo 6)",
+   "clase": "D",
+   "valores": 32,
+   "difMax": 3.979039320256561e-13,
+   "difEscaladaMax": 2.1681708326012613e-14,
+   "peor": "parametros.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "nls(peso ~ <modelo weibull con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "dosis-respuesta/herbicidas-ll4",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dosis-respuesta"
+   },
+   "titulo": "Log-logístico de 4 parámetros con dosis cero: DE10, DE50 y DE90 de dos herbicidas y su comparación",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 116,
+   "difMax": 3.524291969370097e-12,
+   "difEscaladaMax": 1.3426146975941507e-13,
+   "peor": "parametros.p[7]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "nls(peso_seco ~ <modelo ll4 con gradiente analítico> por herbicida) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "dosis-respuesta/toxico-ll3",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dosis-respuesta"
+   },
+   "titulo": "Log-logístico de 3 parámetros (límite inferior en 0) con dos faltantes",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 44,
+   "difMax": 5.684341886080801e-13,
+   "difEscaladaMax": 1.5901839576759923e-13,
+   "peor": "parametros.p[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "nls(germinacion ~ <modelo ll3 con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "respuesta-meseta/maiz-cuadratico-meseta",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "respuesta-meseta"
+   },
+   "titulo": "Cuadrático-meseta por híbrido con la prueba de cada parámetro",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 87,
+   "difMax": 2.2737367544323206e-13,
+   "difEscaladaMax": 3.266745287789628e-13,
+   "peor": "parametros.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "nls(rendimiento ~ <modelo cuadratico-meseta con gradiente analítico> por hibrido) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "respuesta-meseta/maiz-lineal-meseta-una",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "respuesta-meseta"
+   },
+   "titulo": "Lineal-meseta de un híbrido",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 32,
+   "difMax": 1.1368683772161603e-13,
+   "difEscaladaMax": 9.088607293269687e-15,
+   "peor": "parametros.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "nls(rendimiento ~ <modelo lineal-meseta con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "respuesta-meseta/maiz-lineal-meseta",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "respuesta-meseta"
+   },
+   "titulo": "Lineal-meseta por híbrido: dosis óptima, meseta y curva común",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 60,
+   "difMax": 5.684341886080802e-14,
+   "difEscaladaMax": 3.249431346300516e-14,
+   "peor": "parametros.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "nls(rendimiento ~ <modelo lineal-meseta con gradiente analítico> por hibrido) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "respuesta-meseta/pino-mitscherlich",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "respuesta-meseta"
+   },
+   "titulo": "Mitscherlich (asintótico) de la altura de un pino",
+   "fuente": "Kung (1986), Proceedings of the Fourth Southern Silvicultural Research Conference; conjunto Loblolly de R (semilla 329)",
+   "clase": "D",
+   "valores": 26,
+   "difMax": 1.2789769243681803e-13,
+   "difEscaladaMax": 6.854850064665278e-15,
+   "peor": "ajuste.rss",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "nls(altura ~ <modelo mitscherlich con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
    }
   }
  ]

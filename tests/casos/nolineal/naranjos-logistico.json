@@ -1,0 +1,66 @@
+{
+  "esquema": 1,
+  "id": "curva-crecimiento/naranjos-logistico",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "curva-crecimiento"
+  },
+  "titulo": "Logístico de los cinco naranjos juntos",
+  "fuente": "Draper y Smith (1998), Applied Regression Analysis; conjunto Orange de R (Pinheiro y Bates 2000)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "arbol": ["1", "1", "1", "1", "1", "1", "1", "2", "2", "2", "2", "2", "2", "2", "3", "3", "3", "3", "3", "3", "3", "4", "4", "4", "4", "4", "4", "4", "5", "5", "5", "5", "5", "5", "5"],
+      "edad": [118, 484, 664, 1004, 1231, 1372, 1582, 118, 484, 664, 1004, 1231, 1372, 1582, 118, 484, 664, 1004, 1231, 1372, 1582, 118, 484, 664, 1004, 1231, 1372, 1582, 118, 484, 664, 1004, 1231, 1372, 1582],
+      "circunferencia": [30, 58, 87, 115, 120, 142, 145, 33, 69, 111, 156, 172, 203, 203, 30, 51, 75, 108, 115, 139, 140, 32, 62, 112, 167, 179, 209, 214, 30, 49, 81, 125, 142, 174, 177]
+    },
+    "tipos": {
+      "arbol": {
+        "tipo": "factor",
+        "niveles": ["1", "2", "3", "4", "5"]
+      },
+      "edad": {
+        "tipo": "numerica"
+      },
+      "circunferencia": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "circunferencia",
+    "x": "edad"
+  },
+  "opciones": {
+    "modelo": "logistico"
+  },
+  "esperado": {
+    "parametros": {
+      "estimado": [192.68759194163204, 728.756383297002, 353.53366554983529],
+      "ee": [20.244111751167253, 107.29835654620534, 81.471834318179106],
+      "t": [9.5182043208451415, 6.7918690160289765, 4.339336023405945],
+      "p": [7.4819688317434871e-11, 1.1201562649444146e-07, 0.00013381473366057931],
+      "ic_inf": [151.45168570694699, 510.19678314956587, 187.58096967427929],
+      "ic_sup": [233.92349817631708, 947.31598344443819, 519.48636142539135]
+    },
+    "ajuste": {
+      "n": 35,
+      "gl": 32,
+      "rss": 17480.233509040383,
+      "sigma": 23.372147893540124,
+      "r2": 0.84443524676532022,
+      "logLik": -158.39871272191726,
+      "AIC": 324.79742544383453,
+      "BIC": 331.01881768979217
+    },
+    "derivados": []
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "nls(circunferencia ~ <modelo logistico con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+  }
+}

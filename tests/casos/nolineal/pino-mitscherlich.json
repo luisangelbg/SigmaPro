@@ -1,0 +1,61 @@
+{
+  "esquema": 1,
+  "id": "respuesta-meseta/pino-mitscherlich",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "respuesta-meseta"
+  },
+  "titulo": "Mitscherlich (asintótico) de la altura de un pino",
+  "fuente": "Kung (1986), Proceedings of the Fourth Southern Silvicultural Research Conference; conjunto Loblolly de R (semilla 329)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "edad": [3, 5, 10, 15, 20, 25],
+      "altura": [3.9300000000000002, 9.3399999999999999, 26.079999999999998, 37.789999999999999, 48.310000000000002, 56.43]
+    },
+    "tipos": {
+      "edad": {
+        "tipo": "numerica"
+      },
+      "altura": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "altura",
+    "dosis": "edad"
+  },
+  "opciones": {
+    "modelo": "mitscherlich"
+  },
+  "esperado": {
+    "parametros": {
+      "estimado": [94.128209873835516, 102.37896243081684, 0.040051935791414285],
+      "ee": [8.4030191447255849, 7.4989231367864191, 0.0055505445658718114],
+      "t": [11.201713128657811, 13.652488572471249, 7.215856987741061],
+      "p": [0.0015250908356915008, 0.00085017862180901361, 0.0054873978261012878],
+      "ic_inf": [67.386052643475324, 78.514042200544395, 0.022387625745442976],
+      "ic_sup": [120.87036710419571, 126.24388266108929, 0.057716245837385591]
+    },
+    "ajuste": {
+      "n": 6,
+      "gl": 3,
+      "rss": 1.6844014598684638,
+      "sigma": 0.74931111915511295,
+      "r2": 0.9992398028514371,
+      "logLik": -4.7025836435578405,
+      "AIC": 17.405167287115681,
+      "BIC": 16.572205164027899
+    },
+    "derivados": []
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "nls(altura ~ <modelo mitscherlich con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+  }
+}

@@ -25,6 +25,7 @@
   const MIXTOS_DIS = ['mixto-bloques', 'mixto-divididas', 'mixto-latice', 'mixto-localidades'];
   const GENETICOS = ['componentes-varianza', 'heredabilidad', 'repetibilidad'];
   const GLMS = ['glm-conteos', 'glm-proporciones', 'glm-gamma', 'glm', 'glmm-bloques', 'glmm'];
+  const NOLINEAL = ['curva-crecimiento', 'dosis-respuesta', 'respuesta-meseta'];
   const AJUSTES_MX = () => [['tukey', 'Tukey'], ['bonferroni', 'Bonferroni'], ['holm', 'Holm'], ['sidak', 'Šidák'], ['none', T('Sin ajuste (DMS)')]];
   const estado = SP.app.analisis = {
     metodo: 'supuestos', pendiente: true, turno: 0, modo: (() => { try { const m = localStorage.getItem('sigmapro.analisis.modo'); return MODOS.includes(m) ? m : 'asistente'; } catch (e) { return 'asistente'; } })(),
@@ -44,6 +45,7 @@
     mxd: { respuesta: '', tratamientos: [], bloque: '', parcelaGrande: '', subparcela: '', subsubparcela: '', repeticion: '', tratamiento: '', genotipo: '', localidad: '',
       repeticionAleatoria: false, localidadFija: false, compararMx: null, ajuste: 'tukey', gl: 'satterthwaite', estimacion: 'reml', alfa: 0.05, nivel: 0.95, _iniciado: false },
     rep: { respuesta: '', tiempo: '', sujeto: '', tratamientos: [], bloque: '', estructura: 'auto', criterio: 'aic', compararMx: null, dentro: '', ajuste: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
+    nl: { respuesta: '', x: '', grupo: '', modelo: '', nivel: 0.95, alfa: 0.05, metodo: '', _iniciado: false },
     gen: { respuesta: '', aleatorios: [], fijos: [], estructura: 'cruzados', genotipo: '', repeticion: '', bloque: '', ambiente: '', seleccion: 0.1, direccion: 'mayor',
       individuo: '', fijosRep: [], _iniciado: false },
     glm: { respuesta: '', tratamientos: [], bloque: '', covariables: [], ensayos: '', exposicion: '', familia: '', enlace: '', tipo: 2, compararMx: null, dentro: '', ajuste: 'tukey',
@@ -756,7 +758,28 @@
     h += '<p class="small muted">' + esc(mixtoG ? T('Corre en el motor R dentro de tu navegador (lme4, car y emmeans).') : T('Corre en tu navegador (mínimos cuadrados iterativamente reponderados, validado contra glm y glm.nb de R).')) + '</p>';
     return h + campo('glm', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('glm', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
+  /** Regresión no lineal: la x (tiempo o dosis) y la respuesta propuestas por nombre; el modelo, según el método. */
+  const X_NL = { 'curva-crecimiento': /^(dds|dde|ddt|dia|día|dias|días|tiempo|semana|mes|edad|time|day|age)/i, 'dosis-respuesta': /(dosis|dose|conc|^n$|^n_|nitr|kg|ppm)/i, 'respuesta-meseta': /(dosis|dose|^n$|^n_|nitr|kg|riego|lamina|lámina)/i };
+  function formNoLineal(c, m) {
+    const s = estado.nl, num = c.numericas, agr = c.agrupables.filter(n => nivelesDe(c, n).length >= 2), NL = SP.metodosNoLineal;
+    if (!s._iniciado || s.metodo !== m) {
+      if (!s._iniciado || !num.includes(s.x) || !X_NL[m].test(s.x)) s.x = num.find(n => X_NL[m].test(n)) || '';
+      if (!s._iniciado) s.respuesta = (c.pap.respuestas.filter(n => n !== s.x).slice(-1)[0]) || num.find(n => n !== s.x) || '';
+      s._iniciado = true; s.metodo = m;
+    }
+    if (!NL.MODELOS_DE[m].includes(s.modelo)) s.modelo = NL.MODELOS_DE[m][0];
+    if (!num.includes(s.respuesta)) s.respuesta = num.find(n => n !== s.x) || '';
+    if (s.grupo && !agr.includes(s.grupo)) s.grupo = '';
+    let h = campo('nl', 'respuesta', T('Variable de respuesta'), lista(num), s.respuesta);
+    h += campo('nl', 'x', m === 'curva-crecimiento' ? T('Tiempo (días, semanas)') : T('Dosis'), [['', T('— elige —')]].concat(num.filter(n => n !== s.respuesta).map(n => [n, n])), s.x);
+    h += campo('nl', 'grupo', T('Grupos que comparar (opcional)'), [['', T('— una sola curva —')]].concat(agr.filter(n => n !== s.respuesta && n !== s.x).map(n => [n, n])), s.grupo,
+      T('Con grupos (variedades, productos), una curva por grupo y la prueba de si difieren.'));
+    h += campo('nl', 'modelo', T('Modelo'), NL.MODELOS_DE[m].map(k => [k, NL.NOMBRE[k].charAt(0).toUpperCase() + NL.NOMBRE[k].slice(1)]), s.modelo, NL.ECUACION[s.modelo]);
+    h += '<p class="small muted">' + esc(T('Corre en tu navegador (mínimos cuadrados no lineales con gradiente analítico, validado contra nls de R).')) + '</p>';
+    return h + campo('nl', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('nl', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+  }
   function formulario(c) {
+    if (NOLINEAL.includes(estado.metodo)) return formNoLineal(c, estado.metodo);
     if (GLMS.includes(estado.metodo)) return formGlm(c, estado.metodo);
     if (GENETICOS.includes(estado.metodo)) return formGenetico(c, estado.metodo);
     if (estado.metodo === 'medidas-repetidas') return formRepetidas(c);
@@ -783,6 +806,12 @@
       const s = estado.mx;
       return { e: { respuesta: s.respuesta }, op: Object.assign({ derecha: s.derecha, comoFactor: s.comoFactor.slice(), tipoSC: +s.tipoSC, gl: s.gl, reml: s.estimacion !== 'ml', ajuste: s.ajuste, alfa: +s.alfa, nivel: +s.nivel },
         s.compararMx ? { comparar: s.compararMx.slice() } : {}, s.dentro ? { dentro: s.dentro } : {}) };
+    }
+    if (NOLINEAL.includes(m)) {
+      const s = estado.nl, e = { respuesta: s.respuesta };
+      e[m === 'curva-crecimiento' ? 'x' : 'dosis'] = s.x;
+      if (s.grupo) e.grupo = s.grupo;
+      return { e, op: { modelo: s.modelo, nivel: +s.nivel, alfa: +s.alfa } };
     }
     if (GLMS.includes(m)) {
       const s = estado.glm, binomial = ['binomial', 'cuasibinomial'].includes(s.familia) || (s.familia === 'auto' && m === 'glm-proporciones');
@@ -1127,6 +1156,19 @@
       puntos: SP.graficas.adelgazar(v.ajustados.map((x, i) => ({ x, y: v.pearson[i], marca: Math.abs(v.pearson[i]) > 3 })), 2500), referencias: [{ y: 0 }, { y: 2, discontinua: true }, { y: -2, discontinua: true }] }));
     return out.join('');
   }
+  /** Regresión no lineal: los datos con la curva ajustada (una por grupo) y los residuos. */
+  function graficasNoLineal(r) {
+    const v = r.valores, G = r.niveles.length, out = [];
+    out.push(SP.graficas.dispersion({ titulo: T('Curva ajustada: modelo {m}', { m: SP.metodosNoLineal.NOMBRE[r.modelo] }), x: { titulo: r.x }, y: { titulo: r.respuesta },
+      descripcion: T('Cada punto es una observación; la línea es la curva ajustada{g}.', { g: G ? T(', una por cada nivel de «{f}»', { f: r.grupo }) : '' }),
+      puntos: SP.graficas.adelgazar(v.x.map((x, i) => ({ x, y: v.y[i], serie: G ? v.g[i] : undefined })), 2500),
+      lineas: r.curvas.map((c, k) => ({ x: c.x, y: c.y, serie: G ? k : undefined })),
+      leyenda: G ? { titulo: r.grupo, series: r.niveles } : undefined }));
+    out.push(SP.graficas.dispersion({ titulo: T('Residuos contra valores ajustados'), x: { titulo: T('Valor ajustado') }, y: { titulo: T('Residuo') },
+      descripcion: T('Sin patrón (una nube pareja alrededor de cero) el modelo describe bien la forma de los datos; una curva en los residuos indica que falta forma.'),
+      puntos: SP.graficas.adelgazar(r.ajustados.map((x, i) => ({ x, y: v.residuos[i], marca: Math.abs(v.residuos[i]) > 3 * r.ajuste.sigma })), 2500), referencias: [{ y: 0 }] }));
+    return out.join('');
+  }
   function graficasRepetidas(r) {
     let g0 = '';
     const md = (r.medias || [])[0];
@@ -1177,6 +1219,7 @@
     if (r.tipo === 'repetidas') return graficasRepetidas(r);
     if (r.tipo === 'componentes' || r.tipo === 'heredabilidad' || r.tipo === 'repetibilidad') return graficasGeneticos(r);
     if (r.tipo === 'glm' || r.tipo === 'glmm') return graficasGlm(r);
+    if (r.tipo === 'nolineal') return graficasNoLineal(r);
     if (r.tipo === 'modelo') {
       if (r.celdas) {
         const [A, B] = r.celdas.factores, nivA = [], nivB = [];
@@ -1305,7 +1348,7 @@
     if (estado.modo !== 'catalogo') { const p = estado.pintores[estado.modo]; if (p) p(c); return; }
     catalogo();
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -1422,6 +1465,8 @@
       pon(estado.rep, { respuesta: e.respuesta, tiempo: e.tiempo, sujeto: e.sujeto, tratamientos: [].concat(e.tratamientos || []), bloque: e.bloque || '',
         estructura: op.estructura, criterio: op.criterio, ajuste: op.ajuste, dentro: op.dentro === undefined ? undefined : op.dentro });
       estado.rep.compararMx = op.comparar ? [].concat(op.comparar) : null;
+    } else if (NOLINEAL.includes(m)) {
+      pon(estado.nl, { respuesta: e.respuesta, x: e.x || e.dosis, grupo: e.grupo || '', modelo: op.modelo, nivel: op.nivel, metodo: m });
     } else if (GLMS.includes(m)) {
       estado.glm.metodo = m;
       pon(estado.glm, { respuesta: e.respuesta, tratamientos: e.tratamientos ? [].concat(e.tratamientos) : undefined, bloque: e.bloque || '', covariables: [].concat(e.covariables || []),

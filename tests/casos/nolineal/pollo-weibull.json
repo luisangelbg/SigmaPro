@@ -1,0 +1,61 @@
+{
+  "esquema": 1,
+  "id": "curva-crecimiento/pollo-weibull",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "curva-crecimiento"
+  },
+  "titulo": "Weibull del peso de un pollo",
+  "fuente": "Crowder y Hand (1990), Analysis of Repeated Measures; conjunto ChickWeight de R (pollo 6)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "dia": [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 21],
+      "peso": [49, 59, 74, 97, 124, 141, 148, 155, 160, 160, 157]
+    },
+    "tipos": {
+      "dia": {
+        "tipo": "numerica"
+      },
+      "peso": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "peso",
+    "x": "dia"
+  },
+  "opciones": {
+    "modelo": "weibull"
+  },
+  "esperado": {
+    "parametros": {
+      "estimado": [158.50119096469575, 110.99705738062008, -5.9934252636176062, 2.6461426447417327],
+      "ee": [1.176939865735313, 2.6330039820666666, 0.37329466980332487, 0.16129108920566015],
+      "t": [134.67229344438041, 42.15605374569072, -16.055480424553931, 16.406006418418261],
+      "p": [3.2832656457119564e-13, 1.1026654315203762e-09, 8.834892426946507e-07, 7.6217725756537466e-07],
+      "ic_inf": [155.71817041551168, 104.77099231008486, -6.8761268928248684, 2.2647498236402135],
+      "ic_sup": [161.28421151387982, 117.22312245115529, -5.1107236344103439, 3.0275354658432518]
+    },
+    "ajuste": {
+      "n": 11,
+      "gl": 7,
+      "rss": 29.720232317431023,
+      "sigma": 2.0605211656080402,
+      "r2": 0.99838832140889278,
+      "logLik": -21.074954066660009,
+      "AIC": 52.149908133320018,
+      "BIC": 54.139384497311873
+    },
+    "derivados": []
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "nls(peso ~ <modelo weibull con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+  }
+}

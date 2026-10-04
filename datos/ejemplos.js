@@ -221,5 +221,17 @@ window.SP_EJEMPLOS = [
         "niveles": ["2022", "2023", "2024", "2025"]
       }
     }
+  },
+  {
+    "id": "herbicida-dosis",
+    "nombre": "Herbicidas: peso seco por dosis",
+    "descripcion": "Ficticio: peso seco de maleza (g por maceta) con siete dosis (g i.a./ha) de dos herbicidas y cuatro repeticiones; para la dosis-respuesta log-logística (DE50 y comparación entre herbicidas).",
+    "csv": "\"herbicida\",\"rep\",\"dosis\",\"peso_seco\"\n\"Glifosato\",1,0,5.56\n\"Glifosato\",2,0,5.49\n\"Glifosato\",3,0,6.63\n\"Glifosato\",4,0,5.69\n\"Glifosato\",1,15,5.74\n\"Glifosato\",2,15,5.19\n\"Glifosato\",3,15,5.19\n\"Glifosato\",4,15,4.9\n\"Glifosato\",1,30,4.82\n\"Glifosato\",2,30,5.11\n\"Glifosato\",3,30,4.53\n\"Glifosato\",4,30,5.05\n\"Glifosato\",1,60,3.45\n\"Glifosato\",2,60,3.85\n\"Glifosato\",3,60,3.29\n\"Glifosato\",4,60,3.03\n\"Glifosato\",1,120,2.06\n\"Glifosato\",2,120,2.3\n\"Glifosato\",3,120,2.04\n\"Glifosato\",4,120,2.06\n\"Glifosato\",1,240,0.74\n\"Glifosato\",2,240,0.99\n\"Glifosato\",3,240,0.7\n\"Glifosato\",4,240,0.79\n\"Glifosato\",1,480,0.56\n\"Glifosato\",2,480,0.27\n\"Glifosato\",3,480,0.65\n\"Glifosato\",4,480,0.76\n\"Glufosinato\",1,0,6.35\n\"Glufosinato\",2,0,6.18\n\"Glufosinato\",3,0,6.14\n\"Glufosinato\",4,0,6.03\n\"Glufosinato\",1,15,5.73\n\"Glufosinato\",2,15,5.67\n\"Glufosinato\",3,15,5.7\n\"Glufosinato\",4,15,5.86\n\"Glufosinato\",1,30,5.65\n\"Glufosinato\",2,30,4.96\n\"Glufosinato\",3,30,5.7\n\"Glufosinato\",4,30,5.63\n\"Glufosinato\",1,60,5.12\n\"Glufosinato\",2,60,5.14\n\"Glufosinato\",3,60,5.29\n\"Glufosinato\",4,60,4.95\n\"Glufosinato\",1,120,3.84\n\"Glufosinato\",2,120,3.56\n\"Glufosinato\",3,120,3.92\n\"Glufosinato\",4,120,3.78\n\"Glufosinato\",1,240,2.09\n\"Glufosinato\",2,240,1.75\n\"Glufosinato\",3,240,2.28\n\"Glufosinato\",4,240,2.39\n\"Glufosinato\",1,480,0.75\n\"Glufosinato\",2,480,0.92\n\"Glufosinato\",3,480,1.36\n\"Glufosinato\",4,480,0.79",
+    "tipos": {
+      "herbicida": {
+        "tipo": "factor",
+        "niveles": ["Glifosato", "Glufosinato"]
+      }
+    }
   }
 ];
