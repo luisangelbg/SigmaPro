@@ -253,4 +253,39 @@ SPT.describir('Exportaciones · reporte, documentos, hojas, imágenes y proyecto
     SPT.lanza(() => SP.proyecto.abrir(SP.zip.construir([{ nombre: 'otro.txt', datos: 'x' }])), /no es un proyecto/);
     SPT.lanza(() => SP.proyecto.abrir(SP.zip.construir([{ nombre: 'manifiesto.json', datos: JSON.stringify({ formato: 'labg-sigmapro', version_formato: 9, version_programa: '9.0' }) }])), /más nueva/);
   });
+
+  SPT.caso('Guardado automático: la instantánea sobrevive a la copia del navegador y devuelve la misma hoja, filtro y reporte', () => {
+    const c = ensayo();
+    const hoja = SP.hoja.crear({ nombres: Object.keys(c), columnas: c, tipos: { bloque: { tipo: 'factor' }, hibrido: { tipo: 'factor' } } });
+    hoja.agregarColumna({ nombre: 'rend_log', tipo: 'numerica', datos: c.rend.map(Math.log) });
+    hoja.agregarColumna({ nombre: 'siembra', tipo: 'fecha', datos: Float64Array.from(c.rend, (_, i) => 20600 + (i % 3)) });
+    hoja.cols.find(x => x.nombre === 'hibrido').datos[1] = null;   // un faltante en un factor
+    hoja.cols.find(x => x.nombre === 'rend').datos[2] = NaN;   // y en una numérica
+    const reporte = { titulo: 'Ensayo', autor: 'Yo', items: [
+      { id: 7, metodo: 'dbca', e: { respuesta: 'rend', tratamientos: ['hibrido'], bloque: 'bloque' }, op: { tipoSC: 3 }, ctx: null, bloque: 4, vista: 'anova', visibles: ['F', 'p'], titulo: 'ANOVA', nota: '' },
+      { id: 9, metodo: 'descriptivos', e: { variables: ['rend'] }, op: {}, ctx: { factoresNumericos: ['dosis'] }, bloque: 3, titulo: '', nota: 'n' }] };
+    const s = SP.proyecto.instantanea({ hoja, filtro: { expresion: 'dosis > 0', filas: [1, 2] }, origen: 'prueba', reporte, estilos: { figuras: { barras: 'ic' } }, fecha: new Date('2026-10-04T12:00:00Z') });
+    /* las numéricas viajan como Float64Array (copia, no la misma memoria) */
+    SPT.afirmar(s.hoja.columnas.find(x => x.nombre === 'rend').datos instanceof Float64Array, 'Float64Array');
+    SPT.afirmar(s.hoja.columnas.find(x => x.nombre === 'rend').datos !== hoja.cols.find(x => x.nombre === 'rend').datos, 'copia');
+    SPT.igualJSON(s.resumen, { filas: hoja.n, columnas: hoja.p, analisis: 2, origen: 'prueba', titulo: 'Ensayo' });
+    const copia = typeof structuredClone === 'function' ? structuredClone(s) : s;   // lo que hace IndexedDB al guardar
+    const p = SP.proyecto.deInstantanea(copia);
+    SPT.igualJSON(p.hoja.serializar(), hoja.serializar());
+    SPT.igualJSON(p.filtro, { expresion: 'dosis > 0' });
+    SPT.igual(p.origen, 'prueba');
+    /* los análisis conservan vista, columnas visibles, bloque y contexto; no su id */
+    SPT.igualJSON(p.reporte.items[0], { metodo: 'dbca', e: { respuesta: 'rend', tratamientos: ['hibrido'], bloque: 'bloque' }, op: { tipoSC: 3 }, bloque: 4, vista: 'anova', visibles: ['F', 'p'], titulo: 'ANOVA', nota: '' });
+    SPT.igualJSON(p.reporte.items[1].ctx, { factoresNumericos: ['dosis'] });
+    SPT.igualJSON(p.estilos, { figuras: { barras: 'ic' } });
+    /* cambiar el reporte después no cambia lo guardado */
+    reporte.items[0].op.tipoSC = 1;
+    SPT.igual(s.reporte.items[0].op.tipoSC, 3);
+    /* sin datos (solo cálculos sin tabla, como la potencia) */
+    const sd = SP.proyecto.deInstantanea(SP.proyecto.instantanea({ hoja: null, reporte: { items: [{ metodo: 'potencia-t', e: {}, op: { n: 10 } }] } }));
+    SPT.igual(sd.hoja, null); SPT.igual(sd.reporte.items.length, 1);
+    /* lo que no es un trabajo guardado, o viene de una versión más nueva */
+    SPT.lanza(() => SP.proyecto.deInstantanea({ formato: 'otro' }), /no es un trabajo/);
+    SPT.lanza(() => SP.proyecto.deInstantanea(Object.assign({}, s, { version_formato: 9, version_programa: '9.0' })), /más nueva/);
+  });
 });

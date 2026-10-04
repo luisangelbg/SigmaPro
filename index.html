@@ -48,6 +48,7 @@
 
 <!-- ======================= 1 · INICIO ======================= -->
 <section class="step-panel" id="panel-1" aria-labelledby="t1">
+  <div class="rec-caja" data-recuperar hidden></div>
   <div class="hero">
     <div>
       <div class="eyebrow">Investigación agronómica y biológica</div>
@@ -92,6 +93,7 @@
 <!-- ======================= 2 · DATOS ======================= -->
 <section class="step-panel" id="panel-2" aria-labelledby="t2">
   <div class="panel-title"><div><h2 id="t2">Datos</h2><p>Importa o pega la tabla del ensayo, revisa el tipo de cada variable y prepara las que vas a analizar. Los cambios nunca tocan tu archivo original.</p></div></div>
+  <div class="rec-caja" data-recuperar hidden></div>
 
   <div class="dat-barra" role="toolbar" aria-label="Herramientas de datos">
     <div class="btn-row">
@@ -295,6 +297,13 @@
       </div>
       <input type="file" id="expoArchivo" accept=".labg,application/zip" hidden aria-label="Archivo de proyecto .labg">
     </div>
+    <div class="card expo-tarjeta">
+      <h3>Guardado automático</h3>
+      <p class="small muted">Mientras trabajas, los datos y los análisis del reporte se guardan en este navegador, sin salir del equipo. Si la pestaña se cierra sin querer, al volver a abrir SigmaPro te ofrece recuperarlos. En una computadora compartida, desactívalo o borra lo guardado al terminar.</p>
+      <div class="exp-casillas"><label class="imp-check"><input type="checkbox" id="expoAutoActivo" checked> Guardar el trabajo en este navegador</label></div>
+      <p class="small expo-auto-estado" id="expoAutoEstado" role="status" aria-live="polite"></p>
+      <div class="btn-row"><button type="button" class="btn btn-secondary btn-sm" id="expoAutoBorrar">Borrar lo guardado</button></div>
+    </div>
   </div>
   <p class="small muted expo-estado" id="expoEstado" role="status" aria-live="polite"></p>
 </section>
@@ -452,6 +461,7 @@
 <script src="js/interfaz/reporte.js"></script>
 <script src="js/interfaz/figuras.js"></script>
 <script src="js/interfaz/exportar.js"></script>
+<script src="js/interfaz/autoguardado.js"></script>
 <script src="js/labg-figedit.js" data-key="sigmapro:figedit" data-panes="figure.sp-grafica" data-title="figcaption"></script>
 <script src="js/labg-figure-studio.js" defer></script>
 <script src="js/labg-navigator.js" defer></script>

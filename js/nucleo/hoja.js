@@ -363,12 +363,13 @@ SP.definir('hoja', function (SP) {
     return t;
   };
 
-  /** Estado completo, para guardar el proyecto o deshacer operaciones grandes. */
-  H.serializar = function () {
+  /** Estado completo, para guardar el proyecto o deshacer operaciones grandes. Con compacto, las columnas numéricas y
+      de fechas quedan como Float64Array (el guardado automático las pasa tal cual al almacenamiento del navegador). */
+  H.serializar = function (compacto) {
     return {
       n: this.n, opciones: this.opciones,
       columnas: this.cols.map(c => ({ nombre: c.nombre, tipo: c.tipo, niveles: c.niveles, origen: c.origen, detalle: c.detalle,
-        datos: c.datos instanceof Float64Array ? Array.from(c.datos, v => (Number.isNaN(v) ? null : v)) : c.datos.slice() })),
+        datos: c.datos instanceof Float64Array ? (compacto ? c.datos.slice() : Array.from(c.datos, v => (Number.isNaN(v) ? null : v))) : c.datos.slice() })),
     };
   };
   function deSerializado(s) {

@@ -2,6 +2,24 @@
 
 ## Sin publicar
 
+### 0.3.2 · Hito 3.9 · Guardado automático del trabajo (4 oct 2026)
+
+- Mientras se trabaja, los datos (con sus tipos, columnas derivadas y filtro), los análisis del reporte (con su vista y
+  sus columnas visibles) y los ajustes de las figuras se guardan en el almacenamiento del navegador (IndexedDB), dos
+  segundos después del último cambio y al ocultar o cerrar la pestaña. Nada sale del equipo; también con doble clic.
+- Al volver a abrir SigmaPro, Inicio y Datos avisan que quedó un trabajo (fecha, origen, filas, análisis) con
+  **Recuperar el trabajo** y **Descartar**. Lo encontrado se aparta mientras se decide: trabajar en otra cosa no lo pierde.
+  Recuperarlo con otros datos abiertos pide confirmación; los resultados se recalculan, como al abrir un proyecto .labg.
+- Exportar tiene la tarjeta **Guardado automático**: la casilla para desactivarlo (y entonces se borra lo guardado), la
+  hora y el contenido de lo último guardado y **Borrar lo guardado**, para las computadoras compartidas. Si el navegador
+  no deja guardar (ventana privada, almacenamiento bloqueado), la tarjeta lo dice y la app sigue igual.
+- Es rápido: con 100 000 filas y 10 columnas, guardar toma unos 30 ms (12 ms bloquean la página): las columnas numéricas
+  pasan tal cual (`SP.hoja.serializar(true)`), sin comprimir ni calcular huellas.
+- `SP.proyecto.instantanea` y `deInstantanea` (el formato, con su versión); `aplicarProyecto` acepta un trabajo sin
+  datos (solo cálculos sin tabla) y el mensaje de lo recuperado.
+- Versión 0.3.2. 267 pruebas unitarias, 87 escenarios de accesibilidad; `tests/exportar.mjs` recupera el trabajo en
+  una página nueva con los mismos cuadros y comprueba que desactivarlo borra lo guardado.
+
 ### Arreglo · rango estudentizado (4 oct 2026)
 
 - `ptukey`: el primer término de la integral interna (`probRango`) usa ahora el umbral exp(−50/k) del algoritmo

@@ -516,6 +516,12 @@ button.cons-chip:focus-visible { outline: 2px solid var(--primary); outline-offs
 .expo-tarjeta p { margin: 0; }
 .expo-tarjeta .btn-row { margin-top: auto; padding-top: var(--sp-2); }
 .expo-estado { min-height: 1.4em; }
+.expo-auto-estado { min-height: 1.4em; }
+/* guardado automático: el aviso para recuperar el trabajo (Inicio y Datos) */
+.rec-caja { margin-bottom: var(--sp-4); }
+.rec-aviso { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-4); }
+.rec-aviso p { margin: 0; flex: 1 1 22rem; min-width: 0; }
+.rec-aviso .btn-row { margin: 0; }
 
 /* bloque 8 · otras comprobaciones */
 .val-otras { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }

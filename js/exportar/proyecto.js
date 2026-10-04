@@ -14,7 +14,8 @@
         p = { hoja, filtro: { expresion } | null, origen, reporte: { titulo, autor, items: [{ metodo, e, op, titulo, nota }] },
               estilos, fecha }
      SP.proyecto.abrir(bytes) → { manifiesto, hoja, filtro, origen, reporte, estilos, verificacion: { ok, archivos, huella } }
-     SP.proyecto.csv(hoja, filas) · SP.proyecto.codigoR(tabla, items, { origen }) */
+     SP.proyecto.csv(hoja, filas) · SP.proyecto.codigoR(tabla, items, { origen })
+     SP.proyecto.instantanea(p) → objeto · SP.proyecto.deInstantanea(objeto) → como abrir() (guardado automático) */
 SP.definir('proyecto', function (SP) {
   'use strict';
   const T = SP.T;
@@ -144,5 +145,30 @@ SP.definir('proyecto', function (SP) {
     };
   }
 
-  SP.proyecto = { armar, abrir, csv, codigoR, FORMATO };
+  /* Guardado automático: lo mismo que el proyecto (la hoja, el filtro, el reporte y los estilos) como un objeto que el
+     navegador guarda tal cual, sin comprimir ni calcular huellas ni el código R, para armarlo en milisegundos a cada
+     cambio. Los análisis conservan además su vista, sus columnas visibles y su contexto (el .labg no los lleva). */
+  const AUTO = 'sigmapro-autoguardado', VERSION_AUTO = 1;
+  const CAMPOS = ['metodo', 'e', 'op', 'ctx', 'bloque', 'vista', 'visibles', 'titulo', 'nota'];
+  /** → objeto para IndexedDB · p = { hoja | null, filtro, origen, reporte: { titulo, autor, items }, estilos, fecha } */
+  function instantanea(p) {
+    const fecha = p.fecha || new Date(), r = p.reporte || {};
+    const items = (r.items || []).map(it => JSON.parse(JSON.stringify(Object.fromEntries(CAMPOS.filter(k => it[k] !== undefined && it[k] !== null).map(k => [k, it[k]])))));
+    const hoja = p.hoja && p.hoja.p ? p.hoja : null;
+    return {
+      formato: AUTO, version_formato: VERSION_AUTO, version_programa: SP.VERSION, creado: fecha.toISOString(),
+      hoja: hoja ? hoja.serializar(true) : null, filtro: hoja && p.filtro && p.filtro.expresion ? { expresion: p.filtro.expresion } : null, origen: p.origen || '',
+      reporte: { titulo: r.titulo || '', autor: r.autor || '', items }, estilos: JSON.parse(JSON.stringify(p.estilos || {})),
+      resumen: { filas: hoja ? hoja.n : 0, columnas: hoja ? hoja.p : 0, analisis: items.length, origen: p.origen || '', titulo: r.titulo || '' },
+    };
+  }
+  /** objeto guardado → { hoja | null, filtro, origen, reporte, estilos, creado, resumen } (lo que pide aplicarProyecto) */
+  function deInstantanea(s) {
+    if (!s || s.formato !== AUTO || !s.reporte) throw new SP.ErrorSP(T('Lo guardado en este navegador no es un trabajo de SigmaPro.'));
+    if (s.version_formato > VERSION_AUTO) throw new SP.ErrorSP(T('El trabajo guardado viene de una versión más nueva de SigmaPro ({v}).', { v: s.version_programa }), T('Abre la versión más nueva de SigmaPro para recuperarlo.'));
+    return { hoja: s.hoja ? SP.hoja.deSerializado(s.hoja) : null, filtro: s.filtro || null, origen: s.origen || '', reporte: JSON.parse(JSON.stringify(s.reporte)),
+      estilos: s.estilos || {}, creado: s.creado, resumen: s.resumen || {} };
+  }
+
+  SP.proyecto = { armar, abrir, csv, codigoR, FORMATO, instantanea, deInstantanea, AUTO };
 });

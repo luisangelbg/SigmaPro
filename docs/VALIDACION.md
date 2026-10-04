@@ -330,13 +330,17 @@ ejemplo del maíz (bloques al azar, Tukey, polinomios, regresión polinomial y d
 | Figuras | pdftools, png y el lector de imágenes del sistema | cada PDF de una página del tamaño pedido, con su texto en Helvetica y sin caracteres perdidos; cada PNG a 600 ppp; cada TIFF a 600 ppp, del tamaño del PNG e igual a él en todos los píxeles muestreados (44 733) |
 | Proyecto .labg | openssl y R | las 7 huellas SHA-256 del manifiesto; datos.csv idéntico a los datos originales; el código R del proyecto corre de principio a fin |
 | Reabrir el proyecto | la app, en una página nueva | los mismos análisis dan exactamente los mismos cuadros |
+| Guardado automático | la app, en una página nueva | Inicio ofrece recuperar el trabajo (48 filas, 5 análisis) y da exactamente los mismos 16 cuadros; desactivarlo borra lo guardado y activarlo lo guarda otra vez |
 | LaTeX | revisión estructural (no hay compilador instalado) | un entorno table por cuadro, las tres reglas de booktabs y llaves balanceadas |
 
 Las pruebas unitarias (`tests/unidad/exportar.test.js`) cubren además la huella SHA-256 (los vectores de FIPS 180-4 y
 300 mensajes al azar contra crypto de node), el ZIP comprimido, la hoja de cálculo leída con el lector propio, el
 escapado de LaTeX, el bloque de resolución del PNG con su CRC, el TIFF decodificado píxel por píxel, los párrafos de 14
 métodos (sin huecos, con su estadística y con cada cita en la lista de referencias), la numeración del documento y el
-proyecto con un archivo alterado (la huella lo detecta).
+proyecto con un archivo alterado (la huella lo detecta) y la instantánea del guardado automático: pasa por la copia
+del navegador (structuredClone) y devuelve la misma hoja (faltantes, fechas, columnas derivadas), el filtro y el reporte
+(con vista, columnas visibles y contexto), es una copia y no la memoria de la hoja, y rechaza otro formato o una versión
+más nueva.
 
 La validación atrapó un subíndice («hᵢᵢ») que el PDF escribía como «h??»: ahora los subíndices y superíndices de letras
 se escriben con su letra normal, que sí está en las fuentes estándar.
@@ -674,7 +678,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          61 operaciones con 100 000 filas en el navegador (--motor: el motor R con 20 000) (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      86 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      87 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

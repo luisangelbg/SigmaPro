@@ -161,9 +161,11 @@
     if (!d || !d.hoja) { if (L()) L().toast(T('No hay datos que guardar.'), { type: 'warning' }); return null; }
     return exportar(b, T('Guardando el proyecto…'), 'proyecto');
   }
-  function aplicarProyecto(p) {
-    SP.datosUI.cargar(p.hoja, p.origen || T('Proyecto .labg'));
-    if (p.filtro && p.filtro.expresion) {
+  /** Carga un proyecto abierto (o un trabajo recuperado del guardado automático, con op.recuperado). */
+  function aplicarProyecto(p, op) {
+    op = op || {};
+    if (p.hoja) SP.datosUI.cargar(p.hoja, p.origen || T('Proyecto .labg'));
+    if (p.hoja && p.filtro && p.filtro.expresion) {
       const e = SP.datosUI.estado();
       e.filtro = { expresion: p.filtro.expresion, filas: [] };
       SP.datosUI.cambio();
@@ -175,7 +177,13 @@
     } catch (x) { /* sin almacenamiento */ }
     if (es.figuras) Object.assign(R().opciones, es.figuras);
     R().reemplazar(p.reporte || {});
-    estado(T('Proyecto abierto: {n} filas, {k} análisis en el reporte.', { n: p.hoja.n, k: (p.reporte.items || []).length }));
+    const n = p.hoja ? p.hoja.n : 0, k = ((p.reporte || {}).items || []).length;
+    if (op.recuperado) {
+      if (L()) L().toast(T('Trabajo recuperado: {n} filas y {k} análisis; los resultados se recalcularon con sus datos.', { n, k }), { type: 'success' });
+      SP.app.ir(k ? 5 : 2);
+      return;
+    }
+    estado(T('Proyecto abierto: {n} filas, {k} análisis en el reporte.', { n, k }));
     if (L()) L().toast(T('Proyecto abierto: los resultados se recalcularon con sus datos.'), { type: 'success' });
     SP.app.ir(5);
   }
@@ -200,7 +208,7 @@
   }
 
   /* ---------------- bloque 7 ---------------- */
-  const est = SP.app.exportar = { docx, html, imprimir, xlsx, latex, figurasZip, guardarProyecto, abrirProyecto, aplicarProyecto, paginaHtml, items, construir,
+  const est = SP.app.exportar = { docx, html, imprimir, xlsx, latex, figurasZip, guardarProyecto, abrirProyecto, aplicarProyecto, paginaHtml, items, construir, estilos,
     imprimirMarco: marco => marco.contentWindow.print() };
   function pintar() {
     const r = R(), n = r.items.length;

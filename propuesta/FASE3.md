@@ -69,6 +69,7 @@ citas y código R equivalente (que `tests/codigo-r.mjs` corre).
 | 3.6 | Ampliación: estratos en Cox y en log-rank; prueba M de Box en la MANOVA y el discriminante |
 | 3.7 | Ampliación: modelos ARIMA (ajuste, búsqueda por AIC, diagnóstico y pronóstico) |
 | 3.8 | Ampliación: Cox y MANOVA desde el constructor de modelos (0.3.1) |
+| 3.9 | Guardado automático del trabajo en el navegador, con el aviso para recuperarlo (0.3.2) |
 
 ## 5. Riesgos
 

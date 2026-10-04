@@ -9,6 +9,8 @@
 // 2. La página arma cada exportación (.docx, HTML, .xlsx, LaTeX, ZIP de figuras con TIFF y proyecto .labg) y las
 //    entrega con lo que deberían contener.
 // 3. El proyecto se reabre en una página nueva y da los mismos cuadros, y el Estudio de figuras recibe el PDF vectorial.
+//    El guardado automático: al volver a abrir SigmaPro, Inicio ofrece recuperar el trabajo y da los mismos cuadros;
+//    desactivarlo borra lo guardado.
 // 4. R las lee con sus propios lectores: cada número de la hoja de cálculo idéntico al de la app y, para el ANOVA y
 //    las medias, igual al que calcula R desde los datos; cada parte del .docx es XML válido con sus cuadros, figuras y
 //    textos; los PDF de las figuras miden lo que deben y traen su texto; los PNG dicen 600 ppp; la huella SHA-256 de
@@ -133,6 +135,41 @@ try {
   if (reabierto.n !== esperado.analisis) fallasNode.push('proyecto reabierto: ' + reabierto.n + ' análisis');
   if (JSON.stringify(reabierto.cuadros) !== JSON.stringify(esperado.cuadros.map(q => ({ cabecera: q.cabecera, filas: q.filas })))) fallasNode.push('proyecto reabierto: los cuadros no son idénticos');
   if (!/^%PDF-1\.4/.test(reabierto.estudio.cabecera) || reabierto.estudio.formatos.join() !== 'pdf') fallasNode.push('estudio: no recibió el PDF vectorial');
+
+  /* guardado automático: lo que había en la página queda en el navegador; al volver a abrir SigmaPro, Inicio ofrece
+     recuperarlo y da los mismos cuadros; desactivarlo borra lo guardado */
+  await evaluar('SP.app.autoguardado.guardar().then(() => true)');
+  await enviar('Page.navigate', { url: 'about:blank' }); await dormir(300);
+  await enviar('Page.navigate', { url: pathToFileURL(join(RAIZ, 'index.html')).href + '#b1' });
+  for (let k = 0; k < 50; k++) { await dormir(200); if (await evaluar('!!(window.SP && SP.app && SP.app.autoguardado && SP.app.autoguardado.estado.encontrado)')) break; }
+  const recuperado = JSON.parse(await evaluar(`(async () => {
+    const espera = ms => new Promise(r => setTimeout(r, ms));
+    const leerBD = k => new Promise(ok => { const r = indexedDB.open('sigmapro'); r.onerror = () => ok('error'); r.onsuccess = () => { const g = r.result.transaction('trabajo').objectStore('trabajo').get(k); g.onsuccess = () => { ok(g.result === undefined ? null : g.result); r.result.close(); }; }; });
+    const aviso = document.querySelector('#panel-1 [data-recuperar]:not([hidden]) .rec-aviso'), texto = aviso ? aviso.textContent : '';
+    const boton = document.querySelector('#panel-1 [data-rec="recuperar"]');
+    if (boton) boton.click();
+    await espera(300); await SP.app.reporte.listo();
+    const cuadros = [];
+    SP.app.reporte.elementos().forEach(x => x.rep.cuadros.forEach(q => { const v = SP.formatos.valores(q, x.visibles); cuadros.push({ cabecera: v.cabecera, filas: v.filas }); }));
+    const sinAviso = [...document.querySelectorAll('[data-recuperar]')].every(c => c.hidden);
+    const titulo = SP.app.reporte.titulo, n = SP.app.reporte.items.length, filas = SP.app.datos.hoja ? SP.app.datos.hoja.n : 0;
+    await SP.app.autoguardado.guardar();
+    const guardado = await leerBD('actual');
+    /* desactivado: no queda nada guardado; activado otra vez, se guarda de nuevo */
+    await SP.app.autoguardado.poner(false);
+    const trasApagar = await leerBD('actual'), estadoApagado = document.getElementById('expoAutoEstado').textContent;
+    await SP.app.autoguardado.poner(true);
+    const trasPrender = await leerBD('actual');
+    return JSON.stringify({ texto, boton: !!boton, sinAviso, titulo, n, filas, cuadros, guardadoAnalisis: guardado && guardado.resumen.analisis,
+      trasApagar: trasApagar === null, estadoApagado, trasPrender: !!(trasPrender && trasPrender.resumen.analisis === n) });
+  })()`));
+  if (!recuperado.boton || !/48 filas y \d+ columnas, 5 análisis en el reporte/.test(recuperado.texto)) fallasNode.push('guardado automático: el aviso de Inicio no ofrece recuperar el trabajo: «' + recuperado.texto + '»');
+  if (!recuperado.sinAviso) fallasNode.push('guardado automático: el aviso sigue a la vista después de recuperar');
+  if (recuperado.titulo !== 'Ensayo de maíz: híbridos y dosis de nitrógeno' || recuperado.n !== esperado.analisis || recuperado.filas !== 48) fallasNode.push('guardado automático: se recuperó «' + recuperado.titulo + '» con ' + recuperado.n + ' análisis y ' + recuperado.filas + ' filas');
+  if (JSON.stringify(recuperado.cuadros) !== JSON.stringify(esperado.cuadros.map(q => ({ cabecera: q.cabecera, filas: q.filas })))) fallasNode.push('guardado automático: los cuadros recuperados no son idénticos');
+  if (recuperado.guardadoAnalisis !== esperado.analisis) fallasNode.push('guardado automático: después de recuperar, lo guardado tiene ' + recuperado.guardadoAnalisis + ' análisis');
+  if (!recuperado.trasApagar || !/Desactivado/.test(recuperado.estadoApagado)) fallasNode.push('guardado automático: desactivarlo no borró lo guardado');
+  if (!recuperado.trasPrender) fallasNode.push('guardado automático: al activarlo otra vez no se guardó');
 
   /* R: los lectores independientes */
   const guion = `
@@ -291,9 +328,10 @@ $res | ConvertTo-Json -Compress`;
   console.log('  proyecto .labg (openssl): ' + (c.labg_huellas || 0) + ' huellas SHA-256 iguales, datos idénticos a los originales, código R corrido completo (' + (c.labg_codigo_R_lineas || 0) + ' líneas de salida)');
   console.log('  LaTeX: ' + esperado.cuadros.length + ' cuadros con booktabs y llaves balanceadas');
   console.log('  proyecto reabierto en una página nueva: ' + reabierto.n + ' análisis y ' + reabierto.cuadros.length + ' cuadros idénticos; el Estudio de figuras recibe un PDF vectorial (' + Math.round(reabierto.estudio.bytes / 1024) + ' KB a 85 mm)');
+  console.log('  guardado automático: al volver a abrir, Inicio ofrece recuperar el trabajo (' + recuperado.filas + ' filas, ' + recuperado.n + ' análisis) y da los ' + recuperado.cuadros.length + ' cuadros idénticos; desactivarlo borra lo guardado');
   const todas = fallasNode.concat(fallasR, fallasTiff, consola);
   guardar('exportar', { titulo: 'Las exportaciones, leídas con lectores independientes', ok: !todas.length,
-    resumen: `Hoja de cálculo: ${c.xlsx_numeros || 0} números idénticos a la app y ${c.contra_R || 0} valores del ANOVA y las medias iguales a R; .docx válido con ${c.docx_cuadros || 0} cuadros exactos y ${c.docx_imagenes || 0} figuras a 300 ppp; ${c.pdf || 0} PDF vectoriales y ${c.png || 0} PNG a 600 ppp; TIFF iguales al PNG; proyecto .labg con ${c.labg_huellas || 0} huellas SHA-256 iguales, su código R corrido completo y reabierto con los mismos cuadros`,
+    resumen: `Hoja de cálculo: ${c.xlsx_numeros || 0} números idénticos a la app y ${c.contra_R || 0} valores del ANOVA y las medias iguales a R; .docx válido con ${c.docx_cuadros || 0} cuadros exactos y ${c.docx_imagenes || 0} figuras a 300 ppp; ${c.pdf || 0} PDF vectoriales y ${c.png || 0} PNG a 600 ppp; TIFF iguales al PNG; proyecto .labg con ${c.labg_huellas || 0} huellas SHA-256 iguales, su código R corrido completo y reabierto con los mismos cuadros; el guardado automático recupera el trabajo con los mismos cuadros`,
     renglones: ['Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema'] });
   if (todas.length) { console.log('\nFALLAS:'); todas.forEach(f => console.log('  ✗ ' + f)); }
   else console.log('\nTODO APROBADO');

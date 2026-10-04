@@ -49,7 +49,8 @@ medias marginales); y el **Reporte LABG** (conclusión en palabras, cuadros de r
 semáforo, el párrafo de métodos y resultados para la tesis o el artículo con la cita de cada prueba, detalles técnicos
 y código R), las **figuras de publicación** (SVG, PDF vectorial, PNG y TIFF a 600 ppp) y las **exportaciones**: reporte
 en .docx, PDF y HTML, cuadros en hoja de cálculo y LaTeX, y el **proyecto .labg** con la huella SHA-256 de cada archivo y
-el código R que lo repite todo; y el cierre de la fase: **uso sin conexión**, **100 000 filas** en 43 operaciones
+el código R que lo repite todo (y, desde el Hito 3.9, el **guardado automático** en el navegador, con el aviso para
+recuperar el trabajo); y el cierre de la fase: **uso sin conexión**, **100 000 filas** en 43 operaciones
 medidas dentro de su meta, la prueba de **privacidad** (ningún dato sale del navegador) y la **auditoría de
 accesibilidad AA** en claro y oscuro, a 1280 y 360 px, con el foco revisado tecla por tecla. Validado contra R en 624
 casos y 48 458 valores.
@@ -70,7 +71,7 @@ crecimiento, dosis-respuesta con DE50 y respuesta con meseta (dosis óptima), co
 Y las **superficies de respuesta**: punto óptimo, análisis canónico, cresta y ascenso más pronunciado. Y los **ensayos
 multiambiente**: análisis conjunto, estabilidad (Eberhart-Russell, Wricke, Shukla, Lin-Binns), AMMI y biplot GGE.
 
-**Fase 3 completa** (versión 0.3.1, con los Hitos 3.6 a 3.8; plan en [`propuesta/FASE3.md`](propuesta/FASE3.md)): el **tamaño de muestra y la potencia**
+**Fase 3 completa** (versión 0.3.2, con los Hitos 3.6 a 3.9; plan en [`propuesta/FASE3.md`](propuesta/FASE3.md)): el **tamaño de muestra y la potencia**
 (medias, ANOVA, proporciones, correlación y las repeticiones de un experimento), sin necesidad de datos; y el
 **muestreo**: el tamaño de muestra para estimar una media o una proporción, y la estimación con muestreo aleatorio
 simple y estratificado (con la asignación de Neyman); y la **supervivencia**: curvas de Kaplan-Meier, log-rank y el

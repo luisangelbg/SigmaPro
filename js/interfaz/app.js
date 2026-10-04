@@ -80,6 +80,7 @@
     ['hecho', '3.6', 'Estratos en log-rank y Cox; prueba M de Box'],
     ['hecho', '3.7', 'Modelos ARIMA: ajuste, diagnóstico y pronóstico'],
     ['hecho', '3.8', 'Cox y MANOVA desde el constructor de modelos (0.3.1)'],
+    ['hecho', '3.9', 'Guardado automático del trabajo en el navegador (0.3.2)'],
     ['actual', '1.0', 'Publicación: manual, revisión del nombre, repositorio y DOI (versión 1.0.0)'],
   ];
   function hitos() {

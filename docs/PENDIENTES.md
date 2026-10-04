@@ -1,13 +1,13 @@
 # Pendientes de SigmaPro
 
-Estado tras la ampliación de la Fase 3 (Hito 3.8, 4 de octubre de 2026; versión 0.3.1). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
+Estado tras la ampliación de la Fase 3 (Hito 3.9, 4 de octubre de 2026; versión 0.3.2). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
 que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA.md`](../propuesta/PROPUESTA.md) §12).
 
 ## Antes de publicar
 
 - **Nombre.** «SigmaPro» se parece al de un programa comercial de gráficas científicas: buscarlo en el IMPI antes de
   publicar con DOI (riesgo 6 de la propuesta).
-- **Versión 1.0.0.** Hoy la app dice 0.3.1 (Fase 3 completa y su ampliación); al publicar, subir a 1.0.0 en `js/nucleo/sp.js`
+- **Versión 1.0.0.** Hoy la app dice 0.3.2 (Fase 3 completa y su ampliación); al publicar, subir a 1.0.0 en `js/nucleo/sp.js`
   (`SP.VERSION`), `sw.js` y el CHANGELOG.
 - **Motor R sin conexión al publicar**: armar `motor-r/` con `node tools/motor-r/armar.mjs --fuentes` y publicarlo
   junto a la app (no va en el repositorio: unos 250 MB con las fuentes).
@@ -24,8 +24,9 @@ que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA
   figuras sí tienen su PDF vectorial propio.
 - **Figuras en el .docx**: van como PNG a 300 ppp con su tamaño físico, no como vectores.
 - **LaTeX**: se escribe el código de los cuadros (booktabs) y del documento, pero la app no lo compila.
-- **Guardar el trabajo**: los datos y el reporte no se guardan solos; al cerrar la pestaña se pierden si no se guardó
-  el proyecto .labg. Pendiente: guardado automático en el almacenamiento del navegador, con aviso.
+- ~~**Guardar el trabajo**~~: resuelto (Hito 3.9, 4 oct 2026). Los datos y el reporte se guardan solos en el navegador
+  (IndexedDB) y al volver a abrir se ofrece recuperarlos. Queda: con dos pestañas de SigmaPro abiertas a la vez, se
+  guarda lo de la última que cambió; el historial de deshacer de la hoja no se guarda.
 - **Asistente**: no reconoce en los datos una estructura de parcelas divididas; hay que indicarla con sus preguntas o en
   el constructor.
 - **Tablas grandes**: el plan pedía calcular en un hilo de trabajo con más de 20 000 filas. Se midió y resultó más
@@ -93,7 +94,7 @@ base común nueva). **La Fase 2 está completa.** Notas:
 
 ## Fase 3
 
-Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia), Hito 3.1 (muestreo), Hito 3.2 (supervivencia), Hito 3.3 (series de tiempo), Hito 3.4 (MANOVA y discriminante) e Hito 3.5 (asistente para la Fase 3 y cierre). **La Fase 3 está completa.** Después, Hito 3.6 (estratos en la supervivencia y prueba M de Box), Hito 3.7 (modelos ARIMA) e Hito 3.8 (Cox y MANOVA desde el constructor). Notas:
+Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia), Hito 3.1 (muestreo), Hito 3.2 (supervivencia), Hito 3.3 (series de tiempo), Hito 3.4 (MANOVA y discriminante) e Hito 3.5 (asistente para la Fase 3 y cierre). **La Fase 3 está completa.** Después, Hito 3.6 (estratos en la supervivencia y prueba M de Box), Hito 3.7 (modelos ARIMA), Hito 3.8 (Cox y MANOVA desde el constructor) e Hito 3.9 (guardado automático). Notas:
 
 - El constructor arma Cox (con un evento) y la MANOVA (con más respuestas); el muestreo, las series de tiempo y el
   discriminante se eligen en el asistente o en el catálogo. El asistente no propone el tamaño de muestra de un

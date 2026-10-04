@@ -1,4 +1,8 @@
 {
+ "inicio-recuperar": {
+  "espera": true,
+  "prep": "(async () => { window.__esperando = true; document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[0].click(); await new Promise(r => setTimeout(r, 300)); SP.app.reporte.agregar({ metodo: 'dbca', e: { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, op: {} }); await SP.app.autoguardado.guardar(); await SP.app.autoguardado.revisar(); SP.app.ir(1); await new Promise(r => setTimeout(r, 300)); window.__auditT0 = 0; window.__esperando = false; })()"
+ },
  "ana-boton": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.usar('dbca', { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, {})"
  },
