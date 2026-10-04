@@ -93,10 +93,12 @@ base común nueva). **La Fase 2 está completa.** Notas:
 
 ## Fase 3
 
-Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia). Notas:
+Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia) e Hito 3.1 (muestreo). Notas:
 
 - Potencia: sin la prueba t de Welch (varianzas distintas), las proporciones con la corrección de continuidad
   (strict), los diseños factoriales ni el tamaño de muestra de modelos mixtos o por simulación.
+- Muestreo: sin muestreo por conglomerados (en una o dos etapas), sistemático, por razón o regresión, ni el tamaño de
+  muestra del estratificado con un error dado (sí reparte un total). El tamaño de cada estrato se escribe a mano.
 
 Lo que dice la propuesta para esta fase:
 

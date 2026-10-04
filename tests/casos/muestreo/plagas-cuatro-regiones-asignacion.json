@@ -1,0 +1,107 @@
+{
+  "esquema": 1,
+  "id": "muestreo-estratificado/plagas-cuatro-regiones-asignacion",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "muestreo-estratificado"
+  },
+  "titulo": "Insectos por trampa en cuatro regiones (faltantes), 90 % y cómo repartir 80 trampas",
+  "fuente": "Datos sintéticos (generados en este archivo); fórmulas de Cochran (1977) en R base (tests/r/muestreo.R)",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "region": ["norte", "norte", "norte", "norte", "norte", "norte", "norte", "norte", "norte", "norte", "oriente", "oriente", "oriente", "oriente", "oriente", "oriente", "oriente", "poniente", "poniente", "poniente", "poniente", "poniente", "poniente", "poniente", "poniente", "poniente", "sur", "sur", "sur", "sur", "sur", "sur", "sur", "sur", "sur", "sur", "sur", "sur"],
+      "plagas": [26, 32, 17, "NA", 19, 23, 32, 28, 14, 21, 44, 41, 16, 33, 40, 40, 27, 39, 23, 26, "NA", 31, 28, 31, 28, 16, 21, 16, 22, 16, 14, 26, 15, 18, 16, 19, 16, 15]
+    },
+    "tipos": {
+      "region": {
+        "tipo": "factor",
+        "niveles": ["norte", "oriente", "poniente", "sur"]
+      },
+      "plagas": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "plagas",
+    "estrato": "region"
+  },
+  "opciones": {
+    "poblaciones": "norte=120; oriente=45; poniente=80; sur=150",
+    "nTotal": 80,
+    "confianza": 0.90000000000000002
+  },
+  "esperado": {
+    "N": 395,
+    "n": 36,
+    "estratos": [
+      {
+        "estrato": "norte",
+        "Nh": 120,
+        "nh": 9,
+        "W": 0.30379746835443039,
+        "f": 0.074999999999999997,
+        "media": 23.555555555555557,
+        "varianza": 41.277777777777779,
+        "de": 6.4247784224654607,
+        "aporte": 0.39154693870284324
+      },
+      {
+        "estrato": "oriente",
+        "Nh": 45,
+        "nh": 7,
+        "W": 0.11392405063291139,
+        "f": 0.15555555555555556,
+        "media": 34.428571428571431,
+        "varianza": 98.952380952380949,
+        "de": 9.9474811360655995,
+        "aporte": 0.1549280760213074
+      },
+      {
+        "estrato": "poniente",
+        "Nh": 80,
+        "nh": 8,
+        "W": 0.20253164556962025,
+        "f": 0.10000000000000001,
+        "media": 27.75,
+        "varianza": 44.5,
+        "de": 6.6708320320631671,
+        "aporte": 0.2053517064572985
+      },
+      {
+        "estrato": "sur",
+        "Nh": 150,
+        "nh": 12,
+        "W": 0.379746835443038,
+        "f": 0.080000000000000002,
+        "media": 17.833333333333332,
+        "varianza": 12.696969696969697,
+        "de": 3.5632807491088458,
+        "aporte": 0.14037668788510002
+      }
+    ],
+    "media": 23.470765521398434,
+    "ee": 0.94456519577345699,
+    "gl": 25.695125895207951,
+    "t": 1.706365500807915,
+    "ic": [21.858992058066733, 25.082538984730135],
+    "total": 9270.9523809523816,
+    "ee_total": 373.10325233051549,
+    "ic_total": [8634.3018629363596, 9907.6028989684037],
+    "asignacion": {
+      "n": 80,
+      "proporcional": [24.303797468354432, 9.113924050632912, 16.202531645569621, 30.379746835443036],
+      "neyman": [26.971626760702154, 15.660058454677147, 18.669716932494602, 18.698597852126092]
+    },
+    "excluidas": 2
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "ref_estratificado(datos$plagas, datos$region, Nh = c(norte=120; oriente=45; poniente=80; sur=150), confianza = 0.9, nTotal = 80) (tests/r/muestreo.R)"
+  }
+}

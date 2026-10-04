@@ -236,6 +236,18 @@ d <- d[sample(13), ]; d$corrida <- 1:13; rownames(d) <- NULL
 agregar("tomate-superficie", "Tomate: nitrógeno × potasio (central compuesto)",
         "Ficticio: rendimiento de tomate (t/ha) en un central compuesto rotable de nitrógeno y potasio (kg/ha) con cinco puntos centrales, en orden aleatorio de corrida; para la superficie de respuesta (punto óptimo, análisis canónico y cresta).", d)
 
+## 19. Aguacate: muestreo de árboles en tres huertas (muestreo estratificado y proporción; ficticio)
+set.seed(1919)
+nh <- c(Ladera = 12, Planicie = 16, Vega = 10)
+d <- data.frame(huerta = rep(names(nh), nh), stringsAsFactors = FALSE)
+d$arbol <- seq_len(nrow(d))
+d$rendimiento_kg <- round(c(rnorm(12, 46, 9), rnorm(16, 61, 7), rnorm(10, 38, 12)), 1)
+d$con_trips <- rbinom(nrow(d), 1, c(Ladera = 0.25, Planicie = 0.12, Vega = 0.4)[d$huerta])
+d$rendimiento_kg[c(9, 30)] <- NA                                        # dos árboles sin pesar
+agregar("aguacate-huertas", "Aguacate: muestreo en tres huertas",
+        "Ficticio: kilogramos de fruta por árbol y presencia de trips (0/1) en árboles tomados al azar de tres huertas con 420 (Ladera), 900 (Planicie) y 260 (Vega) árboles, con dos pesadas perdidas; para el muestreo estratificado (media y total de la cosecha, asignación de Neyman) y la proporción de árboles con trips.", d,
+        list(huerta = list(tipo = "factor", niveles = c("Ladera", "Planicie", "Vega"))))
+
 ## escribir datos/ejemplos.js
 js <- paste0(
   "/* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.\n",

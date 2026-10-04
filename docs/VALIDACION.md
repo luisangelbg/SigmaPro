@@ -434,6 +434,18 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
 
+## Muestreo en el núcleo JS (Hito 3.1)
+
+- **Referencia** (`tests/r/muestreo.R`): las fórmulas de Cochran (1977, caps. 2 a 5) en R base, escritas por otro
+  camino que la app: la varianza de una proporción 0/1 con var(), la de la media estratificada como
+  (1/N²)·Σ N_h(N_h − n_h)s_h²/n_h y las medias de los estratos con tapply.
+- **Resultado**: 11 casos (tamaño de muestra de una media con DE o con CV y de una proporción, con y sin población
+  finita; aleatorio simple con faltantes, con total y con proporciones; estratificado con faltantes, con fracciones de
+  muestreo altas y con la asignación proporcional y de Neyman): 217 valores, diferencia escalada máxima 1.2 × 10⁻¹⁴.
+- **Pruebas unitarias** (`tests/unidad/muestreo.test.js`): valores de libro (n₀ = 384.15 para p = 0.5, ± 0.05 y
+  95 %), un censo sin error de muestreo, el estratificado con un solo estrato igual al aleatorio simple, las
+  asignaciones que suman la muestra, la lectura de los tamaños de los estratos y los mensajes de error.
+
 ## Tamaño de muestra y potencia en el núcleo JS (Hito 3.0)
 
 - **Referencia** (`tests/r/potencia.R`): las funciones de R con sus valores por omisión (power.t.test,
@@ -571,7 +583,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          53 operaciones con 100 000 filas en el navegador (--motor: el motor R con 20 000) (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      75 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      77 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

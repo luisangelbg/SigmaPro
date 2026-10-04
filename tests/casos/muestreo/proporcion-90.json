@@ -1,0 +1,36 @@
+{
+  "esquema": 1,
+  "id": "tamano-muestra/proporcion-90",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tamano-muestra"
+  },
+  "titulo": "Hojas para estimar la incidencia (esperada 30 %) con ± 5 % y 90 % de confianza",
+  "fuente": "Cochran, W. G. (1977), Sampling Techniques, 3.ª ed., caps. 2–5 (fórmulas en R base, tests/r/muestreo.R)",
+  "clase": "A",
+  "entradas": {},
+  "opciones": {
+    "tipo": "proporcion",
+    "escala": "absoluto",
+    "de": 1,
+    "cv": 20,
+    "p": 0.29999999999999999,
+    "error": 0.050000000000000003,
+    "N": 0,
+    "confianza": 0.90000000000000002
+  },
+  "esperado": {
+    "z": 1.6448536269514715,
+    "n0": 227.26565014401442,
+    "n": 227.26565014401442,
+    "n_entero": 228
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "ref_tamano(op) (tests/r/muestreo.R)"
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "esquema": 1,
+  "id": "muestreo-estratificado/rendimiento-tres-suelos",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "muestreo-estratificado"
+  },
+  "titulo": "Rendimiento con tres tipos de suelo (hectáreas por estrato)",
+  "fuente": "Datos sintéticos (generados en este archivo); fórmulas de Cochran (1977) en R base (tests/r/muestreo.R)",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "suelo": ["arcilloso", "arcilloso", "arcilloso", "arcilloso", "arcilloso", "arcilloso", "arcilloso", "arcilloso", "arcilloso", "arcilloso", "arcilloso", "arcilloso", "arenoso", "arenoso", "arenoso", "arenoso", "arenoso", "arenoso", "arenoso", "arenoso", "franco", "franco", "franco", "franco", "franco", "franco", "franco", "franco", "franco", "franco", "franco", "franco", "franco", "franco", "franco"],
+      "rendimiento": [6.8300000000000001, 7.46, 6.9199999999999999, 5.4299999999999997, 6.0099999999999998, 5.1699999999999999, 6.5, 6.1500000000000004, 5.7400000000000002, 4.4800000000000004, 7.4100000000000001, 5.4199999999999999, 5.7999999999999998, 3.1899999999999999, 3.54, 5.1500000000000004, 5.46, 2.6299999999999999, 5.4299999999999997, 1.48, 6.6200000000000001, 7.5899999999999999, 6.7000000000000002, 6.7599999999999998, 7.2699999999999996, 6.9000000000000004, 7.3700000000000001, 7.4000000000000004, 6.04, 6.9500000000000002, 6.96, 8.9499999999999993, 7.2199999999999998, 7.4400000000000004, 7.1100000000000003]
+    },
+    "tipos": {
+      "suelo": {
+        "tipo": "factor",
+        "niveles": ["arcilloso", "arenoso", "franco"]
+      },
+      "rendimiento": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "rendimiento",
+    "estrato": "suelo"
+  },
+  "opciones": {
+    "poblaciones": "arcilloso=240; arenoso=130; franco=410",
+    "nTotal": 0,
+    "confianza": 0.94999999999999996
+  },
+  "esperado": {
+    "N": 780,
+    "n": 35,
+    "estratos": [
+      {
+        "estrato": "arcilloso",
+        "Nh": 240,
+        "nh": 12,
+        "W": 0.30769230769230771,
+        "f": 0.050000000000000003,
+        "media": 6.1266666666666669,
+        "varianza": 0.86029696969696967,
+        "de": 0.92752195105936419,
+        "aporte": 0.0064479851772159466
+      },
+      {
+        "estrato": "arenoso",
+        "Nh": 130,
+        "nh": 8,
+        "W": 0.16666666666666666,
+        "f": 0.061538461538461542,
+        "media": 4.085,
+        "varianza": 2.5394571428571426,
+        "de": 1.5935674265173541,
+        "aporte": 0.0082749404761904739
+      },
+      {
+        "estrato": "franco",
+        "Nh": 410,
+        "nh": 15,
+        "W": 0.52564102564102566,
+        "f": 0.036585365853658534,
+        "media": 7.1520000000000001,
+        "varianza": 0.40397428571428551,
+        "de": 0.63558971492172955,
+        "aporte": 0.0071689278513509241
+      }
+    ],
+    "media": 6.3253461538461542,
+    "ee": 0.14795895885264043,
+    "gl": 27.810622905165395,
+    "t": 2.0490357363085332,
+    "ic": [6.0221729596500904, 6.628519348042218],
+    "total": 4933.7700000000004,
+    "ee_total": 115.40798790505954,
+    "ic_total": [4697.2949085270702, 5170.2450914729297],
+    "excluidas": 0
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "ref_estratificado(datos$rendimiento, datos$suelo, Nh = c(arcilloso=240; arenoso=130; franco=410), confianza = 0.95, nTotal = 0) (tests/r/muestreo.R)"
+  }
+}

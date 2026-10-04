@@ -1,0 +1,36 @@
+{
+  "esquema": 1,
+  "id": "tamano-muestra/media-cv-poblacion-finita",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tamano-muestra"
+  },
+  "titulo": "Plantas de un lote de 400 para estimar la altura con ± 10 % (CV 25 %)",
+  "fuente": "Cochran, W. G. (1977), Sampling Techniques, 3.ª ed., caps. 2–5 (fórmulas en R base, tests/r/muestreo.R)",
+  "clase": "A",
+  "entradas": {},
+  "opciones": {
+    "tipo": "media",
+    "escala": "relativo",
+    "de": 1,
+    "cv": 25,
+    "p": 0.5,
+    "error": 10,
+    "N": 400,
+    "confianza": 0.94999999999999996
+  },
+  "esperado": {
+    "z": 1.9599639845400536,
+    "n0": 24.009117629338277,
+    "n": 22.649623917122128,
+    "n_entero": 23
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "ref_tamano(op) (tests/r/muestreo.R)"
+  }
+}

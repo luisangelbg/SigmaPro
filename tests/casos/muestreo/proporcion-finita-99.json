@@ -1,0 +1,36 @@
+{
+  "esquema": 1,
+  "id": "tamano-muestra/proporcion-finita-99",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tamano-muestra"
+  },
+  "titulo": "Árboles de una huerta de 1500 para estimar una proporción con ± 4 % y 99 %",
+  "fuente": "Cochran, W. G. (1977), Sampling Techniques, 3.ª ed., caps. 2–5 (fórmulas en R base, tests/r/muestreo.R)",
+  "clase": "A",
+  "entradas": {},
+  "opciones": {
+    "tipo": "proporcion",
+    "escala": "absoluto",
+    "de": 1,
+    "cv": 20,
+    "p": 0.5,
+    "error": 0.040000000000000001,
+    "N": 1500,
+    "confianza": 0.98999999999999999
+  },
+  "esperado": {
+    "z": 2.5758293035488999,
+    "n0": 1036.7025939095643,
+    "n": 613.02176084729683,
+    "n_entero": 614
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "ref_tamano(op) (tests/r/muestreo.R)"
+  }
+}

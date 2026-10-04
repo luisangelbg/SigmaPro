@@ -1,0 +1,36 @@
+{
+  "esquema": 1,
+  "id": "tamano-muestra/media-absoluta",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tamano-muestra"
+  },
+  "titulo": "Frutos para estimar el peso medio con ± 5 g (DE esperada 18 g)",
+  "fuente": "Cochran, W. G. (1977), Sampling Techniques, 3.ª ed., caps. 2–5 (fórmulas en R base, tests/r/muestreo.R)",
+  "clase": "A",
+  "entradas": {},
+  "opciones": {
+    "tipo": "media",
+    "escala": "absoluto",
+    "de": 18,
+    "cv": 20,
+    "p": 0.5,
+    "error": 5,
+    "N": 0,
+    "confianza": 0.94999999999999996
+  },
+  "esperado": {
+    "z": 1.9599639845400536,
+    "n0": 49.785306316195836,
+    "n": 49.785306316195836,
+    "n_entero": 50
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "ref_tamano(op) (tests/r/muestreo.R)"
+  }
+}

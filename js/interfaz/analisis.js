@@ -29,6 +29,7 @@
   const SUPERFICIES = ['superficie-respuesta', 'ascenso-pronunciado'];
   const MULTI = ['ensayos-multiambiente', 'estabilidad', 'ammi', 'gge'];
   const POTENCIA = ['potencia-medias', 'potencia-anova', 'potencia-proporciones', 'potencia-correlacion', 'repeticiones'];
+  const MUESTREO = ['tamano-muestra', 'muestreo-simple', 'muestreo-estratificado'];
   /* sin datos cargados, los métodos que no los necesitan (potencia y tamaño de muestra) corren con estas columnas vacías */
   const SIN_DATOS = { t: null, pap: { respuestas: [], factores: [], bloque: null }, numericas: [], fechas: [], factores: [], numFactor: [], agrupables: [], sinDatos: true };
   const AJUSTES_MX = () => [['tukey', 'Tukey'], ['bonferroni', 'Bonferroni'], ['holm', 'Holm'], ['sidak', 'Šidák'], ['none', T('Sin ajuste (DMS)')]];
@@ -55,6 +56,8 @@
     ma: { respuesta: '', genotipo: '', ambiente: '', repeticion: '', eeb: 'propio', objetivo: 'maximo', escala: 'ninguna', particion: 'simetrica', alfa: 0.05, _iniciado: false },
     pot: { calcular: 'n', n: 10, diferencia: 1, de: 1, tipo: 'dos', alternativa: 'bilateral', alfa: 0.05, potencia: 0.8, grupos: 4, medias: '', varEntre: 1, p1: 0.5, p2: 0.7, r: 0.3,
       cv: 12, difPct: 20, tratamientos: 5, diseno: 'dbca' },
+    mue: { que: 'media', escala: 'absoluto', de: 1, errorAbs: 0.25, cv: 20, errorPct: 10, p: 0.5, errorProp: 0.05, N: 0, confianza: 0.95, respuesta: '', estrato: '', tipoSimple: 'auto', nTotal: 0, _iniciado: false },
+    mueN: {},   // el tamaño de la población de cada estrato, por el nombre del nivel
     sinDatos: false,
     gen: { respuesta: '', aleatorios: [], fijos: [], estructura: 'cruzados', genotipo: '', repeticion: '', bloque: '', ambiente: '', seleccion: 0.1, direccion: 'mayor',
       individuo: '', fijosRep: [], _iniciado: false },
@@ -67,9 +70,9 @@
   function catalogo(c) {
     const vacio = c && c.sinDatos;
     const fams = SP.familias.filter(f => f.fase <= 3 && f.id !== 'descriptiva' && (!vacio || f.id === 'potencia'));
-    if (!SP.metodoDisponible(estado.metodo) || (vacio && !POTENCIA.includes(estado.metodo))) estado.metodo = vacio ? 'potencia-medias' : 'supuestos';
+    if (!SP.metodoDisponible(estado.metodo) || (vacio && !(SP.metodos[estado.metodo] || {}).sinDatos)) estado.metodo = vacio ? 'potencia-medias' : 'supuestos';
     $('#anaCatalogo').innerHTML = fams.map(f => {
-      const metodos = SP.listaMetodos(f.id).filter(m => SP.metodoDisponible(m.id));
+      const metodos = SP.listaMetodos(f.id).filter(m => SP.metodoDisponible(m.id) && (!vacio || m.sinDatos));
       const items = metodos.length
         ? metodos.map(m => `<li><button type="button" class="ana-item${m.id === estado.metodo ? ' activo' : ''}" data-metodo="${esc(m.id)}" aria-pressed="${m.id === estado.metodo}" title="${esc(m.resumen)}"><b>${esc(m.nombre)}</b></button></li>`).join('')
         : `<li><span class="ana-item pronto"><b>${esc(T('Pronto'))}</b><span class="pill gris">${esc(T('Hito {h}', { h: HITO[f.id] || '' }))}</span></span></li>`;
@@ -879,8 +882,57 @@
     h += numero('pot', 'alfa', T('Nivel de significancia'), s.alfa, '', ' min="0" max="1"');
     return h + '<p class="small muted">' + esc(T('Corre en tu navegador con las mismas fórmulas que R (validado contra power.t.test, power.anova.test, power.prop.test y pwr).')) + '</p>';
   }
+  /** Muestreo: el tamaño de muestra sin datos; la estimación con una columna y, en el estratificado, el tamaño de cada estrato. */
+  function formMuestreo(c, m) {
+    const s = estado.mue, pie = '<p class="small muted">' + esc(T('Corre en tu navegador con las fórmulas de Cochran (1977), validadas contra R.')) + '</p>';
+    let h = '';
+    if (m === 'tamano-muestra') {
+      if (c.sinDatos) h += '<p class="small muted">' + esc(T('No hace falta cargar datos: todo se calcula con los valores de abajo.')) + '</p>';
+      h += campo('mue', 'que', T('¿Qué se quiere estimar?'), [['media', T('Una media (peso, altura, rendimiento)')], ['proporcion', T('Una proporción (incidencia, germinación)')]], s.que);
+      if (s.que === 'proporcion') {
+        h += numero('mue', 'p', T('Proporción esperada (0 a 1)'), s.p, T('Si no se sabe, 0.5 da el tamaño más grande (el más seguro).'), ' min="0" max="1"');
+        h += numero('mue', 'errorProp', T('Error máximo aceptable (± en proporción)'), s.errorProp, T('Por ejemplo, 0.05 para ± 5 puntos porcentuales.'), ' min="0" max="1"');
+      } else {
+        h += campo('mue', 'escala', T('La variación y el error se dan'), [['absoluto', T('En las unidades de la variable (DE y ± e)')], ['relativo', T('En porcentaje de la media (CV y ± %)')]], s.escala);
+        if (s.escala === 'relativo') {
+          h += numero('mue', 'cv', T('Coeficiente de variación esperado (%)'), s.cv, T('De un muestreo anterior o de la literatura.'), ' min="0"');
+          h += numero('mue', 'errorPct', T('Error máximo aceptable (± % de la media)'), s.errorPct, '', ' min="0"');
+        } else {
+          h += numero('mue', 'de', T('Desviación estándar esperada'), s.de, T('De un muestreo anterior o de la literatura.'), ' min="0"');
+          h += numero('mue', 'errorAbs', T('Error máximo aceptable (± en las unidades de la variable)'), s.errorAbs, '', ' min="0"');
+        }
+      }
+      h += numero('mue', 'N', T('Tamaño de la población (0 si es muy grande)'), s.N, T('Plantas del lote, árboles de la huerta, sacos del almacén…'), ' min="0" step="1"');
+      return h + campo('mue', 'confianza', T('Nivel de confianza'), NIVELES, s.confianza) + pie;
+    }
+    const num = c.numericas, agr = c.agrupables.filter(n => nivelesDe(c, n).length >= 2);
+    if (!s._iniciado) {
+      /* se propone una medida (kg, altura) antes que una columna 0/1, que se estima mejor como proporción en el aleatorio simple */
+      const binaria = n => { const v = c.t.col(n).valores; let k = 0; for (const x of v) if (x === x) { if (x !== 0 && x !== 1) return false; k++; } return k > 0; };
+      s.respuesta = c.pap.respuestas.filter(n => !binaria(n)).slice(-1)[0] || num.filter(n => !binaria(n)).slice(-1)[0] || num[num.length - 1] || '';
+      s.estrato = agr.find(n => /estr|huert|lote|regi|zona|parc|suelo|sitio|loc/i.test(n)) || agr[0] || '';
+      s._iniciado = true;
+    }
+    if (!num.includes(s.respuesta)) s.respuesta = num[num.length - 1] || '';
+    h += campo('mue', 'respuesta', T('Variable medida en la muestra'), lista(num), s.respuesta);
+    if (m === 'muestreo-simple') {
+      h += campo('mue', 'tipoSimple', T('Estimar'), [['auto', T('Automático (proporción si la columna es 0/1)')], ['media', T('La media y el total')], ['proporcion', T('Una proporción (columna 0/1)')]], s.tipoSimple);
+      h += numero('mue', 'N', T('Tamaño de la población (0 si es muy grande o desconocido)'), s.N, T('Con él se corrige el error por población finita y se estima el total.'), ' min="0" step="1"');
+    } else {
+      if (s.estrato && (!agr.includes(s.estrato) || s.estrato === s.respuesta)) s.estrato = '';
+      h += campo('mue', 'estrato', T('Estratos (huertas, lotes, regiones, tipos de suelo)'), [['', T('— elige —')]].concat(agr.filter(n => n !== s.respuesta).map(n => [n, n])), s.estrato);
+      if (s.estrato) {
+        h += `<fieldset class="exp-casillas"><legend>${esc(T('Tamaño de la población de cada estrato (N_h)'))}</legend>`;
+        for (const l of nivelesDe(c, s.estrato)) h += numero('mueN', esc(l), l, estado.mueN[l] === undefined ? '' : estado.mueN[l], '', ' min="1" step="1"');
+        h += `<p class="small muted">${esc(T('Las unidades que hay en cada estrato, no solo las muestreadas.'))}</p></fieldset>`;
+      }
+      h += numero('mue', 'nTotal', T('Repartir una muestra nueva de (opcional)'), s.nTotal, T('Con un total, propone cuántas unidades tomar en cada estrato: proporcional y de Neyman.'), ' min="0" step="1"');
+    }
+    return h + campo('mue', 'confianza', T('Nivel de confianza'), NIVELES, s.confianza) + pie;
+  }
   function formulario(c) {
     if (POTENCIA.includes(estado.metodo)) return formPotencia(c, estado.metodo);
+    if (MUESTREO.includes(estado.metodo)) return formMuestreo(c, estado.metodo);
     if (MULTI.includes(estado.metodo)) return formMultiambiente(c, estado.metodo);
     if (SUPERFICIES.includes(estado.metodo)) return formSuperficie(c, estado.metodo);
     if (NOLINEAL.includes(estado.metodo)) return formNoLineal(c, estado.metodo);
@@ -920,6 +972,15 @@
       else if (m === 'potencia-proporciones') Object.assign(op, { p1: n('p1'), p2: n('p2'), alternativa: s.alternativa });
       else Object.assign(op, { r: n('r'), alternativa: s.alternativa });
       return { e: {}, op };
+    }
+    if (MUESTREO.includes(m)) {
+      const s = estado.mue;
+      if (m === 'tamano-muestra') return { e: {}, op: { tipo: s.que, escala: s.escala, de: +s.de, cv: +s.cv, p: +s.p, N: +s.N, confianza: +s.confianza,
+        error: +(s.que === 'proporcion' ? s.errorProp : s.escala === 'relativo' ? s.errorPct : s.errorAbs) } };
+      if (m === 'muestreo-simple') return { e: { respuesta: s.respuesta }, op: { N: +s.N, tipo: s.tipoSimple, confianza: +s.confianza } };
+      /* los tamaños escritos, de este estrato y de otros (el método toma los de sus niveles) */
+      const pob = Object.entries(estado.mueN).filter(([, v]) => v !== '' && v !== null && v !== undefined).map(([k, v]) => k + '=' + v).join('; ');
+      return { e: { respuesta: s.respuesta, estrato: s.estrato }, op: { poblaciones: pob, nTotal: +s.nTotal, confianza: +s.confianza } };
     }
     if (MULTI.includes(m)) {
       const s = estado.ma, e = { respuesta: s.respuesta, genotipo: s.genotipo, ambiente: s.ambiente };
@@ -1305,6 +1366,31 @@
       descripcion: T('La potencia para cada tamaño de muestra con el mismo efecto; la línea vertical es el tamaño calculado o dado y la horizontal, la potencia.'),
       linea: { x: r.curva.n, y: r.curva.potencia }, referencias: [{ y: r.potencia, discontinua: true }], verticales: [{ x: r.n, discontinua: true }] });
   }
+  function graficasMuestreo(r) {
+    if (r.metodo === 'tamano-muestra') {
+      const es = [], ns = [];
+      for (let k = 0; k <= 40; k++) {
+        const e = r.error * (0.5 + 1.5 * k / 40);
+        es.push(e);
+        ns.push(SP.muestreo.tamano({ tipo: r.que, de: r.de, cv: r.cv, p: r.p, error: e, relativo: r.escala === 'relativo', N: r.N, confianza: r.confianza }).n);
+      }
+      return SP.graficas.dispersion({ titulo: T('Tamaño de muestra según el error aceptado'), x: { titulo: T('Error máximo (±)') }, y: { titulo: T('Tamaño de muestra') },
+        descripcion: T('Las unidades que hacen falta para cada error, con la misma variación y confianza; la línea vertical es el error pedido. Reducir el error a la mitad cuadruplica la muestra (si la población es grande).'),
+        linea: { x: es, y: ns }, referencias: [{ y: r.n, discontinua: true }], verticales: [{ x: r.error, discontinua: true }] });
+    }
+    const qt = (g, conf) => SP.dist.qt(1 - (1 - conf) / 2, g, true);
+    if (r.metodo === 'muestreo-simple') {
+      const tope = r.N ? Math.min(r.N, Math.max(4 * r.n, 20)) : Math.max(4 * r.n, 20), paso = Math.max(1, Math.ceil((tope - 2) / 80)), ns = [], semi = [];
+      for (let k = 2; k <= tope; k += paso) { ns.push(k); semi.push(qt(k - 1, r.confianza) * Math.sqrt((1 - (r.N ? k / r.N : 0)) * r.varianza / k)); }
+      return SP.graficas.dispersion({ titulo: T('Precisión según el tamaño de muestra'), x: { titulo: T('Tamaño de muestra (n)') }, y: { titulo: T('Semiamplitud del intervalo (±)') },
+        descripcion: T('El ± del intervalo de confianza para cada n, con la varianza de esta muestra; la línea vertical es la muestra tomada.'),
+        linea: { x: ns, y: semi }, verticales: [{ x: r.n, discontinua: true }] });
+    }
+    return SP.graficas.medias({ titulo: T('Media de cada estrato'), y: { titulo: r.respuesta },
+      descripcion: T('La media de cada estrato con su intervalo de confianza; la línea es la media estratificada, en la que cada estrato pesa según su tamaño en la población.'),
+      grupos: r.estratos.map(x => { const ee = Math.sqrt((1 - x.f) * x.varianza / x.nh), t = qt(x.nh - 1, r.confianza); return { nombre: x.estrato, media: x.media, inf: x.media - t * ee, sup: x.media + t * ee }; }),
+      referencias: [{ y: r.media, discontinua: true }] });
+  }
   function graficasMultiambiente(r) {
     const Gn = r.genotipos, An = r.ambientes_nombre, out = [], f1 = v => SP.formatos.texto(v, 'forma2');
     if (r.metodo === 'ensayos-multiambiente' && Gn.length <= 12) {
@@ -1432,6 +1518,7 @@
     if (r.tipo === 'superficie') return graficasSuperficie(r);
     if (r.tipo === 'multiambiente') return graficasMultiambiente(r);
     if (r.tipo === 'potencia') return graficasPotencia(r);
+    if (r.tipo === 'muestreo') return graficasMuestreo(r);
     if (r.tipo === 'modelo') {
       if (r.celdas) {
         const [A, B] = r.celdas.factores, nivA = [], nivB = [];
@@ -1563,7 +1650,7 @@
     if (estado.modo !== 'catalogo') { const p = estado.pintores[estado.modo]; if (p) p(c); return; }
     catalogo(c);
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = estado.srf._iniciado = estado.ma._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = estado.srf._iniciado = estado.ma._iniciado = estado.mue._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -1683,6 +1770,13 @@
     } else if (POTENCIA.includes(m)) {
       pon(estado.pot, m === 'repeticiones' ? { cv: op.cv, difPct: op.diferencia, tratamientos: op.tratamientos, diseno: op.diseno, alfa: op.alfa, potencia: op.potencia }
         : { calcular: op.calcular, n: op.n, diferencia: op.diferencia, de: op.de, tipo: op.tipo, alternativa: op.alternativa, grupos: op.grupos, medias: op.medias, varEntre: op.varEntre, p1: op.p1, p2: op.p2, r: op.r, alfa: op.alfa, potencia: op.potencia });
+    } else if (MUESTREO.includes(m)) {
+      const s = estado.mue;
+      if (m === 'tamano-muestra') {
+        pon(s, { que: op.tipo, escala: op.escala, de: op.de, cv: op.cv, p: op.p, N: op.N, confianza: op.confianza });
+        if (op.error !== undefined) s[op.tipo === 'proporcion' ? 'errorProp' : op.escala === 'relativo' ? 'errorPct' : 'errorAbs'] = op.error;
+      } else pon(s, { respuesta: e.respuesta, estrato: e.estrato, N: op.N, tipoSimple: op.tipo, nTotal: op.nTotal, confianza: op.confianza });
+      for (const parte of String(op.poblaciones || '').split(/[;\n]+/)) { const x = parte.match(/^\s*(.+)[=:]\s*([\d.]+)\s*$/); if (x) estado.mueN[x[1].trim()] = +x[2]; }
     } else if (MULTI.includes(m)) {
       pon(estado.ma, { respuesta: e.respuesta, genotipo: e.genotipo, ambiente: e.ambiente, repeticion: e.repeticion || '', eeb: op.eeb, objetivo: op.objetivo, escala: op.escala, particion: op.particion });
     } else if (SUPERFICIES.includes(m)) {

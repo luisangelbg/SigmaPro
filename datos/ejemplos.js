@@ -240,5 +240,17 @@ window.SP_EJEMPLOS = [
     "descripcion": "Ficticio: rendimiento de tomate (t/ha) en un central compuesto rotable de nitrógeno y potasio (kg/ha) con cinco puntos centrales, en orden aleatorio de corrida; para la superficie de respuesta (punto óptimo, análisis canónico y cresta).",
     "csv": "\"corrida\",\"N\",\"K\",\"rendimiento\"\n1,120,200,55.5\n2,180,150,63.4\n3,95.1,150,48.8\n4,180,79.3,52.9\n5,180,150,59.9\n6,180,150,62.5\n7,120,100,47.8\n8,180,220.7,60.5\n9,264.9,150,61\n10,240,200,60.9\n11,180,150,62.1\n12,180,150,63.4\n13,240,100,59.1",
     "tipos": null
+  },
+  {
+    "id": "aguacate-huertas",
+    "nombre": "Aguacate: muestreo en tres huertas",
+    "descripcion": "Ficticio: kilogramos de fruta por árbol y presencia de trips (0/1) en árboles tomados al azar de tres huertas con 420 (Ladera), 900 (Planicie) y 260 (Vega) árboles, con dos pesadas perdidas; para el muestreo estratificado (media y total de la cosecha, asignación de Neyman) y la proporción de árboles con trips.",
+    "csv": "\"huerta\",\"arbol\",\"rendimiento_kg\",\"con_trips\"\n\"Ladera\",1,45.8,0\n\"Ladera\",2,42.6,0\n\"Ladera\",3,41.2,0\n\"Ladera\",4,53.8,0\n\"Ladera\",5,55.5,0\n\"Ladera\",6,52.8,0\n\"Ladera\",7,51.9,0\n\"Ladera\",8,43.4,1\n\"Ladera\",9,NA,0\n\"Ladera\",10,34.6,1\n\"Ladera\",11,49.1,0\n\"Ladera\",12,37.2,0\n\"Planicie\",13,66.4,0\n\"Planicie\",14,60.8,0\n\"Planicie\",15,68.3,0\n\"Planicie\",16,68.8,0\n\"Planicie\",17,59.3,0\n\"Planicie\",18,58.4,0\n\"Planicie\",19,52.3,0\n\"Planicie\",20,61.9,0\n\"Planicie\",21,68.4,0\n\"Planicie\",22,50.9,0\n\"Planicie\",23,63.8,0\n\"Planicie\",24,70.3,0\n\"Planicie\",25,63,0\n\"Planicie\",26,61.2,0\n\"Planicie\",27,61.9,0\n\"Planicie\",28,56.5,0\n\"Vega\",29,18.9,1\n\"Vega\",30,NA,1\n\"Vega\",31,45.2,0\n\"Vega\",32,40.2,0\n\"Vega\",33,39.5,0\n\"Vega\",34,48.4,0\n\"Vega\",35,39.5,0\n\"Vega\",36,50.9,1\n\"Vega\",37,54.7,1\n\"Vega\",38,30.6,0",
+    "tipos": {
+      "huerta": {
+        "tipo": "factor",
+        "niveles": ["Ladera", "Planicie", "Vega"]
+      }
+    }
   }
 ];

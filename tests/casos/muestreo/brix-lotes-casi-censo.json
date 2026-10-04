@@ -1,0 +1,95 @@
+{
+  "esquema": 1,
+  "id": "muestreo-estratificado/brix-lotes-casi-censo",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "muestreo-estratificado"
+  },
+  "titulo": "Grados Brix en tres lotes numerados con fracciones de muestreo altas (5 de 9)",
+  "fuente": "Datos sintéticos (generados en este archivo); fórmulas de Cochran (1977) en R base (tests/r/muestreo.R)",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "lote": [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3],
+      "brix": [14.130000000000001, 12.890000000000001, 13.32, 14.17, 12.93, 12.19, 14.65, 13.710000000000001, 15.050000000000001, 13.960000000000001, 12.9, 14.359999999999999, 11.68, 12, 11.19, 11.18, 11.27]
+    },
+    "tipos": {
+      "lote": {
+        "tipo": "numerica"
+      },
+      "brix": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "brix",
+    "estrato": "lote"
+  },
+  "opciones": {
+    "poblaciones": "1=18; 2=25; 3=9",
+    "nTotal": 30,
+    "confianza": 0.94999999999999996
+  },
+  "esperado": {
+    "N": 52,
+    "n": 17,
+    "estratos": [
+      {
+        "estrato": "1",
+        "Nh": 18,
+        "nh": 6,
+        "W": 0.34615384615384615,
+        "f": 0.33333333333333331,
+        "media": 13.271666666666667,
+        "varianza": 0.5956966666666671,
+        "de": 0.77181388084606717,
+        "aporte": 0.0079308727810650948
+      },
+      {
+        "estrato": "2",
+        "Nh": 25,
+        "nh": 6,
+        "W": 0.48076923076923078,
+        "f": 0.23999999999999999,
+        "media": 14.105,
+        "varianza": 0.57682999999999995,
+        "de": 0.75949325210958918,
+        "aporte": 0.016888205744575936
+      },
+      {
+        "estrato": "3",
+        "Nh": 9,
+        "nh": 5,
+        "W": 0.17307692307692307,
+        "f": 0.55555555555555558,
+        "media": 11.464,
+        "varianza": 0.13183000000000011,
+        "de": 0.363084012316709,
+        "aporte": 0.00035102662721893521
+      }
+    ],
+    "media": 13.359442307692309,
+    "ee": 0.15865089080386521,
+    "gl": 9.0955958510561228,
+    "t": 2.2585381057772351,
+    "ic": [13.001123225296276, 13.717761390088341],
+    "total": 694.69100000000003,
+    "ee_total": 8.249846321800991,
+    "ic_total": [676.05840771540636, 713.32359228459381],
+    "asignacion": {
+      "n": 30,
+      "proporcional": [10.384615384615385, 14.423076923076923, 5.1923076923076925],
+      "neyman": [11.529891693010233, 15.758107757786002, 2.7120005492037658]
+    },
+    "excluidas": 0
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "ref_estratificado(datos$brix, datos$lote, Nh = c(1=18; 2=25; 3=9), confianza = 0.95, nTotal = 30) (tests/r/muestreo.R)"
+  }
+}

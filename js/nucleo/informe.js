@@ -125,6 +125,7 @@ SP.definir('informe', function (SP) {
     cohen1988: () => 'Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2.ª ed.). Lawrence Erlbaum.',
     cochranCox1957: () => 'Cochran, W. G. y Cox, G. M. (1957). Experimental designs (2.ª ed.). Wiley.',
     champely2020: () => 'Champely, S. (2020). pwr: basic functions for power analysis (versión 1.3-0) [paquete de R].',
+    cochran1977: () => 'Cochran, W. G. (1977). Sampling techniques (3.ª ed.). Wiley.',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -150,7 +151,7 @@ SP.definir('informe', function (SP) {
     box1951: 'Box y Wilson, 1951', myers2016: 'Myers et al., 2016', hoerl1959: 'Hoerl, 1959', draper1963: 'Draper, 1963',
     bartlett1937: 'Bartlett, 1937', finlay1963: 'Finlay y Wilkinson, 1963', eberhart1966: 'Eberhart y Russell, 1966', wricke1962: 'Wricke, 1962', shukla1972: 'Shukla, 1972',
     lin1988: 'Lin y Binns, 1988', gauch1988: 'Gauch, 1988', gollob1968: 'Gollob, 1968', cornelius1992: 'Cornelius et al., 1992', purchase2000: 'Purchase et al., 2000',
-    yan2000: 'Yan et al., 2000', yan2003: 'Yan y Kang, 2003', cohen1988: 'Cohen, 1988', cochranCox1957: 'Cochran y Cox, 1957', champely2020: 'Champely, 2020',
+    yan2000: 'Yan et al., 2000', yan2003: 'Yan y Kang, 2003', cohen1988: 'Cohen, 1988', cochranCox1957: 'Cochran y Cox, 1957', champely2020: 'Champely, 2020', cochran1977: 'Cochran, 1977',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -769,6 +770,29 @@ SP.definir('informe', function (SP) {
     return { metodos: T('Se calculó {q} para {t} ({c}) con las fórmulas exactas de R.', { q: que, t: prueba, c: cita(ref, citas) }), resultados: res };
   }
 
+  function muestreo(id, r, citas) {
+    const c = cita(['cochran1977'], citas), conf = Math.round(100 * r.confianza), dado = x => String(Number((+x).toPrecision(6)));
+    if (id === 'tamano-muestra') {
+      const q = r.que === 'proporcion' ? T('una proporción (esperada de {p})', { p: dado(r.p) }) : T('una media');
+      const e = r.que === 'proporcion' ? dado(r.error) : r.escala === 'relativo' ? T('{e} % de la media (con un CV esperado de {cv} %)', { e: dado(r.error), cv: dado(r.cv) }) : T('{e} (con una desviación estándar esperada de {s})', { e: dado(r.error), s: dado(r.de) });
+      return { metodos: T('El tamaño de muestra para estimar {q} con un error de ± {e} y {k} % de confianza se calculó con las fórmulas de Cochran ({c}){f}.',
+        { q, e, k: conf, c, f: r.N > 0 ? T(', con la corrección por población finita (N = {N})', { N: r.N }) : '' }),
+        resultados: T('Se necesitan {n} unidades (valor exacto {x}).', { n: r.n_entero, x: n2(r.n) }) };
+    }
+    if (id === 'muestreo-simple') {
+      const q = r.proporcion ? T('La proporción') : T('La media');
+      return { metodos: T('{q} de «{y}» se estimó con muestreo aleatorio simple ({c}) con n = {n}{f}; el intervalo de confianza del {k} % usó t con {g} gl.',
+        { q, y: r.respuesta, c, n: r.n, f: r.N ? T(' de una población de {N}, con la corrección por población finita', { N: r.N }) : '', k: conf, g: r.n - 1 }),
+        resultados: T('{q} estimada fue {m} ± {ee} (EE), con un intervalo de {i} a {s}{t}.', { q, m: s4(r.media), ee: s4(r.ee), i: s4(r.ic[0]), s: s4(r.ic[1]),
+          t: r.N ? T('; el total estimado fue {t} ± {e}', { t: s4(r.total), e: s4(r.ee_total) }) : '' }) };
+    }
+    let res = T('La media estratificada fue {m} ± {ee} (EE), con un intervalo de {i} a {s} ({g} gl); el total estimado fue {t} ± {et}.',
+      { m: s4(r.media), ee: s4(r.ee), i: s4(r.ic[0]), s: s4(r.ic[1]), g: gl(r.gl), t: s4(r.total), et: s4(r.ee_total) });
+    if (r.asignacion) res += ' ' + T('Para una muestra de {n}, la asignación de Neyman sería de {l}.', { n: r.asignacion.n, l: y(r.estratos.map((x, h) => T('{v} en {e}', { v: Math.ceil(r.asignacion.neyman[h] - 1e-9), e: x.estrato }))) });
+    return { metodos: T('La media de «{y}» se estimó con muestreo aleatorio estratificado ({c}) en {H} estratos de «{e}» (N = {N}; n = {n}): la varianza combinó la de cada estrato con su peso y la corrección por población finita, y el intervalo de confianza del {k} % usó los gl efectivos de Satterthwaite ({sat}).',
+      { y: r.respuesta, c, H: r.estratos.length, e: r.estrato, N: r.N, n: r.n, k: conf, sat: cita(['satterthwaite1946'], citas) }), resultados: res };
+  }
+
   /** El párrafo de métodos y el de resultados de un análisis. */
   function parrafo(id, r, rep, e, op) {
     e = e || {}; op = op || {};
@@ -793,6 +817,7 @@ SP.definir('informe', function (SP) {
     else if (['superficie-respuesta', 'ascenso-pronunciado'].includes(id)) p = superficie(r, citas);
     else if (['ensayos-multiambiente', 'estabilidad', 'ammi', 'gge'].includes(id)) p = multiambiente(id, r, citas);
     else if (['potencia-medias', 'potencia-anova', 'potencia-proporciones', 'potencia-correlacion', 'repeticiones'].includes(id)) p = potencia(id, r, citas);
+    else if (['tamano-muestra', 'muestreo-simple', 'muestreo-estratificado'].includes(id)) p = muestreo(id, r, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };

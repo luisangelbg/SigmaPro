@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.2.0",
- "generado": "2026-10-04T05:33:29.553Z",
+ "generado": "2026-10-04T05:58:21.090Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 741,
-  "aprobados": 741,
+  "casos": 752,
+  "aprobados": 752,
   "fallidos": 0,
-  "valores": 75669,
+  "valores": 75886,
   "difEscaladaMax": 0.000004071746832135441,
-  "objetivos": 158
+  "objetivos": 161
  },
  "casos": [
   {
@@ -19530,6 +19530,292 @@ window.SP_VALIDACION = {
     "R": "4.6.0",
     "lme4": "2.0.1",
     "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "muestreo-simple/altura-lote-finito",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "muestreo-simple"
+   },
+   "titulo": "Altura de 60 plantas (2 faltantes) de un lote de 800, 90 % de confianza",
+   "fuente": "Datos sintéticos (generados en este archivo); fórmulas de Cochran (1977) en R base (tests/r/muestreo.R)",
+   "clase": "B",
+   "valores": 17,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 1.3279950272235784e-15,
+   "peor": "t",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_simple(datos$altura, N = 800, confianza = 0.9) (tests/r/muestreo.R)"
+   }
+  },
+  {
+   "id": "muestreo-simple/peso-poblacion-grande",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "muestreo-simple"
+   },
+   "titulo": "Peso de 40 frutos de una población grande",
+   "fuente": "Datos sintéticos (generados en este archivo); fórmulas de Cochran (1977) en R base (tests/r/muestreo.R)",
+   "clase": "B",
+   "valores": 12,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 1.097768337838763e-15,
+   "peor": "t",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_simple(datos$peso, N = 0, confianza = 0.95) (tests/r/muestreo.R)"
+   }
+  },
+  {
+   "id": "muestreo-simple/proporcion-enfermos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "muestreo-simple"
+   },
+   "titulo": "Árboles enfermos (0/1) en una muestra de 150 de una huerta de 2000",
+   "fuente": "Datos sintéticos (generados en este archivo); fórmulas de Cochran (1977) en R base (tests/r/muestreo.R)",
+   "clase": "B",
+   "valores": 16,
+   "difMax": 9.094947017729282e-13,
+   "difEscaladaMax": 6.742200125953537e-15,
+   "peor": "t",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_simple(datos$enfermo, N = 2000, confianza = 0.95) (tests/r/muestreo.R)"
+   }
+  },
+  {
+   "id": "muestreo-simple/proporcion-explicita",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "muestreo-simple"
+   },
+   "titulo": "La misma proporción, pedida como tal, sin población finita y con 99 %",
+   "fuente": "Datos sintéticos (generados en este archivo); fórmulas de Cochran (1977) en R base (tests/r/muestreo.R)",
+   "clase": "B",
+   "valores": 11,
+   "difMax": 3.019806626980426e-14,
+   "difEscaladaMax": 1.1573564035401291e-14,
+   "peor": "t",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_simple(datos$enfermo, N = 0, confianza = 0.99) (tests/r/muestreo.R)"
+   }
+  },
+  {
+   "id": "muestreo-estratificado/brix-lotes-casi-censo",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "muestreo-estratificado"
+   },
+   "titulo": "Grados Brix en tres lotes numerados con fracciones de muestreo altas (5 de 9)",
+   "fuente": "Datos sintéticos (generados en este archivo); fórmulas de Cochran (1977) en R base (tests/r/muestreo.R)",
+   "clase": "B",
+   "valores": 47,
+   "difMax": 1.1368683772161603e-13,
+   "difEscaladaMax": 3.905971348087088e-16,
+   "peor": "gl",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_estratificado(datos$brix, datos$lote, Nh = c(1=18; 2=25; 3=9), confianza = 0.95, nTotal = 30) (tests/r/muestreo.R)"
+   }
+  },
+  {
+   "id": "muestreo-estratificado/plagas-cuatro-regiones-asignacion",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "muestreo-estratificado"
+   },
+   "titulo": "Insectos por trampa en cuatro regiones (faltantes), 90 % y cómo repartir 80 trampas",
+   "fuente": "Datos sintéticos (generados en este archivo); fórmulas de Cochran (1977) en R base (tests/r/muestreo.R)",
+   "clase": "B",
+   "valores": 58,
+   "difMax": 1.8189894035458565e-12,
+   "difEscaladaMax": 2.6025444703365085e-16,
+   "peor": "t",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_estratificado(datos$plagas, datos$region, Nh = c(norte=120; oriente=45; poniente=80; sur=150), confianza = 0.9, nTotal = 80) (tests/r/muestreo.R)"
+   }
+  },
+  {
+   "id": "muestreo-estratificado/rendimiento-tres-suelos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "muestreo-estratificado"
+   },
+   "titulo": "Rendimiento con tres tipos de suelo (hectáreas por estrato)",
+   "fuente": "Datos sintéticos (generados en este archivo); fórmulas de Cochran (1977) en R base (tests/r/muestreo.R)",
+   "clase": "B",
+   "valores": 40,
+   "difMax": 9.094947017729282e-13,
+   "difEscaladaMax": 1.8434071749857172e-16,
+   "peor": "total",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_estratificado(datos$rendimiento, datos$suelo, Nh = c(arcilloso=240; arenoso=130; franco=410), confianza = 0.95, nTotal = 0) (tests/r/muestreo.R)"
+   }
+  },
+  {
+   "id": "tamano-muestra/media-absoluta",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tamano-muestra"
+   },
+   "titulo": "Frutos para estimar el peso medio con ± 5 g (DE esperada 18 g)",
+   "fuente": "Cochran, W. G. (1977), Sampling Techniques, 3.ª ed., caps. 2–5 (fórmulas en R base, tests/r/muestreo.R)",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 5.708854988235362e-16,
+   "peor": "n0",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_tamano(op) (tests/r/muestreo.R)"
+   }
+  },
+  {
+   "id": "tamano-muestra/media-cv-poblacion-finita",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tamano-muestra"
+   },
+   "titulo": "Plantas de un lote de 400 para estimar la altura con ± 10 % (CV 25 %)",
+   "fuente": "Cochran, W. G. (1977), Sampling Techniques, 3.ª ed., caps. 2–5 (fórmulas en R base, tests/r/muestreo.R)",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 4.440892098500626e-16,
+   "difEscaladaMax": 2.2658029094053857e-16,
+   "peor": "z",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_tamano(op) (tests/r/muestreo.R)"
+   }
+  },
+  {
+   "id": "tamano-muestra/proporcion-90",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tamano-muestra"
+   },
+   "titulo": "Hojas para estimar la incidencia (esperada 30 %) con ± 5 % y 90 % de confianza",
+   "fuente": "Cochran, W. G. (1977), Sampling Techniques, 3.ª ed., caps. 2–5 (fórmulas en R base, tests/r/muestreo.R)",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 2.5579538487363607e-13,
+   "difEscaladaMax": 1.1255347418826508e-15,
+   "peor": "n0",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_tamano(op) (tests/r/muestreo.R)"
+   }
+  },
+  {
+   "id": "tamano-muestra/proporcion-finita-99",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tamano-muestra"
+   },
+   "titulo": "Árboles de una huerta de 1500 para estimar una proporción con ± 4 % y 99 %",
+   "fuente": "Cochran, W. G. (1977), Sampling Techniques, 3.ª ed., caps. 2–5 (fórmulas en R base, tests/r/muestreo.R)",
+   "clase": "A",
+   "valores": 4,
+   "difMax": 2.2737367544323206e-13,
+   "difEscaladaMax": 2.1932391871980479e-16,
+   "peor": "n0",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "ref_tamano(op) (tests/r/muestreo.R)"
    }
   },
   {

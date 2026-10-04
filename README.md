@@ -71,11 +71,11 @@ Y las **superficies de respuesta**: punto óptimo, análisis canónico, cresta y
 multiambiente**: análisis conjunto, estabilidad (Eberhart-Russell, Wricke, Shukla, Lin-Binns), AMMI y biplot GGE.
 
 **Fase 3 en curso** (plan en [`propuesta/FASE3.md`](propuesta/FASE3.md)): el **tamaño de muestra y la potencia**
-(medias, ANOVA, proporciones, correlación y las repeticiones de un experimento), sin necesidad de datos. En total, 741
-casos y 75 669 valores. Lo que falta para publicar y las
-fases 2 y 3 están en
-[`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan
-completo está en
+(medias, ANOVA, proporciones, correlación y las repeticiones de un experimento), sin necesidad de datos; y el
+**muestreo**: el tamaño de muestra para estimar una media o una proporción, y la estimación con muestreo aleatorio
+simple y estratificado (con la asignación de Neyman). En total, 752 casos y 75 886 valores.
+
+Lo que falta para publicar y las fases 2 y 3 están en [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
 [`propuesta/maqueta.html`](propuesta/maqueta.html); capturas de la app en [`docs/capturas/`](docs/capturas/).
 

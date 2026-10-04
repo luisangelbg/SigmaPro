@@ -2,6 +2,24 @@
 
 ## Sin publicar
 
+### Hito 3.1 · Muestreo (4 oct 2026)
+
+- Tres métodos nuevos en la familia **Tamaño de muestra, potencia y muestreo**, con las fórmulas de Cochran (1977):
+  - **Tamaño de muestra** para estimar una media (con la DE y un error en unidades, o con el CV y un error en % de la
+    media) o una proporción, con la corrección por población finita. No necesita datos.
+  - **Estimación con muestreo aleatorio simple**: la media o la proporción (una columna 0/1 se reconoce sola), su EE
+    con la corrección por población finita, el intervalo con t de n − 1 gl y el total de la población.
+  - **Muestreo estratificado**: la media y el total de la población con estratos (huertas, lotes, regiones, tipos de
+    suelo), con el tamaño de cada estrato escrito en el formulario, el aporte de cada estrato a la varianza, los gl
+    efectivos de Satterthwaite y, con un tamaño total, cómo repartir una muestra nueva (proporcional y de Neyman).
+- Gráficas: el tamaño de muestra según el error aceptado, la precisión según n y la media de cada estrato con su
+  intervalo; el párrafo del reporte con sus citas y el código R.
+- Ejemplo nuevo: **Aguacate: muestreo en tres huertas** (kilogramos por árbol y presencia de trips).
+- Arreglo del Hito 3.0: la referencia de las repeticiones (Cochran y Cox, 1957) pisaba la del ANCOVA (Cochran, 1957)
+  en el reporte; ahora cada una tiene su clave y una prueba lo vigila.
+- Validación: 11 casos contra las fórmulas de Cochran escritas en R base por otro camino: 217 valores, diferencia
+  escalada máxima 1.2 × 10⁻¹⁴. 752 casos en total.
+
 ### Hito 3.0 · Tamaño de muestra y potencia (3 oct 2026)
 
 - **Empieza la Fase 3** (plan en `propuesta/FASE3.md`): potencia, muestreo, supervivencia, series de tiempo y
