@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-04T03:04:14.458Z",
+ "generado": "2026-10-04T03:32:28.860Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 712,
-  "aprobados": 712,
+  "casos": 727,
+  "aprobados": 727,
   "fallidos": 0,
-  "valores": 71401,
+  "valores": 74649,
   "difEscaladaMax": 0.000004071746832135441,
-  "objetivos": 149
+  "objetivos": 153
  },
  "casos": [
   {
@@ -19530,6 +19530,396 @@ window.SP_VALIDACION = {
     "R": "4.6.0",
     "lme4": "2.0.1",
     "lmerTest": "3.2.1"
+   }
+  },
+  {
+   "id": "ammi/avena-ammi",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "ammi"
+   },
+   "titulo": "Avena: AMMI con Gollob, F_R de Cornelius, puntajes y ASV",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 383,
+   "difMax": 9.094947017729282e-13,
+   "difEscaladaMax": 1.0698055321190836e-13,
+   "peor": "ammi.fr.p[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; svd de la interacción; Gollob y F_R (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "ammi/maiz-medias-ammi",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "ammi"
+   },
+   "titulo": "Una media por celda: AMMI sin pruebas",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan; conjunto data_ge2 (13 híbridos de maíz × 4 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 100,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 1.768733322789075e-14,
+   "peor": "anova.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; svd de la interacción; Gollob y F_R (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "ammi/papa-ammi",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "ammi"
+   },
+   "titulo": "Papa: 28 clones en 6 localidades, AMMI",
+   "fuente": "Mendiburu, F. de (2023), agricolae; conjunto plrv (28 clones de papa × 6 localidades × 3 repeticiones, Centro Internacional de la Papa)",
+   "clase": "B",
+   "valores": 299,
+   "difMax": 7.275957614183426e-11,
+   "difEscaladaMax": 2.8406980700766675e-13,
+   "peor": "anova.p[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; svd de la interacción; Gollob y F_R (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "ensayos-multiambiente/avena-conjunto",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "ensayos-multiambiente"
+   },
+   "titulo": "Avena en 14 ambientes: análisis conjunto, cada ambiente y Bartlett",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 314,
+   "difMax": 9.094947017729282e-13,
+   "difEscaladaMax": 9.434522481750991e-14,
+   "peor": "anova.p[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; anova(lm(y ~ amb + amb:rep + gen + gen:amb)) (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "ensayos-multiambiente/avena-parcelas-perdidas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "ensayos-multiambiente"
+   },
+   "titulo": "Avena con 12 parcelas perdidas: análisis conjunto desbalanceado",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 314,
+   "difMax": 8.526512829121202e-14,
+   "difEscaladaMax": 1.0026665827005171e-13,
+   "peor": "anova.p[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; anova(lm(y ~ amb + amb:rep + gen + gen:amb)) (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "ensayos-multiambiente/maiz-medias-conjunto",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "ensayos-multiambiente"
+   },
+   "titulo": "Una media por celda (sin repeticiones): G × A como residuo",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan; conjunto data_ge2 (13 híbridos de maíz × 4 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 106,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 1.768733322789075e-14,
+   "peor": "anova.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; anova(lm(y ~ amb + amb:rep + gen + gen:amb)) (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "estabilidad/avena-estabilidad-ee-error",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "estabilidad"
+   },
+   "titulo": "Avena: EE de b con el error combinado (como metan)",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 194,
+   "difMax": 3.979039320256561e-13,
+   "difEscaladaMax": 8.42663202554184e-14,
+   "peor": "eberhart_russell.p[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "estabilidad/avena-estabilidad",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "estabilidad"
+   },
+   "titulo": "Avena: Eberhart-Russell (EE de b propio), Wricke, Shukla y Lin-Binns",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 194,
+   "difMax": 3.979039320256561e-13,
+   "difEscaladaMax": 8.42663202554184e-14,
+   "peor": "eberhart_russell.p[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "estabilidad/avena-parcelas-perdidas-estabilidad",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "estabilidad"
+   },
+   "titulo": "Avena con parcelas perdidas: estabilidad con r armónica",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 194,
+   "difMax": 3.979039320256561e-13,
+   "difEscaladaMax": 3.35219696629243e-14,
+   "peor": "eberhart_russell.p[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "estabilidad/maiz-estabilidad-menor",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "estabilidad"
+   },
+   "titulo": "Maíz: estabilidad de la altura de mazorca con la menor como objetivo (Lin y Binns)",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan; conjunto data_ge2 (13 híbridos de maíz × 4 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 229,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 1.6623353575340803e-14,
+   "peor": "eberhart_russell.p[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "estabilidad/maiz-medias-estabilidad",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "estabilidad"
+   },
+   "titulo": "Una media por celda: estabilidad sin error (sin S²d ni pruebas de Shukla)",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan; conjunto data_ge2 (13 híbridos de maíz × 4 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 164,
+   "difMax": 1.5987211554602254e-14,
+   "difEscaladaMax": 7.549516567451064e-15,
+   "peor": "eberhart_russell.F[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "estabilidad/papa-estabilidad",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "estabilidad"
+   },
+   "titulo": "Papa: estabilidad de 28 clones",
+   "fuente": "Mendiburu, F. de (2023), agricolae; conjunto plrv (28 clones de papa × 6 localidades × 3 repeticiones, Centro Internacional de la Papa)",
+   "clase": "B",
+   "valores": 456,
+   "difMax": 2.9103830456733704e-10,
+   "difEscaladaMax": 1.1905761899375965e-13,
+   "peor": "eberhart_russell.p[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "gge/avena-gge",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "gge"
+   },
+   "titulo": "Avena: GGE simétrico, quién ganó dónde y media contra estabilidad",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 115,
+   "difMax": 4.618527782440651e-14,
+   "difEscaladaMax": 1.3600232051658168e-14,
+   "peor": "gge.perpendicular[9]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; svd de la tabla centrada; chull (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "gge/maiz-gge-genotipo-escalado",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "gge"
+   },
+   "titulo": "Maíz en 4 ambientes: GGE escalado por ambiente con partición por genotipo",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan; conjunto data_ge2 (13 híbridos de maíz × 4 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 92,
+   "difMax": 5.684341886080802e-14,
+   "difEscaladaMax": 8.881784197001252e-15,
+   "peor": "gge.genotipos[2][1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; svd de la tabla centrada; chull (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "gge/maiz-gge-menor-ambiente",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "gge"
+   },
+   "titulo": "Maíz: menor altura de mazorca como objetivo, partición por ambiente",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan; conjunto data_ge2 (13 híbridos de maíz × 4 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 94,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 3.0588068244412647e-15,
+   "peor": "gge.pct[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "tapply + lm por ambiente; svd de la tabla centrada; chull (tests/r/multiambiente.R)"
    }
   },
   {

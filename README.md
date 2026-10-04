@@ -66,8 +66,9 @@ el navegador contra R. Y, en el propio núcleo (sin internet), los **componentes
 escala de la respuesta; y, en el motor R, los **modelos lineales generalizados mixtos** (conteos y proporciones con
 bloques aleatorios y el efecto por observación para la sobredispersión). Y la **regresión no lineal**: curvas de
 crecimiento, dosis-respuesta con DE50 y respuesta con meseta (dosis óptima), con la comparación de curvas entre grupos.
-Y las **superficies de respuesta**: punto óptimo, análisis canónico, cresta y ascenso más pronunciado. En total, 712
-casos y 71 401 valores. Lo que falta para publicar y las
+Y las **superficies de respuesta**: punto óptimo, análisis canónico, cresta y ascenso más pronunciado. Y los **ensayos
+multiambiente**: análisis conjunto, estabilidad (Eberhart-Russell, Wricke, Shukla, Lin-Binns), AMMI y biplot GGE. En
+total, 727 casos y 74 649 valores. Lo que falta para publicar y las
 fases 2 y 3 están en
 [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan
 completo está en

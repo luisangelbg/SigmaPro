@@ -420,6 +420,7 @@ escritorio con el que se calcula la referencia.
 | data_alpha (Olivoto y Lúcio 2020) | alfa-látice de 24 genotipos, con repeticiones fijas y aleatorias |
 | Orthodont (Potthoff y Roy 1964), BodyWeight (Crowder y Hand 1990), sleepstudy y el maíz de los ejemplos | medidas repetidas: siete estructuras de covarianza con elección por AIC y BIC, la no estructurada pedida, fechas desiguales (AR(1) continua), faltantes, bloques, sin tratamientos (`tests/r/repetidas.R`) |
 | Dyestuff, Dyestuff2, Penicillin y Pastes (Davies y Goldsmith 1972; Box y Tiao 1973), Rail y ergoStool (Pinheiro y Bates 2000), data_alpha, data_ge y data_ge2 (Olivoto y Lúcio 2020) | componentes de varianza cruzados, anidados y con interacción, frontera, desbalance; heredabilidad en completamente al azar, bloques, alfa-látice y varios ambientes; repetibilidad con y sin efectos fijos (`tests/r/geneticos.R`) |
+| data_ge y data_ge2 (Olivoto y Lúcio 2020, metan), plrv (agricolae) | ensayos multiambiente: análisis conjunto, Bartlett, Eberhart-Russell, Wricke, Shukla, Lin-Binns, AMMI con Gollob y F_R, GGE; parcelas perdidas y una media por celda (`tests/r/multiambiente.R`) |
 | Centrales compuestos, Box-Behnken y factoriales con centros (sintéticos) | superficies de respuesta: segundo orden, interacciones y primer orden, bloques, sin error puro, silla, máximo y mínimo, dos a cuatro factores (`tests/r/superficie.R`) |
 | Orange, ChickWeight, DNase y Loblolly (R), herbicidas, tóxico y nitrógeno (sintéticos) | regresión no lineal: ocho modelos, una curva y varias por grupo, comparación de curvas, dosis cero, meseta por perfil (`tests/r/nolineal.R`) |
 | cbpp (Lesnoff et al. 2004), grouseticks (Elston et al. 2001) y el aguacate de los ejemplos | modelos lineales generalizados mixtos: binomial con ensayos, Poisson con dos agrupamientos y exposición, binomial negativa, efecto por observación, ajuste singular, Wald tipo II y III (`tests/r/glmm.R`) |
@@ -432,6 +433,17 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
+
+## Ensayos multiambiente y estabilidad en el núcleo JS (Hito 2.8)
+
+- **Referencia** (`tests/r/multiambiente.R`, solo R base): tapply y un lm por ambiente para la tabla de medias y el
+  error combinado; anova(lm(y ~ amb + amb:rep + gen + gen:amb)) para el análisis conjunto; Bartlett con su fórmula
+  sobre los CME; un lm por genotipo sobre el índice ambiental; Wricke, Shukla y Lin y Binns en fórmula cerrada; svd()
+  para AMMI y GGE y chull() para el polígono de quién ganó dónde. Las convenciones (desviaciones combinadas con
+  g(e − 2) gl, Shukla en la escala de medias, EE de b con el error combinado) se cotejaron contra metan.
+- **Resultado**: 15 casos de 4 métodos, 3 248 valores, diferencia escalada máxima 2.8 × 10⁻¹³.
+- **Pruebas unitarias** (`tests/unidad/multiambiente.test.js`): la SVD reconstruye la tabla con vectores ortonormales,
+  la envolvente convexa, la media de las b es 1, W en % suma 100 y los ejes AMMI suman la SC de G × A.
 
 ## Superficies de respuesta en el núcleo JS (Hito 2.7)
 
@@ -522,7 +534,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          43 operaciones con 100 000 filas en el navegador (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      65 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      69 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

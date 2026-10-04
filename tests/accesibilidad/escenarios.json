@@ -201,5 +201,17 @@
  },
  "srf-ascenso": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[17].click(), SP.app.ir(4), SP.app.analisis.usar('ascenso-pronunciado', { respuesta: 'rendimiento', factores: ['N', 'K'] }, { objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "ma-conjunto": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[13].click(), SP.app.ir(4), SP.app.analisis.usar('ensayos-multiambiente', { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, { objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "ma-estabilidad": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[13].click(), SP.app.ir(4), SP.app.analisis.usar('estabilidad', { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, { eeb: 'propio', objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "ma-ammi": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[13].click(), SP.app.ir(4), SP.app.analisis.usar('ammi', { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, { objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "ma-gge": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[13].click(), SP.app.ir(4), SP.app.analisis.usar('gge', { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, { escala: 'ninguna', particion: 'simetrica', objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  }
 }

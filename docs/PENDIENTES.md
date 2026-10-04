@@ -47,8 +47,8 @@ Plan detallado en [`propuesta/FASE2.md`](../propuesta/FASE2.md). Hecho: Hito 2.0
 desde una fórmula), Hito 2.1 (medias marginales, comparaciones, prueba de los aleatorios, BLUP y los diseños con
 efectos aleatorios), Hito 2.2 (medidas repetidas con estructuras de covarianza), Hito 2.3 (componentes de varianza por
 REML en el núcleo, heredabilidad y repetibilidad) , Hito 2.4 (modelos lineales generalizados en el núcleo), Hito 2.5 (modelos
-lineales generalizados mixtos en el motor R), Hito 2.6 (regresión no lineal en el núcleo) e Hito 2.7 (superficies de
-respuesta en el núcleo). Notas:
+lineales generalizados mixtos en el motor R), Hito 2.6 (regresión no lineal en el núcleo), Hito 2.7 (superficies de
+respuesta en el núcleo) e Hito 2.8 (ensayos multiambiente y estabilidad en el núcleo). Notas:
 
 - Con doble clic el motor R necesita internet la primera vez (luego sale de la caché del navegador); sin conexión
   llega en el cierre de la fase (Hito 2.10), con el repositorio propio de paquetes en Pages.
@@ -60,6 +60,9 @@ respuesta en el núcleo). Notas:
   automática del modelo por AIC ni pesos, y lineal-meseta no tiene la prueba de cada parámetro común (sí la global).
   Faltan Michaelis-Menten, Brain-Cousens (hormesis), la dosis económica óptima con precios y el eje logarítmico de la
   dosis en la gráfica.
+- Multiambiente: cada genotipo debe estar en cada ambiente (falta la imputación EM-AMMI de BreedingPro); faltan las
+  estadísticas de rangos de Huehn, Kang, Annicchiarico, WAAS, el análisis en dos etapas con una varianza por ambiente
+  y las vistas del GGE de comparar dos genotipos y del ambiente ideal.
 - Superficies de respuesta: sin generador de diseños (central compuesto, Box-Behnken), sin mezclas ni optimización
   de varias respuestas (deseabilidad); la codificación es automática (no se puede fijar a mano) y la gráfica de
   superficie en 3D queda pendiente (hay curvas de nivel).

@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### Hito 2.8 · Ensayos multiambiente y estabilidad (3 oct 2026)
+
+- **Familia nueva: Ensayos multiambiente y estabilidad**, en el núcleo JS (js/nucleo/multiambiente.js), adaptada del
+  motor del bloque 9 de BreedingPro (del mismo autor, ya validado contra R).
+- **Análisis conjunto de varios ambientes**: análisis de cada ambiente (bloques o completamente al azar), error
+  combinado, ANOVA conjunto (ambientes contra repeticiones dentro de ambientes; genotipos también contra G × A, como
+  con ambientes aleatorios), homogeneidad de los errores (Bartlett y razón máx./mín.) y la tabla de medias. Acepta
+  parcelas perdidas (r armónica) o una media por celda.
+- **Estabilidad**: regresión sobre el índice ambiental (Finlay-Wilkinson; Eberhart-Russell con b, S²d y su análisis
+  de varianza), con el EE de b de cada regresión o del error combinado; ecovalencia de Wricke, varianza de Shukla y
+  superioridad de Lin y Binns (con la mayor o la menor respuesta como objetivo).
+- **AMMI**: ejes de la interacción con la F de Gollob y la F_R de Cornelius (número de ejes), puntajes de genotipos y
+  ambientes, ASV; biplots AMMI1 y AMMI2.
+- **Biplot GGE**: tabla centrada (o escalada) por ambiente, partición simétrica, por genotipo o por ambiente; quién
+  ganó dónde (polígono, rayos y megaambientes) y media contra estabilidad (eje del ambiente promedio).
+- Gráficas nuevas: biplot con polígono, rayos, vectores y eje del ambiente promedio; respuesta de cada genotipo por
+  ambiente; regresiones sobre el índice. Párrafo con 12 referencias nuevas; código R solo con R base.
+- Validación: 15 casos (data_ge y data_ge2 de metan, plrv de agricolae; balanceados, con parcelas perdidas y con
+  una media por celda) contra lm, svd y chull de R: 3 248 valores, diferencia escalada máxima 2.8 × 10⁻¹³. 727 casos en total.
+  El código R se corre en R en 4 escenarios más.
+
 ### Hito 2.7 · Superficies de respuesta (3 oct 2026)
 
 - **Familia nueva: Superficies de respuesta**, en el núcleo JS (js/nucleo/superficie.js), sin paquetes de R.

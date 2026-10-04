@@ -441,5 +441,74 @@
       `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
   }
 
-  SP.graficas = { dispersion, grupos, lineas, medias, mapaCalor, mosaico, contorno, adelgazar, marcas };
+  /**
+   * Biplot de genotipos y ambientes:
+   *   SP.graficas.biplot({ titulo, descripcion, x: { titulo }, y: { titulo }, genotipos: [{ x, y, nombre }], ambientes: [{ x, y, nombre }],
+   *     vectores: true, poligono: [índices de genotipos], rayos: true, eje: [ux, uy], referencias: [{ x } | { y }], iguales: true })
+   * Genotipos: círculos negros con su nombre; ambientes: rombos en oro (con su vector desde el origen si «vectores»).
+   * «poligono» y «rayos»: quién ganó dónde (los rayos salen del origen perpendiculares a cada lado del polígono);
+   * «eje»: el eje del ambiente promedio (media contra estabilidad) con la proyección de cada genotipo. Con «iguales»,
+   * la misma escala en los dos ejes (los ángulos se leen bien).
+   */
+  function biplot(op) {
+    const G = op.genotipos || [], A = op.ambientes || [], todos = G.concat(A);
+    const xs = todos.map(p => p.x).concat(op.vectores || op.rayos || op.eje ? [0] : [], (op.referencias || []).filter(r => r.x !== undefined).map(r => r.x));
+    const ys = todos.map(p => p.y).concat(op.vectores || op.rayos || op.eje ? [0] : [], (op.referencias || []).filter(r => r.y !== undefined).map(r => r.y));
+    let x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+    const hx = margen(x0, x1, 0.1), hy = margen(y0, y1, 0.1);
+    x0 -= hx; x1 += hx; y0 -= hy; y1 += hy;
+    const w = W - M.l - M.r, h = H - M.t - M.b;
+    if (op.iguales) {
+      const s = Math.max((x1 - x0) / w, (y1 - y0) / h), cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+      x0 = cx - s * w / 2; x1 = cx + s * w / 2; y0 = cy - s * h / 2; y1 = cy + s * h / 2;
+    }
+    const X = v => M.l + (v - x0) / (x1 - x0) * w, Y = v => M.t + (y1 - v) / (y1 - y0) * h;
+    const mx = marcas(x0, x1, 6), my = marcas(y0, y1, 5), partes = [];
+    partes.push(`<rect x="${M.l}" y="${M.t}" width="${w}" height="${h}" class="gr-fondo"/>`);
+    for (const v of mx.lista) partes.push(`<line x1="${X(v).toFixed(1)}" x2="${X(v).toFixed(1)}" y1="${M.t}" y2="${H - M.b}" class="gr-rejilla" data-role="grid"/><text x="${X(v).toFixed(1)}" y="${H - M.b + 16}" text-anchor="middle" class="gr-etq" data-role="xtick" ${TENUE}>${texto(v, mx.paso)}</text>`);
+    for (const v of my.lista) partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="gr-rejilla" data-role="grid"/><text x="${M.l - 6}" y="${(Y(v) + 4).toFixed(1)}" text-anchor="end" class="gr-etq" data-role="ytick" ${TENUE}>${texto(v, my.paso)}</text>`);
+    for (const r of op.referencias || []) partes.push(r.x !== undefined
+      ? `<line x1="${X(r.x).toFixed(1)}" x2="${X(r.x).toFixed(1)}" y1="${M.t}" y2="${H - M.b}" class="gr-ref disc" ${REF}/>`
+      : `<line x1="${M.l}" x2="${W - M.r}" y1="${Y(r.y).toFixed(1)}" y2="${Y(r.y).toFixed(1)}" class="gr-ref disc" ${REF}/>`);
+    /* hasta el borde del área, desde el origen, en la dirección (dx, dy) */
+    const alBorde = (dx, dy) => {
+      let t = Infinity;
+      if (dx > 0) t = Math.min(t, (x1 - 0) / dx); if (dx < 0) t = Math.min(t, (x0 - 0) / dx);
+      if (dy > 0) t = Math.min(t, (y1 - 0) / dy); if (dy < 0) t = Math.min(t, (y0 - 0) / dy);
+      return [dx * t, dy * t];
+    };
+    if (op.poligono && op.poligono.length > 1) {
+      const V = op.poligono.map(i => G[i]);
+      partes.push(`<polygon points="${V.map(p => `${X(p.x).toFixed(1)},${Y(p.y).toFixed(1)}`).join(' ')}" fill="none" stroke="${ORO}" stroke-width="1.5" class="gr-poligono"/>`);
+      if (op.rayos) V.forEach((a, q) => {
+        const b = V[(q + 1) % V.length], [ex, ey] = alBorde(b.y - a.y, -(b.x - a.x));
+        partes.push(`<line x1="${X(0).toFixed(1)}" y1="${Y(0).toFixed(1)}" x2="${X(ex).toFixed(1)}" y2="${Y(ey).toFixed(1)}" class="gr-ref disc" ${REF}/>`);
+      });
+    }
+    if (op.eje) {
+      const [ux, uy] = op.eje, [ax, ay] = alBorde(ux, uy), [bx, by] = alBorde(-ux, -uy), [cx, cy] = alBorde(-uy, ux), [dx, dy] = alBorde(uy, -ux);
+      partes.push(`<line x1="${X(bx).toFixed(1)}" y1="${Y(by).toFixed(1)}" x2="${X(ax).toFixed(1)}" y2="${Y(ay).toFixed(1)}" stroke="${ORO}" stroke-width="1.6" class="gr-eje-aec"/>`);
+      partes.push(`<line x1="${X(dx).toFixed(1)}" y1="${Y(dy).toFixed(1)}" x2="${X(cx).toFixed(1)}" y2="${Y(cy).toFixed(1)}" class="gr-ref disc" ${REF}/>`);
+      const fx = X(ax * 0.92), fy = Y(ay * 0.92);
+      partes.push(`<circle cx="${fx.toFixed(1)}" cy="${fy.toFixed(1)}" r="4" fill="${ORO}"/>`);
+      for (const p of G) { const t = p.x * ux + p.y * uy; partes.push(`<line x1="${X(p.x).toFixed(1)}" y1="${Y(p.y).toFixed(1)}" x2="${X(t * ux).toFixed(1)}" y2="${Y(t * uy).toFixed(1)}" stroke="var(--text-muted)" stroke-dasharray="2 3"/>`); }
+    }
+    if (op.vectores) for (const p of A) partes.push(`<line x1="${X(0).toFixed(1)}" y1="${Y(0).toFixed(1)}" x2="${X(p.x).toFixed(1)}" y2="${Y(p.y).toFixed(1)}" stroke="${ORO}" stroke-opacity=".7" class="gr-vector"/>`);
+    const etq = (p, color) => `<text x="${(X(p.x) + 6).toFixed(1)}" y="${(Y(p.y) - 5).toFixed(1)}" class="gr-etq gr-etq-punto" fill="${color}" stroke="var(--card-bg)" stroke-width="3" paint-order="stroke">${esc(p.nombre)}</text>`;
+    for (const p of A) { const x = X(p.x), y = Y(p.y); partes.push(`<path d="M${x.toFixed(1)} ${(y - 5).toFixed(1)} L${(x + 5).toFixed(1)} ${y.toFixed(1)} L${x.toFixed(1)} ${(y + 5).toFixed(1)} L${(x - 5).toFixed(1)} ${y.toFixed(1)} Z" fill="${ORO}" class="gr-amb"/>`, etq(p, ORO)); }
+    for (const p of G) partes.push(`<circle cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="3.4" class="gr-punto" ${PUNTO}/>`, etq(p, 'var(--text)'));
+    partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${H - M.b}" y2="${H - M.b}" class="gr-eje" data-role="axis"/><line x1="${M.l}" x2="${M.l}" y1="${M.t}" y2="${H - M.b}" class="gr-eje" data-role="axis"/>`);
+    partes.push(`<text x="${(M.l + W - M.r) / 2}" y="${H - 10}" text-anchor="middle" class="gr-titulo-eje" data-role="xlab" ${TITULO}>${esc(op.x.titulo)}</text>`);
+    partes.push(`<text transform="translate(16 ${(M.t + H - M.b) / 2}) rotate(-90)" text-anchor="middle" class="gr-titulo-eje" data-role="ylab" ${TITULO}>${esc(op.y.titulo)}</text>`);
+    let alto = H;
+    if (G.length && A.length) {
+      alto = H + 24;
+      partes.push(`<g data-role="legend"><circle cx="${M.l + 6}" cy="${H + 8}" r="3.4" ${PUNTO} data-li="0"/><text x="${M.l + 14}" y="${H + 12}" class="gr-etq gr-ley" data-li="0" ${TEXTO}>${esc(op.leyenda ? op.leyenda[0] : 'Genotipos')}</text>` +
+        `<path d="M${M.l + 126} ${H + 3} L${M.l + 131} ${H + 8} L${M.l + 126} ${H + 13} L${M.l + 121} ${H + 8} Z" fill="${ORO}" data-li="1"/><text x="${M.l + 136}" y="${H + 12}" class="gr-etq gr-ley" data-li="1" ${TEXTO}>${esc(op.leyenda ? op.leyenda[1] : 'Ambientes')}</text></g>`);
+    }
+    return `<figure class="sp-grafica"><svg viewBox="0 0 ${W} ${alto}"${area(M.l, M.t, w, h, [x0, x1], [y0, y1])} role="img" aria-label="${esc(op.descripcion || op.titulo)}" data-sigmapro-figura="${esc(op.titulo)}">` +
+      `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
+  }
+
+  SP.graficas = { dispersion, grupos, lineas, medias, mapaCalor, mosaico, contorno, biplot, adelgazar, marcas };
 })();

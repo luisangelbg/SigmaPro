@@ -27,6 +27,7 @@
   const GLMS = ['glm-conteos', 'glm-proporciones', 'glm-gamma', 'glm', 'glmm-bloques', 'glmm'];
   const NOLINEAL = ['curva-crecimiento', 'dosis-respuesta', 'respuesta-meseta'];
   const SUPERFICIES = ['superficie-respuesta', 'ascenso-pronunciado'];
+  const MULTI = ['ensayos-multiambiente', 'estabilidad', 'ammi', 'gge'];
   const AJUSTES_MX = () => [['tukey', 'Tukey'], ['bonferroni', 'Bonferroni'], ['holm', 'Holm'], ['sidak', 'Šidák'], ['none', T('Sin ajuste (DMS)')]];
   const estado = SP.app.analisis = {
     metodo: 'supuestos', pendiente: true, turno: 0, modo: (() => { try { const m = localStorage.getItem('sigmapro.analisis.modo'); return MODOS.includes(m) ? m : 'asistente'; } catch (e) { return 'asistente'; } })(),
@@ -48,6 +49,7 @@
     rep: { respuesta: '', tiempo: '', sujeto: '', tratamientos: [], bloque: '', estructura: 'auto', criterio: 'aic', compararMx: null, dentro: '', ajuste: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
     nl: { respuesta: '', x: '', grupo: '', modelo: '', nivel: 0.95, alfa: 0.05, metodo: '', _iniciado: false },
     srf: { respuesta: '', factores: [], bloque: '', orden: 'segundo', objetivo: 'maximo', nivel: 0.95, alfa: 0.05, _iniciado: false },
+    ma: { respuesta: '', genotipo: '', ambiente: '', repeticion: '', eeb: 'propio', objetivo: 'maximo', escala: 'ninguna', particion: 'simetrica', alfa: 0.05, _iniciado: false },
     gen: { respuesta: '', aleatorios: [], fijos: [], estructura: 'cruzados', genotipo: '', repeticion: '', bloque: '', ambiente: '', seleccion: 0.1, direccion: 'mayor',
       individuo: '', fijosRep: [], _iniciado: false },
     glm: { respuesta: '', tratamientos: [], bloque: '', covariables: [], ensayos: '', exposicion: '', familia: '', enlace: '', tipo: 2, compararMx: null, dentro: '', ajuste: 'tukey',
@@ -807,7 +809,35 @@
     h += '<p class="small muted">' + esc(T('Corre en tu navegador (mínimos cuadrados y análisis canónico, validado contra lm y eigen de R).')) + '</p>';
     return h + campo('srf', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('srf', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
+  /** Ensayos multiambiente: genotipo, ambiente y repetición propuestos por nombre. */
+  function formMultiambiente(c, m) {
+    const s = estado.ma, num = c.numericas, agr = c.agrupables.filter(n => nivelesDe(c, n).length >= 2);
+    if (!s._iniciado) {
+      s.genotipo = agr.find(n => /gen|var|h[ií]brido|clon|cult|l[ií]nea/i.test(n)) || agr[0] || '';
+      s.ambiente = agr.find(n => n !== s.genotipo && /amb|loc|env|a[ñn]o|sitio|ciclo|ensayo/i.test(n)) || agr.find(n => n !== s.genotipo) || '';
+      s.repeticion = agr.find(n => n !== s.genotipo && n !== s.ambiente && /rep|bloq|block/i.test(n)) || '';
+      s.respuesta = c.pap.respuestas.slice(-1)[0] || num[num.length - 1] || '';
+      s._iniciado = true;
+    }
+    if (!num.includes(s.respuesta)) s.respuesta = num[num.length - 1] || '';
+    for (const k of ['genotipo', 'ambiente', 'repeticion']) if (s[k] && (!agr.includes(s[k]) || s[k] === s.respuesta)) s[k] = '';
+    const op = (sin, vacio) => [['', vacio]].concat(agr.filter(n => n !== s.respuesta && !sin.includes(n)).map(n => [n, n]));
+    let h = campo('ma', 'respuesta', T('Variable de respuesta'), lista(num), s.respuesta);
+    h += campo('ma', 'genotipo', T('Genotipos (variedades, híbridos, líneas)'), op([s.ambiente, s.repeticion], T('— elige —')), s.genotipo);
+    h += campo('ma', 'ambiente', T('Ambientes (localidades, años, fechas)'), op([s.genotipo, s.repeticion], T('— elige —')), s.ambiente);
+    h += campo('ma', 'repeticion', T('Repeticiones o bloques (opcional)'), op([s.genotipo, s.ambiente], T('— una media por celda —')), s.repeticion,
+      T('Con repeticiones, el error de cada ambiente sale de sus bloques; sin ellas, cada fila es la media de un genotipo en un ambiente.'));
+    if (m === 'estabilidad') h += campo('ma', 'eeb', T('Error estándar de b'), [['propio', T('De la regresión de cada genotipo')], ['error', T('Del error combinado de los ambientes')]], s.eeb);
+    if (m === 'gge') {
+      h += campo('ma', 'escala', T('Tabla'), [['ninguna', T('Centrada por ambiente')], ['desviacion', T('Centrada y dividida por la desviación de cada ambiente')]], s.escala);
+      h += campo('ma', 'particion', T('Partición del valor singular'), [['simetrica', T('Simétrica')], ['genotipo', T('Por genotipo (para comparar genotipos)')], ['ambiente', T('Por ambiente (para comparar ambientes)')]], s.particion);
+    }
+    h += campo('ma', 'objetivo', T('Lo mejor es'), [['maximo', T('La mayor respuesta')], ['minimo', T('La menor respuesta')]], s.objetivo);
+    h += '<p class="small muted">' + esc(T('Corre en tu navegador (validado contra lm y svd de R).')) + '</p>';
+    return h + campo('ma', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+  }
   function formulario(c) {
+    if (MULTI.includes(estado.metodo)) return formMultiambiente(c, estado.metodo);
     if (SUPERFICIES.includes(estado.metodo)) return formSuperficie(c, estado.metodo);
     if (NOLINEAL.includes(estado.metodo)) return formNoLineal(c, estado.metodo);
     if (GLMS.includes(estado.metodo)) return formGlm(c, estado.metodo);
@@ -836,6 +866,11 @@
       const s = estado.mx;
       return { e: { respuesta: s.respuesta }, op: Object.assign({ derecha: s.derecha, comoFactor: s.comoFactor.slice(), tipoSC: +s.tipoSC, gl: s.gl, reml: s.estimacion !== 'ml', ajuste: s.ajuste, alfa: +s.alfa, nivel: +s.nivel },
         s.compararMx ? { comparar: s.compararMx.slice() } : {}, s.dentro ? { dentro: s.dentro } : {}) };
+    }
+    if (MULTI.includes(m)) {
+      const s = estado.ma, e = { respuesta: s.respuesta, genotipo: s.genotipo, ambiente: s.ambiente };
+      if (s.repeticion) e.repeticion = s.repeticion;
+      return { e, op: Object.assign({ objetivo: s.objetivo, alfa: +s.alfa }, m === 'estabilidad' ? { eeb: s.eeb } : {}, m === 'gge' ? { escala: s.escala, particion: s.particion } : {}) };
     }
     if (SUPERFICIES.includes(m)) {
       const s = estado.srf, e = { respuesta: s.respuesta, factores: s.factores.slice() };
@@ -1204,6 +1239,45 @@
       puntos: SP.graficas.adelgazar(r.ajustados.map((x, i) => ({ x, y: v.residuos[i], marca: Math.abs(v.residuos[i]) > 3 * r.ajuste.sigma })), 2500), referencias: [{ y: 0 }] }));
     return out.join('');
   }
+  function graficasMultiambiente(r) {
+    const Gn = r.genotipos, An = r.ambientes_nombre, out = [], f1 = v => SP.formatos.texto(v, 'forma2');
+    if (r.metodo === 'ensayos-multiambiente' && Gn.length <= 12) {
+      const orden = An.map((_, j) => j).sort((a, b) => r.medias_ambiente[a] - r.medias_ambiente[b]);
+      out.push(SP.graficas.lineas({ titulo: T('Cada genotipo en los ambientes'), x: { titulo: T('Ambientes, de menor a mayor media'), niveles: orden.map(j => An[j]) }, y: { titulo: r.respuesta }, leyenda: r.genotipo,
+        descripcion: T('Medias de cada genotipo en los ambientes ordenados por su media; las líneas que se cruzan muestran la interacción genotipo × ambiente.'),
+        series: Gn.map((g, i) => ({ nombre: g, valores: orden.map(j => r.tabla[i][j]) })) }));
+    }
+    if (r.metodo === 'estabilidad') {
+      out.push(SP.graficas.biplot({ titulo: T('Media contra pendiente (Eberhart y Russell)'), x: { titulo: T('Media de «{y}»', { y: r.respuesta }) }, y: { titulo: T('Pendiente b') },
+        descripcion: T('Cada genotipo con su media y su pendiente sobre el índice ambiental; la línea horizontal es b = 1 (adaptación general) y la vertical, la media general.'),
+        genotipos: Gn.map((g, i) => ({ x: r.medias[i], y: r.regresion.b[i], nombre: g })), referencias: [{ x: r.media_general }, { y: 1 }] }));
+      if (Gn.length <= 10) out.push(SP.graficas.dispersion({ titulo: T('Regresión de cada genotipo sobre el índice ambiental'), x: { titulo: T('Índice ambiental') }, y: { titulo: r.respuesta },
+        descripcion: T('Medias de cada genotipo en cada ambiente contra el índice del ambiente, con su recta de regresión.'),
+        puntos: Gn.flatMap((_, i) => r.indice.map((x, j) => ({ x, y: r.tabla[i][j], serie: i }))),
+        lineas: Gn.map((_, i) => { const lo = Math.min(...r.indice), hi = Math.max(...r.indice); return { x: [lo, hi], y: [lo, hi].map(v => r.medias[i] + r.regresion.b[i] * v), serie: i }; }),
+        leyenda: { titulo: r.genotipo, series: Gn } }));
+    }
+    if (r.metodo === 'ammi') {
+      const X = r.ammi, ej = X.ejes;
+      out.push(SP.graficas.biplot({ titulo: T('AMMI1: media contra EJE1'), x: { titulo: T('Media de «{y}»', { y: r.respuesta }) }, y: { titulo: T('EJE1 ({p} %)', { p: f1(ej.pct[0]) }) },
+        descripcion: T('Genotipos y ambientes con su media y su puntaje en el primer eje de la interacción; cerca de cero, más estable.'),
+        genotipos: Gn.map((g, i) => ({ x: r.medias[i], y: X.genotipos[i][0], nombre: g })), ambientes: An.map((a, j) => ({ x: r.medias_ambiente[j], y: X.ambientes[j][0], nombre: a })),
+        referencias: [{ x: r.media_general }, { y: 0 }], leyenda: [T('Genotipos'), T('Ambientes')] }));
+      if (X.genotipos[0].length >= 2) out.push(SP.graficas.biplot({ titulo: T('AMMI2: EJE1 contra EJE2'), x: { titulo: T('EJE1 ({p} %)', { p: f1(ej.pct[0]) }) }, y: { titulo: T('EJE2 ({p} %)', { p: f1(ej.pct[1]) }) },
+        descripcion: T('Los dos primeros ejes de la interacción; un genotipo y un ambiente en la misma dirección interactúan a favor.'),
+        genotipos: Gn.map((g, i) => ({ x: X.genotipos[i][0], y: X.genotipos[i][1], nombre: g })), ambientes: An.map((a, j) => ({ x: X.ambientes[j][0], y: X.ambientes[j][1], nombre: a })),
+        vectores: true, iguales: true, leyenda: [T('Genotipos'), T('Ambientes')] }));
+    }
+    if (r.metodo === 'gge') {
+      const Q = r.gge, ejes = { x: { titulo: T('EJE1 ({p} %)', { p: f1(Q.pct[0]) }) }, y: { titulo: T('EJE2 ({p} %)', { p: f1(Q.pct[1]) }) } };
+      const gs = Gn.map((g, i) => ({ x: Q.genotipos[i][0], y: Q.genotipos[i][1], nombre: g })), as = An.map((a, j) => ({ x: Q.ambientes[j][0], y: Q.ambientes[j][1], nombre: a }));
+      out.push(SP.graficas.biplot(Object.assign({ titulo: T('Quién ganó dónde'), descripcion: T('Polígono de los genotipos más alejados; los rayos dividen los ambientes en sectores y el vértice de cada sector es el ganador ahí.'),
+        genotipos: gs, ambientes: as, poligono: Q.indices_vertices, rayos: true, iguales: true, leyenda: [T('Genotipos'), T('Ambientes')] }, ejes)));
+      out.push(SP.graficas.biplot(Object.assign({ titulo: T('Media contra estabilidad'), descripcion: T('El eje del ambiente promedio (la flecha señala la mejor respuesta): la proyección de cada genotipo sobre él es su desempeño y la distancia al eje, su inestabilidad.'),
+        genotipos: gs, ambientes: as, eje: Q.media_ambiente, iguales: true, leyenda: [T('Genotipos'), T('Ambientes')] }, ejes)));
+    }
+    return out.join('');
+  }
   function graficasSuperficie(r) {
     const F = r.factores, k = F.length, C = r.codificacion, out = [], E = r.estacionario, dentro = E && E.distancia <= r.radio + 1e-9;
     const nat = (h, z) => C.centro[h] + C.paso[h] * z, cod = (h, x) => (x - C.centro[h]) / C.paso[h];
@@ -1290,6 +1364,7 @@
     if (r.tipo === 'glm' || r.tipo === 'glmm') return graficasGlm(r);
     if (r.tipo === 'nolineal') return graficasNoLineal(r);
     if (r.tipo === 'superficie') return graficasSuperficie(r);
+    if (r.tipo === 'multiambiente') return graficasMultiambiente(r);
     if (r.tipo === 'modelo') {
       if (r.celdas) {
         const [A, B] = r.celdas.factores, nivA = [], nivB = [];
@@ -1418,7 +1493,7 @@
     if (estado.modo !== 'catalogo') { const p = estado.pintores[estado.modo]; if (p) p(c); return; }
     catalogo();
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = estado.srf._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = estado.srf._iniciado = estado.ma._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -1535,6 +1610,8 @@
       pon(estado.rep, { respuesta: e.respuesta, tiempo: e.tiempo, sujeto: e.sujeto, tratamientos: [].concat(e.tratamientos || []), bloque: e.bloque || '',
         estructura: op.estructura, criterio: op.criterio, ajuste: op.ajuste, dentro: op.dentro === undefined ? undefined : op.dentro });
       estado.rep.compararMx = op.comparar ? [].concat(op.comparar) : null;
+    } else if (MULTI.includes(m)) {
+      pon(estado.ma, { respuesta: e.respuesta, genotipo: e.genotipo, ambiente: e.ambiente, repeticion: e.repeticion || '', eeb: op.eeb, objetivo: op.objetivo, escala: op.escala, particion: op.particion });
     } else if (SUPERFICIES.includes(m)) {
       pon(estado.srf, { respuesta: e.respuesta, factores: [].concat(e.factores || []), bloque: e.bloque || '', orden: op.orden, objetivo: op.objetivo, nivel: op.nivel });
     } else if (NOLINEAL.includes(m)) {

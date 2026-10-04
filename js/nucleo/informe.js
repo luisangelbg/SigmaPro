@@ -110,6 +110,18 @@ SP.definir('informe', function (SP) {
     myers2016: () => 'Myers, R. H., Montgomery, D. C. y Anderson-Cook, C. M. (2016). Response surface methodology: process and product optimization using designed experiments (4.ª ed.). Wiley.',
     hoerl1959: () => 'Hoerl, A. E. (1959). Optimum solution of many variables equations. Chemical Engineering Progress, 55, 69–78.',
     draper1963: () => 'Draper, N. R. (1963). «Ridge analysis» of response surfaces. Technometrics, 5(4), 469–479.',
+    bartlett1937: () => 'Bartlett, M. S. (1937). Properties of sufficiency and statistical tests. Proceedings of the Royal Society of London A, 160(901), 268–282.',
+    finlay1963: () => 'Finlay, K. W. y Wilkinson, G. N. (1963). The analysis of adaptation in a plant-breeding programme. Australian Journal of Agricultural Research, 14(6), 742–754.',
+    eberhart1966: () => 'Eberhart, S. A. y Russell, W. A. (1966). Stability parameters for comparing varieties. Crop Science, 6(1), 36–40.',
+    wricke1962: () => 'Wricke, G. (1962). Über eine Methode zur Erfassung der ökologischen Streubreite in Feldversuchen. Zeitschrift für Pflanzenzüchtung, 47, 92–96.',
+    shukla1972: () => 'Shukla, G. K. (1972). Some statistical aspects of partitioning genotype-environmental components of variability. Heredity, 29(2), 237–245.',
+    lin1988: () => 'Lin, C. S. y Binns, M. R. (1988). A superiority measure of cultivar performance for cultivar × location data. Canadian Journal of Plant Science, 68(1), 193–198.',
+    gauch1988: () => 'Gauch, H. G. (1988). Model selection and validation for yield trials with interaction. Biometrics, 44(3), 705–715.',
+    gollob1968: () => 'Gollob, H. F. (1968). A statistical model which combines features of factor analytic and analysis of variance techniques. Psychometrika, 33(1), 73–115.',
+    cornelius1992: () => 'Cornelius, P. L., Seyedsadr, M. y Crossa, J. (1992). Using the shifted multiplicative model to search for «separability» in crop cultivar trials. Theoretical and Applied Genetics, 84(1–2), 161–172.',
+    purchase2000: () => 'Purchase, J. L., Hatting, H. y van Deventer, C. S. (2000). Genotype × environment interaction of winter wheat (Triticum aestivum L.) in South Africa: II. Stability analysis of yield performance. South African Journal of Plant and Soil, 17(3), 101–107.',
+    yan2000: () => 'Yan, W., Hunt, L. A., Sheng, Q. y Szlavnics, Z. (2000). Cultivar evaluation and mega-environment investigation based on the GGE biplot. Crop Science, 40(3), 597–605.',
+    yan2003: () => 'Yan, W. y Kang, M. S. (2003). GGE biplot analysis: a graphical tool for breeders, geneticists, and agronomists. CRC Press.',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -133,6 +145,9 @@ SP.definir('informe', function (SP) {
     wedderburn1974: 'Wedderburn, 1974', lenth2016: 'Lenth, 2016', bolker2009: 'Bolker et al., 2009', harrison2014: 'Harrison, 2014', fox2019: 'Fox y Weisberg, 2019',
     bates1988: 'Bates y Watts, 1988', archontoulis2015: 'Archontoulis y Miguez, 2015', ritz2015: 'Ritz et al., 2015', seefeldt1995: 'Seefeldt et al., 1995', cerrato1990: 'Cerrato y Blackmer, 1990',
     box1951: 'Box y Wilson, 1951', myers2016: 'Myers et al., 2016', hoerl1959: 'Hoerl, 1959', draper1963: 'Draper, 1963',
+    bartlett1937: 'Bartlett, 1937', finlay1963: 'Finlay y Wilkinson, 1963', eberhart1966: 'Eberhart y Russell, 1966', wricke1962: 'Wricke, 1962', shukla1972: 'Shukla, 1972',
+    lin1988: 'Lin y Binns, 1988', gauch1988: 'Gauch, 1988', gollob1968: 'Gollob, 1968', cornelius1992: 'Cornelius et al., 1992', purchase2000: 'Purchase et al., 2000',
+    yan2000: 'Yan et al., 2000', yan2003: 'Yan y Kang, 2003',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -695,6 +710,45 @@ SP.definir('informe', function (SP) {
     return { metodos, resultados: res.join(' ') };
   }
 
+  function multiambiente(id, r, citas) {
+    const G = r.genotipos, E = r.ambientes_nombre, a = r.alfa || 0.05, an = r.anova, iGA = an.fuente.indexOf(T('G × A')), iG = an.fuente.indexOf(T('Genotipos'));
+    const base = T('Se evaluaron {g} genotipos en {e} ambientes{r}.', { g: G.length, e: E.length, r: r.repeticion ? T(' con repeticiones (r = {r})', { r: n2(r.r) }) : T(' (una media por genotipo y ambiente)') });
+    const ga = iGA >= 0 ? T('La interacción genotipo × ambiente {s} (F({a}, {b}) = {v}; {p}).', { s: an.p[iGA] < a ? T('fue significativa') : T('no fue significativa'), a: an.gl[iGA], b: an.gl[an.gl.length - 1], v: n2(an.F[iGA]), p: fp(an.p[iGA]) }) : '';
+    if (id === 'ensayos-multiambiente') {
+      const metodos = base + ' ' + T('Después del análisis de cada ambiente se hizo el análisis de varianza conjunto ({c}){h}.', { c: cita(['gomez1984'], citas),
+        h: r.bartlett ? T('; la homogeneidad de los errores de los ambientes se revisó con la prueba de Bartlett ({c})', { c: cita(['bartlett1937'], citas) }) : '' });
+      const res = [ga];
+      if (iG >= 0) res.push(T('Los genotipos {s} (F({a}, {b}) = {v}; {p}).', { s: an.p[iG] < a ? T('difirieron') : T('no difirieron'), a: an.gl[iG], b: an.gl[an.gl.length - 1], v: n2(an.F[iG]), p: fp(an.p[iG]) }));
+      if (r.bartlett) res.push(T('La razón entre el mayor y el menor cuadrado medio del error fue {k} (χ² de Bartlett = {c}; {p}).', { k: n2(r.bartlett.razon), c: n2(r.bartlett.chi2), p: fp(r.bartlett.p) }));
+      return { metodos, resultados: res.filter(Boolean).join(' ') };
+    }
+    if (id === 'estabilidad') {
+      const R = r.regresion, estables = G.filter((_, i) => R.p[i] >= a && (!R.p_dev || R.p_dev[i] >= a));
+      const kW = r.wricke.W.indexOf(Math.min(...r.wricke.W)), kL = r.lin_binns.indexOf(Math.min(...r.lin_binns));
+      return { metodos: base + ' ' + T('La estabilidad se evaluó con la regresión sobre el índice ambiental ({c1}), la ecovalencia ({c2}), la varianza de estabilidad ({c3}) y la superioridad ({c4}).',
+        { c1: cita(['finlay1963', 'eberhart1966'], citas), c2: cita(['wricke1962'], citas), c3: cita(['shukla1972'], citas), c4: cita(['lin1988'], citas) }),
+      resultados: [T('Las pendientes fueron de {a} a {b}.', { a: n2(Math.min(...R.b)), b: n2(Math.max(...R.b)) }),
+        estables.length ? T('No se apartaron de b = 1{s}: {l}.', { s: R.p_dev ? T(' ni de S²d = 0') : '', l: y(estables) }) : T('Todos los genotipos se apartaron de b = 1{s}.', { s: R.p_dev ? T(' o de S²d = 0') : '' }),
+        T('La menor ecovalencia fue la de {g} ({p} % de la interacción) y la mejor superioridad, la de {l}.', { g: G[kW], p: n2(r.wricke.pct[kW]), l: G[kL] })].join(' ') };
+    }
+    if (id === 'ammi') {
+      const X = r.ammi, ej = X.ejes;
+      const metodos = base + ' ' + T('Se ajustó el modelo AMMI ({c1}); los ejes de la interacción se probaron con la prueba F ({c2}) y la prueba F_R ({c3}){s}.',
+        { c1: cita(['gauch1988'], citas), c2: cita(['gollob1968'], citas), c3: cita(['cornelius1992'], citas), s: X.asv ? T(', y la estabilidad se midió con el ASV ({c})', { c: cita(['purchase2000'], citas) }) : '' });
+      const res = [ga, T('Los dos primeros ejes explicaron el {p} % de la suma de cuadrados de la interacción.', { p: pct(ej.acum[Math.min(1, ej.acum.length - 1)]) })];
+      if (X.fr) res.push(T('La prueba F_R retuvo {n} {e}.', { n: X.n_fr, e: X.n_fr === 1 ? T('eje') : T('ejes') }));
+      if (X.asv) { const k = X.asv.indexOf(Math.min(...X.asv)); res.push(T('El genotipo más estable según el ASV fue {g}.', { g: G[k] })); }
+      return { metodos, resultados: res.filter(Boolean).join(' ') };
+    }
+    const Q = r.gge, megas = [...new Set(Q.ganador)];
+    const orden = G.map((_, i) => i).sort((p, q) => Q.proyeccion[q] - Q.proyeccion[p]);
+    return { metodos: base + ' ' + T('Se construyó el biplot GGE ({c}) con la tabla centrada por ambiente{e} y la partición {p} del valor singular.', { c: cita(['yan2000', 'yan2003'], citas),
+      e: r.escala === 'desviacion' ? T(' y escalada por su desviación estándar') : '', p: { simetrica: T('simétrica'), genotipo: T('por genotipo'), ambiente: T('por ambiente') }[r.particion] }),
+    resultados: [T('Los dos primeros ejes explicaron el {p} % de G + G × A.', { p: pct(Q.pct[0] + Q.pct[1]) }),
+      megas.length > 1 ? T('Se distinguieron {k} megaambientes, con {l} como ganadores.', { k: megas.length, l: y(megas) }) : T('{g} ganó en todos los ambientes.', { g: megas[0] }),
+      T('El mejor desempeño promedio fue el de {g}.', { g: G[orden[0]] })].join(' ') };
+  }
+
   /** El párrafo de métodos y el de resultados de un análisis. */
   function parrafo(id, r, rep, e, op) {
     e = e || {}; op = op || {};
@@ -717,6 +771,7 @@ SP.definir('informe', function (SP) {
     else if (id === 'glmm-bloques' || id === 'glmm') p = generalizadoMixto(r, citas);
     else if (['curva-crecimiento', 'dosis-respuesta', 'respuesta-meseta'].includes(id)) p = noLineal(r, citas);
     else if (['superficie-respuesta', 'ascenso-pronunciado'].includes(id)) p = superficie(r, citas);
+    else if (['ensayos-multiambiente', 'estabilidad', 'ammi', 'gge'].includes(id)) p = multiambiente(id, r, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };

@@ -1,5 +1,5 @@
 {
- "generado": "2026-10-04T03:08:40.032Z",
+ "generado": "2026-10-04T03:37:17.030Z",
  "webr": "0.6.0",
  "r": "R 4.6.0",
  "navegador": "Chrome/154.0.0.0",
@@ -13,7 +13,7 @@
    "peor": "coeficientes.z[2]",
    "fallas": [],
    "error": "",
-   "ms": 18551,
+   "ms": 19720,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -31,7 +31,7 @@
    "peor": "coeficientes.z[0]",
    "fallas": [],
    "error": "",
-   "ms": 718,
+   "ms": 820,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -49,7 +49,7 @@
    "peor": "coeficientes.z[4]",
    "fallas": [],
    "error": "",
-   "ms": 9374,
+   "ms": 11004,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -67,7 +67,7 @@
    "peor": "coeficientes.z[2]",
    "fallas": [],
    "error": "",
-   "ms": 260,
+   "ms": 292,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -85,7 +85,7 @@
    "peor": "medias[0].filas[0].ee",
    "fallas": [],
    "error": "",
-   "ms": 764,
+   "ms": 819,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -103,7 +103,7 @@
    "peor": "obs.razon",
    "fallas": [],
    "error": "",
-   "ms": 712,
+   "ms": 849,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -121,7 +121,7 @@
    "peor": "coeficientes.z[1]",
    "fallas": [],
    "error": "",
-   "ms": 490,
+   "ms": 711,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -139,7 +139,7 @@
    "peor": "coeficientes.z[3]",
    "fallas": [],
    "error": "",
-   "ms": 1292,
+   "ms": 1531,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -157,7 +157,7 @@
    "peor": "estructuras[6].logLik",
    "fallas": [],
    "error": "",
-   "ms": 1234,
+   "ms": 1418,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -174,7 +174,7 @@
    "peor": "estructuras[4].logLik",
    "fallas": [],
    "error": "",
-   "ms": 701,
+   "ms": 993,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -191,7 +191,7 @@
    "peor": "estructuras[6].logLik",
    "fallas": [],
    "error": "",
-   "ms": 601,
+   "ms": 813,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -208,7 +208,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 753,
+   "ms": 798,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -225,7 +225,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 1466,
+   "ms": 1865,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -242,7 +242,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 665,
+   "ms": 699,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -259,7 +259,7 @@
    "peor": "medias[0].pares[60].p",
    "fallas": [],
    "error": "",
-   "ms": 4918,
+   "ms": 5526,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -277,7 +277,7 @@
    "peor": "anova.sc[0]",
    "fallas": [],
    "error": "",
-   "ms": 1414,
+   "ms": 1623,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -295,7 +295,7 @@
    "peor": "anova.gl2[0]",
    "fallas": [],
    "error": "",
-   "ms": 1829,
+   "ms": 2103,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -313,7 +313,7 @@
    "peor": "anova.cm[2]",
    "fallas": [],
    "error": "",
-   "ms": 886,
+   "ms": 1113,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -331,7 +331,7 @@
    "peor": "medias[1].pares[3].p",
    "fallas": [],
    "error": "",
-   "ms": 2922,
+   "ms": 3984,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -349,7 +349,7 @@
    "peor": "medias[1].filas[0].ic[0]",
    "fallas": [],
    "error": "",
-   "ms": 570,
+   "ms": 785,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -367,7 +367,7 @@
    "peor": "anova.p[1]",
    "fallas": [],
    "error": "",
-   "ms": 3428,
+   "ms": 4050,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -385,7 +385,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 441,
+   "ms": 544,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -403,7 +403,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 4226,
+   "ms": 5107,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -421,7 +421,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 752,
+   "ms": 718,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -439,7 +439,7 @@
    "peor": "anova.cm[2]",
    "fallas": [],
    "error": "",
-   "ms": 797,
+   "ms": 1008,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -457,7 +457,7 @@
    "peor": "anova.cm[2]",
    "fallas": [],
    "error": "",
-   "ms": 588,
+   "ms": 1130,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -475,7 +475,7 @@
    "peor": "anova.p[2]",
    "fallas": [],
    "error": "",
-   "ms": 304,
+   "ms": 590,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -493,7 +493,7 @@
    "peor": "medias[0].pares[0].p",
    "fallas": [],
    "error": "",
-   "ms": 210,
+   "ms": 424,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -511,7 +511,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 1042,
+   "ms": 2146,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -529,7 +529,7 @@
    "peor": "varianzas.varianza[1]",
    "fallas": [],
    "error": "",
-   "ms": 438,
+   "ms": 784,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -547,7 +547,7 @@
    "peor": "varianzas.de[1]",
    "fallas": [],
    "error": "",
-   "ms": 418,
+   "ms": 777,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -565,7 +565,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 457,
+   "ms": 881,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -583,7 +583,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 354,
+   "ms": 720,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -600,7 +600,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 169,
+   "ms": 305,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -617,7 +617,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 272,
+   "ms": 424,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -634,7 +634,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 378,
+   "ms": 717,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",

@@ -188,6 +188,15 @@ const ESCENARIOS = [
     r: 'c(coef(m), xs, eigen(B)$values, anova(m, pe)$F[2])', js: res => [...res.coeficientes.estimado, ...res.estacionario.codificado, ...res.canonico.valores, res.falta_ajuste.F] },
   { ej: 'tomate-superficie', id: 'ascenso-pronunciado', e: { respuesta: 'rendimiento', factores: ['N', 'K'] }, op: { objetivo: 'maximo' },
     r: 'c(coef(m), b / sqrt(sum(b^2)), anova(m, pe)$F[2])', js: res => [...res.coeficientes.estimado, ...res.cresta.codificado[2], res.falta_ajuste.F] },
+  { ej: 'avena-ambientes', id: 'ensayos-multiambiente', e: { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, op: {},
+    r: 'c(anova(lm(y ~ amb + amb:rep + gen + gen:amb, data = d))[c(1, 3, 2, 4, 5), 3], cme, gle)', js: res => [...res.anova.cm, res.cme, res.gle] },
+  { ej: 'avena-ambientes', id: 'estabilidad', e: { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, op: {},
+    r: 'c(t(apply(Y, 1, function(v) { m <- lm(v ~ I); c(b = coef(m)[[2]], S2d = deviance(m) / (length(v) - 2) - cme / r) })), W, (g * (g - 1) * W - sum(W)) / ((g - 1) * (g - 2) * (e - 1)) / r)',
+    js: res => [...res.regresion.b, ...res.regresion.s2d, ...res.wricke.W, ...res.shukla.sigma2] },
+  { ej: 'avena-ambientes', id: 'ammi', e: { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, op: {},
+    r: 'c(sc, F, scr / glr / cme)', js: res => [...res.ammi.ejes.sc, ...res.ammi.ejes.F, ...res.ammi.fr.F] },
+  { ej: 'avena-ambientes', id: 'gge', e: { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, op: {},
+    r: '(100 * s$d^2 / sum(s$d^2))[1:4]', js: res => res.gge.pct.slice(0, 4) },
 ];
 const efectoDe = res => [res.efecto.d, ...res.efecto.ic_d, res.efecto.g, ...res.efecto.ic_g];
 /* aggregate() de R deja el primer factor cambiando más rápido; la app, el último */
