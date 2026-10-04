@@ -27,7 +27,7 @@ const prefijo = opc('partes'), salidaNombre = opc('salida') || 'manual-completo.
 const dir = join(MANUAL, lang);
 if (!existsSync(dir)) { console.error('No existe la carpeta ' + dir); process.exit(2); }
 
-const partes = readdirSync(dir).filter(f => /^(00b|\d\d[a-z]?)-.*\.html$/.test(f) && f !== 'manual-completo.html')
+const partes = readdirSync(dir).filter(f => /^(00b|\d\d[a-z]?)-.*\.html$/.test(f) && f !== 'manual-completo.html' && !f.startsWith('00a-'))
   .filter(f => !prefijo || f.startsWith(prefijo)).sort();
 if (!partes.length) { console.error('No hay partes en ' + dir + (prefijo ? ' que empiecen con ' + prefijo : '')); process.exit(2); }
 

@@ -75,7 +75,8 @@ try {
   const todas = r.grupos.flatMap(g => g.medidas), dentro = todas.filter(x => !(x.primera > x.meta)).length;
   const plan = todas.filter(x => x.plan).map(x => x.nombre + ': ' + fmt(x.primera) + ' (meta ' + fmt(x.meta) + ')');
   if (!solo) guardar('rendimiento', { titulo: 'Rendimiento con ' + r.n.toLocaleString('es-MX') + ' filas', ok: !fallas,
-    resumen: dentro + ' de ' + todas.length + ' medidas dentro de su meta, en ' + (ua.match(/Edg\/[\d.]+|Chrome\/[\d.]+/) || ['el navegador'])[0] + '. Las metas del plan: ' + plan.join('; ') + '.',
+    /* sin nombres comerciales en lo que muestra la app: el motor del navegador, que es libre */
+    resumen: dentro + ' de ' + todas.length + ' medidas dentro de su meta, en ' + ((ua.match(/Chrome\/([\d.]+)/) || [])[1] ? 'un navegador Chromium ' + ua.match(/Chrome\/([\d.]+)/)[1] : 'el navegador') + '. Las metas del plan: ' + plan.join('; ') + '.',
     renglones: todas.map(x => x.nombre + ': ' + fmt(x.primera) + (x.mediana !== undefined ? ' (después ' + fmt(x.mediana) + ')' : '') + ' · meta ' + fmt(x.meta)) });
   if (!solo && process.argv.includes('--json')) writeFileSync(join(AQUI, 'resultados.json'), JSON.stringify(Object.assign({ fecha: new Date().toISOString(), navegador: ua }, r), null, 1));
   if (consola.length) { console.log('\nConsola:\n  ' + consola.join('\n  ')); fallas++; }

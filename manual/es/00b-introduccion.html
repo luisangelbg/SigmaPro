@@ -8,12 +8,17 @@
 <!-- reparte el contenido en hojas tamaño carta, con encabezados, números de página e índice -->
 <script src="../paginar.js"></script>
 <style>
-  .toc > li { margin-bottom: 0.03in; }
-  .toc ul li { font-size: 9.4pt; margin-bottom: 0.01in; }
+  .toc > li { margin-bottom: 0.02in; }
+  .toc .toc-cap { padding: 0.02in 0; }
+  .toc .toc-cap a { font-size: 13pt; }
+  .toc ul { margin-top: 0.02in; }
+  .toc ul li { font-size: 8.9pt; line-height: 1.22; margin-bottom: 0; }
   figure.media .marco { width: 80%; }
   figure.media figcaption { margin-left: 10%; margin-right: 10%; }
   figure.chica .marco { width: 62%; }
   figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+  /* marcas más chicas sobre la pantalla completa: los botones de arriba están muy juntos */
+  .marcas-chicas .marca { width: 16px; height: 16px; margin: -8px 0 0 -8px; font-size: 7pt; border-width: 1.5px; }
 </style>
 </head>
 <body>
@@ -249,7 +254,7 @@
     <div class="cap-etiqueta">Introducción · Antes de los bloques</div>
     <h1 data-corto="Introducción">Introducción a SigmaPro</h1>
     <div class="cap-regla"></div>
-    <p class="cap-resumen">Qué es el programa, qué preguntas de un ensayo responde, qué datos acepta y qué entrega, cómo se abre y cómo se recorre de principio a fin. Incluye las cinco ideas que sostienen todo lo demás, un recorrido por la interfaz y la lista honesta de lo que el programa todavía no hace.</p>
+    <p class="cap-resumen">Qué es el programa, qué preguntas de un ensayo responde, qué datos acepta y qué entrega, cómo se abre y se recorre, y lo que todavía no hace.</p>
     <div class="cap-franja"><span class="k1"></span><span class="k2"></span><span class="k3"></span><span class="k4"></span><span class="k5"></span><span class="k6"></span><span class="k7"></span><span class="k8"></span></div>
     <ul class="cap-contenido">
       <li><b>I.1</b>¿Qué es SigmaPro?</li>
@@ -267,8 +272,8 @@
 
   <!-- I.1 -->
   <h2 id="si-1"><span class="num">I.1</span>¿Qué es SigmaPro?</h2>
-  <p class="lead">SigmaPro es un programa de estadística para la investigación agronómica y biológica que funciona dentro del navegador, sin instalar nada y sin internet. Lleva los datos de un ensayo, del archivo de campo a la tabla y la figura publicadas, por un solo camino: cargar los datos, explorarlos, elegir el análisis que corresponde al diseño, leer la conclusión, revisar los supuestos y exportar el reporte.</p>
-  <p>Está hecho para quien analiza sus propios experimentos —estudiantes de licenciatura y de posgrado, profesores, investigadores de campo e invernadero— y quiere resultados correctos sin escribir código. Por eso cada resultado empieza con una conclusión en palabras, trae sus supuestos revisados con un semáforo, cita sus métodos y da el código R que repite el cálculo. Sus 70 análisis, en 17 familias, van del análisis de varianza de un diseño experimental a los modelos mixtos, la heredabilidad, los ensayos multiambiente, la supervivencia y las series de tiempo.</p>
+  <p class="lead">SigmaPro es un programa de estadística para la investigación agronómica y biológica que funciona dentro del navegador, sin instalar nada y sin internet. Lleva los datos de un ensayo, del archivo de campo a la tabla y la figura publicadas, por un solo camino.</p>
+  <p>Ese camino es el de los bloques: cargar los datos, explorarlos, elegir el análisis que corresponde al diseño, leer la conclusión, revisar los supuestos y exportar el reporte. Está hecho para quien analiza sus propios experimentos —estudiantes de licenciatura y de posgrado, profesores, investigadores de campo e invernadero— y quiere resultados correctos sin escribir código. Por eso cada resultado empieza con una conclusión en palabras, trae sus supuestos revisados con un semáforo, cita sus métodos y da el código R que repite el cálculo. Sus 70 análisis, en 17 familias, van del análisis de varianza de un diseño experimental a los modelos mixtos, la heredabilidad, los ensayos multiambiente, la supervivencia y las series de tiempo.</p>
   <p>Y cada número se compara contra R: su núcleo de cálculo es propio, pero R es el juez. La comparación, caso por caso, viene dentro de la app (capítulo 8).</p>
 
   <!-- I.2 -->
@@ -318,7 +323,7 @@
   <!-- I.6 -->
   <h2 id="si-6"><span class="num">I.6</span>Recorrido por la interfaz</h2>
   <figure>
-    <div class="marco" style="position:relative"><img src="../img/i-pantalla.png" alt="La pantalla de SigmaPro en el bloque Datos con el ejemplo del maíz, con trece marcas numeradas: el nombre del programa, el enlace a la suite, el tema, el reporte de problemas, la ayuda, la barra de bloques y el botón que la pliega, la ruta, los modos Documento y Enfocado, la búsqueda, el índice del bloque, los botones de abajo de la barra y el título del bloque"><!-- marcas --></div>
+    <div class="marco marcas-chicas" style="position:relative"><img src="../img/i-pantalla.png" alt="La pantalla de SigmaPro en el bloque Datos con el ejemplo del maíz, con trece marcas numeradas: el nombre del programa, el enlace a la suite, el tema, el reporte de problemas, la ayuda, la barra de bloques y el botón que la pliega, la ruta, los modos Documento y Enfocado, la búsqueda, el índice del bloque, los botones de abajo de la barra y el título del bloque"><span class="marca" style="left:2.4%;top:3.1%">1</span><span class="marca" style="left:82%;top:3.1%">2</span><span class="marca" style="left:90.3%;top:3.1%">3</span><span class="marca" style="left:93.3%;top:3.1%">4</span><span class="marca" style="left:96.3%;top:3.1%">5</span><span class="marca" style="left:10.5%;top:9.2%">6</span><span class="marca" style="left:15.7%;top:9.2%">7</span><span class="marca" style="left:21.3%;top:7.4%">8</span><span class="marca" style="left:64%;top:7.4%">9</span><span class="marca" style="left:75%;top:7.4%">10</span><span class="marca" style="left:93.5%;top:9.6%">11</span><span class="marca" style="left:9.6%;top:88.6%">12</span><span class="marca" style="left:27%;top:17.2%">13</span></div>
     <figcaption><b>Figura I.1.</b> La pantalla de SigmaPro, aquí en el bloque Datos con el ejemplo del maíz. Las partes marcadas son comunes a todos los bloques.</figcaption>
   </figure>
   <ol class="leyenda-marcas">

@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 const lang = process.argv[2] || 'es';
 const dir = join(dirname(fileURLToPath(import.meta.url)), '..', lang);
 const destino = join(dir, '00b-introduccion.html');
-const partes = readdirSync(dir).filter(f => /^(00b|\d\d[a-z]?)-.*\.html$/.test(f) && f !== 'manual-completo.html').sort();
+const partes = readdirSync(dir).filter(f => /^(00b|\d\d[a-z]?)-.*\.html$/.test(f) && f !== 'manual-completo.html' && !f.startsWith('00a-')).sort();
 const sinEtiquetas = s => s.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 const CHIP = { In: 'k0', Ap: 'kx' };
 

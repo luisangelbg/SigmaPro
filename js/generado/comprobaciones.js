@@ -3,7 +3,7 @@ window.SP_COMPROBACIONES = {
  "rendimiento": {
   "titulo": "Rendimiento con 99,941 filas",
   "ok": true,
-  "resumen": "61 de 61 medidas dentro de su meta, en Chrome/154.0.0.0. Las metas del plan: Descriptivos de 10 variables: 139 ms (meta 150 ms); ANOVA de una vía + Tukey: 118 ms (meta 250 ms); Factorial 4 × 3 × 2 desbalanceado, SC tipo III: 181 ms (meta 1.50 s).",
+  "resumen": "61 de 61 medidas dentro de su meta, en un navegador Chromium 154.0.0.0. Las metas del plan: Descriptivos de 10 variables: 139 ms (meta 150 ms); ANOVA de una vía + Tukey: 118 ms (meta 250 ms); Factorial 4 × 3 × 2 desbalanceado, SC tipo III: 181 ms (meta 1.50 s).",
   "renglones": [
    "Crear la hoja (25 columnas): 266 ms (después 219 ms) · meta 1.50 s",
    "Leer un CSV de 9.8 MB: 739 ms (después 1.22 s) · meta 1.50 s",

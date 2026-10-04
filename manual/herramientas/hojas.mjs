@@ -19,7 +19,7 @@ if (!parte) { console.error('Uso: node manual/herramientas/hojas.mjs es/NN-parte
 const n = await abrir({ ancho: 1000, alto: 1100, escala: 1 });
 let codigo = 0;
 try {
-  await n.ir(pathToFileURL(join(MANUAL, parte)).href, 'document.documentElement.classList.contains("paginado") || !!document.querySelector(".page svg > *")', 60);
+  await n.ir(pathToFileURL(join(MANUAL, parte)).href, 'document.documentElement.classList.contains("paginado") || !!document.querySelector(".page svg > *")', 240);
   console.log(await n.evaluar(readFileSync(join(AQUI, 'huecos.js'), 'utf8')));
   const malas = await n.evaluar('[...document.images].filter(i => !i.naturalWidth).map(i => i.getAttribute("src"))');
   if (malas.length) { console.log('IMÁGENES QUE NO CARGARON: ' + malas.join(', ')); codigo = 1; }

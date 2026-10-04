@@ -11,7 +11,9 @@ que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA
   (`SP.VERSION`), `sw.js` y el CHANGELOG.
 - **Motor R sin conexión al publicar**: armar `motor-r/` con `node tools/motor-r/armar.mjs --fuentes` y publicarlo
   junto a la app (no va en el repositorio: unos 250 MB con las fuentes).
-- **Manual de usuario** en español, en PDF, con un capítulo por bloque.
+- **Manual de usuario**: escrito en español, un capítulo por bloque (`manual/`, PDF
+  `manual/SigmaPro_Manual_de_usuario_ES.pdf`). Describe la versión 1.0: al subir la versión, rehacer las capturas y el
+  PDF (pasos en [`manual/LEEME.md`](../manual/LEEME.md)) para que las pantallas digan 1.0.0.
 - **Publicación**: repositorio en GitHub, GitHub Pages (ahí funciona el servicio sin conexión), su ficha en el
   catálogo del portal de la suite y registro en Zenodo con DOI.
 - **INDAUTOR**: el ejemplar se arma solo con el código propio (núcleo, métodos, interfaz y exportadores). Los módulos

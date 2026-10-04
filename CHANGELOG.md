@@ -43,6 +43,10 @@ Al escribir el manual de usuario, cada resultado se revisó en la pantalla y sal
 - La cita del programa dice «Barrera-Guzmán, L. Á.», como en el resto de la suite; el aviso del motor R, «unos 25 MB»
   como los demás textos; y la teja «Mayor diferencia» de la validación dice cuántos casos tienen su tolerancia
   documentada (4 de clase D pasan de 10⁻⁶ con su motivo), para que no parezca una falla.
+- El resumen del rendimiento en el bloque Validación dice «un navegador Chromium» y su versión, sin nombre comercial.
+- **Manual de usuario** en español (`manual/`): introducción, un capítulo por bloque y cinco apéndices (archivos,
+  cuando algo no sale, glosario, referencias y licencia), con capturas de la app y las herramientas para rehacerlas,
+  unir las partes, revisar los huecos de las hojas e imprimir el PDF (`manual/LEEME.md`).
 - Versión 0.3.3. 276 pruebas unitarias en el navegador.
 
 ### 0.3.2 · Hito 3.9 · Guardado automático del trabajo (4 oct 2026)
