@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.2.0",
- "generado": "2026-10-04T06:24:29.035Z",
+ "generado": "2026-10-04T06:49:57.154Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 762,
-  "aprobados": 762,
+  "casos": 773,
+  "aprobados": 773,
   "fallidos": 0,
-  "valores": 77474,
+  "valores": 78100,
   "difEscaladaMax": 0.000004071746832135441,
-  "objetivos": 163
+  "objetivos": 166
  },
  "casos": [
   {
@@ -20830,6 +20830,292 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "ref_potencia_t con los valores por omisión de R (tests/r/potencia.R)"
+   }
+  },
+  {
+   "id": "autocorrelacion/ar1-acf",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "autocorrelacion"
+   },
+   "titulo": "Serie AR(1) con φ = 0.7: la PACF se corta en el rezago 1",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats (acf, pacf, Box.test, decompose) y trend (mk.test, sens.slope)",
+   "clase": "A",
+   "valores": 42,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 3.9985376121265404e-16,
+   "peor": "pacf[12]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "acf(); pacf(); Box.test() (tests/r/series.R)"
+   }
+  },
+  {
+   "id": "autocorrelacion/lluvia-acf",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "autocorrelacion"
+   },
+   "titulo": "Precipitación mensual: ACF y PACF automáticas, Ljung-Box con 12 rezagos",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats (acf, pacf, Box.test, decompose) y trend (mk.test, sens.slope)",
+   "clase": "A",
+   "valores": 46,
+   "difMax": 5.684341886080802e-14,
+   "difEscaladaMax": 1.2073675392798577e-15,
+   "peor": "pacf[10]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "acf(); pacf(); Box.test() (tests/r/series.R)"
+   }
+  },
+  {
+   "id": "autocorrelacion/ruido-blanco",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "autocorrelacion"
+   },
+   "titulo": "Ruido blanco: sin autocorrelación",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats (acf, pacf, Box.test, decompose) y trend (mk.test, sens.slope)",
+   "clase": "A",
+   "valores": 42,
+   "difMax": 1.1102230246251565e-16,
+   "difEscaladaMax": 1.1102230246251565e-16,
+   "peor": "box.p_box_pierce",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "acf(); pacf(); Box.test() (tests/r/series.R)"
+   }
+  },
+  {
+   "id": "autocorrelacion/semilla-acf-ordenada",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "autocorrelacion"
+   },
+   "titulo": "Ventas trimestrales ordenadas por el tiempo: 8 rezagos, Box con fitdf = 1, 90 %",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats (acf, pacf, Box.test, decompose) y trend (mk.test, sens.slope)",
+   "clase": "A",
+   "valores": 26,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 8.326672684688674e-16,
+   "peor": "pacf[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "acf(); pacf(); Box.test() (tests/r/series.R)"
+   }
+  },
+  {
+   "id": "descomposicion/lluvia-aditiva",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "descomposicion"
+   },
+   "titulo": "Precipitación mensual: descomposición aditiva (frecuencia 12)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats (acf, pacf, Box.test, decompose) y trend (mk.test, sens.slope)",
+   "clase": "A",
+   "valores": 230,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 2.526842105314705e-14,
+   "peor": "residuo[31]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "decompose(ts(x, frequency = 12), type = \"aditiva\")"
+   }
+  },
+  {
+   "id": "descomposicion/semilla-multiplicativa",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "descomposicion"
+   },
+   "titulo": "Ventas trimestrales: descomposición multiplicativa, filas desordenadas",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats (acf, pacf, Box.test, decompose) y trend (mk.test, sens.slope)",
+   "clase": "A",
+   "valores": 90,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 2.397091060400532e-16,
+   "peor": "tendencia[18]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "decompose(ts(x, frequency = 4), type = \"multiplicativa\")"
+   }
+  },
+  {
+   "id": "descomposicion/trampa-frecuencia-7",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "descomposicion"
+   },
+   "titulo": "Capturas diarias con ciclo semanal (frecuencia impar, 7)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats (acf, pacf, Box.test, decompose) y trend (mk.test, sens.slope)",
+   "clase": "A",
+   "valores": 114,
+   "difMax": 7.105427357601002e-15,
+   "difEscaladaMax": 3.552713678800501e-15,
+   "peor": "residuo[6]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "decompose(ts(x, frequency = 7), type = \"aditiva\")"
+   }
+  },
+  {
+   "id": "tendencia/lluvia-tendencia",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tendencia"
+   },
+   "titulo": "Precipitación mensual: Mann-Kendall y Sen",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats (acf, pacf, Box.test, decompose) y trend (mk.test, sens.slope)",
+   "clase": "A",
+   "valores": 9,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "trend": "1.1.8"
+    },
+    "codigo": "trend::mk.test(x); trend::sens.slope(x, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "tendencia/rendimiento-anual-90",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tendencia"
+   },
+   "titulo": "El mismo rendimiento con intervalo de Sen al 90 %",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats (acf, pacf, Box.test, decompose) y trend (mk.test, sens.slope)",
+   "clase": "A",
+   "valores": 9,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "trend": "1.1.8"
+    },
+    "codigo": "trend::mk.test(x); trend::sens.slope(x, conf.level = 0.9)"
+   }
+  },
+  {
+   "id": "tendencia/rendimiento-anual-empates",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tendencia"
+   },
+   "titulo": "Rendimiento anual con empates y un año faltante (se omite)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats (acf, pacf, Box.test, decompose) y trend (mk.test, sens.slope)",
+   "clase": "A",
+   "valores": 9,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "trend": "1.1.8"
+    },
+    "codigo": "trend::mk.test(x); trend::sens.slope(x, conf.level = 0.95)"
+   }
+  },
+  {
+   "id": "tendencia/trampa-sin-tendencia",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "tendencia"
+   },
+   "titulo": "Capturas diarias sin tendencia (muchos empates)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats (acf, pacf, Box.test, decompose) y trend (mk.test, sens.slope)",
+   "clase": "A",
+   "valores": 9,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "trend": "1.1.8"
+    },
+    "codigo": "trend::mk.test(x); trend::sens.slope(x, conf.level = 0.95)"
    }
   },
   {

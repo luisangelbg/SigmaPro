@@ -434,6 +434,18 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
 
+## Series de tiempo en el núcleo JS (Hito 3.3)
+
+- **Referencia** (`tests/r/series.R`): acf, pacf y Box.test (Ljung-Box y Box-Pierce, con fitdf) y decompose de
+  stats; mk.test y sens.slope del paquete trend 1.1.8. Los rangos del intervalo de Sen se redondean como round de R
+  (la mitad al par), que no es el redondeo de JavaScript.
+- **Resultado**: 11 casos (serie mensual estacional con tendencia, trimestral multiplicativa con las filas
+  desordenadas, AR(1) y ruido blanco sin columna de tiempo, rendimiento anual con empates y un año faltante, ciclo de
+  frecuencia impar): 626 valores, diferencia escalada máxima 2.5 × 10⁻¹⁴.
+- **Pruebas unitarias** (`tests/unidad/series.test.js`): la ACF de una serie alternante, la PACF de un AR(1)
+  teórico, la media móvil centrada a mano, una serie puramente estacional, Mann-Kendall y Sen de una recta, el
+  redondeo de R y los mensajes de error.
+
 ## Supervivencia en el núcleo JS (Hito 3.2)
 
 - **Referencia** (`tests/r/supervivencia.R`): el paquete survival 3.7-0. survfit con conf.type log, log-log o plain
@@ -597,7 +609,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          53 operaciones con 100 000 filas en el navegador (--motor: el motor R con 20 000) (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      79 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      81 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

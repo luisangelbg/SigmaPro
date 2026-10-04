@@ -74,8 +74,9 @@
     ['hecho', '3.0', 'Tamaño de muestra y potencia (sin necesidad de datos)'],
     ['hecho', '3.1', 'Muestreo: tamaño de muestra, aleatorio simple y estratificado'],
     ['hecho', '3.2', 'Supervivencia: Kaplan-Meier, log-rank y Cox'],
-    ['actual', '3.3', 'Series de tiempo'],
-    ['', '3.4–3.5', 'Multivariado (MANOVA, discriminante) y cierre de la Fase 3'],
+    ['hecho', '3.3', 'Series de tiempo: autocorrelación, descomposición y tendencia'],
+    ['actual', '3.4', 'Multivariado: MANOVA y discriminante'],
+    ['', '3.5', 'Asistente y constructor para la Fase 3; cierre (0.3.0)'],
   ];
   function hitos() {
     const ul = $('#hitos');

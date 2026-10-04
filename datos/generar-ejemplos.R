@@ -262,6 +262,15 @@ agregar("frijol-germinacion", "Frijol: días a la germinación",
         "Ficticio: días hasta germinar de 120 semillas de frijol con tres tratamientos pregerminativos (testigo, remojo y escarificación), revisadas cada día hasta el día 21; germino = 0 si no germinó (censura). Con el peso de cada semilla; para las curvas de Kaplan-Meier, la prueba log-rank y el modelo de Cox.", d,
         list(tratamiento = list(tipo = "factor", niveles = c("Testigo", "Remojo", "Escarificada"))))
 
+## 21. Estación meteorológica: lluvia y temperatura mensuales de 8 años (series de tiempo; ficticio)
+set.seed(2121)
+k <- 1:96
+d <- data.frame(periodo = k, anio = 2017 + (k - 1) %/% 12, mes = (k - 1) %% 12 + 1)
+d$precipitacion_mm <- round(pmax(0, 70 + 0.25 * k + 75 * sin(2 * pi * (d$mes - 4) / 12) + as.vector(arima.sim(list(ar = 0.3), n = 96, sd = 18))), 1)
+d$temperatura <- round(17 + 0.012 * k + 4.5 * sin(2 * pi * (d$mes - 3) / 12) + rnorm(96, 0, 0.7), 1)
+agregar("estacion-mensual", "Estación meteorológica: lluvia y temperatura mensuales",
+        "Ficticio: precipitación (mm) y temperatura media (°C) de cada mes de 2017 a 2024 en una estación, empezando en enero; para la autocorrelación, la descomposición en tendencia y ciclo anual (frecuencia 12) y la tendencia de Mann-Kendall con la pendiente de Sen.", d)
+
 ## escribir datos/ejemplos.js
 js <- paste0(
   "/* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.\n",

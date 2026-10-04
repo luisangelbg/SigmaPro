@@ -2,6 +2,23 @@
 
 ## Sin publicar
 
+### Hito 3.3 · Series de tiempo (4 oct 2026)
+
+- Tres métodos para una variable medida a intervalos iguales (lluvia mensual, rendimiento por año, capturas por día),
+  ordenada por la columna del tiempo si se da:
+  - **Autocorrelación**: ACF y PACF con su banda y las pruebas de **Ljung-Box** y **Box-Pierce** (con fitdf para los
+    residuos de un modelo).
+  - **Descomposición clásica** aditiva o multiplicativa: tendencia (media móvil centrada de un ciclo), componente
+    estacional por posición del ciclo, residuo y la fuerza de la estacionalidad.
+  - **Tendencia monótona**: prueba de **Mann-Kendall** (con empates y la corrección de continuidad) y la **pendiente
+    de Sen** con su intervalo; omite los faltantes.
+- Gráficas: correlogramas, serie con su tendencia, componente estacional, residuo y la serie con la recta de Sen;
+  párrafo del reporte con sus citas y el código R.
+- Ejemplo nuevo: **Estación meteorológica: lluvia y temperatura mensuales** (8 años).
+- Kaplan-Meier: el cuadro de la mediana y los cuartiles muestra los tiempos enteros sin decimales de relleno.
+- Validación: 11 casos contra acf, pacf, Box.test y decompose (stats) y mk.test y sens.slope (trend): 626 valores,
+  diferencia escalada máxima 2.5 × 10⁻¹⁴. 773 casos en total.
+
 ### Hito 3.2 · Supervivencia (4 oct 2026)
 
 - Familia **Supervivencia y series de tiempo**, con el tiempo hasta un evento (germinar, morir, florecer) y la

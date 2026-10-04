@@ -93,7 +93,7 @@ base común nueva). **La Fase 2 está completa.** Notas:
 
 ## Fase 3
 
-Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia), Hito 3.1 (muestreo) e Hito 3.2 (supervivencia). Notas:
+Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia), Hito 3.1 (muestreo), Hito 3.2 (supervivencia) e Hito 3.3 (series de tiempo). Notas:
 
 - Potencia: sin la prueba t de Welch (varianzas distintas), las proporciones con la corrección de continuidad
   (strict), los diseños factoriales ni el tamaño de muestra de modelos mixtos o por simulación.
@@ -102,6 +102,9 @@ Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0
 - Supervivencia: sin estratos en Cox ni en log-rank, covariables que cambian con el tiempo, censura por intervalos
   (la revisión cada tantos días se trata como tiempo exacto), riesgos competitivos, modelos paramétricos (Weibull,
   log-normal) ni la gráfica de los residuos de Schoenfeld (sí su prueba). El EE de la concordancia no se calcula.
+- Series de tiempo: sin modelos ARIMA ni pronósticos, sin STL (descomposición con loess), sin Mann-Kendall estacional
+  ni corregido por autocorrelación, sin Pettitt (cambio de nivel) y sin series con intervalos desiguales o huecos
+  (salvo la tendencia, que omite los faltantes).
 
 Lo que dice la propuesta para esta fase:
 

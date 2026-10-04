@@ -31,6 +31,7 @@
   const POTENCIA = ['potencia-medias', 'potencia-anova', 'potencia-proporciones', 'potencia-correlacion', 'repeticiones'];
   const MUESTREO = ['tamano-muestra', 'muestreo-simple', 'muestreo-estratificado'];
   const SUPERVIVENCIA = ['kaplan-meier', 'cox'];
+  const SERIES = ['autocorrelacion', 'descomposicion', 'tendencia'];
   /* sin datos cargados, los métodos que no los necesitan (potencia y tamaño de muestra) corren con estas columnas vacías */
   const SIN_DATOS = { t: null, pap: { respuestas: [], factores: [], bloque: null }, numericas: [], fechas: [], factores: [], numFactor: [], agrupables: [], sinDatos: true };
   const AJUSTES_MX = () => [['tukey', 'Tukey'], ['bonferroni', 'Bonferroni'], ['holm', 'Holm'], ['sidak', 'Šidák'], ['none', T('Sin ajuste (DMS)')]];
@@ -59,6 +60,7 @@
       cv: 12, difPct: 20, tratamientos: 5, diseno: 'dbca' },
     mue: { que: 'media', escala: 'absoluto', de: 1, errorAbs: 0.25, cv: 20, errorPct: 10, p: 0.5, errorProp: 0.05, N: 0, confianza: 0.95, respuesta: '', estrato: '', tipoSimple: 'auto', nTotal: 0, _iniciado: false },
     mueN: {},
+    ts: { respuesta: '', tiempo: '', rezagos: 0, lagBox: 0, fitdf: 0, nivel: 0.95, frecuencia: 12, tipo: 'aditiva', _iniciado: false },
     sv: { tiempo: '', evento: '', grupo: '', conf: 'log', nivel: 0.95, rho: 0, factoresSv: [], covariablesSv: [], empates: 'efron', _iniciado: false },   // el tamaño de la población de cada estrato, por el nombre del nivel
     sinDatos: false,
     gen: { respuesta: '', aleatorios: [], fijos: [], estructura: 'cruzados', genotipo: '', repeticion: '', bloque: '', ambiente: '', seleccion: 0.1, direccion: 'mayor',
@@ -884,6 +886,30 @@
     h += numero('pot', 'alfa', T('Nivel de significancia'), s.alfa, '', ' min="0" max="1"');
     return h + '<p class="small muted">' + esc(T('Corre en tu navegador con las mismas fórmulas que R (validado contra power.t.test, power.anova.test, power.prop.test y pwr).')) + '</p>';
   }
+  /** Series de tiempo: la variable y, si hace falta ordenarla, la columna del tiempo. */
+  function formSeries(c, m) {
+    const s = estado.ts, num = c.numericas;
+    if (!s._iniciado) {
+      s.tiempo = num.find(n => /^(mes|a[ñn]o|anio|fecha|semana|d[ií]a|trimestre|tiempo|periodo|t)$|mes|a[ñn]o|anio|fecha|semana|trimestre|periodo/i.test(n)) || '';
+      s.respuesta = c.pap.respuestas.filter(n => n !== s.tiempo).slice(-1)[0] || num.filter(n => n !== s.tiempo).slice(-1)[0] || '';
+      s._iniciado = true;
+    }
+    if (!num.includes(s.respuesta)) s.respuesta = num.filter(n => n !== s.tiempo).slice(-1)[0] || '';
+    if (s.tiempo && (!num.includes(s.tiempo) || s.tiempo === s.respuesta)) s.tiempo = '';
+    let h = campo('ts', 'respuesta', T('Variable medida en el tiempo'), lista(num.filter(n => n !== s.tiempo)), s.respuesta);
+    h += campo('ts', 'tiempo', T('Columna del tiempo (para ordenar la serie)'), [['', T('— las filas ya están en orden —')]].concat(lista(num.filter(n => n !== s.respuesta))), s.tiempo,
+      T('Mes, año, semana o fecha: un valor por fila y a intervalos iguales.'));
+    if (m === 'autocorrelacion') {
+      h += numero('ts', 'rezagos', T('Rezagos de la ACF y la PACF (0 = como R: 10·log10(n))'), s.rezagos, '', ' min="0" step="1"');
+      h += numero('ts', 'lagBox', T('Rezagos de las pruebas de Ljung-Box y Box-Pierce (0 = 10)'), s.lagBox, T('Con datos mensuales, 12 o 24.'), ' min="0" step="1"');
+      h += numero('ts', 'fitdf', T('Parámetros ajustados antes (fitdf)'), s.fitdf, T('0 para una serie cruda; p + q si son los residuos de un modelo ARMA(p, q).'), ' min="0" step="1"');
+      h += campo('ts', 'nivel', T('Nivel de la banda'), NIVELES, s.nivel);
+    } else if (m === 'descomposicion') {
+      h += numero('ts', 'frecuencia', T('Observaciones por ciclo (frecuencia)'), s.frecuencia, T('12 para meses en un año, 4 para trimestres, 7 para días en una semana, 52 para semanas.'), ' min="2" step="1"');
+      h += campo('ts', 'tipo', T('Tipo'), [['aditiva', T('Aditiva (el ciclo suma lo mismo cada año)')], ['multiplicativa', T('Multiplicativa (el ciclo crece con el nivel)')]], s.tipo);
+    } else h += campo('ts', 'nivel', T('Nivel de confianza de la pendiente'), NIVELES, s.nivel);
+    return h + '<p class="small muted">' + esc(T('Corre en tu navegador (validado contra acf, pacf, Box.test y decompose de R, y mk.test y sens.slope de trend).')) + '</p>';
+  }
   /** Supervivencia: el tiempo, el evento (0/1) y el grupo (Kaplan-Meier) o los factores y covariables (Cox). */
   function formSupervivencia(c, m) {
     const s = estado.sv, num = c.numericas, agr = c.agrupables.filter(n => { const k = nivelesDe(c, n).length; return k >= 2 && k <= 12; });
@@ -971,6 +997,7 @@
     if (POTENCIA.includes(estado.metodo)) return formPotencia(c, estado.metodo);
     if (MUESTREO.includes(estado.metodo)) return formMuestreo(c, estado.metodo);
     if (SUPERVIVENCIA.includes(estado.metodo)) return formSupervivencia(c, estado.metodo);
+    if (SERIES.includes(estado.metodo)) return formSeries(c, estado.metodo);
     if (MULTI.includes(estado.metodo)) return formMultiambiente(c, estado.metodo);
     if (SUPERFICIES.includes(estado.metodo)) return formSuperficie(c, estado.metodo);
     if (NOLINEAL.includes(estado.metodo)) return formNoLineal(c, estado.metodo);
@@ -1010,6 +1037,13 @@
       else if (m === 'potencia-proporciones') Object.assign(op, { p1: n('p1'), p2: n('p2'), alternativa: s.alternativa });
       else Object.assign(op, { r: n('r'), alternativa: s.alternativa });
       return { e: {}, op };
+    }
+    if (SERIES.includes(m)) {
+      const s = estado.ts, e = { respuesta: s.respuesta };
+      if (s.tiempo) e.tiempo = s.tiempo;
+      if (m === 'autocorrelacion') return { e, op: { rezagos: +s.rezagos, lagBox: +s.lagBox, fitdf: +s.fitdf, nivel: +s.nivel } };
+      if (m === 'descomposicion') return { e, op: { frecuencia: +s.frecuencia, tipo: s.tipo } };
+      return { e, op: { nivel: +s.nivel } };
     }
     if (SUPERVIVENCIA.includes(m)) {
       const s = estado.sv, e = { tiempo: s.tiempo, evento: s.evento };
@@ -1411,6 +1445,35 @@
       descripcion: T('La potencia para cada tamaño de muestra con el mismo efecto; la línea vertical es el tamaño calculado o dado y la horizontal, la potencia.'),
       linea: { x: r.curva.n, y: r.curva.potencia }, referencias: [{ y: r.potencia, discontinua: true }], verticales: [{ x: r.n, discontinua: true }] });
   }
+  function graficasSeries(r) {
+    const out = [], tramo = (xs, ys) => { const x = [], y = []; xs.forEach((v, i) => { if (Number.isFinite(ys[i])) { x.push(v); y.push(ys[i]); } }); return { x, y }; };
+    if (r.metodo === 'autocorrelacion') {
+      for (const [nombre, vals, desde] of [[T('Autocorrelación (ACF)'), r.acf, 0], [T('Autocorrelación parcial (PACF)'), r.pacf, 1]]) {
+        out.push(SP.graficas.dispersion({ titulo: nombre, x: { titulo: T('Rezago') }, y: { titulo: nombre.split(' (')[0] },
+          descripcion: T('Cada barra es la correlación de la serie con ella misma k pasos atrás; las líneas punteadas son la banda de ± {b}.', { b: SP.formatos.texto(r.banda, 'forma') }),
+          lineas: vals.map((v, k) => ({ x: [k + desde, k + desde], y: [0, v], serie: 0 })), referencias: [{ y: 0 }, { y: r.banda, discontinua: true }, { y: -r.banda, discontinua: true }] }));
+      }
+      return out.join('');
+    }
+    if (r.metodo === 'descomposicion') {
+      out.push(SP.graficas.dispersion({ titulo: T('Serie y tendencia'), x: { titulo: r.tiempoCol || T('Orden') }, y: { titulo: r.respuesta },
+        descripcion: T('La serie (línea fina) y su tendencia, la media móvil centrada de un ciclo (línea gruesa).'),
+        lineas: [Object.assign(tramo(r.tiempos, r.x), { serie: 1 }), Object.assign(tramo(r.tiempos, r.tendencia), { serie: 0 })], leyenda: { series: [T('Tendencia'), r.respuesta] } }));
+      out.push(SP.graficas.dispersion({ titulo: T('Componente estacional'), x: { titulo: T('Posición en el ciclo') }, y: { titulo: r.tipoDesc === 'aditiva' ? T('Efecto') : T('Índice') },
+        descripcion: r.tipoDesc === 'aditiva' ? T('Lo que cada posición del ciclo suma a la tendencia (suman 0).') : T('Cuánto multiplica cada posición del ciclo a la tendencia (promedian 1).'),
+        linea: { x: r.figura.map((_, k) => k + 1), y: r.figura }, puntos: r.figura.map((v, k) => ({ x: k + 1, y: v })), referencias: [{ y: r.tipoDesc === 'aditiva' ? 0 : 1, discontinua: true }] }));
+      const res = tramo(r.tiempos, r.residuo);
+      out.push(SP.graficas.dispersion({ titulo: T('Residuo'), x: { titulo: r.tiempoCol || T('Orden') }, y: { titulo: T('Residuo') },
+        descripcion: T('Lo que queda sin tendencia ni ciclo: debe verse como ruido, sin patrón.'), puntos: res.x.map((x, i) => ({ x, y: res.y[i] })),
+        referencias: [{ y: r.tipoDesc === 'aditiva' ? 0 : 1, discontinua: true }] }));
+      return out.join('');
+    }
+    const k = r.x.map((_, i) => i), med = v => { const s = v.slice().sort((p, q) => p - q), n = s.length; return n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2; };
+    const b0 = med(r.x.map((v, i) => v - r.pendiente * i));
+    return SP.graficas.dispersion({ titulo: T('Serie con la pendiente de Sen'), x: { titulo: r.tiempoCol || T('Orden') }, y: { titulo: r.respuesta },
+      descripcion: T('Cada observación en el tiempo y la recta con la pendiente de Sen (que pasa por la mediana de los datos sin la pendiente).'),
+      puntos: r.x.map((v, i) => ({ x: r.tiempos[i], y: v })), linea: { x: r.tiempos, y: k.map(i => b0 + r.pendiente * i) } });
+  }
   function graficasSupervivencia(r) {
     if (r.metodo === 'kaplan-meier') {
       const lineas = [], puntos = [], bandas = [], escalon = (ts, vs) => { const x = [0], y = [1]; let ant = 1; ts.forEach((t, i) => { x.push(t, t); y.push(ant, vs[i]); ant = vs[i]; }); return { x, y }; };
@@ -1586,6 +1649,7 @@
     if (r.tipo === 'potencia') return graficasPotencia(r);
     if (r.tipo === 'muestreo') return graficasMuestreo(r);
     if (r.tipo === 'supervivencia') return graficasSupervivencia(r);
+    if (r.tipo === 'series') return graficasSeries(r);
     if (r.tipo === 'modelo') {
       if (r.celdas) {
         const [A, B] = r.celdas.factores, nivA = [], nivB = [];
@@ -1717,7 +1781,7 @@
     if (estado.modo !== 'catalogo') { const p = estado.pintores[estado.modo]; if (p) p(c); return; }
     catalogo(c);
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = estado.srf._iniciado = estado.ma._iniciado = estado.mue._iniciado = estado.sv._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = estado.srf._iniciado = estado.ma._iniciado = estado.mue._iniciado = estado.sv._iniciado = estado.ts._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -1837,6 +1901,8 @@
     } else if (POTENCIA.includes(m)) {
       pon(estado.pot, m === 'repeticiones' ? { cv: op.cv, difPct: op.diferencia, tratamientos: op.tratamientos, diseno: op.diseno, alfa: op.alfa, potencia: op.potencia }
         : { calcular: op.calcular, n: op.n, diferencia: op.diferencia, de: op.de, tipo: op.tipo, alternativa: op.alternativa, grupos: op.grupos, medias: op.medias, varEntre: op.varEntre, p1: op.p1, p2: op.p2, r: op.r, alfa: op.alfa, potencia: op.potencia });
+    } else if (SERIES.includes(m)) {
+      pon(estado.ts, { respuesta: e.respuesta, tiempo: e.tiempo || '', rezagos: op.rezagos, lagBox: op.lagBox, fitdf: op.fitdf, nivel: op.nivel, frecuencia: op.frecuencia, tipo: op.tipo });
     } else if (SUPERVIVENCIA.includes(m)) {
       pon(estado.sv, { tiempo: e.tiempo, evento: e.evento, grupo: m === 'kaplan-meier' ? e.grupo || '' : undefined, conf: op.conf, nivel: op.nivel, rho: op.rho, empates: op.empates,
         factoresSv: m === 'cox' ? [].concat(e.factores || []) : undefined, covariablesSv: m === 'cox' ? [].concat(e.covariables || []) : undefined });

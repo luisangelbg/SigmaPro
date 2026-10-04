@@ -70,8 +70,8 @@ SP.definir('metodos-supervivencia', function (SP) {
       c.push(C.p < 0.05 ? T('Las curvas difieren: {pr} χ²({g}) = {x}, p {p}.', { pr: prueba, g: C.gl, x: f2(C.chi2), p: fp(C.p) }) : T('No hay evidencia de que las curvas difieran: {pr} χ²({g}) = {x}, p {p}.', { pr: prueba, g: C.gl, x: f2(C.chi2), p: fp(C.p) }));
     }
     const cuadros = [{ id: 'resumen', titulo: T('Mediana y cuartiles del tiempo hasta el evento'),
-      columnas: [col('g', r.grupo || T('Curva'), 'texto'), col('n', 'n', 'entero'), col('e', T('Eventos'), 'entero'), col('q1', T('Cuartil 25 %'), 'sig'), col('m', T('Mediana'), 'sig'),
-        col('mi', T('IC inferior'), 'sig'), col('ms', T('IC superior'), 'sig'), col('q3', T('Cuartil 75 %'), 'sig')],
+      columnas: [col('g', r.grupo || T('Curva'), 'texto'), col('n', 'n', 'entero'), col('e', T('Eventos'), 'entero'), col('q1', T('Cuartil 25 %'), 'sigEnt'), col('m', T('Mediana'), 'sigEnt'),
+        col('mi', T('IC inferior'), 'sigEnt'), col('ms', T('IC superior'), 'sigEnt'), col('q3', T('Cuartil 75 %'), 'sigEnt')],
       filas: r.grupos.map(g => ({ g: g.nombre, n: g.n, e: g.eventos, q1: g.cuantiles.tiempo[0], m: g.cuantiles.tiempo[1], mi: g.cuantiles.inf[1], ms: g.cuantiles.sup[1], q3: g.cuantiles.tiempo[2] })),
       notas: [T('El cuartil 25 % es el tiempo en que una cuarta parte tuvo el evento. «—»: la curva (o su límite) no baja hasta ahí.'), T('Intervalos {c} al {k} % (survfit).', { c: CONF[r.conf], k: Math.round(100 * r.nivel) })] }];
     if (r.comparacion) {

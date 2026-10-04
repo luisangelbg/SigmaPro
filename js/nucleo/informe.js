@@ -136,6 +136,13 @@ SP.definir('informe', function (SP) {
     grambsch1994: () => 'Grambsch, P. M. y Therneau, T. M. (1994). Proportional hazards tests and diagnostics based on weighted residuals. Biometrika, 81(3), 515–526.',
     harrell1982: () => 'Harrell, F. E., Califf, R. M., Pryor, D. B., Lee, K. L. y Rosati, R. A. (1982). Evaluating the yield of medical tests. JAMA, 247(18), 2543–2546.',
     therneau2024: () => 'Therneau, T. M. (2024). A package for survival analysis in R (versión 3.7-0) [paquete de R].',
+    box1970: () => 'Box, G. E. P. y Pierce, D. A. (1970). Distribution of residual autocorrelations in autoregressive-integrated moving average time series models. Journal of the American Statistical Association, 65(332), 1509–1526.',
+    ljung1978: () => 'Ljung, G. M. y Box, G. E. P. (1978). On a measure of lack of fit in time series models. Biometrika, 65(2), 297–303.',
+    kendall1983: () => 'Kendall, M. y Stuart, A. (1983). The advanced theory of statistics, vol. 3 (4.ª ed.). Griffin.',
+    mann1945: () => 'Mann, H. B. (1945). Nonparametric tests against trend. Econometrica, 13(3), 245–259.',
+    kendall1975: () => 'Kendall, M. G. (1975). Rank correlation methods (4.ª ed.). Griffin.',
+    sen1968: () => 'Sen, P. K. (1968). Estimates of the regression coefficient based on Kendall\'s tau. Journal of the American Statistical Association, 63(324), 1379–1389.',
+    pohlert2023: () => 'Pohlert, T. (2023). trend: non-parametric trend tests and change-point detection (versión 1.1.8) [paquete de R].',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -164,6 +171,7 @@ SP.definir('informe', function (SP) {
     yan2000: 'Yan et al., 2000', yan2003: 'Yan y Kang, 2003', cohen1988: 'Cohen, 1988', cochranCox1957: 'Cochran y Cox, 1957', champely2020: 'Champely, 2020', cochran1977: 'Cochran, 1977',
     kaplan1958: 'Kaplan y Meier, 1958', greenwood1926: 'Greenwood, 1926', mantel1966: 'Mantel, 1966', peto1972: 'Peto y Peto, 1972', cox1972: 'Cox, 1972',
     efron1977: 'Efron, 1977', breslow1974: 'Breslow, 1974', grambsch1994: 'Grambsch y Therneau, 1994', harrell1982: 'Harrell et al., 1982', therneau2024: 'Therneau, 2024',
+    box1970: 'Box y Pierce, 1970', ljung1978: 'Ljung y Box, 1978', kendall1983: 'Kendall y Stuart, 1983', mann1945: 'Mann, 1945', kendall1975: 'Kendall, 1975', sen1968: 'Sen, 1968', pohlert2023: 'Pohlert, 2023',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -782,6 +790,28 @@ SP.definir('informe', function (SP) {
     return { metodos: T('Se calculó {q} para {t} ({c}) con las fórmulas exactas de R.', { q: que, t: prueba, c: cita(ref, citas) }), resultados: res };
   }
 
+  function series(id, r, citas) {
+    if (id === 'autocorrelacion') {
+      const B = r.box;
+      return { metodos: T('La autocorrelación simple y parcial de «{y}» (n = {n}) se estimó hasta el rezago {l}, y la independencia de la serie se probó con las pruebas de Ljung y Box ({lb}) y de Box y Pierce ({bp}) con {k} rezagos.',
+        { y: r.respuesta, n: r.n, l: r.rezagos, lb: cita(['ljung1978'], citas), bp: cita(['box1970'], citas), k: B.lag }),
+        resultados: B.p_ljung_box < 0.05 ? T('La serie mostró autocorrelación (Ljung-Box Q({g}) = {q}, {p}).', { g: B.gl, q: n2(B.ljung_box), p: fp(B.p_ljung_box) })
+          : T('No hubo evidencia de autocorrelación (Ljung-Box Q({g}) = {q}, {p}).', { g: B.gl, q: n2(B.ljung_box), p: fp(B.p_ljung_box) }) };
+    }
+    if (id === 'descomposicion') {
+      const fig = r.figura, a = fig.indexOf(Math.max(...fig)), b = fig.indexOf(Math.min(...fig)), ad = r.tipoDesc === 'aditiva';
+      return { metodos: T('La serie «{y}» se descompuso en tendencia (media móvil centrada de {f} observaciones), componente estacional y residuo con el método clásico {t} ({c}).',
+        { y: r.respuesta, f: r.frecuencia, t: ad ? T('aditivo') : T('multiplicativo'), c: cita(['kendall1983'], citas) }),
+        resultados: T('El efecto estacional fue máximo en la posición {a} del ciclo ({x}) y mínimo en la {b} ({z}); la estacionalidad explicó el {p} % de la variación sin tendencia.',
+          { a: a + 1, x: ad ? s4(fig[a]) : '×' + n3(fig[a]), b: b + 1, z: ad ? s4(fig[b]) : '×' + n3(fig[b]), p: n2(100 * r.fuerza_estacional) }) };
+    }
+    const k = Math.round(100 * r.nivel);
+    return { metodos: T('La tendencia de «{y}» se probó con la prueba de Mann-Kendall ({mk}) y su magnitud se estimó con la pendiente de Sen ({s}), con las fórmulas del paquete trend ({t}).',
+      { y: r.respuesta, mk: cita(['mann1945', 'kendall1975'], citas), s: cita(['sen1968'], citas), t: cita(['pohlert2023'], citas) }),
+      resultados: (r.p < 0.05 ? T('La serie tuvo una tendencia {d} (τ = {tau}, z = {z}, {p}).', { d: r.S > 0 ? T('creciente') : T('decreciente'), tau: n3(r.tau), z: n2(r.z), p: fp(r.p) })
+        : T('No hubo evidencia de tendencia (τ = {tau}, z = {z}, {p}).', { tau: n3(r.tau), z: n2(r.z), p: fp(r.p) })) + ' ' +
+        T('La pendiente de Sen fue {b} por paso de tiempo (IC {k} %: {i} a {s}).', { b: s4(r.pendiente), k, i: s4(r.pendiente_inf), s: s4(r.pendiente_sup) }) };
+  }
   function supervivencia(id, r, citas) {
     const k = Math.round(100 * r.nivel);
     if (id === 'kaplan-meier') {
@@ -860,6 +890,7 @@ SP.definir('informe', function (SP) {
     else if (['potencia-medias', 'potencia-anova', 'potencia-proporciones', 'potencia-correlacion', 'repeticiones'].includes(id)) p = potencia(id, r, citas);
     else if (['tamano-muestra', 'muestreo-simple', 'muestreo-estratificado'].includes(id)) p = muestreo(id, r, citas);
     else if (id === 'kaplan-meier' || id === 'cox') p = supervivencia(id, r, citas);
+    else if (['autocorrelacion', 'descomposicion', 'tendencia'].includes(id)) p = series(id, r, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };
