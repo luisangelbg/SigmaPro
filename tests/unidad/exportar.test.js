@@ -288,4 +288,20 @@ SPT.describir('Exportaciones · reporte, documentos, hojas, imágenes y proyecto
     SPT.lanza(() => SP.proyecto.deInstantanea({ formato: 'otro' }), /no es un trabajo/);
     SPT.lanza(() => SP.proyecto.deInstantanea(Object.assign({}, s, { version_formato: 9, version_programa: '9.0' })), /más nueva/);
   });
+
+  SPT.caso('Referencias: las obras que citan las conclusiones y las notas también van a la lista, escritas de cualquier forma', () => {
+    const c = t => SP.informe.citasEnTexto(t).sort();
+    SPT.igualJSON(c('concordancia considerable según Landis y Koch (1977)'), ['landis1977']);
+    SPT.igualJSON(c('EE de Fleiss, Cohen y Everitt (1969); la prueba z…'), ['fleiss1969']);
+    SPT.igualJSON(c('(medias armónicas; Holland y col. 2003)'), ['holland2003']);
+    SPT.igualJSON(c('Agresti-Coull (1998); Jeffreys… Brown, Cai y DasGupta (2001) recomiendan'), ['agresti1998', 'brown2001']);
+    SPT.igualJSON(c('(Cochran y Cox, 1957)'), ['cochranCox1957'], 'Cochran y Cox no es Cochran (1957)');
+    SPT.igualJSON(c('(Cruz, Regazzi y Carneiro 2012)'), ['cruz2012']);
+    SPT.igualJSON(c('dosis 1957 y Box y Cox (1964)'), [], 'sin la obra en la lista, nada');
+    /* en el documento: el kappa cita a Landis y Koch y a Fleiss en su conclusión y su nota, no en el párrafo */
+    const items = [{ id: 'sin-parrafo', titulo: 'Kappa', e: {}, op: {}, r: {}, rep: { conclusiones: ['Kappa = 0.757: concordancia considerable según Landis y Koch (1977).'],
+      cuadros: [{ id: 'k', titulo: 'Concordancia', columnas: [{ clave: 'a', titulo: 'a', formato: 'texto' }], filas: [{ a: 'x' }], notas: ['EE de Fleiss, Cohen y Everitt (1969).'] }] } }];
+    const refs = SP.informe.bloques(items, {}).filter(b => b.tipo === 'referencia').map(b => b.texto);
+    SPT.afirmar(refs.some(t => /^Landis, J\. R\./.test(t)) && refs.some(t => /^Fleiss, J\. L\./.test(t)), refs.join(' | '));
+  });
 });

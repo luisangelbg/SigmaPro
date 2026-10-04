@@ -34,7 +34,16 @@ Al escribir el manual de usuario, cada resultado se revisó en la pantalla y sal
   significativos» cuando son varios.
 - La página de pruebas (`tests/index.html`) carga ahora `ui.js` y `graficas.js`, así que las pruebas de las gráficas
   corren de verdad en el navegador (antes se daban por buenas sin el módulo).
-- Versión 0.3.3. 275 pruebas unitarias en el navegador.
+- **Referencias del reporte**: la lista solo recogía las obras que citan los párrafos de métodos, y las conclusiones y
+  las notas de los cuadros citaban otras sin su referencia completa (Landis y Koch, 1977, en el kappa; Fleiss, Cohen y
+  Everitt, 1969; Belsley, Kuh y Welsch, 1980; Hyndman y Fan, 1996; Joanes y Gill, 1998; Steiger y Fouladi, 1997;
+  Agresti, 2002). Las siete están ahora en la bibliografía y el documento recoge las citas de las conclusiones, las
+  notas, el semáforo y las recomendaciones, escritas de cualquiera de las formas que usan los métodos
+  (`SP.informe.citasEnTexto`). La nota del GGE cita el libro de Yan y Kang (2003).
+- La cita del programa dice «Barrera-Guzmán, L. Á.», como en el resto de la suite; el aviso del motor R, «unos 25 MB»
+  como los demás textos; y la teja «Mayor diferencia» de la validación dice cuántos casos tienen su tolerancia
+  documentada (4 de clase D pasan de 10⁻⁶ con su motivo), para que no parezca una falla.
+- Versión 0.3.3. 276 pruebas unitarias en el navegador.
 
 ### 0.3.2 · Hito 3.9 · Guardado automático del trabajo (4 oct 2026)
 

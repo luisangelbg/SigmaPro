@@ -19,7 +19,7 @@ SP.definir('informe', function (SP) {
 
   /* ---------------- referencias ---------------- */
   const REF = {
-    sigmapro: () => T('Barrera-Guzmán, L. A. (2026). SigmaPro: estadística para la investigación agronómica y biológica (versión {v}) [Programa de cómputo]. LABG Suite.', { v: SP.VERSION }),
+    sigmapro: () => T('Barrera-Guzmán, L. Á. (2026). SigmaPro: estadística para la investigación agronómica y biológica (versión {v}) [Programa de cómputo]. LABG Suite.', { v: SP.VERSION }),
     rcore: () => 'R Core Team (2024). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Viena, Austria. https://www.R-project.org/',
     gomez1984: () => 'Gomez, K. A. y Gomez, A. A. (1984). Statistical procedures for agricultural research (2.ª ed.). John Wiley & Sons.',
     yates1936b: () => 'Yates, F. (1936). Incomplete randomized blocks. Annals of Eugenics, 7(2), 121–140.',
@@ -124,6 +124,14 @@ SP.definir('informe', function (SP) {
     yan2003: () => 'Yan, W. y Kang, M. S. (2003). GGE biplot analysis: a graphical tool for breeders, geneticists, and agronomists. CRC Press.',
     cohen1988: () => 'Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2.ª ed.). Lawrence Erlbaum.',
     cochranCox1957: () => 'Cochran, W. G. y Cox, G. M. (1957). Experimental designs (2.ª ed.). Wiley.',
+    /* las que citan las notas de los cuadros y las conclusiones (no los párrafos); el documento las recoge de ahí */
+    agresti2002: () => 'Agresti, A. (2002). Categorical data analysis (2.ª ed.). Wiley.',
+    belsley1980: () => 'Belsley, D. A., Kuh, E. y Welsch, R. E. (1980). Regression diagnostics: identifying influential data and sources of collinearity. Wiley.',
+    fleiss1969: () => 'Fleiss, J. L., Cohen, J. y Everitt, B. S. (1969). Large sample standard errors of kappa and weighted kappa. Psychological Bulletin, 72(5), 323–327.',
+    hyndman1996: () => 'Hyndman, R. J. y Fan, Y. (1996). Sample quantiles in statistical packages. The American Statistician, 50(4), 361–365.',
+    joanes1998: () => 'Joanes, D. N. y Gill, C. A. (1998). Comparing measures of sample skewness and kurtosis. Journal of the Royal Statistical Society D, 47(1), 183–189.',
+    landis1977: () => 'Landis, J. R. y Koch, G. G. (1977). The measurement of observer agreement for categorical data. Biometrics, 33(1), 159–174.',
+    steiger1997: () => 'Steiger, J. H. y Fouladi, R. T. (1997). Noncentrality interval estimation and the evaluation of statistical models. En L. L. Harlow, S. A. Mulaik y J. H. Steiger (eds.), What if there were no significance tests? (pp. 221–257). Lawrence Erlbaum.',
     champely2020: () => 'Champely, S. (2020). pwr: basic functions for power analysis (versión 1.3-0) [paquete de R].',
     cochran1977: () => 'Cochran, W. G. (1977). Sampling techniques (3.ª ed.). Wiley.',
     kaplan1958: () => 'Kaplan, E. L. y Meier, P. (1958). Nonparametric estimation from incomplete observations. Journal of the American Statistical Association, 53(282), 457–481.',
@@ -176,13 +184,30 @@ SP.definir('informe', function (SP) {
     box1951: 'Box y Wilson, 1951', myers2016: 'Myers et al., 2016', hoerl1959: 'Hoerl, 1959', draper1963: 'Draper, 1963',
     bartlett1937: 'Bartlett, 1937', finlay1963: 'Finlay y Wilkinson, 1963', eberhart1966: 'Eberhart y Russell, 1966', wricke1962: 'Wricke, 1962', shukla1972: 'Shukla, 1972',
     lin1988: 'Lin y Binns, 1988', gauch1988: 'Gauch, 1988', gollob1968: 'Gollob, 1968', cornelius1992: 'Cornelius et al., 1992', purchase2000: 'Purchase et al., 2000',
-    yan2000: 'Yan et al., 2000', yan2003: 'Yan y Kang, 2003', cohen1988: 'Cohen, 1988', cochranCox1957: 'Cochran y Cox, 1957', champely2020: 'Champely, 2020', cochran1977: 'Cochran, 1977',
+    yan2000: 'Yan et al., 2000', yan2003: 'Yan y Kang, 2003', cohen1988: 'Cohen, 1988', cochranCox1957: 'Cochran y Cox, 1957', agresti2002: 'Agresti, 2002', belsley1980: 'Belsley et al., 1980', fleiss1969: 'Fleiss et al., 1969',
+    hyndman1996: 'Hyndman y Fan, 1996', joanes1998: 'Joanes y Gill, 1998', landis1977: 'Landis y Koch, 1977', steiger1997: 'Steiger y Fouladi, 1997', champely2020: 'Champely, 2020', cochran1977: 'Cochran, 1977',
     kaplan1958: 'Kaplan y Meier, 1958', greenwood1926: 'Greenwood, 1926', mantel1966: 'Mantel, 1966', peto1972: 'Peto y Peto, 1972', cox1972: 'Cox, 1972',
     efron1977: 'Efron, 1977', breslow1974: 'Breslow, 1974', grambsch1994: 'Grambsch y Therneau, 1994', harrell1982: 'Harrell et al., 1982', therneau2024: 'Therneau, 2024',
     box1970: 'Box y Pierce, 1970', ljung1978: 'Ljung y Box, 1978', kendall1983: 'Kendall y Stuart, 1983', mann1945: 'Mann, 1945', kendall1975: 'Kendall, 1975', sen1968: 'Sen, 1968', pohlert2023: 'Pohlert, 2023',
     pillai1955: 'Pillai, 1955', wilks1932: 'Wilks, 1932', hotelling1951: 'Hotelling, 1951', roy1953: 'Roy, 1953', fisher1936: 'Fisher, 1936', box1949: 'Box, 1949', box1976: 'Box y Jenkins, 1976', gardner1980: 'Gardner et al., 1980',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
+  /* Encuentra en un texto las obras de CITA, escritas como las escriben los métodos: «Landis y Koch (1977)»,
+     «(Cochran y Cox, 1957)», «Holland y col. 2003», «Brown, Cai y DasGupta (2001)», «Agresti-Coull (1998)». Para cada
+     obra, el primer apellido y el año; entre ellos, lo que corresponde a uno, dos o más autores (uno solo no acepta un
+     segundo apellido: «Cochran y Cox, 1957» no es «Cochran, 1957»). */
+  const escRE = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  let patrones = null;
+  function citasEnTexto(texto, citas) {
+    if (!texto) return;
+    if (!patrones) patrones = Object.entries(CITA).map(([k, c]) => {
+      const i = c.lastIndexOf(', '), autores = c.slice(0, i), anio = escRE(c.slice(i + 2)), primero = escRE(autores.split(/[ ,]/)[0]);
+      const medio = / et al\.$/.test(autores) ? '(?: y col\\.| et al\\.|,[^;()0-9]{1,60}?)'
+        : / y /.test(autores) ? '(?: y |-)' + escRE(autores.split(' y ').pop()) : '';
+      return [k, new RegExp('(?<![\\p{L}])' + primero + medio + '\\s?,?\\s?\\(?' + anio + '(?![0-9a-z])', 'u')];
+    });
+    for (const [k, re] of patrones) if (re.test(texto)) citas.add(k);
+  }
 
   /* ---------------- formato de la estadística en el texto ---------------- */
   const n2 = x => F.texto(x, 'forma2'), n3 = x => F.texto(x, 'forma'), s4 = x => F.texto(x, 'sig');
@@ -994,6 +1019,11 @@ SP.definir('informe', function (SP) {
         rec.forEach(t => out.push({ tipo: 'parrafo', texto: '• ' + t }));
       }
     });
+    items.forEach(it => {
+      const rep = it.rep || {}, sup = (it.supuestos && it.supuestos.rep) || {};
+      [].concat(rep.conclusiones || [], ...(rep.cuadros || []).map(c => c.notas || []), (rep.semaforo || []).map(s => s.texto),
+        (sup.semaforo || []).map(s => s.texto), rep.recomendaciones || [], sup.recomendaciones || []).forEach(t => citasEnTexto(t, citas));
+    });
     /* 3. referencias */
     out.push({ tipo: 'encabezado', nivel: 1, texto: T('Referencias') });
     [...citas].map(k => ({ k, t: referencia(k) })).filter(x => x.t).sort((a, b) => a.t.localeCompare(b.t, 'es')).forEach(x => out.push({ tipo: 'referencia', texto: x.t }));
@@ -1069,5 +1099,5 @@ SP.definir('informe', function (SP) {
       + `<title>${escH(o.titulo || T('Reporte de análisis estadístico'))}</title><style>${ESTILO.replace(/size: letter/, 'size: ' + (o.hoja === 'a4' ? 'A4' : 'letter'))}</style></head><body><main>${partes.join('\n')}</main></body></html>`;
   }
 
-  SP.informe = { parrafo, software, referencia, bloques, html, frasesAnova, REFERENCIAS: Object.keys(REF) };
+  SP.informe = { parrafo, software, referencia, citasEnTexto: t => { const s = new Set(); citasEnTexto(t, s); return [...s]; }, bloques, html, frasesAnova, REFERENCIAS: Object.keys(REF) };
 });

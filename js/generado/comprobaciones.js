@@ -90,7 +90,7 @@ window.SP_COMPROBACIONES = {
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-10-04T18:39:30.262Z",
+  "fecha": "2026-10-04T19:02:13.677Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {

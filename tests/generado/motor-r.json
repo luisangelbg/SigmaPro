@@ -1,11 +1,11 @@
 {
- "generado": "2026-10-04T18:34:58.743Z",
+ "generado": "2026-10-04T18:58:09.047Z",
  "webr": "0.6.0",
  "r": "R 4.6.0",
  "navegador": "Chrome/154.0.0.0",
  "casos": {
   "glmm/garrapatas-poisson": {
-   "huella": "56dedbda4f015aaf9248100270d53d0882b0b80b4331e07b666bd7bbf6acd636",
+   "huella": "ac5b6bbf57f96881061ec232f83f3c144abed2cc54ef688dbe52edd497f02fbe",
    "aprobado": true,
    "valores": 91,
    "difMax": 0.0001436029605841327,
@@ -13,7 +13,7 @@
    "peor": "coeficientes.z[2]",
    "fallas": [],
    "error": "",
-   "ms": 12421,
+   "ms": 12624,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -23,7 +23,7 @@
    }
   },
   "glmm-bloques/germinacion-probit": {
-   "huella": "809b4bcd0fbdbddd161e831ffc17e94fc614c5fabb690d15dca0e46b082e5914",
+   "huella": "364b9621906fa0234a5cf5af817e7b2da5e078a5b4bd113f224ebc6fde65e93a",
    "aprobado": true,
    "valores": 89,
    "difMax": 0.0000023717479180618284,
@@ -31,7 +31,7 @@
    "peor": "coeficientes.z[0]",
    "fallas": [],
    "error": "",
-   "ms": 483,
+   "ms": 452,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -41,7 +41,7 @@
    }
   },
   "glmm-bloques/larvas-binomial-negativa": {
-   "huella": "7d2b20218c1fd5fb7c35f1579655514e10a9ebc540e86d67b1abc55bb9991309",
+   "huella": "5b1ac852e435790506f20e22e93bda5580e0dba1a5f0200a48d7db11e61bb098",
    "aprobado": true,
    "valores": 146,
    "difMax": 0.0000058607192201520775,
@@ -49,7 +49,7 @@
    "peor": "coeficientes.z[4]",
    "fallas": [],
    "error": "",
-   "ms": 6719,
+   "ms": 6230,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -59,7 +59,7 @@
    }
   },
   "glmm-bloques/malezas-exposicion": {
-   "huella": "b1ecd1dc6f99e6522dda3c24ec6dbfe8a5d2d23293bbcf93733aec51d4b61638",
+   "huella": "646540036a4bb31223d90c5f607e07f94c61215d8e56a5f0997b5b6be1c58e9d",
    "aprobado": true,
    "valores": 77,
    "difMax": 0.0000034838596292274815,
@@ -67,7 +67,7 @@
    "peor": "coeficientes.z[2]",
    "fallas": [],
    "error": "",
-   "ms": 194,
+   "ms": 187,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -77,7 +77,7 @@
    }
   },
   "glmm-bloques/pulgones-automatica": {
-   "huella": "f7bc70865390446604087cc21dcd2ce8bcc29da27485349efeb457042154dfb7",
+   "huella": "e1fe86f8d151ad4dc9679eb0ff50a0897d53f97424a4705818b47d656aa14816",
    "aprobado": true,
    "valores": 144,
    "difMax": 0.000007929025677810841,
@@ -85,7 +85,7 @@
    "peor": "medias[0].filas[0].ee",
    "fallas": [],
    "error": "",
-   "ms": 519,
+   "ms": 494,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -95,7 +95,7 @@
    }
   },
   "glmm-bloques/trips-aguacate-singular": {
-   "huella": "fd6a1426eff5056395c6577b6f6bb3058710c8135e293f4c44fe4d9923fabb79",
+   "huella": "b447cf840bd206920043c63ae33984542e99c3a5453534c8004a7bd37742ac7b",
    "aprobado": true,
    "valores": 144,
    "difMax": 1.1203370720025418e-7,
@@ -103,7 +103,7 @@
    "peor": "obs.razon",
    "fallas": [],
    "error": "",
-   "ms": 516,
+   "ms": 492,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -113,7 +113,7 @@
    }
   },
   "glmm/vacas-binomial": {
-   "huella": "9d958bc04ce7b7a903a3e38e00312b079d0a7974fadf95ce153db14bd6171259",
+   "huella": "7617f595c5e01960bc961a2dd0bfcd86f22cb31b410b95b4c067743b51478e56",
    "aprobado": true,
    "valores": 107,
    "difMax": 0.000009463306351875644,
@@ -121,7 +121,7 @@
    "peor": "coeficientes.z[1]",
    "fallas": [],
    "error": "",
-   "ms": 447,
+   "ms": 411,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -131,7 +131,7 @@
    }
   },
   "glmm/vacas-observacion-tipo3": {
-   "huella": "7ef9d62df435044cbb9bee3fb90e2cad15285ad492ee0347f514608326f726b9",
+   "huella": "6f15dd340f003fa2efc24318bfb1f60035f035ab533536952ca1fbfc3588e9b0",
    "aprobado": true,
    "valores": 109,
    "difMax": 0.000002702903899809428,
@@ -139,7 +139,7 @@
    "peor": "coeficientes.z[3]",
    "fallas": [],
    "error": "",
-   "ms": 933,
+   "ms": 818,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -149,7 +149,7 @@
    }
   },
   "medidas-repetidas/maiz-altura-bloques": {
-   "huella": "12422a71a4039b895905fb991c13eedc79bc49b8016d2df9bdcf9175a75a8735",
+   "huella": "554408b1db9226bec6b4dd31249da567a13d5b42bf99e19c9af79674476348d6",
    "aprobado": true,
    "valores": 515,
    "difMax": 9.322320693172514e-12,
@@ -157,7 +157,7 @@
    "peor": "estructuras[6].logLik",
    "fallas": [],
    "error": "",
-   "ms": 849,
+   "ms": 784,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -166,7 +166,7 @@
    }
   },
   "medidas-repetidas/orthodont-automatica": {
-   "huella": "ce8db1bcb74760d6b2fa84423c03c28df65e198867b639a11ec0076b57f5fc45",
+   "huella": "2b3d34969983036c2693bef33c6ce93cd3fc718d8f1ec97bd088fc6a28eee383",
    "aprobado": true,
    "valores": 189,
    "difMax": 9.672021406004205e-9,
@@ -174,7 +174,7 @@
    "peor": "estructuras[4].logLik",
    "fallas": [],
    "error": "",
-   "ms": 504,
+   "ms": 470,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -183,7 +183,7 @@
    }
   },
   "medidas-repetidas/orthodont-faltantes-bic": {
-   "huella": "2331c38650acc44f1c63d046989ae6c4b0dab799a7630a5d65316659e6e77c5b",
+   "huella": "3cc3a249b2b487a2cbb05f0485cf97b7606ee34193472e66a6d12909696c29f0",
    "aprobado": true,
    "valores": 189,
    "difMax": 1.7053025658242404e-12,
@@ -191,7 +191,7 @@
    "peor": "estructuras[6].logLik",
    "fallas": [],
    "error": "",
-   "ms": 479,
+   "ms": 449,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -200,7 +200,7 @@
    }
   },
   "medidas-repetidas/orthodont-no-estructurada": {
-   "huella": "c35fa30005802b0fae97a02b2efd4ea400f94d3366ab0e033cbca7e2b737034f",
+   "huella": "8796431e0c81943fd480677d3e7d7496b5cfdcb01b55b0ac573a707bc45d4820",
    "aprobado": true,
    "valores": 189,
    "difMax": 6.320102841073094e-8,
@@ -208,7 +208,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 512,
+   "ms": 488,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -217,7 +217,7 @@
    }
   },
   "medidas-repetidas/ratas-fechas-desiguales": {
-   "huella": "71aa665e096d8fb8ce25fadf139b4e6dd2200203573334a519fbdb86001e8bad",
+   "huella": "395e66eeca8f77783950f3db66a788597f04bf257b02d094d3ca53d9743b7575",
    "aprobado": true,
    "valores": 740,
    "difMax": 0.000004008687483292306,
@@ -225,7 +225,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 1104,
+   "ms": 1049,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -234,7 +234,7 @@
    }
   },
   "medidas-repetidas/sueno-sin-tratamientos": {
-   "huella": "800ea53cb7d2a91d1fcf3d50cd3491b21a79ecc0de74a51088a0457acebde453",
+   "huella": "94a232745f40b4a194e642ec237b17524b16464e21b4b8ac426b80fb0d0c6551",
    "aprobado": true,
    "valores": 548,
    "difMax": 0.000009085153578780591,
@@ -242,7 +242,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 457,
+   "ms": 437,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -251,7 +251,7 @@
    }
   },
   "mixto-latice/alfa-latice-repeticiones-aleatorias": {
-   "huella": "27628b563dcb7bac7933100cc27c7f19c472a071a5e219d89c33ea0d35e8c294",
+   "huella": "009752c17e8ee792adabfc4cde92eb078cb68e16216613142c251feb6bedad8d",
    "aprobado": true,
    "valores": 2098,
    "difMax": 3.552713678800501e-15,
@@ -259,7 +259,7 @@
    "peor": "medias[0].pares[60].p",
    "fallas": [],
    "error": "",
-   "ms": 3499,
+   "ms": 3333,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -269,7 +269,7 @@
    }
   },
   "mixto-latice/alfa-latice": {
-   "huella": "f0ce0e87499183111317a146077e4e8105597f93668840fbd83ce0f5d945b162",
+   "huella": "b693cd6829f5c127ae1fc6cf6b5029e3b98ec7ddbdef108588c0b1839d58fa83",
    "aprobado": true,
    "valores": 2090,
    "difMax": 7.105427357601002e-15,
@@ -277,7 +277,7 @@
    "peor": "anova.sc[0]",
    "fallas": [],
    "error": "",
-   "ms": 1014,
+   "ms": 980,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -287,7 +287,7 @@
    }
   },
   "mixto-localidades/avena-14-ambientes": {
-   "huella": "25d28e299b19ba237333105040b12e7a86e85da99df64ee5ca72475b17807495",
+   "huella": "93e5f1040730dbee4a4d497da72561d5e25bd267703ca9a88078e4efb52c436a",
    "aprobado": true,
    "valores": 1431,
    "difMax": 1.3073986337985843e-12,
@@ -295,7 +295,7 @@
    "peor": "anova.gl2[0]",
    "fallas": [],
    "error": "",
-   "ms": 1389,
+   "ms": 1197,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -305,7 +305,7 @@
    }
   },
   "mixto-divididas/avena-divididas": {
-   "huella": "2f82f677a7c01e4e63e97f8bc936ba8e0795aad4a5f6ce5ec6dc4c626dcf8ff1",
+   "huella": "7d3e716e4c12f38fe14e0f23aafbc04b6e601a439852ee4391b95b493ca5636f",
    "aprobado": true,
    "valores": 352,
    "difMax": 5.684341886080802e-14,
@@ -313,7 +313,7 @@
    "peor": "anova.cm[2]",
    "fallas": [],
    "error": "",
-   "ms": 639,
+   "ms": 596,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -323,7 +323,7 @@
    }
   },
   "mixto-bloques/maiz-parcelas-perdidas": {
-   "huella": "ba0e95bf89be4c8c7fa960515df65a8805e05cfbe8fb5f5a671dd3be35298ddb",
+   "huella": "a17cdedc4bcb38c42fe8ce1df5c4cd5e11cf59fa286ace664c023e2fea7b65c4",
    "aprobado": true,
    "valores": 240,
    "difMax": 2.220446049250313e-16,
@@ -331,7 +331,7 @@
    "peor": "medias[1].pares[3].p",
    "fallas": [],
    "error": "",
-   "ms": 2132,
+   "ms": 2027,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -341,7 +341,7 @@
    }
   },
   "mixto-bloques/npk-bloques-aleatorios": {
-   "huella": "b45e957d209ae4d83bca39a3067c59f5f98e84570b0226582f7bac2df7793130",
+   "huella": "e11a2bd3f22797747801cad1b5b356dc3fe0a02cc7c8009cc0785b320641fc13",
    "aprobado": true,
    "valores": 213,
    "difMax": 7.105427357601002e-15,
@@ -349,7 +349,7 @@
    "peor": "medias[1].filas[0].ic[0]",
    "fallas": [],
    "error": "",
-   "ms": 414,
+   "ms": 398,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -359,7 +359,7 @@
    }
   },
   "mixto-localidades/papa-localidades-fijas": {
-   "huella": "f5bf3dbb3cec625e0c85ff165dedcd92bd6e19cfc394c9418cda0b1571421324",
+   "huella": "0d0800044b21bb09fc9eeba48516cc37a2ff6508bef49762056361bf7615e571",
    "aprobado": true,
    "valores": 3585,
    "difMax": 2.572718358351267e-7,
@@ -367,7 +367,7 @@
    "peor": "anova.p[1]",
    "fallas": [],
    "error": "",
-   "ms": 2387,
+   "ms": 2253,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -377,7 +377,7 @@
    }
   },
   "mixto-divididas/parcelas-sin-bloques": {
-   "huella": "4ac16e5b5e183f7049956633e11d3803e32856184f61f30072b8b90b3c2e4e12",
+   "huella": "febdf97f86e930acce4284871c0c258ef5b11f1ca001351c20a067d6c7380bf5",
    "aprobado": true,
    "valores": 172,
    "difMax": 0,
@@ -385,7 +385,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 342,
+   "ms": 324,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -395,7 +395,7 @@
    }
   },
   "modelo-mixto/avena-kenward-roger": {
-   "huella": "af2f7027595ea416c5ad924d507ce544c0d4f8dfd0678a749d28551998c2088a",
+   "huella": "0017f0c673b3b9fa0eb27448a358851c190e1920d58d13d4eb422189de86a78e",
    "aprobado": true,
    "valores": 352,
    "difMax": 1.4210854715202004e-14,
@@ -403,7 +403,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 3140,
+   "ms": 2831,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -413,7 +413,7 @@
    }
   },
   "modelo-mixto/avena-maxima-verosimilitud": {
-   "huella": "3f020111d9b4679513faf2c358e018517db0514671b78e1710008912caac11a8",
+   "huella": "cf7cd00c70fbd72f3f16f3b4938811504b4a845b1ab3b32a63e20c00566968b1",
    "aprobado": true,
    "valores": 236,
    "difMax": 2.842170943040401e-14,
@@ -421,7 +421,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 481,
+   "ms": 483,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -431,7 +431,7 @@
    }
   },
   "modelo-mixto/avena-nitrogeno-dentro-variedad": {
-   "huella": "93a29454be864638a578b3af09aee5a75e610a71ae885cfeae943a91e4230657",
+   "huella": "6eeba71386894bd513bbb4b5253436f9a2f2c1cde361801527d4c9897fdc3abf",
    "aprobado": true,
    "valores": 435,
    "difMax": 5.684341886080802e-14,
@@ -439,7 +439,7 @@
    "peor": "anova.cm[2]",
    "fallas": [],
    "error": "",
-   "ms": 585,
+   "ms": 569,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -449,7 +449,7 @@
    }
   },
   "modelo-mixto/avena-parcelas-divididas": {
-   "huella": "4ffc000348b2b9f28a596bd95fbcd4fbe4f7b6a624ba1221281d3e571056d950",
+   "huella": "435cbc5b0bde51a4261942d25c87fd70b802ae6038286d5138e110e776b3096a",
    "aprobado": true,
    "valores": 352,
    "difMax": 5.684341886080802e-14,
@@ -457,7 +457,7 @@
    "peor": "anova.cm[2]",
    "fallas": [],
    "error": "",
-   "ms": 632,
+   "ms": 601,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -467,7 +467,7 @@
    }
   },
   "modelo-mixto/maiz-bloques-aleatorios": {
-   "huella": "adb5c5c02dd788c664d0a70f3786fff3216280478b13b34fa5abc7999a6c6049",
+   "huella": "e3c4f425b59ccc1f42e7053acb0d2e93999a508a909947f202adbe0c5ee8de39",
    "aprobado": true,
    "valores": 240,
    "difMax": 7.105427357601002e-15,
@@ -475,7 +475,7 @@
    "peor": "anova.p[2]",
    "fallas": [],
    "error": "",
-   "ms": 356,
+   "ms": 341,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -485,7 +485,7 @@
    }
   },
   "modelo-mixto/maquinas-agrupamiento-numerico": {
-   "huella": "53b549346b3da0e03992e75d84e1ca770f2a26cccc42f9d11b2b737931484e38",
+   "huella": "b51ca94bcd0ee0a6b8d80df1de8ed4f81ed4b3ff23b2e8c9c698fe07604c5668",
    "aprobado": true,
    "valores": 121,
    "difMax": 1.4210854715202004e-14,
@@ -493,7 +493,7 @@
    "peor": "medias[0].pares[0].p",
    "fallas": [],
    "error": "",
-   "ms": 230,
+   "ms": 221,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -503,7 +503,7 @@
    }
   },
   "modelo-mixto/maquinas-bonferroni-kenward-roger": {
-   "huella": "d2fc9fa739c49534c35281b4e09ec696bff0dd5c19f25b225e5a79fa26f274a6",
+   "huella": "15d46fd0b17c652ee5c105c604e6431e7fd4f69c41da3fb2ae4218abef5419e9",
    "aprobado": true,
    "valores": 223,
    "difMax": 6.394884621840902e-14,
@@ -511,7 +511,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 1178,
+   "ms": 1130,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -521,7 +521,7 @@
    }
   },
   "modelo-mixto/maquinas-desbalanceado-tipo1": {
-   "huella": "c1ef241403193dcc7be5c77b84196a1de076f8d075e4119ea88fa41130e9b31e",
+   "huella": "2efae8942c0fc18a6025b1f646eac82204764141aa95175f8547dd34039d1e4f",
    "aprobado": true,
    "valores": 223,
    "difMax": 3.552713678800501e-15,
@@ -529,7 +529,7 @@
    "peor": "varianzas.varianza[1]",
    "fallas": [],
    "error": "",
-   "ms": 506,
+   "ms": 467,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -539,7 +539,7 @@
    }
   },
   "modelo-mixto/maquinas-desbalanceado-tipo3": {
-   "huella": "398ee9147c47f88ca95d20134f836eff281d38f6074da6be5f0720023c033abd",
+   "huella": "7abdd7dd8eb833cd0892d15a465d015fa660e9627f02506bcc32f4fa43a2d3e9",
    "aprobado": true,
    "valores": 223,
    "difMax": 3.552713678800501e-15,
@@ -547,7 +547,7 @@
    "peor": "varianzas.de[1]",
    "fallas": [],
    "error": "",
-   "ms": 516,
+   "ms": 456,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -557,7 +557,7 @@
    }
   },
   "modelo-mixto/maquinas-operario": {
-   "huella": "a809dbc22e57a12556ccda16028ae753ea7ebfdf561a306c8abaf1eb8616ba25",
+   "huella": "733eb0666d38e375cdd32729fb7a89435a25f7287397d812ac8d2fee3b08a8d7",
    "aprobado": true,
    "valores": 223,
    "difMax": 1.7763568394002505e-15,
@@ -565,7 +565,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 490,
+   "ms": 460,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -575,7 +575,7 @@
    }
   },
   "modelo-mixto/penicilina-cruzados": {
-   "huella": "32eafda0f76a125a717ae819fadc883ffe4aba254847b87aa35d4fca05b85dd8",
+   "huella": "7ffdab59863bc6c32d91612689e5c66c00dfe1ad657d06794f57e35ae5dc5e3a",
    "aprobado": true,
    "valores": 197,
    "difMax": 1.1102230246251565e-16,
@@ -583,7 +583,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 396,
+   "ms": 383,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -592,7 +592,7 @@
    }
   },
   "modelo-mixto/sueno-faltantes": {
-   "huella": "5942742672d1cd1e80b504abf5f8f55c91c07589ce175ce8f014429aabae72e6",
+   "huella": "1a6dbc0ba82f47b8015fa4790bc032741ef89774ac4953bc8344431503fd0bee",
    "aprobado": true,
    "valores": 138,
    "difMax": 0,
@@ -600,7 +600,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 169,
+   "ms": 154,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -609,7 +609,7 @@
    }
   },
   "modelo-mixto/sueno-pendientes": {
-   "huella": "ac1d5b988b69d5ad490a9b44698ed493957da23aeef36f2146b19cb080c365e0",
+   "huella": "5fb7ad94a095d331715195e7728f1b648e5013bf6825ae79e7fd8c97f748c170",
    "aprobado": true,
    "valores": 238,
    "difMax": 0,
@@ -617,7 +617,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 306,
+   "ms": 286,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -626,7 +626,7 @@
    }
   },
   "modelo-mixto/sueno-sin-correlacion": {
-   "huella": "1178454a3ab6ad83c9f9f0a40f37919a8d20e66864e96d347f7facd0c323ab24",
+   "huella": "a6f562cb5178849780b308716c58d7665285cde85b086fe639b3038e6fd97d99",
    "aprobado": true,
    "valores": 240,
    "difMax": 0,
@@ -634,7 +634,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 449,
+   "ms": 424,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",

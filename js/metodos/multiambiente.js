@@ -178,7 +178,7 @@ SP.definir('metodos-multiambiente', function (SP) {
       cuadros.push({ id: 'media_estabilidad', titulo: T('Media contra estabilidad'), columnas: [col('g', T('Genotipo'), 'texto'), col('m', T('Media'), 'sig'), col('E1', 'EJE1', 'forma'), col('E2', 'EJE2', 'forma'),
         col('pr', T('Desempeño (proyección)'), 'forma'), col('pe', T('Inestabilidad (distancia al eje)'), 'forma')],
         filas: orden.map(i => ({ g: Gn[i], m: r.medias[i], E1: Q.genotipos[i][0], E2: Q.genotipos[i][1], pr: Q.proyeccion[i], pe: Q.perpendicular[i] })),
-        notas: [T('Ordenados por su proyección sobre el eje del ambiente promedio (Yan 2001){o}.', { o: r.objetivo === 'minimo' ? T('; con la menor respuesta como objetivo, la tabla se invirtió') : '' })] });
+        notas: [T('Ordenados por su proyección sobre el eje del ambiente promedio (Yan y Kang, 2003){o}.', { o: r.objetivo === 'minimo' ? T('; con la menor respuesta como objetivo, la tabla se invirtió') : '' })] });
     }
     cuadros.push({ id: 'medias', titulo: T('Medias de los genotipos en cada ambiente'), columnas: [col('g', T('Genotipo'), 'texto')].concat(An.map((n, j) => col('a' + j, n, 'sig')), [col('m', T('Media'), 'sig')]),
       filas: Gn.map((g, i) => Object.assign({ g, m: r.medias[i] }, ...An.map((_, j) => ({ ['a' + j]: r.tabla[i][j] })))).concat([Object.assign({ g: T('Media'), m: r.media_general }, ...An.map((_, j) => ({ ['a' + j]: r.medias_ambiente[j] })))]),

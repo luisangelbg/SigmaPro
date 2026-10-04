@@ -213,7 +213,7 @@ SP.definir('motor-r', function (SP) {
 
   function errorCarga(e) {
     return new SP.ErrorSP(T('No se pudo cargar el motor R.'),
-      T('La primera vez el motor R se descarga de internet (unos 20 MB): revisa la conexión y vuelve a intentarlo. Detalle: {m}', { m: (e && e.message) || String(e) }));
+      T('La primera vez el motor R se descarga de internet (unos 25 MB): revisa la conexión y vuelve a intentarlo. Detalle: {m}', { m: (e && e.message) || String(e) }));
   }
   /** Carga webR (una sola vez) y define las funciones propias. */
   function iniciar() {

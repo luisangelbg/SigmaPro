@@ -77,6 +77,14 @@
     tbody.innerHTML = h;
   }
 
+  /* la mayor diferencia puede pasar de 10⁻⁶ en los casos con una tolerancia propia, documentada en el caso (clase D:
+     ARIMA, GLMM): la nota lo dice, para que no parezca una falla */
+  function notaLimite(V) {
+    const k = V.casos.filter(c => c.aprobado && c.difEscaladaMax > 1e-6).length;
+    return !k ? T('escalada; el límite es 10⁻⁶')
+      : k === 1 ? T('escalada; el límite es 10⁻⁶, salvo un caso con su tolerancia documentada')
+        : T('escalada; el límite es 10⁻⁶, salvo {k} casos con su tolerancia documentada', { k });
+  }
   function pintar() {
     const V = window.SP_VALIDACION;
     const vacio = $('#valVacio'), cont = $('#valContenido');
@@ -89,7 +97,7 @@
     $('#valTejas').innerHTML =
       '<div class="teja"><div class="k">' + T('Casos aprobados') + '</div><div class="v">' + r.aprobados + ' <small>' + T('de {n}', { n: r.casos }) + '</small></div></div>' +
       '<div class="teja"><div class="k">' + T('Valores comparados') + '</div><div class="v">' + miles(r.valores) + '</div></div>' +
-      '<div class="teja"><div class="k">' + T('Mayor diferencia') + '</div><div class="v">' + cientifico(r.difEscaladaMax) + '</div><div class="nota">' + T('escalada; el límite es 10⁻⁶') + '</div></div>' +
+      '<div class="teja"><div class="k">' + T('Mayor diferencia') + '</div><div class="v">' + cientifico(r.difEscaladaMax) + '</div><div class="nota">' + notaLimite(V) + '</div></div>' +
       '<div class="teja"><div class="k">' + T('Referencia') + '</div><div class="v" style="font-size:var(--fs-lg)">' + esc((V.referencias || []).map(s => s.replace(/^R version ([\d.]+).*$/, 'R $1')).join(', ')) + '</div><div class="nota">' + esc(r.objetivos === 1 ? T('1 función o método') : T('{n} funciones y métodos', { n: r.objetivos })) + '</div></div>';
     pintarTabla(V);
     pintarOtras();

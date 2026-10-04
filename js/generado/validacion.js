@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.3.3",
- "generado": "2026-10-04T18:38:17.588Z",
+ "generado": "2026-10-04T19:01:34.584Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
