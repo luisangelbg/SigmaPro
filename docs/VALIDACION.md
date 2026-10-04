@@ -434,6 +434,18 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
 
+## Cierre de la Fase 3 (Hito 3.5)
+
+- **Asistente** (`tests/unidad/asistente.test.js`): una prueba por objetivo nuevo (tiempo hasta un evento con y
+  sin covariables, serie con tendencia y con ciclo, MANOVA y discriminante, muestreo simple y estratificado, planear
+  con el CV de la tabla); todo método que recomienda existe en el registro.
+- **Rendimiento** (`tests/rendimiento/medir.mjs`): 61 operaciones con 100 000 filas, todas en meta, con el
+  grupo nuevo de la Fase 3 (muestreo estratificado, Kaplan-Meier, Cox con su concordancia y su prueba de riesgos
+  proporcionales, autocorrelación, descomposición, MANOVA, discriminante con validación cruzada y la tendencia con
+  3000 valores).
+- La concordancia de Cox en O(n log n) da los mismos conteos que la cuenta de todos los pares: los 5 casos de Cox
+  contra survival siguen aprobados.
+
 ## Multivariado en el núcleo JS (Hito 3.4)
 
 - **Referencia** (`tests/r/multivariado.R`): manova con summary.manova para cada una de las cuatro pruebas (los
@@ -621,8 +633,8 @@ tests/
 ├─ codigo-r.mjs                   el código R que muestra la app, corrido en R contra los números de la app
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
-├─ rendimiento/medir.mjs          53 operaciones con 100 000 filas en el navegador (--motor: el motor R con 20 000) (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      83 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ rendimiento/medir.mjs          61 operaciones con 100 000 filas en el navegador (--motor: el motor R con 20 000) (pagina.js: lo que corre en la página)
+├─ accesibilidad/auditar.mjs      84 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

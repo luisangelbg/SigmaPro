@@ -238,18 +238,34 @@ SP.definir('supervivencia', function (SP) {
   /** b' A b */
   function cuadraticaInv(A, b) { let s = 0; for (let i = 0; i < b.length; i++) for (let j = 0; j < b.length; j++) s += b[i] * A[i][j] * b[j]; return s; }
 
-  /** Concordancia de Harrell (concordance de survival, sin pesos): pares comparables, concordantes, discordantes y empates en el predictor. */
+  /**
+   * Concordancia de Harrell (concordance de survival, sin pesos): para cada evento, los que siguen en riesgo después
+   * (o censurados en el mismo tiempo) son comparables; es concordante si el evento tenía el mayor riesgo predicho.
+   * En O(n log n): los tiempos de mayor a menor y un árbol de Fenwick con los rangos del predictor de los que ya entraron.
+   */
   function concordancia(t, ev, lp) {
-    let conc = 0, disc = 0, empX = 0, empY = 0;
-    const n = t.length;
-    for (let i = 0; i < n; i++) {
-      if (!ev[i]) continue;
-      for (let j = 0; j < n; j++) {
-        if (j === i) continue;
-        if (t[j] > t[i] || (t[j] === t[i] && !ev[j])) {
-          if (lp[i] > lp[j]) conc++; else if (lp[i] < lp[j]) disc++; else empX++;
-        } else if (t[j] === t[i] && ev[j] && j > i) empY++;
+    const n = t.length, porLp = [...Array(n).keys()].sort((a, b) => lp[a] - lp[b]), rango = new Int32Array(n);
+    let r = 0;
+    for (let k = 0; k < n; k++) { if (k > 0 && lp[porLp[k]] !== lp[porLp[k - 1]]) r++; rango[porLp[k]] = r + 1; }
+    const m = r + 1, arbol = new Float64Array(m + 1);
+    const sumar = i => { for (; i <= m; i += i & -i) arbol[i]++; }, hasta = i => { let s = 0; for (; i > 0; i -= i & -i) s += arbol[i]; return s; };
+    const porT = [...Array(n).keys()].sort((a, b) => t[b] - t[a]);
+    let conc = 0, disc = 0, empX = 0, empY = 0, dentro = 0;
+    for (let k = 0; k < n;) {
+      let j = k;
+      while (j < n && t[porT[j]] === t[porT[k]]) j++;
+      for (let q = k; q < j; q++) if (!ev[porT[q]]) { sumar(rango[porT[q]]); dentro++; }   // censurados en este tiempo: comparables
+      let d = 0;
+      for (let q = k; q < j; q++) {
+        const i = porT[q];
+        if (!ev[i]) continue;
+        d++;
+        const menos = hasta(rango[i] - 1), igual = hasta(rango[i]) - menos;
+        conc += menos; empX += igual; disc += dentro - menos - igual;
       }
+      empY += d * (d - 1) / 2;
+      for (let q = k; q < j; q++) if (ev[porT[q]]) { sumar(rango[porT[q]]); dentro++; }
+      k = j;
     }
     return { concordantes: conc, discordantes: disc, empates_x: empX, empates_y: empY, C: (conc + empX / 2) / (conc + disc + empX) };
   }

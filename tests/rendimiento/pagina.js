@@ -4,7 +4,8 @@
    dosis y una covariable; diez variables numéricas correlacionadas; categorías para contingencia y evaluadores. Un 7 %
    de las filas se quita al azar para que el factorial quede desbalanceado. Para la Fase 2, con otra semilla (los datos
    de la Fase 1 no cambian): un conteo de Poisson y una respuesta 0/1. El modelo mixto del motor R se mide con las
-   primeras 20 000 filas (la meta de la Fase 2) si se pide con --motor. */
+   primeras 20 000 filas (la meta de la Fase 2) si se pide con --motor. Los métodos de la Fase 3 usan las mismas columnas (la
+   supervivencia toma «plantas» como tiempo y «germino» como evento; la tendencia, las primeras 3 000 filas). */
 (async () => {
   const N0 = 107527;
   let s = 20261002;
@@ -129,6 +130,22 @@
   await M('Superficie de respuesta dosis × plantas', 'superficie-respuesta', { respuesta: 'rend', factores: ['dosis', 'plantas'] }, {}, 3000);
   await M('Ensayo en varios ambientes (5 genotipos × 6 ambientes, bloques)', 'ensayos-multiambiente', { respuesta: 'rend', genotipo: 'trat', ambiente: 'l', repeticion: 'bloque' }, {}, 3000);
   await M('AMMI de 5 genotipos en 6 ambientes', 'ammi', { respuesta: 'rend', genotipo: 'trat', ambiente: 'l', repeticion: 'bloque' }, {}, 3000);
+
+  /* ---------------- Fase 3 en el núcleo ---------------- */
+  titulo('Fase 3: muestreo, supervivencia, series y multivariado');
+  await M('Muestreo estratificado por trat (5 estratos, asignación de Neyman)', 'muestreo-estratificado', { respuesta: 'rend', estrato: 'trat' },
+    { poblaciones: 'T1=40000; T2=40000; T3=40000; T4=40000; T5=40000', nTotal: 500 }, 500);
+  await M('Kaplan-Meier de 5 grupos con log-rank', 'kaplan-meier', { tiempo: 'plantas', evento: 'germino', grupo: 'trat' }, {}, 1500);
+  await M('Cox con trat y una covariable (Efron, concordancia y riesgos proporcionales)', 'cox', { tiempo: 'plantas', evento: 'germino', factores: ['trat'], covariables: ['v0'] }, {}, 5000);
+  await M('Autocorrelación (50 rezagos) y Ljung-Box', 'autocorrelacion', { respuesta: 'rend' }, { rezagos: 50, lagBox: 20 }, 1500);
+  await M('Descomposición clásica (frecuencia 12)', 'descomposicion', { respuesta: 'rend' }, { frecuencia: 12 }, 1500);
+  await M('MANOVA de 3 respuestas en bloques', 'manova', { respuestas: ['rend', 'v0', 'v1'], tratamientos: ['trat'], bloque: 'bloque' }, {}, 3000);
+  await M('Discriminante de 5 grupos con 4 variables y validación cruzada', 'discriminante', { variables: ['v0', 'v1', 'v2', 'v3'], grupo: 'trat' }, {}, 3000);
+  {
+    /* Mann-Kendall y Sen comparan todos los pares: el método admite hasta 3000 observaciones */
+    const t3 = SP.tabla.crear(Object.fromEntries(Object.entries(c).map(([k, v]) => [k, v.slice(0, 3000)])), tipos);
+    await medir('Tendencia de Mann-Kendall y Sen (3 000 valores, 4.5 millones de pares)', () => { const r = SP.ejecutar('tendencia', t3, { respuesta: 'rend' }, SP.opcionesCon(SP.metodos.tendencia, {})).resultado; SP.metodos.tendencia.reporte(r, {}); return r; }, 2000);
+  }
   if (window.__motor) {
     titulo('Fase 2: motor R (20 000 filas)');
     const c20 = Object.fromEntries(Object.entries(c).map(([k, v]) => [k, v.slice(0, 20000)]));

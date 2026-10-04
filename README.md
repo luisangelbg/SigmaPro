@@ -70,13 +70,14 @@ crecimiento, dosis-respuesta con DE50 y respuesta con meseta (dosis óptima), co
 Y las **superficies de respuesta**: punto óptimo, análisis canónico, cresta y ascenso más pronunciado. Y los **ensayos
 multiambiente**: análisis conjunto, estabilidad (Eberhart-Russell, Wricke, Shukla, Lin-Binns), AMMI y biplot GGE.
 
-**Fase 3 en curso** (plan en [`propuesta/FASE3.md`](propuesta/FASE3.md)): el **tamaño de muestra y la potencia**
+**Fase 3 completa** (versión 0.3.0; plan en [`propuesta/FASE3.md`](propuesta/FASE3.md)): el **tamaño de muestra y la potencia**
 (medias, ANOVA, proporciones, correlación y las repeticiones de un experimento), sin necesidad de datos; y el
 **muestreo**: el tamaño de muestra para estimar una media o una proporción, y la estimación con muestreo aleatorio
 simple y estratificado (con la asignación de Neyman); y la **supervivencia**: curvas de Kaplan-Meier, log-rank y el
 modelo de Cox con su prueba de riesgos proporcionales; y las **series de tiempo**: autocorrelación, descomposición
 en tendencia y ciclo, y la tendencia de Mann-Kendall con la pendiente de Sen; y el **multivariado**: MANOVA y análisis discriminante
-lineal (el ACP y los conglomerados se preparan para PCAPro y ClusteringPro). En total, 780 casos y 80 646 valores.
+lineal (el ACP y los conglomerados se preparan para PCAPro y ClusteringPro). En total, 780 casos y 80 646 valores. El asistente propone también los métodos de la
+Fase 3.
 
 Lo que falta para publicar y las fases 2 y 3 están en [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en

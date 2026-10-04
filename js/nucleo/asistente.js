@@ -32,6 +32,11 @@
      objetivo = asociación entre categorías
        casos independientes: tabla de contingencia · pareados: McNemar/Bowker · dos evaluadores: kappa ·
        por estratos: Cochran-Mantel-Haenszel
+     objetivo = tiempo hasta un evento: Kaplan-Meier con log-rank; con covariables, Cox
+     objetivo = serie de tiempo: tendencia (Mann-Kendall y Sen), ciclo (descomposición) o autocorrelación
+     objetivo = varias respuestas: MANOVA, o el discriminante para separar grupos
+     objetivo = muestreo: aleatorio simple o estratificado
+     objetivo = planear un ensayo: repeticiones con el CV de la respuesta (y la potencia, después)
      objetivo = describir: descriptivos por grupos (bloque Explorar) */
 SP.definir('asistente', function (SP) {
   'use strict';
@@ -76,7 +81,10 @@ SP.definir('asistente', function (SP) {
       }
       if (fab || fba) { ligados.add(agrupables[i] + '|' + agrupables[j]); ligados.add(agrupables[j] + '|' + agrupables[i]); }
     }
-    return { numericas, medidas, numFactor, factores: agrupables, niveles, tipoNum, pap, n: tabla.n, ligados: [...ligados], binarias };
+    /* el coeficiente de variación de cada numérica (para planear un ensayo con la variación de estos datos) */
+    const cvs = {};
+    for (const n of numericas) { const v = Array.from(tabla.col(n).valores).filter(z => z === z); if (v.length > 2) { const m = v.reduce((a, b) => a + b, 0) / v.length, s = Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / (v.length - 1)); cvs[n] = m > 0 ? 100 * s / m : NaN; } }
+    return { numericas, medidas, numFactor, factores: agrupables, niveles, tipoNum, pap, n: tabla.n, ligados: [...ligados], binarias, cvs };
   }
 
   /* respuestas con sus valores de omisión, según la tabla */
@@ -155,6 +163,22 @@ SP.definir('asistente', function (SP) {
     if (!cats.includes(x.estrato) || [x.cat1, x.cat2].includes(x.estrato)) x.estrato = cats.find(f => f !== x.cat1 && f !== x.cat2) || '';
     const conteos = inf.numericas.filter(n => inf.tipoNum[n] === 'conteo' || /^(n|frec.*|conteos?|casos|semillas|veces)$/i.test(n));
     if (x.frecuencia !== '' && !conteos.includes(x.frecuencia)) x.frecuencia = conteos.find(n => /^(n|frec.*|conteos?|casos|semillas|veces)$/i.test(n)) || '';
+    /* Fase 3: tiempo hasta un evento, serie de tiempo, varias respuestas, muestreo y planear un ensayo */
+    const bins = inf.binarias || [], noBin = inf.numericas.filter(n => !bins.includes(n)), TIEMPO = /periodo|mes|a[ñn]o|anio|semana|trimestre|fecha|tiempo/i;
+    if (!noBin.includes(x.tEvento)) x.tEvento = noBin.find(n => /d[ií]as?|horas?|semanas?|meses|tiempo|vida|dds/i.test(n)) || noBin[0] || '';
+    if (!bins.includes(x.evento)) x.evento = bins.find(n => /event|muri|muert|germin|status|estado|flor|brot|cens|vivo/i.test(n)) || bins[0] || '';
+    if (x.grupoEv === undefined || (x.grupoEv && !inf.factores.includes(x.grupoEv))) x.grupoEv = inf.factores.find(f => (inf.niveles[f] || []).length <= 12 && /trat|grupo|var|gen|h[ií]brido|insect|sustrato/i.test(f)) || '';
+    if (!Array.isArray(x.covEv)) x.covEv = [];
+    x.covEv = x.covEv.filter(n => noBin.includes(n) && n !== x.tEvento);
+    if (!medidas.includes(x.ySerie)) x.ySerie = resp.filter(n => !TIEMPO.test(n)).slice(-1)[0] || medidas.find(n => !TIEMPO.test(n)) || medidas[0] || '';
+    if (x.tSerie === undefined || (x.tSerie && !inf.numericas.includes(x.tSerie))) x.tSerie = inf.numericas.find(n => n !== x.ySerie && TIEMPO.test(n)) || '';
+    if (!['tendencia', 'ciclo', 'autocorrelacion'].includes(x.interesSerie)) x.interesSerie = 'tendencia';
+    if (!['4', '7', '12', '52'].includes(String(x.frecSerie))) x.frecSerie = '12';
+    if (!['manova', 'discriminante'].includes(x.interesMV)) x.interesMV = 'manova';
+    if (!Array.isArray(x.respuestasMV)) x.respuestasMV = (resp.length >= 2 ? resp : medidas).slice(0, 6);
+    x.respuestasMV = x.respuestasMV.filter(n => medidas.includes(n));
+    if (x.bloqueMV === undefined || (x.bloqueMV && (!inf.factores.includes(x.bloqueMV) || x.factores.includes(x.bloqueMV)))) x.bloqueMV = libres.includes(bloqueProbable) ? bloqueProbable : '';
+    if (x.estratoM === undefined || (x.estratoM && !inf.factores.includes(x.estratoM))) x.estratoM = inf.factores.find(f => /estr|huert|lote|regi|zona|suelo|sitio/i.test(f)) || '';
     return x;
   }
 
@@ -164,7 +188,9 @@ SP.definir('asistente', function (SP) {
     const P = (id, texto, tipo, opciones, ayuda, extra) => out.push(Object.assign({ id, texto, tipo, opciones, ayuda: ayuda || '', valor: x[id] }, extra || {}));
     const libres = inf.factores.filter(f => !x.factores.includes(f));
     P('objetivo', T('¿Qué quieres saber?'), 'opciones', [['comparar', T('Comparar tratamientos o grupos')], ['ambientes', T('Comparar genotipos en varios ambientes (estabilidad)')], ['relacion', T('Relación entre variables numéricas')],
-      ['asociacion', T('Asociación entre categorías')], ['describir', T('Solo describir los datos')]]);
+      ['asociacion', T('Asociación entre categorías')], ['tiempo', T('Tiempo hasta un evento: germinar, morir, florecer (con unidades que no lo tuvieron)')], ['serie', T('Una variable medida en el tiempo: tendencia y ciclo')],
+      ['multivariado', T('Varias respuestas a la vez, o qué variables separan a los grupos')], ['muestreo', T('Estimar la media o el total de una población muestreada')], ['planear', T('Planear un ensayo: cuántas repeticiones o qué potencia')],
+      ['describir', T('Solo describir los datos')]]);
     if (x.objetivo === 'comparar') {
       P('respuesta', T('¿Qué mediste? (la respuesta)'), 'variable', med.map(n => [n, n]).concat(inf.numericas.filter(n => !med.includes(n)).map(n => [n, T('{n} (pocos valores)', { n })])));
       P('tipoRespuesta', T('¿Qué clase de dato es «{r}»?', { r: x.respuesta }), 'opciones', [['continua', T('Una medida continua (peso, altura, rendimiento)')], ['conteo', T('Un conteo (insectos, frutos, plantas)')],
@@ -242,6 +268,28 @@ SP.definir('asistente', function (SP) {
       P('cat2', et[1], 'variable', inf.factores.filter(f => f !== x.cat1).map(f => [f, f]));
       if (x.tipoAsoc === 'estratos') P('estrato', T('¿Qué columna dice el estrato?'), 'variable', inf.factores.filter(f => f !== x.cat1 && f !== x.cat2).map(f => [f, f]));
       P('frecuencia', T('¿Tus datos ya vienen contados?'), 'variable', [['', T('No: cada fila es un caso')]].concat(inf.numericas.map(n => [n, T('Sí: la columna «{n}»', { n })])));
+    } else if (x.objetivo === 'tiempo') {
+      const noBin = inf.numericas.filter(n => !(inf.binarias || []).includes(n));
+      P('tEvento', T('¿Qué columna dice el tiempo (hasta el evento o hasta que se dejó de observar)?'), 'variable', noBin.map(n => [n, n]));
+      P('evento', T('¿Qué columna dice si ocurrió el evento (1) o no (0, censura)?'), 'variable', (inf.binarias || []).map(n => [n, n]), T('0 si al terminar el ensayo la unidad seguía sin el evento (no germinó, seguía viva).'));
+      P('grupoEv', T('¿Comparas grupos (tratamientos, variedades)?'), 'variable', [['', T('No: una sola curva')]].concat(inf.factores.filter(f => (inf.niveles[f] || []).length <= 12).map(f => [f, T('Sí: «{f}»', { f })])));
+      P('covEv', T('¿Hay covariables numéricas que puedan cambiar el riesgo (peso, edad)?'), 'variables', noBin.filter(n => n !== x.tEvento).map(n => [n, n]), T('Con covariables, el modelo de Cox.'), { max: 10 });
+    } else if (x.objetivo === 'serie') {
+      P('ySerie', T('¿Qué variable se midió en el tiempo?'), 'variable', med.map(n => [n, n]));
+      P('tSerie', T('¿Qué columna dice el tiempo?'), 'variable', [['', T('Ninguna: las filas ya están en orden')]].concat(inf.numericas.filter(n => n !== x.ySerie).map(n => [n, n])));
+      P('interesSerie', T('¿Qué te interesa?'), 'opciones', [['tendencia', T('Si sube o baja con los años (tendencia)')], ['ciclo', T('El ciclo de cada año o estación (estacionalidad)')],
+        ['autocorrelacion', T('Si los valores cercanos se parecen (autocorrelación)')]]);
+      if (x.interesSerie !== 'tendencia') P('frecSerie', T('¿Cuántas observaciones hay en cada ciclo?'), 'opciones', [['12', T('12: meses en un año')], ['4', T('4: trimestres')], ['7', T('7: días de la semana')], ['52', T('52: semanas en un año')]]);
+    } else if (x.objetivo === 'multivariado') {
+      P('interesMV', T('¿Qué buscas?'), 'opciones', [['manova', T('Si los tratamientos cambian el conjunto de respuestas (MANOVA)')], ['discriminante', T('Qué variables separan mejor a los grupos y qué tan bien los clasifican')]]);
+      P('respuestasMV', x.interesMV === 'manova' ? T('¿Qué respuestas mediste? (de 2 a 10)') : T('¿Qué variables describen a cada unidad? (de 2 a 10)'), 'variables', med.map(n => [n, n]), '', { max: 10 });
+      P('factores', x.interesMV === 'manova' ? T('¿Qué factores aplicaste? (hasta 3)') : T('¿Qué columna dice el grupo?'), 'variables', inf.factores.map(f => [f, f]), '', { max: x.interesMV === 'manova' ? 3 : 1 });
+      if (x.interesMV === 'manova') P('bloqueMV', T('¿Hay bloques?'), 'variable', [['', T('No')]].concat(inf.factores.filter(f => !x.factores.includes(f)).map(f => [f, T('Sí: «{f}»', { f })])));
+    } else if (x.objetivo === 'muestreo') {
+      P('respuesta', T('¿Qué mediste en la muestra?'), 'variable', inf.numericas.map(n => [n, n]));
+      P('estratoM', T('¿La población estaba dividida en estratos (huertas, lotes, regiones) y muestreaste en cada uno?'), 'variable', [['', T('No: muestreo aleatorio simple')]].concat(inf.factores.map(f => [f, T('Sí: «{f}»', { f })])));
+    } else if (x.objetivo === 'planear') {
+      P('respuesta', T('¿Qué variable vas a medir? (para tomar su variación de estos datos)'), 'variable', med.map(n => [n, n]));
     } else {
       P('respuesta', T('¿Qué variable quieres describir?'), 'variable', med.map(n => [n, n]));
       P('factores', T('¿Por grupos? (hasta 3)'), 'variables', inf.factores.filter(f => f !== x.respuesta).map(f => [f, f]), T('Déjalo vacío para describir todo junto.'), { max: 3 });
@@ -262,6 +310,72 @@ SP.definir('asistente', function (SP) {
   function recomendar(r, inf) {
     const x = completar(r, inf), avisos = [];
     const y = x.respuesta, facs = x.factores, tipo = x.tipoRespuesta;
+    if (x.objetivo === 'tiempo') {
+      const base = { revisar: [T('que la censura no dependa del tratamiento'), T('riesgos proporcionales (en Cox)')], siFallan: T('Si los riesgos no son proporcionales, compara las curvas con Peto-Peto o analiza por tramos de tiempo.'), avisos };
+      if (!x.tEvento || !x.evento) return Object.assign(base, { metodo: null, titulo: T('Faltan columnas'), resumen: T('Hacen falta el tiempo y una columna 0/1 que diga si ocurrió el evento.'), porque: [], despues: [] });
+      const eKM = Object.assign({ tiempo: x.tEvento, evento: x.evento }, x.grupoEv ? { grupo: x.grupoEv } : {});
+      const eCox = Object.assign({ tiempo: x.tEvento, evento: x.evento }, x.grupoEv ? { factores: [x.grupoEv] } : {}, x.covEv.length ? { covariables: x.covEv } : {});
+      if (x.covEv.length) return Object.assign(base, { metodo: 'cox', e: eCox, op: { empates: 'efron' }, titulo: T('Modelo de riesgos proporcionales de Cox'),
+        resumen: T('El efecto de {v} sobre el riesgo del evento.', { v: [x.grupoEv].filter(Boolean).concat(x.covEv).map(n => '«' + n + '»').join(', ') }),
+        porque: [T('Con covariables numéricas, Cox da la razón de riesgo de cada una ajustada por las demás, sin suponer una forma para la curva.'), T('Usa las unidades censuradas: saber que una semilla no germinó en 21 días también informa.')],
+        despues: [{ texto: T('Las curvas de Kaplan-Meier{g}', { g: x.grupoEv ? T(' por «{g}»', { g: x.grupoEv }) : '' }), metodo: 'kaplan-meier', e: eKM, op: {} }] });
+      return Object.assign(base, { metodo: 'kaplan-meier', e: eKM, op: { conf: 'log', rho: 0 }, titulo: T('Curvas de supervivencia (Kaplan-Meier)'),
+        resumen: x.grupoEv ? T('La curva de cada nivel de «{g}», su mediana y la prueba log-rank.', { g: x.grupoEv }) : T('La curva del tiempo hasta el evento y su mediana.'),
+        porque: [T('Las unidades que terminaron sin el evento (censuradas) no se pueden tratar como si lo hubieran tenido al final ni quitarse: Kaplan-Meier las usa bien.'),
+          x.grupoEv ? T('La prueba log-rank compara las curvas completas, no solo un tiempo.') : T('La mediana dice en qué tiempo la mitad de las unidades tuvo el evento.')],
+        despues: x.grupoEv ? [{ texto: T('Cuántas veces más rápido ocurre el evento en cada grupo (modelo de Cox)'), metodo: 'cox', e: eCox, op: { empates: 'efron' } }] : [] });
+    }
+    if (x.objetivo === 'serie') {
+      const e = Object.assign({ respuesta: x.ySerie }, x.tSerie ? { tiempo: x.tSerie } : {}), f = +x.frecSerie;
+      const base = { revisar: [T('intervalos de tiempo iguales'), T('sin huecos en la serie')], siFallan: '', avisos };
+      if (!x.ySerie) return Object.assign(base, { metodo: null, titulo: T('Falta la variable'), resumen: T('Elige la variable medida en el tiempo.'), porque: [], despues: [] });
+      const S = {
+        tendencia: ['tendencia', { nivel: 0.95 }, T('Tendencia monótona (Mann-Kendall y Sen)'), T('¿«{y}» sube o baja con el tiempo, y cuánto por paso?', { y: x.ySerie }),
+          [T('Mann-Kendall no supone normalidad ni una recta: solo cuenta si los valores posteriores tienden a ser mayores.'), T('La pendiente de Sen (mediana de las pendientes) resiste a los años extremos.')]],
+        ciclo: ['descomposicion', { frecuencia: f, tipo: 'aditiva' }, T('Descomposición de la serie'), T('La tendencia, el ciclo de {f} observaciones y el residuo de «{y}».', { f, y: x.ySerie }),
+          [T('La media móvil de un ciclo separa la tendencia; el promedio de cada posición del ciclo, la estacionalidad.')]],
+        autocorrelacion: ['autocorrelacion', { lagBox: f }, T('Autocorrelación de la serie'), T('¿Los valores de «{y}» se parecen a los de los tiempos anteriores?', { y: x.ySerie }),
+          [T('Si hay autocorrelación, las observaciones no son independientes y una regresión o ANOVA común da errores estándar demasiado chicos.')]],
+      };
+      const [metodo, op, titulo, resumen, porque] = S[x.interesSerie];
+      return Object.assign(base, { metodo, e, op, titulo, resumen, porque, despues: Object.keys(S).filter(k => k !== x.interesSerie).map(k => ({ texto: S[k][2], metodo: S[k][0], e, op: S[k][1] })) });
+    }
+    if (x.objetivo === 'multivariado') {
+      const base = { revisar: [T('normalidad multivariada'), T('covarianzas parecidas entre grupos')], siFallan: T('Con supuestos dudosos, Pillai es la prueba más robusta.'), avisos };
+      if (x.respuestasMV.length < 2) return Object.assign(base, { metodo: null, titulo: T('Faltan variables'), resumen: T('Elige al menos dos variables.'), porque: [], despues: [] });
+      if (!x.factores.length) return Object.assign(base, { metodo: null, titulo: T('Falta el factor'), resumen: x.interesMV === 'manova' ? T('Elige al menos un factor de tratamiento.') : T('Elige la columna del grupo.'), porque: [], despues: [] });
+      const eL = { variables: x.respuestasMV, grupo: x.factores[0] }, eM = Object.assign({ respuestas: x.respuestasMV, tratamientos: x.factores.slice(0, 3) }, x.bloqueMV ? { bloque: x.bloqueMV } : {});
+      if (x.interesMV === 'discriminante') return Object.assign(base, { metodo: 'discriminante', e: eL, op: {}, titulo: T('Análisis discriminante lineal'),
+        resumen: T('Qué combinación de {k} variables separa mejor los niveles de «{g}».', { k: x.respuestasMV.length, g: x.factores[0] }),
+        porque: [T('Las funciones discriminantes son las direcciones en que los grupos se separan más con relación a la variación dentro de ellos.'), T('La validación cruzada dice qué tan bien clasificaría unidades nuevas.')],
+        despues: [{ texto: T('¿Difieren los grupos en el conjunto de variables? (MANOVA)'), metodo: 'manova', e: { respuestas: x.respuestasMV, tratamientos: [x.factores[0]] }, op: { prueba: 'pillai' } }] });
+      return Object.assign(base, { metodo: 'manova', e: eM, op: { prueba: 'pillai' }, titulo: T('MANOVA'),
+        resumen: T('El efecto de {f} sobre {k} respuestas juntas.', { f: nombreDe(x.factores.slice(0, 3)), k: x.respuestasMV.length }),
+        porque: [T('Analizar cada respuesta por separado multiplica el riesgo de un falso positivo y no ve las respuestas que cambian juntas.'), T('Pillai es la prueba más robusta; la app da también Wilks, Hotelling-Lawley y Roy.')],
+        despues: [{ texto: T('Qué variables separan mejor los niveles de «{f}» (discriminante)', { f: x.factores[0] }), metodo: 'discriminante', e: { variables: x.respuestasMV, grupo: x.factores[0] }, op: {} }] });
+    }
+    if (x.objetivo === 'muestreo') {
+      const base = { revisar: [T('que la muestra se haya tomado al azar (dentro de cada estrato)')], siFallan: '', avisos };
+      if (!y) return Object.assign(base, { metodo: null, titulo: T('Falta la variable'), resumen: T('Elige la variable medida.'), porque: [], despues: [] });
+      if (x.estratoM) {
+        avisos.push(T('Escribe en el formulario cuántas unidades tiene cada estrato en la población (no solo las muestreadas).'));
+        return Object.assign(base, { metodo: 'muestreo-estratificado', e: { respuesta: y, estrato: x.estratoM }, op: { poblaciones: '' }, titulo: T('Estimación con muestreo estratificado'),
+          resumen: T('La media y el total de «{y}» combinando los estratos de «{s}» con su peso.', { y, s: x.estratoM }),
+          porque: [T('Cada estrato pesa según su tamaño en la población, no según cuántas unidades se tomaron en él.'), T('Con un tamaño total, propone cómo repartir la próxima muestra (Neyman).')], despues: [] });
+      }
+      return Object.assign(base, { metodo: 'muestreo-simple', e: { respuesta: y }, op: { N: 0 }, titulo: T('Estimación con muestreo aleatorio simple'),
+        resumen: T('La media (o la proporción) de «{y}» con su intervalo y, si das el tamaño de la población, el total.', { y }),
+        porque: [T('Con la población finita el error baja: la corrección por población finita lo toma en cuenta.')],
+        despues: [{ texto: T('¿Cuántas unidades medir la próxima vez? (tamaño de muestra)'), metodo: 'tamano-muestra', e: {}, op: {} }] });
+    }
+    if (x.objetivo === 'planear') {
+      /* la variación de la respuesta en estos datos: el CV dentro de los grupos del primer factor, o el de toda la columna */
+      const cv = y && Number.isFinite((inf.cvs || {})[y]) ? Math.round(10 * inf.cvs[y]) / 10 : 15;
+      return { metodo: 'repeticiones', e: {}, op: { cv, diferencia: 15, tratamientos: Math.max(2, (inf.niveles[facs[0]] || []).length || 5), diseno: x.bloques === 'uno' ? 'dbca' : 'dca' },
+        titulo: T('Número de repeticiones de un experimento'), resumen: T('Cuántas repeticiones hacen falta para detectar una diferencia de 15 % con el CV de «{y}» ({c} %).', { y: y || '—', c: cv }),
+        porque: [T('Con el CV esperado y la diferencia que interesa, la fórmula de Cochran y Cox da las repeticiones para una potencia de 80 %.'), T('Cambia la diferencia y el CV en el formulario; el CV de estos datos incluye el efecto de los tratamientos (es una cota alta).')],
+        revisar: [], siFallan: '', avisos, despues: [{ texto: T('Potencia de un ANOVA de varios tratamientos'), metodo: 'potencia-anova', e: {}, op: {} }, { texto: T('Potencia para comparar dos medias'), metodo: 'potencia-medias', e: {}, op: {} }] };
+    }
     if (x.objetivo === 'describir') {
       return { bloque: 3, metodo: 'descriptivos', e: { variables: [y], grupos: facs }, op: {}, titulo: T('Descriptivos por grupos'),
         resumen: T('Media, desviación, cuartiles e intervalos de «{y}»{g}.', { y, g: facs.length ? T(' en cada combinación de {f}', { f: facs.join(' × ') }) : '' }),

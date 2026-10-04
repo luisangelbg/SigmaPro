@@ -93,7 +93,9 @@ SP.definir('metodos-series', function (SP) {
 
   /* ======================= tendencia ======================= */
   function calcularTend(tabla, e, op) {
-    const s = serie(tabla, e, false), mk = Z().mannKendall(s.x), sn = Z().sen(s.x, +op.nivel);
+    const s = serie(tabla, e, false);
+    exigir(s.x.length <= 3000, T('Mann-Kendall y Sen comparan todos los pares: hasta 3000 observaciones (hay {n}).', { n: s.x.length }), T('Resume la serie (por ejemplo, la media de cada mes o de cada año) y vuelve a probar.'));
+    const mk = Z().mannKendall(s.x), sn = Z().sen(s.x, +op.nivel);
     return Object.assign({ tipo: 'series', metodo: 'tendencia', respuesta: e.respuesta, tiempoCol: e.tiempo || '', nivel: +op.nivel, excluidas: s.excluidas, x: s.x, tiempos: s.tiempos },
       mk, { pendiente: sn.pendiente, pendiente_inf: sn.inf, pendiente_sup: sn.sup });
   }

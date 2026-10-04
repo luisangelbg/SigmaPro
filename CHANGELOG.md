@@ -2,6 +2,22 @@
 
 ## Sin publicar
 
+### 0.3.0 · Hito 3.5 · Cierre de la Fase 3 (4 oct 2026)
+
+- **La Fase 3 está completa**: versión 0.3.0 (`SP.VERSION` y el servicio sin conexión).
+- **Asistente para la Fase 3**: cinco objetivos nuevos. «Tiempo hasta un evento» (Kaplan-Meier con log-rank; con
+  covariables, Cox), «una variable medida en el tiempo» (tendencia, ciclo o autocorrelación), «varias respuestas a la
+  vez» (MANOVA o discriminante), «muestreo» (aleatorio simple o estratificado) y «planear un ensayo» (las
+  repeticiones con el CV de la respuesta de la tabla, y la potencia como paso siguiente). El constructor de modelos
+  sigue para los modelos de fórmula: los métodos de la Fase 3 se eligen en el asistente o en el catálogo.
+- **Rendimiento de la Fase 3** (`tests/rendimiento/medir.mjs`): los métodos nuevos con 100 000 filas, en meta. Lo
+  que salió al medir: la concordancia de Cox comparaba todos los pares (O(n²), minutos con 100 000 filas); ahora
+  recorre los tiempos de mayor a menor con un árbol de Fenwick (O(n log n)) y da los mismos conteos. Mann-Kendall y
+  Sen comparan todos los pares: el método admite hasta 3000 observaciones y lo dice si hay más; la pendiente de Sen
+  ordena sus 4.5 millones de pendientes una sola vez en un arreglo tipado (de 8.4 s a 0.7 s, los mismos resultados).
+- 61 medidas de rendimiento, 84 escenarios de accesibilidad, 257 pruebas unitarias; 780 casos
+  contra R con 80 646 valores.
+
 ### Hito 3.4 · Multivariado: MANOVA y discriminante (4 oct 2026)
 
 - Familia **Análisis multivariado**, con dos métodos en el núcleo JS:

@@ -20,7 +20,6 @@ SP.definir('series', function (SP) {
   const media = v => v.reduce((a, b) => a + b, 0) / v.length;
   /** round de R: la mitad va al par (IEC 60559). */
   const redondearR = x => { const f = Math.floor(x), d = x - f; return d > 0.5 ? f + 1 : d < 0.5 ? f : (f % 2 === 0 ? f : f + 1); };
-  const mediana = v => { const s = v.slice().sort((a, b) => a - b), n = s.length; return n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2; };
 
   /** Rezagos por omisión de acf: floor(10·log10(n)), como mucho n − 1. */
   const rezagosR = n => min(floor(10 * log10(n)), n - 1);
@@ -91,12 +90,15 @@ SP.definir('series', function (SP) {
   }
   /** Pendiente de Sen (trend::sens.slope) con su intervalo. */
   function sen(x, nivel) {
-    const n = x.length, d = [];
-    for (let i = 0; i < n - 1; i++) for (let j = i + 1; j < n; j++) d.push((x[j] - x[i]) / (j - i));
-    const mk = mannKendall(x), k = d.length, C = D().qnorm(1 - (1 - nivel) / 2, 0, 1, true) * sqrt(mk.varS);
-    const arriba = redondearR((k + C) / 2 + 1), abajo = redondearR((k - C) / 2), s = d.slice().sort((a, b) => a - b);
+    /* las n(n − 1)/2 pendientes en un arreglo tipado, ordenadas una sola vez (con 3000 valores son 4.5 millones) */
+    const n = x.length, k = n * (n - 1) / 2, s = new Float64Array(k);
+    let q = 0;
+    for (let i = 0; i < n - 1; i++) for (let j = i + 1; j < n; j++) s[q++] = (x[j] - x[i]) / (j - i);
+    s.sort();
+    const mk = mannKendall(x), C = D().qnorm(1 - (1 - nivel) / 2, 0, 1, true) * sqrt(mk.varS);
+    const arriba = redondearR((k + C) / 2 + 1), abajo = redondearR((k - C) / 2);
     const tomar = r => (r >= 1 && r <= k ? s[r - 1] : NaN);
-    return { pendiente: mediana(d), inf: tomar(abajo), sup: tomar(arriba), rangos: [abajo, arriba], pares: k };
+    return { pendiente: k % 2 ? s[(k - 1) / 2] : (s[k / 2 - 1] + s[k / 2]) / 2, inf: tomar(abajo), sup: tomar(arriba), rangos: [abajo, arriba], pares: k };
   }
 
   SP.series = { acf, pacf, box, rezagosR, mediaMovil, descomponer, mannKendall, sen, redondearR };

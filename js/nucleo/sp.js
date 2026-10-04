@@ -23,7 +23,7 @@
   'use strict';
 
   const SP = raiz.SP || (raiz.SP = {});
-  SP.VERSION = '0.2.0';
+  SP.VERSION = '0.3.0';
   SP._base = sigmaproBase;            // para reconstruir el núcleo en un hilo
   SP.fabricas = SP.fabricas || [];    // [[nombre, fábrica]] en orden de carga
 

@@ -76,7 +76,8 @@
     ['hecho', '3.2', 'Supervivencia: Kaplan-Meier, log-rank y Cox'],
     ['hecho', '3.3', 'Series de tiempo: autocorrelación, descomposición y tendencia'],
     ['hecho', '3.4', 'Multivariado: MANOVA y discriminante; CSV para PCAPro y ClusteringPro'],
-    ['actual', '3.5', 'Asistente y constructor para la Fase 3; cierre (0.3.0)'],
+    ['hecho', '3.5', 'Asistente para la Fase 3; cierre (0.3.0)'],
+    ['actual', '1.0', 'Publicación: manual, revisión del nombre, repositorio y DOI (versión 1.0.0)'],
   ];
   function hitos() {
     const ul = $('#hitos');

@@ -232,6 +232,9 @@
  "pot-anova-con-datos": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.usar('potencia-anova', {}, { calcular: 'n', medias: '4.2, 4.8, 5.1, 5.6', de: 0.6 }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },
+ "asis-tiempo": {
+  "prep": "document.querySelector('#datEjemplos').click(), [...document.querySelectorAll('.sp-menu-item')].find(b => /días a la germinación/.test(b.textContent)).click(), SP.app.ir(4), SP.app.analisis.ponerModo('asistente'), document.querySelector('#anaAsistente input[value=\"tiempo\"]').click()"
+ },
  "sv-kaplan-meier": {
   "prep": "document.querySelector('#datEjemplos').click(), [...document.querySelectorAll('.sp-menu-item')].find(b => /días a la germinación/.test(b.textContent)).click(), SP.app.ir(4), SP.app.analisis.usar('kaplan-meier', { tiempo: 'dias', evento: 'germino', grupo: 'tratamiento' }, { conf: 'log', rho: 0 }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },

@@ -253,6 +253,34 @@ SPT.describir('Asistente y constructor de modelos', () => {
     SPT.igual(cmh.e.estrato, 'lote');
   });
 
+  SPT.caso('Fase 3: tiempo hasta un evento, serie, varias respuestas, muestreo y planear', () => {
+    const germ = tab({ trat: ['A', 'A', 'A', 'B', 'B', 'B', 'C', 'C', 'C'], dias: [3, 5, 21, 4, 9, 21, 2, 3, 6], germino: [1, 1, 0, 1, 1, 0, 1, 1, 1], peso: [1.1, 0.9, 1.2, 1.0, 1.3, 0.8, 1.1, 1.0, 0.9] });
+    let r = R(germ, { objetivo: 'tiempo' });
+    existe(r); SPT.igual(r.metodo, 'kaplan-meier'); SPT.igual(r.e.evento, 'germino'); SPT.igual(r.e.tiempo, 'dias'); SPT.igual(r.e.grupo, 'trat');
+    r = R(germ, { objetivo: 'tiempo', covEv: ['peso'] });
+    existe(r); SPT.igual(r.metodo, 'cox'); SPT.igualJSON(r.e.covariables, ['peso']); SPT.igualJSON(r.e.factores, ['trat']);
+    const serie = tab({ mes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24], lluvia: [5, 8, 20, 60, 90, 120, 110, 100, 80, 30, 10, 4, 6, 9, 25, 70, 95, 118, 115, 98, 84, 28, 12, 5] });
+    r = R(serie, { objetivo: 'serie' });
+    existe(r); SPT.igual(r.metodo, 'tendencia'); SPT.igual(r.e.tiempo, 'mes'); SPT.igual(r.e.respuesta, 'lluvia');
+    r = R(serie, { objetivo: 'serie', interesSerie: 'ciclo', frecSerie: '12' });
+    existe(r); SPT.igual(r.metodo, 'descomposicion'); SPT.igual(r.op.frecuencia, 12);
+    const t = ensayo();
+    r = R(t, { objetivo: 'multivariado', respuestasMV: ['rend', 'plantas'], factores: ['hibrido'], bloqueMV: 'bloque' });
+    existe(r); SPT.igual(r.metodo, 'manova'); SPT.igual(r.e.bloque, 'bloque');
+    r = R(t, { objetivo: 'multivariado', interesMV: 'discriminante', respuestasMV: ['rend', 'plantas'], factores: ['hibrido'] });
+    existe(r); SPT.igual(r.metodo, 'discriminante'); SPT.igual(r.e.grupo, 'hibrido');
+    r = R(t, { objetivo: 'muestreo', respuesta: 'rend' });
+    existe(r); SPT.igual(r.metodo, 'muestreo-simple');
+    r = R(t, { objetivo: 'muestreo', respuesta: 'rend', estratoM: 'bloque' });
+    existe(r); SPT.igual(r.metodo, 'muestreo-estratificado'); SPT.afirmar(r.avisos.length, 'pide escribir el tamaño de cada estrato');
+    r = R(t, { objetivo: 'planear', respuesta: 'rend' });
+    existe(r); SPT.igual(r.metodo, 'repeticiones'); SPT.afirmar(r.op.cv > 0 && r.op.cv < 100, 'CV de los datos: ' + r.op.cv);
+    /* las preguntas de cada objetivo nuevo */
+    const ids = o => SP.asistente.preguntas({ objetivo: o }, SP.asistente.info(germ)).map(p => p.id);
+    SPT.igualJSON(ids('tiempo'), ['objetivo', 'tEvento', 'evento', 'grupoEv', 'covEv']);
+    SPT.igualJSON(ids('muestreo'), ['objetivo', 'respuesta', 'estratoM']);
+  });
+
   SPT.caso('describir y faltantes: al bloque Explorar, o la tarjeta de lo que falta', () => {
     const t = ensayo();
     const d = R(t, { objetivo: 'describir', factores: ['hibrido'] });
