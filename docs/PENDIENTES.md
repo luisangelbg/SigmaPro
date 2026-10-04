@@ -1,13 +1,13 @@
 # Pendientes de SigmaPro
 
-Estado al cerrar la Fase 3 (Hito 3.5, 4 de octubre de 2026; versión 0.3.0). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
+Estado tras la ampliación de la Fase 3 (Hito 3.8, 4 de octubre de 2026; versión 0.3.1). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
 que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA.md`](../propuesta/PROPUESTA.md) §12).
 
 ## Antes de publicar
 
 - **Nombre.** «SigmaPro» se parece al de un programa comercial de gráficas científicas: buscarlo en el IMPI antes de
   publicar con DOI (riesgo 6 de la propuesta).
-- **Versión 1.0.0.** Hoy la app dice 0.3.0 (Fase 3 completa); al publicar, subir a 1.0.0 en `js/nucleo/sp.js`
+- **Versión 1.0.0.** Hoy la app dice 0.3.1 (Fase 3 completa y su ampliación); al publicar, subir a 1.0.0 en `js/nucleo/sp.js`
   (`SP.VERSION`), `sw.js` y el CHANGELOG.
 - **Motor R sin conexión al publicar**: armar `motor-r/` con `node tools/motor-r/armar.mjs --fuentes` y publicarlo
   junto a la app (no va en el repositorio: unos 250 MB con las fuentes).
@@ -93,10 +93,11 @@ base común nueva). **La Fase 2 está completa.** Notas:
 
 ## Fase 3
 
-Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia), Hito 3.1 (muestreo), Hito 3.2 (supervivencia), Hito 3.3 (series de tiempo), Hito 3.4 (MANOVA y discriminante) e Hito 3.5 (asistente para la Fase 3 y cierre). **La Fase 3 está completa.** Después, Hito 3.6 (estratos en la supervivencia y prueba M de Box) e Hito 3.7 (modelos ARIMA). Notas:
+Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia), Hito 3.1 (muestreo), Hito 3.2 (supervivencia), Hito 3.3 (series de tiempo), Hito 3.4 (MANOVA y discriminante) e Hito 3.5 (asistente para la Fase 3 y cierre). **La Fase 3 está completa.** Después, Hito 3.6 (estratos en la supervivencia y prueba M de Box), Hito 3.7 (modelos ARIMA) e Hito 3.8 (Cox y MANOVA desde el constructor). Notas:
 
-- El constructor de modelos no arma los métodos de la Fase 3 (no son modelos de fórmula): se eligen en el asistente o
-  en el catálogo. El asistente no propone el tamaño de muestra de un muestreo (está en el catálogo, sin datos).
+- El constructor arma Cox (con un evento) y la MANOVA (con más respuestas); el muestreo, las series de tiempo y el
+  discriminante se eligen en el asistente o en el catálogo. El asistente no propone el tamaño de muestra de un
+  muestreo (está en el catálogo, sin datos).
 - Potencia: sin la prueba t de Welch (varianzas distintas), las proporciones con la corrección de continuidad
   (strict), los diseños factoriales ni el tamaño de muestra de modelos mixtos o por simulación.
 - Muestreo: sin muestreo por conglomerados (en una o dos etapas), sistemático, por razón o regresión, ni el tamaño de

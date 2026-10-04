@@ -434,6 +434,16 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
 
+## Cox y MANOVA desde el constructor (Hito 3.8)
+
+- **Constructor** (`tests/unidad/asistente.test.js`): con un evento, Cox con su fórmula `Surv(t, e) ~ … + strata(b)` y
+  las entradas del método; sin predictores, Kaplan-Meier; con más respuestas, la MANOVA con `cbind(…) ~ bloque + …`;
+  y los errores con su arreglo (aleatorios en Cox, covariables en la MANOVA, MANOVA sin factores, evento con varias
+  respuestas). Todo método que arma existe en el registro.
+- **Submuestras** (`tests/unidad/hoja.test.js`): el número de fruto 1…5 dentro de la parcela queda como submuestra
+  (con su aviso en el diagnóstico) y sigue siendo agrupable; una densidad de plantas 10/20/30 sigue siendo factor.
+- **Accesibilidad**: el escenario `cons-cox` revisa el constructor con el evento y el estrato.
+
 ## Modelos ARIMA en el núcleo JS (Hito 3.7)
 
 - **Referencia** (`tests/r/arima.R`): arima de stats, que se detiene con reltol = 1e-8 (su óptimo tiene unas 5
@@ -664,7 +674,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          61 operaciones con 100 000 filas en el navegador (--motor: el motor R con 20 000) (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      85 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      86 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

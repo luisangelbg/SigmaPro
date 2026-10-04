@@ -256,6 +256,9 @@
  "ts-arima": {
   "prep": "document.querySelector('#datEjemplos').click(), [...document.querySelectorAll('.sp-menu-item')].find(b => /Estación meteorológica/.test(b.textContent)).click(), SP.app.ir(4), SP.app.analisis.usar('arima', { respuesta: 'precipitacion_mm', tiempo: 'periodo' }, { p: 1, d: 0, q: 0, P: 0, D: 1, Q: 1, periodo: 12, horizonte: 12 }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },
+ "cons-cox": {
+  "prep": "document.querySelector('#datEjemplos').click(), [...document.querySelectorAll('.sp-menu-item')].find(b => /días a la germinación/.test(b.textContent)).click(), SP.app.ir(4), SP.app.analisis.ponerModo('constructor'), Object.assign(SP.app.constructorUI.estado.roles, { respuesta: 'dias', evento: 'germino', factores: ['tratamiento'], covariables: ['peso_semilla'], bloques: ['lote'], aleatorios: [], masRespuestas: [], parcelaGrande: '' }), SP.app.analisis.calcular()"
+ },
  "mue-tamano-sin-datos": {
   "prep": "SP.app.ir(4), document.querySelector('#anaSinDatos').click(), SP.app.analisis.usar('tamano-muestra', {}, { tipo: 'proporcion', p: 0.3, error: 0.05, N: 900 }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },

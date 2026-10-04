@@ -2,7 +2,7 @@
    una fórmula escrita a mano con la explicación de cada término (o de su error).
    Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
 
-     SP.constructorModelos.modelo({ respuesta, factores, bloques, parcelaGrande, covariables, aleatorios, familia }, info)
+     SP.constructorModelos.modelo({ respuesta, factores, bloques, parcelaGrande, covariables, aleatorios, familia, evento, masRespuestas }, info)
         → { metodo, e, op, formula, error, descripcion: [], avisos: [] }
      SP.constructorModelos.interpretar(respuesta, derecha, info, comoFactor)
         → { ok, terminos: [{ etiqueta, explicacion }], mensaje, arreglo }
@@ -12,7 +12,10 @@
    general con la fórmula equivalente. Con efectos aleatorios (bloques, localidades o años como muestra de muchos
    posibles), el modelo lineal mixto (motor R); con una respuesta de conteo o positiva y asimétrica, el modelo lineal
    generalizado (Poisson o gamma), mixto si además hay aleatorios. Con parcela grande y un bloque aleatorio, el error de
-   las parcelas grandes es (1 | bloque:parcela). Módulo puro: se prueba en node (tests/unidad/asistente.test.js). */
+   las parcelas grandes es (1 | bloque:parcela). Fase 3: con un evento (0/1), la respuesta es el tiempo hasta él y el
+   modelo es el de Cox (Surv(tiempo, evento) ~ …, con el bloque como estrato), o la curva de Kaplan-Meier sin
+   predictores; con más respuestas, la MANOVA (cbind(y1, y2, …) ~ bloque + factores cruzados). Módulo puro: se prueba
+   en node (tests/unidad/asistente.test.js). */
 SP.definir('constructor-modelos', function (SP) {
   'use strict';
   const T = SP.T;
@@ -54,13 +57,50 @@ SP.definir('constructor-modelos', function (SP) {
     return { metodo: 'glm', e, op: { derecha, comoFactor, familia: rol.familia === 'conteo' ? 'poisson' : 'gamma', tipo: 2 }, formula, descripcion, avisos };
   }
 
+  /** Fase 3: tiempo hasta un evento (Cox, o la curva de Kaplan-Meier sin predictores) y varias respuestas (MANOVA). */
+  function supervivencia(rol, info, avisos, descripcion, falla) {
+    if (rol.aleatorios.length) return falla(T('El modelo de Cox de SigmaPro no tiene efectos aleatorios.'), T('Pon el lote, sitio o fecha en «Bloques»: se usa como estrato, con su propio riesgo base.'));
+    if (rol.parcelaGrande) return falla(T('Las parcelas grandes no aplican al tiempo hasta un evento.'), T('Quita la parcela grande.'));
+    if (rol.bloques.length > 1) return falla(T('Con tiempo hasta un evento cabe un solo estrato.'), T('Deja una sola variable en «Bloques».'));
+    const t = rol.respuesta, ev = rol.evento, b = rol.bloques[0] || '', izq = `Surv(${q(t)}, ${q(ev)})`;
+    if (!rol.factores.length && !rol.covariables.length) {
+      if (b) return falla(T('Un estrato sin factores ni covariables no tiene nada que comparar.'), T('Pon un factor (tratamiento) o una covariable.'));
+      descripcion.push(T('Curva de supervivencia de Kaplan-Meier de «{t}» (sin predictores).', { t }));
+      return { metodo: 'kaplan-meier', e: { tiempo: t, evento: ev }, op: {}, formula: `${izq} ~ 1`, descripcion, avisos };
+    }
+    if (rol.factores.length > 4) return falla(T('El modelo de Cox admite hasta 4 factores.'), '');
+    if (rol.covariables.length > 10) return falla(T('El modelo de Cox admite hasta 10 covariables.'), '');
+    const derecha = rol.factores.concat(rol.covariables).map(q).join(' + ') + (b ? ` + strata(${q(b)})` : '');
+    descripcion.push(T('Modelo de riesgos proporcionales de Cox de «{t}» con el evento «{e}»: efectos principales, sin interacciones.', { t, e: ev }));
+    if (b) descripcion.push(T('«{b}» es un estrato: cada nivel con su propio riesgo base.', { b }));
+    if (rol.familia !== 'normal') avisos.push(T('La distribución no aplica al tiempo hasta un evento: se ignora.'));
+    const e = Object.assign({ tiempo: t, evento: ev }, rol.factores.length ? { factores: rol.factores } : {}, rol.covariables.length ? { covariables: rol.covariables } : {}, b ? { estrato: b } : {});
+    return { metodo: 'cox', e, op: { empates: 'efron' }, formula: `${izq} ~ ${derecha}`, descripcion, avisos };
+  }
+  function multivariado(rol, info, avisos, descripcion, falla) {
+    const resp = [rol.respuesta].concat(rol.extra);
+    if (rol.aleatorios.length) return falla(T('La MANOVA de SigmaPro no tiene efectos aleatorios.'), T('Pon los bloques en «Bloques» (fijos).'));
+    if (rol.covariables.length) return falla(T('La MANOVA de SigmaPro no admite covariables (MANCOVA).'), T('Quita las covariables, o analiza cada respuesta con su ANCOVA.'));
+    if (rol.parcelaGrande) return falla(T('La MANOVA de SigmaPro no tiene parcelas divididas.'), T('Quita la parcela grande.'));
+    if (rol.bloques.length > 1) return falla(T('La MANOVA admite un solo factor de bloqueo.'), T('Deja una sola variable en «Bloques».'));
+    if (!rol.factores.length || rol.factores.length > 3) return falla(T('La MANOVA necesita de uno a tres factores de tratamiento.'), T('Pon de uno a tres factores en «Factores de tratamiento».'));
+    if (resp.length > 10) return falla(T('Hasta 10 respuestas.'), '');
+    const b = rol.bloques[0] || '', derecha = (b ? q(b) + ' + ' : '') + rol.factores.map(q).join(' * ');
+    descripcion.push(T('MANOVA de {k} respuestas: el efecto de {f} sobre todas juntas (Pillai, Wilks, Hotelling-Lawley y Roy).', { k: resp.length, f: rol.factores.map(f => '«' + f + '»').join(' × ') }));
+    if (rol.familia !== 'normal') avisos.push(T('La distribución no aplica a la MANOVA: se ignora.'));
+    return { metodo: 'manova', e: Object.assign({ respuestas: resp, tratamientos: rol.factores }, b ? { bloque: b } : {}), op: { prueba: 'pillai' }, formula: `cbind(${resp.map(q).join(', ')}) ~ ${derecha}`, descripcion, avisos };
+  }
+
   function modelo(r, info) {
     const rol = { respuesta: r.respuesta || '', factores: lista(r.factores), bloques: lista(r.bloques), covariables: lista(r.covariables), parcelaGrande: r.parcelaGrande || '',
-      aleatorios: lista(r.aleatorios), familia: ['conteo', 'gamma'].includes(r.familia) ? r.familia : 'normal' };
+      aleatorios: lista(r.aleatorios), familia: ['conteo', 'gamma'].includes(r.familia) ? r.familia : 'normal', evento: r.evento || '', extra: lista(r.masRespuestas) };
     const avisos = [], descripcion = [];
     const falla = (mensaje, arreglo) => ({ metodo: null, error: { mensaje, arreglo }, formula: '', descripcion, avisos });
     if (!rol.respuesta) return falla(T('Falta la respuesta.'), T('Pon en «Respuesta» la variable que mediste.'));
     if (rol.parcelaGrande && !rol.factores.includes(rol.parcelaGrande)) rol.parcelaGrande = '';
+    if (rol.evento && rol.extra.length) return falla(T('Un tiempo hasta un evento y varias respuestas no van juntos.'), T('Quita el evento o las otras respuestas.'));
+    if (rol.evento) return supervivencia(rol, info, avisos, descripcion, falla);
+    if (rol.extra.length) return multivariado(rol, info, avisos, descripcion, falla);
     if (!rol.factores.length && !rol.covariables.length) return falla(T('Faltan factores o covariables.'), T('Pon al menos un factor de tratamiento o una covariable.'));
     if (rol.bloques.length > 2) return falla(T('Hasta dos variables de bloqueo (filas y columnas).'), '');
     if (rol.aleatorios.length || rol.familia !== 'normal') return fase2(rol, info, avisos, descripcion, falla);

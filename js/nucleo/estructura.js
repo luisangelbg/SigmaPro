@@ -1,7 +1,7 @@
 /* SigmaPro — estructura del ensayo: qué diseño parece tener la tabla.
    Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
 
-     SP.estructura.adivinarPapeles(tabla) → { respuestas, factores, bloque, fila, columna, numericosComoFactor }
+     SP.estructura.adivinarPapeles(tabla) → { respuestas, factores, bloque, fila, columna, numericosComoFactor, identificadores, submuestras }
      SP.estructura.analizar(tabla, papeles) → { hallazgos: [{ tipo: 'ok'|'aviso'|'info', texto }], datos: { … } }
 
    Revisa: observaciones completas, combinaciones de tratamientos y celdas vacías,
@@ -16,7 +16,11 @@ SP.definir('estructura', function (SP) {
     bloque: /^(bloques?|blocks?|rep|reps|repetici[oó]n(es)?|r)$/i,
     fila: /^(filas?|hileras?|rows?)$/i,
     columna: /^(columnas?|cols?|columns?)$/i,
+    /* la unidad medida dentro de la parcela (fruto 1, 2, …, 5): submuestra, no tratamiento */
+    submuestra: /^(frutos?|plantas?|hojas?|muestras?|submuestras?|individuos?|ejemplar(es)?|semillas?|tallos?|espigas?|mazorcas?|vainas?|[aá]rbol(es)?|n[uú]m(ero)?)$/i,
   };
+  /** ¿Valores 1, 2, …, k (un contador)? */
+  const esContador = c => { const v = [...new Set(Array.from(c.valores).filter(x => !Number.isNaN(x)))].sort((a, b) => a - b); return v.length >= 2 && v.every((x, i) => x === i + 1); };
 
   /** ¿Columna numérica con pocos valores, repetidos casi por igual? (dosis, densidades, años del diseño) */
   function pareceFactorNumerico(c, n) {
@@ -27,13 +31,14 @@ SP.definir('estructura', function (SP) {
   }
 
   function adivinarPapeles(tabla) {
-    const p = { respuestas: [], factores: [], bloque: null, fila: null, columna: null, numericosComoFactor: [], identificadores: [] };
+    const p = { respuestas: [], factores: [], bloque: null, fila: null, columna: null, numericosComoFactor: [], identificadores: [], submuestras: [] };
     const candidatos = [];
     for (const nom of tabla.nombres) {
       const c = tabla.col(nom);
       if (c.fecha) continue;
       const numerica = c.tipo === 'numerica', comoDiseno = numerica && pareceFactorNumerico(c, tabla.n);
       if (numerica && !comoDiseno) { p.respuestas.push(nom); continue; }
+      if (comoDiseno && PAT.submuestra.test(nom) && esContador(c)) { p.submuestras.push(nom); continue; }
       /* todos distintos en una tabla de al menos 10 filas: identificador (en una tabla corta ya agregada, son categorías) */
       if (!numerica && tabla.n >= 10 && c.niveles.length === tabla.n) { p.identificadores.push(nom); continue; }
       if (!p.bloque && PAT.bloque.test(nom)) p.bloque = nom;
@@ -82,6 +87,9 @@ SP.definir('estructura', function (SP) {
     if (faltan) aviso(T('«{r}» tiene {k} valores faltantes de {n}: el análisis usará {m} observaciones.', { r: resp, k: faltan, n: tabla.n, m: filas.length }));
     for (const nom of papeles.identificadores || []) {
       info(T('«{f}» tiene un valor distinto en cada fila: parece un identificador de la unidad y no un factor. Márcala como identificador.', { f: nom }));
+    }
+    for (const nom of papeles.submuestras || []) {
+      info(T('«{f}» numera las unidades medidas dentro de cada parcela (1, 2, …): son submuestras, no un tratamiento.', { f: nom }));
     }
     for (const nom of papeles.numericosComoFactor || []) {
       const c = comoFactor(tabla, nom);

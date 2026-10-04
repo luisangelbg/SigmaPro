@@ -80,7 +80,7 @@ window.SP_COMPROBACIONES = {
    "Servicio sin conexión activo con 145 archivos guardados.",
    "Sin red: 7 análisis, reporte, 6 exportaciones y huellas del proyecto verificadas."
   ],
-  "fecha": "2026-10-04T14:18:38.054Z",
+  "fecha": "2026-10-04T14:55:07.393Z",
   "motor": "node v24.19.0"
  },
  "exportar": {
@@ -90,22 +90,22 @@ window.SP_COMPROBACIONES = {
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-10-04T14:17:37.349Z",
+  "fecha": "2026-10-04T14:53:31.756Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {
   "titulo": "El código R equivalente",
   "ok": true,
   "resumen": "83 escenarios de 61 métodos: el código R que muestra la app corre en R y da 1,230 números iguales a los de la app (tolerancia 1e-6)",
-  "fecha": "2026-10-04T14:17:23.599Z",
+  "fecha": "2026-10-04T14:53:12.749Z",
   "motor": "node v24.19.0"
  },
  "accesibilidad": {
   "titulo": "Accesibilidad (AA)",
   "ok": true,
-  "resumen": "170 revisiones de 85 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 90,048 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 569 paradas en los 8 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
+  "resumen": "172 revisiones de 86 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 89,484 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 569 paradas en los 8 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
   "renglones": [],
-  "fecha": "2026-10-04T14:27:21.844Z",
+  "fecha": "2026-10-04T15:05:23.223Z",
   "motor": "node v24.19.0"
  }
 };

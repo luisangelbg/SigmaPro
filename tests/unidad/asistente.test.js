@@ -367,6 +367,26 @@ SPT.describir('Asistente y constructor de modelos', () => {
     SPT.afirmar(!SP.constructorModelos.interpretar('rend', 'hibrido + (1 | parcela)', info).ok, 'columna inexistente');
   });
 
+  SPT.caso('constructor, Fase 3: Cox con estrato, Kaplan-Meier sin predictores y MANOVA', () => {
+    const info = { numericas: ['dias', 'germino', 'peso', 'largo', 'ancho'], factores: ['trat', 'lote', 'bloque'] };
+    const M = r => SP.constructorModelos.modelo(r, info);
+    const cx = M({ respuesta: 'dias', evento: 'germino', factores: ['trat'], covariables: ['peso'], bloques: ['lote'] });
+    SPT.igual(cx.metodo, 'cox');
+    SPT.igual(cx.formula, 'Surv(dias, germino) ~ trat + peso + strata(lote)');
+    SPT.igualJSON(cx.e, { tiempo: 'dias', evento: 'germino', factores: ['trat'], covariables: ['peso'], estrato: 'lote' });
+    const km = M({ respuesta: 'dias', evento: 'germino' });
+    SPT.igual(km.metodo, 'kaplan-meier'); SPT.igual(km.formula, 'Surv(dias, germino) ~ 1');
+    const mv = M({ respuesta: 'largo', masRespuestas: ['ancho', 'peso'], factores: ['trat'], bloques: ['bloque'] });
+    SPT.igual(mv.metodo, 'manova');
+    SPT.igual(mv.formula, 'cbind(largo, ancho, peso) ~ bloque + trat');
+    SPT.igualJSON(mv.e, { respuestas: ['largo', 'ancho', 'peso'], tratamientos: ['trat'], bloque: 'bloque' });
+    for (const m of [cx, km, mv]) SPT.afirmar(SP.metodos[m.metodo], m.metodo);
+    SPT.afirmar(M({ respuesta: 'dias', evento: 'germino', factores: ['trat'], aleatorios: ['lote'] }).error, 'Cox sin aleatorios');
+    SPT.afirmar(M({ respuesta: 'largo', masRespuestas: ['ancho'], factores: ['trat'], covariables: ['peso'] }).error, 'MANOVA sin covariables');
+    SPT.afirmar(M({ respuesta: 'largo', masRespuestas: ['ancho'] }).error, 'MANOVA sin factores');
+    SPT.afirmar(M({ respuesta: 'dias', evento: 'germino', masRespuestas: ['ancho'], factores: ['trat'] }).error, 'evento y varias respuestas no van juntos');
+  });
+
   SPT.caso('fórmulas escritas: cada término explicado y los errores con su arreglo', () => {
     const info = { numericas: ['rend', 'plantas', 'dosis'], factores: ['bloque', 'hibrido', 'parcela'] };
     const I = (d, cf) => SP.constructorModelos.interpretar('rend', d, info, cf);

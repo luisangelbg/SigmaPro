@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### 0.3.1 · Hito 3.8 · Cox y MANOVA desde el constructor (4 oct 2026)
+
+- El constructor de modelos arma también los métodos de la Fase 3:
+  - zona **Evento (0/1)** (tecla E): con ella, la respuesta es el tiempo hasta el evento y el modelo es el de **Cox**,
+    `Surv(tiempo, evento) ~ factores + covariables + strata(bloque)` (el bloque como estrato); sin factores ni
+    covariables, la curva de **Kaplan-Meier**;
+  - zona **Más respuestas** (tecla M): las respuestas se analizan juntas con la **MANOVA**,
+    `cbind(y1, y2, …) ~ bloque + factores cruzados`.
+  - Lo que esos métodos no admiten se dice con su arreglo: efectos aleatorios o parcelas grandes en Cox o en la MANOVA,
+    covariables en la MANOVA (MANCOVA), un evento junto con varias respuestas. Con ellos la fórmula sale de las zonas
+    (no se edita a mano) y la distribución de la respuesta no aplica.
+- El asistente lleva también una recomendación de Cox o de MANOVA al constructor («Ajustar en el constructor»).
+- Arreglo: una columna numérica que solo numera las unidades medidas dentro de la parcela (`fruto` 1, 2, …, 5; también
+  planta, hoja, muestra, semilla, árbol…) ya no se propone como factor de tratamiento: se anota como submuestra en el
+  diagnóstico de la estructura. Con el ejemplo del chile, el asistente proponía la MANOVA `~ bloque + variedad * fruto`;
+  ahora `~ bloque + variedad`. La columna sigue disponible para agrupar (por ejemplo, como sujeto de medidas repetidas).
+- Con estos tres hitos (3.6 a 3.8) quedan resueltos los pendientes de la Fase 3 que se habían anotado como principales:
+  los estratos en Cox y en log-rank, los modelos ARIMA, la prueba M de Box y el constructor para la Fase 3.
+- Versión 0.3.1 (`SP.VERSION` y el servicio sin conexión). 795 casos contra R con 83 645 valores, 266 pruebas
+  unitarias, 86 escenarios de accesibilidad.
+
 ### Hito 3.7 · Modelos ARIMA y pronóstico (4 oct 2026)
 
 - Método nuevo **Modelo ARIMA y pronóstico**: ARIMA(p, d, q) y SARIMA(p, d, q)(P, D, Q)s por máxima verosimilitud

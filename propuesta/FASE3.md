@@ -66,6 +66,9 @@ citas y código R equivalente (que `tests/codigo-r.mjs` corre).
 | 3.3 | Series de tiempo básicas |
 | 3.4 | Multivariado: MANOVA, discriminante y preparación para PCAPro y ClusteringPro |
 | 3.5 | Asistente y constructor para la Fase 3; cierre (rendimiento, accesibilidad, capturas, pendientes, 0.3.0) |
+| 3.6 | Ampliación: estratos en Cox y en log-rank; prueba M de Box en la MANOVA y el discriminante |
+| 3.7 | Ampliación: modelos ARIMA (ajuste, búsqueda por AIC, diagnóstico y pronóstico) |
+| 3.8 | Ampliación: Cox y MANOVA desde el constructor de modelos (0.3.1) |
 
 ## 5. Riesgos
 

@@ -167,6 +167,16 @@ SPT.describir('Datos · estructura del ensayo y formas de tabla', () => {
     const m = SP.hoja.crear({ nombres: ['fenotipo', 'semillas'], columnas: { fenotipo: ['RA', 'Ra', 'rA', 'ra'], semillas: [315, 108, 101, 32] }, tipos: { fenotipo: 'factor' } });
     SPT.igualJSON(SP.estructura.adivinarPapeles(m.aTabla()).identificadores, []);
   });
+  SPT.caso('el número de fruto (1, 2, …, 5) en cada parcela es submuestra, no tratamiento; una densidad de plantas sí es factor', () => {
+    const c = { variedad: [], bloque: [], fruto: [], plantas: [], largo: [] };
+    for (const v of ['A', 'B', 'C']) for (let b = 1; b <= 3; b++) for (let f = 1; f <= 5; f++) { c.variedad.push(v); c.bloque.push(String(b)); c.fruto.push(f); c.plantas.push([10, 20, 30][b - 1]); c.largo.push(10 + b / 3 + f / 7 + v.charCodeAt(0) / 50 + c.largo.length / 997); }
+    const t = SP.tabla.crear(c, { variedad: { tipo: 'factor' }, bloque: { tipo: 'factor' } });
+    const p = SP.estructura.adivinarPapeles(t);
+    SPT.igualJSON(p.submuestras, ['fruto']); SPT.igualJSON(p.factores, ['variedad', 'plantas']); SPT.igual(p.bloque, 'bloque');
+    SPT.afirmar(SP.estructura.analizar(t).hallazgos.some(x => /«fruto» numera las unidades medidas/.test(x.texto)), 'aviso de submuestras');
+    /* sigue siendo agrupable: el asistente la puede usar como sujeto de medidas repetidas */
+    SPT.afirmar(SP.asistente.info(t).factores.includes('fruto'), 'agrupable');
+  });
   SPT.caso('reconoce un cuadro latino 4 × 4', () => {
     const c = { fila: [], columna: [], trat: [], y: [] };
     const L = ['A', 'B', 'C', 'D'];
