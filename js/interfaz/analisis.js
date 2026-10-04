@@ -32,6 +32,7 @@
   const MUESTREO = ['tamano-muestra', 'muestreo-simple', 'muestreo-estratificado'];
   const SUPERVIVENCIA = ['kaplan-meier', 'cox'];
   const SERIES = ['autocorrelacion', 'descomposicion', 'tendencia'];
+  const MULTIVARIADO = ['manova', 'discriminante'];
   /* sin datos cargados, los métodos que no los necesitan (potencia y tamaño de muestra) corren con estas columnas vacías */
   const SIN_DATOS = { t: null, pap: { respuestas: [], factores: [], bloque: null }, numericas: [], fechas: [], factores: [], numFactor: [], agrupables: [], sinDatos: true };
   const AJUSTES_MX = () => [['tukey', 'Tukey'], ['bonferroni', 'Bonferroni'], ['holm', 'Holm'], ['sidak', 'Šidák'], ['none', T('Sin ajuste (DMS)')]];
@@ -60,6 +61,7 @@
       cv: 12, difPct: 20, tratamientos: 5, diseno: 'dbca' },
     mue: { que: 'media', escala: 'absoluto', de: 1, errorAbs: 0.25, cv: 20, errorPct: 10, p: 0.5, errorProp: 0.05, N: 0, confianza: 0.95, respuesta: '', estrato: '', tipoSimple: 'auto', nTotal: 0, _iniciado: false },
     mueN: {},
+    mv: { respuestas: [], tratamientos: [], bloque: '', prueba: 'pillai', alfa: 0.05, variables: [], grupo: '', _iniciado: false },
     ts: { respuesta: '', tiempo: '', rezagos: 0, lagBox: 0, fitdf: 0, nivel: 0.95, frecuencia: 12, tipo: 'aditiva', _iniciado: false },
     sv: { tiempo: '', evento: '', grupo: '', conf: 'log', nivel: 0.95, rho: 0, factoresSv: [], covariablesSv: [], empates: 'efron', _iniciado: false },   // el tamaño de la población de cada estrato, por el nombre del nivel
     sinDatos: false,
@@ -886,6 +888,37 @@
     h += numero('pot', 'alfa', T('Nivel de significancia'), s.alfa, '', ' min="0" max="1"');
     return h + '<p class="small muted">' + esc(T('Corre en tu navegador con las mismas fórmulas que R (validado contra power.t.test, power.anova.test, power.prop.test y pwr).')) + '</p>';
   }
+  /** Multivariado: varias respuestas y los factores (MANOVA) o las variables y el grupo (discriminante). */
+  function formMultivariado(c, m) {
+    const s = estado.mv, num = c.numericas, agr = c.agrupables.filter(n => { const k = nivelesDe(c, n).length; return k >= 2 && k <= 30; });
+    if (!s._iniciado) {
+      const disenos = num.filter(n => esFactorDiseno(c, n));
+      s.respuestas = c.pap.respuestas.filter(n => !disenos.includes(n)).slice(0, 4);
+      if (s.respuestas.length < 2) s.respuestas = num.filter(n => !disenos.includes(n)).slice(-4);
+      s.variables = s.respuestas.slice();
+      s.bloque = agr.find(n => /bloq|block|rep/i.test(n)) || '';
+      s.tratamientos = agr.filter(n => n !== s.bloque && /trat|var|h[ií]brido|gen|dosis|esp|origen|grupo|regi/i.test(n)).slice(0, 1);
+      if (!s.tratamientos.length) s.tratamientos = agr.filter(n => n !== s.bloque).slice(0, 1);
+      s.grupo = s.tratamientos[0] || '';
+      s._iniciado = true;
+    }
+    let h = '';
+    if (m === 'manova') {
+      s.tratamientos = s.tratamientos.filter(n => agr.includes(n) && n !== s.bloque);
+      s.respuestas = s.respuestas.filter(n => num.includes(n));
+      h += casillas('mv', 'respuestasMv', T('Variables respuesta (de 2 a 10)'), num, s.respuestas, n => n, T('No hay columnas numéricas.'));
+      h += casillas('mv', 'tratamientos', T('Factores de tratamiento (hasta 3, cruzados)'), agr.filter(n => n !== s.bloque), s.tratamientos, n => n, T('No hay factores en la tabla.'));
+      h += campo('mv', 'bloque', T('Bloques (opcional)'), [['', T('— sin bloques —')]].concat(agr.filter(n => !s.tratamientos.includes(n)).map(n => [n, n])), s.bloque);
+      h += campo('mv', 'prueba', T('Prueba principal'), [['pillai', T('Pillai (la más robusta)')], ['wilks', 'Wilks'], ['hotelling', 'Hotelling-Lawley'], ['roy', T('Roy (cota superior)')]], s.prueba);
+      h += campo('mv', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+    } else {
+      s.variables = s.variables.filter(n => num.includes(n) && n !== s.grupo);
+      if (s.grupo && !agr.includes(s.grupo)) s.grupo = '';
+      h += campo('mv', 'grupo', T('Grupos que se quieren separar'), [['', T('— elige —')]].concat(agr.map(n => [n, n])), s.grupo);
+      h += casillas('mv', 'variablesMv', T('Variables que los describen (de 2 a 15)'), num.filter(n => n !== s.grupo), s.variables, n => n, T('No hay columnas numéricas.'));
+    }
+    return h + '<p class="small muted">' + esc(m === 'manova' ? T('Corre en tu navegador (validado contra manova y summary.manova de R).') : T('Corre en tu navegador (validado contra lda de MASS, con su validación cruzada).')) + '</p>';
+  }
   /** Series de tiempo: la variable y, si hace falta ordenarla, la columna del tiempo. */
   function formSeries(c, m) {
     const s = estado.ts, num = c.numericas;
@@ -998,6 +1031,7 @@
     if (MUESTREO.includes(estado.metodo)) return formMuestreo(c, estado.metodo);
     if (SUPERVIVENCIA.includes(estado.metodo)) return formSupervivencia(c, estado.metodo);
     if (SERIES.includes(estado.metodo)) return formSeries(c, estado.metodo);
+    if (MULTIVARIADO.includes(estado.metodo)) return formMultivariado(c, estado.metodo);
     if (MULTI.includes(estado.metodo)) return formMultiambiente(c, estado.metodo);
     if (SUPERFICIES.includes(estado.metodo)) return formSuperficie(c, estado.metodo);
     if (NOLINEAL.includes(estado.metodo)) return formNoLineal(c, estado.metodo);
@@ -1037,6 +1071,11 @@
       else if (m === 'potencia-proporciones') Object.assign(op, { p1: n('p1'), p2: n('p2'), alternativa: s.alternativa });
       else Object.assign(op, { r: n('r'), alternativa: s.alternativa });
       return { e: {}, op };
+    }
+    if (MULTIVARIADO.includes(m)) {
+      const s = estado.mv;
+      if (m === 'manova') return { e: Object.assign({ respuestas: s.respuestas.slice(), tratamientos: s.tratamientos.slice() }, s.bloque ? { bloque: s.bloque } : {}), op: { prueba: s.prueba, alfa: +s.alfa } };
+      return { e: { variables: s.variables.slice(), grupo: s.grupo }, op: {} };
     }
     if (SERIES.includes(m)) {
       const s = estado.ts, e = { respuesta: s.respuesta };
@@ -1445,6 +1484,29 @@
       descripcion: T('La potencia para cada tamaño de muestra con el mismo efecto; la línea vertical es el tamaño calculado o dado y la horizontal, la potencia.'),
       linea: { x: r.curva.n, y: r.curva.potencia }, referencias: [{ y: r.potencia, discontinua: true }], verticales: [{ x: r.n, discontinua: true }] });
   }
+  function graficasMultivariado(r) {
+    if (r.metodo === 'discriminante') {
+      const dos = r.sv.length >= 2, pts = r.puntajes.map((z, i) => ({ x: z[0], y: dos ? z[1] : 0, serie: r.grupoReal[i] }));
+      if (!dos) {
+        /* una sola función: cada grupo en su renglón */
+        return SP.graficas.dispersion({ titulo: T('Puntajes de la función discriminante'), x: { titulo: 'LD1' }, y: { titulo: r.grupo },
+          descripcion: T('Cada unidad en la única función discriminante; los grupos bien separados no se enciman.'),
+          puntos: r.puntajes.map((z, i) => ({ x: z[0], y: r.grupoReal[i] + 1, serie: r.grupoReal[i] })), leyenda: { titulo: r.grupo, series: r.niveles } });
+      }
+      return SP.graficas.dispersion({ titulo: T('Unidades en las dos primeras funciones discriminantes'), x: { titulo: T('LD1 ({p} %)', { p: SP.formatos.texto(100 * r.proporcion[0], 'pct') }) },
+        y: { titulo: T('LD2 ({p} %)', { p: SP.formatos.texto(100 * r.proporcion[1], 'pct') }) },
+        descripcion: T('Cada unidad con su grupo real; los grupos separados en este plano se distinguen bien con las variables elegidas.'),
+        puntos: SP.graficas.adelgazar(pts, 2500), leyenda: { titulo: r.grupo, series: r.niveles } });
+    }
+    const out = [];
+    for (const m of r.medias) {
+      if (m.niveles.length > 12) continue;
+      out.push(SP.graficas.lineas({ titulo: T('Perfil de medias por «{f}» (estandarizadas)', { f: m.factor }), x: { titulo: T('Respuesta'), niveles: r.respuestas }, y: { titulo: T('Media estandarizada') }, leyenda: m.factor,
+        descripcion: T('Cada respuesta en unidades de su DE entre las medias, para ver juntas variables de escalas distintas; perfiles paralelos indican un efecto parecido en todas.'),
+        series: m.niveles.map((nv, l) => ({ nombre: nv, valores: r.respuestas.map((_, j) => { const col = m.medias.map(f => f[j]), mu = col.reduce((a, b) => a + b, 0) / col.length, sd = Math.sqrt(col.reduce((a, b) => a + (b - mu) ** 2, 0) / Math.max(1, col.length - 1)) || 1; return (m.medias[l][j] - mu) / sd; }) })) }));
+    }
+    return out.join('');
+  }
   function graficasSeries(r) {
     const out = [], tramo = (xs, ys) => { const x = [], y = []; xs.forEach((v, i) => { if (Number.isFinite(ys[i])) { x.push(v); y.push(ys[i]); } }); return { x, y }; };
     if (r.metodo === 'autocorrelacion') {
@@ -1650,6 +1712,7 @@
     if (r.tipo === 'muestreo') return graficasMuestreo(r);
     if (r.tipo === 'supervivencia') return graficasSupervivencia(r);
     if (r.tipo === 'series') return graficasSeries(r);
+    if (r.tipo === 'multivariado') return graficasMultivariado(r);
     if (r.tipo === 'modelo') {
       if (r.celdas) {
         const [A, B] = r.celdas.factores, nivA = [], nivB = [];
@@ -1750,6 +1813,12 @@
   }
   /** Tras la selección, botones que llevan el modelo elegido a la regresión lineal con todo su diagnóstico. */
   function botonesModelo(r) {
+    if (r.tipo === 'multivariado') {
+      /* el ACP y los conglomerados están en las otras apps de la suite: se les prepara el CSV */
+      const b = (app, texto) => '<button type="button" class="btn btn-secondary btn-sm" data-accion="csv-suite" data-app="' + app + '">' + esc(texto) + '</button>';
+      return '<div class="btn-row exp-acciones">' + b('PCAPro', T('CSV para PCAPro (componentes principales)')) + b('ClusteringPro', T('CSV para ClusteringPro (conglomerados)')) + '</div>' +
+        '<p class="small muted">' + esc(T('Baja las variables de este análisis con su grupo para abrirlas en la otra app (Datos → Importar):')) + ' <a href="https://luisangelbg.github.io/PCAPro/" target="_blank" rel="noopener">PCAPro</a> · <a href="https://luisangelbg.github.io/ClusteringPro/" target="_blank" rel="noopener">ClusteringPro</a></p>';
+    }
     const boton = (vars, texto) => '<button type="button" class="btn btn-primary btn-sm" data-accion="analizar-modelo" data-vars="' + esc(JSON.stringify(vars)) + '">' + esc(texto) + '</button>';
     if (r.tipo === 'seleccion' && r.finales.length) return '<div class="btn-row exp-acciones">' + boton(r.finales, T('Analizar el modelo elegido')) + '</div>';
     if (r.tipo === 'subconjuntos') {
@@ -1781,7 +1850,7 @@
     if (estado.modo !== 'catalogo') { const p = estado.pintores[estado.modo]; if (p) p(c); return; }
     catalogo(c);
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = estado.srf._iniciado = estado.ma._iniciado = estado.mue._iniciado = estado.sv._iniciado = estado.ts._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = estado.srf._iniciado = estado.ma._iniciado = estado.mue._iniciado = estado.sv._iniciado = estado.ts._iniciado = estado.mv._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -1802,6 +1871,7 @@
       (id === 'supuestos' ? pintarSupuestos : pintarMetodo)(resultado, rep, codigo, ms);
       $('#anaResultado').dataset.codigo = codigo;
       estado.ultimo = rep;
+      estado.ultimoResultado = resultado;
     };
     const fallar = err => {
       if (turno !== estado.turno) return;
@@ -1901,6 +1971,9 @@
     } else if (POTENCIA.includes(m)) {
       pon(estado.pot, m === 'repeticiones' ? { cv: op.cv, difPct: op.diferencia, tratamientos: op.tratamientos, diseno: op.diseno, alfa: op.alfa, potencia: op.potencia }
         : { calcular: op.calcular, n: op.n, diferencia: op.diferencia, de: op.de, tipo: op.tipo, alternativa: op.alternativa, grupos: op.grupos, medias: op.medias, varEntre: op.varEntre, p1: op.p1, p2: op.p2, r: op.r, alfa: op.alfa, potencia: op.potencia });
+    } else if (MULTIVARIADO.includes(m)) {
+      pon(estado.mv, m === 'manova' ? { respuestas: [].concat(e.respuestas || []), tratamientos: [].concat(e.tratamientos || []), bloque: e.bloque || '', prueba: op.prueba, alfa: op.alfa }
+        : { variables: [].concat(e.variables || []), grupo: e.grupo });
     } else if (SERIES.includes(m)) {
       pon(estado.ts, { respuesta: e.respuesta, tiempo: e.tiempo || '', rezagos: op.rezagos, lagBox: op.lagBox, fitdf: op.fitdf, nivel: op.nivel, frecuencia: op.frecuencia, tipo: op.tipo });
     } else if (SUPERVIVENCIA.includes(m)) {
@@ -1974,8 +2047,8 @@
         estado.cmp.comparar = marcados;
       } else if (el.dataset.campo === 'comparar1') {
         estado.cmp.comparar = el.value ? [el.value] : [];
-      } else if (['predictores', 'covariables', 'variables', 'controles', 'comoFactor', 'compararMx', 'aleatorios', 'fijos', 'fijosRep', 'factores', 'factoresSv', 'covariablesSv'].includes(el.dataset.lista)) {
-        const marcados = [...form.querySelectorAll('[data-lista="' + el.dataset.lista + '"]:checked')].map(x => x.value), max = { covariables: 2, predictores: 15, variables: 30, controles: 10, comoFactor: 30, compararMx: 6, aleatorios: 4, fijos: 3, fijosRep: 3, factores: 6, factoresSv: 4, covariablesSv: 10 }[el.dataset.lista];
+      } else if (['predictores', 'covariables', 'variables', 'controles', 'comoFactor', 'compararMx', 'aleatorios', 'fijos', 'fijosRep', 'factores', 'factoresSv', 'covariablesSv', 'respuestasMv', 'variablesMv'].includes(el.dataset.lista)) {
+        const marcados = [...form.querySelectorAll('[data-lista="' + el.dataset.lista + '"]:checked')].map(x => x.value), max = { covariables: 2, predictores: 15, variables: 30, controles: 10, comoFactor: 30, compararMx: 6, aleatorios: 4, fijos: 3, fijosRep: 3, factores: 6, factoresSv: 4, covariablesSv: 10, respuestasMv: 10, variablesMv: 15 }[el.dataset.lista];
         if (marcados.length > max) { el.checked = false; L() && L().toast(T('Hasta {k} variables.', { k: max }), { type: 'warning' }); return; }
         estado[el.dataset.grupo][el.dataset.lista] = marcados;
       } else if (el.dataset.lista === 'tratamientos') {
@@ -1996,6 +2069,17 @@
       if (!a) return;
       if (a.dataset.accion === 'motor-cargar') { estado.motorAceptado = true; calcular(); return; }
       if (a.dataset.accion === 'motor-cancelar') { SP.motorR.cancelar(); return; }
+      if (a.dataset.accion === 'csv-suite') {
+        const r = estado.ultimoResultado, t = SP.app.tablaAnalisis();
+        if (!r || !t) return;
+        const vars = r.variables || r.respuestas, facs = r.grupo ? [r.grupo] : (r.bloque ? [r.bloque] : []).concat(r.tratamientos || []), cols = facs.concat(vars);
+        const celda = v => { const s = v === null || v === undefined || (typeof v === 'number' && Number.isNaN(v)) ? '' : String(v); return /[",;\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+        const valor = (nom, i) => { const c = t.col(nom); return c.tipo === 'factor' ? (c.codigos[i] >= 0 ? c.niveles[c.codigos[i]] : '') : c.valores[i]; };
+        const lineas = [cols.map(celda).join(',')].concat(r.filas.map(i => cols.map(nm => celda(valor(nm, i))).join(',')));
+        SP.app.figuras.descargar('\ufeff' + lineas.join('\r\n') + '\r\n', 'sigmapro-para-' + a.dataset.app.toLowerCase() + '.csv', 'text/csv;charset=utf-8');
+        L() && L().toast(T('CSV listo: ábrelo en {a} (Datos → Importar).', { a: a.dataset.app }), { type: 'success' });
+        return;
+      }
       if (a.dataset.accion === 'analizar-modelo') {
         estado.reg.predictores = JSON.parse(a.dataset.vars);
         estado.metodo = 'regresion-lineal';

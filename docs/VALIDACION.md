@@ -434,6 +434,19 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
 
+## Multivariado en el núcleo JS (Hito 3.4)
+
+- **Referencia** (`tests/r/multivariado.R`): manova con summary.manova para cada una de las cuatro pruebas (los
+  valores propios de E⁻¹H, el estadístico, la F aproximada y sus gl) y summary.aov; MASS::lda con predict (puntajes,
+  posteriores, clases) y lda(CV = TRUE). El signo de cada función discriminante lo fija LAPACK en R: la referencia lo
+  normaliza igual que la app (el coeficiente de mayor valor absoluto, positivo).
+- **Resultado**: 7 casos (bloques con tres respuestas, factorial desbalanceado con faltantes, cuatro respuestas con
+  q < p, iris de Fisher en MANOVA y en discriminante, dos grupos con una sola función, cuatro grupos de tamaños
+  distintos): 2546 valores, diferencia escalada máxima 2.5 × 10⁻¹².
+- **Pruebas unitarias** (`tests/unidad/multivariado.test.js`): los valores propios de Jacobi, las cuatro pruebas con
+  un solo valor propio dan la F del ANOVA, la validación cruzada exacta contra ajustar sin cada unidad, las columnas
+  del modelo como model.matrix y los mensajes de error.
+
 ## Series de tiempo en el núcleo JS (Hito 3.3)
 
 - **Referencia** (`tests/r/series.R`): acf, pacf y Box.test (Ljung-Box y Box-Pierce, con fitdf) y decompose de
@@ -609,7 +622,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          53 operaciones con 100 000 filas en el navegador (--motor: el motor R con 20 000) (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      81 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      83 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

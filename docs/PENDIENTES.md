@@ -93,7 +93,7 @@ base común nueva). **La Fase 2 está completa.** Notas:
 
 ## Fase 3
 
-Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia), Hito 3.1 (muestreo), Hito 3.2 (supervivencia) e Hito 3.3 (series de tiempo). Notas:
+Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia), Hito 3.1 (muestreo), Hito 3.2 (supervivencia), Hito 3.3 (series de tiempo) e Hito 3.4 (MANOVA y discriminante). Notas:
 
 - Potencia: sin la prueba t de Welch (varianzas distintas), las proporciones con la corrección de continuidad
   (strict), los diseños factoriales ni el tamaño de muestra de modelos mixtos o por simulación.
@@ -105,6 +105,9 @@ Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0
 - Series de tiempo: sin modelos ARIMA ni pronósticos, sin STL (descomposición con loess), sin Mann-Kendall estacional
   ni corregido por autocorrelación, sin Pettitt (cambio de nivel) y sin series con intervalos desiguales o huecos
   (salvo la tendencia, que omite los faltantes).
+- Multivariado: sin la prueba M de Box (igualdad de covarianzas), sin sumas de cuadrados tipo II o III en la
+  MANOVA, sin discriminante cuadrático ni previas a elegir, sin variables canónicas con sus pruebas por dimensión
+  (candisc) y sin el traspaso directo a PCAPro y ClusteringPro (hoy por CSV).
 
 Lo que dice la propuesta para esta fase:
 

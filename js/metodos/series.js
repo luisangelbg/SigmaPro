@@ -82,7 +82,7 @@ SP.definir('metodos-series', function (SP) {
     return { titulo: T('Descomposición {t} de «{y}»', { t: aditiva ? T('aditiva') : T('multiplicativa'), y: r.respuesta }), conclusiones: c, semaforo: [],
       cuadros: [{ id: 'figura', titulo: T('Componente estacional (posición en el ciclo)'), columnas: [col('k', T('Posición'), 'entero'), col('v', aditiva ? T('Efecto (unidades de la variable)') : T('Índice (1 = sin efecto)'), 'forma')],
         filas: fig.map((v, k) => ({ k: k + 1, v })), notas: [T('La posición 1 es la de la primera observación de la serie.'), aditiva ? T('Los efectos suman 0 en el ciclo.') : T('Los índices promedian 1 en el ciclo.')] },
-      { id: 'componentes', titulo: T('Serie y componentes'), columnas: [col('t', r.tiempoCol || T('Orden'), 'sig'), col('x', r.respuesta, 'sig'), col('tr', T('Tendencia'), 'sig'), col('e', T('Estacional'), 'sig'), col('r', T('Residuo'), 'sig')],
+      { id: 'componentes', titulo: T('Serie y componentes'), columnas: [col('t', r.tiempoCol || T('Orden'), 'sigEnt'), col('x', r.respuesta, 'sigEnt'), col('tr', T('Tendencia'), 'sig'), col('e', T('Estacional'), 'sig'), col('r', T('Residuo'), 'sig')],
         filas: r.x.map((x, i) => ({ t: r.tiempos[i], x, tr: r.tendencia[i], e: r.estacional[i], r: r.residuo[i] })).slice(0, 600),
         notas: [T('La media móvil no alcanza la mitad de un ciclo en cada extremo: ahí la tendencia y el residuo faltan («—»).')] }] };
   }

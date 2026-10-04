@@ -75,8 +75,8 @@
     ['hecho', '3.1', 'Muestreo: tamaño de muestra, aleatorio simple y estratificado'],
     ['hecho', '3.2', 'Supervivencia: Kaplan-Meier, log-rank y Cox'],
     ['hecho', '3.3', 'Series de tiempo: autocorrelación, descomposición y tendencia'],
-    ['actual', '3.4', 'Multivariado: MANOVA y discriminante'],
-    ['', '3.5', 'Asistente y constructor para la Fase 3; cierre (0.3.0)'],
+    ['hecho', '3.4', 'Multivariado: MANOVA y discriminante; CSV para PCAPro y ClusteringPro'],
+    ['actual', '3.5', 'Asistente y constructor para la Fase 3; cierre (0.3.0)'],
   ];
   function hitos() {
     const ul = $('#hitos');

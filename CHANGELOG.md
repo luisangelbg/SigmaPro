@@ -2,6 +2,25 @@
 
 ## Sin publicar
 
+### Hito 3.4 · Multivariado: MANOVA y discriminante (4 oct 2026)
+
+- Familia **Análisis multivariado**, con dos métodos en el núcleo JS:
+  - **MANOVA** en completamente al azar, bloques o factorial (hasta tres factores): las cuatro pruebas (Pillai,
+    Wilks, Hotelling-Lawley y Roy) con su F aproximada para cada término, con sumas de cuadrados secuenciales como
+    summary.manova; el ANOVA de cada respuesta y las medias por tratamiento.
+  - **Análisis discriminante lineal** como MASS::lda: valores singulares y proporción de la traza, coeficientes de
+    las funciones, centroides de los grupos y la tabla de clasificación con **validación cruzada** dejando uno fuera
+    (la fórmula exacta de lda con CV = TRUE).
+- Gráficas: el perfil de medias estandarizadas por tratamiento y las unidades en las dos primeras funciones
+  discriminantes; párrafo del reporte con sus citas y el código R.
+- **El ACP y los conglomerados no se duplican**: los análisis multivariados traen dos botones que bajan el CSV con
+  las variables y el grupo para abrirlo en PCAPro o ClusteringPro (con la liga a cada app). El traspaso directo, sin
+  archivo, queda pendiente: necesita que esas apps lo lean.
+- Ejemplo nuevo: **Chile: medidas del fruto de cuatro variedades** (en bloques).
+- Series de tiempo: el cuadro de componentes muestra el tiempo y los datos enteros sin decimales de relleno.
+- Validación: 7 casos contra manova/summary.manova y summary.aov (stats) y lda/predict/lda(CV = TRUE) (MASS),
+  incluido iris de Fisher: 2546 valores, diferencia escalada máxima 2.5 × 10⁻¹². 780 casos en total.
+
 ### Hito 3.3 · Series de tiempo (4 oct 2026)
 
 - Tres métodos para una variable medida a intervalos iguales (lluvia mensual, rendimiento por año, capturas por día),

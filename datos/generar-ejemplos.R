@@ -271,6 +271,19 @@ d$temperatura <- round(17 + 0.012 * k + 4.5 * sin(2 * pi * (d$mes - 3) / 12) + r
 agregar("estacion-mensual", "Estación meteorológica: lluvia y temperatura mensuales",
         "Ficticio: precipitación (mm) y temperatura media (°C) de cada mes de 2017 a 2024 en una estación, empezando en enero; para la autocorrelación, la descomposición en tendencia y ciclo anual (frecuencia 12) y la tendencia de Mann-Kendall con la pendiente de Sen.", d)
 
+## 22. Chile: cuatro medidas del fruto de cuatro variedades en bloques (multivariado; ficticio)
+set.seed(2222)
+d <- expand.grid(fruto = 1:5, bloque = factor(1:3), variedad = factor(c("Ancho", "Guajillo", "Jalapeño", "Serrano")))[, 3:1]
+z <- matrix(rnorm(60 * 4), 60, 4) %*% chol(matrix(c(1, .6, .7, .3, .6, 1, .6, .2, .7, .6, 1, .4, .3, .2, .4, 1), 4))
+v <- as.integer(d$variedad); b <- as.integer(d$bloque)
+d$largo_cm <- round(c(11, 12.5, 7, 5)[v] + c(.2, 0, -.2)[b] + 0.9 * z[, 1], 2)
+d$ancho_cm <- round(c(6, 3, 3.2, 1.4)[v] + 0.35 * z[, 2], 2)
+d$peso_g <- round(c(55, 28, 38, 9)[v] + c(1.5, 0, -1)[b] + 4 * z[, 3], 1)
+d$pared_mm <- round(c(3.5, 1.8, 4.2, 2.1)[v] + 0.3 * z[, 4], 2)
+agregar("chile-frutos", "Chile: medidas del fruto de cuatro variedades",
+        "Ficticio: largo y ancho (cm), peso (g) y grosor de la pared (mm) de 5 frutos por parcela de cuatro variedades de chile en tres bloques; para la MANOVA en bloques y el análisis discriminante de las variedades.", d,
+        list(variedad = list(tipo = "factor", niveles = c("Ancho", "Guajillo", "Jalapeño", "Serrano")), bloque = list(tipo = "factor", niveles = c("1", "2", "3"))))
+
 ## escribir datos/ejemplos.js
 js <- paste0(
   "/* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.\n",

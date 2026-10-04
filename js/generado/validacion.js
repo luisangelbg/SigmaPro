@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.2.0",
- "generado": "2026-10-04T06:49:57.154Z",
+ "generado": "2026-10-04T07:14:18.607Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 773,
-  "aprobados": 773,
+  "casos": 780,
+  "aprobados": 780,
   "fallidos": 0,
-  "valores": 78100,
+  "valores": 80646,
   "difEscaladaMax": 0.000004071746832135441,
-  "objetivos": 166
+  "objetivos": 168
  },
  "casos": [
   {
@@ -20206,6 +20206,188 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "tapply + lm por ambiente; svd de la tabla centrada; chull (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "discriminante/cuatro-regiones",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "discriminante"
+   },
+   "titulo": "Cuatro regiones de tamaños distintos y faltantes (tres funciones)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::manova y MASS::lda",
+   "clase": "A",
+   "valores": 500,
+   "difMax": 1.2045919817182948e-14,
+   "difEscaladaMax": 1.2045919817182948e-14,
+   "peor": "puntajes[25][2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "MASS": "7.3.61"
+    },
+    "codigo": "MASS::lda(x, g); predict(); lda(CV = TRUE) (tests/r/multivariado.R)"
+   }
+  },
+  {
+   "id": "discriminante/dos-origenes",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "discriminante"
+   },
+   "titulo": "Dos orígenes de una especie (una función discriminante)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::manova y MASS::lda",
+   "clase": "A",
+   "valores": 189,
+   "difMax": 3.608224830031759e-15,
+   "difEscaladaMax": 3.608224830031759e-15,
+   "peor": "cv.posterior[2][0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "MASS": "7.3.61"
+    },
+    "codigo": "MASS::lda(x, g); predict(); lda(CV = TRUE) (tests/r/multivariado.R)"
+   }
+  },
+  {
+   "id": "discriminante/iris-fisher",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "discriminante"
+   },
+   "titulo": "Iris: tres especies con cuatro medidas de la flor",
+   "fuente": "Anderson (1935) y Fisher (1936), datasets::iris de R; referencia: MASS::lda",
+   "clase": "A",
+   "valores": 1528,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 1.1324274851176597e-14,
+   "peor": "puntajes[106][1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "MASS": "7.3.61"
+    },
+    "codigo": "MASS::lda(x, g); predict(); lda(CV = TRUE) (tests/r/multivariado.R)"
+   }
+  },
+  {
+   "id": "manova/cuatro-respuestas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "manova"
+   },
+   "titulo": "Una vía con cuatro respuestas y cuatro tratamientos (q = 3 < p = 4)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::manova y MASS::lda",
+   "clase": "A",
+   "valores": 68,
+   "difMax": 2.4868995751603507e-14,
+   "difEscaladaMax": 6.329303953604208e-15,
+   "peor": "E[1][2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "manova(); summary(test = ...); summary.aov() (tests/r/multivariado.R)"
+   }
+  },
+  {
+   "id": "manova/factorial-desbalanceado",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "manova"
+   },
+   "titulo": "Factorial riego × variedad con faltantes (sumas secuenciales)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::manova y MASS::lda",
+   "clase": "A",
+   "valores": 102,
+   "difMax": 8.739675649849232e-13,
+   "difEscaladaMax": 9.445662549990151e-14,
+   "peor": "terminos[0].pruebas.pillai.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "manova(); summary(test = ...); summary.aov() (tests/r/multivariado.R)"
+   }
+  },
+  {
+   "id": "manova/iris-manova",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "manova"
+   },
+   "titulo": "Iris: MANOVA de las cuatro medidas por especie",
+   "fuente": "Anderson (1935) y Fisher (1936), datasets::iris de R; referencia: stats::manova",
+   "clase": "A",
+   "valores": 68,
+   "difMax": 3.865352482534945e-12,
+   "difEscaladaMax": 2.5130575112245065e-12,
+   "peor": "terminos[0].pruebas.pillai.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "manova(); summary(test = ...); summary.aov() (tests/r/multivariado.R)"
+   }
+  },
+  {
+   "id": "manova/maiz-bloques",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "manova"
+   },
+   "titulo": "Tres híbridos en bloques con rendimiento, altura y peso de grano",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::manova y MASS::lda",
+   "clase": "A",
+   "valores": 91,
+   "difMax": 3.922195901395753e-12,
+   "difEscaladaMax": 6.486719639228925e-14,
+   "peor": "terminos[0].H[1][2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "manova(); summary(test = ...); summary.aov() (tests/r/multivariado.R)"
    }
   },
   {

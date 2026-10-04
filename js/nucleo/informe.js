@@ -143,6 +143,11 @@ SP.definir('informe', function (SP) {
     kendall1975: () => 'Kendall, M. G. (1975). Rank correlation methods (4.ª ed.). Griffin.',
     sen1968: () => 'Sen, P. K. (1968). Estimates of the regression coefficient based on Kendall\'s tau. Journal of the American Statistical Association, 63(324), 1379–1389.',
     pohlert2023: () => 'Pohlert, T. (2023). trend: non-parametric trend tests and change-point detection (versión 1.1.8) [paquete de R].',
+    pillai1955: () => 'Pillai, K. C. S. (1955). Some new test criteria in multivariate analysis. The Annals of Mathematical Statistics, 26(1), 117–121.',
+    wilks1932: () => 'Wilks, S. S. (1932). Certain generalizations in the analysis of variance. Biometrika, 24(3–4), 471–494.',
+    hotelling1951: () => 'Hotelling, H. (1951). A generalized T test and measure of multivariate dispersion. En J. Neyman (ed.), Proceedings of the Second Berkeley Symposium on Mathematical Statistics and Probability (pp. 23–41). University of California Press.',
+    roy1953: () => 'Roy, S. N. (1953). On a heuristic method of test construction and its use in multivariate analysis. The Annals of Mathematical Statistics, 24(2), 220–238.',
+    fisher1936: () => 'Fisher, R. A. (1936). The use of multiple measurements in taxonomic problems. Annals of Eugenics, 7(2), 179–188.',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -172,6 +177,7 @@ SP.definir('informe', function (SP) {
     kaplan1958: 'Kaplan y Meier, 1958', greenwood1926: 'Greenwood, 1926', mantel1966: 'Mantel, 1966', peto1972: 'Peto y Peto, 1972', cox1972: 'Cox, 1972',
     efron1977: 'Efron, 1977', breslow1974: 'Breslow, 1974', grambsch1994: 'Grambsch y Therneau, 1994', harrell1982: 'Harrell et al., 1982', therneau2024: 'Therneau, 2024',
     box1970: 'Box y Pierce, 1970', ljung1978: 'Ljung y Box, 1978', kendall1983: 'Kendall y Stuart, 1983', mann1945: 'Mann, 1945', kendall1975: 'Kendall, 1975', sen1968: 'Sen, 1968', pohlert2023: 'Pohlert, 2023',
+    pillai1955: 'Pillai, 1955', wilks1932: 'Wilks, 1932', hotelling1951: 'Hotelling, 1951', roy1953: 'Roy, 1953', fisher1936: 'Fisher, 1936',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -790,6 +796,19 @@ SP.definir('informe', function (SP) {
     return { metodos: T('Se calculó {q} para {t} ({c}) con las fórmulas exactas de R.', { q: que, t: prueba, c: cita(ref, citas) }), resultados: res };
   }
 
+  function multivariado(id, r, citas) {
+    if (id === 'manova') {
+      const nombre = { pillai: 'Pillai', wilks: 'Wilks', hotelling: 'Hotelling-Lawley', roy: 'Roy' }[r.prueba];
+      const met = T('Las respuestas {y} se analizaron en conjunto con un análisis de varianza multivariado (MANOVA){d}, con la traza de {n} ({c}) y sumas de cuadrados secuenciales; después, cada respuesta con su ANOVA.',
+        { y: y(r.respuestas.map(v => '«' + v + '»')), d: r.bloque ? T(' en bloques') : '', n: nombre, c: cita([{ pillai: 'pillai1955', wilks: 'wilks1932', hotelling: 'hotelling1951', roy: 'roy1953' }[r.prueba]], citas) });
+      const res = r.terminos.filter(t => t.pruebas).map(t => { const x = t.pruebas[r.prueba]; return T('{t}: {n} = {v}, F({a}, {b}) = {f}, {p}', { t: t.termino, n: nombre, v: n3(x.estadistico), a: gl(x.gl1), b: gl(x.gl2), f: n2(x.F), p: fp(x.p) }); });
+      return { metodos: met, resultados: T('Resultados de la MANOVA: {l}.', { l: res.join('; ') }) };
+    }
+    const pct = x => F.fijo(100 * x, 1);
+    return { metodos: T('Los grupos de «{g}» se describieron con {v} mediante un análisis discriminante lineal ({c}) con previas iguales a las proporciones de los grupos, como lda de MASS ({m}); la clasificación se evaluó con validación cruzada dejando uno fuera.',
+      { g: r.grupo, v: y(r.variables.map(v => '«' + v + '»')), c: cita(['fisher1936'], citas), m: cita(['venables2002'], citas) }),
+      resultados: T('La primera función discriminante explicó el {a} % de la separación entre grupos; con validación cruzada se clasificó correctamente el {b} % de las unidades.', { a: pct(r.proporcion[0]), b: pct(r.acierto_cv) }) };
+  }
   function series(id, r, citas) {
     if (id === 'autocorrelacion') {
       const B = r.box;
@@ -891,6 +910,7 @@ SP.definir('informe', function (SP) {
     else if (['tamano-muestra', 'muestreo-simple', 'muestreo-estratificado'].includes(id)) p = muestreo(id, r, citas);
     else if (id === 'kaplan-meier' || id === 'cox') p = supervivencia(id, r, citas);
     else if (['autocorrelacion', 'descomposicion', 'tendencia'].includes(id)) p = series(id, r, citas);
+    else if (id === 'manova' || id === 'discriminante') p = multivariado(id, r, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };
