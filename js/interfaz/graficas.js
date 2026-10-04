@@ -378,5 +378,68 @@
       `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
   }
 
-  SP.graficas = { dispersion, grupos, lineas, medias, mapaCalor, mosaico, adelgazar, marcas };
+  /**
+   * Curvas de nivel de una superficie z(x, y), como contour() de R:
+   *   SP.graficas.contorno({ titulo, descripcion, x: { titulo, rango: [a, b] }, y: { titulo, rango: [a, b] }, z: (x, y) => valor,
+   *     puntos: [{ x, y }], marca: { x, y, etiqueta }, camino: { x: [], y: [] } })
+   * Malla de 81 × 81 y marching squares (las celdas ambiguas se resuelven con el valor del centro); cada curva lleva su
+   * valor escrito y su tono: más oscura en oro cuanto mayor es el nivel. «puntos» son los del diseño; «marca», el punto
+   * estacionario; «camino», la cresta.
+   */
+  function contorno(op) {
+    const NM = 80, [xa, xb] = op.x.rango, [ya, yb] = op.y.rango;
+    const gx = i => xa + (xb - xa) * i / NM, gy = j => ya + (yb - ya) * j / NM;
+    const Zm = [];
+    let z0 = Infinity, z1 = -Infinity;
+    for (let j = 0; j <= NM; j++) {
+      const fila = new Float64Array(NM + 1);
+      for (let i = 0; i <= NM; i++) { const v = op.z(gx(i), gy(j)); fila[i] = v; if (v < z0) z0 = v; if (v > z1) z1 = v; }
+      Zm.push(fila);
+    }
+    const mz = marcas(z0, z1, 12), niveles = mz.lista.filter(v => v > z0 && v < z1);
+    const X = v => M.l + (v - xa) / (xb - xa) * (W - M.l - M.r), Y = v => M.t + (yb - v) / (yb - ya) * (H - M.t - M.b);
+    const mx = marcas(xa, xb, 6), my = marcas(ya, yb, 5), partes = [];
+    partes.push(`<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}" class="gr-fondo"/>`);
+    for (const v of mx.lista) partes.push(`<text x="${X(v).toFixed(1)}" y="${H - M.b + 16}" text-anchor="middle" class="gr-etq" data-role="xtick" ${TENUE}>${texto(v, mx.paso)}</text>`);
+    for (const v of my.lista) partes.push(`<text x="${M.l - 6}" y="${(Y(v) + 4).toFixed(1)}" text-anchor="end" class="gr-etq" data-role="ytick" ${TENUE}>${texto(v, my.paso)}</text>`);
+    const P = (i, j) => [X(gx(i)), Y(gy(j))];
+    const corte = (a, b, va, vb, L) => { const t = (L - va) / (vb - va); return [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])]; };
+    niveles.forEach((L, li) => {
+      const seg = [];
+      for (let j = 0; j < NM; j++) for (let i = 0; i < NM; i++) {
+        const v = [Zm[j][i], Zm[j][i + 1], Zm[j + 1][i + 1], Zm[j + 1][i]], p = [P(i, j), P(i + 1, j), P(i + 1, j + 1), P(i, j + 1)];
+        const caso = (v[0] > L ? 1 : 0) | (v[1] > L ? 2 : 0) | (v[2] > L ? 4 : 0) | (v[3] > L ? 8 : 0);
+        if (caso === 0 || caso === 15) continue;
+        const e = k => corte(p[k], p[(k + 1) % 4], v[k], v[(k + 1) % 4], L);   // arista k: de la esquina k a la k + 1
+        const cruza = [0, 1, 2, 3].filter(k => (v[k] > L) !== (v[(k + 1) % 4] > L));
+        if (cruza.length === 2) seg.push([e(cruza[0]), e(cruza[1])]);
+        else {
+          const centro = (v[0] + v[1] + v[2] + v[3]) / 4 > L, alto0 = v[0] > L;
+          /* silla: si el centro está del lado de la esquina 0, se unen las aristas que la rodean de otra forma */
+          if (centro === alto0) { seg.push([e(0), e(1)]); seg.push([e(2), e(3)]); } else { seg.push([e(3), e(0)]); seg.push([e(1), e(2)]); }
+        }
+      }
+      if (!seg.length) return;
+      const f = niveles.length > 1 ? li / (niveles.length - 1) : 1;
+      const trazo = f >= 0.5 ? ORO : 'var(--text-muted)', opac = (0.45 + 0.55 * (f >= 0.5 ? (f - 0.5) * 2 : (0.5 - f) * 2)).toFixed(2);
+      partes.push(`<path d="${seg.map(s => `M${s[0][0].toFixed(1)} ${s[0][1].toFixed(1)}L${s[1][0].toFixed(1)} ${s[1][1].toFixed(1)}`).join('')}" class="gr-contorno" fill="none" stroke="${trazo}" stroke-opacity="${opac}" stroke-width="1.4" data-nivel="${L}"/>`);
+      const orden = seg.slice().sort((a, b) => a[0][0] + a[1][0] - b[0][0] - b[1][0]), s = orden[Math.floor(orden.length * [0.5, 0.3, 0.7][li % 3])];
+      const cx = (s[0][0] + s[1][0]) / 2, cy = (s[0][1] + s[1][1]) / 2;
+      partes.push(`<text x="${cx.toFixed(1)}" y="${(cy + 3.5).toFixed(1)}" text-anchor="middle" class="gr-etq gr-nivel" ${TEXTO} stroke="var(--card-bg)" stroke-width="3" paint-order="stroke">${texto(L, mz.paso)}</text>`);
+    });
+    if (op.camino && op.camino.x.length > 1) partes.push(`<polyline points="${op.camino.x.map((v, k) => `${X(v).toFixed(1)},${Y(op.camino.y[k]).toFixed(1)}`).join(' ')}" class="gr-linea" fill="none" stroke="${ORO}" stroke-width="2" stroke-dasharray="6 4"/>`);
+    for (const p of op.puntos || []) partes.push(`<circle cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="3" class="gr-punto" ${PUNTO}/>`);
+    if (op.marca && op.marca.x >= xa && op.marca.x <= xb && op.marca.y >= ya && op.marca.y <= yb) {
+      const x = X(op.marca.x), y = Y(op.marca.y);
+      partes.push(`<path d="M${x.toFixed(1)} ${(y - 7).toFixed(1)} L${(x + 7).toFixed(1)} ${y.toFixed(1)} L${x.toFixed(1)} ${(y + 7).toFixed(1)} L${(x - 7).toFixed(1)} ${y.toFixed(1)} Z" class="gr-punto marca" ${PUNTO_MARCA}/>`);
+      if (op.marca.etiqueta) partes.push(`<text x="${(x + 10).toFixed(1)}" y="${(y - 8).toFixed(1)}" class="gr-etq gr-etq-punto" ${LETRA} stroke="var(--card-bg)" stroke-width="3" paint-order="stroke">${esc(op.marca.etiqueta)}</text>`);
+    }
+    partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${H - M.b}" y2="${H - M.b}" class="gr-eje" data-role="axis"/><line x1="${M.l}" x2="${M.l}" y1="${M.t}" y2="${H - M.b}" class="gr-eje" data-role="axis"/>`);
+    partes.push(`<text x="${(M.l + W - M.r) / 2}" y="${H - 10}" text-anchor="middle" class="gr-titulo-eje" data-role="xlab" ${TITULO}>${esc(op.x.titulo)}</text>`);
+    partes.push(`<text transform="translate(16 ${(M.t + H - M.b) / 2}) rotate(-90)" text-anchor="middle" class="gr-titulo-eje" data-role="ylab" ${TITULO}>${esc(op.y.titulo)}</text>`);
+    return `<figure class="sp-grafica"><svg viewBox="0 0 ${W} ${H}"${area(M.l, M.t, W - M.l - M.r, H - M.t - M.b, [xa, xb], [ya, yb])} role="img" aria-label="${esc(op.descripcion || op.titulo)}" data-sigmapro-figura="${esc(op.titulo)}">` +
+      `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
+  }
+
+  SP.graficas = { dispersion, grupos, lineas, medias, mapaCalor, mosaico, contorno, adelgazar, marcas };
 })();

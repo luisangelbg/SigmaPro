@@ -227,6 +227,15 @@ agregar("herbicida-dosis", "Herbicidas: peso seco por dosis",
         "Ficticio: peso seco de maleza (g por maceta) con siete dosis (g i.a./ha) de dos herbicidas y cuatro repeticiones; para la dosis-respuesta log-logística (DE50 y comparación entre herbicidas).", d,
         list(herbicida = list(tipo = "factor", niveles = c("Glifosato", "Glufosinato"))))
 
+## 18. Tomate: central compuesto rotable de nitrógeno y potasio (superficie de respuesta; ficticio)
+set.seed(1818)
+z <- rbind(as.matrix(expand.grid(c(-1, 1), c(-1, 1))), cbind(c(-sqrt(2), sqrt(2), 0, 0), c(0, 0, -sqrt(2), sqrt(2))), matrix(0, 5, 2))
+d <- data.frame(corrida = 1:13, N = round(180 + 60 * z[, 1], 1), K = round(150 + 50 * z[, 2], 1))
+d$rendimiento <- round(62 + 4.1 * z[, 1] + 2.2 * z[, 2] - 3.6 * z[, 1]^2 - 2.4 * z[, 2]^2 - 1.1 * z[, 1] * z[, 2] + rnorm(13, 0, 0.9), 1)
+d <- d[sample(13), ]; d$corrida <- 1:13; rownames(d) <- NULL
+agregar("tomate-superficie", "Tomate: nitrógeno × potasio (central compuesto)",
+        "Ficticio: rendimiento de tomate (t/ha) en un central compuesto rotable de nitrógeno y potasio (kg/ha) con cinco puntos centrales, en orden aleatorio de corrida; para la superficie de respuesta (punto óptimo, análisis canónico y cresta).", d)
+
 ## escribir datos/ejemplos.js
 js <- paste0(
   "/* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.\n",

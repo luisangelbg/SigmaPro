@@ -420,6 +420,7 @@ escritorio con el que se calcula la referencia.
 | data_alpha (Olivoto y Lúcio 2020) | alfa-látice de 24 genotipos, con repeticiones fijas y aleatorias |
 | Orthodont (Potthoff y Roy 1964), BodyWeight (Crowder y Hand 1990), sleepstudy y el maíz de los ejemplos | medidas repetidas: siete estructuras de covarianza con elección por AIC y BIC, la no estructurada pedida, fechas desiguales (AR(1) continua), faltantes, bloques, sin tratamientos (`tests/r/repetidas.R`) |
 | Dyestuff, Dyestuff2, Penicillin y Pastes (Davies y Goldsmith 1972; Box y Tiao 1973), Rail y ergoStool (Pinheiro y Bates 2000), data_alpha, data_ge y data_ge2 (Olivoto y Lúcio 2020) | componentes de varianza cruzados, anidados y con interacción, frontera, desbalance; heredabilidad en completamente al azar, bloques, alfa-látice y varios ambientes; repetibilidad con y sin efectos fijos (`tests/r/geneticos.R`) |
+| Centrales compuestos, Box-Behnken y factoriales con centros (sintéticos) | superficies de respuesta: segundo orden, interacciones y primer orden, bloques, sin error puro, silla, máximo y mínimo, dos a cuatro factores (`tests/r/superficie.R`) |
 | Orange, ChickWeight, DNase y Loblolly (R), herbicidas, tóxico y nitrógeno (sintéticos) | regresión no lineal: ocho modelos, una curva y varias por grupo, comparación de curvas, dosis cero, meseta por perfil (`tests/r/nolineal.R`) |
 | cbpp (Lesnoff et al. 2004), grouseticks (Elston et al. 2001) y el aguacate de los ejemplos | modelos lineales generalizados mixtos: binomial con ensayos, Poisson con dos agrupamientos y exposición, binomial negativa, efecto por observación, ajuste singular, Wald tipo II y III (`tests/r/glmm.R`) |
 | InsectSprays (Beall 1942), warpbreaks, snails, quine, Insurance y birthwt (MASS), escarabajos de Bliss (1935), coagulación (McCullagh y Nelder 1989) | modelos lineales generalizados: seis familias, cinco enlaces, exposición, familia automática, tipos I a III, medias y pares en la escala de la respuesta (`tests/r/glm.R`) |
@@ -431,6 +432,17 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
+
+## Superficies de respuesta en el núcleo JS (Hito 2.7)
+
+- **Referencia** (`tests/r/superficie.R`, solo R base): lm sobre los factores codificados con los términos en el orden
+  de la metodología; un lm aparte sobre las variables originales (comprueba la transformación exacta de la app); ANOVA
+  por grupos con diferencias de SCR de modelos anidados; error puro con lm(y ~ bloque + combinación de x); eigen(B)
+  con el signo de cada vector fijado por su primer componente no despreciable; cresta con uniroot (tolerancia mínima)
+  sobre el radio.
+- **Resultado**: 10 casos de 2 métodos, 2 015 valores, diferencia escalada máxima 5.9 × 10⁻¹³.
+- **Pruebas unitarias** (`tests/unidad/superficie.test.js`): la codificación, los valores propios (A·v = λ·v), cada
+  punto de la cresta contra 400 puntos al azar de su esfera y la ecuación original con las mismas predicciones.
 
 ## Regresión no lineal en el núcleo JS (Hito 2.6)
 
@@ -510,7 +522,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          43 operaciones con 100 000 filas en el navegador (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      63 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      65 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

@@ -184,6 +184,10 @@ const ESCENARIOS = [
     r: 'c(coef(m), summary(m)$sigma)', js: res => [...res.parametros.estimado, res.ajuste.sigma] },
   { ej: 'guayabo-cosechas', id: 'repetibilidad', e: { respuesta: 'rendimiento', individuo: 'arbol', fijos: ['cosecha'] }, op: {},
     r: 'c(r, mh * r / (1 + (mh - 1) * r), R2 * (1 - r) / ((1 - R2) * r))', js: res => [res.repetibilidad.r, res.repetibilidad.R2, ...res.necesarias.map(x => x.medidas)] },
+  { ej: 'tomate-superficie', id: 'superficie-respuesta', e: { respuesta: 'rendimiento', factores: ['N', 'K'] }, op: { orden: 'segundo', objetivo: 'maximo' },
+    r: 'c(coef(m), xs, eigen(B)$values, anova(m, pe)$F[2])', js: res => [...res.coeficientes.estimado, ...res.estacionario.codificado, ...res.canonico.valores, res.falta_ajuste.F] },
+  { ej: 'tomate-superficie', id: 'ascenso-pronunciado', e: { respuesta: 'rendimiento', factores: ['N', 'K'] }, op: { objetivo: 'maximo' },
+    r: 'c(coef(m), b / sqrt(sum(b^2)), anova(m, pe)$F[2])', js: res => [...res.coeficientes.estimado, ...res.cresta.codificado[2], res.falta_ajuste.F] },
 ];
 const efectoDe = res => [res.efecto.d, ...res.efecto.ic_d, res.efecto.g, ...res.efecto.ic_g];
 /* aggregate() de R deja el primer factor cambiando más rápido; la app, el último */

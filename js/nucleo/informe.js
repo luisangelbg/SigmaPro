@@ -106,6 +106,10 @@ SP.definir('informe', function (SP) {
     ritz2015: () => 'Ritz, C., Baty, F., Streibig, J. C. y Gerhard, D. (2015). Dose-response analysis using R. PLoS ONE, 10(12), e0146021.',
     seefeldt1995: () => 'Seefeldt, S. S., Jensen, J. E. y Fuerst, E. P. (1995). Log-logistic analysis of herbicide dose-response relationships. Weed Technology, 9(2), 218–227.',
     cerrato1990: () => 'Cerrato, M. E. y Blackmer, A. M. (1990). Comparison of models for describing corn yield response to nitrogen fertilizer. Agronomy Journal, 82(1), 138–143.',
+    box1951: () => 'Box, G. E. P. y Wilson, K. B. (1951). On the experimental attainment of optimum conditions. Journal of the Royal Statistical Society B, 13(1), 1–45.',
+    myers2016: () => 'Myers, R. H., Montgomery, D. C. y Anderson-Cook, C. M. (2016). Response surface methodology: process and product optimization using designed experiments (4.ª ed.). Wiley.',
+    hoerl1959: () => 'Hoerl, A. E. (1959). Optimum solution of many variables equations. Chemical Engineering Progress, 55, 69–78.',
+    draper1963: () => 'Draper, N. R. (1963). «Ridge analysis» of response surfaces. Technometrics, 5(4), 469–479.',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -128,6 +132,7 @@ SP.definir('informe', function (SP) {
     cruz2012: 'Cruz et al., 2012', nelder1972: 'Nelder y Wedderburn, 1972', mccullagh1989: 'McCullagh y Nelder, 1989', venables2002: 'Venables y Ripley, 2002',
     wedderburn1974: 'Wedderburn, 1974', lenth2016: 'Lenth, 2016', bolker2009: 'Bolker et al., 2009', harrison2014: 'Harrison, 2014', fox2019: 'Fox y Weisberg, 2019',
     bates1988: 'Bates y Watts, 1988', archontoulis2015: 'Archontoulis y Miguez, 2015', ritz2015: 'Ritz et al., 2015', seefeldt1995: 'Seefeldt et al., 1995', cerrato1990: 'Cerrato y Blackmer, 1990',
+    box1951: 'Box y Wilson, 1951', myers2016: 'Myers et al., 2016', hoerl1959: 'Hoerl, 1959', draper1963: 'Draper, 1963',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -662,6 +667,34 @@ SP.definir('informe', function (SP) {
       der.length ? fin(may(y(der))) : '', comp].filter(Boolean).join(' ') };
   }
 
+  function superficie(r, citas) {
+    const A = r.ajuste, E = r.estacionario, fa = r.falta_ajuste, F = r.factores, NS = SP.metodosSuperficie, minimo = r.objetivo === 'minimo';
+    const lista = (vals) => y(F.map((f, j) => f + ' = ' + s4(vals[j])));
+    const cod = y(F.map((f, j) => T('{f} con centro {c} y paso {p}', { f, c: s4(r.codificacion.centro[j]), p: s4(r.codificacion.paso[j]) })));
+    let metodos = T('Se ajustó un modelo de {o} con los factores codificados ({c}) por mínimos cuadrados ({cit}){b}.', { o: NS.ORDEN[r.orden], c: cod, cit: cita(['box1951', 'myers2016'], citas), b: r.bloque ? T(', con el efecto de {b}', { b: r.bloque }) : '' });
+    if (fa) metodos += ' ' + T('La falta de ajuste se probó contra el error puro de los puntos repetidos.');
+    if (E) metodos += ' ' + T('El punto estacionario se caracterizó con el análisis canónico y se trazó la cresta de {o} respuesta ({c}).', { o: minimo ? T('mínima') : T('máxima'), c: cita(['hoerl1959', 'draper1963'], citas) });
+    else if (r.orden === 'primer') metodos += ' ' + T('Se calculó el camino de {s} más pronunciado ({c}).', { s: minimo ? T('descenso') : T('ascenso'), c: cita(['box1951'], citas) });
+    else metodos += ' ' + T('Se trazó la cresta de {o} respuesta ({c}).', { o: minimo ? T('mínima') : T('máxima'), c: cita(['hoerl1959', 'draper1963'], citas) });
+    const res = [T('El modelo explicó el {p} % de la variación (R² = {r}; R² ajustada = {a}).', { p: pct(100 * A.r2), r: n3(A.r2), a: n3(A.r2_ajustada) })];
+    if (fa) res.push(fa.p >= (r.alfa || 0.05) ? T('La falta de ajuste no fue significativa (F({a}, {b}) = {v}; {p}).', { a: fa.gl1, b: fa.gl2, v: n2(fa.F), p: fp(fa.p) })
+      : T('La falta de ajuste fue significativa (F({a}, {b}) = {v}; {p}).', { a: fa.gl1, b: fa.gl2, v: n2(fa.F), p: fp(fa.p) }));
+    const dentro = E && E.distancia <= r.radio + 1e-9;
+    if (E) res.push(E.naturaleza === 'silla' ? T('El punto estacionario fue un punto silla ({x}; valores propios de signo distinto), por lo que la superficie no tiene un óptimo.', { x: lista(E.natural) })
+      : T('El punto estacionario fue {n} en {x}, con una respuesta estimada de {v} (IC: {i} a {s}){d}.', { n: NS.NATURALEZA[E.naturaleza], x: lista(E.natural), v: s4(E.prediccion), i: s4(E.ic_inf), s: s4(E.ic_sup),
+        d: dentro ? '' : T(', fuera de la región experimental') }));
+    const C = r.cresta;
+    if (r.orden === 'primer') {
+      const paso = C.natural[2].map((v, j) => v - C.natural[0][j]);
+      res.push(T('Sobre el camino de {s}, cada unidad codificada de distancia cambia {d}.', { s: minimo ? T('descenso') : T('ascenso'), d: y(F.map((f, j) => f + T(' en {v}', { v: s4(paso[j]) }))) }));
+    } else if (!E || E.naturaleza === 'silla' || !dentro || (E.naturaleza === 'maximo') === minimo) {
+      let k = 0;
+      C.prediccion.forEach((v, i) => { if ((minimo ? -1 : 1) * (v - C.prediccion[k]) > 0) k = i; });
+      res.push(T('Sobre la cresta, la {o} respuesta estimada en la región fue {v}, con {x}.', { o: minimo ? T('menor') : T('mayor'), v: s4(C.prediccion[k]), x: lista(C.natural[k]) }));
+    }
+    return { metodos, resultados: res.join(' ') };
+  }
+
   /** El párrafo de métodos y el de resultados de un análisis. */
   function parrafo(id, r, rep, e, op) {
     e = e || {}; op = op || {};
@@ -683,6 +716,7 @@ SP.definir('informe', function (SP) {
     else if (['glm-conteos', 'glm-proporciones', 'glm-gamma', 'glm'].includes(id)) p = generalizado(r, citas);
     else if (id === 'glmm-bloques' || id === 'glmm') p = generalizadoMixto(r, citas);
     else if (['curva-crecimiento', 'dosis-respuesta', 'respuesta-meseta'].includes(id)) p = noLineal(r, citas);
+    else if (['superficie-respuesta', 'ascenso-pronunciado'].includes(id)) p = superficie(r, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };
     return { metodos: fin(p.metodos), resultados: fin(p.resultados), citas: [...citas] };

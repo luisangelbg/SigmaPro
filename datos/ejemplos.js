@@ -233,5 +233,12 @@ window.SP_EJEMPLOS = [
         "niveles": ["Glifosato", "Glufosinato"]
       }
     }
+  },
+  {
+    "id": "tomate-superficie",
+    "nombre": "Tomate: nitrógeno × potasio (central compuesto)",
+    "descripcion": "Ficticio: rendimiento de tomate (t/ha) en un central compuesto rotable de nitrógeno y potasio (kg/ha) con cinco puntos centrales, en orden aleatorio de corrida; para la superficie de respuesta (punto óptimo, análisis canónico y cresta).",
+    "csv": "\"corrida\",\"N\",\"K\",\"rendimiento\"\n1,120,200,55.5\n2,180,150,63.4\n3,95.1,150,48.8\n4,180,79.3,52.9\n5,180,150,59.9\n6,180,150,62.5\n7,120,100,47.8\n8,180,220.7,60.5\n9,264.9,150,61\n10,240,200,60.9\n11,180,150,62.1\n12,180,150,63.4\n13,240,100,59.1",
+    "tipos": null
   }
 ];

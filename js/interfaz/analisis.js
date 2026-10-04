@@ -26,6 +26,7 @@
   const GENETICOS = ['componentes-varianza', 'heredabilidad', 'repetibilidad'];
   const GLMS = ['glm-conteos', 'glm-proporciones', 'glm-gamma', 'glm', 'glmm-bloques', 'glmm'];
   const NOLINEAL = ['curva-crecimiento', 'dosis-respuesta', 'respuesta-meseta'];
+  const SUPERFICIES = ['superficie-respuesta', 'ascenso-pronunciado'];
   const AJUSTES_MX = () => [['tukey', 'Tukey'], ['bonferroni', 'Bonferroni'], ['holm', 'Holm'], ['sidak', 'Šidák'], ['none', T('Sin ajuste (DMS)')]];
   const estado = SP.app.analisis = {
     metodo: 'supuestos', pendiente: true, turno: 0, modo: (() => { try { const m = localStorage.getItem('sigmapro.analisis.modo'); return MODOS.includes(m) ? m : 'asistente'; } catch (e) { return 'asistente'; } })(),
@@ -46,6 +47,7 @@
       repeticionAleatoria: false, localidadFija: false, compararMx: null, ajuste: 'tukey', gl: 'satterthwaite', estimacion: 'reml', alfa: 0.05, nivel: 0.95, _iniciado: false },
     rep: { respuesta: '', tiempo: '', sujeto: '', tratamientos: [], bloque: '', estructura: 'auto', criterio: 'aic', compararMx: null, dentro: '', ajuste: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
     nl: { respuesta: '', x: '', grupo: '', modelo: '', nivel: 0.95, alfa: 0.05, metodo: '', _iniciado: false },
+    srf: { respuesta: '', factores: [], bloque: '', orden: 'segundo', objetivo: 'maximo', nivel: 0.95, alfa: 0.05, _iniciado: false },
     gen: { respuesta: '', aleatorios: [], fijos: [], estructura: 'cruzados', genotipo: '', repeticion: '', bloque: '', ambiente: '', seleccion: 0.1, direccion: 'mayor',
       individuo: '', fijosRep: [], _iniciado: false },
     glm: { respuesta: '', tratamientos: [], bloque: '', covariables: [], ensayos: '', exposicion: '', familia: '', enlace: '', tipo: 2, compararMx: null, dentro: '', ajuste: 'tukey',
@@ -778,7 +780,35 @@
     h += '<p class="small muted">' + esc(T('Corre en tu navegador (mínimos cuadrados no lineales con gradiente analítico, validado contra nls de R).')) + '</p>';
     return h + campo('nl', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('nl', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
+  /**
+   * Superficies de respuesta: los factores propuestos son las numéricas con pocos valores distintos (los niveles del
+   * diseño: tres en un Box-Behnken, cinco en un central compuesto), sin la respuesta.
+   */
+  const nivelesNum = (c, n) => new Set(Array.from(c.t.col(n).valores).filter(v => v === v)).size;
+  const esFactorDiseno = (c, n) => { const k = nivelesNum(c, n); return k >= 2 && k <= 7 && k <= c.t.n / 2; };
+  function formSuperficie(c, m) {
+    const s = estado.srf, num = c.numericas, agr = c.agrupables.filter(n => nivelesDe(c, n).length >= 2 && !num.includes(n));
+    if (!s._iniciado) {
+      const disenos = num.filter(n => esFactorDiseno(c, n));
+      s.respuesta = num.filter(n => !disenos.includes(n)).slice(-1)[0] || num[num.length - 1] || '';
+      s.factores = disenos.filter(n => n !== s.respuesta).slice(0, 6);
+      s.bloque = agr.find(n => /bloq|block|rep/i.test(n)) || '';
+      s._iniciado = true;
+    }
+    if (!num.includes(s.respuesta)) s.respuesta = num[num.length - 1] || '';
+    s.factores = s.factores.filter(n => num.includes(n) && n !== s.respuesta);
+    if (s.bloque && (!agr.includes(s.bloque) || s.factores.includes(s.bloque))) s.bloque = '';
+    let h = campo('srf', 'respuesta', T('Variable de respuesta'), lista(num), s.respuesta);
+    h += casillas('srf', 'factores', T('Factores del diseño (numéricos, de 2 a 6)'), num.filter(n => n !== s.respuesta), s.factores, n => n, T('No hay más columnas numéricas.'));
+    h += campo('srf', 'bloque', T('Bloques (opcional)'), [['', T('— sin bloques —')]].concat(agr.filter(n => n !== s.respuesta).map(n => [n, n])), s.bloque);
+    if (m === 'superficie-respuesta') h += campo('srf', 'orden', T('Modelo'), [['segundo', T('Segundo orden (con los cuadráticos)')], ['interacciones', T('Primer orden con interacciones')]], s.orden);
+    h += campo('srf', 'objetivo', T('Buscar'), [['maximo', T('La máxima respuesta')], ['minimo', T('La mínima respuesta')]], s.objetivo,
+      m === 'ascenso-pronunciado' ? T('El camino va en la dirección en que la respuesta cambia más rápido.') : T('La cresta da la mejor combinación a cada distancia del centro del diseño.'));
+    h += '<p class="small muted">' + esc(T('Corre en tu navegador (mínimos cuadrados y análisis canónico, validado contra lm y eigen de R).')) + '</p>';
+    return h + campo('srf', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('srf', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+  }
   function formulario(c) {
+    if (SUPERFICIES.includes(estado.metodo)) return formSuperficie(c, estado.metodo);
     if (NOLINEAL.includes(estado.metodo)) return formNoLineal(c, estado.metodo);
     if (GLMS.includes(estado.metodo)) return formGlm(c, estado.metodo);
     if (GENETICOS.includes(estado.metodo)) return formGenetico(c, estado.metodo);
@@ -806,6 +836,11 @@
       const s = estado.mx;
       return { e: { respuesta: s.respuesta }, op: Object.assign({ derecha: s.derecha, comoFactor: s.comoFactor.slice(), tipoSC: +s.tipoSC, gl: s.gl, reml: s.estimacion !== 'ml', ajuste: s.ajuste, alfa: +s.alfa, nivel: +s.nivel },
         s.compararMx ? { comparar: s.compararMx.slice() } : {}, s.dentro ? { dentro: s.dentro } : {}) };
+    }
+    if (SUPERFICIES.includes(m)) {
+      const s = estado.srf, e = { respuesta: s.respuesta, factores: s.factores.slice() };
+      if (s.bloque) e.bloque = s.bloque;
+      return { e, op: Object.assign(m === 'superficie-respuesta' ? { orden: s.orden } : {}, { objetivo: s.objetivo, nivel: +s.nivel, alfa: +s.alfa }) };
     }
     if (NOLINEAL.includes(m)) {
       const s = estado.nl, e = { respuesta: s.respuesta };
@@ -1169,6 +1204,40 @@
       puntos: SP.graficas.adelgazar(r.ajustados.map((x, i) => ({ x, y: v.residuos[i], marca: Math.abs(v.residuos[i]) > 3 * r.ajuste.sigma })), 2500), referencias: [{ y: 0 }] }));
     return out.join('');
   }
+  function graficasSuperficie(r) {
+    const F = r.factores, k = F.length, C = r.codificacion, out = [], E = r.estacionario, dentro = E && E.distancia <= r.radio + 1e-9;
+    const nat = (h, z) => C.centro[h] + C.paso[h] * z, cod = (h, x) => (x - C.centro[h]) / C.paso[h];
+    const zr = F.map((_, j) => Math.max(...r.valores.x[j].map(v => Math.abs(cod(j, v)))));
+    const fijo = F.map((_, j) => (dentro ? E.codificado[j] : 0));
+    const marcaE = { maximo: T('máximo'), minimo: T('mínimo'), silla: T('silla') };
+    const pares = [];
+    for (let i = 0; i < k; i++) for (let j = i + 1; j < k; j++) pares.push([i, j]);
+    for (const [i, j] of pares.slice(0, 6)) {
+      const otros = F.map((f, h) => (h === i || h === j ? '' : f + ' = ' + SP.formatos.texto(nat(h, fijo[h]), 'sig'))).filter(Boolean);
+      const xr = [nat(i, -zr[i]), nat(i, zr[i])], yr = [nat(j, -zr[j]), nat(j, zr[j])], adentro = p => p[i] >= xr[0] && p[i] <= xr[1] && p[j] >= yr[0] && p[j] <= yr[1];
+      const camino = r.cresta.natural.filter(adentro);
+      out.push(SP.graficas.contorno({
+        titulo: T('Contornos de «{y}»: {a} × {b}', { y: r.respuesta, a: F[i], b: F[j] }),
+        descripcion: T('Curvas de nivel de «{y}» estimada en {a} y {b}{o}; los puntos son los del diseño{e}{c}.', { y: r.respuesta, a: F[i], b: F[j],
+          o: otros.length ? T(', con {l}', { l: otros.join(', ') }) : '', e: E && dentro ? T(', el rombo es el punto estacionario') : '', c: k === 2 && camino.length > 1 ? T(' y la línea discontinua, la cresta') : '' }),
+        x: { titulo: F[i], rango: xr }, y: { titulo: F[j], rango: yr },
+        z: (a, b) => { const z = fijo.slice(); z[i] = cod(i, a); z[j] = cod(j, b); return SP.superficie.predecir(r, z); },
+        puntos: r.valores.x[i].map((v, n) => ({ x: v, y: r.valores.x[j][n] })),
+        marca: E && dentro ? { x: E.natural[i], y: E.natural[j], etiqueta: marcaE[E.naturaleza] } : undefined,
+        camino: k === 2 && camino.length > 1 ? { x: camino.map(p => p[i]), y: camino.map(p => p[j]) } : undefined,
+      }));
+    }
+    const Cr = r.cresta, qt = SP.dist.qt(1 - (1 - (r.nivel || 0.95)) / 2, r.ajuste.gl);
+    out.push(SP.graficas.dispersion({ titulo: r.orden === 'primer' ? T('Respuesta estimada sobre el camino de {s}', { s: r.objetivo === 'minimo' ? T('descenso') : T('ascenso') }) : T('Respuesta estimada sobre la cresta'),
+      x: { titulo: T('Distancia al centro (unidades codificadas)') }, y: { titulo: r.respuesta },
+      descripcion: T('Predicción con su intervalo de confianza de {c} % a cada distancia del centro del diseño; la línea vertical marca hasta dónde llegan los datos.', { c: Math.round(100 * (r.nivel || 0.95)) }),
+      linea: { x: Cr.distancia, y: Cr.prediccion }, banda: { x: Cr.distancia, inf: Cr.prediccion.map((v, i) => v - qt * Cr.ee[i]), sup: Cr.prediccion.map((v, i) => v + qt * Cr.ee[i]) },
+      verticales: [{ x: r.radio, discontinua: true }] }));
+    out.push(SP.graficas.dispersion({ titulo: T('Residuos contra valores ajustados'), x: { titulo: T('Valor ajustado') }, y: { titulo: T('Residuo') },
+      descripcion: T('Sin patrón (una nube pareja alrededor de cero) el modelo describe bien la superficie.'),
+      puntos: r.ajustados.map((x, i) => ({ x, y: r.residuos[i], marca: Math.abs(r.residuos[i]) > 3 * r.ajuste.sigma })), referencias: [{ y: 0 }] }));
+    return out.join('');
+  }
   function graficasRepetidas(r) {
     let g0 = '';
     const md = (r.medias || [])[0];
@@ -1220,6 +1289,7 @@
     if (r.tipo === 'componentes' || r.tipo === 'heredabilidad' || r.tipo === 'repetibilidad') return graficasGeneticos(r);
     if (r.tipo === 'glm' || r.tipo === 'glmm') return graficasGlm(r);
     if (r.tipo === 'nolineal') return graficasNoLineal(r);
+    if (r.tipo === 'superficie') return graficasSuperficie(r);
     if (r.tipo === 'modelo') {
       if (r.celdas) {
         const [A, B] = r.celdas.factores, nivA = [], nivB = [];
@@ -1348,7 +1418,7 @@
     if (estado.modo !== 'catalogo') { const p = estado.pintores[estado.modo]; if (p) p(c); return; }
     catalogo();
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = estado.srf._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -1465,6 +1535,8 @@
       pon(estado.rep, { respuesta: e.respuesta, tiempo: e.tiempo, sujeto: e.sujeto, tratamientos: [].concat(e.tratamientos || []), bloque: e.bloque || '',
         estructura: op.estructura, criterio: op.criterio, ajuste: op.ajuste, dentro: op.dentro === undefined ? undefined : op.dentro });
       estado.rep.compararMx = op.comparar ? [].concat(op.comparar) : null;
+    } else if (SUPERFICIES.includes(m)) {
+      pon(estado.srf, { respuesta: e.respuesta, factores: [].concat(e.factores || []), bloque: e.bloque || '', orden: op.orden, objetivo: op.objetivo, nivel: op.nivel });
     } else if (NOLINEAL.includes(m)) {
       pon(estado.nl, { respuesta: e.respuesta, x: e.x || e.dosis, grupo: e.grupo || '', modelo: op.modelo, nivel: op.nivel, metodo: m });
     } else if (GLMS.includes(m)) {
@@ -1519,8 +1591,8 @@
         estado.cmp.comparar = marcados;
       } else if (el.dataset.campo === 'comparar1') {
         estado.cmp.comparar = el.value ? [el.value] : [];
-      } else if (['predictores', 'covariables', 'variables', 'controles', 'comoFactor', 'compararMx', 'aleatorios', 'fijos', 'fijosRep'].includes(el.dataset.lista)) {
-        const marcados = [...form.querySelectorAll('[data-lista="' + el.dataset.lista + '"]:checked')].map(x => x.value), max = { covariables: 2, predictores: 15, variables: 30, controles: 10, comoFactor: 30, compararMx: 6, aleatorios: 4, fijos: 3, fijosRep: 3 }[el.dataset.lista];
+      } else if (['predictores', 'covariables', 'variables', 'controles', 'comoFactor', 'compararMx', 'aleatorios', 'fijos', 'fijosRep', 'factores'].includes(el.dataset.lista)) {
+        const marcados = [...form.querySelectorAll('[data-lista="' + el.dataset.lista + '"]:checked')].map(x => x.value), max = { covariables: 2, predictores: 15, variables: 30, controles: 10, comoFactor: 30, compararMx: 6, aleatorios: 4, fijos: 3, fijosRep: 3, factores: 6 }[el.dataset.lista];
         if (marcados.length > max) { el.checked = false; L() && L().toast(T('Hasta {k} variables.', { k: max }), { type: 'warning' }); return; }
         estado[el.dataset.grupo][el.dataset.lista] = marcados;
       } else if (el.dataset.lista === 'tratamientos') {

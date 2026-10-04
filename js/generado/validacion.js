@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.1.0",
- "generado": "2026-10-04T02:38:56.160Z",
+ "generado": "2026-10-04T03:04:14.458Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 702,
-  "aprobados": 702,
+  "casos": 712,
+  "aprobados": 712,
   "fallidos": 0,
-  "valores": 69386,
+  "valores": 71401,
   "difEscaladaMax": 0.000004071746832135441,
-  "objetivos": 147
+  "objetivos": 149
  },
  "casos": [
   {
@@ -19790,6 +19790,266 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "nls(altura ~ <modelo mitscherlich con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "ascenso-pronunciado/ascenso-factorial-centros",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "ascenso-pronunciado"
+   },
+   "titulo": "Factorial 2² con cinco centros: ascenso más pronunciado",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "B",
+   "valores": 144,
+   "difMax": 2.3874235921539366e-12,
+   "difEscaladaMax": 4.547615253359488e-14,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(rendimiento ~ primer orden, datos codificados); eigen(B); uniroot para la cresta (tests/r/superficie.R)"
+   }
+  },
+  {
+   "id": "ascenso-pronunciado/descenso-factorial-centros",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "ascenso-pronunciado"
+   },
+   "titulo": "El mismo factorial: descenso más pronunciado",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "B",
+   "valores": 144,
+   "difMax": 2.3874235921539366e-12,
+   "difEscaladaMax": 4.547615253359488e-14,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(rendimiento ~ primer orden, datos codificados); eigen(B); uniroot para la cresta (tests/r/superficie.R)"
+   }
+  },
+  {
+   "id": "superficie-respuesta/biomasa-factorial-sin-error-puro",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "superficie-respuesta"
+   },
+   "titulo": "Factorial 3 × 3 sin repeticiones (sin error puro)",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "B",
+   "valores": 155,
+   "difMax": 2.1316282072803006e-13,
+   "difEscaladaMax": 6.4911404577489135e-15,
+   "peor": "naturales.t[5]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(biomasa ~ segundo orden, datos codificados); eigen(B); uniroot para la cresta (tests/r/superficie.R)"
+   }
+  },
+  {
+   "id": "superficie-respuesta/cafe-cara-centrada-cuatro",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "superficie-respuesta"
+   },
+   "titulo": "Central compuesto de caras centradas con cuatro factores",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "B",
+   "valores": 326,
+   "difMax": 5.7127635955112055e-12,
+   "difEscaladaMax": 2.703583623832997e-13,
+   "peor": "naturales.t[14]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(rendimiento ~ segundo orden, datos codificados); eigen(B); uniroot para la cresta (tests/r/superficie.R)"
+   }
+  },
+  {
+   "id": "superficie-respuesta/factorial-interacciones",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "superficie-respuesta"
+   },
+   "titulo": "Factorial 2³ con centros: primer orden con interacciones y su cresta",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "B",
+   "valores": 184,
+   "difMax": 2.8421709430404007e-13,
+   "difEscaladaMax": 1.8096635301390052e-14,
+   "peor": "naturales.t[5]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(rendimiento ~ primer orden + interacciones, datos codificados); eigen(B); uniroot para la cresta (tests/r/superficie.R)"
+   }
+  },
+  {
+   "id": "superficie-respuesta/germinacion-bbd-cresta-minima",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "superficie-respuesta"
+   },
+   "titulo": "Box-Behnken: cresta de mínima respuesta",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "B",
+   "valores": 232,
+   "difMax": 1.3145040611561853e-12,
+   "difEscaladaMax": 7.100284800417871e-14,
+   "peor": "naturales.t[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(germinacion ~ segundo orden, datos codificados); eigen(B); uniroot para la cresta (tests/r/superficie.R)"
+   }
+  },
+  {
+   "id": "superficie-respuesta/germinacion-bbd-silla",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "superficie-respuesta"
+   },
+   "titulo": "Box-Behnken de tres factores con punto silla y cresta de máxima respuesta",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "B",
+   "valores": 232,
+   "difMax": 1.3145040611561853e-12,
+   "difEscaladaMax": 7.100284800417871e-14,
+   "peor": "naturales.t[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(germinacion ~ segundo orden, datos codificados); eigen(B); uniroot para la cresta (tests/r/superficie.R)"
+   }
+  },
+  {
+   "id": "superficie-respuesta/maiz-ccd-bloques",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "superficie-respuesta"
+   },
+   "titulo": "Central compuesto en dos bloques ortogonales, con un faltante",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "B",
+   "valores": 186,
+   "difMax": 2.6716406864579767e-12,
+   "difEscaladaMax": 5.870399347934354e-13,
+   "peor": "naturales.t[4]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(rendimiento ~ bloque + segundo orden, datos codificados); eigen(B); uniroot para la cresta (tests/r/superficie.R)"
+   }
+  },
+  {
+   "id": "superficie-respuesta/maiz-ccd-maximo",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "superficie-respuesta"
+   },
+   "titulo": "Central compuesto rotable de dos factores: máximo, análisis canónico y cresta",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "B",
+   "valores": 171,
+   "difMax": 4.618527782440651e-13,
+   "difEscaladaMax": 2.1885706537838987e-14,
+   "peor": "naturales.t[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(rendimiento ~ segundo orden, datos codificados); eigen(B); uniroot para la cresta (tests/r/superficie.R)"
+   }
+  },
+  {
+   "id": "superficie-respuesta/severidad-ccd3-minimo",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "superficie-respuesta"
+   },
+   "titulo": "Central compuesto rotable de tres factores con mínimo",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "B",
+   "valores": 241,
+   "difMax": 6.679101716144942e-13,
+   "difEscaladaMax": 2.280472770423752e-13,
+   "peor": "naturales.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(severidad ~ segundo orden, datos codificados); eigen(B); uniroot para la cresta (tests/r/superficie.R)"
    }
   }
  ]

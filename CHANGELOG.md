@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### Hito 2.7 · Superficies de respuesta (3 oct 2026)
+
+- **Familia nueva: Superficies de respuesta**, en el núcleo JS (js/nucleo/superficie.js), sin paquetes de R.
+- **Superficie de respuesta (segundo orden)**: modelo de segundo orden (o de primer orden con interacciones) en los
+  factores codificados, con bloques opcionales; ANOVA por grupos de términos (primer orden, interacciones,
+  cuadráticos puros) con la **falta de ajuste** contra el error puro; coeficientes codificados y la ecuación en
+  unidades originales con sus EE; **punto estacionario** (máximo, mínimo o silla) con la respuesta estimada y su
+  intervalo; **análisis canónico** (valores y vectores propios) y la **cresta** de máxima o mínima respuesta (análisis
+  de cresta de Hoerl y Draper) dentro de la región experimental.
+- **Primer orden y ascenso más pronunciado**: factorial con puntos centrales, curvatura por la falta de ajuste y el
+  camino de ascenso (o descenso) más pronunciado en unidades originales.
+- Codificación automática: en un central compuesto los axiales quedan en ±α; en otros diseños, del centro a los
+  extremos; los datos ya codificados quedan igual.
+- Gráfica nueva de **curvas de nivel** (marching squares, con el valor en cada curva, los puntos del diseño, el punto
+  estacionario y la cresta), la respuesta sobre la cresta con su banda y los residuos; párrafo con cuatro referencias
+  nuevas; código R solo con R base (lm, solve, eigen).
+- Ejemplo nuevo (ficticio): **tomate, nitrógeno × potasio en un central compuesto rotable**.
+- Validación: 10 casos (central compuesto rotable, en bloques y de caras centradas con cuatro factores, Box-Behnken
+  con silla, factorial 3 × 3 sin error puro, factoriales con centros) contra lm, eigen y uniroot de R: 2 015 valores,
+  diferencia escalada máxima 5.9 × 10⁻¹³. 712 casos en total. El código R se corre en R en 2 escenarios más.
+
 ### Hito 2.6 · Regresión no lineal y dosis-respuesta (3 oct 2026)
 
 - **Familia nueva: Regresión no lineal**, en el núcleo JS (js/nucleo/nolineal.js): mínimos cuadrados no lineales por

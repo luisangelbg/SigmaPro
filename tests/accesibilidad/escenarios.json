@@ -195,5 +195,11 @@
  },
  "nl-meseta": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.usar('respuesta-meseta', { respuesta: 'rend', dosis: 'dosis', grupo: 'hibrido' }, { modelo: 'lineal-meseta' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "srf-segundo": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[17].click(), SP.app.ir(4), SP.app.analisis.usar('superficie-respuesta', { respuesta: 'rendimiento', factores: ['N', 'K'] }, { orden: 'segundo', objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "srf-ascenso": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[17].click(), SP.app.ir(4), SP.app.analisis.usar('ascenso-pronunciado', { respuesta: 'rendimiento', factores: ['N', 'K'] }, { objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  }
 }
