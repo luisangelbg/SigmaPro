@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### Hito 3.7 · Modelos ARIMA y pronóstico (4 oct 2026)
+
+- Método nuevo **Modelo ARIMA y pronóstico**: ARIMA(p, d, q) y SARIMA(p, d, q)(P, D, Q)s por máxima verosimilitud
+  exacta, como arima de R: el modelo en espacio de estados con la parte no estacionaria difusa (κ = 1e6), el filtro de
+  Kalman con la estructura de R, los AR transformados para quedar en la región estacionaria, el arranque por suma de
+  cuadrados condicional y el óptimo pulido con Newton. Los faltantes dentro de la serie se quedan en su lugar.
+- Los coeficientes con su EE **igual que arima**: el hessiano numérico de optim (paso 1e-3 con su parscale) en el
+  espacio transformado y el jacobiano de la transformación. σ², log-verosimilitud, AIC y BIC; la prueba de Ljung-Box
+  de los residuos; el pronóstico con su intervalo, como predict.
+- **Búsqueda del orden** por AIC entre p, q = 0…2 (y P, Q = 0…1 con periodo), con la d y la D dadas. Cada modelo se
+  prueba en un modo rápido (solo el AIC, sin el pulido ni el hessiano) y el elegido se ajusta completo: los 36
+  modelos con periodo tardan unos 6 s en el navegador.
+- Gráficas: la serie con el pronóstico y su banda, y la autocorrelación de los residuos; el párrafo del reporte con
+  sus citas y el código R (con el pulido del óptimo y la nota de que arima, con method = "ML" e init, transforma init
+  dos veces).
+- Validación: 10 casos contra arima en su óptimo (AR, ARMA, integrados, un SARIMA, el modelo «airline» de los
+  pasajeros aéreos, el lago Hurón, faltantes y la búsqueda por AIC): 1724 valores. Sin diferenciación coinciden a
+  1e-8; con diferenciación, la inicial difusa deja en la verosimilitud un ruido de ~1e-13 (en R y en la app) y el
+  óptimo solo queda fijo a ~1e-6: esos casos se comparan con 1e-5 (5e-5 con diferencia estacional), con el motivo en
+  cada caso. 795 casos en total.
+
 ### Hito 3.6 · Estratos en supervivencia y prueba M de Box (4 oct 2026)
 
 - **Estratos** en la supervivencia, como `strata()` de survival: cada estrato (lote, sitio, fecha de siembra) con su

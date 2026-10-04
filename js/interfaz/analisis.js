@@ -31,7 +31,7 @@
   const POTENCIA = ['potencia-medias', 'potencia-anova', 'potencia-proporciones', 'potencia-correlacion', 'repeticiones'];
   const MUESTREO = ['tamano-muestra', 'muestreo-simple', 'muestreo-estratificado'];
   const SUPERVIVENCIA = ['kaplan-meier', 'cox'];
-  const SERIES = ['autocorrelacion', 'descomposicion', 'tendencia'];
+  const SERIES = ['autocorrelacion', 'descomposicion', 'tendencia', 'arima'];
   const MULTIVARIADO = ['manova', 'discriminante'];
   /* sin datos cargados, los métodos que no los necesitan (potencia y tamaño de muestra) corren con estas columnas vacías */
   const SIN_DATOS = { t: null, pap: { respuestas: [], factores: [], bloque: null }, numericas: [], fechas: [], factores: [], numFactor: [], agrupables: [], sinDatos: true };
@@ -62,7 +62,7 @@
     mue: { que: 'media', escala: 'absoluto', de: 1, errorAbs: 0.25, cv: 20, errorPct: 10, p: 0.5, errorProp: 0.05, N: 0, confianza: 0.95, respuesta: '', estrato: '', tipoSimple: 'auto', nTotal: 0, _iniciado: false },
     mueN: {},   // el tamaño de la población de cada estrato, por el nombre del nivel
     mv: { respuestas: [], tratamientos: [], bloque: '', prueba: 'pillai', alfa: 0.05, variables: [], grupo: '', _iniciado: false },
-    ts: { respuesta: '', tiempo: '', rezagos: 0, lagBox: 0, fitdf: 0, nivel: 0.95, frecuencia: 12, tipo: 'aditiva', _iniciado: false },
+    ts: { respuesta: '', tiempo: '', rezagos: 0, lagBox: 0, fitdf: 0, nivel: 0.95, frecuencia: 12, tipo: 'aditiva', ap: 1, ad: 0, aq: 0, aP: 0, aD: 0, aQ: 0, periodoA: 1, mediaA: 'si', buscarA: 'no', horizonte: 12, _iniciado: false },
     sv: { tiempo: '', evento: '', grupo: '', estrato: '', conf: 'log', nivel: 0.95, rho: 0, factoresSv: [], covariablesSv: [], empates: 'efron', _iniciado: false },
     sinDatos: false,
     gen: { respuesta: '', aleatorios: [], fijos: [], estructura: 'cruzados', genotipo: '', repeticion: '', bloque: '', ambiente: '', seleccion: 0.1, direccion: 'mayor',
@@ -940,6 +940,20 @@
     } else if (m === 'descomposicion') {
       h += numero('ts', 'frecuencia', T('Observaciones por ciclo (frecuencia)'), s.frecuencia, T('12 para meses en un año, 4 para trimestres, 7 para días en una semana, 52 para semanas.'), ' min="2" step="1"');
       h += campo('ts', 'tipo', T('Tipo'), [['aditiva', T('Aditiva (el ciclo suma lo mismo cada año)')], ['multiplicativa', T('Multiplicativa (el ciclo crece con el nivel)')]], s.tipo);
+    } else if (m === 'arima') {
+      const ord = (k, et, ayuda, max) => numero('ts', k, et, s[k], ayuda, ` min="0" max="${max}" step="1"`);
+      h += campo('ts', 'buscarA', T('Orden del modelo'), [['no', T('Lo elijo yo')], ['si', T('Buscar el de menor AIC (p, q = 0…2; P, Q = 0…1)')]], s.buscarA, T('La búsqueda usa la d y la D que pongas abajo; con periodo prueba 36 modelos y tarda unos segundos.'));
+      if (s.buscarA !== 'si') h += ord('ap', T('p: autorregresivos'), '', 5) + ord('aq', T('q: medias móviles'), '', 5);
+      h += ord('ad', T('d: diferencias'), T('1 si la serie sube o baja sin volver a un nivel; 0 si oscila alrededor de su media.'), 2);
+      h += numero('ts', 'periodoA', T('Periodo estacional (1 = sin parte estacional)'), s.periodoA, T('12 para meses, 4 para trimestres, 7 para días de la semana.'), ' min="1" step="1"');
+      if (+s.periodoA > 1) {
+        if (s.buscarA !== 'si') h += ord('aP', T('P: autorregresivos estacionales'), '', 2) + ord('aQ', T('Q: medias móviles estacionales'), '', 2);
+        h += ord('aD', T('D: diferencias estacionales'), T('1 si el ciclo se repite año con año.'), 1);
+      }
+      if (+s.ad + (+s.periodoA > 1 ? +s.aD : 0) === 0) h += campo('ts', 'mediaA', T('Media de la serie'), [['si', T('Estimarla (la serie oscila alrededor de un nivel)')], ['no', T('Sin media (centrada en 0)')]], s.mediaA);
+      h += numero('ts', 'horizonte', T('Pasos a pronosticar'), s.horizonte, '', ' min="1" max="120" step="1"');
+      h += campo('ts', 'nivel', T('Nivel del intervalo de pronóstico'), NIVELES, s.nivel);
+      return h + '<p class="small muted">' + esc(T('Corre en tu navegador (validado contra arima, predict y Box.test de R).')) + '</p>';
     } else h += campo('ts', 'nivel', T('Nivel de confianza de la pendiente'), NIVELES, s.nivel);
     return h + '<p class="small muted">' + esc(T('Corre en tu navegador (validado contra acf, pacf, Box.test y decompose de R, y mk.test y sens.slope de trend).')) + '</p>';
   }
@@ -1088,6 +1102,10 @@
       if (s.tiempo) e.tiempo = s.tiempo;
       if (m === 'autocorrelacion') return { e, op: { rezagos: +s.rezagos, lagBox: +s.lagBox, fitdf: +s.fitdf, nivel: +s.nivel } };
       if (m === 'descomposicion') return { e, op: { frecuencia: +s.frecuencia, tipo: s.tipo } };
+      if (m === 'arima') {
+        const est = +s.periodoA > 1;
+        return { e, op: { p: +s.ap, d: +s.ad, q: +s.aq, P: est ? +s.aP : 0, D: est ? +s.aD : 0, Q: est ? +s.aQ : 0, periodo: +s.periodoA, media: s.mediaA !== 'no', buscar: s.buscarA === 'si', horizonte: +s.horizonte, nivel: +s.nivel } };
+      }
       return { e, op: { nivel: +s.nivel } };
     }
     if (SUPERVIVENCIA.includes(m)) {
@@ -1516,6 +1534,19 @@
   }
   function graficasSeries(r) {
     const out = [], tramo = (xs, ys) => { const x = [], y = []; xs.forEach((v, i) => { if (Number.isFinite(ys[i])) { x.push(v); y.push(ys[i]); } }); return { x, y }; };
+    if (r.metodo === 'arima') {
+      const P = r.pronostico, ultimo = r.tiempos.length - 1, ult = r.x[ultimo];
+      const unir = v => (Number.isFinite(ult) ? [r.tiempos[ultimo]].concat(P.tiempos) : P.tiempos), con = v => (Number.isFinite(ult) ? [ult].concat(v) : v);
+      out.push(SP.graficas.dispersion({ titulo: T('Serie y pronóstico'), x: { titulo: r.tiempoCol || T('Orden') }, y: { titulo: r.respuesta },
+        descripcion: T('La serie observada, el pronóstico del modelo y su intervalo al {k} % (la banda se abre con el horizonte).', { k: Math.round(100 * r.nivel) }),
+        lineas: [Object.assign(tramo(r.tiempos, r.x), { serie: 1 }), { x: unir(), y: con(P.media), serie: 0 }],
+        bandas: [{ x: unir(), inf: con(P.inf), sup: con(P.sup) }], leyenda: { series: [T('Pronóstico'), r.respuesta] } }));
+      const nr = r.residuos.filter(v => v === v).length, banda = SP.dist.qnorm(0.975, 0, 1, true) / Math.sqrt(nr);
+      out.push(SP.graficas.dispersion({ titulo: T('Autocorrelación de los residuos'), x: { titulo: T('Rezago') }, y: { titulo: 'ACF' },
+        descripcion: T('Si el modelo captó la estructura, las barras quedan dentro de la banda de ± {b}.', { b: SP.formatos.texto(banda, 'forma') }),
+        lineas: r.acfResiduos.slice(1).map((v, k) => ({ x: [k + 1, k + 1], y: [0, v], serie: 0 })), referencias: [{ y: 0 }, { y: banda, discontinua: true }, { y: -banda, discontinua: true }] }));
+      return out.join('');
+    }
     if (r.metodo === 'autocorrelacion') {
       for (const [nombre, vals, desde] of [[T('Autocorrelación (ACF)'), r.acf, 0], [T('Autocorrelación parcial (PACF)'), r.pacf, 1]]) {
         out.push(SP.graficas.dispersion({ titulo: nombre, x: { titulo: T('Rezago') }, y: { titulo: nombre.split(' (')[0] },
@@ -1982,7 +2013,9 @@
       pon(estado.mv, m === 'manova' ? { respuestas: [].concat(e.respuestas || []), tratamientos: [].concat(e.tratamientos || []), bloque: e.bloque || '', prueba: op.prueba, alfa: op.alfa }
         : { variables: [].concat(e.variables || []), grupo: e.grupo });
     } else if (SERIES.includes(m)) {
-      pon(estado.ts, { respuesta: e.respuesta, tiempo: e.tiempo || '', rezagos: op.rezagos, lagBox: op.lagBox, fitdf: op.fitdf, nivel: op.nivel, frecuencia: op.frecuencia, tipo: op.tipo });
+      pon(estado.ts, m === 'arima' ? { respuesta: e.respuesta, tiempo: e.tiempo || '', ap: op.p, ad: op.d, aq: op.q, aP: op.P, aD: op.D, aQ: op.Q, periodoA: op.periodo,
+        mediaA: op.media === undefined ? undefined : op.media === false ? 'no' : 'si', buscarA: op.buscar === undefined ? undefined : op.buscar ? 'si' : 'no', horizonte: op.horizonte, nivel: op.nivel }
+        : { respuesta: e.respuesta, tiempo: e.tiempo || '', rezagos: op.rezagos, lagBox: op.lagBox, fitdf: op.fitdf, nivel: op.nivel, frecuencia: op.frecuencia, tipo: op.tipo });
     } else if (SUPERVIVENCIA.includes(m)) {
       pon(estado.sv, { tiempo: e.tiempo, evento: e.evento, grupo: m === 'kaplan-meier' ? e.grupo || '' : undefined, estrato: e.estrato || '', conf: op.conf, nivel: op.nivel, rho: op.rho, empates: op.empates,
         factoresSv: m === 'cox' ? [].concat(e.factores || []) : undefined, covariablesSv: m === 'cox' ? [].concat(e.covariables || []) : undefined });

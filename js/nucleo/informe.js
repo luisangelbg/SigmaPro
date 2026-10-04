@@ -149,6 +149,8 @@ SP.definir('informe', function (SP) {
     roy1953: () => 'Roy, S. N. (1953). On a heuristic method of test construction and its use in multivariate analysis. The Annals of Mathematical Statistics, 24(2), 220–238.',
     fisher1936: () => 'Fisher, R. A. (1936). The use of multiple measurements in taxonomic problems. Annals of Eugenics, 7(2), 179–188.',
     box1949: () => 'Box, G. E. P. (1949). A general distribution theory for a class of likelihood criteria. Biometrika, 36(3–4), 317–346.',
+    box1976: () => 'Box, G. E. P. y Jenkins, G. M. (1976). Time series analysis: forecasting and control (ed. revisada). Holden-Day.',
+    gardner1980: () => 'Gardner, G., Harvey, A. C. y Phillips, G. D. A. (1980). Algorithm AS 154: an algorithm for exact maximum likelihood estimation of autoregressive-moving average models by means of Kalman filtering. Applied Statistics, 29(3), 311–322.',
   };
   /* cómo se cita cada clave dentro del texto */
   const CITA = {
@@ -178,7 +180,7 @@ SP.definir('informe', function (SP) {
     kaplan1958: 'Kaplan y Meier, 1958', greenwood1926: 'Greenwood, 1926', mantel1966: 'Mantel, 1966', peto1972: 'Peto y Peto, 1972', cox1972: 'Cox, 1972',
     efron1977: 'Efron, 1977', breslow1974: 'Breslow, 1974', grambsch1994: 'Grambsch y Therneau, 1994', harrell1982: 'Harrell et al., 1982', therneau2024: 'Therneau, 2024',
     box1970: 'Box y Pierce, 1970', ljung1978: 'Ljung y Box, 1978', kendall1983: 'Kendall y Stuart, 1983', mann1945: 'Mann, 1945', kendall1975: 'Kendall, 1975', sen1968: 'Sen, 1968', pohlert2023: 'Pohlert, 2023',
-    pillai1955: 'Pillai, 1955', wilks1932: 'Wilks, 1932', hotelling1951: 'Hotelling, 1951', roy1953: 'Roy, 1953', fisher1936: 'Fisher, 1936', box1949: 'Box, 1949',
+    pillai1955: 'Pillai, 1955', wilks1932: 'Wilks, 1932', hotelling1951: 'Hotelling, 1951', roy1953: 'Roy, 1953', fisher1936: 'Fisher, 1936', box1949: 'Box, 1949', box1976: 'Box y Jenkins, 1976', gardner1980: 'Gardner et al., 1980',
   };
   const referencia = k => (REF[k] ? REF[k]() : '');
 
@@ -813,6 +815,15 @@ SP.definir('informe', function (SP) {
       resultados: T('La primera función discriminante explicó el {a} % de la separación entre grupos; con validación cruzada se clasificó correctamente el {b} % de las unidades.', { a: pct(r.proporcion[0]), b: pct(r.acierto_cv) }) + box };
   }
   function series(id, r, citas) {
+    if (id === 'arima') {
+      const B = r.box, coefs = r.nombres.map((n, j) => T('{n} = {b} (EE {e})', { n: n === 'intercept' ? T('media') : n, b: s4(r.coef[j]), e: s4(r.ee[j]) }));
+      const P = r.pronostico, u = P.media.length - 1;
+      return { metodos: T('La serie «{y}» se modeló con un {m}{b} ({bj}), ajustado por máxima verosimilitud exacta con el filtro de Kalman ({g}), con las mismas fórmulas que arima de R; la adecuación se revisó con la prueba de Ljung y Box de los residuos ({lb}) con {k} rezagos.',
+        { y: r.respuesta, m: r.modelo, b: r.busqueda ? T(', el de menor AIC ({a}) entre los órdenes probados', { a: cita(['akaike1974'], citas) }) : '', bj: cita(['box1976'], citas), g: cita(['gardner1980'], citas), lb: cita(['ljung1978'], citas), k: B.lag }),
+        resultados: T('Coeficientes: {c}; σ² = {s}, AIC = {a}.', { c: y(coefs), s: s4(r.sigma2), a: n2(r.aic) }) + ' ' +
+          (B.p >= 0.05 ? T('Los residuos no mostraron autocorrelación (Q({g}) = {q}, {p}).', { g: B.gl, q: n2(B.q), p: fp(B.p) }) : T('Los residuos conservaron autocorrelación (Q({g}) = {q}, {p}).', { g: B.gl, q: n2(B.q), p: fp(B.p) })) + ' ' +
+          T('El pronóstico a {h} pasos fue {m} (IC {k} %: {i} a {s}).', { h: u + 1, m: s4(P.media[u]), k: Math.round(100 * r.nivel), i: s4(P.inf[u]), s: s4(P.sup[u]) }) };
+    }
     if (id === 'autocorrelacion') {
       const B = r.box;
       return { metodos: T('La autocorrelación simple y parcial de «{y}» (n = {n}) se estimó hasta el rezago {l}, y la independencia de la serie se probó con las pruebas de Ljung y Box ({lb}) y de Box y Pierce ({bp}) con {k} rezagos.',
@@ -913,7 +924,7 @@ SP.definir('informe', function (SP) {
     else if (['potencia-medias', 'potencia-anova', 'potencia-proporciones', 'potencia-correlacion', 'repeticiones'].includes(id)) p = potencia(id, r, citas);
     else if (['tamano-muestra', 'muestreo-simple', 'muestreo-estratificado'].includes(id)) p = muestreo(id, r, citas);
     else if (id === 'kaplan-meier' || id === 'cox') p = supervivencia(id, r, citas);
-    else if (['autocorrelacion', 'descomposicion', 'tendencia'].includes(id)) p = series(id, r, citas);
+    else if (['autocorrelacion', 'descomposicion', 'tendencia', 'arima'].includes(id)) p = series(id, r, citas);
     else if (id === 'manova' || id === 'discriminante') p = multivariado(id, r, citas);
     else p = explorar(id, r, rep, e, op, citas);
     if (!p) p = { metodos: '', resultados: (rep && rep.conclusiones || []).join(' ') };

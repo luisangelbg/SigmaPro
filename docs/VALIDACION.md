@@ -434,6 +434,24 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
 
+## Modelos ARIMA en el núcleo JS (Hito 3.7)
+
+- **Referencia** (`tests/r/arima.R`): arima de stats, que se detiene con reltol = 1e-8 (su óptimo tiene unas 5
+  cifras). Se pule en dos pasos: arima por omisión y luego ML con reltol = 1e-15 y ndeps = 1e-7 da el óptimo; después
+  arima con init en el óptimo y maxit = 0 da lo que reporta ahí con sus opciones por omisión (el hessiano numérico,
+  σ², la verosimilitud, los residuos y el estado para predict). Con method = "ML" e init, arima (R 4.4.2) transforma
+  init dos veces: la referencia le da init ya «deshecho» con ARIMA_undoPars.
+- **Ruido de la inicial difusa.** Con d o D > 0, arima arranca la parte no estacionaria con varianza κ = 1e6: la resta
+  P − MM'/F de los primeros pasos pierde unas 6 cifras y la verosimilitud trae un ruido de ~1e-13 (medido en R y en
+  la app). En las verosimilitudes planas eso deja el óptimo fijo solo a ~1e-6 (unas veces el de R es mejor y otras el
+  de la app). Esos casos llevan tolerancia de 1e-5 (5e-5 con diferencia estacional) en los coeficientes, sus EE,
+  σ², los residuos, el pronóstico y Ljung-Box, con el motivo en el caso. Sin diferenciación coinciden a 1e-8.
+- **Resultado**: 10 casos, 1724 valores. La inicialización exacta de la parte estacionaria (la ecuación de Lyapunov)
+  da lo mismo que la Gardner1980 de R (comprobado: diferencias de 1e-10 o menos en la log-verosimilitud).
+- **Pruebas unitarias** (`tests/unidad/arima.test.js`): la transformación de los AR ida y vuelta, el polinomio de la
+  diferenciación, la inversión de un MA, la verosimilitud exacta de un AR(1) contra su fórmula cerrada, el pronóstico
+  de un AR(1) y los mensajes de error.
+
 ## Estratos en supervivencia y prueba M de Box (Hito 3.6)
 
 - **Referencia**: survdiff y coxph con `strata()` (survival 3.7-0), con la concordancia y cox.zph del modelo
@@ -646,7 +664,7 @@ tests/
 ├─ exportar.mjs                   cada exportación, leída con R (readxl, xml2, pdftools, png, openssl) y con el sistema
 ├─ sin-conexion.mjs               privacidad (cada petición de red) y uso sin red con el servicio sin conexión
 ├─ rendimiento/medir.mjs          61 operaciones con 100 000 filas en el navegador (--motor: el motor R con 20 000) (pagina.js: lo que corre en la página)
-├─ accesibilidad/auditar.mjs      84 escenarios con el auditor de la suite y el foco con Tab de verdad
+├─ accesibilidad/auditar.mjs      85 escenarios con el auditor de la suite y el foco con Tab de verdad
 ├─ motor-r.mjs                    los casos de los métodos del motor R, en el navegador (guarda generado/motor-r.json)
 ├─ lib/huella-motor-r.mjs         la huella que decide si un resultado del motor R sigue valiendo
 ├─ lib/navegador.mjs              cómo abren las pruebas el navegador sin ventana

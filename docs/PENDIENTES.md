@@ -93,7 +93,7 @@ base común nueva). **La Fase 2 está completa.** Notas:
 
 ## Fase 3
 
-Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia), Hito 3.1 (muestreo), Hito 3.2 (supervivencia), Hito 3.3 (series de tiempo), Hito 3.4 (MANOVA y discriminante) e Hito 3.5 (asistente para la Fase 3 y cierre). **La Fase 3 está completa.** Después, Hito 3.6 (estratos en la supervivencia y prueba M de Box). Notas:
+Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0 (tamaño de muestra y potencia), Hito 3.1 (muestreo), Hito 3.2 (supervivencia), Hito 3.3 (series de tiempo), Hito 3.4 (MANOVA y discriminante) e Hito 3.5 (asistente para la Fase 3 y cierre). **La Fase 3 está completa.** Después, Hito 3.6 (estratos en la supervivencia y prueba M de Box) e Hito 3.7 (modelos ARIMA). Notas:
 
 - El constructor de modelos no arma los métodos de la Fase 3 (no son modelos de fórmula): se eligen en el asistente o
   en el catálogo. El asistente no propone el tamaño de muestra de un muestreo (está en el catálogo, sin datos).
@@ -104,7 +104,7 @@ Plan detallado en [`propuesta/FASE3.md`](../propuesta/FASE3.md). Hecho: Hito 3.0
 - Supervivencia: sin covariables que cambian con el tiempo, censura por intervalos
   (la revisión cada tantos días se trata como tiempo exacto), riesgos competitivos, modelos paramétricos (Weibull,
   log-normal) ni la gráfica de los residuos de Schoenfeld (sí su prueba). El EE de la concordancia no se calcula.
-- Series de tiempo: sin modelos ARIMA ni pronósticos, sin STL (descomposición con loess), sin Mann-Kendall estacional
+- Series de tiempo: sin regresores externos en ARIMA (sí la media) ni la búsqueda automática de d y D, sin STL (descomposición con loess), sin Mann-Kendall estacional
   ni corregido por autocorrelación, sin Pettitt (cambio de nivel) y sin series con intervalos desiguales o huecos
   (salvo la tendencia, que omite los faltantes).
 - Multivariado: sin sumas de cuadrados tipo II o III en la

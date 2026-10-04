@@ -224,6 +224,8 @@ const ESCENARIOS = [
     r: 'c(coef(fit), fit$loglik, fit$concordance[["concordance"]], zph$table[, "chisq"])', js: res => [...res.coef, res.ll0, res.ll, res.concordancia.C, ...res.zph.chi2] },
   { ej: 'chile-frutos', id: 'discriminante', e: { variables: ['largo_cm', 'ancho_cm', 'peso_g', 'pared_mm'], grupo: 'variedad' }, op: {},
     r: 'unlist(heplots::boxM(x, g)[c("statistic", "p.value")])', js: res => [res.boxM.chi2, res.boxM.p] },
+  { ej: 'estacion-mensual', id: 'arima', e: { respuesta: 'temperatura', tiempo: 'periodo' }, op: { p: 1, d: 0, q: 0, periodo: 1, horizonte: 6 },
+    r: 'c(coef(fit), sqrt(diag(fit$var.coef)), fit$loglik, pr$pred, lb$statistic)', js: res => [...res.coef, ...res.ee, res.loglik, ...res.pronostico.media, res.box.q] },
   { ej: 'aguacate-huertas', id: 'tamano-muestra', e: {}, op: { tipo: 'proporcion', p: 0.3, error: 0.05, N: 900 }, r: 'c(n0, n)', js: res => [res.n0, res.n] },
   { ej: 'aguacate-huertas', id: 'muestreo-simple', e: { respuesta: 'con_trips' }, op: { N: 1580 }, r: 'c(m, ee, m - t * ee, N * m)', js: res => [res.media, res.ee, res.ic[0], res.total] },
   { ej: 'aguacate-huertas', id: 'muestreo-estratificado', e: { respuesta: 'rendimiento_kg', estrato: 'huerta' }, op: { poblaciones: 'Ladera=420; Planicie=900; Vega=260', nTotal: 60 },

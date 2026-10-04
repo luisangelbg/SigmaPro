@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.3.0",
- "generado": "2026-10-04T13:46:00.781Z",
+ "generado": "2026-10-04T14:05:25.316Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 785,
-  "aprobados": 785,
+  "casos": 795,
+  "aprobados": 795,
   "fallidos": 0,
-  "valores": 81921,
-  "difEscaladaMax": 0.000004071746832135441,
-  "objetivos": 168
+  "valores": 83645,
+  "difEscaladaMax": 0.000024564204685412263,
+  "objetivos": 169
  },
  "casos": [
   {
@@ -16970,6 +16970,374 @@ window.SP_VALIDACION = {
      "emmeans": "1.10.6"
     },
     "codigo": "lm(captacion ~ origen * tratamiento + factor(conc)); car::Anova(type = 3) con contr.sum; summary(m); confint(emmeans(m, factor))"
+   }
+  },
+  {
+   "id": "arima/airline-pasajeros",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "arima"
+   },
+   "titulo": "Pasajeros aéreos (log): SARIMA(0, 1, 1)(0, 1, 1)12, el modelo «airline»",
+   "fuente": "datasets::AirPassengers de R (Box y Jenkins, 1976); referencia: stats::arima en su óptimo",
+   "clase": "D",
+   "valores": 255,
+   "difMax": 0.000004730658666574072,
+   "difEscaladaMax": 0.0000014065049178668687,
+   "peor": "coef[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "coef[*]": {
+      "tol": 0.00005,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "ee[*]": {
+      "tol": 0.00005,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "residuos[*]": {
+      "tol": 0.00005,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "pronostico.*": {
+      "tol": 0.00005,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "box.*": {
+      "tol": 0.00005,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "sigma2": {
+      "tol": 0.00005,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "arima(x, order = c(0, 1, 1), seasonal = list(order = c(0, 1, 1), period = 12), include.mean = TRUE) en su óptimo; predict; Box.test"
+   }
+  },
+  {
+   "id": "arima/ar1-faltantes",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "arima"
+   },
+   "titulo": "AR(1) con cuatro faltantes dentro de la serie",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::arima en su óptimo, predict y Box.test",
+   "clase": "D",
+   "valores": 183,
+   "difMax": 2.0200687345095503e-8,
+   "difEscaladaMax": 9.9250376806026e-9,
+   "peor": "residuos[71]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "arima(x, order = c(1, 0, 0), seasonal = list(order = c(0, 0, 0), period = 1), include.mean = TRUE) en su óptimo; predict; Box.test"
+   }
+  },
+  {
+   "id": "arima/ar1-media",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "arima"
+   },
+   "titulo": "AR(1) con media, pronóstico a 12 años",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::arima en su óptimo, predict y Box.test",
+   "clase": "D",
+   "valores": 183,
+   "difMax": 4.3699877494418615e-8,
+   "difEscaladaMax": 2.9282002600439228e-8,
+   "peor": "residuos[33]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "arima(x, order = c(1, 0, 0), seasonal = list(order = c(0, 0, 0), period = 1), include.mean = TRUE) en su óptimo; predict; Box.test"
+   }
+  },
+  {
+   "id": "arima/arima111",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "arima"
+   },
+   "titulo": "ARIMA(1, 1, 1)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::arima en su óptimo, predict y Box.test",
+   "clase": "D",
+   "valores": 139,
+   "difMax": 0.000004523842628501029,
+   "difEscaladaMax": 0.0000013306203712204479,
+   "peor": "residuos[31]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "coef[*]": {
+      "tol": 0.00001,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "ee[*]": {
+      "tol": 0.00001,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "residuos[*]": {
+      "tol": 0.00001,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "pronostico.*": {
+      "tol": 0.00001,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "box.*": {
+      "tol": 0.00001,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "sigma2": {
+      "tol": 0.00001,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "arima(x, order = c(1, 1, 1), seasonal = list(order = c(0, 0, 0), period = 1), include.mean = TRUE) en su óptimo; predict; Box.test"
+   }
+  },
+  {
+   "id": "arima/arma21-desordenada",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "arima"
+   },
+   "titulo": "ARMA(2, 1) con media, filas desordenadas que se ordenan por el tiempo, 90 %",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::arima en su óptimo, predict y Box.test",
+   "clase": "D",
+   "valores": 203,
+   "difMax": 5.119291213162569e-9,
+   "difEscaladaMax": 4.745896768647499e-9,
+   "peor": "residuos[83]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "arima(x, order = c(2, 0, 1), seasonal = list(order = c(0, 0, 0), period = 1), include.mean = TRUE) en su óptimo; predict; Box.test"
+   }
+  },
+  {
+   "id": "arima/busqueda-aic",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "arima"
+   },
+   "titulo": "Búsqueda del orden por AIC entre p, q = 0, 1, 2 (ARMA con media)",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::arima en su óptimo, predict y Box.test",
+   "clase": "D",
+   "valores": 171,
+   "difMax": 7.193562723273317e-8,
+   "difEscaladaMax": 6.966079424408633e-8,
+   "peor": "residuos[84]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "arima(x, order = c(1, 0, 0), seasonal = list(order = c(0, 0, 0), period = 1), include.mean = TRUE) en su óptimo; predict; Box.test"
+   }
+  },
+  {
+   "id": "arima/ima11",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "arima"
+   },
+   "titulo": "IMA(1, 1): una diferencia y una media móvil",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::arima en su óptimo, predict y Box.test",
+   "clase": "D",
+   "valores": 160,
+   "difMax": 1.2657681480732208e-7,
+   "difEscaladaMax": 1.164224627814292e-8,
+   "peor": "residuos[30]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "coef[*]": {
+      "tol": 0.00001,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "ee[*]": {
+      "tol": 0.00001,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "residuos[*]": {
+      "tol": 0.00001,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "pronostico.*": {
+      "tol": 0.00001,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "box.*": {
+      "tol": 0.00001,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "sigma2": {
+      "tol": 0.00001,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "arima(x, order = c(0, 1, 1), seasonal = list(order = c(0, 0, 0), period = 1), include.mean = TRUE) en su óptimo; predict; Box.test"
+   }
+  },
+  {
+   "id": "arima/lago-huron-ar2",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "arima"
+   },
+   "titulo": "Nivel del lago Hurón: AR(2) con media",
+   "fuente": "datasets::LakeHuron de R (Brockwell y Davis, 1991); referencia: stats::arima en su óptimo",
+   "clase": "D",
+   "valores": 156,
+   "difMax": 1.0438157005410176e-8,
+   "difEscaladaMax": 4.637809580820829e-9,
+   "peor": "residuos[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "arima(x, order = c(2, 0, 0), seasonal = list(order = c(0, 0, 0), period = 1), include.mean = TRUE) en su óptimo; predict; Box.test"
+   }
+  },
+  {
+   "id": "arima/ma2-sin-media",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "arima"
+   },
+   "titulo": "MA(2) sin media y sin columna de tiempo",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::arima en su óptimo, predict y Box.test",
+   "clase": "D",
+   "valores": 115,
+   "difMax": 4.739957759625213e-9,
+   "difEscaladaMax": 4.046116774958364e-9,
+   "peor": "residuos[22]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "arima(x, order = c(0, 0, 2), seasonal = list(order = c(0, 0, 0), period = 1), include.mean = FALSE) en su óptimo; predict; Box.test"
+   }
+  },
+  {
+   "id": "arima/sarima-diferencia-estacional",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "arima"
+   },
+   "titulo": "SARIMA(1, 0, 0)(0, 1, 1)12: diferencia estacional y media móvil estacional",
+   "fuente": "Datos sintéticos (generados en este archivo); referencia: stats::arima en su óptimo, predict y Box.test",
+   "clase": "D",
+   "valores": 159,
+   "difMax": 0.00009592327856466909,
+   "difEscaladaMax": 0.000024564204685412263,
+   "peor": "residuos[78]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "coef[*]": {
+      "tol": 0.00005,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "ee[*]": {
+      "tol": 0.00005,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "residuos[*]": {
+      "tol": 0.00005,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "pronostico.*": {
+      "tol": 0.00005,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "box.*": {
+      "tol": 0.00005,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     },
+     "sigma2": {
+      "tol": 0.00005,
+      "motivo": "con diferenciación, arima usa la inicial difusa κ = 1e6 y la verosimilitud trae un ruido de ~1e-13 (en R y en SigmaPro): el óptimo solo queda fijo a ~1e-6 (con diferencia estacional hay d + D·s estados difusos y el ruido crece: 5e-5)"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "arima(x, order = c(1, 0, 0), seasonal = list(order = c(0, 1, 1), period = 12), include.mean = TRUE) en su óptimo; predict; Box.test"
    }
   },
   {
