@@ -64,6 +64,12 @@ const unidadEnPagina = scriptsDe(htmlPruebas, /^unidad\//);
 const unidadEnCarpeta = readdirSync(join(TESTS, 'unidad')).filter(f => f.endsWith('.test.js')).map(f => 'unidad/' + f);
 for (const f of unidadEnCarpeta) if (!unidadEnPagina.includes(f)) problemas.push('tests/index.html no carga ' + f);
 for (const f of unidadEnPagina) if (!unidadEnCarpeta.includes(f)) problemas.push('tests/index.html carga ' + f + ', que no existe');
+/* dos funciones con el mismo nombre en un mismo archivo: la segunda tapa a la primera sin aviso (pasó en el Hito 4.2 con formDiseno) */
+for (const d of ['js/nucleo', 'js/metodos', 'js/interfaz', 'js/exportar']) for (const f of readdirSync(join(RAIZ, d)).filter(x => x.endsWith('.js'))) {
+  const nombres = [...leer(join(RAIZ, d, f)).matchAll(/^  function ([A-Za-z0-9_$]+)\(/gm)].map(m => m[1]);
+  const rep = [...new Set(nombres.filter((n, i) => nombres.indexOf(n) !== i))];
+  if (rep.length) problemas.push(d + '/' + f + ': funciones repetidas (la última tapa a la primera): ' + rep.join(', '));
+}
 /* en un objeto literal una clave repetida pisa a la anterior sin aviso: las referencias del informe no deben repetirse */
 {
   const inf = leer(join(RAIZ, 'js', 'nucleo', 'informe.js'));

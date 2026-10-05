@@ -80,8 +80,14 @@
   /* ---------------- catálogo ---------------- */
   function catalogo(c) {
     const vacio = c && c.sinDatos;
-    const fams = SP.familias.filter(f => f.fase <= 3 && f.id !== 'descriptiva' && (!vacio || f.id === 'potencia'));
     if (!SP.metodoDisponible(estado.metodo) || (vacio && !(SP.metodos[estado.metodo] || {}).sinDatos)) estado.metodo = vacio ? 'potencia-medias' : 'supuestos';
+    /* el catálogo nuevo (js/interfaz/catalogo.js): tarjetas con lo que se puede hacer con los datos */
+    if (SP.catalogoUI) {
+      SP.catalogoUI.iniciar(() => catalogo(columnas() || (estado.sinDatos ? SIN_DATOS : null)));
+      SP.catalogoUI.dibujar({ tabla: c && !vacio ? c.t : null, vacio, metodo: estado.metodo });
+      return;
+    }
+    const fams = SP.familias.filter(f => f.fase <= 3 && f.id !== 'descriptiva' && (!vacio || f.id === 'potencia'));
     $('#anaCatalogo').innerHTML = fams.map(f => {
       const metodos = SP.listaMetodos(f.id).filter(m => SP.metodoDisponible(m.id) && (!vacio || m.sinDatos));
       const items = metodos.length
@@ -866,7 +872,7 @@
     return h + campo('srf', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('srf', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
   /** Generador de diseños (sin datos): el tipo, cuántos factores, α, centros y, si se quiere, nombres y niveles. */
-  function formDiseno(c) {
+  function formDisenoSuperficie(c) {
     const s = estado.dsn, mezcla = s.tipo === 'latice' || s.tipo === 'centroide';
     let h = c.sinDatos ? '<p class="small muted">' + esc(T('No hace falta cargar datos: el diseño se arma con los valores de abajo y se abre en Datos.')) + '</p>' : '';
     h += campo('dsn', 'tipo', T('Diseño'), [['ccd', T('Central compuesto')], ['bbd', 'Box-Behnken'], ['factorial', T('Factorial 2^k con centros')], ['latice', T('Simplex-látice (mezclas)')], ['centroide', T('Simplex-centroide (mezclas)')]], s.tipo);
@@ -1177,7 +1183,7 @@
     if (MULTIVARIADO.includes(estado.metodo)) return formMultivariado(c, estado.metodo);
     if (MULTI.includes(estado.metodo)) return formMultiambiente(c, estado.metodo);
     if (SUPERFICIES.includes(estado.metodo)) return formSuperficie(c, estado.metodo);
-    if (estado.metodo === 'diseno-superficie') return formDiseno(c);
+    if (estado.metodo === 'diseno-superficie') return formDisenoSuperficie(c);
     if (estado.metodo === 'mezclas') return formMezclas(c);
     if (estado.metodo === 'deseabilidad') return formDeseabilidad(c);
     if (NOLINEAL.includes(estado.metodo)) return formNoLineal(c, estado.metodo);
@@ -1401,7 +1407,8 @@
     const ya = SP.app.reporte && SP.app.reporte.tiene(pedidoActual());
     return `<button type="button" class="btn ${ya ? 'btn-ghost' : 'btn-secondary'} btn-sm exp-reporte" data-accion="reporte"${ya ? ' aria-pressed="true"' : ''}>${esc(ya ? T('En el reporte ✓') : T('Agregar al reporte'))}</button>`;
   };
-  const copiarHTML = i => `<div class="btn-row exp-acciones"><button type="button" class="btn btn-secondary btn-sm" data-accion="copiar" data-cuadro="${i}">${esc(T('Copiar cuadro'))}</button></div>`;
+  const copiarHTML = i => `<div class="btn-row exp-acciones"><button type="button" class="btn btn-secondary btn-sm" data-accion="copiar" data-cuadro="${i}">${esc(T('Copiar cuadro'))}</button>` +
+    `<button type="button" class="btn btn-ghost btn-sm" data-accion="csv" data-cuadro="${i}">${esc(T('Bajar en CSV'))}</button></div>`;
 
   function graficasSupuestos(r) {
     const g = r.graficas, qq = g.qq;
@@ -2314,6 +2321,7 @@
   }
   /** Aplica el pedido, pasa al catálogo y calcula. */
   function usar(m, e, op) {
+    if (SP.catalogoUI) SP.catalogoUI.recoger();
     aplicar(m, e, op);
     ponerModo('catalogo');
     const r = $('#anaResultado');
@@ -2432,6 +2440,11 @@
         $('#anaCatalogo').scrollIntoView({ block: 'nearest' });
         return;
       }
+      if (a.dataset.accion === 'csv') {
+        const c = estado.ultimo && estado.ultimo.cuadros[+a.dataset.cuadro || 0];
+        if (c) { const n = SP.cuadros.bajarCSV(c); L() && L().toast(T('Cuadro bajado: {f}', { f: n }), { type: 'success' }); }
+        return;
+      }
       const texto = a.dataset.accion === 'copiar' ? (estado.ultimo && SP.cuadros.tsv(estado.ultimo.cuadros[+a.dataset.cuadro || 0])) : $('#anaResultado').dataset.codigo;
       if (texto && await SP.cuadros.copiar(texto)) L() && L().toast(a.dataset.accion === 'copiar' ? T('Cuadro copiado.') : T('Código R copiado.'), { type: 'success' });
     });
@@ -2440,7 +2453,11 @@
       if (!b) return;
       estado.metodo = b.dataset.metodo;
       if (DISENOS.includes(estado.metodo)) estado.cmp.diseno = estado.metodo;   // las comparaciones usan el último diseño elegido
+      if (SP.catalogoUI) SP.catalogoUI.recoger();
       calcular();
+      /* elegido: al formulario del análisis */
+      const f = $('#anaOpciones');
+      if (f) { f.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); const p = f.querySelector('select, input, button'); if (p) p.focus({ preventScroll: true }); }
     });
     document.addEventListener('sp:datos', () => { if (panel.classList.contains('active')) recalcular(); else estado.pendiente = true; });
     document.addEventListener('sp:bloque', e => { if (e.detail.bloque === 4 && estado.pendiente) calcular(); });

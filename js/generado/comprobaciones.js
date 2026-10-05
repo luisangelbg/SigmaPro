@@ -73,14 +73,14 @@ window.SP_COMPROBACIONES = {
  "sin-conexion": {
   "titulo": "Privacidad y uso sin conexión",
   "ok": true,
-  "resumen": "Con datos, 7 análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, 296 peticiones GET sin datos, todas a la propia app; con doble clic, fuera del equipo solo se pide el código del motor R para el modelo mixto (43 descargas de webR y sus paquetes); servida por http con su repositorio propio, ni eso: el motor sale del mismo origen, todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo y el modelo mixto en el motor R guardado, exporta y verifica las huellas del proyecto.",
+  "resumen": "Con datos, 7 análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, 300 peticiones GET sin datos, todas a la propia app; con doble clic, fuera del equipo solo se pide el código del motor R para el modelo mixto (43 descargas de webR y sus paquetes); servida por http con su repositorio propio, ni eso: el motor sale del mismo origen, todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo y el modelo mixto en el motor R guardado, exporta y verifica las huellas del proyecto.",
   "renglones": [
-   "Doble clic: 179 peticiones; fuera del equipo, solo 43 descargas del motor R (webR y paquetes).",
-   "Servida por http: 296 peticiones GET a 149 archivos de la app, sin parámetros ni cuerpo.",
-   "Servicio sin conexión activo con 148 archivos guardados.",
+   "Doble clic: 181 peticiones; fuera del equipo, solo 43 descargas del motor R (webR y paquetes).",
+   "Servida por http: 300 peticiones GET a 151 archivos de la app, sin parámetros ni cuerpo.",
+   "Servicio sin conexión activo con 150 archivos guardados.",
    "Sin red: 7 análisis, reporte, 6 exportaciones y huellas del proyecto verificadas."
   ],
-  "fecha": "2026-10-05T02:55:22.240Z",
+  "fecha": "2026-10-05T03:28:22.692Z",
   "motor": "node v24.19.0"
  },
  "exportar": {
@@ -90,29 +90,29 @@ window.SP_COMPROBACIONES = {
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-10-05T02:54:16.306Z",
+  "fecha": "2026-10-05T03:27:36.599Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {
   "titulo": "El código R equivalente",
   "ok": true,
   "resumen": "99 escenarios de 65 métodos: el código R que muestra la app corre en R y da 1,626 números iguales a los de la app (tolerancia 1e-6)",
-  "fecha": "2026-10-05T02:43:38.586Z",
+  "fecha": "2026-10-05T03:20:23.634Z",
   "motor": "node v24.19.0"
  },
  "accesibilidad": {
   "titulo": "Accesibilidad (AA)",
   "ok": true,
-  "resumen": "200 revisiones de 100 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 113,582 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 587 paradas en los 8 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
+  "resumen": "200 revisiones de 100 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 120,510 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 531 paradas en los 8 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
   "renglones": [],
-  "fecha": "2026-10-05T03:05:21.361Z",
+  "fecha": "2026-10-05T03:37:27.682Z",
   "motor": "node v24.19.0"
  },
  "idioma": {
   "titulo": "La interfaz en inglés",
   "ok": true,
-  "resumen": "5848 textos traducidos; 809 casos con los mismos números en los dos idiomas (71,548 valores); 272 resultados armados en inglés sin textos pendientes",
-  "fecha": "2026-10-05T02:53:58.294Z",
+  "resumen": "5920 textos traducidos; 809 casos con los mismos números en los dos idiomas (71,548 valores); 272 resultados armados en inglés sin textos pendientes",
+  "fecha": "2026-10-05T03:27:23.028Z",
   "motor": "node v24.19.0"
  }
 };

@@ -100,6 +100,8 @@
   R.headerH = Math.round((q('header') || q('.topbar') || document.body).getBoundingClientRect().height);
   /* errores de la preparación y de la página (los registra la envoltura de auditar.mjs) */
   R.errorPrep = window.__errorPrep || '';
+  /* un análisis que terminó en error (salvo los escenarios que lo esperan): el escenario no mostró lo que debía */
+  { const e = document.querySelector('#anaResultado .msg-error, #expResultado .msg-error'); R.errorAnalisis = e && e.getClientRects().length ? e.textContent.trim().slice(0, 140) : ''; }
   R.erroresPagina = (window.__errores || []).slice(0, 5);
   return JSON.stringify(R);
 })()

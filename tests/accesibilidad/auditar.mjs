@@ -88,6 +88,7 @@ if (AUDITOR && process.platform === 'win32') {
           if (j.errors.length) mal.push('consola: ' + j.errors.slice(0, 2).join(' | '));
           if (R.errorPrep) mal.push('la preparación falló: ' + R.errorPrep);
           if (R.erroresPagina && R.erroresPagina.length) mal.push('errores en la página: ' + R.erroresPagina.join(' | '));
+          if (R.errorAnalisis && !t.e.error) mal.push('el análisis terminó en error: ' + R.errorAnalisis);
           if (R.noName.length) mal.push('botones o enlaces sin nombre: ' + R.noName.join(' '));
           if (R.noAlt) mal.push(R.noAlt + ' imágenes sin alt');
           if (R.dupIds.length) mal.push('ids repetidos: ' + R.dupIds.join(' '));

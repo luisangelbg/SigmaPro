@@ -2,6 +2,24 @@
 
 ## Sin publicar
 
+### 0.4.1 · Catálogo nuevo, cuadros en CSV y un arreglo (4 oct 2026)
+
+- **Catálogo de análisis rediseñado**: arriba, «Con tus datos» (filas, numéricas, factores con sus niveles, bloques,
+  parcelas, fechas, conteos, proporciones, columnas 0/1), cuántos análisis se pueden hacer con la tabla y el que
+  recomienda el asistente con su porqué y los pasos siguientes. Abajo, cada familia con su ícono y sus análisis en
+  tarjetas: nombre, para qué sirve y su estado (listo con tus datos, qué le falta, no necesita datos, motor R). Búsqueda
+  por texto, filtro «solo los que puedo hacer con mis datos» (se recuerda) y por familia. Al elegir un análisis, el
+  catálogo se recoge en una barra con el elegido y el botón para volver a abrirlo. La revisión vive en
+  `js/nucleo/aplicable.js` (sin DOM, con pruebas unitarias): las entradas de cada método y algunos requisitos propios.
+- **Cuadros en CSV**: cada cuadro de Análisis y de Explorar tiene «Bajar en CSV», con los números completos (sin el
+  redondeo de la pantalla), los intervalos en dos columnas, coma y punto decimal, en UTF-8 con BOM.
+- **Arreglo**: desde el Hito 4.2, el formulario de los diseños experimentales (bloques, cuadro latino, parcelas…) y el
+  de las comparaciones de medias mostraban el del generador de diseños: la función nueva se llamaba igual que la
+  anterior (`formDiseno`) y la tapaba. Ahora es `formDisenoSuperficie`. Dos guardas nuevas: `tests/correr.mjs` rechaza
+  dos funciones con el mismo nombre en un archivo, y la auditoría marca como falla un escenario cuyo análisis termina
+  en error (antes contaba solo la accesibilidad del mensaje).
+- `tools/i18n/agregar.mjs`: agrega traducciones a `js/i18n/en.js` y lista las que faltan.
+
 ### Hito 4.5 · Interfaz en inglés (4 oct 2026)
 
 - **Español e inglés**: el selector ES | EN de la barra cambia el idioma de toda la app (se guarda el trabajo y se

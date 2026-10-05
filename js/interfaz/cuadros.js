@@ -6,6 +6,8 @@
 
      SP.cuadros.html(cuadro, { numero, visibles })   → HTML de la tabla con su título y notas
      SP.cuadros.tsv(cuadro, visibles)                → texto separado por tabuladores (para pegar en una hoja)
+     SP.cuadros.csv(cuadro, visibles)                → CSV (RFC 4180) con los valores sin redondear, para otro programa
+     SP.cuadros.bajarCSV(cuadro, visibles)           → lo baja como archivo .csv (UTF-8 con BOM, para que Excel lea los acentos)
      SP.cuadros.formato(valor, formato, fila, paraCopiar) */
 (function () {
   'use strict';
@@ -49,6 +51,38 @@
     return [c.titulo, cab.join('\t'), ...filas, ...(c.notas || [])].join('\n');
   }
 
+  /**
+   * CSV del cuadro: una fila de títulos y una por fila del cuadro, con los números completos (sin el redondeo de la
+   * pantalla: sirven para volver a calcular), los intervalos en dos columnas (inf. y sup.), coma como separador y punto
+   * decimal. Un faltante queda vacío.
+   */
+  function csv(c, visibles) {
+    const cols = columnasVisibles(c, visibles);
+    const campo = v => {
+      if (v === null || v === undefined || (typeof v === 'number' && !Number.isFinite(v) && !(v === Infinity || v === -Infinity))) return '';
+      const s = typeof v === 'number' ? (v === Infinity ? 'Inf' : v === -Infinity ? '-Inf' : String(v)) : String(v);
+      return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+    const cab = cols.flatMap(k => (k.formato.startsWith('intervalo') ? [k.titulo + ' (' + T('inf.') + ')', k.titulo + ' (' + T('sup.') + ')'] : [k.titulo]));
+    const filas = c.filas.map(f => cols.flatMap(k => {
+      const v = f[k.clave];
+      if (k.formato.startsWith('intervalo')) return Array.isArray(v) ? [campo(v[0]), campo(v[1])] : ['', ''];
+      return [k.formato === 'texto' || typeof v !== 'number' ? campo(v === undefined ? '' : formato(v, k.formato, f, true)) : campo(v)];
+    }).join(','));
+    return [cab.map(campo).join(','), ...filas].join('\r\n') + '\r\n';
+  }
+  /** Nombre de archivo a partir del título del cuadro. */
+  const nombreArchivo = t => (String(t || T('cuadro')).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60).toLowerCase() || 'cuadro') + '.csv';
+  /** Baja el cuadro como archivo .csv. */
+  function bajarCSV(c, visibles) {
+    const b = new Blob(['\ufeff' + csv(c, visibles)], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(b); a.download = nombreArchivo(c.titulo);
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    return a.download;
+  }
+
   /** Copia texto al portapapeles (con respaldo para file:// en navegadores que no dan el permiso). */
   async function copiar(texto) {
     try { await navigator.clipboard.writeText(texto); return true; } catch (e) {
@@ -62,5 +96,5 @@
     }
   }
 
-  SP.cuadros = { html, tsv, formato, copiar, columnasVisibles };
+  SP.cuadros = { html, tsv, csv, bajarCSV, nombreArchivo, formato, copiar, columnasVisibles };
 })();
