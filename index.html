@@ -7,19 +7,21 @@
 <meta name="description" content="Diseños experimentales, comparaciones de medias, regresión y modelos mixtos con resultados comprobados contra R. Los datos no salen del navegador.">
 <meta name="theme-color" content="#111111">
 <link rel="apple-touch-icon" href="iconos/sigmapro-192.png">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ctext x='16' y='24' font-family='system-ui,sans-serif' font-size='22' font-weight='800' text-anchor='middle' fill='%23D4A848'%3E%CE%A3%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ctext x='16' y='23.3' font-family='Georgia,serif' font-size='35' text-anchor='middle' fill='%23D4A848'%3E%CF%83%3C/text%3E%3C/svg%3E">
 <script>/* idioma antes de cargar el núcleo: ?lang=en|es o el que se eligió; el catálogo inglés solo si hace falta */ (function () { var l = 'es'; try { var q = new URLSearchParams(location.search).get('lang'); if (q === 'en' || q === 'es') localStorage.setItem('sigmapro.idioma', q); l = localStorage.getItem('sigmapro.idioma') === 'en' ? 'en' : 'es'; } catch (e) { l = /[?&]lang=en/.test(location.search) ? 'en' : 'es'; } document.documentElement.lang = l; if (l === 'en') document.write('<script src="js/i18n/en.js"><\/script>'); })();</script>
 <script>/* tema antes de pintar, para que no parpadee */ try { var t = localStorage.getItem('sigmapro.theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); var g = localStorage.getItem('sigmapro.graficas.tema'); if (g && g !== 'sigmapro') document.documentElement.setAttribute('data-graficas', g); } catch (e) {}</script>
 <link rel="stylesheet" href="css/labg-base.css">
 <link rel="stylesheet" href="css/sigma.css">
+<link rel="stylesheet" href="css/intro.css">
 </head>
 <body>
+<script src="js/intro.js"></script>
 <a class="skip-link" href="#main">Saltar al contenido</a>
 
 <header class="topbar">
   <div class="topbar-inner">
     <div class="topbar-row">
-      <a class="brand" href="#b1" data-ir="1" title="Inicio de SigmaPro"><span class="brand-mark" aria-hidden="true">Σ</span><span>Sigma<span class="brand-pro">Pro</span></span>
+      <a class="brand" href="#b1" data-ir="1" title="Inicio de SigmaPro"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 512 512" focusable="false"><text x="256" y="372" font-family="Georgia,'Times New Roman',serif" font-size="560" text-anchor="middle" fill="currentColor">&#963;</text></svg></span><span>Sigma<span class="brand-pro">Pro</span></span>
         <span class="brand-sub">· estadística para la investigación agronómica y biológica</span></a>
       <div class="top-tools">
         <a class="suite-link" id="suiteLink" href="https://luisangelbg.github.io/" title="Volver al portal de la LABG Suite"><span class="suite-text">LABG Suite</span></a>
@@ -76,7 +78,7 @@
           <text x="60" y="214">c</text><text x="150" y="106">b</text><text x="250" y="52">a</text><text x="350" y="58">a</text>
         </g>
         <text x="40" y="285" font-family="ui-monospace, monospace" font-size="11" fill="#A8A196">rend ~ bloque + híbrido × N</text>
-        <text x="330" y="44" font-family="system-ui, sans-serif" font-size="64" font-weight="800" fill="#D4A848" opacity=".16" text-anchor="middle">Σ</text>
+        <text x="330" y="46" font-family="Georgia, 'Times New Roman', serif" font-size="74" fill="#D4A848" opacity=".16" text-anchor="middle">σ</text>
       </svg>
     </div>
   </div>
@@ -91,6 +93,16 @@
     <h3>Estado del desarrollo</h3>
     <p class="small muted" style="margin-top:0">SigmaPro se construye por hitos y cada uno se cierra con su validación contra R. La Fase 1 está completa: datos, exploración, supuestos, pruebas, diseños experimentales, comparaciones, ANCOVA, regresión, correlación, contingencia, el asistente, el reporte, las figuras y las exportaciones. La Fase 2 también: el motor R dentro del navegador ajusta modelos lineales mixtos, con sus medias, los diseños con efectos aleatorios y las medidas repetidas en el tiempo, y el núcleo calcula componentes de varianza, heredabilidad, repetibilidad y modelos lineales generalizados (conteos, proporciones, gamma); el motor R también ajusta los generalizados mixtos, y el núcleo, las curvas no lineales, la dosis-respuesta, las superficies de respuesta y los ensayos multiambiente con su estabilidad (AMMI y GGE); el asistente y el constructor ya proponen estos métodos, y servida con su repositorio propio el motor R funciona sin internet. La Fase 3 también: el tamaño de muestra y la potencia (sin datos), el muestreo, la supervivencia (Kaplan-Meier y Cox), las series de tiempo y el multivariado (MANOVA y discriminante, y el CSV para PCAPro y ClusteringPro), con el asistente que los propone; y después, los estratos en la supervivencia, la prueba M de Box, los modelos ARIMA, Cox y la MANOVA en el constructor y el guardado automático del trabajo. La Fase 4 completó los cálculos: la no lineal con hormesis y dosis económica, el multiambiente con imputación, WAAS y análisis en dos etapas, las superficies con el generador de diseños, las mezclas y la deseabilidad, los generalizados con perfiles, Firth y cuadratura, y el asistente que reconoce las parcelas divididas en los datos.</p>
     <ul class="hitos" id="hitos"></ul>
+  </div>
+
+  <div class="card acerca" id="acerca" style="margin-top:var(--sp-5)">
+    <h3>Acerca de SigmaPro</h3>
+    <p class="small muted" style="margin-top:0">Luis Ángel Barrera-Guzmán · licencia GPL-3.0 · parte de la LABG Suite: del dato a la decisión.</p>
+    <div class="btn-row">
+      <button type="button" class="btn btn-secondary" data-intro="full">Ver la intro</button>
+      <button type="button" class="btn btn-ghost" data-intro="loop">Pantalla de presentación</button>
+    </div>
+    <label class="imp-check"><input type="checkbox" id="introActiva" checked> Mostrar la intro al abrir (la versión corta después de la primera vez)</label>
   </div>
 </section>
 
@@ -414,6 +426,7 @@
 <script src="js/nucleo/motor-r.js"></script>
 <script src="js/nucleo/asistente.js"></script>
 <script src="js/nucleo/aplicable.js"></script>
+<script src="js/nucleo/guias.js"></script>
 <script src="js/nucleo/constructor.js"></script>
 <script src="js/nucleo/informe.js"></script>
 <script src="js/metodos/descriptiva.js"></script>

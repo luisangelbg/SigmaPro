@@ -1,0 +1,173 @@
+/* SigmaPro — secuencia de apertura (js/intro.js).
+   Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
+
+   Todo lo que se mueve mientras la app carga detrás usa solo transform y opacity: el navegador lo anima en el
+   compositor y no se traba aunque los scripts de la app ocupen el hilo principal. Los tiempos salen de --u (escala de la
+   duración, 1 = 4.5 s) y los colores de las variables que pone intro.js desde sus constantes. */
+html.si-activa { overflow: hidden; }
+.si {
+  position: fixed; inset: 0; z-index: 2147483000; overflow: hidden; color: var(--si-blanco);
+  --u: 1; --px: 0px; --py: 0px; --r: 0px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1); --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  contain: strict;
+}
+.si-capa { position: absolute; inset: 0; }
+.si-fondo { position: absolute; inset: 0; background: radial-gradient(ellipse 75% 70% at 50% 46%, var(--si-fondo-borde) 0%, var(--si-fondo) 72%); }
+.si-grano { position: absolute; inset: -192px; background-size: 192px 192px; opacity: .03; animation: si-grano 9s linear infinite; will-change: transform; }
+@keyframes si-grano { to { transform: translate3d(192px, 96px, 0); } }
+
+/* ---------------- constelación de letras ---------------- */
+.si-campo { position: absolute; inset: 0; transform-origin: 50% 50%; }
+.si-l { position: absolute; left: var(--x); top: var(--y); opacity: 0; transform: translate3d(var(--fx), var(--fy), 0) scale(.15);
+  animation: si-sale calc(1.15s * var(--u)) var(--ease) calc(var(--d) * var(--u)) forwards; }
+@keyframes si-sale { to { opacity: 1; transform: none; } }
+.si-l-par { transform: translate3d(calc(var(--px) * var(--k)), calc(var(--py) * var(--k)), 0); transition: transform .9s var(--ease); }
+.si-l-in, .si-l-brillo { position: absolute; left: 0; top: 0; font-family: var(--si-serif); font-size: var(--s); line-height: 1; white-space: nowrap;
+  transform: translate(-50%, -50%); animation: si-deriva var(--dd) linear var(--dd0) infinite alternate; }
+.si-l-in { color: var(--si-blanco); opacity: var(--o); filter: var(--b); }
+@keyframes si-deriva { from { transform: translate(-50%, -50%); } to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))); } }
+/* unas pocas letras se encienden en oro y se apagan (nunca más de dos a la vez) */
+.si-l-brillo { color: var(--si-oro-claro); opacity: 0; text-shadow: 0 0 18px var(--si-oro), 0 0 2px var(--si-oro-claro);
+  animation: si-deriva var(--dd) linear var(--dd0) infinite alternate, si-brilla calc(.9s * var(--u)) var(--ease-io) calc(var(--bd) * var(--u)) both; }
+@keyframes si-brilla { 0%, 100% { opacity: 0; } 45%, 55% { opacity: .3; } }
+/* en bucle: cada una brilla 1.4 s de cada 7 s, escalonadas 1.2 s (a lo más dos encendidas a la vez) */
+.si[data-modo="loop"] .si-l-brillo { animation: si-deriva var(--dd) linear var(--dd0) infinite alternate, si-brilla-loop 7s var(--ease-io) var(--bdl) infinite; }
+@keyframes si-brilla-loop { 0%, 20%, 100% { opacity: 0; } 9%, 11% { opacity: .3; } }
+
+/* motas de oro */
+.si-m { position: absolute; left: var(--x); top: var(--y); width: var(--t); height: var(--t); border-radius: 50%; background: var(--si-oro-claro); opacity: 0;
+  box-shadow: 0 0 4px var(--si-oro); animation: si-mota var(--dd) ease-in-out calc(var(--d) * var(--u)) infinite; }
+@keyframes si-mota { 0% { opacity: 0; transform: translate3d(0, 0, 0); } 30% { opacity: var(--o); } 70% { opacity: var(--o); } 100% { opacity: 0; transform: translate3d(var(--dx), var(--dy), 0); } }
+
+/* ---------------- centro ---------------- */
+.si-centro { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+.si-punto { position: absolute; left: -5px; top: calc(-5px - var(--sube)); width: 10px; height: 10px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--si-oro-claro), var(--si-oro) 55%, var(--si-oro-sombra));
+  box-shadow: 0 0 22px 4px rgba(201, 162, 39, .35);
+  animation: si-respira calc(.6s * var(--u)) var(--ease-io) both, si-punto-va calc(.5s * var(--u)) var(--ease) calc(1.7s * var(--u)) forwards; }
+@keyframes si-respira { 0% { opacity: 0; transform: scale(.4); } 55% { opacity: 1; transform: scale(1.25); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes si-punto-va { to { opacity: 0; transform: scale(3.2); } }
+/* la pila (logo, nombre, eslogan, LABG) centrada en la pantalla; el logo queda --sube por encima del centro */
+.si-pila { position: absolute; left: 0; top: 0; transform: translate(-50%, calc(var(--alto-logo) * -0.5 - var(--sube))); display: flex; flex-direction: column; align-items: center; width: max-content; }
+.si-logo { position: relative; width: var(--alto-logo); height: var(--alto-logo); transform-origin: 50% 50%; }
+.si-logo svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.si-trazo rect, .si-trazo text { fill: none; stroke: url(#siMetal); stroke-width: 5; stroke-linejoin: round; }
+.si-trazo rect { stroke-dasharray: 1; stroke-dashoffset: 1; animation: si-traza calc(.75s * var(--u)) var(--ease-io) calc(1.8s * var(--u)) forwards; }
+.si-trazo text { stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: si-traza-t calc(.85s * var(--u)) var(--ease-io) calc(1.9s * var(--u)) forwards; }
+@keyframes si-traza { to { stroke-dashoffset: 0; } }
+@keyframes si-traza-t { to { stroke-dashoffset: 0; } }
+.si-trazo { animation: si-apaga calc(.3s * var(--u)) ease calc(2.75s * var(--u)) forwards; }
+@keyframes si-apaga { to { opacity: 0; } }
+/* el metal sube: una ola que se desplaza hacia arriba dentro de la máscara */
+.si-ola { transform: translateY(600px); animation: si-vierte calc(.6s * var(--u)) var(--ease-io) calc(2.35s * var(--u)) forwards; }
+@keyframes si-vierte { to { transform: translateY(-70px); } }
+.si-veta { transform: translateX(-700px) skewX(-18deg); animation: si-veta calc(.7s * var(--u)) var(--ease) calc(2.75s * var(--u)) forwards; }
+@keyframes si-veta { to { transform: translateX(900px) skewX(-18deg); } }
+.si-destello { position: absolute; left: 50%; top: 50%; width: calc(var(--alto-logo) * 2.2); height: calc(var(--alto-logo) * 2.2); margin: calc(var(--alto-logo) * -1.1) 0 0 calc(var(--alto-logo) * -1.1);
+  border-radius: 50%; background: radial-gradient(circle, rgba(230, 198, 92, .38), rgba(201, 162, 39, .12) 38%, transparent 66%); opacity: 0;
+  animation: si-destella calc(.2s * var(--u)) ease-out calc(2.92s * var(--u)) both; pointer-events: none; }
+@keyframes si-destella { 0% { opacity: 0; } 40% { opacity: 1; } 100% { opacity: 0; } }
+.si-onda { position: absolute; left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; border: 1px solid var(--si-oro); opacity: 0;
+  animation: si-onda calc(.95s * var(--u)) var(--ease) calc(2.95s * var(--u)) both; }
+@keyframes si-onda { 0% { opacity: .55; transform: scale(.6); } 100% { opacity: 0; transform: scale(9); } }
+.si-campo { animation: si-pulso calc(1.2s * var(--u)) var(--ease) calc(2.98s * var(--u)) both; }
+@keyframes si-pulso { 0% { transform: scale(1); } 30% { transform: scale(1.05); } 100% { transform: scale(1.025); } }
+
+/* nombre, eslogan y LABG */
+.si-nombre { margin-top: 30px; font-family: var(--si-serif); font-size: var(--tam-nombre, 44px); font-variant: small-caps; letter-spacing: .32em; text-indent: .32em;
+  white-space: nowrap; line-height: 1.1; }
+.si-nombre span { display: inline-block; opacity: 0; transform: translateY(8px);
+  background: linear-gradient(180deg, var(--si-oro-claro) 0%, var(--si-oro) 55%, var(--si-oro-sombra) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: si-letra calc(.5s * var(--u)) var(--ease) calc((3s + var(--i) * 55ms) * var(--u)) forwards; }
+@keyframes si-letra { to { opacity: 1; transform: none; } }
+@keyframes si-aparece { from { opacity: 0; transform: translateY(6px); } to { opacity: .82; transform: none; } }
+.si-labg { margin-top: 26px; display: flex; align-items: center; gap: 10px; opacity: 0; animation: si-aparece calc(.6s * var(--u)) var(--ease) calc(3.4s * var(--u)) forwards; }
+.si-iso { display: block; width: 30px; height: 35px; transform-origin: 50% 50%; }
+.si-iso svg { display: block; width: 100%; height: 100%; }
+.si-iso .iso-brillo { animation: lw-iso-brillo 1100ms calc(3.6s * var(--u)) ease-out both; }
+.si-by { font-family: system-ui, sans-serif; font-size: 12px; letter-spacing: .28em; text-transform: uppercase; color: var(--si-blanco); opacity: .62; }
+
+/* ---------------- saltar y anuncio ---------------- */
+.si-saltar { position: absolute; left: max(16px, env(safe-area-inset-left)); bottom: max(14px, env(safe-area-inset-bottom)); z-index: 2; padding: 8px 12px; border: 0; border-radius: 999px;
+  background: transparent; color: var(--si-oro); opacity: 0; font: 500 12px/1 system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; cursor: pointer;
+  animation: si-aparece-saltar .5s ease .25s forwards; }
+@keyframes si-aparece-saltar { to { opacity: .5; } }
+.si-saltar:hover, .si-saltar:focus-visible { opacity: .9 !important; outline: 1px solid var(--si-oro); outline-offset: 2px; }
+.si-anuncio { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------------- la escena fija y el botón «Start» (negro con vivos dorados) ---------------- */
+.si-acciones { position: absolute; left: 50%; top: var(--start-top, 78%); z-index: 2; transform: translate(-50%, 10px); opacity: 0; pointer-events: none;
+  transition: opacity .7s var(--ease), transform .9s var(--ease); }
+.si.si-espera .si-acciones { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.si-start { position: relative; overflow: hidden; min-width: 190px; padding: 16px 46px 15px; border: 1px solid var(--si-oro); border-radius: 999px; cursor: pointer;
+  background: radial-gradient(120% 140% at 50% 0%, #161410 0%, #0B0B0B 55%, #050505 100%);
+  box-shadow: inset 0 0 0 3px #050505, inset 0 0 0 4px rgba(201, 162, 39, .55), inset 0 1px 0 4px rgba(230, 198, 92, .08), 0 10px 34px rgba(0, 0, 0, .65), 0 0 26px rgba(201, 162, 39, .14);
+  font: 600 16px/1 var(--si-serif); letter-spacing: .42em; text-indent: .42em; text-transform: uppercase;
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s; }
+.si-start span { position: relative; z-index: 1; background: linear-gradient(180deg, var(--si-oro-claro) 0%, var(--si-oro) 55%, var(--si-oro-sombra) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+/* una veta de luz cruza el botón despacio (una vez cada 5 s; no parpadea) */
+.si-start::after { content: ''; position: absolute; top: -20%; bottom: -20%; left: 0; width: 40%; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(230, 198, 92, .16), transparent); transform: translateX(-160%) skewX(-20deg);
+  animation: si-start-veta 5s var(--ease-io) 1.2s infinite; }
+@keyframes si-start-veta { 0% { transform: translateX(-160%) skewX(-20deg); } 30%, 100% { transform: translateX(420%) skewX(-20deg); } }
+.si-start:hover { transform: translateY(-2px); border-color: var(--si-oro-claro);
+  box-shadow: inset 0 0 0 3px #050505, inset 0 0 0 4px rgba(230, 198, 92, .8), 0 14px 40px rgba(0, 0, 0, .7), 0 0 36px rgba(201, 162, 39, .28); }
+.si-start:active { transform: translateY(0) scale(.98); }
+.si-start:focus-visible { outline: 2px solid var(--si-oro-claro); outline-offset: 5px; }
+.si-start:disabled { cursor: default; }
+.si.si-espera .si-saltar { opacity: 0 !important; pointer-events: none; transition: opacity .3s; }
+/* ---------------- destellos del logo ----------------
+   Chispas de cuatro puntas que se encienden de una en una sobre la σ (cada una 0.7 s de cada 5.6 s: nunca más de
+   una a la vez, muy por debajo de tres destellos por segundo), una veta de luz que cruza la σ cada 6 s y un halo
+   dorado que respira detrás del cuadro. Empiezan cuando el logo ya se llenó. */
+.si-aura { position: absolute; left: 50%; top: 50%; width: 170%; height: 170%; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(201, 162, 39, .16) 0%, rgba(201, 162, 39, .06) 38%, transparent 66%); opacity: 0;
+  animation: si-aura 7s var(--ease-io) calc(3.05s * var(--u)) infinite; }
+@keyframes si-aura { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+.si-chispa { transform-box: fill-box; transform-origin: center; transform: scale(0) rotate(0deg); opacity: 0;
+  animation: si-chispa 5.6s var(--ease) calc(3.1s * var(--u) + var(--ci) * 1.4s) infinite; }
+@keyframes si-chispa { 0% { opacity: 0; transform: scale(0) rotate(0deg); } 6% { opacity: 1; transform: scale(1) rotate(45deg); } 12.5% { opacity: 0; transform: scale(.2) rotate(90deg); } 100% { opacity: 0; transform: scale(0) rotate(90deg); } }
+.si.si-espera .si-veta { animation: si-veta-ciclo 6s var(--ease-io) .6s infinite; }
+@keyframes si-veta-ciclo { 0% { transform: translateX(-700px) skewX(-18deg); } 22%, 100% { transform: translateX(900px) skewX(-18deg); } }
+.si.si-cierre .si-chispa, .si.si-cierre .si-aura { animation: none; opacity: 0; transition: opacity .2s; }
+
+/* mientras espera: los brillos siguen (uno cada 7/6 s) y el logo respira */
+.si.si-espera .si-l-brillo { animation: si-deriva var(--dd) linear var(--dd0) infinite alternate, si-brilla-loop 7s var(--ease-io) var(--bdl) infinite; }
+.si.si-espera .si-logo { animation: si-late 6s var(--ease-io) .8s infinite; }
+
+/* ---------------- cierre: todo se contrae, el fondo se abre en iris y los logos viajan al encabezado ---------------- */
+@property --r { syntax: '<length>'; inherits: true; initial-value: 0px; }
+.si.si-cierre .si-fondo, .si.si-cierre .si-grano { -webkit-mask-image: radial-gradient(circle at var(--cx, 50%) var(--cy, 50%), transparent var(--r), #000 calc(var(--r) + 60px));
+  mask-image: radial-gradient(circle at var(--cx, 50%) var(--cy, 50%), transparent var(--r), #000 calc(var(--r) + 60px)); }
+.si.si-cierre { --r: 150vmax; transition: --r calc(.7s * var(--u)) var(--ease-io); }
+.si.si-cierre .si-fondo, .si.si-cierre .si-grano { transition: opacity calc(.3s * var(--u)) ease calc(.4s * var(--u)); opacity: 0; }
+.si.si-cierre .si-campo { transition: transform calc(.7s * var(--u)) var(--ease), opacity calc(.5s * var(--u)) ease; transform: scale(.72); opacity: 0; animation: none; }
+.si.si-cierre .si-nombre, .si.si-cierre .si-by { transition: opacity calc(.35s * var(--u)) ease, transform calc(.6s * var(--u)) var(--ease); opacity: 0 !important; transform: scale(.9); }
+.si.si-cierre .si-logo, .si.si-cierre .si-iso { animation: none; transition: transform calc(.7s * var(--u)) var(--ease), opacity calc(.2s * var(--u)) ease calc(.55s * var(--u)); }
+.si.si-cierre .si-saltar, .si.si-cierre .si-acciones { transition: opacity .25s, transform .4s var(--ease); opacity: 0 !important; transform: translate(-50%, 6px) scale(.96); }
+.si.si-fuera { transition: opacity .22s ease; opacity: 0; }
+.si.si-cierre, .si.si-fuera { pointer-events: none; }
+.si.si-cierre .si-acciones, .si.si-fuera .si-acciones { pointer-events: none; }
+
+/* ---------------- presentación en bucle ---------------- */
+.si[data-modo="loop"] .si-punto, .si[data-modo="loop"] .si-onda, .si[data-modo="loop"] .si-destello, .si[data-modo="loop"] .si-saltar { display: none; }
+.si[data-modo="loop"] .si-logo { animation: si-late 6s var(--ease-io) 3.6s infinite; }
+@keyframes si-late { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.035); } }
+.si[data-modo="loop"] .si-campo { animation: si-late-campo 14s var(--ease-io) 3s infinite; }
+@keyframes si-late-campo { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+.si-salir { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); font: 500 11px/1 system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--si-oro); opacity: 0; animation: si-aparece-saltar .8s ease 4.5s forwards; white-space: nowrap; }
+
+/* ---------------- movimiento reducido: la escena quieta, sin letras ni motas, con «Start» ---------------- */
+.si[data-modo="quieto"] .si-campo, .si[data-modo="quieto"] .si-punto, .si[data-modo="quieto"] .si-onda, .si[data-modo="quieto"] .si-destello, .si[data-modo="quieto"] .si-trazo, .si[data-modo="quieto"] .si-grano { display: none; }
+.si[data-modo="quieto"] { animation: si-entra .3s ease-out both; }
+@keyframes si-entra { from { opacity: 0; } to { opacity: 1; } }
+.si[data-modo="quieto"] *, .si[data-modo="quieto"] *::before, .si[data-modo="quieto"] *::after { animation: none !important; transition: none !important; }
+.si[data-modo="quieto"] .si-ola { transform: translateY(-70px); }
+.si[data-modo="quieto"] .si-nombre span, .si[data-modo="quieto"] .si-labg { opacity: 1; transform: none; }
+.si[data-modo="quieto"] .si-salir { opacity: .5; }
+.si[data-modo="quieto"].si-fuera { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .si .si-l, .si .si-m { display: none; }
+}

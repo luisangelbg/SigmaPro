@@ -1,0 +1,1366 @@
+{
+ "generado": "node tests/regresion.mjs --actualizar",
+ "version": "0.4.2",
+ "casos": {
+  "ancova/metodo-ancova-anorexia": {
+   "numeros": 333,
+   "resultado": "cfcadc7efda3e3ff4465f69a",
+   "reporte": "5e1d7e4a658adb046dba00a2"
+  },
+  "arima/airline-pasajeros": {
+   "numeros": 598,
+   "resultado": "5c548dfaaeb1e0150e596032",
+   "reporte": "afae7dd3d99d976589acb13d"
+  },
+  "arima/ar1-faltantes": {
+   "numeros": 452,
+   "resultado": "b92a9a0c1477fb04ca1ccdb3",
+   "reporte": "8433b0b6122fa68f5d110eed"
+  },
+  "arima/ar1-media": {
+   "numeros": 452,
+   "resultado": "b41321700c71d4771f1248d9",
+   "reporte": "aa6b2154d00fb67d270c38d4"
+  },
+  "arima/arima111": {
+   "numeros": 362,
+   "resultado": "03bd989322ab626a4074879d",
+   "reporte": "882237aff2c1f5d8e1413c09"
+  },
+  "arima/arma21-desordenada": {
+   "numeros": 526,
+   "resultado": "67acd98b8ad32bc01d169ee1",
+   "reporte": "eceafca962f1bbb4088d52bf"
+  },
+  "arima/busqueda-aic": {
+   "numeros": 432,
+   "resultado": "c6d1fac1c7f0088457c9d15d",
+   "reporte": "0632801d8a5699d1cbcf6bd1"
+  },
+  "arima/ima11": {
+   "numeros": 390,
+   "resultado": "51d65b358d8e590b1fcf7076",
+   "reporte": "fd10ce0e6c2feeeb15f33df3"
+  },
+  "arima/lago-huron-ar2": {
+   "numeros": 378,
+   "resultado": "6f02d03c0f31c57118352d8d",
+   "reporte": "b404efe6761c3859f575f91c"
+  },
+  "arima/ma2-sin-media": {
+   "numeros": 297,
+   "resultado": "d34b7504215cacb0387064ca",
+   "reporte": "90735937bdcbd5b8a88ffdf7"
+  },
+  "arima/sarima-diferencia-estacional": {
+   "numeros": 394,
+   "resultado": "e10ace0fa1d7fc10fed0764b",
+   "reporte": "9499bb2bbaaaf355c6b747b5"
+  },
+  "comparaciones-medias/metodo-bonferroni-pollos": {
+   "numeros": 146,
+   "resultado": "b8aa5f01ba80a19986d9f68c",
+   "reporte": "9b4f3ae1259750391e7710d6"
+  },
+  "contrastes/metodo-contrastes-plantas": {
+   "numeros": 26,
+   "resultado": "02299ded786ca4df61fcc74a",
+   "reporte": "6a1f718f34db2275332a6555"
+  },
+  "comparaciones-medias/metodo-dms-dosis-en-hibrido": {
+   "numeros": 188,
+   "resultado": "55cc26e172d0e291ec7a42dc",
+   "reporte": "d4f39479a237fd3bf981a00d"
+  },
+  "comparaciones-medias/metodo-dms-protegida-no-significativa": {
+   "numeros": 69,
+   "resultado": "33b4b7a0e928a77ebcfcebf8",
+   "reporte": "397cd47c42bf8af57c11a895"
+  },
+  "comparaciones-medias/metodo-dunnett-bloques": {
+   "numeros": 42,
+   "resultado": "c57c50f43c1289482c81dcff",
+   "reporte": "a232f890fe318a44513f0207"
+  },
+  "medias-ajustadas/metodo-medias-maiz": {
+   "numeros": 16,
+   "resultado": "df360d49f4c2e4b2ae13f21e",
+   "reporte": "4b03e2c84b74fdb96826cae7"
+  },
+  "polinomios/metodo-polinomios-maiz": {
+   "numeros": 49,
+   "resultado": "81af57e210b23bbd195f683e",
+   "reporte": "42fba110ba82905f3eb746cb"
+  },
+  "comparaciones-medias/metodo-tukey-avena-n-en-v": {
+   "numeros": 186,
+   "resultado": "f0ad2387d602ee9b901a3ee3",
+   "reporte": "f389533816d8b4ce187631fb"
+  },
+  "comparaciones-medias/metodo-tukey-maiz": {
+   "numeros": 41,
+   "resultado": "76c081a608bf34dffdbb51ea",
+   "reporte": "de59453466dfa69652848f08"
+  },
+  "mantel-haenszel/metodo-cmh-berkeley": {
+   "numeros": 58,
+   "resultado": "ce9577e8bf9eb48ed6cd8922",
+   "reporte": "cc0ca337a3146d21de32a86e"
+  },
+  "kappa/metodo-kappa-cohen": {
+   "numeros": 26,
+   "resultado": "5a616dc68ad28bb8cf3a46b7",
+   "reporte": "98b65ef199d36e4fba3ad8fd"
+  },
+  "mcnemar/metodo-mcnemar": {
+   "numeros": 17,
+   "resultado": "fd02799d94f1dd811787b3ca",
+   "reporte": "4e556fbacd2c81c92f3a24e6"
+  },
+  "tabla-contingencia/metodo-tabla-gemelos": {
+   "numeros": 87,
+   "resultado": "9af9a9c022d1658e0906a935",
+   "reporte": "ade49c82a8a2cec87b5e27be"
+  },
+  "correlacion/metodo-correlacion-hw": {
+   "numeros": 33,
+   "resultado": "68c37d54c2c7b9f69a6eb8aa",
+   "reporte": "edc00d98516b3f1be3324136"
+  },
+  "matriz-correlacion/metodo-matriz-swiss": {
+   "numeros": 168,
+   "resultado": "6f33db167dca5ce76e2fcfec",
+   "reporte": "f222b203bb8edc63c2c9521c"
+  },
+  "correlacion-parcial/metodo-parcial-swiss": {
+   "numeros": 113,
+   "resultado": "2b284991a7d4b61c2743de9b",
+   "reporte": "215c21b1dac68f25b4308508"
+  },
+  "descriptivos/dientes-dosis-numerica": {
+   "numeros": 204,
+   "resultado": "cf42de6349a37f36ce6262cb",
+   "reporte": "ed296f382d385399bfc3f141"
+  },
+  "descriptivos/erupciones-sin-grupos": {
+   "numeros": 85,
+   "resultado": "eaaac456f001a73a21a12afe",
+   "reporte": "fdea94c6f46527181f144505"
+  },
+  "descriptivos/insectos": {
+   "numeros": 204,
+   "resultado": "46970d5cf9530717557cb0d0",
+   "reporte": "c685e995b080569d503f2e0b"
+  },
+  "descriptivos/npk-tres-factores": {
+   "numeros": 270,
+   "resultado": "e96e24b63ab3bee3ff8c3af1",
+   "reporte": "a80e26618f3dbac33b108124"
+  },
+  "descriptivos/ozono-por-mes": {
+   "numeros": 503,
+   "resultado": "69b3da19204ba826d00591d4",
+   "reporte": "4d2ae5dea5f9406609f3d48e"
+  },
+  "descriptivos/plantas-factor-faltante": {
+   "numeros": 105,
+   "resultado": "1859d0f8a1b09a2672d3e59c",
+   "reporte": "722af93a479c7b9c93e8d696"
+  },
+  "descriptivos/plantas": {
+   "numeros": 113,
+   "resultado": "369c477eacdba6374af59ca2",
+   "reporte": "ac7597fa874fca02d3fe45ad"
+  },
+  "bib/bib-siete": {
+   "numeros": 74,
+   "resultado": "e94ecf82a3024e603c7dba97",
+   "reporte": "3c5f29119b401be2f99c65a7"
+  },
+  "dbca/dbca-factorial-maiz": {
+   "numeros": 172,
+   "resultado": "a2c98a4e17aea86d639ec7b8",
+   "reporte": "f4355c21c58a70cbd89be37b"
+  },
+  "dbca/dbca-generalizado": {
+   "numeros": 64,
+   "resultado": "a1f4b732f88eb54bb39fdf23",
+   "reporte": "6bf928012e74ef5a040a0489"
+  },
+  "dbca/dbca-npk-tipo2": {
+   "numeros": 154,
+   "resultado": "ef0a7baf1a51651fc832d9ee",
+   "reporte": "30ed5d8db54ff236fac137da"
+  },
+  "dbca/dbca-parcelas-perdidas": {
+   "numeros": 60,
+   "resultado": "a42ae08468bc4d50e240798b",
+   "reporte": "f7e7a751e5cb26463e567d41"
+  },
+  "dbca/dbca-variedades": {
+   "numeros": 64,
+   "resultado": "a0e063189536a948a18b15e7",
+   "reporte": "8065ec1da11970c6d31c5828"
+  },
+  "dca/dca-celda-vacia": {
+   "numeros": 121,
+   "resultado": "c224ad73b8fc89583b824c01",
+   "reporte": "92b02aeec145373719bdacff"
+  },
+  "dca/dca-factorial-desbalanceado-tipo1": {
+   "numeros": 133,
+   "resultado": "3f9baa1d5494160763e49794",
+   "reporte": "8e4b0a0d5cd9f2fc01c7ef17"
+  },
+  "dca/dca-factorial-desbalanceado-tipo2": {
+   "numeros": 133,
+   "resultado": "657d6c565fee9e463af0d447",
+   "reporte": "a12ccffd9cdc6733e4534152"
+  },
+  "dca/dca-factorial-desbalanceado-tipo3": {
+   "numeros": 133,
+   "resultado": "9c40123bb23ae11d68c28d75",
+   "reporte": "71a1b08c0b5a5859dd10cc04"
+  },
+  "dca/dca-factorial-dientes": {
+   "numeros": 144,
+   "resultado": "1bc7caf7ce47364cab5fcf94",
+   "reporte": "65573c26dd5c1cd3f3443ff4"
+  },
+  "dca/dca-plantas": {
+   "numeros": 60,
+   "resultado": "7183810312a92c6df460d365",
+   "reporte": "889cb618f90177d51c4f51a4"
+  },
+  "dca/dca-pollos-desbalanceado": {
+   "numeros": 110,
+   "resultado": "09ced2011bfc3ee8950211b3",
+   "reporte": "567b2f70b0d7cc6965f0cca4"
+  },
+  "dca/dca-tres-factores": {
+   "numeros": 204,
+   "resultado": "f62628ad1e2c6972365fd732",
+   "reporte": "681006be00436524b2654ef6"
+  },
+  "parcelas-divididas/divididas-avena": {
+   "numeros": 147,
+   "resultado": "66c2056f662bd26d5f7e995c",
+   "reporte": "ef02032c1319018b5d510a60"
+  },
+  "parcelas-divididas/divididas-dca": {
+   "numeros": 77,
+   "resultado": "5700923279667a06b6121e8c",
+   "reporte": "616c5396cbe96fdae2db5583"
+  },
+  "parcelas-divididas/divididas-latino": {
+   "numeros": 127,
+   "resultado": "789c88a170f42b330974fb02",
+   "reporte": "ac008d3d63c0c07710bc61bf"
+  },
+  "franjas/franjas": {
+   "numeros": 116,
+   "resultado": "89475cb7388015cad8ae680e",
+   "reporte": "cf5d22bb8bed26e53762f614"
+  },
+  "latice/latice-alfa": {
+   "numeros": 103,
+   "resultado": "727b7be5ef1f4b3f5f1d77bb",
+   "reporte": "e191f406e310ec89db2687ae"
+  },
+  "latice/latice-simple": {
+   "numeros": 76,
+   "resultado": "dfefa029f6c85951139773ee",
+   "reporte": "ce6404c38faf1a85b1c1918e"
+  },
+  "cuadro-latino/latino-cinco": {
+   "numeros": 80,
+   "resultado": "c9f4d308f45c19eac82e2813",
+   "reporte": "c8dad5e6ea7dff4612de0bf8"
+  },
+  "cuadro-latino/latino-huertos": {
+   "numeros": 128,
+   "resultado": "033644a3401337e20b1170e7",
+   "reporte": "b96355f3e486ba69b1b8542a"
+  },
+  "parcelas-subdivididas/subdivididas": {
+   "numeros": 124,
+   "resultado": "660049e779661cac3bf65e5c",
+   "reporte": "f7998448d345a67f98476768"
+  },
+  "frecuencias/autos-cambios-numerico": {
+   "numeros": 15,
+   "resultado": "3f0b7fcf6809e5f063b8af3a",
+   "reporte": "4851a0efe091fc88cca1d185"
+  },
+  "frecuencias/autos-cilindros-cambios": {
+   "numeros": 45,
+   "resultado": "972273749926d3d2f2e37c8d",
+   "reporte": "ed4650b67f93751dc6111ed1"
+  },
+  "proporciones/autos-transmision-por-cilindros": {
+   "numeros": 92,
+   "resultado": "9ad7bc7c6a952a1383b9ef98",
+   "reporte": "538bacb7156af05dfcb8c6cf"
+  },
+  "bondad-ajuste/dado-pocos-esperados": {
+   "numeros": 43,
+   "resultado": "c585e17e9bb3a3f5dbf52e84",
+   "reporte": "6db8699b1bca984f0c74943b"
+  },
+  "proporciones/germinacion-por-tratamiento": {
+   "numeros": 47,
+   "resultado": "4604e49561c0f538bb778bec",
+   "reporte": "d04e060d2fdaf4d4e93bd425"
+  },
+  "proporciones/germinacion-total-99": {
+   "numeros": 9,
+   "resultado": "0eb2e0276797e0ca54276620",
+   "reporte": "d73cf778e508b01d1f1e3423"
+  },
+  "bondad-ajuste/mendel-dihibrido": {
+   "numeros": 31,
+   "resultado": "b0c96ec0e304fafeb049dbbe",
+   "reporte": "e0aeaa127eb0fba737d03426"
+  },
+  "bondad-ajuste/mendel-monohibrido": {
+   "numeros": 19,
+   "resultado": "a020697914aa0eaf47aca1f7",
+   "reporte": "0ff5f235971a2518d3e554bd"
+  },
+  "frecuencias/ozono-por-mes-con-faltantes": {
+   "numeros": 92,
+   "resultado": "c6b58ed2d8e0b0f00fc5fda1",
+   "reporte": "f487b31bedb53dffa7b8ae04"
+  },
+  "frecuencias/ozono-por-mes": {
+   "numeros": 71,
+   "resultado": "54efec1e485fe8d86aa5fe7c",
+   "reporte": "9a74733ec52c3a25b6d2e792"
+  },
+  "proporciones/pollos-categorias": {
+   "numeros": 92,
+   "resultado": "3855edff26f59971d7fa9923",
+   "reporte": "765e7bd8a376e30a88a69b8b"
+  },
+  "frecuencias/pollos-con-faltantes-dentro": {
+   "numeros": 31,
+   "resultado": "de775d15b1564bf6664bb4db",
+   "reporte": "ae3e222e20bb8abc1ac28d24"
+  },
+  "frecuencias/pollos-con-faltantes-fuera": {
+   "numeros": 27,
+   "resultado": "9730f1c639bae6f5c5716071",
+   "reporte": "ef5a74fb4222a80fbc55646a"
+  },
+  "bondad-ajuste/pollos-iguales": {
+   "numeros": 43,
+   "resultado": "85cf808af8d418a29ea90afc",
+   "reporte": "d5584e83655dc91d920d0267"
+  },
+  "frecuencias/pollos-una-via": {
+   "numeros": 27,
+   "resultado": "9fe0654bb4413b8b65e70393",
+   "reporte": "f355a32429ca4f685d656863"
+  },
+  "glm-proporciones/bajo-peso-binaria": {
+   "numeros": 1077,
+   "resultado": "73f0d1f515cac0764653f2f6",
+   "reporte": "7a6021a3bcbf7c379abd1c50"
+  },
+  "glm/caracoles-binomial": {
+   "numeros": 483,
+   "resultado": "e35a0e5034ee66efdfd99eab",
+   "reporte": "0b44c403ffe0c66ad5fb52f1"
+  },
+  "glm-gamma/coagulacion-inverso": {
+   "numeros": 150,
+   "resultado": "b9e6eba22d6408336f411f24",
+   "reporte": "975da1ee2a6efd11ea4629a1"
+  },
+  "glm-gamma/coagulacion-perfil": {
+   "numeros": 150,
+   "resultado": "f74a29836d763ddf56d5a3e0",
+   "reporte": "65d6b653e052680230c3f5b4"
+  },
+  "glm/degradacion-canonica": {
+   "numeros": 164,
+   "resultado": "4542b009847e90e9edf111f8",
+   "reporte": "3157c21a04e1eacaa2eaa5f5"
+  },
+  "glm-gamma/dias-germinacion-log": {
+   "numeros": 252,
+   "resultado": "f145fb049af034b6eed13c7f",
+   "reporte": "f5c2bdde62db86768bd70d9f"
+  },
+  "glm/dias-potencia": {
+   "numeros": 175,
+   "resultado": "7a946f5356a36645aff48b70",
+   "reporte": "c29062c46fa3bc0cb1ae42be"
+  },
+  "glm/enfermedad-binaria-firth": {
+   "numeros": 246,
+   "resultado": "f55e2f503a36eb3b40beadb3",
+   "reporte": "b2dbc1655677517f694e9619"
+  },
+  "glm/escarabajos-cloglog": {
+   "numeros": 74,
+   "resultado": "081e1413c58efc06fbdc8a20",
+   "reporte": "f48130c404337d6f6c070b90"
+  },
+  "glm/escarabajos-firth": {
+   "numeros": 81,
+   "resultado": "7b2a3f0adeee9706a9b2a0fa",
+   "reporte": "24747f2e091ed77bcfa85e04"
+  },
+  "glm/escarabajos-perfil": {
+   "numeros": 80,
+   "resultado": "c92815aa5bf80adad9299fc1",
+   "reporte": "1f2d928054824acf3f98ff6d"
+  },
+  "glm-proporciones/escarificacion-firth": {
+   "numeros": 224,
+   "resultado": "f292c485d6da70a77519a73d",
+   "reporte": "a00ad55eff5a6767a82c47bc"
+  },
+  "glm-proporciones/germinacion-automatica": {
+   "numeros": 225,
+   "resultado": "d3fb20d949bc8172dc87e1dd",
+   "reporte": "ba3d5c3dcf32be3c3ebe5688"
+  },
+  "glm-proporciones/germinacion-cuasi-perfil": {
+   "numeros": 223,
+   "resultado": "942f5e8fb7a0675549d9abd6",
+   "reporte": "15dc80f3b77bad58152ae7e0"
+  },
+  "glm-proporciones/germinacion-probit-tipo3": {
+   "numeros": 196,
+   "resultado": "5d69110e29f3021f68658bb7",
+   "reporte": "5136306c4495776b490c42db"
+  },
+  "glm-conteos/insectos-automatica": {
+   "numeros": 551,
+   "resultado": "e293355f6c3b2d5ac674e088",
+   "reporte": "c9fcabc44c62f57f4b846aad"
+  },
+  "glm-conteos/insectos-cuasipoisson": {
+   "numeros": 547,
+   "resultado": "5efdc4d27e40d24d1a9d279b",
+   "reporte": "67be6cc60d9b14ffcb51f8c4"
+  },
+  "glm-conteos/insectos-perfil-nb": {
+   "numeros": 549,
+   "resultado": "39c7581687e4c5fe5848ea7a",
+   "reporte": "3965caa935588517f52d5966"
+  },
+  "glm-conteos/insectos-raiz": {
+   "numeros": 514,
+   "resultado": "6b1461745e26437207cfae05",
+   "reporte": "bdc58d47e3793c0d79269aa8"
+  },
+  "glm-conteos/plantulas-exposicion": {
+   "numeros": 280,
+   "resultado": "41f603d67f3a656ed26985dd",
+   "reporte": "c9e1e4a675f5b4fabe066b76"
+  },
+  "glm/quine-binomial-negativa": {
+   "numeros": 883,
+   "resultado": "b5bf24cfca9d339f040bb971",
+   "reporte": "5a9b9fa518f94504ca4e05bb"
+  },
+  "glm/roturas-cuasipoisson-tipo1": {
+   "numeros": 420,
+   "resultado": "2914375ee4a32c89ca883c7b",
+   "reporte": "7a36e927047c25703c6a2fcb"
+  },
+  "glm-conteos/roturas-poisson-tipo3": {
+   "numeros": 420,
+   "resultado": "5e9854a35cf93d4d3b0eb02f",
+   "reporte": "5ab9be57d8dfe1c3352c6c26"
+  },
+  "glm/seguros-exposicion": {
+   "numeros": 494,
+   "resultado": "9afcca64b3d28a1873707587",
+   "reporte": "f333ef58f8fa1a08716a8bb0"
+  },
+  "glm-conteos/trips-dosis-numericas": {
+   "numeros": 225,
+   "resultado": "d2ca22465613e721b724af23",
+   "reporte": "7d8d3ac585477a0b2d6f02b9"
+  },
+  "glm-gamma/vida-anaquel-inversa": {
+   "numeros": 252,
+   "resultado": "8cb75d545a01fae5daef3860",
+   "reporte": "7b17a2b491c491eb0a8a224a"
+  },
+  "componentes-varianza/alfa-genotipos-fijos": {
+   "numeros": 26,
+   "resultado": "8079679de22f13bd85f1aba4",
+   "reporte": "3f58c5fe464a37b2de109d40"
+  },
+  "heredabilidad/alfa-latice-desbalanceado": {
+   "numeros": 169,
+   "resultado": "14a4eb1dbdcaa57fc9cf8be6",
+   "reporte": "82377d08c173d3fdf3148c9a"
+  },
+  "heredabilidad/alfa-latice": {
+   "numeros": 169,
+   "resultado": "d7b20af9f50a77d7f6da9516",
+   "reporte": "249978a943d622814174e4aa"
+  },
+  "repetibilidad/arboles-cosechas": {
+   "numeros": 96,
+   "resultado": "8ac5ba14906ffc6bf349d490",
+   "reporte": "a47e8d6793729844f12cf3fc"
+  },
+  "heredabilidad/bloques-un-ambiente-menor": {
+   "numeros": 108,
+   "resultado": "d2a35e88212743810964d95e",
+   "reporte": "ba39a4f10f3d20bf09983e83"
+  },
+  "heredabilidad/completamente-al-azar": {
+   "numeros": 103,
+   "resultado": "1c685f2db4b3cb6598b28298",
+   "reporte": "14bf47923335a272eb4497a9"
+  },
+  "componentes-varianza/dyestuff-una-via": {
+   "numeros": 23,
+   "resultado": "fe8387761e2cbee45e381d68",
+   "reporte": "586f6145d2e7a6dd4a6a1ee4"
+  },
+  "componentes-varianza/dyestuff2-frontera": {
+   "numeros": 20,
+   "resultado": "1927036d615e2a16c8be50d4",
+   "reporte": "a19515ff926ae8ddd3725d85"
+  },
+  "repetibilidad/ergostool-tipo-fijo": {
+   "numeros": 63,
+   "resultado": "4cef8d3b6c494f901a69dcab",
+   "reporte": "ba9c7e9adfd78f20c45a8f37"
+  },
+  "componentes-varianza/ge-cruzados-interaccion": {
+   "numeros": 35,
+   "resultado": "65e2c6b881c5525027b45c93",
+   "reporte": "94cf335772b65320525cd0c5"
+  },
+  "heredabilidad/multiambiente-desbalanceado": {
+   "numeros": 114,
+   "resultado": "ece73992fa4e03744ed52b9a",
+   "reporte": "3949243d460474303088124f"
+  },
+  "heredabilidad/multiambiente-varianza-genetica-cero": {
+   "numeros": 111,
+   "resultado": "0f6c2d118a27d2b8b96c1705",
+   "reporte": "e39f8731a768a7a2977c80ea"
+  },
+  "heredabilidad/multiambiente": {
+   "numeros": 99,
+   "resultado": "f51533b500ad49759348e66d",
+   "reporte": "34ef0ec7e5bfc7e351d075df"
+  },
+  "componentes-varianza/pastas-anidados-desbalanceado": {
+   "numeros": 29,
+   "resultado": "010a93dcc720552cc44a6f3e",
+   "reporte": "5d1f38d4db981d828cb986f7"
+  },
+  "componentes-varianza/pastas-anidados": {
+   "numeros": 29,
+   "resultado": "ceac6ec1da17e4a39954e997",
+   "reporte": "71115dcf63baaf0554e6857a"
+  },
+  "componentes-varianza/penicilina-cruzados": {
+   "numeros": 29,
+   "resultado": "5d31d20356a461b136a2a060",
+   "reporte": "4e1911957ffbbc9eda83675b"
+  },
+  "repetibilidad/rieles": {
+   "numeros": 54,
+   "resultado": "6e0e80c4d34cc10b496f775a",
+   "reporte": "2bc7c9e11bd824d062e8f1f1"
+  },
+  "modelo-lineal/metodo-modelo-lineal-co2": {
+   "numeros": 314,
+   "resultado": "64ce2271629cd0ab49a3d289",
+   "reporte": "a05ec6af009e805ca0e50b78"
+  },
+  "muestreo-simple/altura-lote-finito": {
+   "numeros": 17,
+   "resultado": "666a9125bc86b577fcf0be4b",
+   "reporte": "6104cc109c7588a5bd8d2a26"
+  },
+  "muestreo-estratificado/brix-lotes-casi-censo": {
+   "numeros": 45,
+   "resultado": "b3cedd50bfc9ea86a4b8f9ee",
+   "reporte": "5faeb08928fb538c27d30b22"
+  },
+  "tamano-muestra/media-absoluta": {
+   "numeros": 10,
+   "resultado": "84dc348f323e8409eacfe54c",
+   "reporte": "61daffa76083cbc4fa5a209d"
+  },
+  "tamano-muestra/media-cv-poblacion-finita": {
+   "numeros": 10,
+   "resultado": "638100493b77744975b4b443",
+   "reporte": "94e96573d879c6afe311a36e"
+  },
+  "muestreo-simple/peso-poblacion-grande": {
+   "numeros": 12,
+   "resultado": "d51e1f77108cbfebd615d854",
+   "reporte": "2726cffcadd2a84144e5ef13"
+  },
+  "muestreo-estratificado/plagas-cuatro-regiones-asignacion": {
+   "numeros": 55,
+   "resultado": "21e91d2b744c308ab06e10f9",
+   "reporte": "29a2ec928edb47b68dd3d79e"
+  },
+  "tamano-muestra/proporcion-90": {
+   "numeros": 10,
+   "resultado": "7aa0ad8d8f2d33201d230d5b",
+   "reporte": "a4e49cc978c2ee5bdaf4ddc4"
+  },
+  "muestreo-simple/proporcion-enfermos": {
+   "numeros": 17,
+   "resultado": "d4525cbaff05d56ef5a65919",
+   "reporte": "ca0471cc72af2173dc569b3b"
+  },
+  "muestreo-simple/proporcion-explicita": {
+   "numeros": 12,
+   "resultado": "8fbd276d53b62c492bdc513e",
+   "reporte": "af295f8d737479fd7708f7e4"
+  },
+  "tamano-muestra/proporcion-finita-99": {
+   "numeros": 10,
+   "resultado": "4e2a586692a18972294193cd",
+   "reporte": "4992b9f242be2cb4677b5cc2"
+  },
+  "muestreo-estratificado/rendimiento-tres-suelos": {
+   "numeros": 38,
+   "resultado": "1b55fbddf42d0718f1c72202",
+   "reporte": "27dd229aa289e85ac37f1c54"
+  },
+  "ammi/avena-ammi": {
+   "numeros": 697,
+   "resultado": "5e6a822cd2e7d08c381861d8",
+   "reporte": "a1a7e992c0ca3aed262961a2"
+  },
+  "ammi/avena-celdas-vacias-ammi": {
+   "numeros": 703,
+   "resultado": "4ee1ab56ef65e33ad0f9dbab",
+   "reporte": "812b9a771b18ebde420754b0"
+  },
+  "ensayos-multiambiente/avena-celdas-vacias-conjunto": {
+   "numeros": 294,
+   "resultado": "90fef4dae6d65437c0e31c36",
+   "reporte": "51112134a084ef433c1db349"
+  },
+  "estabilidad/avena-celdas-vacias-dos-ejes": {
+   "numeros": 827,
+   "resultado": "3cc33517ead2ea89f69949c7",
+   "reporte": "96439b7ad1c11f900063a9c0"
+  },
+  "ensayos-multiambiente/avena-conjunto": {
+   "numeros": 288,
+   "resultado": "f33c42a30f8a6febb4a2f7e9",
+   "reporte": "04be62998ab5572f4e4ba4e2"
+  },
+  "dos-etapas/avena-dos-etapas-incompleta": {
+   "numeros": 659,
+   "resultado": "17812100c40fe4e7588dd32f",
+   "reporte": "d30c726a0187f6abff49954c"
+  },
+  "dos-etapas/avena-dos-etapas": {
+   "numeros": 671,
+   "resultado": "6e1d7885467bda2d1a0f47c0",
+   "reporte": "98787cd123502d96cb678a59"
+  },
+  "estabilidad/avena-estabilidad-ee-error": {
+   "numeros": 821,
+   "resultado": "f82098eb54e4a474873beb39",
+   "reporte": "40f498cc4ab5f442c89c4b58"
+  },
+  "estabilidad/avena-estabilidad": {
+   "numeros": 821,
+   "resultado": "bd94e1f85b3ab31529756f73",
+   "reporte": "f287465ae9b0ba5635418f45"
+  },
+  "gge/avena-gge-ideal-par": {
+   "numeros": 437,
+   "resultado": "d69ae1dc18144610a7cbbafe",
+   "reporte": "be6abf0e096d024c0a1ffc74"
+  },
+  "gge/avena-gge": {
+   "numeros": 409,
+   "resultado": "34c0e31e63f2b302eccba93b",
+   "reporte": "ac57cb328328d5535c92bdc2"
+  },
+  "estabilidad/avena-parcelas-perdidas-estabilidad": {
+   "numeros": 821,
+   "resultado": "3c4fde5b28e6d96b1489cfd5",
+   "reporte": "5d69fe8e04248eccf3d0ee10"
+  },
+  "ensayos-multiambiente/avena-parcelas-perdidas": {
+   "numeros": 288,
+   "resultado": "879a0ed2c10980c7aba06839",
+   "reporte": "28109521c2dc0a145a3f0f6e"
+  },
+  "ammi/avena-waas-tres-ejes": {
+   "numeros": 697,
+   "resultado": "6f7ed97c8fa35ab012ad8a17",
+   "reporte": "7ecaf61bcdfd3a1a50cb011a"
+  },
+  "estabilidad/maiz-estabilidad-menor": {
+   "numeros": 549,
+   "resultado": "4807ce9edd84a112df8e55d1",
+   "reporte": "e99c492f6d81186b0be63fb8"
+  },
+  "gge/maiz-gge-genotipo-escalado": {
+   "numeros": 231,
+   "resultado": "470e822be09bbf2c5e117229",
+   "reporte": "e287109068502c2177b3bdc0"
+  },
+  "gge/maiz-gge-menor-ambiente": {
+   "numeros": 233,
+   "resultado": "ad60e6cddbeded735a85027a",
+   "reporte": "b643c1e3e41019a62b4ca0c0"
+  },
+  "gge/maiz-gge-par-escalado-menor": {
+   "numeros": 239,
+   "resultado": "36647525d35cc3ed58736e02",
+   "reporte": "4904717b8a0bfe1f9c703d37"
+  },
+  "ammi/maiz-medias-ammi": {
+   "numeros": 231,
+   "resultado": "f01683706602399c42a91fd2",
+   "reporte": "91079ed3e4a5ca1e777df030"
+  },
+  "ensayos-multiambiente/maiz-medias-conjunto": {
+   "numeros": 91,
+   "resultado": "72b5d0e76e1c349f972242b4",
+   "reporte": "76e208f838b7912859a219d6"
+  },
+  "estabilidad/maiz-medias-estabilidad": {
+   "numeros": 558,
+   "resultado": "8714e4adf6be9ec289c305d4",
+   "reporte": "a7f43efd0ff4a81b1cf09213"
+  },
+  "ammi/papa-ammi": {
+   "numeros": 667,
+   "resultado": "4a38e26af23677d2c6053726",
+   "reporte": "75db9cea94f3ee79746a4744"
+  },
+  "dos-etapas/papa-dos-etapas": {
+   "numeros": 797,
+   "resultado": "5c45569e09ae6151f94bec87",
+   "reporte": "053f1c3689135dc26a6e680f"
+  },
+  "estabilidad/papa-estabilidad": {
+   "numeros": 1571,
+   "resultado": "e3300e0e656443df8a37159f",
+   "reporte": "d0ff80c2770a56e313977f59"
+  },
+  "discriminante/cuatro-regiones": {
+   "numeros": 634,
+   "resultado": "dd0dd4aa176a99b0097ab6aa",
+   "reporte": "f93f9139d480263ce88289f2"
+  },
+  "manova/cuatro-respuestas": {
+   "numeros": 100,
+   "resultado": "13f3c4daf795539f5758f068",
+   "reporte": "4ec385b8f6f11aa421827dd8"
+  },
+  "discriminante/dos-origenes": {
+   "numeros": 263,
+   "resultado": "b389cd4ca675c0b21ed27e0d",
+   "reporte": "3ea4af1f731287ed033b7230"
+  },
+  "manova/factorial-desbalanceado": {
+   "numeros": 130,
+   "resultado": "abd1d06d0f29394cecaf7541",
+   "reporte": "36cdb1b15399080c8369ab8d"
+  },
+  "discriminante/grupo-chico-box": {
+   "numeros": 589,
+   "resultado": "70c713b51e51710f55ea0766",
+   "reporte": "49e40efadcfeaf5a12740d4e"
+  },
+  "discriminante/iris-fisher": {
+   "numeros": 1868,
+   "resultado": "c7b53ce4a50f0887f8d92c50",
+   "reporte": "3e0e3c6f6b2a224dccc2d7c5"
+  },
+  "manova/iris-manova": {
+   "numeros": 94,
+   "resultado": "982dedce4b62adc8d411d40a",
+   "reporte": "1d6daa27fa589331f2c1929b"
+  },
+  "manova/maiz-bloques": {
+   "numeros": 113,
+   "resultado": "5f8d705dc4d7d993ac87b179",
+   "reporte": "6a912def69e05d37ab8293d0"
+  },
+  "friedman/metodo-friedman-campo": {
+   "numeros": 114,
+   "resultado": "816fb719fd35c31bd947725a",
+   "reporte": "40cf94b950fd763a93793d6b"
+  },
+  "friedman/metodo-friedman-catas": {
+   "numeros": 93,
+   "resultado": "e66d0fa2658731bafd77b392",
+   "reporte": "8208110bb2ed29b2527d8212"
+  },
+  "friedman/metodo-friedman-redondeo": {
+   "numeros": 106,
+   "resultado": "84e74cf24485be218434b3b5",
+   "reporte": "3d67dd09964fdd68275f38ba"
+  },
+  "kruskal-wallis/metodo-kruskal-insectos": {
+   "numeros": 207,
+   "resultado": "9e758ac84a42ff2ff07f2d0b",
+   "reporte": "b10593d770df4f06dc93d34a"
+  },
+  "kruskal-wallis/metodo-kruskal-plantas": {
+   "numeros": 74,
+   "resultado": "796b2c6b6ecb841103ab997e",
+   "reporte": "cf41811c445ffaf65ec30bea"
+  },
+  "kruskal-wallis/metodo-kruskal-pollos": {
+   "numeros": 205,
+   "resultado": "002d75f119e5c755ed765cf5",
+   "reporte": "8e28f2333bafa72809af6ae9"
+  },
+  "wilcoxon/metodo-wilcoxon-dos": {
+   "numeros": 41,
+   "resultado": "2e1bb71b5aaf499c5a465a89",
+   "reporte": "5cc18050612890b9fa48b962"
+  },
+  "wilcoxon/metodo-wilcoxon-pareada": {
+   "numeros": 36,
+   "resultado": "c93325b0eb84b27a9136c6e4",
+   "reporte": "426cd12be0880c0dab1e8fcb"
+  },
+  "wilcoxon/metodo-wilcoxon-una": {
+   "numeros": 134,
+   "resultado": "cfae5d91bd1cf1560013dfa1",
+   "reporte": "db2e63402abcfadd0815b0c7"
+  },
+  "curva-crecimiento/dnasa-gompertz": {
+   "numeros": 343,
+   "resultado": "ac749a3d896f243e80e80ed0",
+   "reporte": "b68717427ba6221a077df751"
+  },
+  "dosis-respuesta/germinacion-pesos-perfil": {
+   "numeros": 404,
+   "resultado": "4a936bb3419c3f8068afbb82",
+   "reporte": "9312b9162b5ca79afb14adda"
+  },
+  "dosis-respuesta/herbicidas-ll4": {
+   "numeros": 876,
+   "resultado": "90fcfeac7c3193d65fe5e8e5",
+   "reporte": "049e73c3fc1e43c2e5c327b9"
+  },
+  "dosis-respuesta/lechuga-aic": {
+   "numeros": 378,
+   "resultado": "1cf19cfa6309ba43b2083c79",
+   "reporte": "e88ca7a5eb842d8d10bb1066"
+  },
+  "dosis-respuesta/lechuga-bc4-perfil": {
+   "numeros": 350,
+   "resultado": "14b3be746c88ddbdb4bc241d",
+   "reporte": "9a265da548e2a751950b4f73"
+  },
+  "dosis-respuesta/lechuga-bc5": {
+   "numeros": 357,
+   "resultado": "042267ed29f705becc08190a",
+   "reporte": "48a2b5266727da808c3b2c12"
+  },
+  "respuesta-meseta/maiz-cuadratico-meseta": {
+   "numeros": 869,
+   "resultado": "13e69adc328675c0b0e7f8c2",
+   "reporte": "412b0903c0a843dbcb17f7c4"
+  },
+  "respuesta-meseta/maiz-lineal-meseta-una": {
+   "numeros": 391,
+   "resultado": "73cfb487e39a72476323046d",
+   "reporte": "f88dbbe10d282195b6f20735"
+  },
+  "respuesta-meseta/maiz-lineal-meseta": {
+   "numeros": 861,
+   "resultado": "f774bf34703b0b27ed2fcdd7",
+   "reporte": "3c3bba3b5ce24ea1e1104737"
+  },
+  "curva-crecimiento/naranjos-logistico": {
+   "numeros": 415,
+   "resultado": "b4034a84793abd474fffe29d",
+   "reporte": "f1490bfb63275bbb6bc73819"
+  },
+  "curva-crecimiento/naranjos-por-arbol": {
+   "numeros": 1518,
+   "resultado": "123b427d04ad1c418534a0ce",
+   "reporte": "222366a852d468b9162a69a4"
+  },
+  "respuesta-meseta/pino-mitscherlich": {
+   "numeros": 299,
+   "resultado": "a46f712401ac429282baa51c",
+   "reporte": "d15ddfda63a641f786d5fc58"
+  },
+  "curva-crecimiento/pollo-weibull": {
+   "numeros": 326,
+   "resultado": "692bea9be2332b12f8513492",
+   "reporte": "a60be5135c55660ffe086326"
+  },
+  "respuesta-meseta/puromicina-aic": {
+   "numeros": 358,
+   "resultado": "974c84f9ff4985b6f2f3e8c3",
+   "reporte": "9e52691af76994fb2b5ac940"
+  },
+  "respuesta-meseta/puromicina-mm2-perfil": {
+   "numeros": 327,
+   "resultado": "84f75171559a0667b6d8d7d8",
+   "reporte": "48e89160d923d877c0ee4ba2"
+  },
+  "respuesta-meseta/puromicina-mm3-estados": {
+   "numeros": 669,
+   "resultado": "608caa7833a08f786c03d299",
+   "reporte": "f5d9c8f0f1d2a5485e14a384"
+  },
+  "dosis-respuesta/toxico-ll3": {
+   "numeros": 363,
+   "resultado": "fe833f79f37be5674a501843",
+   "reporte": "7d5e764f368333c08dca3a31"
+  },
+  "respuesta-meseta/trigo-mitscherlich-economica": {
+   "numeros": 426,
+   "resultado": "0e3ae9cf0ce0b1d0b2a15e96",
+   "reporte": "0d17276fa4d22b02b9108035"
+  },
+  "potencia-anova/anova-medias-n": {
+   "numeros": 30,
+   "resultado": "314136d83ce3472649738546",
+   "reporte": "7cfd400f1af88148a4c07b50"
+  },
+  "potencia-anova/anova-potencia": {
+   "numeros": 26,
+   "resultado": "85a358a15d33fa94cf0206f4",
+   "reporte": "df1307d80b12c941384fd46c"
+  },
+  "potencia-anova/anova-varianza-detectable": {
+   "numeros": 30,
+   "resultado": "747e46337f67b3b120d6b0a8",
+   "reporte": "a7172b9c7e66faf3b787112e"
+  },
+  "potencia-proporciones/prop-n": {
+   "numeros": 118,
+   "resultado": "bb4e812dcfe5c5f3be1b61e0",
+   "reporte": "ef5bf383481dca7cb616b46f"
+  },
+  "potencia-proporciones/prop-potencia-unilateral": {
+   "numeros": 126,
+   "resultado": "16edac62286fcb61eb90a8ca",
+   "reporte": "f0c69941740e5a1e4adbb2e3"
+  },
+  "potencia-correlacion/r-detectable": {
+   "numeros": 80,
+   "resultado": "1673a5f07b1e94d38213b4ca",
+   "reporte": "3e05878fb490c0292fb3c428"
+  },
+  "potencia-correlacion/r-n": {
+   "numeros": 122,
+   "resultado": "daf9cbb45f0ca0b235763cbd",
+   "reporte": "3ec88a5362e8281a3da04c87"
+  },
+  "potencia-correlacion/r-potencia-unilateral": {
+   "numeros": 96,
+   "resultado": "341aeaa03a7ee9ca9794f098",
+   "reporte": "d918a06fb88e6e3620e713f2"
+  },
+  "repeticiones/repeticiones-bloques": {
+   "numeros": 60,
+   "resultado": "bae47274d84ce8cddc0642de",
+   "reporte": "100da61c975e16bf8d01f9b6"
+  },
+  "repeticiones/repeticiones-dca-potencia-alta": {
+   "numeros": 75,
+   "resultado": "962a5b4c224761486b393ad9",
+   "reporte": "93f81bedb577ecf87dd2239d"
+  },
+  "potencia-medias/t-dos-muestras-n": {
+   "numeros": 69,
+   "resultado": "6af7c982fb8b439394808949",
+   "reporte": "cf3f4bc284ab89736e847083"
+  },
+  "potencia-medias/t-dos-muestras-unilateral-n": {
+   "numeros": 71,
+   "resultado": "9898ef4e9069095f0f610bd5",
+   "reporte": "133d2a95a2688b8f06633f10"
+  },
+  "potencia-medias/t-pareada-potencia": {
+   "numeros": 51,
+   "resultado": "c5139b8ca6d832cc27122b71",
+   "reporte": "afaeabb15d3a2340d9e044fe"
+  },
+  "potencia-medias/t-una-muestra-diferencia": {
+   "numeros": 83,
+   "resultado": "08236afc0c7808bf40905410",
+   "reporte": "db359eb744062d17b714129e"
+  },
+  "prueba-t/metodo-dos-plantas": {
+   "numeros": 74,
+   "resultado": "234a974d59e890032f0a9ceb",
+   "reporte": "3528d1f12603f3cd0cdf3d8e"
+  },
+  "prueba-t/metodo-niveles-elegidos": {
+   "numeros": 74,
+   "resultado": "5c3e92a9ae6cd75509d14bb3",
+   "reporte": "ac4217e310a48c9df77ce72b"
+  },
+  "prueba-t/metodo-pareada": {
+   "numeros": 43,
+   "resultado": "58f24f9f8c10712ef472eec7",
+   "reporte": "df036c20b4a93c073ababfff"
+  },
+  "prueba-t/metodo-una": {
+   "numeros": 142,
+   "resultado": "b423cfd72a6922e1e9ac66fc",
+   "reporte": "5485fdbcc5b5d9bd222642a1"
+  },
+  "seleccion-pasos/metodo-pasos-swiss": {
+   "numeros": 36,
+   "resultado": "d178507f5e01992d9c1555fb",
+   "reporte": "28fde6c1d06534ef4606a47f"
+  },
+  "regresion-polinomial/metodo-polinomial-dosis": {
+   "numeros": 1158,
+   "resultado": "5142a5937c259d9caa2a1d01",
+   "reporte": "3e2717ccfc7c75a834ac6d84"
+  },
+  "regresion-lineal/metodo-regresion-stackloss": {
+   "numeros": 446,
+   "resultado": "955f0d1c632b5b6449d2e4f3",
+   "reporte": "8f28ea974ef5c6e5ff09fe30"
+  },
+  "mejores-subconjuntos/metodo-subconjuntos-mtcars": {
+   "numeros": 76,
+   "resultado": "3a961239aef7204216dfe039",
+   "reporte": "6f73ea140a261e65ba056c19"
+  },
+  "autocorrelacion/ar1-acf": {
+   "numeros": 143,
+   "resultado": "f832d8572eda3bb42e750168",
+   "reporte": "0bc70aabc056e1da292461a7"
+  },
+  "autocorrelacion/lluvia-acf": {
+   "numeros": 191,
+   "resultado": "4989a4bf51d96f26826c057a",
+   "reporte": "44ea5fa914446820b4c09a8c"
+  },
+  "descomposicion/lluvia-aditiva": {
+   "numeros": 375,
+   "resultado": "26e05832fdceff449d36439f",
+   "reporte": "c6019f05da217b0fb8dfe90f"
+  },
+  "tendencia/lluvia-tendencia": {
+   "numeros": 155,
+   "resultado": "1dc8b92cee568fc55129695e",
+   "reporte": "777d103f1614ec27dfe3c57c"
+  },
+  "tendencia/rendimiento-anual-90": {
+   "numeros": 57,
+   "resultado": "d918c195bdcf995fe79d57c3",
+   "reporte": "06f5631433e388286d1480a4"
+  },
+  "tendencia/rendimiento-anual-empates": {
+   "numeros": 57,
+   "resultado": "5c0e7d81b400ef389ef0e21e",
+   "reporte": "5ae57ca33ada22ab7a16ad4c"
+  },
+  "autocorrelacion/ruido-blanco": {
+   "numeros": 143,
+   "resultado": "33c343e71d37bea7febfb65a",
+   "reporte": "64d6fd257a25c75a282f3d70"
+  },
+  "autocorrelacion/semilla-acf-ordenada": {
+   "numeros": 83,
+   "resultado": "8cc1a09e90aea158c351e45c",
+   "reporte": "cfbe62a5960f01bccaff9f2e"
+  },
+  "descomposicion/semilla-multiplicativa": {
+   "numeros": 147,
+   "resultado": "328784cd5b2672b6204325c6",
+   "reporte": "a6a86b7cf4fb87da6c10a542"
+  },
+  "descomposicion/trampa-frecuencia-7": {
+   "numeros": 185,
+   "resultado": "4ff80bcbd0f1a0f9121f0ee0",
+   "reporte": "c6ea33a15f36b340aa2580a7"
+  },
+  "tendencia/trampa-sin-tendencia": {
+   "numeros": 81,
+   "resultado": "cfc63a0b4958b82230ea10e5",
+   "reporte": "8c5dad93e71d74d9b8c7d7d8"
+  },
+  "ascenso-pronunciado/ascenso-factorial-centros": {
+   "numeros": 189,
+   "resultado": "d34735621b6a3dd1994c3191",
+   "reporte": "9a9979f00edfefc04c03acae"
+  },
+  "diseno-superficie/bbd-cinco": {
+   "numeros": 324,
+   "resultado": "3e53e26c7f07824b63f27d35",
+   "reporte": "10c713c9664cd89e88865447"
+  },
+  "diseno-superficie/bbd-cuatro": {
+   "numeros": 170,
+   "resultado": "9f4412277eff28a19d7b5d76",
+   "reporte": "232821c7a70c21e34d457ee6"
+  },
+  "diseno-superficie/bbd-tres": {
+   "numeros": 77,
+   "resultado": "bb0d742acab3a067271aacb1",
+   "reporte": "fba734bf8d3a7b6966e22188"
+  },
+  "superficie-respuesta/biomasa-factorial-sin-error-puro": {
+   "numeros": 201,
+   "resultado": "03ad54bb3916af6e9cd59712",
+   "reporte": "d81b9f8f808f12aaa6267c1a"
+  },
+  "superficie-respuesta/cafe-cara-centrada-cuatro": {
+   "numeros": 515,
+   "resultado": "556a9d5a074ab74b6301cb98",
+   "reporte": "a216e9aa5c2643c8a2181be7"
+  },
+  "diseno-superficie/ccd-bloques-tres": {
+   "numeros": 103,
+   "resultado": "eaba6b5f9710d5f677cbc9e0",
+   "reporte": "d4f8b47e2a3cbc95f65d5d3c"
+  },
+  "diseno-superficie/ccd-caras-cuatro": {
+   "numeros": 165,
+   "resultado": "2d99af868eb2f4ff368ef6cd",
+   "reporte": "88110021d8bdade5b58e9aef"
+  },
+  "diseno-superficie/ccd-media-fraccion-cinco": {
+   "numeros": 227,
+   "resultado": "cdce16cee89a0ebaa529521d",
+   "reporte": "bc3628c1077ec3c1211d19c4"
+  },
+  "diseno-superficie/ccd-ortogonal-tres": {
+   "numeros": 103,
+   "resultado": "87621857ba351980d584531a",
+   "reporte": "d8e7e14e01f3735a11c56292"
+  },
+  "diseno-superficie/ccd-rotable-dos": {
+   "numeros": 55,
+   "resultado": "5358b9d457bc0627ed940afd",
+   "reporte": "fcccd25d1bf2224894492640"
+  },
+  "diseno-superficie/ccd-seis": {
+   "numeros": 427,
+   "resultado": "2126f2b307bfee66565258ae",
+   "reporte": "8b2c7b1b6a1b62da9eefb464"
+  },
+  "diseno-superficie/centroide-cuatro": {
+   "numeros": 153,
+   "resultado": "dda9c0177d869cbfc48138e9",
+   "reporte": "ccd4ca0a569380c4c1a9b0d3"
+  },
+  "diseno-superficie/centroide-tres": {
+   "numeros": 75,
+   "resultado": "e351399ce60063ae57a39632",
+   "reporte": "809544a18ee17d29353711de"
+  },
+  "mezclas/cuatro-componentes-minimo": {
+   "numeros": 192,
+   "resultado": "551f406bc4ab34c16ca1024f",
+   "reporte": "8ee3cd257b28e96c132f91ee"
+  },
+  "ascenso-pronunciado/descenso-factorial-centros": {
+   "numeros": 189,
+   "resultado": "17ab615553baf57c5640bed2",
+   "reporte": "691993f0524b57f83c46cc9f"
+  },
+  "superficie-respuesta/factorial-interacciones": {
+   "numeros": 260,
+   "resultado": "96f17876c63bbd7dfbb3f0cf",
+   "reporte": "c06488a2e7ef6b78c65efa4f"
+  },
+  "diseno-superficie/factorial-tres-centros": {
+   "numeros": 62,
+   "resultado": "b1bd9cc5aee99d98fe44f01c",
+   "reporte": "ecb945739f72184fc5690ad8"
+  },
+  "deseabilidad/fruto-importancias-esfera": {
+   "numeros": 169,
+   "resultado": "5b4fa89258a806e08b675aca",
+   "reporte": "782c9cc753ef1a9bb879ba6e"
+  },
+  "deseabilidad/fruto-tres-respuestas": {
+   "numeros": 169,
+   "resultado": "495f65824d0ce4adba11e179",
+   "reporte": "55fcc13f0b18d49302b91c8d"
+  },
+  "superficie-respuesta/germinacion-bbd-cresta-minima": {
+   "numeros": 324,
+   "resultado": "a95ee355944d4e8ad438b08c",
+   "reporte": "666fe4d1154344a8f4d47e90"
+  },
+  "superficie-respuesta/germinacion-bbd-silla": {
+   "numeros": 324,
+   "resultado": "d91eb4b48c8915427e68713a",
+   "reporte": "8064b40529def20401f9c0ab"
+  },
+  "mezclas/hilo-cuadratico": {
+   "numeros": 153,
+   "resultado": "31e2e0c48bf58b0f5bc3eb47",
+   "reporte": "04a2988938f240316c784cb3"
+  },
+  "mezclas/hilo-lineal": {
+   "numeros": 149,
+   "resultado": "79d64b3ec6eb73e6204a3315",
+   "reporte": "e5f631853aa2d13caf05d5f3"
+  },
+  "mezclas/hilo-minimo": {
+   "numeros": 153,
+   "resultado": "26e51b798fafddb94067f69b",
+   "reporte": "bbbd34e7954e46d86cd8166b"
+  },
+  "diseno-superficie/latice-cuatro-tres": {
+   "numeros": 203,
+   "resultado": "babc33f0115a79c4520f35dc",
+   "reporte": "55c69ac82305e88ed722b4d7"
+  },
+  "diseno-superficie/latice-tres-dos": {
+   "numeros": 59,
+   "resultado": "35970914008f4a4f5a17e421",
+   "reporte": "9697eafa4bf1fdc6e313f8a3"
+  },
+  "superficie-respuesta/maiz-ccd-bloques": {
+   "numeros": 249,
+   "resultado": "ca507582c2e04dfc1150598a",
+   "reporte": "26a86032244d8aebbc8b9eab"
+  },
+  "superficie-respuesta/maiz-ccd-maximo": {
+   "numeros": 235,
+   "resultado": "54199059a4e7f33670142441",
+   "reporte": "697850200669857af644ee8f"
+  },
+  "superficie-respuesta/maiz-codificacion-a-mano": {
+   "numeros": 228,
+   "resultado": "f261b5c6dc7c53e898c1203f",
+   "reporte": "3d5b3fa2813b6ff120870283"
+  },
+  "superficie-respuesta/severidad-ccd3-minimo": {
+   "numeros": 363,
+   "resultado": "889c35f467a91e175c965690",
+   "reporte": "d051cddbed5636068d8d644f"
+  },
+  "mezclas/sustrato-cubico-especial": {
+   "numeros": 130,
+   "resultado": "b08a197eb9be6b51485a62f3",
+   "reporte": "69204de2d692a55aa0926cc3"
+  },
+  "cox/bioensayo-cox-breslow-90": {
+   "numeros": 224,
+   "resultado": "9e3e008b2d3e0759aee6562b",
+   "reporte": "99bbb8940e503eccdb8bc680"
+  },
+  "cox/bioensayo-cox-factor-covariable": {
+   "numeros": 224,
+   "resultado": "ea1a45668b3abfa3293d9734",
+   "reporte": "16f74fab99a964cde2d71749"
+  },
+  "kaplan-meier/bioensayo-tres-grupos": {
+   "numeros": 497,
+   "resultado": "eaba443965e815edc5b0c6d6",
+   "reporte": "9ecd546579fc6caf2a3881fb"
+  },
+  "cox/germinacion-cox-breslow": {
+   "numeros": 312,
+   "resultado": "02ed7cf3300da002ab9977bc",
+   "reporte": "4aec4f1129b5a4cb1c22d664"
+  },
+  "cox/germinacion-cox-efron": {
+   "numeros": 312,
+   "resultado": "784eeec928471d940f8a6aed",
+   "reporte": "7463f262e5e1f50bdde0e0d5"
+  },
+  "kaplan-meier/germinacion-log-log-peto": {
+   "numeros": 369,
+   "resultado": "4090b9b28eb196242e3cac4f",
+   "reporte": "235e93332b7c25260974095e"
+  },
+  "kaplan-meier/germinacion-log-rank": {
+   "numeros": 369,
+   "resultado": "52b84ba52d4fc1964a430c0b",
+   "reporte": "387540068293a0f597f6980b"
+  },
+  "cox/lotes-cox-estratos-covariable-breslow": {
+   "numeros": 371,
+   "resultado": "3b5e396395f0e1845803e02c",
+   "reporte": "66d7b6e26ea945274d1e5494"
+  },
+  "cox/lotes-cox-estratos": {
+   "numeros": 360,
+   "resultado": "a4564654790c71837b58d3c2",
+   "reporte": "b4342214c709723e0f0e5e64"
+  },
+  "kaplan-meier/lotes-log-rank-estratificado": {
+   "numeros": 345,
+   "resultado": "c81de7f4c2b12e824060e45b",
+   "reporte": "ef74aedf57223e5a69b01e3c"
+  },
+  "kaplan-meier/lotes-peto-estratificado": {
+   "numeros": 345,
+   "resultado": "47ecc3a026e8f94b27426e7e",
+   "reporte": "f468126fd52600a57edc2ab6"
+  },
+  "kaplan-meier/mediana-punto-medio": {
+   "numeros": 63,
+   "resultado": "42499640d1e16a42f645eb91",
+   "reporte": "5b8d8578eeba0eab3c5bdf54"
+  },
+  "kaplan-meier/una-curva-plain-hasta-cero": {
+   "numeros": 95,
+   "resultado": "2afd1aa98b763aeb9a5dbca5",
+   "reporte": "ceae1396f0e9743514c82675"
+  },
+  "cox/vivero-dos-covariables": {
+   "numeros": 285,
+   "resultado": "c16815c8a1417441e25e0aba",
+   "reporte": "87cfc7d474274f61ae4f14d7"
+  },
+  "supuestos/metodo-insectos": {
+   "numeros": 718,
+   "resultado": "7d82e29d1ec1a265711400a3",
+   "reporte": "0233c5ba664303bd90375c55"
+  },
+  "supuestos/metodo-maiz": {
+   "numeros": 522,
+   "resultado": "20e1003f1b7c18278d7ca579",
+   "reporte": "e0b7f68cb745bea9a4cd786b"
+  },
+  "supuestos/metodo-ozono-ordenado": {
+   "numeros": 1116,
+   "resultado": "911058ef56d8325ab2fa16e3",
+   "reporte": "df58ebb0e53797b5b9298c43"
+  },
+  "supuestos/metodo-plantas": {
+   "numeros": 334,
+   "resultado": "ccd66e86d5b1de84f148296f",
+   "reporte": "d5d849ba1a0fafcc657649e2"
+  },
+  "supuestos/metodo-roturas": {
+   "numeros": 560,
+   "resultado": "6f1308e18d5b0a0a8e679222",
+   "reporte": "dcd6d4e4b7840e0be79ad58f"
+  },
+  "supuestos/metodo-una-muestra": {
+   "numeros": 2093,
+   "resultado": "8a92ccaafcb6042650faef09",
+   "reporte": "79ee46f6b096640167791dd5"
+  },
+  "supuestos/metodo-venenos": {
+   "numeros": 518,
+   "resultado": "f3f5f181c37c2b8a31afb185",
+   "reporte": "ed1fe18edca32037f022926e"
+  }
+ }
+}

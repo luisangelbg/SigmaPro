@@ -23,7 +23,7 @@
   'use strict';
 
   const SP = raiz.SP || (raiz.SP = {});
-  SP.VERSION = '0.4.2';
+  SP.VERSION = '0.4.3';
   SP._base = sigmaproBase;            // para reconstruir el núcleo en un hilo
   SP.fabricas = SP.fabricas || [];    // [[nombre, fábrica]] en orden de carga
 
@@ -49,9 +49,17 @@
     if (s === es && es.indexOf('@@') > 0) s = es.slice(0, es.indexOf('@@'));
     if (cat && s === es && SP.T.faltantes && !Object.prototype.hasOwnProperty.call(cat, es)) SP.T.faltantes.add(es);   // tests/idioma.mjs
     if (vars) s = s.replace(/\{(\w+)\}/g, (m, k) => (Object.prototype.hasOwnProperty.call(vars, k) ? String(vars[k]) : m));
+    /* con la interfaz traducida, de qué texto en español salió cada texto corto (títulos de columna, nombres de
+       medidas): el registro de estadísticos (guias.js) los reconoce en español */
+    if (cat && s.length <= 80) {
+      let o = es.indexOf('@@') > 0 ? es.slice(0, es.indexOf('@@')) : es;
+      if (vars) o = o.replace(/\{(\w+)\}/g, (m, k) => (Object.prototype.hasOwnProperty.call(vars, k) ? String(vars[k]) : m));
+      if (o !== s) { if (SP.T.origen.size > 50000) SP.T.origen.clear(); SP.T.origen.set(s, o); }
+    }
     return s;
   };
   SP.T.catalogo = raiz.SP_CATALOGO || null;
+  SP.T.origen = new Map();
   /** Un nombre (columna, nivel) entre comillas: «x» en español, “x” en inglés. */
   SP.comillas = x => SP.T('«{c}»', { c: x });
   /** El idioma de la interfaz ('es' | 'en') y el formato local de fechas y números. */

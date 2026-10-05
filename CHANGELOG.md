@@ -2,6 +2,25 @@
 
 ## Sin publicar
 
+### 0.4.3 · Intro, logo σ e inventario de estadísticos (4 oct 2026)
+
+- **Secuencia de apertura** (`js/intro.js`, `css/intro.css`, ≈ 39 KB, sin imágenes, fuentes ni bibliotecas): un punto
+  dorado, la constelación de letras griegas de la estadística con paralaje, el logo que se traza y se llena como metal
+  líquido, un destello y una onda, «SigmaPro» letra por letra y el isotipo LABG. A los 5.6 s se queda fija, con
+  destellos en el logo y el botón **Start** (negro con vivos dorados) que lleva a la app: el logo y el isotipo viajan a
+  su lugar en el encabezado y el fondo se abre en iris. La completa la primera vez, una corta (1.5 s) después; nada en
+  recargas de la misma pestaña; Esc o «Saltar»; con «reducir movimiento», la escena quieta. Inicio → «Acerca de
+  SigmaPro»: ver la intro, pantalla de presentación en bucle (para clase o un stand) y desactivarla. Animada en el
+  compositor: no se traba mientras cargan los scripts. Guion, tiempos y constantes en `docs/intro.md`; prueba
+  `tests/intro.mjs` (en la batería).
+- **Logo nuevo**: la σ minúscula con serifas en oro sobre el cuadro negro, en el encabezado, el favicon y
+  `iconos/` (SVG y PNG de 192 y 512).
+- **Fase 5, Hito 5.0** (plan en `propuesta/FASE5.md`): registro de estadísticos `js/nucleo/guias.js` (119 fichas con
+  nombre, símbolo, grupo, qué es y los títulos con que aparece; `SP.guias.buscar` también con la interfaz en inglés,
+  gracias a `SP.T.origen`); `tools/inventario/inventario.mjs` corre los casos en los dos idiomas y escribe
+  `docs/inventario-estadisticos.md` (78 análisis; ≈ 80 % de las columnas de estadísticos ya con ficha);
+  `tests/regresion.mjs` fija la huella de los resultados (70 474 números de 272 casos) y de los reportes.
+
 ### 0.4.2 · Ilustraciones en el catálogo y temas de las gráficas (4 oct 2026)
 
 - **Ilustraciones del catálogo**: cada uno de los 78 análisis tiene su miniatura vectorial propia

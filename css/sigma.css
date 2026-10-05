@@ -31,12 +31,13 @@ main { max-width: var(--content-max); margin: 0 auto; padding: var(--sp-5) var(-
 @media (max-width: 700px) { main { padding-inline: var(--sp-4); } }
 h1, h2, h3 { letter-spacing: -0.015em; }
 
-/* marca: Σ dorada sobre negro */
+/* marca: σ dorada con serifas sobre negro (el mismo dibujo que iconos/sigmapro.svg y la intro) */
 .brand-mark {
-  width: 28px; height: 28px; display: inline-grid; place-items: center; flex: none;
+  width: 28px; height: 28px; display: inline-grid; place-items: center; flex: none; overflow: hidden;
   border-radius: 8px; background: #111; color: #D4A848; border: 1px solid rgba(212, 168, 72, .55);
-  font-weight: 800; font-size: 19px; line-height: 1; margin-right: 8px;
+  line-height: 1; margin-right: 8px;
 }
+.brand-mark svg { width: 100%; height: 100%; display: block; }
 .brand { font-weight: 800; }
 
 /* ================= estructura de cada bloque ================= */
