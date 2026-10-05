@@ -94,6 +94,10 @@ SP.definir('informe', function (SP) {
     falconer1996: () => 'Falconer, D. S. y Mackay, T. F. C. (1996). Introduction to quantitative genetics (4.ª ed.). Longman.',
     cruz2012: () => 'Cruz, C. D., Regazzi, A. J. y Carneiro, P. C. S. (2012). Modelos biométricos aplicados ao melhoramento genético (4.ª ed., vol. 1). Editora UFV.',
     nelder1972: () => 'Nelder, J. A. y Wedderburn, R. W. M. (1972). Generalized linear models. Journal of the Royal Statistical Society A, 135(3), 370–384.',
+    firth1993: () => 'Firth, D. (1993). Bias reduction of maximum likelihood estimates. Biometrika, 80(1), 27–38.',
+    heinze2002: () => 'Heinze, G. y Schemper, M. (2002). A solution to the problem of separation in logistic regression. Statistics in Medicine, 21(16), 2409–2419.',
+    venzon1988: () => 'Venzon, D. J. y Moolgavkar, S. H. (1988). A method for computing profile-likelihood-based confidence intervals. Journal of the Royal Statistical Society C (Applied Statistics), 37(1), 87–94.',
+    pinheiro1995: () => 'Pinheiro, J. C. y Bates, D. M. (1995). Approximations to the log-likelihood function in the nonlinear mixed-effects model. Journal of Computational and Graphical Statistics, 4(1), 12–35.',
     mccullagh1989: () => 'McCullagh, P. y Nelder, J. A. (1989). Generalized linear models (2.ª ed.). Chapman and Hall.',
     venables2002: () => 'Venables, W. N. y Ripley, B. D. (2002). Modern applied statistics with S (4.ª ed.). Springer.',
     wedderburn1974: () => 'Wedderburn, R. W. M. (1974). Quasi-likelihood functions, generalized linear models, and the Gauss-Newton method. Biometrika, 61(3), 439–447.',
@@ -196,6 +200,7 @@ SP.definir('informe', function (SP) {
     henderson1975: 'Henderson, 1975', gilmour1995: 'Gilmour et al., 1995', self1987: 'Self y Liang, 1987', holland2003: 'Holland et al., 2003',
     cullis2006: 'Cullis et al., 2006', piepho2007: 'Piepho y Möhring, 2007', schmidt2019: 'Schmidt et al., 2019', falconer1996: 'Falconer y Mackay, 1996',
     cruz2012: 'Cruz et al., 2012', nelder1972: 'Nelder y Wedderburn, 1972', mccullagh1989: 'McCullagh y Nelder, 1989', venables2002: 'Venables y Ripley, 2002',
+    firth1993: 'Firth, 1993', heinze2002: 'Heinze y Schemper, 2002', venzon1988: 'Venzon y Moolgavkar, 1988', pinheiro1995: 'Pinheiro y Bates, 1995',
     wedderburn1974: 'Wedderburn, 1974', lenth2016: 'Lenth, 2016', bolker2009: 'Bolker et al., 2009', harrison2014: 'Harrison, 2014', fox2019: 'Fox y Weisberg, 2019',
     bates1988: 'Bates y Watts, 1988', archontoulis2015: 'Archontoulis y Miguez, 2015', ritz2015: 'Ritz et al., 2015', seefeldt1995: 'Seefeldt et al., 1995', cerrato1990: 'Cerrato y Blackmer, 1990', brain1989: 'Brain y Cousens, 1989', michaelis1913: 'Michaelis y Menten, 1913',
     box1951: 'Box y Wilson, 1951', myers2016: 'Myers et al., 2016', box1957: 'Box y Hunter, 1957', box1960: 'Box y Behnken, 1960', scheffe1958: 'Scheffé, 1958',
@@ -684,14 +689,18 @@ SP.definir('informe', function (SP) {
 
   /** Modelos lineales generalizados (núcleo JS). */
   function generalizado(r, citas) {
-    const FAM = { binomial: T('binomial'), cuasibinomial: T('cuasibinomial'), poisson: T('de Poisson'), cuasipoisson: T('cuasi-Poisson'), 'binomial-negativa': T('binomial negativa'), gamma: T('gamma') };
-    const ENL = { logit: 'logit', probit: 'probit', cloglog: T('log-log complementario'), log: T('logarítmico'), inverso: T('inverso'), identidad: T('identidad') };
+    const FAM = { binomial: T('binomial'), cuasibinomial: T('cuasibinomial'), poisson: T('de Poisson'), cuasipoisson: T('cuasi-Poisson'), 'binomial-negativa': T('binomial negativa'), gamma: T('gamma'),
+      'inversa-gaussiana': T('gaussiana inversa') };
+    const ENL = { logit: 'logit', probit: 'probit', cloglog: T('log-log complementario'), log: T('logarítmico'), inverso: T('inverso'), identidad: T('identidad'), raiz: T('raíz cuadrada'), inverso2: '1/μ²',
+      potencia: T('de potencia (μ^{l})', { l: r.lambda }) };
     const ref = r.familia === 'binomial-negativa' ? ['venables2002'] : /cuasi/.test(r.familia) ? ['wedderburn1974'] : [];
     const autoTxt = r.auto && !r.auto.binaria ? ' ' + (r.familia === r.auto.base ? T('La familia se eligió después de comprobar con la prueba de Pearson que no había sobredispersión (χ²/gl = {v}).', { v: n2(r.auto.razon) })
       : T('Se usó esta familia porque el modelo {b} mostró sobredispersión (Pearson χ²/gl = {v}; {p}).', { b: FAM[r.auto.base], v: n2(r.auto.razon), p: fp(r.auto.p) })) : '';
-    const fija = r.prueba === 'chi2';
+    const fija = r.prueba !== 'F';
     const metodos = T('Se ajustó un modelo lineal generalizado ({c}) con distribución {f} y enlace {e}: {fm}.', { c: cita(['nelder1972', 'mccullagh1989'].concat(ref), citas), f: FAM[r.familia], e: ENL[r.enlace], fm: r.formula }) + autoTxt + ' ' +
-      T('Los efectos se probaron con un análisis de devianza tipo {t} ({s}).', { t: ['', 'I', 'II', 'III'][r.tipoDev], s: fija ? T('razón de verosimilitudes, χ²') : T('prueba F con la dispersión estimada por Pearson') }) +
+      (r.firth ? T('Para evitar el sesgo y la separación (grupos con 0 % o 100 %), los coeficientes se estimaron por máxima verosimilitud penalizada ({c}); sus pruebas son de razón de verosimilitudes penalizadas y sus intervalos, del perfil penalizado.', { c: cita(['firth1993', 'heinze2002'], citas) }) + ' ' : '') +
+      (!r.firth && r.intervalo === 'perfil' ? T('Los intervalos de confianza de los coeficientes se obtuvieron por verosimilitud perfilada ({c}).', { c: cita(['venzon1988'], citas) }) + ' ' : '') +
+      T('Los efectos se probaron con un análisis de devianza tipo {t} ({s}).', { t: ['', 'I', 'II', 'III'][r.tipoDev], s: r.firth ? T('razón de verosimilitudes penalizadas, χ²') : fija ? T('razón de verosimilitudes, χ²') : T('prueba F con la dispersión estimada por Pearson') }) +
       (r.medias.length ? ' ' + T('Las medias marginales ({m}) se estimaron en la escala de la respuesta y se compararon {a}.', { m: cita(['lenth2016'], citas),
         a: ({ tukey: T('con la prueba de Tukey ({c})', { c: cita(['tukey1949'], citas) }), holm: T('con el ajuste de Holm ({c})', { c: cita(['holm1979'], citas) }), sidak: T('con el ajuste de Šidák ({c})', { c: cita(['sidak1967'], citas) }),
           bonferroni: T('con el ajuste de Bonferroni'), none: T('por pares sin ajuste') })[r.medias[0].ajuste] || '' }) : '');
@@ -715,11 +724,13 @@ SP.definir('informe', function (SP) {
 
   /** Modelos lineales generalizados mixtos (motor R). */
   function generalizadoMixto(r, citas) {
-    const FAM = { binomial: T('binomial'), poisson: T('de Poisson'), 'binomial-negativa': T('binomial negativa') };
-    const ENL = { logit: 'logit', probit: 'probit', cloglog: T('log-log complementario'), log: T('logarítmico'), identidad: T('identidad') };
+    const FAM = { binomial: T('binomial'), poisson: T('de Poisson'), 'binomial-negativa': T('binomial negativa'), gamma: T('gamma') };
+    const ENL = { logit: 'logit', probit: 'probit', cloglog: T('log-log complementario'), log: T('logarítmico'), identidad: T('identidad'), inverso: T('inverso') };
     const aleat = r.aleatorios.filter(a => !/\.obs/.test(a)).map(a => a.replace(/^\(1 \| (.*)\)$/, '$1'));
-    const metodos = T('Se ajustó un modelo lineal generalizado mixto ({c}) con distribución {f}, enlace {e} y {a} como {x}, por aproximación de Laplace con lme4 ({l}): {fm}.', {
-      c: cita(['bolker2009'], citas), f: FAM[r.familia], e: ENL[r.enlace], a: y(aleat), x: aleat.length > 1 ? T('efectos aleatorios') : T('efecto aleatorio'), l: cita(['bates2015'], citas), fm: r.formula }) +
+    const aprox = r.ajuste.nagq > 1 ? T('por cuadratura adaptativa de Gauss-Hermite con {k} nodos ({p})', { k: r.ajuste.nagq, p: cita(['pinheiro1995'], citas) }) : T('por aproximación de Laplace');
+    const metodos = T('Se ajustó un modelo lineal generalizado mixto ({c}) con distribución {f}, enlace {e} y {a} como {x}, {ap} con lme4 ({l}): {fm}.', {
+      c: cita(['bolker2009'], citas), f: FAM[r.familia], e: ENL[r.enlace], a: y(aleat), x: aleat.length > 1 ? T('efectos aleatorios') : T('efecto aleatorio'), ap: aprox, l: cita(['bates2015'], citas), fm: r.formula }) +
+      (r.pruebaAleatorios ? ' ' + T('Cada efecto aleatorio se probó con la razón de verosimilitudes contra el modelo sin él.') : '') +
       (r.obs.usado ? ' ' + T('La sobredispersión se modeló con un efecto aleatorio por observación ({h}){p}.', { h: cita(['harrison2014'], citas),
         p: Number.isFinite(r.obs.p) ? T(', agregado porque la prueba de Pearson del modelo sin él la mostró (χ²/gl = {v}; {q})', { v: n2(r.obs.razon), q: fp(r.obs.p) }) : '' }) : '') +
       ' ' + T('Los efectos fijos se probaron con pruebas χ² de Wald tipo {t} ({c}).', { t: r.tipoDev === 3 ? 'III' : 'II', c: cita(['fox2019'], citas) }) +
@@ -738,8 +749,11 @@ SP.definir('informe', function (SP) {
       return fs.length <= 12 ? T('Las {e} estimadas de {f} fueron: {l} (niveles con la misma letra no difieren).', { e: ESC[m.escala], f: m.factor, l: fs.map(x => x.nivel + ', ' + con(x)).join('; ') })
         : T('La más alta de {f} fue {a} ({x}) y la más baja {b} ({z}).', { f: m.factor, a: fs[0].nivel, x: con(fs[0]), b: fs[fs.length - 1].nivel, z: con(fs[fs.length - 1]) });
     });
-    return { metodos, resultados: [oracion(frases), partes.length ? T('Las varianzas de los efectos aleatorios (escala del enlace) fueron: {l}.', { l: y(partes) }) : ''].concat(medias,
-      [r.theta !== undefined ? T('El parámetro de forma de la binomial negativa fue θ = {t}.', { t: s4(r.theta) }) : '', r.ajuste.singular ? T('El ajuste fue singular: al menos un componente de varianza se estimó en cero.') : '']).filter(Boolean).join(' ') };
+    const pa = r.pruebaAleatorios, lrt = pa ? pa.termino.map((t, k) => (Number.isFinite(pa.p[k]) ? T('{t}, χ²({g}) = {v}; {p}', { t: t === '(1 | .obs)' ? T('el de cada observación') : t, g: pa.gl[k], v: n2(pa.lrt[k]), p: fp(pa.p[k]) }) : '')).filter(Boolean) : [];
+    return { metodos, resultados: [oracion(frases), partes.length ? T('Las varianzas de los efectos aleatorios (escala del enlace) fueron: {l}.', { l: y(partes) }) : '',
+      lrt.length ? T('La prueba de razón de verosimilitudes de cada efecto aleatorio dio: {l}.', { l: y(lrt) }) : ''].concat(medias,
+      [r.theta !== undefined ? T('El parámetro de forma de la binomial negativa fue θ = {t}.', { t: s4(r.theta) }) : '', r.ajuste.sigma !== undefined ? T('La dispersión de la gamma fue σ² = {s}.', { s: s4(r.ajuste.sigma * r.ajuste.sigma) }) : '',
+        r.ajuste.singular ? T('El ajuste fue singular: al menos un componente de varianza se estimó en cero.') : '']).filter(Boolean).join(' ') };
   }
 
   /** Regresión no lineal (núcleo JS). */

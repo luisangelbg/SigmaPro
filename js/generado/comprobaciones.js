@@ -80,7 +80,7 @@ window.SP_COMPROBACIONES = {
    "Servicio sin conexión activo con 146 archivos guardados.",
    "Sin red: 7 análisis, reporte, 6 exportaciones y huellas del proyecto verificadas."
   ],
-  "fecha": "2026-10-05T00:37:44.991Z",
+  "fecha": "2026-10-05T01:15:55.114Z",
   "motor": "node v24.19.0"
  },
  "exportar": {
@@ -90,22 +90,22 @@ window.SP_COMPROBACIONES = {
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-10-05T00:36:58.025Z",
+  "fecha": "2026-10-05T01:14:48.766Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {
   "titulo": "El código R equivalente",
   "ok": true,
-  "resumen": "95 escenarios de 65 métodos: el código R que muestra la app corre en R y da 1,564 números iguales a los de la app (tolerancia 1e-6)",
-  "fecha": "2026-10-05T00:36:44.014Z",
+  "resumen": "99 escenarios de 65 métodos: el código R que muestra la app corre en R y da 1,626 números iguales a los de la app (tolerancia 1e-6)",
+  "fecha": "2026-10-05T01:14:32.794Z",
   "motor": "node v24.19.0"
  },
  "accesibilidad": {
   "titulo": "Accesibilidad (AA)",
   "ok": true,
-  "resumen": "188 revisiones de 94 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 104,234 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 575 paradas en los 8 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
+  "resumen": "198 revisiones de 99 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 112,316 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 575 paradas en los 8 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
   "renglones": [],
-  "fecha": "2026-10-05T00:45:05.451Z",
+  "fecha": "2026-10-05T01:25:34.880Z",
   "motor": "node v24.19.0"
  }
 };

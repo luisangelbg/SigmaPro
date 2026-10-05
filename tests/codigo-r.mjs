@@ -169,6 +169,16 @@ const ESCENARIOS = [
     r: 'c(coef(m), sum(residuals(m, type = "pearson")^2) / df.residual(m), as.data.frame(em)[, 2])', js: res => [...res.coeficientes.estimado, res.ajuste.dispersion, ...res.medias[1].filas.map(f => f.respuesta)] },
   { ej: 'aguacate', id: 'glm', e: { respuesta: 'trips' }, op: { derecha: 'bloque + tratamiento', comoFactor: ['bloque'], familia: 'cuasipoisson', tipo: 1, comparar: ['tratamiento'] },
     r: 'c(coef(m), anova(m, test = "F")[-1, "F"])', js: res => [...res.coeficientes.estimado, ...res.devianza.map(x => x.estadistico)] },
+  /* Hito 4.3: enlace raíz, gaussiana inversa, potencia y Firth (en R base). Los intervalos perfilados no: confint
+     interpola el perfil con splines y difiere en la 4.ª o 5.ª cifra de la raíz exacta (los casos los cotejan con uniroot) */
+  { ej: 'aguacate', id: 'glm-conteos', e: { respuesta: 'trips', tratamientos: ['tratamiento'], bloque: 'bloque' }, op: { familia: 'poisson', enlace: 'raiz' },
+    r: 'c(coef(m), deviance(m), as.data.frame(em)[, 2])', js: res => [...res.coeficientes.estimado, res.ajuste.devianza, ...res.medias[0].filas.map(f => f.respuesta)] },
+  { ej: 'venenos', id: 'glm-gamma', e: { respuesta: 'tiempo', tratamientos: ['veneno', 'tratamiento'] }, op: { familia: 'inversa-gaussiana', enlace: 'log' },
+    r: 'c(coef(m), sum(residuals(m, type = "pearson")^2) / df.residual(m), AIC(m))', js: res => [...res.coeficientes.estimado, res.ajuste.dispersion, res.ajuste.aic] },
+  { ej: 'venenos', id: 'glm', e: { respuesta: 'tiempo' }, op: { derecha: 'veneno + tratamiento', familia: 'gamma', enlace: 'potencia', lambda: 0.5 },
+    r: 'c(coef(m), deviance(m))', js: res => [...res.coeficientes.estimado, res.ajuste.devianza] },
+  { ej: 'frijol', id: 'glm-proporciones', e: { respuesta: 'germinadas', ensayos: 'sembradas', tratamientos: ['tratamiento'] }, op: { familia: 'binomial', firth: true },
+    r: 'c(b, ee, chi, ic)', js: res => [...res.coeficientes.estimado, ...res.coeficientes.ee, ...res.coeficientes.estadistico, ...res.coeficientes.ic_inf, ...res.coeficientes.ic_sup] },
   /* Hito 2.6: regresión no lineal (el código arranca en los valores de la app y nls converge al mismo óptimo) */
   { ej: 'herbicida-dosis', id: 'dosis-respuesta', e: { respuesta: 'peso_seco', dosis: 'dosis', grupo: 'herbicida' }, op: { modelo: 'll4' },
     r: 'c(coef(m), deviance(m), anova(m0, m)$F[2])', js: res => [...res.parametros.estimado, res.ajuste.rss, res.comparacion.global.F] },

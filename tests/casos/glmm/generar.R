@@ -14,23 +14,24 @@ TOL <- list(tolerancias = list("medias[*].pares[*].p" = list(absoluto = 1e-10, m
 ent <- function(...) { e <- list(...); e[vapply(e, function(v) length(v) > 0 && !identical(v, ""), TRUE)] }
 
 caso_f <- function(nombre, titulo, fuente, datos, y, derecha, familia, enlace, ensayos = "", exposicion = "", comoFactor = character(0), olre = "no", tipo = 2,
-                   comparar = character(0), dentro = "", ajuste = "tukey", tol = TOL) {
-  r <- ref_glmm(datos, y, derecha, familia, enlace, ensayos, exposicion, comoFactor, olre, tipo, comparar, dentro, ajuste)
+                   comparar = character(0), dentro = "", ajuste = "tukey", tol = TOL, nagq = 1L) {
+  r <- ref_glmm(datos, y, derecha, familia, enlace, ensayos, exposicion, comoFactor, olre, tipo, comparar, dentro, ajuste, nagq = nagq)
   sp_caso(nombre, objetivo = "glmm", tipo = "metodo", titulo = titulo, fuente = fuente, clase = "D", datos = datos,
     entradas = ent(respuesta = y, ensayos = ensayos, exposicion = exposicion),
-    opciones = list(derecha = derecha, comoFactor = I(comoFactor), familia = familia, enlace = enlace, sobredispersion = olre, tipo = tipo, comparar = I(comparar), dentro = dentro, ajuste = ajuste),
+    opciones = c(list(derecha = derecha, comoFactor = I(comoFactor), familia = familia, enlace = enlace, sobredispersion = olre, tipo = tipo, comparar = I(comparar), dentro = dentro, ajuste = ajuste),
+                 if (nagq > 1) list(nagq = nagq)),
     esperado = r, comparacion = tol, paquetes = c("lme4", "car", "emmeans"),
     codigo = sprintf("glmer(%s ~ %s, family = %s(link = \"%s\"), control = glmerControl(optimizer = \"bobyqa\", tolPwrss = 1e-12, optCtrl = list(rhoend = 1e-12))); car::Anova(type = %d); emmeans(type = \"response\")",
                      y, derecha, familia, enlace, tipo))
 }
-caso_b <- function(nombre, titulo, fuente, datos, y, trats, bloque, familia, enlace, ensayos = "", exposicion = "", olre = "auto", tipo = 2, comparar = NULL, dentro = "", ajuste = "tukey") {
+caso_b <- function(nombre, titulo, fuente, datos, y, trats, bloque, familia, enlace, ensayos = "", exposicion = "", olre = "auto", tipo = 2, comparar = NULL, dentro = "", ajuste = "tukey", nagq = 1L) {
   derecha <- paste0(paste(trats, collapse = " * "), " + (1 | ", bloque, ")")
   comoFactor <- Filter(function(v) is.numeric(datos[[v]]), c(trats, bloque))
   if (is.null(comparar)) comparar <- trats
-  r <- ref_glmm(datos, y, derecha, familia, enlace, ensayos, exposicion, comoFactor, olre, tipo, comparar, dentro, ajuste)
+  r <- ref_glmm(datos, y, derecha, familia, enlace, ensayos, exposicion, comoFactor, olre, tipo, comparar, dentro, ajuste, nagq = nagq)
   sp_caso(nombre, objetivo = "glmm-bloques", tipo = "metodo", titulo = titulo, fuente = fuente, clase = "D", datos = datos,
     entradas = ent(respuesta = y, tratamientos = I(trats), bloque = bloque, ensayos = ensayos, exposicion = exposicion),
-    opciones = list(familia = familia, enlace = enlace, sobredispersion = olre, tipo = tipo, comparar = I(comparar), dentro = dentro, ajuste = ajuste),
+    opciones = c(list(familia = familia, enlace = enlace, sobredispersion = olre, tipo = tipo, comparar = I(comparar), dentro = dentro, ajuste = ajuste), if (nagq > 1) list(nagq = nagq)),
     esperado = r, comparacion = TOL, paquetes = c("lme4", "car", "emmeans"),
     codigo = sprintf("glmer(%s ~ %s, family = %s(link = \"%s\")) con el efecto por observación «%s»; car::Anova(type = %d); emmeans", y, derecha, familia, enlace, olre, tipo))
 }
@@ -81,3 +82,14 @@ ag <- utils::read.csv(text = Filter(function(x) x$id == "aguacate", ej)[[1]]$csv
 ag$tratamiento <- factor(ag$tratamiento, levels = c("Testigo", "Azadiractina", "Spinosad", "Jabón potásico", "Beauveria"))
 caso_b("trips-aguacate-singular", "Trips del ejemplo del aguacate: efecto por observación automático y bloques con varianza en cero (ajuste singular, EE de RX)",
        "Ejemplo ficticio de SigmaPro «Aguacate» (datos/generar-ejemplos.R)", ag, "trips", "tratamiento", "bloque", "poisson", "log")
+
+# ---- Hito 4.3: cuadratura de Gauss-Hermite, familia gamma y la prueba de los efectos aleatorios (en todos los casos)
+caso_f("vacas-gauss-hermite", "Pleuroneumonía con los hatos aleatorios por cuadratura adaptativa de Gauss-Hermite (10 nodos) y la prueba del efecto del hato", F_CBPP,
+       cb, "incidence", "period + (1 | herd)", "binomial", "logit", ensayos = "size", olre = "no", comparar = "period", nagq = 10L)
+caso_b("malezas-gauss-hermite", "Malezas con exposición en bloques aleatorios, Poisson por cuadratura (25 nodos)", F_SINT, ex, "malezas", "trat", "bloque", "poisson", "log",
+       exposicion = "m2", olre = "no", nagq = 25L)
+set.seed(65)
+dg <- expand.grid(bloque = factor(paste0("B", 1:6)), trat = factor(c("Testigo", "GA3", "KNO3", "Frío")))
+dg$dias <- round(rgamma(24, shape = 8, rate = 8 / (c(14, 10, 12, 9)[as.integer(dg$trat)] * exp(rnorm(6, 0, 0.15))[as.integer(dg$bloque)])), 2)
+dg <- dg[c("bloque", "trat", "dias")]
+caso_b("dias-gamma-bloques", "Días a germinación en bloques aleatorios: gamma con enlace log (con su dispersión; sin la prueba de los aleatorios)", F_SINT, dg, "dias", "trat", "bloque", "gamma", "log")

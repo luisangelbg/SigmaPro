@@ -1,0 +1,205 @@
+{
+  "esquema": 1,
+  "id": "glmm/vacas-gauss-hermite",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm"
+  },
+  "titulo": "Pleuroneumonía con los hatos aleatorios por cuadratura adaptativa de Gauss-Hermite (10 nodos) y la prueba del efecto del hato",
+  "fuente": "Lesnoff et al. (2004), Journal of Applied Ecology 41: 31-41; conjunto cbpp de lme4",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "herd": ["1", "1", "1", "1", "2", "2", "2", "3", "3", "3", "3", "4", "4", "4", "4", "5", "5", "5", "5", "6", "6", "6", "6", "7", "7", "7", "7", "8", "9", "9", "9", "9", "10", "10", "10", "10", "11", "11", "11", "11", "12", "12", "12", "12", "13", "13", "13", "13", "14", "14", "14", "14", "15", "15", "15", "15"],
+      "incidence": [2, 3, 4, 0, 3, 1, 1, 8, 2, 0, 2, 2, 0, 2, 0, 5, 0, 0, 1, 3, 0, 0, 1, 8, 1, 3, 0, 12, 2, 0, 0, 0, 1, 1, 0, 2, 0, 5, 3, 1, 2, 1, 0, 0, 1, 2, 0, 0, 11, 0, 0, 0, 1, 1, 1, 0],
+      "size": [14, 12, 9, 5, 22, 18, 21, 22, 16, 16, 20, 10, 10, 9, 6, 18, 25, 24, 4, 17, 17, 18, 20, 16, 10, 9, 5, 34, 9, 6, 8, 6, 22, 22, 18, 22, 25, 27, 22, 22, 10, 8, 6, 5, 21, 24, 19, 23, 19, 2, 3, 2, 19, 15, 15, 15],
+      "period": ["1", "2", "3", "4", "1", "2", "3", "1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4", "1", "1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4"]
+    },
+    "tipos": {
+      "herd": {
+        "tipo": "factor",
+        "niveles": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"]
+      },
+      "incidence": {
+        "tipo": "numerica"
+      },
+      "size": {
+        "tipo": "numerica"
+      },
+      "period": {
+        "tipo": "factor",
+        "niveles": ["1", "2", "3", "4"]
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "incidence",
+    "ensayos": "size"
+  },
+  "opciones": {
+    "derecha": "period + (1 | herd)",
+    "comoFactor": [],
+    "familia": "binomial",
+    "enlace": "logit",
+    "sobredispersion": "no",
+    "tipo": 2,
+    "comparar": ["period"],
+    "dentro": "",
+    "ajuste": "tukey",
+    "nagq": 10
+  },
+  "esperado": {
+    "obs": {
+      "usado": false,
+      "razon": "NA",
+      "p": "NA"
+    },
+    "wald": {
+      "termino": ["period"],
+      "chi2": [24.888899092823564],
+      "gl": [3],
+      "p": [1.6288794467456707e-05]
+    },
+    "coeficientes": {
+      "nombre": ["(Intercept)", "period2", "period3", "period4"],
+      "estimado": [-1.3992304971693863, -0.99140364743842291, -1.1278194337718441, -1.5794706718778684],
+      "ee": [0.23351153974404265, 0.3067678847042305, 0.32676826135167381, 0.4275943157845043],
+      "z": [-5.9921256941010919, -3.2317713061596467, -3.4514350601451613, -3.6938532940505175],
+      "p": [2.0711574080126828e-09, 0.0012302547379055475, 0.00055761392718585879, 0.00022088126654574425]
+    },
+    "varianzas": {
+      "grupo": ["herd"],
+      "varianza": [0.41928021037939334]
+    },
+    "ajuste": {
+      "n": 56,
+      "logLik": -91.98336875243227,
+      "AIC": 193.96673750486454,
+      "BIC": 204.0934959585403,
+      "pearson": 62.975349139005679,
+      "gl": 51,
+      "dispersion": 1.2348107674314839,
+      "nagq": 10
+    },
+    "pruebaAleatorios": {
+      "termino": ["(1 | herd)"],
+      "gl": [1],
+      "lrt": [14.091661473862189],
+      "p": [0.00017411394690588957]
+    },
+    "razones": {
+      "razon": [0.24678679403140893, 0.37105549422536216, 0.32373842038072159, 0.2060841554778165],
+      "ic_inf": [0.15615522958399308, 0.20338436774362725, 0.17062733002501376, 0.089140622257685834],
+      "ic_sup": [0.39002037825151437, 0.6769555660658283, 0.61424254142194157, 0.47644584548929325]
+    },
+    "medias": [
+      {
+        "factor": "period",
+        "filas": [
+          {
+            "nivel": "1",
+            "eta": -1.3992304971693863,
+            "ee_eta": 0.23351153974404265,
+            "respuesta": 0.19793824831384274,
+            "ee": 0.037071988057037181,
+            "ic": [0.13506424188400784, 0.28058608661702866]
+          },
+          {
+            "nivel": "2",
+            "eta": -2.3906341446078092,
+            "ee_eta": 0.31101664417769048,
+            "respuesta": 0.083889683624635336,
+            "ee": 0.023902314774213479,
+            "ic": [0.047416135585318285, 0.14417319274448984]
+          },
+          {
+            "nivel": "3",
+            "eta": -2.5270499309412306,
+            "ee_eta": 0.33104260840133548,
+            "respuesta": 0.073983501832756482,
+            "ee": 0.022679710327923732,
+            "ic": [0.040083500093998428, 0.13259365261742331]
+          },
+          {
+            "nivel": "4",
+            "eta": -2.9787011690472545,
+            "ee_eta": 0.43071788722749882,
+            "respuesta": 0.04839741143763817,
+            "ee": 0.019836756231112546,
+            "ic": [0.02139663573812129, 0.10578763764720714]
+          }
+        ],
+        "pares": [
+          {
+            "dif": 0.99140364743842291,
+            "ee": 0.3067678847042305,
+            "estadistico": 3.2317713061596467,
+            "p": 0.0067480940321882343,
+            "razon": 2.695014669133684
+          },
+          {
+            "dif": 1.1278194337718441,
+            "ee": 0.32676826135167381,
+            "estadistico": 3.4514350601451613,
+            "p": 0.0031292116276538939,
+            "razon": 3.0889135704807109
+          },
+          {
+            "dif": 1.5794706718778684,
+            "ee": 0.4275943157845043,
+            "estadistico": 3.6938532940505175,
+            "p": 0.0012636257918720029,
+            "razon": 4.8523866266256599
+          },
+          {
+            "dif": 0.13641578633342122,
+            "ee": 0.38081741098522459,
+            "estadistico": 0.35821835451403256,
+            "p": 0.98426167892362781,
+            "razon": 1.1461583515141482
+          },
+          {
+            "dif": 0.58806702443944547,
+            "ee": 0.47039215282612251,
+            "estadistico": 1.2501633390487719,
+            "p": 0.59481129988466475,
+            "razon": 1.8005047179151223
+          },
+          {
+            "dif": 0.45165123810602426,
+            "ee": 0.48442925914295654,
+            "estadistico": 0.93233682644412819,
+            "p": 0.78747391349647278,
+            "razon": 1.5709039815803294
+          }
+        ]
+      }
+    ]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 1e-10,
+        "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      },
+      "coeficientes.p[*]": {
+        "absoluto": 1e-10,
+        "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      },
+      "wald.p[*]": {
+        "absoluto": 1e-10,
+        "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "lme4": "1.1.35.5",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(incidence ~ period + (1 | herd), family = binomial(link = \"logit\"), control = glmerControl(optimizer = \"bobyqa\", tolPwrss = 1e-12, optCtrl = list(rhoend = 1e-12))); car::Anova(type = 2); emmeans(type = \"response\")"
+  }
+}

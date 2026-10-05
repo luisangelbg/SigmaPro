@@ -427,8 +427,8 @@ escritorio con el que se calcula la referencia.
 | data_ge y data_ge2 (Olivoto y Lúcio 2020, metan), plrv (agricolae) | ensayos multiambiente: análisis conjunto, Bartlett, Eberhart-Russell, Wricke, Shukla, Lin-Binns, Huehn, Kang, Annicchiarico, AMMI con Gollob y F_R, WAAS y WAASY, GGE con el genotipo y el ambiente ideales y la comparación de dos genotipos, análisis en dos etapas; parcelas perdidas, celdas vacías imputadas por EM-AMMI y una media por celda (`tests/r/multiambiente.R`) |
 | Centrales compuestos, Box-Behnken y factoriales con centros (sintéticos), el hilo de Cornell (2002) | superficies de respuesta: segundo orden, interacciones y primer orden, bloques, sin error puro, silla, máximo y mínimo, dos a cuatro factores, codificación a mano; generador de diseños (central compuesto, Box-Behnken, factorial, simplex-látice y simplex-centroide); mezclas de Scheffé; deseabilidad (`tests/r/superficie.R`) |
 | Orange, ChickWeight, DNase, Loblolly y Puromycin (R), lettuce (van Ewijk y Hoekstra 1993, drc), herbicidas, tóxico, germinación, trigo y nitrógeno (sintéticos) | regresión no lineal: doce modelos (con Brain-Cousens y Michaelis-Menten), una curva y varias por grupo, comparación de curvas y de cada parámetro (también en lineal-meseta), dosis cero, meseta por perfil, pesos, intervalos perfilados, dosis económica, elección por AIC (`tests/r/nolineal.R`) |
-| cbpp (Lesnoff et al. 2004), grouseticks (Elston et al. 2001) y el aguacate de los ejemplos | modelos lineales generalizados mixtos: binomial con ensayos, Poisson con dos agrupamientos y exposición, binomial negativa, efecto por observación, ajuste singular, Wald tipo II y III (`tests/r/glmm.R`) |
-| InsectSprays (Beall 1942), warpbreaks, snails, quine, Insurance y birthwt (MASS), escarabajos de Bliss (1935), coagulación (McCullagh y Nelder 1989) | modelos lineales generalizados: seis familias, cinco enlaces, exposición, familia automática, tipos I a III, medias y pares en la escala de la respuesta (`tests/r/glm.R`) |
+| cbpp (Lesnoff et al. 2004), grouseticks (Elston et al. 2001) y el aguacate de los ejemplos | modelos lineales generalizados mixtos: binomial con ensayos, Poisson con dos agrupamientos y exposición, binomial negativa, gamma, efecto por observación, ajuste singular, Wald tipo II y III, cuadratura de Gauss-Hermite, prueba de cada efecto aleatorio (`tests/r/glmm.R`) |
+| InsectSprays (Beall 1942), warpbreaks, snails, quine, Insurance y birthwt (MASS), escarabajos de Bliss (1935), coagulación (McCullagh y Nelder 1989) | modelos lineales generalizados: siete familias (con la gaussiana inversa), ocho enlaces (con la raíz, 1/μ² y la potencia), exposición, familia automática, tipos I a III, medias y pares en la escala de la respuesta, intervalos perfilados, Firth (`tests/r/glm.R`) |
 | data_ge (Olivoto y Lúcio 2020) y plrv (CIP, agricolae) | ensayos en varias localidades: localidad, repetición y G × L aleatorios; localidades fijas con 28 clones (378 pares de Tukey) |
 
 Las piezas puras del puente (lectura de la salida de R, nombres, columnas, código que se manda) tienen pruebas unitarias
@@ -437,6 +437,44 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
+
+## Modelos generalizados ampliados (Hito 4.3)
+
+- **Intervalos perfilados del GLM** (`gl_perfil` en `tests/r/glm.R`): `glm.fit` con β_j en el desplazamiento y
+  `uniroot` sobre τ(b) = signo(b − β̂)·√((D(b) − D̂)/φ) = ±z, lo que hacen `profile.glm` y `confint.profile.glm` sin
+  la interpolación por splines. `confint` queda a 4e-6 de la raíz exacta (Bliss: −71.44263 contra −71.44235); la app y
+  la referencia coinciden a 1e-14. Casos: logit (Bliss), binomial negativa (θ fija), gamma y cuasibinomial (φ de
+  Pearson) y la gaussiana inversa.
+- **Firth** (`ref_firth`): en R base y por otro camino que la app, `optim` (BFGS, con la puntuación modificada como
+  gradiente) sobre l*(β) = l(β) + ½·log|X'WX| y el pulido por Newton con el jacobiano de la puntuación por
+  diferencias centrales; las pruebas fijan cada coeficiente (o las columnas de un término) en cero con la penalización
+  del modelo completo, y el perfil penalizado se resuelve con `uniroot`; las medias, con `emmeans::qdrg` (los
+  coeficientes y la covarianza de Firth en la rejilla). Tres casos: germinación con un tratamiento sin ninguna
+  germinada, 0/1 con una variedad sin enfermas (tipo III) y Bliss sin separación (tipo I). La prueba unitaria comprueba
+  que, con un solo factor, el estimado de cada grupo es logit((k + ½)/(n + 1)).
+- **Gaussiana inversa y potencia**: `inverse.gaussian()` y `power()` de R, con el AIC de `glm`. Hallazgo: `glm`
+  calcula la covarianza con los pesos de la penúltima iteración (los del último paso de IRLS), y la app con los del
+  óptimo; con `epsilon = 1e-14` la diferencia relativa en los EE llega a 2.4e-8 (comprobado reajustando `glm` desde
+  sus propios coeficientes: baja a 3.9e-9).
+- **GLMM** (`tests/r/glmm.R`, en el motor R contra el escritorio): la gamma, la cuadratura de Gauss-Hermite y la
+  prueba de cada efecto aleatorio (`glmer` o `glm` / `MASS::glm.nb` sin él). Tres hallazgos de lme4:
+  1. Con nAGQ > 1, `logLik` omite la log-verosimilitud del modelo saturado (lme4 1.1 y 2.0): en cbpp da −50.005,
+     Laplace −92.027 y la integral directa −91.983; la diferencia con la integral es exactamente la del saturado
+     (−41.978). La app se la suma, y la referencia lo coteja con la integral directa (`integrate`, grupo por grupo) a
+     1e-5. Sin la corrección, la prueba del hato daba χ² = 98.0 con la cuadratura y 14.0 con Laplace; con ella, 14.09.
+  2. `glmer.nb` con nAGQ > 1 estima mal θ: la parte que omite depende de θ, y en unos conteos simulados θ pasó de
+     27.6 (Laplace) a 2.58, con una log-verosimilitud corregida de −74.06 contra −67.01 de Laplace (peor ajuste). La
+     cuadratura queda para la binomial y la de Poisson.
+  3. La varianza de los aleatorios de la gamma: `glmer` ajusta con la devianza sin dividir entre la dispersión, así
+     que la del efecto en la escala del enlace es (θ·σ)²; `VarCorr` de lme4 1.1 la da así (0.028 en bloques simulados
+     con 0.0225) y la de lme4 2.0, la del motor, θ² (0.539). La app la calcula aparte. Y la verosimilitud de Laplace de
+     la gamma no se compara con la de `glm` (con la varianza del bloque casi en cero salía 0.84 menor): la gamma va
+     sin la prueba de los aleatorios.
+- **Resultado**: 26 casos del GLM (11 nuevos, 15 regenerados con los intervalos), 3 362 valores, diferencia escalada
+  máxima 2.5e-7 (la covarianza de la penúltima iteración de `glm`); 11 casos del GLMM en el motor (3 nuevos, 8
+  regenerados con la prueba de los aleatorios), 1 266 valores, diferencia máxima 4.1e-6 (la de antes, de la hessiana).
+- **Código R** (`tests/codigo-r.mjs`): la raíz en Poisson, la gaussiana inversa, la potencia y Firth en R base (sus
+  coeficientes, EE, χ² e intervalos). Los intervalos perfilados no: `confint` interpola y difiere en la 4.ª cifra.
 
 ## Superficies de respuesta ampliadas (Hito 4.2)
 

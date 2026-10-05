@@ -2,6 +2,31 @@
 
 ## Sin publicar
 
+### Hito 4.3 · Modelos generalizados ampliados (4 oct 2026)
+
+- **Intervalos por verosimilitud perfilada** de los coeficientes del GLM (opción del formulario), los de `confint()`
+  de glm, pero con la raíz exacta del perfil en lugar de su interpolación por splines; con la dispersión de Pearson en
+  las cuasi, la gamma y la gaussiana inversa, y con θ fija en la binomial negativa. Si la verosimilitud no baja lo
+  suficiente en una dirección, ese límite queda como «—».
+- **Corrección de Firth** para la separación en la binomial con logit (grupos con 0 % o 100 %): coeficientes de la
+  verosimilitud penalizada, sus p por la razón de verosimilitudes penalizadas, intervalos por el perfil penalizado y
+  análisis de devianza con la misma razón (como logistf), medias y pares. El código R lo hace en R base. Cuando el
+  ajuste ordinario tiene separación, su aviso sugiere Firth.
+- **Gaussiana inversa** (en «respuestas positivas» y en la fórmula) y los enlaces **raíz cuadrada**, **1/μ²** y **de
+  potencia** μ^λ (`power()` de R); la binomial negativa admite también la raíz.
+- **GLMM**: la familia **gamma** (con su dispersión), la **cuadratura adaptativa de Gauss-Hermite** (de 5 a 25 nodos,
+  con un solo intercepto aleatorio y la binomial o la de Poisson; con el efecto por observación vuelve a Laplace) y la
+  **prueba de razón de verosimilitudes de cada efecto aleatorio** (contra el modelo sin él).
+- Tres hallazgos de lme4, documentados en la validación: con nAGQ > 1 su log-verosimilitud omite la del modelo
+  saturado (la app se la suma: así el AIC, el BIC y la prueba quedan bien; en cbpp, −91.983, igual a la integral
+  directa); glmer.nb con nAGQ > 1 estima mal θ, porque esa parte depende de θ (la cuadratura queda solo para binomial
+  y Poisson), y la varianza de los aleatorios de la gamma es (θ·σ)², que lme4 2.0 ya no informa así (la app la calcula
+  aparte). La gamma mixta va sin la prueba de los aleatorios: su verosimilitud de Laplace no se compara con la de glm.
+- Validación: 14 casos nuevos (11 del GLM y 3 del GLMM) y 23 regenerados con los intervalos y la prueba de los
+  aleatorios; cuatro escenarios del código R, cinco pruebas unitarias y cinco escenarios de accesibilidad. El escenario
+  del GLMM por fórmula usaba una columna que la tabla toma como identificador y daba un error (el auditor no lo veía
+  porque el mensaje también es accesible): ahora usa los bloques del aguacate.
+
 ### Hito 4.2 · Superficies de respuesta ampliadas (4 oct 2026)
 
 - **Generador de diseños** (método nuevo, sin datos): central compuesto rotable, ortogonal, de caras centradas o en dos

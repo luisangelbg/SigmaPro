@@ -22,28 +22,30 @@ TOL <- list(tolerancias = list("medias[*].pares[*].p" = list(absoluto = 1e-12, m
 
 #' Un caso de método de diseño (conteos, proporciones, gamma): el lado derecho como lo arma la app.
 caso_dis <- function(nombre, objetivo, titulo, fuente, datos, y, trats, bloque = "", covs = character(0), ensayos = "", exposicion = "",
-                     familia, enlace, tipo = 2, comparar = NULL, dentro = "", ajuste = "tukey") {
+                     familia, enlace, tipo = 2, comparar = NULL, dentro = "", ajuste = "tukey", intervalo = "wald", lambda = 1) {
   derecha <- paste(c(if (nzchar(bloque)) bloque, covs, paste(trats, collapse = " * ")), collapse = " + ")
   comoFactor <- Filter(function(v) is.numeric(datos[[v]]), c(trats, if (nzchar(bloque)) bloque))
   base <- c("glm-conteos" = "poisson", "glm-proporciones" = "binomial", "glm-gamma" = "gamma")[[objetivo]]
   fam <- if (familia == "auto") gl_auto(datos, y, derecha, base, enlace, ensayos, exposicion, comoFactor) else familia
   if (is.null(comparar)) comparar <- trats
-  r <- ref_glm(datos, y, derecha, fam, enlace, ensayos, exposicion, comoFactor, tipo, comparar, dentro, ajuste)
+  r <- ref_glm(datos, y, derecha, fam, enlace, ensayos, exposicion, comoFactor, tipo, comparar, dentro, ajuste, intervalo = intervalo, lambda = lambda)
   r$familia <- fam
   sp_caso(nombre, objetivo = objetivo, tipo = "metodo", titulo = titulo, fuente = fuente, clase = "D", datos = datos,
     entradas = ent(respuesta = y, tratamientos = I(trats), bloque = bloque, covariables = if (length(covs)) I(covs), ensayos = ensayos, exposicion = exposicion),
-    opciones = list(familia = familia, enlace = enlace, tipo = tipo, comparar = I(comparar), dentro = dentro, ajuste = ajuste),
+    opciones = c(list(familia = familia, enlace = enlace, tipo = tipo, comparar = I(comparar), dentro = dentro, ajuste = ajuste), if (intervalo != "wald") list(intervalo = intervalo),
+                 if (enlace == "potencia") list(lambda = lambda)),
     esperado = r, comparacion = if (ajuste == "tukey") TOL, paquetes = c("stats", "MASS", "car", "emmeans"),
     codigo = sprintf("glm(%s ~ %s, family = %s(link = %s)) [MASS::glm.nb con la binomial negativa]; car::Anova / anova; emmeans(type = \"response\", offset = 0); pairs(adjust = \"%s\")",
                      y, derecha, fam, enlace, ajuste))
 }
 caso_f <- function(nombre, titulo, fuente, datos, y, derecha, familia, enlace, ensayos = "", exposicion = "", comoFactor = character(0), tipo = 2,
-                   comparar = character(0), dentro = "", ajuste = "tukey") {
-  r <- ref_glm(datos, y, derecha, familia, enlace, ensayos, exposicion, comoFactor, tipo, comparar, dentro, ajuste)
+                   comparar = character(0), dentro = "", ajuste = "tukey", intervalo = "wald", lambda = 1) {
+  r <- ref_glm(datos, y, derecha, familia, enlace, ensayos, exposicion, comoFactor, tipo, comparar, dentro, ajuste, intervalo = intervalo, lambda = lambda)
   r$familia <- familia
   sp_caso(nombre, objetivo = "glm", tipo = "metodo", titulo = titulo, fuente = fuente, clase = "D", datos = datos,
     entradas = ent(respuesta = y, ensayos = ensayos, exposicion = exposicion),
-    opciones = list(derecha = derecha, comoFactor = I(comoFactor), familia = familia, enlace = enlace, tipo = tipo, comparar = I(comparar), dentro = dentro, ajuste = ajuste),
+    opciones = c(list(derecha = derecha, comoFactor = I(comoFactor), familia = familia, enlace = enlace, tipo = tipo, comparar = I(comparar), dentro = dentro, ajuste = ajuste),
+                 if (intervalo != "wald") list(intervalo = intervalo), if (enlace == "potencia") list(lambda = lambda)),
     esperado = r, comparacion = if (ajuste == "tukey" && length(comparar)) TOL, paquetes = c("stats", "MASS", "car", "emmeans"),
     codigo = sprintf("glm(%s ~ %s, family = %s(link = %s)); tipo %d; emmeans", y, derecha, familia, enlace, tipo))
 }
@@ -108,3 +110,57 @@ bliss <- data.frame(dosis = c(1.6907, 1.7242, 1.7552, 1.7842, 1.8113, 1.8369, 1.
 caso_f("escarabajos-cloglog", "Dosis-respuesta con enlace log-log complementario", F_BLISS, bliss, "muertos", "dosis", "binomial", "cloglog", ensayos = "n")
 caso_f("roturas-cuasipoisson-tipo1", "Análisis de devianza secuencial (tipo I) con cuasi-Poisson y la interacción", F_WARP, wb, "breaks", "wool * tension", "cuasipoisson", "log", tipo = 1,
        comparar = "tension", dentro = "wool")
+
+# ---- Hito 4.3: intervalos perfilados, gaussiana inversa, enlaces raíz y de potencia, y Firth
+caso_dis("insectos-raiz", "glm-conteos", "Seis insecticidas: Poisson con enlace raíz cuadrada (la escala de la transformación clásica)", F_INSECT, ins, "count", "spray",
+         familia = "poisson", enlace = "raiz")
+caso_dis("insectos-perfil-nb", "glm-conteos", "Seis insecticidas: binomial negativa con intervalos por verosimilitud perfilada (θ fija, como profile.glm)", F_INSECT, ins, "count", "spray",
+         familia = "binomial-negativa", enlace = "log", intervalo = "perfil")
+caso_f("escarabajos-perfil", "Dosis-respuesta logit con intervalos por verosimilitud perfilada (la raíz exacta del perfil de confint)", F_BLISS, bliss, "muertos", "dosis", "binomial", "logit",
+       ensayos = "n", intervalo = "perfil")
+caso_dis("coagulacion-perfil", "glm-gamma", "Gamma con enlace inverso: intervalos perfilados con la dispersión de Pearson", F_COAG, coag, "tiempo", "lote", covs = "log_u", familia = "gamma", enlace = "inverso",
+         intervalo = "perfil")
+caso_dis("germinacion-cuasi-perfil", "glm-proporciones", "Germinadas de 50 con la cuasibinomial: intervalos perfilados con la dispersión estimada", F_SINT, ge, "germinadas", "trat", bloque = "bloque",
+         ensayos = "sembradas", familia = "cuasibinomial", enlace = "logit", intervalo = "perfil")
+# gaussiana inversa: datos sintéticos con el método de Michael, Schucany y Haas (1976)
+rig <- function(n, mu, lambda) { nu <- rnorm(n)^2; x <- mu + mu^2 * nu / (2 * lambda) - mu / (2 * lambda) * sqrt(4 * mu * lambda * nu + mu^2 * nu^2); ifelse(runif(n) <= mu / (mu + x), x, mu^2 / x) }
+set.seed(72)
+va <- expand.grid(bloque = factor(paste0("B", 1:5)), empaque = factor(c("Charola", "Película", "Atmósfera", "Cera")))
+va$dias <- round(rig(20, c(9, 12, 16, 13)[as.integer(va$empaque)] * c(1, 1.1, 0.9, 1.05, 0.95)[as.integer(va$bloque)], 120), 2)
+va <- va[c("bloque", "empaque", "dias")]
+caso_dis("vida-anaquel-inversa", "glm-gamma", "Días de vida de anaquel en bloques: gaussiana inversa con enlace log (razones de medias, emmeans con gl infinitos)", F_SINT, va, "dias", "empaque",
+         bloque = "bloque", familia = "inversa-gaussiana", enlace = "log")
+set.seed(73)
+dg <- data.frame(temperatura = rep(c(10, 15, 20, 25, 30, 35), each = 4), lote = factor(rep(c("L1", "L2"), 12)))
+dg$horas <- round(rig(24, 1 / sqrt(0.004 + 0.0011 * dg$temperatura + 0.002 * (dg$lote == "L2")), 400), 3)
+caso_f("degradacion-canonica", "Horas de degradación con la temperatura: gaussiana inversa con su enlace canónico 1/μ², tipo I e intervalos perfilados", F_SINT, dg, "horas", "lote + temperatura",
+       "inversa-gaussiana", "inverso2", tipo = 1, intervalo = "perfil")
+caso_f("dias-potencia", "Días a germinación en bloques: gamma con enlace de potencia μ^0.5 (power() de R)", F_SINT, gd, "dias", "bloque + trat", "gamma", "potencia", lambda = 0.5)
+
+# Firth: referencia en R base (optim y Newton sobre la verosimilitud penalizada; ver tests/r/glm.R)
+caso_firth <- function(nombre, objetivo, titulo, fuente, datos, y, derecha, entradas, opciones, ensayos = "", comoFactor = character(0), tipo = 2,
+                       comparar = character(0), dentro = "", ajuste = "tukey") {
+  r <- ref_firth(datos, y, derecha, ensayos, comoFactor, tipo, comparar, dentro, ajuste)
+  r$familia <- "binomial"; r$firth <- TRUE
+  sp_caso(nombre, objetivo = objetivo, tipo = "metodo", titulo = titulo, fuente = fuente, clase = "D", datos = datos, entradas = entradas,
+    opciones = c(opciones, list(firth = TRUE, tipo = tipo, comparar = I(comparar), dentro = dentro, ajuste = ajuste)),
+    esperado = r, comparacion = if (length(comparar)) TOL, paquetes = c("stats", "emmeans"),
+    codigo = sprintf("Firth en R base: l*(β) = l(β) + ½·log|X'WX| con optim y Newton; χ² de la razón de verosimilitudes penalizadas; perfil penalizado; tipo %d; emmeans::qdrg", tipo))
+}
+set.seed(74)
+sx <- expand.grid(bloque = factor(paste0("B", 1:4)), trat = factor(c("Sin escarificar", "Lija", "Ácido", "Agua caliente")))
+sx$sembradas <- 20
+sx$germinadas <- rbinom(16, 20, c(0, 0.35, 0.7, 0.55)[as.integer(sx$trat)])   # sin escarificar no germina ninguna: separación
+sx <- sx[c("bloque", "trat", "sembradas", "germinadas")]
+caso_firth("escarificacion-firth", "glm-proporciones", "Germinadas de 20 en bloques con un tratamiento sin ninguna germinada (separación): Firth", F_SINT, sx, "germinadas", "bloque + trat",
+           entradas = list(respuesta = "germinadas", tratamientos = I("trat"), bloque = "bloque", ensayos = "sembradas"), opciones = list(familia = "binomial", enlace = "logit"),
+           ensayos = "sembradas", comparar = "trat")
+set.seed(75)
+en <- data.frame(variedad = factor(rep(c("Resistente", "Intermedia", "Susceptible"), each = 10), levels = c("Resistente", "Intermedia", "Susceptible")), altura = round(runif(30, 40, 90), 1))
+en$enferma <- ifelse(en$variedad == "Resistente", 0L, rbinom(30, 1, plogis(-3 + 2.5 * (en$variedad == "Susceptible") + 0.04 * en$altura)))
+caso_firth("enfermedad-binaria-firth", "glm", "Plantas enfermas (0/1) con una variedad sin enfermas (separación) y la altura: Firth con tipo III", F_SINT, en, "enferma", "variedad + altura",
+           entradas = list(respuesta = "enferma"), opciones = list(derecha = "variedad + altura", comoFactor = I(character(0)), familia = "binomial", enlace = "logit"),
+           tipo = 3, comparar = "variedad")
+caso_firth("escarabajos-firth", "glm", "Dosis-respuesta de Bliss con Firth (sin separación: corrige el sesgo), tipo I", F_BLISS, bliss, "muertos", "dosis",
+           entradas = list(respuesta = "muertos", ensayos = "n"), opciones = list(derecha = "dosis", comoFactor = I(character(0)), familia = "binomial", enlace = "logit"),
+           ensayos = "n", tipo = 1)

@@ -1,0 +1,86 @@
+{
+  "esquema": 1,
+  "id": "glm/escarabajos-firth",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm"
+  },
+  "titulo": "Dosis-respuesta de Bliss con Firth (sin separación: corrige el sesgo), tipo I",
+  "fuente": "Bliss (1935), Annals of Applied Biology 22: 134-167: mortalidad de escarabajos con disulfuro de carbono",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "dosis": [1.6907000000000001, 1.7242, 1.7552000000000001, 1.7842, 1.8112999999999999, 1.8369, 1.861, 1.8838999999999999],
+      "n": [59, 60, 62, 56, 63, 59, 62, 60],
+      "muertos": [6, 13, 18, 28, 52, 53, 61, 60]
+    },
+    "tipos": {
+      "dosis": {
+        "tipo": "numerica"
+      },
+      "n": {
+        "tipo": "numerica"
+      },
+      "muertos": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "muertos",
+    "ensayos": "n"
+  },
+  "opciones": {
+    "derecha": "dosis",
+    "comoFactor": [],
+    "familia": "binomial",
+    "enlace": "logit",
+    "firth": true,
+    "tipo": 1,
+    "comparar": [],
+    "dentro": "",
+    "ajuste": "tukey"
+  },
+  "esperado": {
+    "coeficientes": {
+      "nombre": ["(Intercept)", "dosis"],
+      "estimado": [-60.113771323617918, 33.93013045114315],
+      "ee": [5.1311417194170073, 2.8841186634652458],
+      "estadistico": [265.87901564848949, 270.95385251805385],
+      "p": [8.9760447193630675e-60, 7.0310888759524048e-61],
+      "ic_inf": [-70.743733495638594, 28.560720850984215],
+      "ic_sup": [-50.558449760307205, 39.906768388488793]
+    },
+    "razones": {
+      "razon": [7.8148532618412764e-27, 544087095038375.25],
+      "ic_inf": [1.8896741129180632e-31, 2533748267603.7427],
+      "ic_sup": [1.1034286487246781e-22, 2.1443185456955376e+17]
+    },
+    "devianza": [
+      {
+        "termino": "dosis",
+        "gl": 1,
+        "devianza": 270.95385251805385,
+        "estadistico": 270.95385251805385,
+        "p": 7.0310888759524048e-61
+      }
+    ],
+    "ajuste": {
+      "n": 8,
+      "devianza": 11.246072146942781,
+      "gl": 6,
+      "loglik_penalizada": -17.742691284241769
+    },
+    "familia": "binomial",
+    "firth": true
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "Firth en R base: l*(β) = l(β) + ½·log|X'WX| con optim y Newton; χ² de la razón de verosimilitudes penalizadas; perfil penalizado; tipo 1; emmeans::qdrg"
+  }
+}

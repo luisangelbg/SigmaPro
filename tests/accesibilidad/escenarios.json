@@ -183,13 +183,30 @@
  "glm-formula": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[4].click(), SP.app.ir(4), SP.app.analisis.usar('glm', { respuesta: 'trips' }, { derecha: 'bloque + tratamiento', comoFactor: ['bloque'], familia: 'cuasipoisson', tipo: 1, comparar: ['tratamiento'] }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },
+ "glm-firth": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[1].click(), SP.app.ir(4), SP.app.analisis.usar('glm-proporciones', { respuesta: 'germinadas', ensayos: 'sembradas', tratamientos: ['tratamiento'] }, { familia: 'binomial', firth: true }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "glm-perfil": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[1].click(), SP.app.ir(4), SP.app.analisis.usar('glm-proporciones', { respuesta: 'germinadas', ensayos: 'sembradas', tratamientos: ['tratamiento'] }, { familia: 'binomial', enlace: 'probit', intervalo: 'perfil' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "glm-inversa": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[5].click(), SP.app.ir(4), SP.app.analisis.usar('glm-gamma', { respuesta: 'tiempo', tratamientos: ['veneno', 'tratamiento'] }, { familia: 'inversa-gaussiana', enlace: 'log' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
  "glmm-bloques": {
   "espera": true,
   "prep": "(async () => { window.__esperando = true; try { localStorage.setItem('sigmapro.motorR.usado', '1'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[4].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.usar('glmm-bloques', { respuesta: 'trips', tratamientos: ['tratamiento'], bloque: 'bloque' }, { familia: 'poisson', sobredispersion: 'auto' }); for (let k = 0; k < 400; k++) { await new Promise(r => setTimeout(r, 200)); const r = document.querySelector('#anaResultado'); if (r && !r.classList.contains('calculando') && (r.querySelector('.exp-cabeza h3') || r.querySelector('.msg-error'))) break; } document.querySelectorAll('#anaResultado details').forEach(d => d.open = true); window.__auditT0 = 0; window.__esperando = false; })()"
  },
  "glmm-formula": {
   "espera": true,
-  "prep": "(async () => { window.__esperando = true; try { localStorage.setItem('sigmapro.motorR.usado', '1'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[1].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.usar('glmm', { respuesta: 'germinadas', ensayos: 'sembradas' }, { derecha: 'tratamiento + (1 | caja)', familia: 'binomial', sobredispersion: 'no', tipo: 3 }); for (let k = 0; k < 400; k++) { await new Promise(r => setTimeout(r, 200)); const r = document.querySelector('#anaResultado'); if (r && !r.classList.contains('calculando') && (r.querySelector('.exp-cabeza h3') || r.querySelector('.msg-error'))) break; } document.querySelectorAll('#anaResultado details').forEach(d => d.open = true); window.__auditT0 = 0; window.__esperando = false; })()"
+  "prep": "(async () => { window.__esperando = true; try { localStorage.setItem('sigmapro.motorR.usado', '1'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[4].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.usar('glmm', { respuesta: 'trips' }, { derecha: 'tratamiento + (1 | bloque)', comoFactor: ['bloque'], familia: 'poisson', sobredispersion: 'no', tipo: 3 }); for (let k = 0; k < 400; k++) { await new Promise(r => setTimeout(r, 200)); const r = document.querySelector('#anaResultado'); if (r && !r.classList.contains('calculando') && (r.querySelector('.exp-cabeza h3') || r.querySelector('.msg-error'))) break; } document.querySelectorAll('#anaResultado details').forEach(d => d.open = true); window.__auditT0 = 0; window.__esperando = false; })()"
+ },
+ "glmm-gamma": {
+  "espera": true,
+  "prep": "(async () => { window.__esperando = true; try { localStorage.setItem('sigmapro.motorR.usado', '1'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[0].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.usar('glmm-bloques', { respuesta: 'rend', tratamientos: ['hibrido'], bloque: 'bloque' }, { familia: 'gamma', enlace: 'log' }); for (let k = 0; k < 400; k++) { await new Promise(r => setTimeout(r, 200)); const r = document.querySelector('#anaResultado'); if (r && !r.classList.contains('calculando') && (r.querySelector('.exp-cabeza h3') || r.querySelector('.msg-error'))) break; } document.querySelectorAll('#anaResultado details').forEach(d => d.open = true); window.__auditT0 = 0; window.__esperando = false; })()"
+ },
+ "glmm-gauss-hermite": {
+  "espera": true,
+  "prep": "(async () => { window.__esperando = true; try { localStorage.setItem('sigmapro.motorR.usado', '1'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[4].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.usar('glmm', { respuesta: 'trips' }, { derecha: 'tratamiento + (1 | bloque)', comoFactor: ['bloque'], familia: 'poisson', sobredispersion: 'no', nagq: 10 }); for (let k = 0; k < 400; k++) { await new Promise(r => setTimeout(r, 200)); const r = document.querySelector('#anaResultado'); if (r && !r.classList.contains('calculando') && (r.querySelector('.exp-cabeza h3') || r.querySelector('.msg-error'))) break; } document.querySelectorAll('#anaResultado details').forEach(d => d.open = true); window.__auditT0 = 0; window.__esperando = false; })()"
  },
  "nl-dosis": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[16].click(), SP.app.ir(4), SP.app.analisis.usar('dosis-respuesta', { respuesta: 'peso_seco', dosis: 'dosis', grupo: 'herbicida' }, { modelo: 'll4' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"

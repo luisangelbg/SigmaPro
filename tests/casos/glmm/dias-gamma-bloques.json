@@ -1,0 +1,194 @@
+{
+  "esquema": 1,
+  "id": "glmm-bloques/dias-gamma-bloques",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glmm-bloques"
+  },
+  "titulo": "Días a germinación en bloques aleatorios: gamma con enlace log (con su dispersión; sin la prueba de los aleatorios)",
+  "fuente": "Datos sintéticos (generados en este archivo)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "bloque": ["B1", "B2", "B3", "B4", "B5", "B6", "B1", "B2", "B3", "B4", "B5", "B6", "B1", "B2", "B3", "B4", "B5", "B6", "B1", "B2", "B3", "B4", "B5", "B6"],
+      "trat": ["Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "Testigo", "GA3", "GA3", "GA3", "GA3", "GA3", "GA3", "KNO3", "KNO3", "KNO3", "KNO3", "KNO3", "KNO3", "Frío", "Frío", "Frío", "Frío", "Frío", "Frío"],
+      "dias": [6.0700000000000003, 6.2400000000000002, 5.4400000000000004, 8.5800000000000001, 12.119999999999999, 5.4500000000000002, 7.1500000000000004, 6.4800000000000004, 15.859999999999999, 9.9600000000000009, 11.68, 9.9000000000000004, 9.1300000000000008, 11.01, 16.98, 17.210000000000001, 17.600000000000001, 10.69, 9.5299999999999994, 11.890000000000001, 16.850000000000001, 14.17, 16.59, 22.140000000000001]
+    },
+    "tipos": {
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["B1", "B2", "B3", "B4", "B5", "B6"]
+      },
+      "trat": {
+        "tipo": "factor",
+        "niveles": ["Frío", "GA3", "KNO3", "Testigo"]
+      },
+      "dias": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "dias",
+    "tratamientos": ["trat"],
+    "bloque": "bloque"
+  },
+  "opciones": {
+    "familia": "gamma",
+    "enlace": "log",
+    "sobredispersion": "auto",
+    "tipo": 2,
+    "comparar": ["trat"],
+    "dentro": "",
+    "ajuste": "tukey"
+  },
+  "esperado": {
+    "obs": {
+      "usado": false,
+      "razon": "NA",
+      "p": "NA"
+    },
+    "wald": {
+      "termino": ["trat"],
+      "chi2": [49.315588705206608],
+      "gl": [3],
+      "p": [1.1174835227166141e-10]
+    },
+    "coeficientes": {
+      "nombre": ["(Intercept)", "tratGA3", "tratKNO3", "tratTestigo"],
+      "estimado": [2.6978770230716074, -0.41615411320671231, -0.10957580591075967, -0.73136131374704716],
+      "ee": [0.14112632604682243, 0.1146491685050879, 0.11481175469145592, 0.11518943074303442],
+      "z": [19.116752335609689, -3.6298048963891461, -0.95439535964965183, -6.3492050358211625],
+      "p": [1.831633759732423e-81, 0.00028363552444628113, 0.33988355425506411, 2.1643041486709602e-10]
+    },
+    "varianzas": {
+      "grupo": ["bloque"],
+      "varianza": [0.02804989664337643]
+    },
+    "ajuste": {
+      "n": 24,
+      "logLik": -56.837416511695956,
+      "AIC": 125.67483302339191,
+      "BIC": 132.74315600547959,
+      "pearson": 1.0041561909110173,
+      "gl": 18,
+      "dispersion": 0.055786455050612069,
+      "nagq": 1,
+      "sigma": 0.22810113764528542
+    },
+    "razones": {
+      "razon": [14.848175905710198, 0.6595786128760911, 0.89621422345153567, 0.48125340708548786],
+      "ic_inf": [11.260201376066714, 0.52683790714128853, 0.71562233940542352, 0.38399396241214107],
+      "ic_sup": [19.579430275155907, 0.82576432080252227, 1.1223796269191089, 0.60314709214830986]
+    },
+    "medias": [
+      {
+        "factor": "trat",
+        "filas": [
+          {
+            "nivel": "Frío",
+            "eta": 2.6978770230716074,
+            "ee_eta": 0.14112632604682243,
+            "respuesta": 14.848175905710198,
+            "ee": 2.0954685140698301,
+            "ic": [11.260201376066714, 19.579430275155907]
+          },
+          {
+            "nivel": "GA3",
+            "eta": 2.2817229098648952,
+            "ee_eta": 0.14109526749894868,
+            "respuesta": 9.79353926762853,
+            "ee": 1.3818220427275054,
+            "ic": [7.4274401258512821, 12.913387353033565]
+          },
+          {
+            "nivel": "KNO3",
+            "eta": 2.5883012171608475,
+            "ee_eta": 0.14098873194464331,
+            "respuesta": 13.307146439007864,
+            "ee": 1.8761577022373945,
+            "ic": [10.094274483871061, 17.542632373643468]
+          },
+          {
+            "nivel": "Testigo",
+            "eta": 1.9665157093245602,
+            "ee_eta": 0.14113207955280047,
+            "respuesta": 7.1457352436276818,
+            "ee": 1.008492474866912,
+            "ic": [5.4189491686845317, 9.4227737855710743]
+          }
+        ],
+        "pares": [
+          {
+            "dif": 0.41615411320671231,
+            "ee": 0.1146491685050879,
+            "estadistico": 3.6298048963891461,
+            "p": 0.0016152653462390143,
+            "razon": 1.5161195049055674
+          },
+          {
+            "dif": 0.10957580591075967,
+            "ee": 0.11481175469145592,
+            "estadistico": 0.95439535964965183,
+            "p": 0.77530876056500408,
+            "razon": 1.1158046523171217
+          },
+          {
+            "dif": 0.73136131374704716,
+            "ee": 0.11518943074303442,
+            "estadistico": 6.3492050358211625,
+            "p": 1.2981359320818342e-09,
+            "razon": 2.0779073670482382
+          },
+          {
+            "dif": -0.30657830729595265,
+            "ee": 0.1144324456321634,
+            "estadistico": -2.6791204679958622,
+            "p": 0.037074987414328242,
+            "razon": 0.73596088481601618
+          },
+          {
+            "dif": 0.31520720054033485,
+            "ee": 0.11510859436702021,
+            "estadistico": 2.738346361309099,
+            "p": 0.031387803199885322,
+            "razon": 1.3705432588426876
+          },
+          {
+            "dif": 0.6217855078362875,
+            "ee": 0.11453464300900466,
+            "estadistico": 5.4287985844370512,
+            "p": 3.3954634626187641e-07,
+            "razon": 1.862250137363362
+          }
+        ]
+      }
+    ]
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 1e-10,
+        "motivo": "p de Tukey (integral numérica) y los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      },
+      "coeficientes.p[*]": {
+        "absoluto": 1e-10,
+        "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      },
+      "wald.p[*]": {
+        "absoluto": 1e-10,
+        "motivo": "los EE salen de una hessiana por diferencias finitas: 7 cifras entre lme4 2.0-1 (motor) y 1.1-35.5 (escritorio); en los p menores que 1e-6 eso se amplifica (dp/p ≈ z²·dEE/EE) y se comparan en absoluto"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "lme4": "1.1.35.5",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "glmer(dias ~ trat + (1 | bloque), family = gamma(link = \"log\")) con el efecto por observación «auto»; car::Anova(type = 2); emmeans"
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "esquema": 1,
+  "id": "glm/degradacion-canonica",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm"
+  },
+  "titulo": "Horas de degradación con la temperatura: gaussiana inversa con su enlace canónico 1/μ², tipo I e intervalos perfilados",
+  "fuente": "Datos sintéticos (generados en este archivo)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "temperatura": [10, 10, 10, 10, 15, 15, 15, 15, 20, 20, 20, 20, 25, 25, 25, 25, 30, 30, 30, 30, 35, 35, 35, 35],
+      "lote": ["L1", "L2", "L1", "L2", "L1", "L2", "L1", "L2", "L1", "L2", "L1", "L2", "L1", "L2", "L1", "L2", "L1", "L2", "L1", "L2", "L1", "L2", "L1", "L2"],
+      "horas": [8.3360000000000003, 7.3659999999999997, 8.2750000000000004, 7.5359999999999996, 6.2450000000000001, 6.7889999999999997, 5.702, 9.4770000000000003, 7.5209999999999999, 6.3230000000000004, 5.6070000000000002, 6.6749999999999998, 6.5890000000000004, 5.1520000000000001, 5.9939999999999998, 6.3650000000000002, 4.5910000000000002, 5.1559999999999997, 5.7380000000000004, 4.5910000000000002, 5.3300000000000001, 4.758, 5.3849999999999998, 4.9370000000000003]
+    },
+    "tipos": {
+      "temperatura": {
+        "tipo": "numerica"
+      },
+      "lote": {
+        "tipo": "factor",
+        "niveles": ["L1", "L2"]
+      },
+      "horas": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "horas"
+  },
+  "opciones": {
+    "derecha": "lote + temperatura",
+    "comoFactor": [],
+    "familia": "inversa-gaussiana",
+    "enlace": "inverso2",
+    "tipo": 1,
+    "comparar": [],
+    "dentro": "",
+    "ajuste": "tukey",
+    "intervalo": "perfil"
+  },
+  "esperado": {
+    "coeficientes": {
+      "nombre": ["(Intercept)", "loteL2", "temperatura"],
+      "estimado": [0.0058473530736752452, 0.00011759843280704558, 0.00095533668564868235],
+      "ee": [0.0033434978150158846, 0.0025074907621211455, 0.00015390266420612186],
+      "estadistico": [1.7488730058127659, 0.046898849871560962, 6.2074083679877026],
+      "p": [0.094916582156583704, 0.96303699470354298, 3.7048284605818968e-06],
+      "ic_inf": [-0.00049213907766914135, -0.0048049376204207577, 0.00065419605850041676],
+      "ic_sup": [0.012602079501539803, 0.0050418122182161957, 0.0012576254235820766]
+    },
+    "devianza": [
+      {
+        "termino": "lote",
+        "gl": 1,
+        "devianza": 5.9795184055855266e-06,
+        "estadistico": 0.0023795497040563097,
+        "p": 0.9615550920917334
+      },
+      {
+        "termino": "temperatura",
+        "gl": 1,
+        "devianza": 0.097619635339914745,
+        "estadistico": 38.847739671842788,
+        "p": 3.5001984193634901e-06
+      }
+    ],
+    "ajuste": {
+      "n": 24,
+      "devianza": 0.050126722019160408,
+      "gl": 21,
+      "devianza_nula": 0.14775233687748077,
+      "gl_nula": 23,
+      "dispersion": 0.0025128781279048361,
+      "pearson": 0.052770440686001556,
+      "sobredispersion": 0.0025128781279048361,
+      "p_sobredispersion": 1,
+      "aic": 58.759384932348752,
+      "bic": 63.471600253740533
+    },
+    "familia": "inversa-gaussiana"
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "MASS": "7.3.61",
+      "car": "3.1.3",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "glm(horas ~ lote + temperatura, family = inversa-gaussiana(link = inverso2)); tipo 1; emmeans"
+  }
+}

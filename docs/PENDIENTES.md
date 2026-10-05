@@ -72,11 +72,12 @@ base común nueva). **La Fase 2 está completa.** Notas:
 - ~~Superficies de respuesta~~: resuelto en el Hito 4.2 (4 oct 2026): generador de diseños, codificación a mano,
   mezclas de Scheffé, deseabilidad y la superficie en 3D. Queda: las mezclas con restricciones (límites inferiores y
   superiores de cada componente, pseudocomponentes) y los diseños óptimos (D-óptimos) no están.
-- GLMM: solo aproximación de Laplace (nAGQ = 1); la cuadratura adaptativa de Gauss-Hermite, la familia gamma mixta y la
-  prueba de razón de verosimilitudes de cada efecto aleatorio quedan pendientes.
-- GLM: los intervalos de las razones son de Wald (confint.default); los de verosimilitud perfilada quedan pendientes.
-  Con separación completa en la binomial (una probabilidad ajustada en 0 o 1) la app avisa, pero no corrige (Firth).
-  Faltan la gaussiana inversa, los enlaces de potencia y la binomial negativa con otros enlaces que log e identidad.
+- ~~GLMM~~: resuelto en el Hito 4.3 (4 oct 2026): la cuadratura de Gauss-Hermite, la gamma mixta y la prueba de cada
+  efecto aleatorio. Queda: la cuadratura con la binomial negativa o la gamma (lme4 no la da bien), la prueba de los
+  aleatorios en la gamma, las pendientes aleatorias en la gamma y el p de la prueba con la mezcla de χ² (es conservador).
+- ~~GLM~~: resuelto en el Hito 4.3 (4 oct 2026): intervalos perfilados, Firth, la gaussiana inversa, los enlaces raíz,
+  1/μ² y de potencia, y la raíz en la binomial negativa. Queda: Firth con otros enlaces que logit y en Poisson, y los
+  intervalos perfilados de las medias (siguen de Wald en la escala del enlace).
 - Heredabilidad: los testigos (genotipos fijos dentro de un ensayo de genotipos aleatorios), las matrices de
   parentesco (modelo animal, como en BreedingPro) y los intervalos de confianza de H² quedan pendientes. El REML del
   núcleo admite hasta 2500 incógnitas fuera del término mayor; para modelos más grandes, el modelo mixto del motor R.

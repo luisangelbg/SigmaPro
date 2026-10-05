@@ -1,0 +1,155 @@
+{
+  "esquema": 1,
+  "id": "glm/enfermedad-binaria-firth",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "glm"
+  },
+  "titulo": "Plantas enfermas (0/1) con una variedad sin enfermas (separación) y la altura: Firth con tipo III",
+  "fuente": "Datos sintéticos (generados en este archivo)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "variedad": ["Resistente", "Resistente", "Resistente", "Resistente", "Resistente", "Resistente", "Resistente", "Resistente", "Resistente", "Resistente", "Intermedia", "Intermedia", "Intermedia", "Intermedia", "Intermedia", "Intermedia", "Intermedia", "Intermedia", "Intermedia", "Intermedia", "Susceptible", "Susceptible", "Susceptible", "Susceptible", "Susceptible", "Susceptible", "Susceptible", "Susceptible", "Susceptible", "Susceptible"],
+      "altura": [50.700000000000003, 40.899999999999999, 74.200000000000003, 57.799999999999997, 43.799999999999997, 46.799999999999997, 67.5, 80.599999999999994, 87.200000000000003, 51.299999999999997, 78.900000000000006, 65.5, 72.700000000000003, 77.5, 77.700000000000003, 42.600000000000001, 44.799999999999997, 74.099999999999994, 71.200000000000003, 73.799999999999997, 59.600000000000001, 42.899999999999999, 83.400000000000006, 61.100000000000001, 45.200000000000003, 46.600000000000001, 89.400000000000006, 52.299999999999997, 83.299999999999997, 69.599999999999994],
+      "enferma": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1]
+    },
+    "tipos": {
+      "variedad": {
+        "tipo": "factor",
+        "niveles": ["Resistente", "Intermedia", "Susceptible"]
+      },
+      "altura": {
+        "tipo": "numerica"
+      },
+      "enferma": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "enferma"
+  },
+  "opciones": {
+    "derecha": "variedad + altura",
+    "comoFactor": [],
+    "familia": "binomial",
+    "enlace": "logit",
+    "firth": true,
+    "tipo": 3,
+    "comparar": ["variedad"],
+    "dentro": "",
+    "ajuste": "tukey"
+  },
+  "esperado": {
+    "coeficientes": {
+      "nombre": ["(Intercept)", "variedadIntermedia", "variedadSusceptible", "altura"],
+      "estimado": [-4.9551974162932169, 2.0170005254843661, 4.7594134726712429, 0.032193394745944695],
+      "ee": [3.013347299859058, 1.5941509459513095, 1.7381928378994047, 0.039400940614992559],
+      "estadistico": [3.8986280297493607, 2.2938707336879531, 16.664599155927714, 0.69790196299318374],
+      "p": [0.048325556621345835, 0.12988564698489757, 4.4605681034971802e-05, 0.40348956432476474],
+      "ic_inf": [-14.223145125027367, -0.5252180333302584, 2.1194741570642806, -0.04014910804210594],
+      "ic_sup": [-0.031082270074647731, 6.9631183540677375, 9.8735463855656125, 0.14551293501407681]
+    },
+    "razones": {
+      "razon": [0.0070466890110826913, 7.5157477968330317, 116.67747130013805, 1.0327172080758513],
+      "ic_inf": [6.6522192841352946e-07, 0.59142639964050525, 8.326757769516135, 0.96064618840036009],
+      "ic_sup": [0.96939581752905224, 1056.9242878964869, 19410.052589574865, 1.1566326955456274]
+    },
+    "devianza": [
+      {
+        "termino": "variedad",
+        "gl": 2,
+        "devianza": 17.482235140272834,
+        "estadistico": 17.482235140272834,
+        "p": 0.00015987511637766727
+      },
+      {
+        "termino": "altura",
+        "gl": 1,
+        "devianza": 0.69790196299317842,
+        "estadistico": 0.69790196299317842,
+        "p": 0.40348956432476646
+      }
+    ],
+    "ajuste": {
+      "n": 30,
+      "devianza": 19.024336196124498,
+      "gl": 26,
+      "loglik_penalizada": -6.1584248314352905
+    },
+    "medias": [
+      {
+        "factor": "variedad",
+        "filas": [
+          {
+            "nivel": "Resistente",
+            "eta": -2.9023319446601437,
+            "ee_eta": 1.4426026611331457,
+            "respuesta": 0.052038407047047798,
+            "ee": 0.071164182528251116,
+            "ic": [0.0032372737791335005, 0.48128807177146243]
+          },
+          {
+            "nivel": "Intermedia",
+            "eta": -0.88533141917577751,
+            "ee_eta": 0.72564251165786475,
+            "respuesta": 0.29207419735110252,
+            "ee": 0.1500388240481795,
+            "ic": [0.090498398230123525, 0.63109139644018275]
+          },
+          {
+            "nivel": "Susceptible",
+            "eta": 1.8570815280110993,
+            "ee_eta": 0.93500852930137612,
+            "respuesta": 0.86495641357691633,
+            "ee": 0.10921536941732299,
+            "ic": [0.50612431503325883, 0.97562843125437448]
+          }
+        ],
+        "pares": [
+          {
+            "dif": -2.0170005254843661,
+            "ee": 1.5941509459513095,
+            "estadistico": -1.2652506530871337,
+            "p": 0.41491819283081999,
+            "razon": 0.13305395910455878
+          },
+          {
+            "dif": -4.7594134726712429,
+            "ee": 1.7381928378994047,
+            "estadistico": -2.7381389273372938,
+            "p": 0.017002930823609264,
+            "razon": 0.0085706348351313362
+          },
+          {
+            "dif": -2.7424129471868768,
+            "ee": 1.2320650037350644,
+            "estadistico": -2.22586709213647,
+            "p": 0.066886238945065846,
+            "razon": 0.064414729879598773
+          }
+        ]
+      }
+    ],
+    "familia": "binomial",
+    "firth": true
+  },
+  "comparacion": {
+    "tolerancias": {
+      "medias[*].pares[*].p": {
+        "absoluto": 9.9999999999999998e-13,
+        "motivo": "p de Tukey = 1 − ptukey(): integral numérica (AS 190), con cifras absolutas debajo de 1e-6"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "emmeans": "1.10.6"
+    },
+    "codigo": "Firth en R base: l*(β) = l(β) + ½·log|X'WX| con optim y Newton; χ² de la razón de verosimilitudes penalizadas; perfil penalizado; tipo 3; emmeans::qdrg"
+  }
+}
