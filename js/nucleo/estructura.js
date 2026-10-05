@@ -18,6 +18,8 @@ SP.definir('estructura', function (SP) {
     columna: /^(columnas?|cols?|columns?)$/i,
     /* la unidad medida dentro de la parcela (fruto 1, 2, …, 5): submuestra, no tratamiento */
     submuestra: /^(frutos?|plantas?|hojas?|muestras?|submuestras?|individuos?|ejemplar(es)?|semillas?|tallos?|espigas?|mazorcas?|vainas?|[aá]rbol(es)?|n[uú]m(ero)?)$/i,
+    /* la parcela (grande, chica o franja) de un diseño con parcelas: identifica unidades, no es un tratamiento (Hito 4.4) */
+    parcela: /^(parcelas?|parcelas?[_ .]?(grandes?|chicas?|principal(es)?)|pg|sub[_ .]?parcelas?|franjas?|franjas?[_ .]?(h|v|horizontal(es)?|vertical(es)?|a|b|1|2))$/i,
   };
   /** ¿Valores 1, 2, …, k (un contador)? */
   const esContador = c => { const v = [...new Set(Array.from(c.valores).filter(x => !Number.isNaN(x)))].sort((a, b) => a - b); return v.length >= 2 && v.every((x, i) => x === i + 1); };
@@ -31,7 +33,7 @@ SP.definir('estructura', function (SP) {
   }
 
   function adivinarPapeles(tabla) {
-    const p = { respuestas: [], factores: [], bloque: null, fila: null, columna: null, numericosComoFactor: [], identificadores: [], submuestras: [] };
+    const p = { respuestas: [], factores: [], bloque: null, fila: null, columna: null, numericosComoFactor: [], identificadores: [], submuestras: [], parcelas: [] };
     const candidatos = [];
     for (const nom of tabla.nombres) {
       const c = tabla.col(nom);
@@ -39,6 +41,7 @@ SP.definir('estructura', function (SP) {
       const numerica = c.tipo === 'numerica', comoDiseno = numerica && pareceFactorNumerico(c, tabla.n);
       if (numerica && !comoDiseno) { p.respuestas.push(nom); continue; }
       if (comoDiseno && PAT.submuestra.test(nom) && esContador(c)) { p.submuestras.push(nom); continue; }
+      if (PAT.parcela.test(nom) && (comoDiseno || !numerica)) { p.parcelas.push(nom); continue; }
       /* todos distintos en una tabla de al menos 10 filas: identificador (en una tabla corta ya agregada, son categorías) */
       if (!numerica && tabla.n >= 10 && c.niveles.length === tabla.n) { p.identificadores.push(nom); continue; }
       if (!p.bloque && PAT.bloque.test(nom)) p.bloque = nom;

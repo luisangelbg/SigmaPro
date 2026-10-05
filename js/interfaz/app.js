@@ -85,8 +85,8 @@
     ['hecho', '4.1', 'Multiambiente: EM-AMMI, Huehn, Kang, Annicchiarico, WAAS, dos etapas y vistas del GGE'],
     ['hecho', '4.2', 'Superficies: generador de diseños, mezclas, deseabilidad y superficie en 3D'],
     ['hecho', '4.3', 'Generalizados: intervalos perfilados, Firth y más familias; GLMM con Gauss-Hermite y gamma'],
-    ['actual', '4.4', 'Asistente: parcelas divididas desde los datos; cierre de los cálculos (0.4.0)'],
-    ['', '4.5', 'Interfaz en inglés'],
+    ['hecho', '4.4', 'Asistente: parcelas divididas desde los datos; cierre de los cálculos (0.4.0)'],
+    ['actual', '4.5', 'Interfaz en inglés'],
     ['', '1.0', 'Publicación: revisión del nombre, repositorio y DOI (versión 1.0.0)'],
   ];
   function hitos() {

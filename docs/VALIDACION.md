@@ -438,6 +438,22 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
 
+## El asistente reconoce las parcelas (Hito 4.4, versión 0.4.0)
+
+- **Regla** (`detectarParcelas` en `js/nucleo/asistente.js`): solo las columnas que se llaman como parcelas (parcela,
+  subparcela, franja, pg…; `SP.estructura` ya no las toma por tratamientos). Con bloques, las celdas son bloque ×
+  parcela. Un factor que no cambia dentro de las celdas y otro que sí: parcelas divididas; dos columnas que fijan cada
+  una un factor distinto: franjas; una que fija A y otra más fina que fija A y B: subdivididas. Una columna con un valor
+  por fila, o con tantas celdas como bloques, no cuenta. Lo que el usuario conteste manda.
+- **Por qué solo por el nombre**: un identificador de planta medida en el tiempo también deja fijo el tratamiento, y eso
+  son medidas repetidas, no parcelas; sin una columna de parcela, un factorial en bloques y unas parcelas divididas son
+  idénticos en los datos.
+- **Pruebas unitarias** (`tests/unidad/asistente.test.js`): divididas con la parcela numerada en todo el ensayo o
+  dentro de cada bloque, sin bloques (la parcela es la repetición), franjas, subdivididas, la respuesta del usuario que
+  manda y dos negativos (un factorial en bloques sin columna de parcela y una columna con un valor por fila). Ejemplo
+  nuevo «Trigo: riego × variedad» con la columna de la parcela grande, y su escenario de accesibilidad.
+- **Cierre de los cálculos de la Fase 4**: 848 casos contra R con 93 157 valores.
+
 ## Modelos generalizados ampliados (Hito 4.3)
 
 - **Intervalos perfilados del GLM** (`gl_perfil` en `tests/r/glm.R`): `glm.fit` con β_j en el desplazamiento y

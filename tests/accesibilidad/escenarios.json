@@ -30,6 +30,9 @@
  "asis-maiz": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.ponerModo('asistente'), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },
+ "asis-parcelas": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[24].click(), SP.app.ir(4), SP.app.analisis.ponerModo('asistente'), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
  "asis-roya": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[11].click(), SP.app.ir(4), SP.app.analisis.ponerModo('asistente'), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },

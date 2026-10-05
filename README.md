@@ -80,6 +80,17 @@ en tendencia y ciclo, la tendencia de Mann-Kendall con la pendiente de Sen y los
 lineal, con la prueba M de Box (el ACP y los conglomerados se preparan para PCAPro y ClusteringPro). En total, 795 casos y 83 645 valores. El asistente propone también los métodos de la
 Fase 3, y el constructor arma el modelo de Cox y la MANOVA.
 
+**Fase 4: cálculos completos** (versión 0.4.0; plan en [`propuesta/FASE4.md`](propuesta/FASE4.md)), las mejoras que
+quedaban para versiones futuras: la **regresión no lineal** con hormesis (Brain-Cousens), Michaelis-Menten, pesos,
+intervalos perfilados, elección por AIC y la dosis económica óptima; los **ensayos multiambiente** con la imputación
+EM-AMMI, Huehn, Kang, Annicchiarico, WAAS, el análisis en dos etapas y las vistas del GGE; las **superficies de
+respuesta** con el generador de diseños (central compuesto, Box-Behnken, simplex), la codificación a mano, las
+**mezclas** de Scheffé, la **deseabilidad** de varias respuestas y la superficie en 3D; los **modelos generalizados**
+con intervalos perfilados, la corrección de **Firth** para la separación, la gaussiana inversa y los enlaces de
+potencia, y en los mixtos la gamma, la cuadratura de Gauss-Hermite y la prueba de cada efecto aleatorio; y el
+asistente que **reconoce en los datos las parcelas divididas**, subdivididas y en franjas. En total, 848 casos y
+93 157 valores contra R. Falta la interfaz en inglés (Hito 4.5).
+
 Lo que falta para publicar y las fases 2 y 3 están en [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
 [`propuesta/maqueta.html`](propuesta/maqueta.html); capturas de la app en [`docs/capturas/`](docs/capturas/).

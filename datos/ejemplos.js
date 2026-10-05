@@ -306,5 +306,25 @@ window.SP_EJEMPLOS = [
     "descripcion": "Ficticio: rendimiento, costo de producción y pH del fruto con dosis de nitrógeno (kg/ha) y lámina de riego (cm) en un central compuesto rotable; para la superficie de cada respuesta y la deseabilidad de las tres a la vez.",
     "csv": "\"N\",\"riego\",\"rendimiento\",\"costo\",\"ph\"\n140,20,66.03,12.9,5.43\n220,20,75.01,15.61,6\n140,30,70.11,11.07,6.38\n220,30,85.48,14.12,7.39\n123.43,25,62.97,11.67,5.57\n236.57,25,81.71,15.96,6.61\n180,17.93,70.89,14.34,5.84\n180,32.07,79.05,11.93,7.12\n180,25,79.6,12.27,6.44\n180,25,79.98,11.94,6.6\n180,25,79.49,11.83,6.34\n180,25,79.49,11.74,6.53\n180,25,79.93,12.2,6.34",
     "tipos": null
+  },
+  {
+    "id": "riego-parcelas",
+    "nombre": "Trigo: riego × variedad (parcelas divididas)",
+    "descripcion": "Ficticio: rendimiento (t/ha) de cuatro variedades (subparcelas) con tres láminas de riego (parcelas grandes) en cuatro bloques; la columna «parcela» numera las parcelas grandes, y con ella el asistente reconoce las parcelas divididas.",
+    "csv": "\"bloque\",\"parcela\",\"riego\",\"variedad\",\"rendimiento\"\n1,1,\"Medio\",\"V1\",5.14\n1,1,\"Medio\",\"V2\",5.82\n1,1,\"Medio\",\"V3\",5.25\n1,1,\"Medio\",\"V4\",5.86\n1,2,\"Alto\",\"V1\",5.94\n1,2,\"Alto\",\"V2\",6.55\n1,2,\"Alto\",\"V3\",5.4\n1,2,\"Alto\",\"V4\",6.07\n1,3,\"Bajo\",\"V1\",5.21\n1,3,\"Bajo\",\"V2\",6.01\n1,3,\"Bajo\",\"V3\",5.23\n1,3,\"Bajo\",\"V4\",5.78\n2,4,\"Medio\",\"V1\",4.69\n2,4,\"Medio\",\"V2\",5\n2,4,\"Medio\",\"V3\",4.6\n2,4,\"Medio\",\"V4\",5.32\n2,5,\"Alto\",\"V1\",6.04\n2,5,\"Alto\",\"V2\",6.18\n2,5,\"Alto\",\"V3\",5.82\n2,5,\"Alto\",\"V4\",6.32\n2,6,\"Bajo\",\"V1\",3.86\n2,6,\"Bajo\",\"V2\",4.17\n2,6,\"Bajo\",\"V3\",3.47\n2,6,\"Bajo\",\"V4\",4.62\n3,7,\"Bajo\",\"V1\",3.99\n3,7,\"Bajo\",\"V2\",4.01\n3,7,\"Bajo\",\"V3\",3.77\n3,7,\"Bajo\",\"V4\",4.46\n3,8,\"Alto\",\"V1\",4.65\n3,8,\"Alto\",\"V2\",5.14\n3,8,\"Alto\",\"V3\",4.74\n3,8,\"Alto\",\"V4\",5.13\n3,9,\"Medio\",\"V1\",4.79\n3,9,\"Medio\",\"V2\",5\n3,9,\"Medio\",\"V3\",4.86\n3,9,\"Medio\",\"V4\",5.2\n4,10,\"Alto\",\"V1\",5.44\n4,10,\"Alto\",\"V2\",5.4\n4,10,\"Alto\",\"V3\",4.9\n4,10,\"Alto\",\"V4\",5.75\n4,11,\"Bajo\",\"V1\",4.58\n4,11,\"Bajo\",\"V2\",4.52\n4,11,\"Bajo\",\"V3\",4\n4,11,\"Bajo\",\"V4\",4.53\n4,12,\"Medio\",\"V1\",5.02\n4,12,\"Medio\",\"V2\",5.48\n4,12,\"Medio\",\"V3\",5.16\n4,12,\"Medio\",\"V4\",5.79",
+    "tipos": {
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["1", "2", "3", "4"]
+      },
+      "parcela": {
+        "tipo": "factor",
+        "niveles": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+      },
+      "riego": {
+        "tipo": "factor",
+        "niveles": ["Bajo", "Medio", "Alto"]
+      }
+    }
   }
 ];

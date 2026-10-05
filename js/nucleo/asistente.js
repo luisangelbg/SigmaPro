@@ -19,7 +19,8 @@
        bloques aleatorios (si se pide): bloques, parcelas divididas o látice con modelo mixto; conteos y proporciones,
          modelo lineal generalizado mixto (motor R)
        parcelas grandes: divididas (2 factores; parcelas grandes en bloques, al azar o en cuadro latino),
-                         subdivididas (3 factores) o franjas
+                         subdivididas (3 factores) o franjas; si una columna identifica las parcelas (un factor no
+                         cambia dentro de cada una), el asistente lo reconoce y lo propone (Hito 4.4)
        bloques incompletos: látice (agrupados en repeticiones) o BIB
        bloques en dos direcciones: cuadro latino;  en una: bloques completos al azar;  sin bloques: completamente al azar
        y después: polinomios o curva con meseta (dosis numérica), Dunnett (contra un testigo), Tukey o contrastes planeados
@@ -84,7 +85,53 @@ SP.definir('asistente', function (SP) {
     /* el coeficiente de variación de cada numérica (para planear un ensayo con la variación de estos datos) */
     const cvs = {};
     for (const n of numericas) { const v = Array.from(tabla.col(n).valores).filter(z => z === z); if (v.length > 2) { const m = v.reduce((a, b) => a + b, 0) / v.length, s = Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / (v.length - 1)); cvs[n] = m > 0 ? 100 * s / m : NaN; } }
-    return { numericas, medidas, numFactor, factores: agrupables, niveles, tipoNum, pap, n: tabla.n, ligados: [...ligados], binarias, cvs };
+    /* los códigos de cada factor y de las columnas de parcela: para reconocer las parcelas (Hito 4.4) */
+    for (const p of pap.parcelas || []) { try { cods[p] = SP.estructura.comoFactor(tabla, p).codigos; } catch (e) { /* nada */ } }
+    return { numericas, medidas, numFactor, factores: agrupables, niveles, tipoNum, pap, n: tabla.n, ligados: [...ligados], binarias, cvs, cods, parcelasCol: (pap.parcelas || []).filter(p => cods[p]) };
+  }
+
+  /**
+   * Parcelas desde los datos (Hito 4.4). Una columna P que no es tratamiento ni bloque (de preferencia una que se llame
+   * parcela, franja…) define celdas: sus niveles, o bloque × P si hay bloques. Si dentro de cada celda un factor de
+   * tratamiento no cambia y los otros sí, ese factor se aplicó a parcelas grandes: parcelas divididas. Con dos columnas
+   * que fijan cada una un factor distinto: franjas. Con tres factores, una columna que fija A y otra más fina que fija A
+   * y B: subdivididas (A en las grandes, B en las subparcelas). Una columna con una celda por fila (un identificador) o
+   * con tantas celdas como bloques no sirve. Si las pistas no son claras, no propone nada.
+   * @returns {null | { tipo: 'divididas'|'franjas'|'subdivididas', grande, sub?, columna, columna2? }}
+   */
+  function detectarParcelas(inf, x) {
+    const C = inf.cods || {}, n = inf.n, F = x.factores;
+    if (F.length < 2 || !F.every(f => C[f])) return null;
+    const bl = x.bloques === 'uno' && C[x.bloque] ? C[x.bloque] : null, nb = bl ? new Set(bl).size : 1;
+    /* solo las columnas que se llaman como parcelas (parcela, franja…): un identificador de planta medida en el tiempo
+       también deja fijo el tratamiento, pero eso son medidas repetidas */
+    const nombres = (inf.parcelasCol || []).filter(p => !F.includes(p) && !(bl && p === x.bloque) && p !== x.respuesta && C[p]);
+    const evalua = p => {
+      const m = new Map(), k = new Int32Array(n);
+      for (let i = 0; i < n; i++) { const a = C[p][i], b = bl ? bl[i] : 0; if (a < 0 || b < 0) { k[i] = -1; continue; } const c = b * 100003 + a; if (!m.has(c)) m.set(c, m.size); k[i] = m.get(c); }
+      const G = m.size;
+      if (G >= n || G <= nb) return null;
+      const fijos = F.filter(f => { const v = new Map(); for (let i = 0; i < n; i++) { if (k[i] < 0 || C[f][i] < 0) continue; const a = v.get(k[i]); if (a === undefined) v.set(k[i], C[f][i]); else if (a !== C[f][i]) return false; } return true; });
+      return fijos.length && fijos.length < F.length ? { p, G, fijos } : null;
+    };
+    const cand = nombres.map(evalua).filter(Boolean);
+    if (!cand.length) return null;
+    const de = f => cand.filter(z => z.fijos.length === 1 && z.fijos[0] === f);
+    if (F.length === 2) {
+      const [a, b] = F, ca = de(a), cb = de(b);
+      if (bl && ca.length && cb.length) return { tipo: 'franjas', grande: a, columna: ca[0].p, columna2: cb[0].p };
+      if (ca.length && !cb.length) return { tipo: 'divididas', grande: a, columna: ca[0].p };
+      if (cb.length && !ca.length) return { tipo: 'divididas', grande: b, columna: cb[0].p };
+      return null;
+    }
+    if (F.length === 3 && bl) {
+      const unos = cand.filter(z => z.fijos.length === 1), dos = cand.filter(z => z.fijos.length === 2);
+      for (const u of unos) for (const d of dos) if (d.fijos.includes(u.fijos[0]) && d.G > u.G) {
+        const sub = d.fijos.find(f => f !== u.fijos[0]);
+        return { tipo: 'subdivididas', grande: u.fijos[0], sub, columna: u.p, columna2: d.p };
+      }
+    }
+    return null;
   }
 
   /* respuestas con sus valores de omisión, según la tabla */
@@ -113,6 +160,15 @@ SP.definir('asistente', function (SP) {
     if (!libres.includes(x.fila)) x.fila = libres.includes(inf.pap.fila) ? inf.pap.fila : libres[0] || '';
     if (!libres.includes(x.columna) || x.columna === x.fila) x.columna = libres.includes(inf.pap.columna) && inf.pap.columna !== x.fila ? inf.pap.columna : libres.find(f => f !== x.fila) || '';
     if (!libres.includes(x.repeticion) || x.repeticion === x.bloque) x.repeticion = libres.find(f => /^rep/i.test(f) && f !== x.bloque) || libres.find(f => f !== x.bloque) || '';
+    /* las parcelas que se ven en los datos: se proponen si el usuario no contestó la pregunta */
+    const det = x.objetivo === 'comparar' && x.bloques !== 'incompletos' ? detectarParcelas(inf, x) : null;
+    x.detectado = det;
+    if (det && !r.parcelas) {
+      x.parcelas = det.tipo === 'subdivididas' ? 'divididas' : det.tipo;
+      x.parcelaGrande = det.grande;
+      if (det.tipo === 'subdivididas') x.factores = [det.grande, det.sub].concat(x.factores.filter(f => f !== det.grande && f !== det.sub));
+      if (det.tipo === 'divididas' && x.bloques === 'no' && !r.repeticion) x.repeticion = det.columna;
+    }
     if (!x.parcelas) x.parcelas = 'no';
     if (!x.factores.includes(x.parcelaGrande)) x.parcelaGrande = x.factores[0] || '';
     if (!x.latice) x.latice = 'no';
@@ -183,6 +239,14 @@ SP.definir('asistente', function (SP) {
   }
 
   /** Preguntas que tocan, con su valor actual. */
+  /** Lo que se vio en los datos, en palabras. */
+  function detectadoTexto(d, x) {
+    const dentro = x.bloques === 'uno' ? T(' de un mismo bloque') : '';
+    return d.tipo === 'franjas' ? T('Lo vi en los datos: «{a}» no cambia dentro de cada «{p}»{b} y «{c}» no cambia dentro de cada «{q}»: son franjas que se cruzan.', { a: d.grande, p: d.columna, b: dentro, c: x.factores.find(f => f !== d.grande), q: d.columna2 })
+      : d.tipo === 'subdivididas' ? T('Lo vi en los datos: «{a}» no cambia dentro de cada «{p}»{b} y «{s}» no cambia dentro de cada «{q}»: parcelas subdivididas.', { a: d.grande, p: d.columna, b: dentro, s: d.sub, q: d.columna2 })
+        : T('Lo vi en los datos: «{a}» no cambia dentro de cada «{p}»{b}, y los demás factores sí: «{a}» va en parcelas grandes.', { a: d.grande, p: d.columna, b: dentro });
+  }
+
   function preguntas(r, inf) {
     const x = completar(r, inf), out = [], med = inf.medidas.length ? inf.medidas : inf.numericas;
     const P = (id, texto, tipo, opciones, ayuda, extra) => out.push(Object.assign({ id, texto, tipo, opciones, ayuda: ayuda || '', valor: x[id] }, extra || {}));
@@ -211,7 +275,7 @@ SP.definir('asistente', function (SP) {
       if (x.factores.length >= 2 && x.bloques !== 'incompletos') {
         P('parcelas', T('¿Algún factor se aplicó a parcelas grandes, que no se pueden sortear por parcela chica (riego, labranza, fecha de siembra)?'), 'opciones',
           [['no', T('No, todo se sorteó por parcela')], ['divididas', T('Sí: un factor en parcelas grandes y lo demás dentro de ellas')]].concat(x.factores.length === 2 && x.bloques === 'uno' ? [['franjas', T('Sí: los dos factores en franjas que se cruzan')]] : []),
-          T('Si es así, cada factor tiene su propio error y analizarlo como factorial común da conclusiones falsas.'));
+          x.detectado ? detectadoTexto(x.detectado, x) : T('Si es así, cada factor tiene su propio error y analizarlo como factorial común da conclusiones falsas.'));
         if (x.parcelas !== 'no') P('parcelaGrande', x.parcelas === 'franjas' ? T('¿Qué factor va en las franjas horizontales?') : T('¿Qué factor va en las parcelas grandes?'), 'variable', x.factores.map(f => [f, f]));
         if (x.parcelas === 'divididas' && x.bloques === 'no') P('repeticion', T('¿Qué columna dice la repetición de cada parcela grande?'), 'variable', libres.map(f => [f, f]));
       }
@@ -572,6 +636,7 @@ SP.definir('asistente', function (SP) {
       Object.assign(e, { franjaA: x.parcelaGrande, franjaB: facs.find(f => f !== x.parcelaGrande), bloque });
       titulo = T('Parcelas en franjas');
       porque.push(T('Los dos factores se aplicaron en franjas que se cruzan: cada uno y su interacción tienen su propio error.'));
+      if (x.detectado && x.detectado.tipo === 'franjas') porque.push(detectadoTexto(x.detectado, x));
     } else if (x.parcelas === 'divididas' && facs.length >= 2) {
       const resto = facs.filter(f => f !== x.parcelaGrande);
       if (facs.length === 3) {
@@ -580,12 +645,14 @@ SP.definir('asistente', function (SP) {
         Object.assign(e, { parcelaGrande: x.parcelaGrande, subparcela: resto[0], subsubparcela: resto[1], bloque });
         titulo = T('Parcelas subdivididas');
         porque.push(T('Tres niveles de parcela: «{a}» en las grandes, «{b}» en las subparcelas y «{c}» en las sub-subparcelas, cada uno con su error.', { a: x.parcelaGrande, b: resto[0], c: resto[1] }));
+        if (x.detectado && x.detectado.tipo === 'subdivididas') porque.push(detectadoTexto(x.detectado, x));
       } else {
         metodo = 'parcelas-divididas';
         const principal = x.bloques === 'dos' ? 'latino' : bloque ? 'dbca' : 'dca';
         Object.assign(e, { parcelaGrande: x.parcelaGrande, subparcela: resto[0], principal }, principal === 'dbca' ? { bloque } : principal === 'latino' ? { fila: x.fila, columna: x.columna } : { repeticion: x.repeticion });
         titulo = T('Parcelas divididas');
         porque.push(T('«{a}» se aplicó a parcelas grandes y «{b}» dentro de ellas: cada uno se prueba contra su propio error.', { a: x.parcelaGrande, b: resto[0] }));
+        if (x.detectado && x.detectado.tipo === 'divididas' && x.detectado.grande === x.parcelaGrande) porque.push(detectadoTexto(x.detectado, x));
       }
     } else if (x.bloques === 'incompletos' && uno) {
       metodo = x.latice === 'si' ? 'latice' : 'bib';

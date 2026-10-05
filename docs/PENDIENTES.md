@@ -1,19 +1,21 @@
 # Pendientes de SigmaPro
 
-Estado tras la ampliación de la Fase 3 (Hito 3.9, 4 de octubre de 2026), los arreglos hallados al escribir el manual (versión 0.3.3) y los Hitos 4.0 y 4.1 de la Fase 4 (plan en [`propuesta/FASE4.md`](../propuesta/FASE4.md)). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
+Estado tras los cálculos de la Fase 4 (Hitos 4.0 a 4.4, versión 0.4.0, 4 de octubre de 2026; plan en [`propuesta/FASE4.md`](../propuesta/FASE4.md)), la ampliación de la Fase 3 (Hito 3.9) y los arreglos hallados al escribir el manual (0.3.3). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
 que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA.md`](../propuesta/PROPUESTA.md) §12).
 
 ## Antes de publicar
 
 - **Nombre.** «SigmaPro» se parece al de un programa comercial de gráficas científicas: buscarlo en el IMPI antes de
   publicar con DOI (riesgo 6 de la propuesta).
-- **Versión 1.0.0.** Hoy la app dice 0.3.3 (Fase 3 completa, su ampliación y los arreglos del manual); al publicar, subir a 1.0.0 en `js/nucleo/sp.js`
+- **Versión 1.0.0.** Hoy la app dice 0.4.0 (los cálculos de la Fase 4); al publicar, subir a 1.0.0 en `js/nucleo/sp.js`
   (`SP.VERSION`), `sw.js` y el CHANGELOG.
 - **Motor R sin conexión al publicar**: armar `motor-r/` con `node tools/motor-r/armar.mjs --fuentes` y publicarlo
   junto a la app (no va en el repositorio: unos 250 MB con las fuentes).
 - **Manual de usuario**: escrito en español, un capítulo por bloque (`manual/`, PDF
   `manual/SigmaPro_Manual_de_usuario_ES.pdf`). Describe la versión 1.0: al subir la versión, rehacer las capturas y el
-  PDF (pasos en [`manual/LEEME.md`](../manual/LEEME.md)) para que las pantallas digan 1.0.0.
+  PDF (pasos en [`manual/LEEME.md`](../manual/LEEME.md)) para que las pantallas digan 1.0.0. El manual describe la versión 0.3.3:
+  le faltan las novedades de la Fase 4 (no lineal, multiambiente, superficies, mezclas, deseabilidad, generalizados y el
+  asistente que reconoce las parcelas).
 - **Publicación**: repositorio en GitHub, GitHub Pages (ahí funciona el servicio sin conexión), su ficha en el
   catálogo del portal de la suite y registro en Zenodo con DOI.
 - **INDAUTOR**: el ejemplar se arma solo con el código propio (núcleo, métodos, interfaz y exportadores). Los módulos
@@ -29,8 +31,10 @@ que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA
 - ~~**Guardar el trabajo**~~: resuelto (Hito 3.9, 4 oct 2026). Los datos y el reporte se guardan solos en el navegador
   (IndexedDB) y al volver a abrir se ofrece recuperarlos. Queda: con dos pestañas de SigmaPro abiertas a la vez, se
   guarda lo de la última que cambió; el historial de deshacer de la hoja no se guarda.
-- **Asistente**: no reconoce en los datos una estructura de parcelas divididas; hay que indicarla con sus preguntas o en
-  el constructor.
+- ~~**Asistente**: no reconoce en los datos una estructura de parcelas divididas~~: resuelto en el Hito 4.4 (4 oct 2026)
+  cuando una columna identifica las parcelas (parcela, subparcela, franja…): ahí reconoce las parcelas divididas, las
+  subdivididas y las franjas, y lo dice. Sin esa columna, un factorial en bloques y unas parcelas divididas se ven
+  iguales en los datos: hay que contestarlo en su pregunta.
 - **Tablas grandes**: el plan pedía calcular en un hilo de trabajo con más de 20 000 filas. Se midió y resultó más
   lento (el hilo arranca sin el código optimizado y con menos prioridad), así que los cálculos siguen en la página con
   el aviso «Calculando con n filas…». Volver a medir con un hilo que se quede abierto y ya optimizado.

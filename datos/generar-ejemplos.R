@@ -301,6 +301,18 @@ d$ph <- round(6.5 + 0.4 * Zd[, 1] + 0.5 * Zd[, 2] - 0.2 * Zd[, 1]^2 + rnorm(13, 
 agregar("fruto-respuestas", "Fruto: rendimiento, costo y pH (central compuesto)",
         "Ficticio: rendimiento, costo de producción y pH del fruto con dosis de nitrógeno (kg/ha) y lámina de riego (cm) en un central compuesto rotable; para la superficie de cada respuesta y la deseabilidad de las tres a la vez.", d)
 
+## 25. Trigo: riego × variedad en parcelas divididas, con la columna de la parcela grande (ficticio)
+set.seed(92)
+d <- do.call(rbind, lapply(1:4, function(b) {
+  orden <- sample(3)   # el riego de cada parcela grande se sortea dentro del bloque
+  do.call(rbind, lapply(1:3, function(k) data.frame(bloque = b, parcela = 3 * (b - 1) + k, riego = c("Bajo", "Medio", "Alto")[orden[k]], variedad = paste0("V", 1:4))))
+}))
+r <- match(d$riego, c("Bajo", "Medio", "Alto")); v <- as.integer(substr(d$variedad, 2, 2))
+d$rendimiento <- round(5 + c(-0.8, 0, 0.6)[r] + c(0, 0.3, -0.2, 0.5)[v] + c(0, 0.1, -0.15)[r] * (v == 4) + rnorm(4, 0, 0.3)[d$bloque] + rnorm(12, 0, 0.35)[d$parcela] + rnorm(48, 0, 0.2), 2)
+agregar("riego-parcelas", "Trigo: riego × variedad (parcelas divididas)",
+        "Ficticio: rendimiento (t/ha) de cuatro variedades (subparcelas) con tres láminas de riego (parcelas grandes) en cuatro bloques; la columna «parcela» numera las parcelas grandes, y con ella el asistente reconoce las parcelas divididas.", d,
+        list(bloque = list(tipo = "factor", niveles = as.character(1:4)), parcela = list(tipo = "factor", niveles = as.character(1:12)), riego = list(tipo = "factor", niveles = c("Bajo", "Medio", "Alto"))))
+
 ## escribir datos/ejemplos.js
 js <- paste0(
   "/* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.\n",

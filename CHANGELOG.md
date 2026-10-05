@@ -2,6 +2,17 @@
 
 ## Sin publicar
 
+### 0.4.0 · Hito 4.4 · El asistente reconoce las parcelas; cierre de los cálculos de la Fase 4 (4 oct 2026)
+
+- **Asistente**: cuando una columna identifica las parcelas (parcela, subparcela, franja…), reconoce en los datos las
+  parcelas divididas (un factor que no cambia dentro de cada parcela del bloque), las subdivididas y las franjas; las
+  propone en su pregunta y en la recomendación dice lo que vio. Sin bloques, la parcela queda como la repetición de
+  cada parcela grande. Lo que se conteste en la pregunta manda.
+- Las columnas que se llaman como parcelas ya no se proponen como factores de tratamiento.
+- Ejemplo nuevo: «Trigo: riego × variedad (parcelas divididas)», con la columna de la parcela grande (ficticio).
+- **Versión 0.4.0**: los cálculos de la Fase 4 (Hitos 4.0 a 4.4) están completos, con 848 casos y 93 157 valores
+  contra R. Falta la interfaz en inglés (Hito 4.5).
+
 ### Hito 4.3 · Modelos generalizados ampliados (4 oct 2026)
 
 - **Intervalos por verosimilitud perfilada** de los coeficientes del GLM (opción del formulario), los de `confint()`

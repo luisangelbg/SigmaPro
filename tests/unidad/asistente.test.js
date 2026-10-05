@@ -112,6 +112,45 @@ SPT.describir('Asistente y constructor de modelos', () => {
     existe(la);
   });
 
+  SPT.caso('Hito 4.4: las parcelas divididas, subdivididas y las franjas se reconocen en los datos', () => {
+    /* divididas: 4 bloques × 3 riegos (parcelas grandes numeradas) × 4 variedades */
+    const d = { bloque: [], parcela: [], riego: [], variedad: [], rend: [] };
+    let k = 0;
+    for (const b of ['I', 'II', 'III', 'IV']) for (const g of ['Bajo', 'Medio', 'Alto']) { k++; for (const v of ['V1', 'V2', 'V3', 'V4']) { d.bloque.push(b); d.parcela.push('P' + k); d.riego.push(g); d.variedad.push(v); d.rend.push(5 + az()); } }
+    const td = tab(d), inf = SP.asistente.info(td);
+    SPT.igualJSON(inf.pap.parcelas, ['parcela']);
+    const pd = R(td);
+    SPT.igual(pd.metodo, 'parcelas-divididas');
+    SPT.igualJSON([pd.e.parcelaGrande, pd.e.subparcela, pd.e.bloque], ['riego', 'variedad', 'bloque']);
+    SPT.afirmar(pd.porque.some(x => /Lo vi en los datos/.test(x) && /«parcela»/.test(x)), 'dice lo que vio');
+    existe(pd);
+    const pq = SP.asistente.preguntas({}, inf).find(q => q.id === 'parcelas');
+    SPT.igual(pq.valor, 'divididas');
+    SPT.afirmar(/Lo vi en los datos/.test(pq.ayuda), pq.ayuda);
+    /* lo que conteste el usuario manda */
+    SPT.afirmar(R(td, { parcelas: 'no' }).metodo !== 'parcelas-divididas', 'la respuesta del usuario manda');
+    /* la parcela numerada dentro de cada bloque (1, 2, 3): igual */
+    SPT.igual(R(tab(Object.assign({}, d, { parcela: d.parcela.map((p, i) => String(1 + Math.floor((i % 12) / 4))) }))).metodo, 'parcelas-divididas');
+    /* sin bloques: la parcela es la repetición de cada parcela grande */
+    const p3 = R(tab({ parcela: d.parcela, riego: d.riego, variedad: d.variedad, rend: d.rend }));
+    SPT.igualJSON([p3.metodo, p3.e.principal, p3.e.repeticion], ['parcelas-divididas', 'dca', 'parcela']);
+    /* franjas: dos columnas, cada una fija un factor distinto */
+    const f = { bloque: [], franja_h: [], franja_v: [], riego: [], labranza: [], y: [] };
+    for (const b of ['I', 'II', 'III']) for (const [i, g] of ['R1', 'R2', 'R3'].entries()) for (const [j, l] of ['L1', 'L2'].entries()) { f.bloque.push(b); f.franja_h.push('H' + (i + 1)); f.franja_v.push('V' + (j + 1)); f.riego.push(g); f.labranza.push(l); f.y.push(az()); }
+    const pf = R(tab(f));
+    SPT.igualJSON([pf.metodo, pf.e.franjaA, pf.e.franjaB], ['franjas', 'riego', 'labranza']);
+    existe(pf);
+    /* subdivididas: la parcela fija el riego y la subparcela, el riego y el híbrido */
+    const s3 = { bloque: [], parcela: [], subparcela: [], riego: [], hibrido: [], dosis: [], y: [] };
+    let pp = 0, sp = 0;
+    for (const b of ['I', 'II', 'III']) for (const g of ['R1', 'R2']) { pp++; for (const h of ['H1', 'H2']) { sp++; for (const dz of [0, 50, 100]) { s3.bloque.push(b); s3.parcela.push('P' + pp); s3.subparcela.push('S' + sp); s3.riego.push(g); s3.hibrido.push(h); s3.dosis.push(dz); s3.y.push(az()); } } }
+    const ps = R(tab(s3), { factores: ['dosis', 'hibrido', 'riego'] });
+    SPT.igualJSON([ps.metodo, ps.e.parcelaGrande, ps.e.subparcela, ps.e.subsubparcela], ['parcelas-subdivididas', 'riego', 'hibrido', 'dosis']);
+    existe(ps);
+    /* sin una columna de parcela, un factorial en bloques no se toma por parcelas; una columna con un valor por fila tampoco sirve */
+    SPT.afirmar(SP.asistente.info(ensayo()).pap.parcelas.length === 0 && R(ensayo()).metodo !== 'parcelas-divididas', 'sin falsos positivos');
+    SPT.afirmar(R(tab(Object.assign({}, d, { parcela: d.parcela.map((_, i) => 'U' + i) }))).metodo !== 'parcelas-divididas', 'un identificador por fila no es parcela');
+  });
   SPT.caso('Fase 2: conteos y proporciones → modelo lineal generalizado; bloques aleatorios → modelo mixto', () => {
     const c = { bloque: [], trat: [], insectos: [], plantas: [], germinadas: [], sembradas: [], emergio: [] };
     for (const b of ['I', 'II', 'III', 'IV']) for (const tr of ['T1', 'T2', 'T3']) {
