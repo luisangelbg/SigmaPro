@@ -2,7 +2,8 @@
    Ficticios y reproducibles, salvo «venenos»: Box, G. E. P. y Cox, D. R. (1964). An analysis of transformations.
    J. R. Stat. Soc. B 26: 211-252, cuadro 1; «mendel»: Mendel, G. (1866), Versuche über Pflanzen-Hybriden;
    «avena»: Yates, F. (1935). Complex experiments. Suppl. J. R. Stat. Soc. 2: 181-247; «alfa-latice» y «avena-ambientes»:
-   Olivoto, T. y Lúcio, A. D. (2020). metan: an R package for multi-environment trial analysis. Methods Ecol. Evol. 11: 783-789. */
+   Olivoto, T. y Lúcio, A. D. (2020). metan: an R package for multi-environment trial analysis. Methods Ecol. Evol. 11: 783-789;
+   «hilo-mezcla»: Cornell, J. A. (2002). Experiments with Mixtures (3.ª ed.). Wiley. */
 window.SP_EJEMPLOS = [
   {
     "id": "maiz",
@@ -291,5 +292,19 @@ window.SP_EJEMPLOS = [
         "niveles": ["1", "2", "3"]
       }
     }
+  },
+  {
+    "id": "hilo-mezcla",
+    "nombre": "Hilo: alargamiento de tres polímeros (mezclas)",
+    "descripcion": "Datos publicados: alargamiento del hilo con mezclas de polietileno, poliestireno y polipropileno (simplex-látice {3, 2} con repeticiones; Cornell, 2002); para los modelos de Scheffé y la mejor mezcla.",
+    "csv": "\"polietileno\",\"poliestireno\",\"polipropileno\",\"alargamiento\"\n1,0,0,11\n1,0,0,12.4\n0.5,0.5,0,15\n0.5,0.5,0,14.8\n0.5,0.5,0,16.1\n0,1,0,8.8\n0,1,0,10\n0,0.5,0.5,10\n0,0.5,0.5,9.7\n0,0.5,0.5,11.8\n0,0,1,16.8\n0,0,1,16\n0.5,0,0.5,17.7\n0.5,0,0.5,16.4\n0.5,0,0.5,16.6",
+    "tipos": null
+  },
+  {
+    "id": "fruto-respuestas",
+    "nombre": "Fruto: rendimiento, costo y pH (central compuesto)",
+    "descripcion": "Ficticio: rendimiento, costo de producción y pH del fruto con dosis de nitrógeno (kg/ha) y lámina de riego (cm) en un central compuesto rotable; para la superficie de cada respuesta y la deseabilidad de las tres a la vez.",
+    "csv": "\"N\",\"riego\",\"rendimiento\",\"costo\",\"ph\"\n140,20,66.03,12.9,5.43\n220,20,75.01,15.61,6\n140,30,70.11,11.07,6.38\n220,30,85.48,14.12,7.39\n123.43,25,62.97,11.67,5.57\n236.57,25,81.71,15.96,6.61\n180,17.93,70.89,14.34,5.84\n180,32.07,79.05,11.93,7.12\n180,25,79.6,12.27,6.44\n180,25,79.98,11.94,6.6\n180,25,79.49,11.83,6.34\n180,25,79.49,11.74,6.53\n180,25,79.93,12.2,6.34",
+    "tipos": null
   }
 ];

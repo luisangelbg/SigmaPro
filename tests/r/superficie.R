@@ -42,11 +42,12 @@ sr_signo <- function(V) {
 }
 
 ref_superficie <- function(datos, y, factores, orden = "segundo", bloque = "",
-                           objetivo = "maximo", nivel = 0.95) {
+                           objetivo = "maximo", nivel = 0.95, bajos = NULL, altos = NULL) {
   vars <- c(y, factores, if (nzchar(bloque)) bloque)
   d <- datos[complete.cases(datos[vars]), , drop = FALSE]
   k <- length(factores); n <- nrow(d); yv <- d[[y]]
   cod <- t(vapply(factores, function(f) sr_codificacion(d[[f]]), c(centro = 0, paso = 0)))
+  if (!is.null(bajos)) cod <- cbind(centro = (bajos + altos) / 2, paso = (altos - bajos) / 2)   # codificación a mano: −1 y +1 dados
   Xn <- sapply(factores, function(f) d[[f]])
   Z <- sweep(sweep(Xn, 2, cod[, "centro"]), 2, cod[, "paso"], "/")
   cz <- sr_columnas(Z, factores, orden)
@@ -142,4 +143,119 @@ ref_superficie <- function(datos, y, factores, orden = "segundo", bloque = "",
                      natural = sweep(sweep(camino, 2, cod[, "paso"], "*"), 2, cod[, "centro"], "+"),
                      prediccion = pp[, 1], ee = pp[, 2])
   out
+}
+
+# ---- Fase 4 (Hito 4.2): diseños, mezclas y deseabilidad -------------------------------------------------------
+
+#' Diseño en unidades codificadas y en el orden estándar (el de la app), con las fórmulas de α escritas aparte:
+#' rotable F^(1/4); ortogonal (F·Q/4)^(1/4) con Q = (√(F + 2k + n0) − √F)²; caras 1; dos bloques ortogonales
+#' √(k(1 + nA/(2k))/(1 + nF/F)) (Box y Hunter 1957). Con k ≥ 5 la parte factorial es la media fracción I = ABC….
+sr_diseno <- function(tipo, k, alfa = "rotable", centros = NULL, grado = 2) {
+  fila <- list(); bloque <- integer(); a <- NULL; F <- 0L
+  pon <- function(z, b = 1L) { fila[[length(fila) + 1]] <<- z; bloque <<- c(bloque, b) }
+  if (tipo == "ccd") {
+    base <- as.matrix(expand.grid(rep(list(c(-1, 1)), if (k >= 5) k - 1 else k)))
+    if (k >= 5) base <- cbind(base, apply(base, 1, prod))
+    F <- nrow(base); n0 <- if (is.null(centros)) c("2" = 5, "3" = 6, "4" = 7, "5" = 6, "6" = 9)[[as.character(k)]] else centros
+    nF <- if (alfa == "bloques") ceiling(n0 / 2) else n0; nA <- if (alfa == "bloques") n0 - nF else 0
+    a <- switch(alfa, rotable = F^(1 / 4), cara = 1, ortogonal = (F * (sqrt(F + 2 * k + n0) - sqrt(F))^2 / 4)^(1 / 4), bloques = sqrt(k * (1 + nA / (2 * k)) / (1 + nF / F)))
+    for (r in seq_len(F)) pon(unname(base[r, ]))
+    for (c in seq_len(nF)) pon(rep(0, k))
+    for (j in seq_len(k)) for (s in c(-1, 1)) { z <- rep(0, k); z[j] <- s * a; pon(z, if (alfa == "bloques") 2L else 1L) }
+    for (c in seq_len(nA)) pon(rep(0, k), 2L)
+  } else if (tipo == "bbd") {
+    p <- t(combn(k, 2))
+    for (r in seq_len(nrow(p))) for (s in list(c(-1, -1), c(1, -1), c(-1, 1), c(1, 1))) { z <- rep(0, k); z[p[r, ]] <- s; pon(z) }
+    for (c in seq_len(if (is.null(centros)) (if (k == 5) 6 else 3) else centros)) pon(rep(0, k))
+  } else if (tipo == "factorial") {
+    base <- as.matrix(expand.grid(rep(list(c(-1, 1)), k)))
+    for (r in seq_len(nrow(base))) pon(unname(base[r, ]))
+    for (c in seq_len(if (is.null(centros)) 4 else centros)) pon(rep(0, k))
+  } else if (tipo == "latice") {
+    rec <- function(resto, pref) { if (length(pref) == k - 1) { pon(c(pref, resto) / grado); return(invisible()) }; for (x in resto:0) rec(resto - x, c(pref, x)) }
+    rec(grado, numeric())
+    for (c in seq_len(if (is.null(centros)) 0 else centros)) pon(rep(1 / k, k))
+  } else if (tipo == "centroide") {
+    subs <- seq_len(2^k - 1); tam <- vapply(subs, function(s) sum(bitwAnd(s, 2^(0:(k - 1))) > 0), 0)
+    for (s in subs[order(tam, subs)]) { b <- bitwAnd(s, 2^(0:(k - 1))) > 0; pon(ifelse(b, 1 / sum(b), 0)) }
+    for (c in seq_len(if (is.null(centros)) 0 else centros - 1)) pon(rep(1 / k, k))
+  }
+  list(alfa = if (is.null(a)) NA else a, factorial = F, codificado = do.call(rbind, fila), bloque = bloque)
+}
+
+#' Mezclas: lm sin intercepto con los términos de Scheffé sobre las proporciones; ANOVA contra la media; falta de ajuste.
+#' La mejor mezcla: en cada cara del simplex (y en los vértices), optim (BFGS) sobre las coordenadas libres desde
+#' varios arranques, con la última proporción igual a 1 − la suma de las demás; se pule con un segundo optim. No usa el
+#' método de la app (Newton con multiplicadores de Lagrange).
+ref_mezclas <- function(datos, y, comps, modelo = "cuadratico", objetivo = "maximo", nivel = 0.95) {
+  d <- datos[complete.cases(datos[c(y, comps)]), , drop = FALSE]; q <- length(comps); n <- nrow(d); yv <- d[[y]]
+  X <- as.matrix(d[comps]); X <- X / rowSums(X)
+  terms <- c(as.list(seq_len(q)), if (modelo != "lineal") lapply(seq_len(ncol(combn(q, 2))), function(r) combn(q, 2)[, r]),
+             if (modelo == "cubico-especial" && q >= 3) lapply(seq_len(ncol(combn(q, 3))), function(r) combn(q, 3)[, r]))
+  M <- matrix(sapply(terms, function(t) apply(X[, t, drop = FALSE], 1, prod)), n)
+  m <- lm(yv ~ 0 + M); stopifnot(m$rank == ncol(M))
+  cf <- summary(m)$coefficients; coef <- unname(cf[, 1]); p <- length(coef); gl <- m$df.residual; scr <- sum(residuals(m)^2); s2 <- scr / gl
+  sct <- sum((yv - mean(yv))^2); scm <- sct - scr; Fm <- (scm / (p - 1)) / s2
+  anova <- list(fuente = c("Modelo", "Residuo"), gl = c(p - 1, gl), sc = c(scm, scr), cm = c(scm / (p - 1), s2), F = c(Fm, NA), p = c(pf(Fm, p - 1, gl, lower.tail = FALSE), NA))
+  combo <- factor(apply(round(X, 10), 1, paste, collapse = "|")); mpe <- lm(yv ~ combo); glpe <- mpe$df.residual; scpe <- sum(residuals(mpe)^2); gllof <- gl - glpe
+  falta <- NULL
+  if (glpe > 0 && gllof > 0) {
+    Fl <- ((scr - scpe) / gllof) / (scpe / glpe); falta <- list(F = Fl, gl1 = gllof, gl2 = glpe, p = pf(Fl, gllof, glpe, lower.tail = FALSE))
+    anova$fuente <- c(anova$fuente, "Falta de ajuste", "Error puro"); anova$gl <- c(anova$gl, gllof, glpe); anova$sc <- c(anova$sc, scr - scpe, scpe)
+    anova$cm <- c(anova$cm, (scr - scpe) / gllof, scpe / glpe); anova$F <- c(anova$F, Fl, NA); anova$p <- c(anova$p, falta$p, NA)
+  }
+  fx <- function(x) sum(coef * vapply(terms, function(t) prod(x[t]), 0)); sgn <- if (objetivo == "maximo") 1 else -1
+  mejor <- list(val = -Inf)
+  for (i in seq_len(q)) { x <- rep(0, q); x[i] <- 1; v <- sgn * fx(x); if (v > mejor$val + 1e-13) mejor <- list(val = v, x = x) }
+  if (modelo != "lineal") for (s in seq_len(2^q - 1)) {
+    S <- which(bitwAnd(s, 2^(0:(q - 1))) > 0); if (length(S) < 2) next
+    full <- function(u) { x <- rep(0, q); x[S] <- c(u, 1 - sum(u)); x }
+    obj <- function(u) { x <- full(u); if (any(x[S] < 0)) return(1e10 + sum(pmin(x, 0)^2)); -sgn * fx(x) }
+    for (r in 1:12) {
+      w <- (seq_along(S) * r) %% 7 + 1; u0 <- (w / sum(w))[-length(S)]
+      o <- optim(u0, obj, method = "BFGS", control = list(reltol = 1e-15, maxit = 10000))
+      o <- optim(o$par, obj, method = "BFGS", control = list(reltol = 1e-16, maxit = 10000))
+      x <- full(o$par); if (all(x[S] > 1e-6)) { v <- sgn * fx(x); if (v > mejor$val + 1e-13) mejor <- list(val = v, x = x) }
+    }
+  }
+  V <- vcov(m); a <- vapply(terms, function(t) prod(mejor$x[t]), 0); pr <- sum(a * coef); epr <- sqrt(drop(t(a) %*% V %*% a)); qt_ <- qt(1 - (1 - nivel) / 2, gl)
+  out <- list(coeficientes = list(estimado = coef, ee = unname(cf[, 2]), t = unname(cf[, 3]), p = unname(cf[, 4])), anova = anova,
+              ajuste = list(n = n, gl = gl, sigma = sqrt(s2), r2 = scm / sct, r2_ajustada = 1 - s2 / (sct / (n - 1))),
+              optimo = list(mezcla = mejor$x, prediccion = pr, ee = epr, ic_inf = pr - qt_ * epr, ic_sup = pr + qt_ * epr))
+  if (!is.null(falta)) out$falta_ajuste <- falta
+  out
+}
+
+#' Deseabilidad (Derringer y Suich 1980): cada respuesta con su modelo de segundo orden (ref_superficie), d y D en
+#' fórmula cerrada y la mayor D por optim (Nelder-Mead de R) desde cada punto del diseño y el centro, con el punto
+#' llevado a la región (cubo de los niveles codificados o esfera de radio la mayor distancia).
+ref_deseabilidad <- function(datos, factores, respuestas, region = "cubo") {
+  nombres <- vapply(respuestas, function(rs) rs$nombre, "")
+  d <- datos[complete.cases(datos[c(factores, nombres)]), , drop = FALSE]; k <- length(factores)
+  mods <- lapply(respuestas, function(rs) ref_superficie(d, rs$nombre, factores, "segundo"))
+  cod <- mods[[1]]$codificacion; Z <- sweep(sweep(sapply(factores, function(f) d[[f]]), 2, cod$centro), 2, cod$paso, "/"); n <- nrow(Z)
+  lo <- apply(Z, 2, min); hi <- apply(Z, 2, max); radio <- max(sqrt(rowSums(Z^2)))
+  llevar <- function(z) if (region == "esfera") { r <- sqrt(sum(z^2)); if (r > radio) z * radio / r else z } else pmin(hi, pmax(lo, z))
+  predice <- function(mo, z) { cf <- mo$coeficientes$estimado; pr <- if (k > 1) { p <- t(combn(k, 2)); z[p[, 1]] * z[p[, 2]] } else numeric(); sum(cf * c(1, z, pr, z^2)) }
+  dfun <- function(y, rs) {
+    s <- if (is.null(rs$s)) 1 else rs$s; t <- if (is.null(rs$t)) 1 else rs$t
+    switch(rs$meta, max = if (y <= rs$L) 0 else if (y >= rs$U) 1 else ((y - rs$L) / (rs$U - rs$L))^s,
+                    min = if (y >= rs$U) 0 else if (y <= rs$L) 1 else ((rs$U - y) / (rs$U - rs$L))^s,
+                    valor = if (y < rs$L || y > rs$U) 0 else if (y <= rs$T) ((y - rs$L) / (rs$T - rs$L))^s else ((rs$U - y) / (rs$U - rs$T))^t)
+  }
+  imp <- vapply(respuestas, function(rs) if (is.null(rs$r)) 1 else rs$r, 0)
+  evalua <- function(z) {
+    yp <- vapply(mods, predice, 0, z = z); ds <- vapply(seq_along(respuestas), function(i) dfun(yp[i], respuestas[[i]]), 0)
+    list(yp = yp, ds = ds, D = if (any(ds <= 0)) 0 else exp(sum(imp * log(ds)) / sum(imp)))
+  }
+  mejor <- list(D = -1)
+  for (r in seq_len(n + 1)) {
+    z0 <- if (r <= n) unname(Z[r, ]) else rep(0, k)
+    o <- optim(z0, function(z) -evalua(llevar(z))$D, method = "Nelder-Mead", control = list(reltol = 1e-15, maxit = 20000))
+    o <- optim(o$par, function(z) -evalua(llevar(z))$D, method = "Nelder-Mead", control = list(reltol = 1e-15, maxit = 20000))
+    z <- llevar(o$par); e <- evalua(z); if (e$D > mejor$D + 1e-12) mejor <- c(list(z = z), e)
+  }
+  pts <- vapply(seq_len(n), function(r) evalua(unname(Z[r, ]))$D, 0)
+  list(optimo = list(codificado = mejor$z, natural = cod$centro + cod$paso * mejor$z, prediccion = mejor$yp, d = mejor$ds, D = mejor$D),
+       puntos = list(D = pts), radio = radio)
 }

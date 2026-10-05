@@ -16,6 +16,8 @@
   const NOMBRE_TIPO = { numerica: 'numérica', factor: 'factor', fecha: 'fecha', texto: 'texto', id: 'identificador' };
 
   SP.app.tablaAnalisis = () => (estado.hoja ? estado.hoja.aTabla(estado.filtro ? estado.filtro.filas : undefined) : null);
+  /** Carga una hoja hecha en otro bloque (p. ej. el diseño generado en Análisis), conservando la anterior para volver. */
+  SP.app.cargarHoja = (hoja, origen) => cargar(hoja, origen, true);
 
   /* ---------------- cargar ---------------- */
   function cargar(hoja, origen, conservarAnterior) {

@@ -1,0 +1,87 @@
+{
+  "esquema": 1,
+  "id": "mezclas/sustrato-cubico-especial",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mezclas"
+  },
+  "titulo": "Sustrato en porcentaje (suma 100): cúbico especial de Scheffé con el simplex-centroide",
+  "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "arcilla": [100, 0, 0, 50, 50, 0, 33.333333333333329, 100, 50, 33.333333333333329],
+      "arena": [0, 100, 0, 50, 0, 50, 33.333333333333329, 0, 50, 33.333333333333329],
+      "limo": [0, 0, 100, 0, 50, 50, 33.333333333333329, 0, 0, 33.333333333333329],
+      "crecimiento": [28.84, 22.57, 27.27, 29.829999999999998, 29.539999999999999, 20.52, 30.52, 28.18, 29.940000000000001, 29.030000000000001]
+    },
+    "tipos": {
+      "arcilla": {
+        "tipo": "numerica"
+      },
+      "arena": {
+        "tipo": "numerica"
+      },
+      "limo": {
+        "tipo": "numerica"
+      },
+      "crecimiento": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "crecimiento",
+    "componentes": ["arcilla", "arena", "limo"]
+  },
+  "opciones": {
+    "modelo": "cubico-especial",
+    "objetivo": "maximo"
+  },
+  "esperado": {
+    "coeficientes": {
+      "estimado": [28.510000000000009, 22.57, 27.269999999999996, 17.379999999999999, 6.5999999999999988, -17.599999999999998, 79.635000000000119],
+      "ee": [0.47150468361053105, 0.66680831828444809, 0.6668083182844482, 2.4949682696713147, 3.1276082448627327, 3.2666802720805128, 18.224738681254127],
+      "t": [60.465995335795299, 33.847808104835394, 40.896310457193657, 6.9660204545565731, 2.1102387138289647, -5.3877326625512545, 4.3696099786556761],
+      "p": [9.9657426124246635e-06, 5.6691260492689813e-05, 3.2172465867366408e-05, 0.0060701606768436989, 0.12533865649939999, 0.012527156166327356, 0.022170212559955292]
+    },
+    "anova": {
+      "fuente": ["Modelo", "Residuo"],
+      "gl": [6, 3],
+      "sc": [100.85393999999999, 1.3339000000000016],
+      "cm": [16.808989999999998, 0.44463333333333388],
+      "F": [37.804160731688981, "NA"],
+      "p": [0.0064230260299678703, "NA"]
+    },
+    "ajuste": {
+      "n": 10,
+      "gl": 3,
+      "sigma": 0.66680831828444809,
+      "r2": 0.98694658777404431,
+      "r2_ajustada": 0.96083976332213294
+    },
+    "optimo": {
+      "mezcla": [0.566424734740542, 0.24234561451924247, 0.19122965074021558],
+      "prediccion": 31.208784084000587,
+      "ee": 0.38007370917320399,
+      "ic_inf": 29.999219912506849,
+      "ic_sup": 32.418348255494323
+    }
+  },
+  "comparacion": {
+    "tolerancias": {
+      "optimo.mezcla[*]": {
+        "tol": 1.0000000000000001e-05,
+        "motivo": "la mejor mezcla en la referencia sale de optim (BFGS) sobre cada cara; la app resuelve el sistema de Lagrange"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "lm(crecimiento ~ 0 + términos de Scheffé cubico-especial sobre las proporciones); ANOVA contra la media; la mejor mezcla con optim en cada cara del simplex"
+  }
+}

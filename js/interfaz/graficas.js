@@ -555,5 +555,104 @@
       `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
   }
 
-  SP.graficas = { dispersion, grupos, lineas, medias, mapaCalor, mosaico, contorno, biplot, adelgazar, marcas };
+  /**
+   * Superficie en 3D (SVG propio, sin bibliotecas): la malla z[i][j] sobre x[i] × y[j] en perspectiva paralela, girada
+   * «azimut» grados alrededor del eje vertical y vista desde «elevacion» grados sobre el plano; cada celda se pinta de
+   * atrás hacia adelante (orden del pintor) con un color según su altura. Con «puntos» ([x, y, z]), las observaciones.
+   *   SP.graficas.superficie3d({ titulo, descripcion, x: { titulo, valores }, y: { titulo, valores }, z: { titulo, valores },
+   *     azimut: 35, elevacion: 30, puntos })
+   */
+  function superficie3d(op) {
+    const xs = op.x.valores, ys = op.y.valores, Zm = op.z.valores, nx = xs.length, ny = ys.length;
+    const zs = Zm.flat().concat((op.puntos || []).map(p => p[2])).filter(Number.isFinite);
+    const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys), z0 = Math.min(...zs), z1 = Math.max(...zs);
+    const az = (op.azimut === undefined ? 35 : op.azimut) * Math.PI / 180, el = (op.elevacion === undefined ? 28 : op.elevacion) * Math.PI / 180;
+    const ca = Math.cos(az), sa = Math.sin(az), ce = Math.cos(el), se = Math.sin(el);
+    /* a [−1, 1]³, girado: (u, v, w) → pantalla (a, alto) y profundidad */
+    const norm = (v, a, b) => (b > a ? 2 * (v - a) / (b - a) - 1 : 0);
+    const proy = (x, y, z) => {
+      const u = norm(x, x0, x1), v = norm(y, y0, y1), w = 0.8 * norm(z, z0, z1);
+      const a = u * ca - v * sa, b = u * sa + v * ca;
+      return { a, alto: b * se + w * ce, prof: b * ce - w * se };
+    };
+    const ancho = W - M.l - M.r, altoA = H - M.t - M.b, escala = Math.min(ancho, altoA) / 3.1, cx = M.l + ancho / 2, cy = M.t + altoA / 2 + 6;
+    const S = p => [cx + escala * p.a, cy - escala * p.alto];
+    const color = t => { const c0 = [243, 227, 181], c1 = [122, 79, 0], k = Math.max(0, Math.min(1, t)); return 'rgb(' + c0.map((v, i) => Math.round(v + (c1[i] - v) * k)).join(',') + ')'; };
+    const celdas = [];
+    for (let i = 0; i < nx - 1; i++) for (let j = 0; j < ny - 1; j++) {
+      const q = [[i, j], [i + 1, j], [i + 1, j + 1], [i, j + 1]].map(([a, b]) => ({ p: proy(xs[a], ys[b], Zm[a][b]), z: Zm[a][b] }));
+      if (q.some(v => !Number.isFinite(v.z))) continue;
+      const zm = q.reduce((s, v) => s + v.z, 0) / 4;
+      celdas.push({ q, prof: q.reduce((s, v) => s + v.p.prof, 0) / 4, t: (zm - z0) / ((z1 - z0) || 1) });
+    }
+    celdas.sort((a, b) => b.prof - a.prof);
+    const partes = [];
+    /* la caja: el piso; x e y por los bordes delanteros del piso (con sus extremos) y el eje vertical en la esquina de atrás */
+    const piso = [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
+    partes.push(`<polygon points="${piso.map(([x, y]) => S(proy(x, y, z0)).map(v => v.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="var(--border)" class="gr-piso"/>`);
+    const prof = (x, y, z) => proy(x, y, z).prof, mxs = marcas(x0, x1, 4), mys = marcas(y0, y1, 4), mzs = marcas(z0, z1, 4);
+    const yF = prof((x0 + x1) / 2, y0, z0) <= prof((x0 + x1) / 2, y1, z0) ? y0 : y1, xF = prof(x0, (y0 + y1) / 2, z0) <= prof(x1, (y0 + y1) / 2, z0) ? x0 : x1;
+    const atras = piso.reduce((m, c) => (prof(c[0], c[1], z0) > prof(m[0], m[1], z0) ? c : m));
+    const fuera = (p, d) => { const dx = p[0] - cx, dy = p[1] - cy, l = Math.hypot(dx, dy) || 1; return [p[0] + d * dx / l, p[1] + d * dy / l]; };
+    const etq = (p, s, clase, rol) => `<text x="${p[0].toFixed(1)}" y="${(p[1] + 4).toFixed(1)}" text-anchor="middle" class="${clase}"${rol ? ` data-role="${rol}"` : ''} ${clase === 'gr-etq' ? TENUE : TITULO}>${esc(s)}</text>`;
+    const en = (A, B, t) => [A[0] + t * (B[0] - A[0]), A[1] + t * (B[1] - A[1])];
+    const eje = (a, b, nombre, rol, va, vb, paso) => {
+      const A = S(a), B = S(b), mid = [(A[0] + B[0]) / 2, (A[1] + B[1]) / 2];
+      partes.push(`<line x1="${A[0].toFixed(1)}" y1="${A[1].toFixed(1)}" x2="${B[0].toFixed(1)}" y2="${B[1].toFixed(1)}" class="gr-eje" data-role="axis"/>`,
+        etq(fuera(en(A, B, 0.1), 16), texto(va, paso), 'gr-etq'), etq(fuera(en(A, B, 0.95), 16), texto(vb, paso), 'gr-etq'), etq(fuera(mid, 32), nombre, 'gr-titulo-eje', rol));
+    };
+    eje(proy(x0, yF, z0), proy(x1, yF, z0), op.x.titulo, 'xlab', x0, x1, mxs.paso);
+    eje(proy(xF, y0, z0), proy(xF, y1, z0), op.y.titulo, 'ylab', y0, y1, mys.paso);
+    const zA = S(proy(atras[0], atras[1], z0)), zB = S(proy(atras[0], atras[1], z1));
+    partes.push(`<line x1="${zA[0].toFixed(1)}" y1="${zA[1].toFixed(1)}" x2="${zB[0].toFixed(1)}" y2="${zB[1].toFixed(1)}" class="gr-eje" data-role="axis"/>`,
+      etq([zB[0], zB[1] - 22], op.z.titulo, 'gr-titulo-eje', 'zlab'), etq([zB[0], zB[1] - 8], texto(z1, mzs.paso), 'gr-etq'));
+    for (const c of celdas) partes.push(`<polygon points="${c.q.map(v => S(v.p).map(n => n.toFixed(1)).join(',')).join(' ')}" fill="${color(c.t)}" stroke="rgba(60,40,0,.35)" stroke-width=".5" class="gr-celda3d"/>`);
+    for (const p of op.puntos || []) { const s = S(proy(p[0], p[1], p[2])); partes.push(`<circle cx="${s[0].toFixed(1)}" cy="${s[1].toFixed(1)}" r="3" class="gr-punto" ${PUNTO}/>`); }
+    /* la escala de color */
+    const lx = W - M.r - 14, ly0 = M.t + 10, lh = 120;
+    for (let k = 0; k < 20; k++) partes.push(`<rect x="${lx}" y="${(ly0 + lh * (1 - (k + 1) / 20)).toFixed(1)}" width="10" height="${(lh / 20 + 0.5).toFixed(1)}" fill="${color((k + 0.5) / 20)}"/>`);
+    partes.push(`<text x="${lx - 4}" y="${ly0 + 4}" text-anchor="end" class="gr-etq" ${TENUE}>${texto(z1, mzs.paso)}</text><text x="${lx - 4}" y="${ly0 + lh}" text-anchor="end" class="gr-etq" ${TENUE}>${texto(z0, mzs.paso)}</text>`);
+    return `<figure class="sp-grafica"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(op.descripcion || op.titulo)}" data-sigmapro-figura="${esc(op.titulo)}">` +
+      `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
+  }
+
+  /**
+   * Diagrama ternario de una mezcla de tres componentes: el triángulo partido en n² triángulos pequeños, cada uno
+   * pintado según el valor del modelo en su centro (más oscuro, mayor), con los puntos del diseño y una marca.
+   *   SP.graficas.ternaria({ titulo, descripcion, vertices: [a, b, c], f: (x1, x2, x3) => valor, puntos: [[x1, x2, x3]], marca: { x: [..], etiqueta }, divisiones: 24 })
+   */
+  function ternaria(op) {
+    const n = op.divisiones || 24, ancho = W - M.l - M.r, alto = H - M.t - M.b, lado = Math.min(ancho, alto * 2 / Math.sqrt(3)) * 0.92;
+    const ox = M.l + (ancho - lado) / 2, oy = M.t + alto - 8, h = lado * Math.sqrt(3) / 2;
+    /* vértice 1 abajo a la izquierda, 2 abajo a la derecha, 3 arriba */
+    const P = (a, b, c) => { const s = a + b + c; return [ox + lado * (b + c / 2) / s, oy - h * c / s]; };
+    const tris = [], vals = [];
+    for (let i = 0; i < n; i++) for (let j = 0; j < n - i; j++) {
+      const k = n - i - j;
+      const t1 = [[i, j, k], [i + 1, j, k - 1], [i, j + 1, k - 1]];
+      tris.push(t1);
+      if (j + i + 1 < n) tris.push([[i + 1, j, k - 1], [i + 1, j + 1, k - 2], [i, j + 1, k - 1]]);
+    }
+    /* los índices (a, b, c) cuentan las proporciones del tercer, primer y segundo… se normalizan */
+    const centro = t => [0, 1, 2].map(d => (t[0][d] + t[1][d] + t[2][d]) / (3 * n));
+    for (const t of tris) vals.push(op.f(...centro(t).map((v, d) => v)));
+    const finitos = vals.filter(Number.isFinite), v0 = Math.min(...finitos), v1 = Math.max(...finitos);
+    const color = x => { const c0 = [250, 243, 222], c1 = [138, 90, 0], k = (x - v0) / ((v1 - v0) || 1); return 'rgb(' + c0.map((v, i) => Math.round(v + (c1[i] - v) * k)).join(',') + ')'; };
+    const partes = [];
+    tris.forEach((t, q) => { if (!Number.isFinite(vals[q])) return; const pts = t.map(v => P(v[0], v[1], v[2])); partes.push(`<polygon points="${pts.map(p => p.map(z => z.toFixed(1)).join(',')).join(' ')}" fill="${color(vals[q])}" stroke="${color(vals[q])}" stroke-width=".4"/>`); });
+    const V = [P(1, 0, 0), P(0, 1, 0), P(0, 0, 1)];
+    partes.push(`<polygon points="${V.map(p => p.map(z => z.toFixed(1)).join(',')).join(' ')}" fill="none" class="gr-eje" data-role="axis"/>`);
+    const etq = [[V[0][0] - 4, V[0][1] + 16, 'start'], [V[1][0] + 4, V[1][1] + 16, 'end'], [V[2][0], V[2][1] - 8, 'middle']];
+    op.vertices.forEach((nm, d) => partes.push(`<text x="${etq[d][0].toFixed(1)}" y="${etq[d][1].toFixed(1)}" text-anchor="${etq[d][2]}" class="gr-titulo-eje" ${TITULO}>${esc(nm)}</text>`));
+    for (const p of op.puntos || []) { const s = P(p[0], p[1], p[2]); partes.push(`<circle cx="${s[0].toFixed(1)}" cy="${s[1].toFixed(1)}" r="3" class="gr-punto" ${PUNTO}/>`); }
+    if (op.marca) { const s = P(...op.marca.x); partes.push(`<circle cx="${s[0].toFixed(1)}" cy="${s[1].toFixed(1)}" r="6" fill="none" stroke="${ORO}" stroke-width="2.2"/>`, `<text x="${(s[0] + 9).toFixed(1)}" y="${(s[1] - 7).toFixed(1)}" class="gr-etq gr-etq-punto" ${LETRA}>${esc(op.marca.etiqueta || '')}</text>`); }
+    const lx = W - M.r - 14, ly0 = M.t + 10, lh = 120;
+    for (let k = 0; k < 20; k++) partes.push(`<rect x="${lx}" y="${(ly0 + lh * (1 - (k + 1) / 20)).toFixed(1)}" width="10" height="${(lh / 20 + 0.5).toFixed(1)}" fill="${color(v0 + (v1 - v0) * (k + 0.5) / 20)}"/>`);
+    const mv = marcas(v0, v1, 4);
+    partes.push(`<text x="${lx - 4}" y="${ly0 + 4}" text-anchor="end" class="gr-etq" ${TENUE}>${texto(v1, mv.paso)}</text><text x="${lx - 4}" y="${ly0 + lh}" text-anchor="end" class="gr-etq" ${TENUE}>${texto(v0, mv.paso)}</text>`);
+    return `<figure class="sp-grafica"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(op.descripcion || op.titulo)}" data-sigmapro-figura="${esc(op.titulo)}">` +
+      `<title>${esc(op.titulo)}</title>${partes.join('')}</svg><figcaption>${esc(op.titulo)}</figcaption></figure>`;
+  }
+
+  SP.graficas = { dispersion, grupos, lineas, medias, mapaCalor, mosaico, contorno, biplot, superficie3d, ternaria, adelgazar, marcas };
 })();

@@ -55,7 +55,11 @@
       repeticionAleatoria: false, localidadFija: false, compararMx: null, ajuste: 'tukey', gl: 'satterthwaite', estimacion: 'reml', alfa: 0.05, nivel: 0.95, _iniciado: false },
     rep: { respuesta: '', tiempo: '', sujeto: '', tratamientos: [], bloque: '', estructura: 'auto', criterio: 'aic', compararMx: null, dentro: '', ajuste: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
     nl: { respuesta: '', x: '', grupo: '', pesos: '', modelo: '', nivel: 0.95, alfa: 0.05, intervalo: 'wald', precioProducto: '', precioInsumo: '', ejeLog: false, metodo: '', _iniciado: false },
-    srf: { respuesta: '', factores: [], bloque: '', orden: 'segundo', objetivo: 'maximo', nivel: 0.95, alfa: 0.05, _iniciado: false },
+    srf: { respuesta: '', factores: [], bloque: '', orden: 'segundo', objetivo: 'maximo', nivel: 0.95, alfa: 0.05, codificacion: 'auto', bajos: {}, altos: {}, _iniciado: false },
+    dsn: { tipo: 'ccd', k: 2, alfa: 'rotable', centros: '', grado: 2, nombres: '', bajos: '', altos: '', total: 1, semilla: '' },
+    mez: { respuesta: '', componentes: [], modelo: 'cuadratico', objetivo: 'maximo', nivel: 0.95, alfa: 0.05, _iniciado: false },
+    des: { factores: [], respuestasDes: [], por: {}, region: 'cubo', _iniciado: false },
+    vista3d: { azimut: 35, elevacion: 28 },
     ma: { respuesta: '', genotipo: '', ambiente: '', repeticion: '', eeb: 'propio', objetivo: 'maximo', escala: 'ninguna', particion: 'simetrica', alfa: 0.05, imputar: true, ejesImputar: 1,
       ejesWaas: 0, pesoRespuesta: 50, probAnnicchiarico: 0.25, genotipoA: '', genotipoB: '', _iniciado: false },
     pot: { calcular: 'n', n: 10, diferencia: 1, de: 1, tipo: 'dos', alternativa: 'bilateral', alfa: 0.05, potencia: 0.8, grupos: 4, medias: '', varEntre: 1, p1: 0.5, p2: 0.7, r: 0.3,
@@ -836,9 +840,78 @@
     if (m === 'superficie-respuesta') h += campo('srf', 'orden', T('Modelo'), [['segundo', T('Segundo orden (con los cuadráticos)')], ['interacciones', T('Primer orden con interacciones')]], s.orden);
     h += campo('srf', 'objetivo', T('Buscar'), [['maximo', T('La máxima respuesta')], ['minimo', T('La mínima respuesta')]], s.objetivo,
       m === 'ascenso-pronunciado' ? T('El camino va en la dirección en que la respuesta cambia más rápido.') : T('La cresta da la mejor combinación a cada distancia del centro del diseño.'));
+    h += campo('srf', 'codificacion', T('Codificación de los factores'), [['auto', T('La del diseño (centro y paso de sus niveles)')], ['manual', T('A mano: el nivel −1 y el +1 de cada factor')]], s.codificacion);
+    if (s.codificacion === 'manual') for (const f of s.factores) {
+      const v = (o, k) => (o[k] === undefined ? '' : o[k]);
+      h += numero('srf', 'bajo|' + f, T('{f}: nivel −1', { f }), v(s.bajos, f)) + numero('srf', 'alto|' + f, T('{f}: nivel +1', { f }), v(s.altos, f));
+    }
     h += '<p class="small muted">' + esc(T('Corre en tu navegador (mínimos cuadrados y análisis canónico, validado contra lm y eigen de R).')) + '</p>';
     return h + campo('srf', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('srf', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
+  /** Generador de diseños (sin datos): el tipo, cuántos factores, α, centros y, si se quiere, nombres y niveles. */
+  function formDiseno(c) {
+    const s = estado.dsn, mezcla = s.tipo === 'latice' || s.tipo === 'centroide';
+    let h = c.sinDatos ? '<p class="small muted">' + esc(T('No hace falta cargar datos: el diseño se arma con los valores de abajo y se abre en Datos.')) + '</p>' : '';
+    h += campo('dsn', 'tipo', T('Diseño'), [['ccd', T('Central compuesto')], ['bbd', 'Box-Behnken'], ['factorial', T('Factorial 2^k con centros')], ['latice', T('Simplex-látice (mezclas)')], ['centroide', T('Simplex-centroide (mezclas)')]], s.tipo);
+    const rango = s.tipo === 'bbd' ? [3, 4, 5] : [2, 3, 4, 5, 6];
+    if (!rango.includes(+s.k)) s.k = rango[0];
+    h += campo('dsn', 'k', mezcla ? T('Componentes') : T('Factores'), rango.map(k => [k, String(k)]), s.k);
+    if (s.tipo === 'ccd') h += campo('dsn', 'alfa', 'α', [['rotable', T('Rotable (α = F^¼)')], ['ortogonal', T('Ortogonal')], ['cara', T('Caras centradas (α = 1)')], ['bloques', T('Dos bloques ortogonales')]], s.alfa,
+      T('Rotable: la misma precisión a la misma distancia del centro. Caras centradas: solo tres niveles por factor. Dos bloques: la parte factorial y la axial en días o lotes distintos.'));
+    if (s.tipo === 'latice') h += campo('dsn', 'grado', T('Grado del látice'), [[2, '2 (0, ½, 1)'], [3, '3 (0, ⅓, ⅔, 1)'], [4, '4']], s.grado);
+    h += numero('dsn', 'centros', mezcla ? T('Repeticiones del centroide') : T('Puntos centrales'), s.centros, T('Vacío: los de omisión del diseño.'), ' min="0" max="20" step="1" placeholder="' + esc(T('omisión')) + '"');
+    h += '<label class="field"><span>' + esc(mezcla ? T('Nombres de los componentes (opcional)') : T('Nombres de los factores (opcional)')) + '</span><input type="text" class="input" data-grupo="dsn" data-campo="nombres" value="' + esc(s.nombres) + '" placeholder="' + esc(mezcla ? 'arcilla, arena, limo' : 'N, P') + '"></label>';
+    if (mezcla) h += numero('dsn', 'total', T('Total de la mezcla'), s.total, T('1 para proporciones, 100 para porcentajes, o la masa total.'), ' min="0" step="any"');
+    else {
+      h += '<label class="field"><span>' + esc(T('Nivel bajo (−1) de cada factor (opcional)')) + '</span><input type="text" class="input" data-grupo="dsn" data-campo="bajos" value="' + esc(s.bajos) + '" placeholder="100, 50"></label>';
+      h += '<label class="field"><span>' + esc(T('Nivel alto (+1) de cada factor (opcional)')) + '</span><input type="text" class="input" data-grupo="dsn" data-campo="altos" value="' + esc(s.altos) + '" placeholder="200, 90"></label>';
+    }
+    h += numero('dsn', 'semilla', T('Semilla para el orden al azar (opcional)'), s.semilla, T('La misma semilla da el mismo orden de corrida.'), ' step="1"');
+    return h + '<p class="small muted">' + esc(T('Corre en tu navegador; el diseño se compara contra su construcción en R.')) + '</p>';
+  }
+  /** Mezclas: la respuesta, los componentes (proporciones) y el modelo de Scheffé. */
+  function formMezclas(c) {
+    const s = estado.mez, num = c.numericas;
+    if (!s._iniciado) {
+      s.respuesta = c.pap.respuestas.slice(-1)[0] || num[num.length - 1] || '';
+      s.componentes = num.filter(n => n !== s.respuesta).slice(0, 3);
+      s._iniciado = true;
+    }
+    if (!num.includes(s.respuesta)) s.respuesta = num[num.length - 1] || '';
+    s.componentes = s.componentes.filter(n => num.includes(n) && n !== s.respuesta);
+    let h = campo('mez', 'respuesta', T('Variable de respuesta'), lista(num), s.respuesta);
+    h += casillas('mez', 'componentes', T('Componentes de la mezcla (de 2 a 6; cada fila suma lo mismo)'), num.filter(n => n !== s.respuesta), s.componentes, n => n, T('No hay más columnas numéricas.'));
+    h += campo('mez', 'modelo', T('Modelo de Scheffé'), [['lineal', T('Lineal (cada componente solo)')], ['cuadratico', T('Cuadrático (con las mezclas de dos)')], ['cubico-especial', T('Cúbico especial (con las de tres)')]], s.modelo);
+    h += campo('mez', 'objetivo', T('Buscar'), [['maximo', T('La mezcla de mayor respuesta')], ['minimo', T('La mezcla de menor respuesta')]], s.objetivo);
+    h += '<p class="small muted">' + esc(T('Corre en tu navegador (mínimos cuadrados sin intercepto, validado contra lm de R).')) + '</p>';
+    return h + campo('mez', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('mez', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
+  }
+  /** Deseabilidad: las respuestas con su meta y sus límites, los factores y la región. */
+  function formDeseabilidad(c) {
+    const s = estado.des, num = c.numericas;
+    if (!s._iniciado) {
+      const disenos = num.filter(n => esFactorDiseno(c, n));
+      s.factores = disenos.slice(0, 6);
+      s.respuestasDes = num.filter(n => !disenos.includes(n)).slice(0, 4);
+      s._iniciado = true;
+    }
+    s.factores = s.factores.filter(n => num.includes(n));
+    s.respuestasDes = s.respuestasDes.filter(n => num.includes(n) && !s.factores.includes(n));
+    let h = casillas('des', 'factores', T('Factores del diseño (numéricos, de 2 a 6)'), num, s.factores, n => n, T('No hay columnas numéricas.'));
+    h += casillas('des', 'respuestasDes', T('Respuestas que combinar (de 1 a 6)'), num.filter(n => !s.factores.includes(n)), s.respuestasDes, n => n, T('No hay más columnas numéricas.'));
+    for (const y of s.respuestasDes) {
+      const v = Array.from(c.t.col(y).valores).filter(x => x === x), lo = Math.min(...v), hi = Math.max(...v);
+      const p = s.por[y] || (s.por[y] = { meta: 'max', L: +lo.toPrecision(6), U: +hi.toPrecision(6), T: +((lo + hi) / 2).toPrecision(6), s: 1, t: 1, r: 1 });
+      h += '<fieldset class="field des-resp"><legend>' + esc(y) + '</legend>' +
+        campo('des', 'meta|' + y, T('Buscar'), [['max', T('La mayor')], ['min', T('La menor')], ['valor', T('Un valor meta')]], p.meta) +
+        numero('des', 'L|' + y, T('Límite inferior'), p.L) + (p.meta === 'valor' ? numero('des', 'T|' + y, T('Valor meta'), p.T) : '') + numero('des', 'U|' + y, T('Límite superior'), p.U) +
+        numero('des', 's|' + y, T('Exponente'), p.s, T('1: lineal; mayor que 1: exige acercarse más a la meta.'), ' min="0.1" step="0.1"') + (p.meta === 'valor' ? numero('des', 't|' + y, T('Exponente (arriba de la meta)'), p.t, '', ' min="0.1" step="0.1"') : '') +
+        numero('des', 'r|' + y, T('Importancia'), p.r, '', ' min="0.1" step="0.1"') + '</fieldset>';
+    }
+    h += campo('des', 'region', T('Región de búsqueda'), [['cubo', T('El cubo de los niveles del diseño')], ['esfera', T('La esfera del diseño (central compuesto rotable)')]], s.region);
+    return h + '<p class="small muted">' + esc(T('Cada respuesta con su modelo de segundo orden; la búsqueda corre en tu navegador (validada contra R).')) + '</p>';
+  }
+
   /** Ensayos multiambiente: genotipo, ambiente y repetición propuestos por nombre. */
   function formMultiambiente(c, m) {
     const s = estado.ma, num = c.numericas, agr = c.agrupables.filter(n => nivelesDe(c, n).length >= 2);
@@ -1087,6 +1160,9 @@
     if (MULTIVARIADO.includes(estado.metodo)) return formMultivariado(c, estado.metodo);
     if (MULTI.includes(estado.metodo)) return formMultiambiente(c, estado.metodo);
     if (SUPERFICIES.includes(estado.metodo)) return formSuperficie(c, estado.metodo);
+    if (estado.metodo === 'diseno-superficie') return formDiseno(c);
+    if (estado.metodo === 'mezclas') return formMezclas(c);
+    if (estado.metodo === 'deseabilidad') return formDeseabilidad(c);
     if (NOLINEAL.includes(estado.metodo)) return formNoLineal(c, estado.metodo);
     if (GLMS.includes(estado.metodo)) return formGlm(c, estado.metodo);
     if (GENETICOS.includes(estado.metodo)) return formGenetico(c, estado.metodo);
@@ -1169,7 +1245,16 @@
     if (SUPERFICIES.includes(m)) {
       const s = estado.srf, e = { respuesta: s.respuesta, factores: s.factores.slice() };
       if (s.bloque) e.bloque = s.bloque;
-      return { e, op: Object.assign(m === 'superficie-respuesta' ? { orden: s.orden } : {}, { objetivo: s.objetivo, nivel: +s.nivel, alfa: +s.alfa }) };
+      const manual = s.codificacion === 'manual' && s.factores.every(f => s.bajos[f] !== undefined && s.bajos[f] !== '' && s.altos[f] !== undefined && s.altos[f] !== '');
+      return { e, op: Object.assign(m === 'superficie-respuesta' ? { orden: s.orden } : {}, { objetivo: s.objetivo, nivel: +s.nivel, alfa: +s.alfa },
+        manual ? { codificacion: 'manual', bajos: s.factores.map(f => +s.bajos[f]), altos: s.factores.map(f => +s.altos[f]) } : {}) };
+    }
+    if (m === 'diseno-superficie') { const s = estado.dsn; return { e: {}, op: { tipo: s.tipo, k: +s.k, alfa: s.alfa, centros: s.centros, grado: +s.grado, nombres: s.nombres, bajos: s.bajos, altos: s.altos, total: +s.total || 1, semilla: s.semilla } }; }
+    if (m === 'mezclas') { const s = estado.mez; return { e: { respuesta: s.respuesta, componentes: s.componentes.slice() }, op: { modelo: s.modelo, objetivo: s.objetivo, nivel: +s.nivel, alfa: +s.alfa } }; }
+    if (m === 'deseabilidad') {
+      const s = estado.des, R = s.respuestasDes, p = y => s.por[y] || {};
+      return { e: { respuestas: R.slice(), factores: s.factores.slice() }, op: { metas: R.map(y => p(y).meta || 'max'), inferiores: R.map(y => +p(y).L), superiores: R.map(y => +p(y).U), objetivos: R.map(y => +p(y).T || 0),
+        exponentes: R.map(y => +p(y).s || 1), exponentes2: R.map(y => +p(y).t || 1), importancias: R.map(y => +p(y).r || 1), region: s.region } };
     }
     if (NOLINEAL.includes(m)) {
       const s = estado.nl, e = { respuesta: s.respuesta };
@@ -1771,6 +1856,7 @@
         camino: k === 2 && camino.length > 1 ? { x: camino.map(p => p[i]), y: camino.map(p => p[j]) } : undefined,
       }));
     }
+    if (r.orden !== 'primer') out.push(superficie3dDe(r));
     const Cr = r.cresta, qt = SP.dist.qt(1 - (1 - (r.nivel || 0.95)) / 2, r.ajuste.gl);
     out.push(SP.graficas.dispersion({ titulo: r.orden === 'primer' ? T('Respuesta estimada sobre el camino de {s}', { s: r.objetivo === 'minimo' ? T('descenso') : T('ascenso') }) : T('Respuesta estimada sobre la cresta'),
       x: { titulo: T('Distancia al centro (unidades codificadas)') }, y: { titulo: r.respuesta },
@@ -1781,6 +1867,49 @@
       descripcion: T('Sin patrón (una nube pareja alrededor de cero) el modelo describe bien la superficie.'),
       puntos: r.ajustados.map((x, i) => ({ x, y: r.residuos[i], marca: Math.abs(r.residuos[i]) > 3 * r.ajuste.sigma })), referencias: [{ y: 0 }] }));
     return out.join('');
+  }
+  /** La superficie en 3D de los dos primeros factores (los demás en el punto estacionario si está dentro, si no en el centro). */
+  function superficie3dDe(r) {
+    const F = r.factores, k = F.length, C = r.codificacion, E = r.estacionario, dentro = E && E.distancia <= r.radio + 1e-9;
+    const cod = (h, x) => (x - C.centro[h]) / C.paso[h], nat = (h, z) => C.centro[h] + C.paso[h] * z;
+    const zr = [0, 1].map(j => Math.max(...r.valores.x[j].map(v => Math.abs(cod(j, v))))), fijo = F.map((_, j) => (dentro ? E.codificado[j] : 0)), n = 25;
+    const xs = Array.from({ length: n }, (_, a) => nat(0, -zr[0] + 2 * zr[0] * a / (n - 1))), ys = Array.from({ length: n }, (_, b) => nat(1, -zr[1] + 2 * zr[1] * b / (n - 1)));
+    const Z = xs.map(x => ys.map(y => { const z = fijo.slice(); z[0] = cod(0, x); z[1] = cod(1, y); return SP.superficie.predecir(r, z); }));
+    const otros = F.slice(2).map((f, h) => f + ' = ' + SP.formatos.texto(nat(h + 2, fijo[h + 2]), 'sig'));
+    return SP.graficas.superficie3d({ titulo: T('Superficie en 3D de «{y}»: {a} × {b}', { y: r.respuesta, a: F[0], b: F[1] }),
+      descripcion: T('La respuesta estimada sobre {a} y {b}{o}{p}; los botones giran la vista.', { a: F[0], b: F[1], o: otros.length ? T(', con {l}', { l: otros.join(', ') }) : '', p: k === 2 ? T('; los puntos son las observaciones') : '' }),
+      x: { titulo: F[0], valores: xs }, y: { titulo: F[1], valores: ys }, z: { titulo: r.respuesta, valores: Z }, azimut: estado.vista3d.azimut, elevacion: estado.vista3d.elevacion,
+      puntos: k === 2 ? r.valores.y.map((v, i) => [r.valores.x[0][i], r.valores.x[1][i], v]) : [] });
+  }
+  /** Generador de diseños: los puntos en las dos primeras coordenadas codificadas, o el triángulo de una mezcla de tres. */
+  function graficasDiseno(r) {
+    if ((r.clase === 'latice' || r.clase === 'centroide') && r.k === 3) return SP.graficas.ternaria({ titulo: T('Mezclas del diseño'), descripcion: T('Cada punto es una mezcla del diseño en el triángulo de los tres componentes.'),
+      vertices: r.nombres, f: () => 0, puntos: r.codificado, divisiones: 2 });
+    const pts = r.codificado.map((z, i) => ({ x: z[0], y: z[1], serie: r.bloque[i] > 1 ? 1 : 0 }));
+    return SP.graficas.dispersion({ titulo: T('Corridas del diseño: {a} × {b} (codificados)', { a: r.nombres[0], b: r.nombres[1] }), x: { titulo: r.nombres[0] }, y: { titulo: r.nombres[1] }, diagonal: false,
+      descripcion: T('Las corridas en los dos primeros factores codificados (los centros y los puntos repetidos se enciman).'), puntos: pts,
+      leyenda: new Set(r.bloque).size > 1 ? { titulo: T('Bloque'), series: ['1', '2'] } : undefined });
+  }
+  /** Mezclas: el triángulo del modelo (con tres componentes) y la traza de Cox. */
+  function graficasMezclas(r) {
+    const q = r.componentes.length, out = [], f = x => r.terminos.reduce((s, t, j) => s + r.coeficientes.estimado[j] * t.reduce((p, i) => p * x[i], 1), 0);
+    if (q === 3) out.push(SP.graficas.ternaria({ titulo: T('«{y}» en el triángulo de la mezcla', { y: r.respuesta }), descripcion: T('Respuesta estimada por el modelo en cada mezcla (más oscuro, mayor); los puntos son las mezclas del ensayo y el círculo, la mejor.'),
+      vertices: r.componentes, f: (a, b, c) => f([a, b, c]), puntos: r.proporciones, marca: { x: r.optimo.mezcla, etiqueta: r.objetivo === 'minimo' ? T('mínimo') : T('máximo') } }));
+    const ts = Array.from({ length: 41 }, (_, i) => i / 40);
+    out.push(SP.graficas.dispersion({ titulo: T('Traza de Cox'), x: { titulo: T('Proporción del componente') }, y: { titulo: r.respuesta },
+      descripcion: T('Cada línea mueve un componente desde 0 hasta 1 y reparte el resto por igual entre los demás (la dirección de Cox desde el centroide): la pendiente muestra cuánto pesa cada componente.'),
+      lineas: r.componentes.map((_, i) => ({ x: ts, y: ts.map(t => f(r.componentes.map((__, h) => (h === i ? t : (1 - t) / (q - 1))))), serie: i })),
+      verticales: [{ x: 1 / q, discontinua: true }], leyenda: { titulo: T('Componente'), series: r.componentes } }));
+    return out.join('');
+  }
+  /** Deseabilidad: contornos de D en los dos primeros factores (los demás en el óptimo). */
+  function graficasDeseabilidad(r) {
+    const C = r.codificacion, O = r.optimo, F = r.factores, cod = (h, x) => (x - C.centro[h]) / C.paso[h];
+    const D = z => SP.superficie.deseabilidadGlobal(r.modelos.map((m, i) => SP.superficie.deseabilidadUna(SP.superficie.predecir(m, z), Object.assign({ meta: r.metas[i] }, r.limites[i]))), r.limites.map(l => l.r));
+    const rango = h => { const zs = r.puntosCodificados ? r.puntosCodificados[h] : [-1, 1]; return [C.centro[h] + C.paso[h] * Math.min(...zs), C.centro[h] + C.paso[h] * Math.max(...zs)]; };
+    return SP.graficas.contorno({ titulo: T('Deseabilidad global: {a} × {b}', { a: F[0], b: F[1] }), descripcion: T('Curvas de nivel de D en {a} y {b}{o}; el rombo es la combinación más deseable.', { a: F[0], b: F[1],
+      o: F.length > 2 ? T(', con los demás factores en su mejor valor') : '' }), x: { titulo: F[0], rango: rango(0) }, y: { titulo: F[1], rango: rango(1) },
+      z: (a, b) => { const z = O.codificado.slice(); z[0] = cod(0, a); z[1] = cod(1, b); return D(z); }, marca: { x: O.natural[0], y: O.natural[1], etiqueta: 'D = ' + O.D.toFixed(2) } });
   }
   function graficasRepetidas(r) {
     let g0 = '';
@@ -1834,6 +1963,9 @@
     if (r.tipo === 'glm' || r.tipo === 'glmm') return graficasGlm(r);
     if (r.tipo === 'nolineal') return graficasNoLineal(r);
     if (r.tipo === 'superficie') return graficasSuperficie(r);
+    if (r.tipo === 'diseno-superficie') return graficasDiseno(r);
+    if (r.tipo === 'mezclas') return graficasMezclas(r);
+    if (r.tipo === 'deseabilidad') return graficasDeseabilidad(r);
     if (r.tipo === 'multiambiente') return graficasMultiambiente(r);
     if (r.tipo === 'potencia') return graficasPotencia(r);
     if (r.tipo === 'muestreo') return graficasMuestreo(r);
@@ -1940,6 +2072,11 @@
   }
   /** Tras la selección, botones que llevan el modelo elegido a la regresión lineal con todo su diagnóstico. */
   function botonesModelo(r) {
+    if (r.tipo === 'superficie' && r.orden !== 'primer') {
+      const b = (dir, et, txt) => '<button type="button" class="btn btn-secondary btn-sm" data-accion="girar3d" data-dir="' + dir + '" aria-label="' + esc(txt) + '">' + et + '</button>';
+      return '<div class="btn-row exp-acciones"><span class="small muted">' + esc(T('Girar la superficie en 3D:')) + '</span>' + b('izq', '⟲', T('Girar a la izquierda')) + b('der', '⟳', T('Girar a la derecha')) + b('arriba', '↑', T('Ver desde más arriba')) + b('abajo', '↓', T('Ver desde más abajo')) + '</div>';
+    }
+    if (r.tipo === 'diseno-superficie') return '<div class="btn-row exp-acciones"><button type="button" class="btn btn-primary btn-sm" data-accion="abrir-diseno">' + esc(T('Abrir el diseño en Datos (con una columna para la respuesta)')) + '</button></div>';
     if (r.tipo === 'multivariado') {
       /* el ACP y los conglomerados están en las otras apps de la suite: se les prepara el CSV */
       const b = (app, texto) => '<button type="button" class="btn btn-secondary btn-sm" data-accion="csv-suite" data-app="' + app + '">' + esc(texto) + '</button>';
@@ -1977,7 +2114,7 @@
     if (estado.modo !== 'catalogo') { const p = estado.pintores[estado.modo]; if (p) p(c); return; }
     catalogo(c);
     /* con otra tabla, los papeles vuelven a proponerse; con ediciones de la misma, se respetan */
-    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = estado.srf._iniciado = estado.ma._iniciado = estado.mue._iniciado = estado.sv._iniciado = estado.ts._iniciado = estado.mv._iniciado = false; }
+    if (SP.app.datos.hoja !== estado.hoja) { estado.hoja = SP.app.datos.hoja; estado.sup._iniciado = estado.dos._iniciado = estado.rangos._iniciado = estado.dis._iniciado = estado.reg._iniciado = estado.anc._iniciado = estado.cor._iniciado = estado.cont._iniciado = estado.ml._iniciado = estado.mx._iniciado = estado.mxd._iniciado = estado.rep._iniciado = estado.gen._iniciado = estado.glm._iniciado = estado.nl._iniciado = estado.srf._iniciado = estado.ma._iniciado = estado.mue._iniciado = estado.sv._iniciado = estado.ts._iniciado = estado.mv._iniciado = estado.mez._iniciado = estado.des._iniciado = false; }
     if (estado.metodo === 'supuestos') sanearSup(c);
     const form = $('#anaOpciones');
     const foco = document.activeElement && form.contains(document.activeElement) ? document.activeElement : null;
@@ -2122,7 +2259,15 @@
         imputar: op.imputar !== false, ejesImputar: op.ejesImputar === undefined ? 1 : op.ejesImputar, ejesWaas: op.ejesWaas || 0, pesoRespuesta: op.pesoRespuesta === undefined ? 50 : op.pesoRespuesta,
         probAnnicchiarico: op.probAnnicchiarico || 0.25, genotipoA: op.genotipoA || '', genotipoB: op.genotipoB || '' });
     } else if (SUPERFICIES.includes(m)) {
-      pon(estado.srf, { respuesta: e.respuesta, factores: [].concat(e.factores || []), bloque: e.bloque || '', orden: op.orden, objetivo: op.objetivo, nivel: op.nivel });
+      pon(estado.srf, { respuesta: e.respuesta, factores: [].concat(e.factores || []), bloque: e.bloque || '', orden: op.orden, objetivo: op.objetivo, nivel: op.nivel, codificacion: op.codificacion || 'auto' });
+      if (op.codificacion === 'manual') (e.factores || []).forEach((f, j) => { estado.srf.bajos[f] = op.bajos[j]; estado.srf.altos[f] = op.altos[j]; });
+    } else if (m === 'diseno-superficie') {
+      pon(estado.dsn, { tipo: op.tipo, k: op.k, alfa: op.alfa, centros: op.centros, grado: op.grado, nombres: op.nombres, bajos: op.bajos, altos: op.altos, total: op.total, semilla: op.semilla });
+    } else if (m === 'mezclas') {
+      pon(estado.mez, { respuesta: e.respuesta, componentes: [].concat(e.componentes || []), modelo: op.modelo, objetivo: op.objetivo, nivel: op.nivel });
+    } else if (m === 'deseabilidad') {
+      pon(estado.des, { factores: [].concat(e.factores || []), respuestasDes: [].concat(e.respuestas || []), region: op.region });
+      (e.respuestas || []).forEach((y, i) => { estado.des.por[y] = { meta: op.metas[i], L: op.inferiores[i], U: op.superiores[i], T: (op.objetivos || [])[i], s: (op.exponentes || [])[i] || 1, t: (op.exponentes2 || [])[i] || 1, r: (op.importancias || [])[i] || 1 }; });
     } else if (NOLINEAL.includes(m)) {
       pon(estado.nl, { respuesta: e.respuesta, x: e.x || e.dosis, grupo: e.grupo || '', pesos: e.pesos || '', modelo: op.modelo, nivel: op.nivel, intervalo: op.intervalo || 'wald',
         precioProducto: op.precioProducto > 0 ? op.precioProducto : '', precioInsumo: op.precioInsumo > 0 ? op.precioInsumo : '', ejeLog: !!op.ejeLog, metodo: m });
@@ -2184,8 +2329,8 @@
         estado.cmp.comparar = marcados;
       } else if (el.dataset.campo === 'comparar1') {
         estado.cmp.comparar = el.value ? [el.value] : [];
-      } else if (['predictores', 'covariables', 'variables', 'controles', 'comoFactor', 'compararMx', 'aleatorios', 'fijos', 'fijosRep', 'factores', 'factoresSv', 'covariablesSv', 'respuestasMv', 'variablesMv'].includes(el.dataset.lista)) {
-        const marcados = [...form.querySelectorAll('[data-lista="' + el.dataset.lista + '"]:checked')].map(x => x.value), max = { covariables: 2, predictores: 15, variables: 30, controles: 10, comoFactor: 30, compararMx: 6, aleatorios: 4, fijos: 3, fijosRep: 3, factores: 6, factoresSv: 4, covariablesSv: 10, respuestasMv: 10, variablesMv: 15 }[el.dataset.lista];
+      } else if (['predictores', 'covariables', 'variables', 'controles', 'comoFactor', 'compararMx', 'aleatorios', 'fijos', 'fijosRep', 'factores', 'factoresSv', 'covariablesSv', 'respuestasMv', 'variablesMv', 'componentes', 'respuestasDes'].includes(el.dataset.lista)) {
+        const marcados = [...form.querySelectorAll('[data-lista="' + el.dataset.lista + '"]:checked')].map(x => x.value), max = { covariables: 2, predictores: 15, variables: 30, controles: 10, comoFactor: 30, compararMx: 6, aleatorios: 4, fijos: 3, fijosRep: 3, factores: 6, factoresSv: 4, covariablesSv: 10, respuestasMv: 10, variablesMv: 15, componentes: 6, respuestasDes: 6 }[el.dataset.lista];
         if (marcados.length > max) { el.checked = false; L() && L().toast(T('Hasta {k} variables.', { k: max }), { type: 'warning' }); return; }
         estado[el.dataset.grupo][el.dataset.lista] = marcados;
       } else if (el.dataset.lista === 'tratamientos') {
@@ -2195,6 +2340,12 @@
         estado[grupo].tratamientos = marcados;
       } else if (el.dataset.campo === 'tratamiento1') {
         estado.dis.tratamientos = el.value ? [el.value] : [];
+      } else if (el.dataset.grupo === 'des' && el.dataset.campo && el.dataset.campo.includes('|')) {
+        const [k, y] = el.dataset.campo.split('|');
+        (estado.des.por[y] = estado.des.por[y] || {})[k] = el.value;
+      } else if (el.dataset.grupo === 'srf' && el.dataset.campo && /^(bajo|alto)\|/.test(el.dataset.campo)) {
+        const [k, f2] = el.dataset.campo.split('|');
+        estado.srf[k === 'bajo' ? 'bajos' : 'altos'][f2] = el.value;
       } else if (el.dataset.campo) {
         const s = estado[el.dataset.grupo || 'sup'];
         s[el.dataset.campo] = el.type === 'checkbox' ? el.checked : el.value;
@@ -2215,6 +2366,28 @@
         const lineas = [cols.map(celda).join(',')].concat(r.filas.map(i => cols.map(nm => celda(valor(nm, i))).join(',')));
         SP.app.figuras.descargar('\ufeff' + lineas.join('\r\n') + '\r\n', 'sigmapro-para-' + a.dataset.app.toLowerCase() + '.csv', 'text/csv;charset=utf-8');
         L() && L().toast(T('CSV listo: ábrelo en {a} (Datos → Importar).', { a: a.dataset.app }), { type: 'success' });
+        return;
+      }
+      if (a.dataset.accion === 'girar3d') {
+        const v = estado.vista3d, d = a.dataset.dir;
+        if (d === 'izq') v.azimut -= 20; else if (d === 'der') v.azimut += 20; else if (d === 'arriba') v.elevacion = Math.min(85, v.elevacion + 10); else v.elevacion = Math.max(5, v.elevacion - 10);
+        const r = estado.ultimoResultado, fig = $('#anaResultado').querySelector('svg[data-sigmapro-figura^="' + T('Superficie en 3D') + '"]');
+        if (r && fig) fig.closest('figure').outerHTML = superficie3dDe(r);
+        return;
+      }
+      if (a.dataset.accion === 'abrir-diseno') {
+        const r = estado.ultimoResultado;
+        if (!r || r.tipo !== 'diseno-superficie') return;
+        const nombres = ['corrida', 'estandar'].concat(new Set(r.bloque).size > 1 ? ['bloque'] : [], r.nombres, ['respuesta']), cols = {};
+        nombres.forEach(n => { cols[n] = []; });
+        r.orden.forEach((st, c) => {
+          cols.corrida.push(c + 1); cols.estandar.push(st + 1); if (cols.bloque) cols.bloque.push(String(r.bloque[st]));
+          r.nombres.forEach((n, j) => cols[n].push(r.natural ? +r.natural[st][j].toPrecision(10) : +r.codificado[st][j].toPrecision(10))); cols.respuesta.push(NaN);
+        });
+        const hoja = SP.hoja.crear({ nombres, columnas: cols, tipos: cols.bloque ? { bloque: { tipo: 'factor' } } : {} });
+        SP.app.cargarHoja(hoja, T('Diseño generado: {t}', { t: SP.metodos['diseno-superficie'].nombre }));
+        SP.app.ir(2);
+        L() && L().toast(T('El diseño quedó en Datos: anota la respuesta de cada corrida en la columna «respuesta».'), { type: 'success' });
         return;
       }
       if (a.dataset.accion === 'analizar-modelo') {

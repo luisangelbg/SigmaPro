@@ -1,0 +1,52 @@
+{
+  "esquema": 1,
+  "id": "diseno-superficie/ccd-ortogonal-tres",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+  },
+  "titulo": "Central compuesto ortogonal de tres factores",
+  "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+  "clase": "A",
+  "entradas": [],
+  "opciones": {
+    "tipo": "ccd",
+    "k": 3,
+    "alfa": "ortogonal"
+  },
+  "esperado": {
+    "alfa": 1.5246492450189186,
+    "factorial": 8,
+    "codificado": [
+      [-1, -1, -1],
+      [1, -1, -1],
+      [-1, 1, -1],
+      [1, 1, -1],
+      [-1, -1, 1],
+      [1, -1, 1],
+      [-1, 1, 1],
+      [1, 1, 1],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+      [-1.5246492450189186, 0, 0],
+      [1.5246492450189186, 0, 0],
+      [0, -1.5246492450189186, 0],
+      [0, 1.5246492450189186, 0],
+      [0, 0, -1.5246492450189186],
+      [0, 0, 1.5246492450189186]
+    ],
+    "bloque": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+  }
+}

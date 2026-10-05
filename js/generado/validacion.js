@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.3.3",
- "generado": "2026-10-04T23:55:16.539Z",
+ "generado": "2026-10-05T00:35:35.531Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 812,
-  "aprobados": 812,
+  "casos": 834,
+  "aprobados": 834,
   "fallidos": 0,
-  "valores": 89259,
+  "valores": 91442,
   "difEscaladaMax": 0.000024564204685412263,
-  "objetivos": 170
+  "objetivos": 173
  },
  "casos": [
   {
@@ -22248,6 +22248,370 @@ window.SP_VALIDACION = {
    }
   },
   {
+   "id": "diseno-superficie/bbd-cinco",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Box-Behnken de cinco factores",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 278,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
+   "id": "diseno-superficie/bbd-cuatro",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Box-Behnken de cuatro factores con 4 centros",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 142,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
+   "id": "diseno-superficie/bbd-tres",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Box-Behnken de tres factores",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 62,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
+   "id": "diseno-superficie/ccd-bloques-tres",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Central compuesto en dos bloques ortogonales, tres factores",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 82,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
+   "id": "diseno-superficie/ccd-caras-cuatro",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Central compuesto de caras centradas, cuatro factores y 3 centros",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 137,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
+   "id": "diseno-superficie/ccd-media-fraccion-cinco",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Central compuesto rotable de cinco factores con la media fracción",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 194,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
+   "id": "diseno-superficie/ccd-ortogonal-tres",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Central compuesto ortogonal de tres factores",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 82,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
+   "id": "diseno-superficie/ccd-rotable-dos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Central compuesto rotable de dos factores (5 centros)",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 41,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
+   "id": "diseno-superficie/ccd-seis",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Central compuesto ortogonal de seis factores (media fracción)",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 373,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
+   "id": "diseno-superficie/centroide-cuatro",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Simplex-centroide de cuatro componentes",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 77,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
+   "id": "diseno-superficie/centroide-tres",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Simplex-centroide de tres componentes con el centroide tres veces",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 38,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
+   "id": "diseno-superficie/factorial-tres-centros",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Factorial 2³ con 4 centros",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 50,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
+   "id": "diseno-superficie/latice-cuatro-tres",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Simplex-látice {4, 3}",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 102,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
+   "id": "diseno-superficie/latice-tres-dos",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+   },
+   "titulo": "Simplex-látice {3, 2} con un centroide",
+   "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+   "clase": "A",
+   "valores": 30,
+   "difMax": 0,
+   "difEscaladaMax": 0,
+   "peor": null,
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+   }
+  },
+  {
    "id": "superficie-respuesta/biomasa-factorial-sin-error-puro",
    "objetivo": {
     "tipo": "metodo",
@@ -22430,6 +22794,32 @@ window.SP_VALIDACION = {
    }
   },
   {
+   "id": "superficie-respuesta/maiz-codificacion-a-mano",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "superficie-respuesta"
+   },
+   "titulo": "Central compuesto con la codificación a mano (−1 = 90 y 55, +1 = 210 y 85)",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "B",
+   "valores": 164,
+   "difMax": 4.689582056016661e-13,
+   "difEscaladaMax": 2.3136318340001215e-14,
+   "peor": "naturales.t[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(rendimiento ~ segundo orden en z = (x − (bajo + alto)/2) / ((alto − bajo)/2)); eigen(B); uniroot (tests/r/superficie.R)"
+   }
+  },
+  {
    "id": "superficie-respuesta/severidad-ccd3-minimo",
    "objetivo": {
     "tipo": "metodo",
@@ -22453,6 +22843,261 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "lm(severidad ~ segundo orden, datos codificados); eigen(B); uniroot para la cresta (tests/r/superficie.R)"
+   }
+  },
+  {
+   "id": "mezclas/cuatro-componentes-minimo",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mezclas"
+   },
+   "titulo": "Cuatro componentes (simplex-látice {4, 2} con tres centroides): la mezcla de menor respuesta",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "B",
+   "valores": 81,
+   "difMax": 4.902467320988535e-12,
+   "difEscaladaMax": 4.902467320988535e-12,
+   "peor": "optimo.mezcla[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "optimo.mezcla[*]": {
+      "tol": 0.00001,
+      "motivo": "la mejor mezcla en la referencia sale de optim (BFGS) sobre cada cara; la app resuelve el sistema de Lagrange"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(y ~ 0 + términos de Scheffé cuadratico sobre las proporciones); ANOVA contra la media; la mejor mezcla con optim en cada cara del simplex"
+   }
+  },
+  {
+   "id": "mezclas/hilo-cuadratico",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mezclas"
+   },
+   "titulo": "Alargamiento del hilo: modelo cuadrático de Scheffé (tantos coeficientes como mezclas distintas) y la mezcla de mayor alargamiento",
+   "fuente": "Cornell, J. A. (2002), Experiments with Mixtures (3.ª ed.), Wiley: alargamiento del hilo (polietileno, poliestireno y polipropileno)",
+   "clase": "B",
+   "valores": 48,
+   "difMax": 4.0799918998857265e-11,
+   "difEscaladaMax": 4.0799918998857265e-11,
+   "peor": "optimo.mezcla[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "optimo.mezcla[*]": {
+      "tol": 0.00001,
+      "motivo": "la mejor mezcla en la referencia sale de optim (BFGS) sobre cada cara; la app resuelve el sistema de Lagrange"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(alargamiento ~ 0 + términos de Scheffé cuadratico sobre las proporciones); ANOVA contra la media; la mejor mezcla con optim en cada cara del simplex"
+   }
+  },
+  {
+   "id": "mezclas/hilo-lineal",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mezclas"
+   },
+   "titulo": "Alargamiento del hilo: modelo lineal (la mejor mezcla es un componente puro)",
+   "fuente": "Cornell, J. A. (2002), Experiments with Mixtures (3.ª ed.), Wiley: alargamiento del hilo (polietileno, poliestireno y polipropileno)",
+   "clase": "B",
+   "valores": 52,
+   "difMax": 7.105427357601002e-14,
+   "difEscaladaMax": 8.052887345047421e-15,
+   "peor": "coeficientes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "optimo.mezcla[*]": {
+      "tol": 0.00001,
+      "motivo": "la mejor mezcla en la referencia sale de optim (BFGS) sobre cada cara; la app resuelve el sistema de Lagrange"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(alargamiento ~ 0 + términos de Scheffé lineal sobre las proporciones); ANOVA contra la media; la mejor mezcla con optim en cada cara del simplex"
+   }
+  },
+  {
+   "id": "mezclas/hilo-minimo",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mezclas"
+   },
+   "titulo": "Alargamiento del hilo: la mezcla de menor alargamiento",
+   "fuente": "Cornell, J. A. (2002), Experiments with Mixtures (3.ª ed.), Wiley: alargamiento del hilo (polietileno, poliestireno y polipropileno)",
+   "clase": "B",
+   "valores": 48,
+   "difMax": 1.7417178810319456e-11,
+   "difEscaladaMax": 1.597111332074519e-11,
+   "peor": "optimo.mezcla[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "optimo.mezcla[*]": {
+      "tol": 0.00001,
+      "motivo": "la mejor mezcla en la referencia sale de optim (BFGS) sobre cada cara; la app resuelve el sistema de Lagrange"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(alargamiento ~ 0 + términos de Scheffé cuadratico sobre las proporciones); ANOVA contra la media; la mejor mezcla con optim en cada cara del simplex"
+   }
+  },
+  {
+   "id": "mezclas/sustrato-cubico-especial",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mezclas"
+   },
+   "titulo": "Sustrato en porcentaje (suma 100): cúbico especial de Scheffé con el simplex-centroide",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "B",
+   "valores": 52,
+   "difMax": 1.3070774684820208e-8,
+   "difEscaladaMax": 5.8584211370948935e-9,
+   "peor": "optimo.mezcla[2]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "optimo.mezcla[*]": {
+      "tol": 0.00001,
+      "motivo": "la mejor mezcla en la referencia sale de optim (BFGS) sobre cada cara; la app resuelve el sistema de Lagrange"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "lm(crecimiento ~ 0 + términos de Scheffé cubico-especial sobre las proporciones); ANOVA contra la media; la mejor mezcla con optim en cada cara del simplex"
+   }
+  },
+  {
+   "id": "deseabilidad/fruto-importancias-esfera",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "deseabilidad"
+   },
+   "titulo": "Deseabilidad con exponentes, importancias y la región esférica",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "D",
+   "valores": 25,
+   "difMax": 3.8906821941964154e-7,
+   "difEscaladaMax": 9.726705607615571e-9,
+   "peor": "optimo.codificado[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "optimo.codificado[*]": {
+      "tol": 0.0001,
+      "motivo": "Nelder-Mead en la app y en R: la D llega a 1e-14, el punto a ~1e-7 (cerca del óptimo la D es plana)"
+     },
+     "optimo.natural[*]": {
+      "tol": 0.0001,
+      "motivo": "el punto en unidades originales, como el codificado"
+     },
+     "optimo.prediccion[*]": {
+      "tol": 0.00001,
+      "motivo": "las respuestas en el punto óptimo heredan su precisión"
+     },
+     "optimo.d[*]": {
+      "tol": 0.00001,
+      "motivo": "las deseabilidades en el punto óptimo heredan su precisión"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "segundo orden por respuesta (ref_superficie); d de Derringer y Suich en fórmula cerrada; la mayor D con optim (Nelder-Mead) desde cada punto"
+   }
+  },
+  {
+   "id": "deseabilidad/fruto-tres-respuestas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "deseabilidad"
+   },
+   "titulo": "Deseabilidad: máximo rendimiento, mínimo costo y pH meta de 6.5, en el cubo del diseño",
+   "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+   "clase": "D",
+   "valores": 25,
+   "difMax": 4.2633709540496056e-7,
+   "difEscaladaMax": 1.065842757108637e-8,
+   "peor": "optimo.codificado[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {
+    "tolerancias": {
+     "optimo.codificado[*]": {
+      "tol": 0.0001,
+      "motivo": "Nelder-Mead en la app y en R: la D llega a 1e-14, el punto a ~1e-7 (cerca del óptimo la D es plana)"
+     },
+     "optimo.natural[*]": {
+      "tol": 0.0001,
+      "motivo": "el punto en unidades originales, como el codificado"
+     },
+     "optimo.prediccion[*]": {
+      "tol": 0.00001,
+      "motivo": "las respuestas en el punto óptimo heredan su precisión"
+     },
+     "optimo.d[*]": {
+      "tol": 0.00001,
+      "motivo": "las deseabilidades en el punto óptimo heredan su precisión"
+     }
+    }
+   },
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "segundo orden por respuesta (ref_superficie); d de Derringer y Suich en fórmula cerrada; la mayor D con optim (Nelder-Mead) desde cada punto"
    }
   },
   {

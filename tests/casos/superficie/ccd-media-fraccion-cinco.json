@@ -1,0 +1,64 @@
+{
+  "esquema": 1,
+  "id": "diseno-superficie/ccd-media-fraccion-cinco",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "diseno-superficie"
+  },
+  "titulo": "Central compuesto rotable de cinco factores con la media fracción",
+  "fuente": "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)",
+  "clase": "A",
+  "entradas": [],
+  "opciones": {
+    "tipo": "ccd",
+    "k": 5,
+    "alfa": "rotable"
+  },
+  "esperado": {
+    "alfa": 2,
+    "factorial": 16,
+    "codificado": [
+      [-1, -1, -1, -1, 1],
+      [1, -1, -1, -1, -1],
+      [-1, 1, -1, -1, -1],
+      [1, 1, -1, -1, 1],
+      [-1, -1, 1, -1, -1],
+      [1, -1, 1, -1, 1],
+      [-1, 1, 1, -1, 1],
+      [1, 1, 1, -1, -1],
+      [-1, -1, -1, 1, -1],
+      [1, -1, -1, 1, 1],
+      [-1, 1, -1, 1, 1],
+      [1, 1, -1, 1, -1],
+      [-1, -1, 1, 1, 1],
+      [1, -1, 1, 1, -1],
+      [-1, 1, 1, 1, -1],
+      [1, 1, 1, 1, 1],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [-2, 0, 0, 0, 0],
+      [2, 0, 0, 0, 0],
+      [0, -2, 0, 0, 0],
+      [0, 2, 0, 0, 0],
+      [0, 0, -2, 0, 0],
+      [0, 0, 2, 0, 0],
+      [0, 0, 0, -2, 0],
+      [0, 0, 0, 2, 0],
+      [0, 0, 0, 0, -2],
+      [0, 0, 0, 0, 2]
+    ],
+    "bloque": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "base": "4.4.2"
+    },
+    "codigo": "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)"
+  }
+}

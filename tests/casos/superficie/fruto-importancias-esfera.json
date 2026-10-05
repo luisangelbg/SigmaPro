@@ -1,0 +1,92 @@
+{
+  "esquema": 1,
+  "id": "deseabilidad/fruto-importancias-esfera",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "deseabilidad"
+  },
+  "titulo": "Deseabilidad con exponentes, importancias y la región esférica",
+  "fuente": "Datos sintéticos (generados en este archivo con la respuesta y el diseño indicados)",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "N": [140, 220, 140, 220, 123.43000000000001, 236.56999999999999, 180, 180, 180, 180, 180, 180, 180],
+      "riego": [20, 20, 30, 30, 25, 25, 17.93, 32.07, 25, 25, 25, 25, 25],
+      "rendimiento": [66.030000000000001, 75.010000000000005, 70.109999999999999, 85.480000000000004, 62.969999999999999, 81.709999999999994, 70.890000000000001, 79.049999999999997, 79.599999999999994, 79.980000000000004, 79.489999999999995, 79.489999999999995, 79.930000000000007],
+      "costo": [12.9, 15.609999999999999, 11.07, 14.119999999999999, 11.67, 15.960000000000001, 14.34, 11.93, 12.27, 11.94, 11.83, 11.74, 12.199999999999999],
+      "ph": [5.4299999999999997, 6, 6.3799999999999999, 7.3899999999999997, 5.5700000000000003, 6.6100000000000003, 5.8399999999999999, 7.1200000000000001, 6.4400000000000004, 6.5999999999999996, 6.3399999999999999, 6.5300000000000002, 6.3399999999999999]
+    },
+    "tipos": {
+      "N": {
+        "tipo": "numerica"
+      },
+      "riego": {
+        "tipo": "numerica"
+      },
+      "rendimiento": {
+        "tipo": "numerica"
+      },
+      "costo": {
+        "tipo": "numerica"
+      },
+      "ph": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuestas": ["rendimiento", "costo", "ph"],
+    "factores": ["N", "riego"]
+  },
+  "opciones": {
+    "metas": ["max", "min", "valor"],
+    "inferiores": [72, 11, 6.0999999999999996],
+    "superiores": [84, 14.5, 6.9000000000000004],
+    "objetivos": [0, 0, 6.5],
+    "exponentes": [2, 0.5, 1],
+    "exponentes2": [1, 1, 2],
+    "importancias": [3, 1, 2],
+    "region": "esfera"
+  },
+  "esperado": {
+    "optimo": {
+      "codificado": [0.43656023750919093, -0.14694388573719902],
+      "natural": [197.46240950036764, 24.265280571314005],
+      "prediccion": [81.165710788893307, 12.942503731707761, 6.5],
+      "d": [0.58340454351135529, 0.66708240405348906, 1],
+      "D": 0.71397249994959888
+    },
+    "puntos": {
+      "D": [0, 0, 0, 0, 0, 0, 0, 0, 0.59668451352475038, 0.59668451352475038, 0.59668451352475038, 0.59668451352475038, 0.59668451352475038]
+    },
+    "radio": 1.4142499999999998
+  },
+  "comparacion": {
+    "tolerancias": {
+      "optimo.codificado[*]": {
+        "tol": 0.0001,
+        "motivo": "Nelder-Mead en la app y en R: la D llega a 1e-14, el punto a ~1e-7 (cerca del óptimo la D es plana)"
+      },
+      "optimo.natural[*]": {
+        "tol": 0.0001,
+        "motivo": "el punto en unidades originales, como el codificado"
+      },
+      "optimo.prediccion[*]": {
+        "tol": 1.0000000000000001e-05,
+        "motivo": "las respuestas en el punto óptimo heredan su precisión"
+      },
+      "optimo.d[*]": {
+        "tol": 1.0000000000000001e-05,
+        "motivo": "las deseabilidades en el punto óptimo heredan su precisión"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "segundo orden por respuesta (ref_superficie); d de Derringer y Suich en fórmula cerrada; la mayor D con optim (Nelder-Mead) desde cada punto"
+  }
+}

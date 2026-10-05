@@ -110,6 +110,12 @@ SP.definir('informe', function (SP) {
     michaelis1913: () => 'Michaelis, L. y Menten, M. L. (1913). Die Kinetik der Invertinwirkung. Biochemische Zeitschrift, 49, 333–369.',
     box1951: () => 'Box, G. E. P. y Wilson, K. B. (1951). On the experimental attainment of optimum conditions. Journal of the Royal Statistical Society B, 13(1), 1–45.',
     myers2016: () => 'Myers, R. H., Montgomery, D. C. y Anderson-Cook, C. M. (2016). Response surface methodology: process and product optimization using designed experiments (4.ª ed.). Wiley.',
+    box1957: () => 'Box, G. E. P. y Hunter, J. S. (1957). Multi-factor experimental designs for exploring response surfaces. The Annals of Mathematical Statistics, 28(1), 195–241.',
+    box1960: () => 'Box, G. E. P. y Behnken, D. W. (1960). Some new three level designs for the study of quantitative variables. Technometrics, 2(4), 455–475.',
+    scheffe1958: () => 'Scheffé, H. (1958). Experiments with mixtures. Journal of the Royal Statistical Society B, 20(2), 344–360.',
+    cornell2002: () => 'Cornell, J. A. (2002). Experiments with mixtures: designs, models, and the analysis of mixture data (3.ª ed.). Wiley.',
+    derringer1980: () => 'Derringer, G. y Suich, R. (1980). Simultaneous optimization of several response variables. Journal of Quality Technology, 12(4), 214–219.',
+    nelder1965: () => 'Nelder, J. A. y Mead, R. (1965). A simplex method for function minimization. The Computer Journal, 7(4), 308–313.',
     hoerl1959: () => 'Hoerl, A. E. (1959). Optimum solution of many variables equations. Chemical Engineering Progress, 55, 69–78.',
     draper1963: () => 'Draper, N. R. (1963). «Ridge analysis» of response surfaces. Technometrics, 5(4), 469–479.',
     bartlett1937: () => 'Bartlett, M. S. (1937). Properties of sufficiency and statistical tests. Proceedings of the Royal Society of London A, 160(901), 268–282.',
@@ -192,7 +198,8 @@ SP.definir('informe', function (SP) {
     cruz2012: 'Cruz et al., 2012', nelder1972: 'Nelder y Wedderburn, 1972', mccullagh1989: 'McCullagh y Nelder, 1989', venables2002: 'Venables y Ripley, 2002',
     wedderburn1974: 'Wedderburn, 1974', lenth2016: 'Lenth, 2016', bolker2009: 'Bolker et al., 2009', harrison2014: 'Harrison, 2014', fox2019: 'Fox y Weisberg, 2019',
     bates1988: 'Bates y Watts, 1988', archontoulis2015: 'Archontoulis y Miguez, 2015', ritz2015: 'Ritz et al., 2015', seefeldt1995: 'Seefeldt et al., 1995', cerrato1990: 'Cerrato y Blackmer, 1990', brain1989: 'Brain y Cousens, 1989', michaelis1913: 'Michaelis y Menten, 1913',
-    box1951: 'Box y Wilson, 1951', myers2016: 'Myers et al., 2016', hoerl1959: 'Hoerl, 1959', draper1963: 'Draper, 1963',
+    box1951: 'Box y Wilson, 1951', myers2016: 'Myers et al., 2016', box1957: 'Box y Hunter, 1957', box1960: 'Box y Behnken, 1960', scheffe1958: 'Scheffé, 1958',
+    cornell2002: 'Cornell, 2002', derringer1980: 'Derringer y Suich, 1980', nelder1965: 'Nelder y Mead, 1965', hoerl1959: 'Hoerl, 1959', draper1963: 'Draper, 1963',
     bartlett1937: 'Bartlett, 1937', finlay1963: 'Finlay y Wilkinson, 1963', eberhart1966: 'Eberhart y Russell, 1966', wricke1962: 'Wricke, 1962', shukla1972: 'Shukla, 1972',
     lin1988: 'Lin y Binns, 1988', gauch1988: 'Gauch, 1988', gollob1968: 'Gollob, 1968', cornelius1992: 'Cornelius et al., 1992', purchase2000: 'Purchase et al., 2000',
     yan2000: 'Yan et al., 2000', yan2003: 'Yan y Kang, 2003', gauch1990: 'Gauch y Zobel, 1990', nassar1987: 'Nassar y Huehn, 1987', huehn1990: 'Huehn, 1990',
@@ -760,11 +767,39 @@ SP.definir('informe', function (SP) {
       der.length ? fin(may(y(der))) : '', comp].filter(Boolean).join(' ') };
   }
 
+  /** Generador de diseños (Hito 4.2). */
+  function disenoSuperficie(r, citas) {
+    const n = r.codificado.length, c = { ccd: ['box1951', 'box1957'], bbd: ['box1960'], factorial: ['box1951'], latice: ['scheffe1958', 'cornell2002'], centroide: ['scheffe1958', 'cornell2002'] }[r.clase];
+    const tipo = { ccd: T('central compuesto ({a}, α = {v})', { a: { rotable: T('rotable'), ortogonal: T('ortogonal'), cara: T('de caras centradas'), bloques: T('en dos bloques ortogonales') }[r.tipoAlfa], v: r.alfa ? r.alfa.toFixed(3) : '' }),
+      bbd: 'Box-Behnken', factorial: T('factorial 2^{k} con puntos centrales', { k: r.k }), latice: T('simplex-látice'), centroide: T('simplex-centroide') }[r.clase];
+    return { metodos: T('Se usó un diseño {t} con {k} {f} y {n} corridas ({c}){o}.', { t: tipo, k: r.k, f: r.clase === 'latice' || r.clase === 'centroide' ? T('componentes') : T('factores'), n, c: cita(c, citas),
+      o: r.orden.some((v, i) => v !== i) ? T(', en orden al azar') : '' }), resultados: '' };
+  }
+  /** Mezclas (Hito 4.2). */
+  function mezclas(r, citas) {
+    const A = r.ajuste, fa = r.falta_ajuste, O = r.optimo, M = { lineal: T('lineal'), cuadratico: T('cuadrático'), 'cubico-especial': T('cúbico especial') }[r.modelo];
+    const metodos = T('Las proporciones de {k} componentes se analizaron con el modelo {m} de Scheffé por mínimos cuadrados sin intercepto ({c}); la mezcla de {o} respuesta se buscó en todo el simplex.',
+      { k: r.componentes.length, m: M, c: cita(['scheffe1958', 'cornell2002'], citas), o: r.objetivo === 'minimo' ? T('menor') : T('mayor') });
+    const res = [T('El modelo explicó el {p} % de la variación (R² = {r}; R² ajustada = {a}).', { p: pct(100 * A.r2), r: n3(A.r2), a: n3(A.r2_ajustada) })];
+    if (fa) res.push(fa.p >= (r.alfa || 0.05) ? T('La falta de ajuste no fue significativa (F({a}, {b}) = {v}; {p}).', { a: fa.gl1, b: fa.gl2, v: n2(fa.F), p: fp(fa.p) })
+      : T('La falta de ajuste fue significativa (F({a}, {b}) = {v}; {p}).', { a: fa.gl1, b: fa.gl2, v: n2(fa.F), p: fp(fa.p) }));
+    res.push(T('La mejor mezcla fue {x}, con una respuesta estimada de {v} (IC {c} %: {i} a {s}).', { x: y(r.componentes.map((c, j) => c + ' ' + n2(100 * O.mezcla[j]) + ' %')), v: s4(O.prediccion), c: Math.round(100 * (r.nivel || 0.95)), i: s4(O.ic_inf), s: s4(O.ic_sup) }));
+    return { metodos, resultados: res.join(' ') };
+  }
+  /** Deseabilidad (Hito 4.2). */
+  function deseabilidad(r, citas) {
+    const O = r.optimo;
+    return { metodos: T('Las {m} respuestas se modelaron con superficies de segundo orden y se combinaron en una deseabilidad global ({c}); la combinación más deseable se buscó con el simplex sin derivadas ({c2}) dentro de {g}.',
+      { m: r.respuestas.length, c: cita(['derringer1980'], citas), c2: cita(['nelder1965'], citas), g: r.region === 'esfera' ? T('la esfera del diseño') : T('los niveles del diseño') }),
+      resultados: !(O.D > 0) ? T('Ninguna combinación de la región dejó todas las respuestas dentro de sus límites (D = 0).') : T('La mayor deseabilidad global fue D = {d}, con {x}; ahí se estimó {p}.', { d: n3(O.D), x: y(r.factores.map((f, j) => f + ' = ' + s4(O.natural[j]))),
+        p: y(r.respuestas.map((v, i) => v + ' = ' + s4(O.prediccion[i]) + ' (d = ' + n3(O.d[i]) + ')')) }) };
+  }
+
   function superficie(r, citas) {
     const A = r.ajuste, E = r.estacionario, fa = r.falta_ajuste, F = r.factores, NS = SP.metodosSuperficie, minimo = r.objetivo === 'minimo';
     const lista = (vals) => y(F.map((f, j) => f + ' = ' + s4(vals[j])));
     const cod = y(F.map((f, j) => T('{f} con centro {c} y paso {p}', { f, c: s4(r.codificacion.centro[j]), p: s4(r.codificacion.paso[j]) })));
-    let metodos = T('Se ajustó un modelo de {o} con los factores codificados ({c}) por mínimos cuadrados ({cit}){b}.', { o: NS.ORDEN[r.orden], c: cod, cit: cita(['box1951', 'myers2016'], citas), b: r.bloque ? T(', con el efecto de {b}', { b: r.bloque }) : '' });
+    let metodos = T('Se ajustó un modelo de {o} con los factores codificados{m} ({c}) por mínimos cuadrados ({cit}){b}.', { o: NS.ORDEN[r.orden], c: cod, m: r.codificacionManual ? T(' a mano, −1 y +1 en los niveles indicados') : '', cit: cita(['box1951', 'myers2016'], citas), b: r.bloque ? T(', con el efecto de {b}', { b: r.bloque }) : '' });
     if (fa) metodos += ' ' + T('La falta de ajuste se probó contra el error puro de los puntos repetidos.');
     if (E) metodos += ' ' + T('El punto estacionario se caracterizó con el análisis canónico y se trazó la cresta de {o} respuesta ({c}).', { o: minimo ? T('mínima') : T('máxima'), c: cita(['hoerl1959', 'draper1963'], citas) });
     else if (r.orden === 'primer') metodos += ' ' + T('Se calculó el camino de {s} más pronunciado ({c}).', { s: minimo ? T('descenso') : T('ascenso'), c: cita(['box1951'], citas) });
@@ -978,6 +1013,9 @@ SP.definir('informe', function (SP) {
     else if (id === 'glmm-bloques' || id === 'glmm') p = generalizadoMixto(r, citas);
     else if (['curva-crecimiento', 'dosis-respuesta', 'respuesta-meseta'].includes(id)) p = noLineal(r, citas);
     else if (['superficie-respuesta', 'ascenso-pronunciado'].includes(id)) p = superficie(r, citas);
+    else if (id === 'diseno-superficie') p = disenoSuperficie(r, citas);
+    else if (id === 'mezclas') p = mezclas(r, citas);
+    else if (id === 'deseabilidad') p = deseabilidad(r, citas);
     else if (['ensayos-multiambiente', 'dos-etapas', 'estabilidad', 'ammi', 'gge'].includes(id)) p = multiambiente(id, r, citas);
     else if (['potencia-medias', 'potencia-anova', 'potencia-proporciones', 'potencia-correlacion', 'repeticiones'].includes(id)) p = potencia(id, r, citas);
     else if (['tamano-muestra', 'muestreo-simple', 'muestreo-estratificado'].includes(id)) p = muestreo(id, r, citas);

@@ -1,0 +1,93 @@
+{
+  "esquema": 1,
+  "id": "mezclas/hilo-lineal",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "mezclas"
+  },
+  "titulo": "Alargamiento del hilo: modelo lineal (la mejor mezcla es un componente puro)",
+  "fuente": "Cornell, J. A. (2002), Experiments with Mixtures (3.ª ed.), Wiley: alargamiento del hilo (polietileno, poliestireno y polipropileno)",
+  "clase": "B",
+  "datos": {
+    "columnas": {
+      "polietileno": [1, 1, 0.5, 0.5, 0.5, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5],
+      "poliestireno": [0, 0, 0.5, 0.5, 0.5, 1, 1, 0.5, 0.5, 0.5, 0, 0, 0, 0, 0],
+      "polipropileno": [0, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5, 1, 1, 0.5, 0.5, 0.5],
+      "alargamiento": [11, 12.4, 15, 14.800000000000001, 16.100000000000001, 8.8000000000000007, 10, 10, 9.6999999999999993, 11.800000000000001, 16.800000000000001, 16, 17.699999999999999, 16.399999999999999, 16.600000000000001]
+    },
+    "tipos": {
+      "polietileno": {
+        "tipo": "numerica"
+      },
+      "poliestireno": {
+        "tipo": "numerica"
+      },
+      "polipropileno": {
+        "tipo": "numerica"
+      },
+      "alargamiento": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "alargamiento",
+    "componentes": ["polietileno", "poliestireno", "polipropileno"]
+  },
+  "opciones": {
+    "modelo": "lineal",
+    "objetivo": "maximo"
+  },
+  "esperado": {
+    "coeficientes": {
+      "estimado": [14.994545454545451, 9.8309090909090884, 15.794545454545455],
+      "ee": [1.4103822040257417, 1.4103822040257417, 1.4103822040257417],
+      "t": [10.631547542039021, 6.9703865114350654, 11.198769673541046],
+      "p": [1.8407157509867e-07, 1.4951745233265058e-05, 1.0403026086144535e-07]
+    },
+    "anova": {
+      "fuente": ["Modelo", "Residuo", "Falta de ajuste", "Error puro"],
+      "gl": [2, 12, 3, 9],
+      "sc": [57.629090909090834, 77.22690909090916, 70.666909090909144, 6.5600000000000191],
+      "cm": [28.814545454545417, 6.4355757575757631, 23.555636363636381, 0.72888888888889103],
+      "F": [4.4773842372418375, "NA", 32.31718403547665, "NA"],
+      "p": [0.035268766903648663, "NA", 3.7864809992774475e-05, "NA"]
+    },
+    "ajuste": {
+      "n": 15,
+      "gl": 12,
+      "sigma": 2.5368436604520515,
+      "r2": 0.42733798206302159,
+      "r2_ajustada": 0.33189431240685852
+    },
+    "optimo": {
+      "mezcla": [0, 0, 1],
+      "prediccion": 15.794545454545455,
+      "ee": 1.4103822040257417,
+      "ic_inf": 12.721586613679825,
+      "ic_sup": 18.867504295411084
+    },
+    "falta_ajuste": {
+      "F": 32.31718403547665,
+      "gl1": 3,
+      "gl2": 9,
+      "p": 3.7864809992774475e-05
+    }
+  },
+  "comparacion": {
+    "tolerancias": {
+      "optimo.mezcla[*]": {
+        "tol": 1.0000000000000001e-05,
+        "motivo": "la mejor mezcla en la referencia sale de optim (BFGS) sobre cada cara; la app resuelve el sistema de Lagrange"
+      }
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2"
+    },
+    "codigo": "lm(alargamiento ~ 0 + términos de Scheffé lineal sobre las proporciones); ANOVA contra la media; la mejor mezcla con optim en cada cara del simplex"
+  }
+}

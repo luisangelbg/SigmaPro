@@ -83,3 +83,57 @@ SPT.describir('Superficies de respuesta · métodos', () => {
     SPT.lanza(() => SP.ejecutar('ascenso-pronunciado', fijo, { respuesta: 'y', factores: ['a', 'b'] }, { objetivo: 'maximo', nivel: 0.95 }), 'un solo valor');
   });
 });
+
+SPT.describir('Superficies de respuesta · Fase 4 (diseños, codificación a mano, mezclas, deseabilidad)', () => {
+  const S = () => SP.superficie;
+  SPT.caso('Diseños: corridas, α y propiedades; la semilla da siempre el mismo orden', () => {
+    const c2 = S().generarDiseno({ tipo: 'ccd', k: 2, alfa: 'rotable' });
+    SPT.igual(c2.codificado.length, 13); SPT.cerca(c2.alfa, Math.SQRT2, 1e-15);
+    const c3 = S().generarDiseno({ tipo: 'ccd', k: 3, alfa: 'bloques', centros: 6 });
+    /* bloques ortogonales: en cada bloque, Σz_j² / n_bloque es el mismo */
+    const m = b => { const f = c3.codificado.filter((_, i) => c3.bloque[i] === b); return f.reduce((s, z) => s + z[0] * z[0], 0) / f.length; };
+    SPT.cerca(m(1), m(2), 1e-12, 'ortogonal en bloques');
+    const c5 = S().generarDiseno({ tipo: 'ccd', k: 5, alfa: 'rotable' });
+    SPT.igual(c5.factorial, 16); SPT.afirmar(c5.codificado.slice(0, 16).every(z => z[4] === z[0] * z[1] * z[2] * z[3]), 'media fracción I = ABCDE');
+    SPT.igual(S().generarDiseno({ tipo: 'bbd', k: 4 }).codificado.length, 27);
+    const lat = S().generarDiseno({ tipo: 'latice', k: 3, grado: 2 });
+    SPT.igual(lat.codificado.length, 6); SPT.afirmar(lat.codificado.every(z => Math.abs(z.reduce((a, b) => a + b, 0) - 1) < 1e-15), 'suman 1');
+    SPT.igual(S().generarDiseno({ tipo: 'centroide', k: 4 }).codificado.length, 15);
+    const a = S().generarDiseno({ tipo: 'ccd', k: 3, alfa: 'rotable', semilla: 42 }), b = S().generarDiseno({ tipo: 'ccd', k: 3, alfa: 'rotable', semilla: 42 });
+    SPT.igualJSON(a.orden, b.orden); SPT.afirmar(a.orden.some((v, i) => v !== i), 'al azar');
+    SPT.igualJSON([...a.orden].sort((x, y) => x - y), a.orden.map((_, i) => i));
+    const r = SP.ejecutar('diseno-superficie', null, {}, SP.opcionesCon(SP.metodos['diseno-superficie'], { tipo: 'ccd', k: 2, nombres: 'N, densidad', bajos: '100, 60', altos: '200, 80' })).resultado;
+    SPT.cerca(r.natural[r.natural.length - 1][1], 70 + 10 * Math.SQRT2, 1e-12, 'axial en unidades originales');
+    SPT.lanza(() => SP.ejecutar('diseno-superficie', null, {}, SP.opcionesCon(SP.metodos['diseno-superficie'], { tipo: 'ccd', k: 2, bajos: '100', altos: '200, 80' })), 'niveles bajos');
+  });
+  SPT.caso('Codificación a mano: las mismas predicciones que la automática; cambian los coeficientes codificados', () => {
+    const Z = S().generarDiseno({ tipo: 'ccd', k: 2, alfa: 'rotable' }).codificado, c = { N: [], D: [], y: [] };
+    Z.forEach((z, i) => { c.N.push(150 + 50 * z[0]); c.D.push(70 + 10 * z[1]); c.y.push(8 + 0.9 * z[0] + 0.4 * z[1] - 0.8 * z[0] * z[0] - 0.5 * z[1] * z[1] + 0.05 * Math.sin(3 * i)); });
+    const t = SP.tabla.crear(c, {}), e = { respuesta: 'y', factores: ['N', 'D'] };
+    const a = SP.ejecutar('superficie-respuesta', t, e, SP.opcionesCon(SP.metodos['superficie-respuesta'], {})).resultado;
+    const m = SP.ejecutar('superficie-respuesta', t, e, SP.opcionesCon(SP.metodos['superficie-respuesta'], { codificacion: 'manual', bajos: [90, 55], altos: [210, 85] })).resultado;
+    a.ajustados.forEach((v, i) => SPT.cerca(m.ajustados[i], v, 1e-10));
+    SPT.cerca(m.estacionario.natural[0], a.estacionario.natural[0], 1e-9);
+    SPT.cerca(m.codificacion.paso[0], 60, 1e-15);
+  });
+  SPT.caso('Mezclas: Scheffé reproduce el hilo de Cornell y la mejor mezcla cumple Σx = 1 y las condiciones de Lagrange', () => {
+    const t = SP.tabla.crear({ x1: [1, 1, 0.5, 0.5, 0.5, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5], x2: [0, 0, 0.5, 0.5, 0.5, 1, 1, 0.5, 0.5, 0.5, 0, 0, 0, 0, 0],
+      x3: [0, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5, 1, 1, 0.5, 0.5, 0.5], y: [11.0, 12.4, 15.0, 14.8, 16.1, 8.8, 10.0, 10.0, 9.7, 11.8, 16.8, 16.0, 17.7, 16.4, 16.6] }, {});
+    const r = SP.ejecutar('mezclas', t, { respuesta: 'y', componentes: ['x1', 'x2', 'x3'] }, SP.opcionesCon(SP.metodos.mezclas, { modelo: 'cuadratico' })).resultado;
+    [11.7, 9.4, 16.4, 19.0, 11.4, -9.6].forEach((b, j) => SPT.cerca(r.coeficientes.estimado[j], b, 1e-12, 'b' + j));
+    SPT.cerca(r.optimo.mezcla.reduce((a, b) => a + b, 0), 1, 1e-14);
+    /* sobre la arista x1–x3 (x2 = 0): ∂f/∂x1 = ∂f/∂x3 en el óptimo */
+    const [x1, , x3] = r.optimo.mezcla;
+    SPT.cerca(11.7 + 11.4 * x3, 16.4 + 11.4 * x1, 1e-9, 'Lagrange');
+    const pct = SP.tabla.crear({ a: [100, 0, 50], b: [0, 100, 50], y: [1, 2, 3] }, {});
+    SPT.lanza(() => SP.ejecutar('mezclas', SP.tabla.crear({ a: [1, 0, 0.6], b: [0, 1, 0.5], y: [1, 2, 3] }, {}), { respuesta: 'y', componentes: ['a', 'b'] }, SP.opcionesCon(SP.metodos.mezclas, { modelo: 'lineal' })), 'no suman lo mismo');
+    SPT.afirmar(pct.n === 3, 'tabla en porcentaje');
+  });
+  SPT.caso('Deseabilidad: las d de Derringer y Suich en sus bordes y la D es la media geométrica ponderada', () => {
+    const d = S().deseabilidadUna;
+    SPT.igual(d(5, { meta: 'max', L: 5, U: 10 }), 0); SPT.igual(d(10, { meta: 'max', L: 5, U: 10 }), 1); SPT.cerca(d(7.5, { meta: 'max', L: 5, U: 10, s: 2 }), 0.25, 1e-15);
+    SPT.igual(d(5, { meta: 'min', L: 5, U: 10 }), 1); SPT.cerca(d(6, { meta: 'valor', L: 5, U: 10, T: 7 }), 0.5, 1e-15); SPT.igual(d(7, { meta: 'valor', L: 5, U: 10, T: 7 }), 1);
+    SPT.cerca(S().deseabilidadGlobal([0.5, 0.8], [1, 3]), Math.exp((Math.log(0.5) + 3 * Math.log(0.8)) / 4), 1e-15);
+    SPT.igual(S().deseabilidadGlobal([0.5, 0], [1, 1]), 0);
+  });
+});

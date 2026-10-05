@@ -2,6 +2,28 @@
 
 ## Sin publicar
 
+### Hito 4.2 · Superficies de respuesta ampliadas (4 oct 2026)
+
+- **Generador de diseños** (método nuevo, sin datos): central compuesto rotable, ortogonal, de caras centradas o en dos
+  bloques ortogonales (con la media fracción desde cinco factores), Box-Behnken, factorial 2^k con puntos centrales,
+  simplex-látice y simplex-centroide. Da las corridas codificadas y, con los niveles bajo y alto (o el total de la
+  mezcla), en unidades originales; con una semilla, el orden de corrida al azar dentro de cada bloque. El botón «Abrir
+  en Datos» lo convierte en una hoja lista para anotar la respuesta.
+- **Codificación a mano** en la superficie de respuesta: −1 y +1 en los niveles que se indiquen para cada factor (las
+  predicciones no cambian; los coeficientes codificados sí).
+- **Mezclas** (método nuevo): modelos lineal, cuadrático y cúbico especial de Scheffé sobre las proporciones (cada fila
+  dividida por su suma, también en porcentaje o en cantidades), ANOVA contra la media, falta de ajuste contra el error
+  puro, las sinergias y los antagonismos, y la mezcla de mayor (o menor) respuesta en todo el simplex con su IC.
+  Gráficas: la superficie ternaria con curvas de nivel y la traza de Cox.
+- **Deseabilidad** (método nuevo): varias respuestas, cada una con su modelo de segundo orden, combinadas con las d de
+  Derringer y Suich (la mayor, la menor o un valor meta; exponentes e importancias) en una D global; la combinación más
+  deseable se busca con Nelder-Mead en el cubo o la esfera del diseño. Gráfica: las curvas de nivel de D.
+- **Superficie en 3D**: la superficie ajustada en perspectiva, con botones para girarla, junto a las curvas de nivel.
+- Ejemplos nuevos: el alargamiento del hilo (Cornell 2002, mezclas) y tres respuestas de un fruto (sintético,
+  deseabilidad). El informe tiene el párrafo de métodos y resultados de los tres métodos nuevos.
+- Validación: 22 casos nuevos (14 diseños, 5 mezclas, 2 de deseabilidad y la codificación a mano; 32 en la familia,
+  4 198 valores), cinco escenarios del código R, cuatro pruebas unitarias y cuatro escenarios de accesibilidad.
+
 ### Hito 4.1 · Ensayos multiambiente ampliados (4 oct 2026)
 
 - **Celdas genotipo × ambiente vacías**: se imputan por EM-AMMI (Gauch y Zobel, 1990), como metan, con los ejes que se

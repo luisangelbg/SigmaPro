@@ -209,6 +209,18 @@
  "srf-ascenso": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[17].click(), SP.app.ir(4), SP.app.analisis.usar('ascenso-pronunciado', { respuesta: 'rendimiento', factores: ['N', 'K'] }, { objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },
+ "srf-diseno": {
+  "prep": "SP.app.ir(4), document.querySelector('#anaSinDatos').click(), SP.app.analisis.usar('diseno-superficie', {}, { tipo: 'ccd', k: 3, alfa: 'rotable', semilla: 7, bajos: '80, 40, 10', altos: '220, 160, 30' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "srf-codificacion": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[17].click(), SP.app.ir(4), SP.app.analisis.usar('superficie-respuesta', { respuesta: 'rendimiento', factores: ['N', 'K'] }, { orden: 'segundo', objetivo: 'maximo', codificacion: 'manual', bajos: [80, 40], altos: [220, 160] }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "srf-mezclas": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[22].click(), SP.app.ir(4), SP.app.analisis.usar('mezclas', { respuesta: 'alargamiento', componentes: ['polietileno', 'poliestireno', 'polipropileno'] }, { modelo: 'cuadratico', objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "srf-deseabilidad": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[23].click(), SP.app.ir(4), SP.app.analisis.usar('deseabilidad', { respuestas: ['rendimiento', 'costo', 'ph'], factores: ['N', 'riego'] }, { metas: ['max', 'min', 'valor'], inferiores: [70, 11, 6], superiores: [86, 15, 7], objetivos: [0, 0, 6.5], exponentes: [1, 1, 1], exponentes2: [1, 1, 1], importancias: [1, 1, 1], region: 'cubo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
  "ma-conjunto": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[13].click(), SP.app.ir(4), SP.app.analisis.usar('ensayos-multiambiente', { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, { objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },

@@ -285,13 +285,30 @@ agregar("chile-frutos", "Chile: medidas del fruto de cuatro variedades",
         "Ficticio: largo y ancho (cm), peso (g) y grosor de la pared (mm) de 5 frutos por parcela de cuatro variedades de chile en tres bloques; para la MANOVA en bloques y el análisis discriminante de las variedades.", d,
         list(variedad = list(tipo = "factor", niveles = c("Ancho", "Guajillo", "Jalapeño", "Serrano")), bloque = list(tipo = "factor", niveles = c("1", "2", "3"))))
 
+## 23. Hilo: alargamiento de tres polímeros (mezclas; datos publicados de Cornell 2002)
+d <- data.frame(polietileno = c(1, 1, 0.5, 0.5, 0.5, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5), poliestireno = c(0, 0, 0.5, 0.5, 0.5, 1, 1, 0.5, 0.5, 0.5, 0, 0, 0, 0, 0),
+                polipropileno = c(0, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5, 1, 1, 0.5, 0.5, 0.5), alargamiento = c(11.0, 12.4, 15.0, 14.8, 16.1, 8.8, 10.0, 10.0, 9.7, 11.8, 16.8, 16.0, 17.7, 16.4, 16.6))
+agregar("hilo-mezcla", "Hilo: alargamiento de tres polímeros (mezclas)",
+        "Datos publicados: alargamiento del hilo con mezclas de polietileno, poliestireno y polipropileno (simplex-látice {3, 2} con repeticiones; Cornell, 2002); para los modelos de Scheffé y la mejor mezcla.", d)
+
+## 24. Fruto: tres respuestas en un central compuesto (deseabilidad; ficticio, el mismo de los casos de validación)
+set.seed(91)
+Zd <- rbind(as.matrix(expand.grid(c(-1, 1), c(-1, 1))), rbind(c(-sqrt(2), 0), c(sqrt(2), 0), c(0, -sqrt(2)), c(0, sqrt(2))), matrix(0, 5, 2))
+d <- data.frame(N = round(180 + 40 * Zd[, 1], 2), riego = round(25 + 5 * Zd[, 2], 2))
+d$rendimiento <- round(80 + 6 * Zd[, 1] + 3 * Zd[, 2] - 4 * Zd[, 1]^2 - 2.5 * Zd[, 2]^2 + 1.5 * Zd[, 1] * Zd[, 2] + rnorm(13, 0, 0.6), 2)
+d$costo <- round(12 + 1.5 * Zd[, 1] - 0.8 * Zd[, 2] + 0.9 * Zd[, 1]^2 + 0.6 * Zd[, 2]^2 + rnorm(13, 0, 0.2), 2)
+d$ph <- round(6.5 + 0.4 * Zd[, 1] + 0.5 * Zd[, 2] - 0.2 * Zd[, 1]^2 + rnorm(13, 0, 0.08), 2)
+agregar("fruto-respuestas", "Fruto: rendimiento, costo y pH (central compuesto)",
+        "Ficticio: rendimiento, costo de producción y pH del fruto con dosis de nitrógeno (kg/ha) y lámina de riego (cm) en un central compuesto rotable; para la superficie de cada respuesta y la deseabilidad de las tres a la vez.", d)
+
 ## escribir datos/ejemplos.js
 js <- paste0(
   "/* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.\n",
   "   Ficticios y reproducibles, salvo «venenos»: Box, G. E. P. y Cox, D. R. (1964). An analysis of transformations.\n",
   "   J. R. Stat. Soc. B 26: 211-252, cuadro 1; «mendel»: Mendel, G. (1866), Versuche über Pflanzen-Hybriden;\n",
   "   «avena»: Yates, F. (1935). Complex experiments. Suppl. J. R. Stat. Soc. 2: 181-247; «alfa-latice» y «avena-ambientes»:\n",
-  "   Olivoto, T. y Lúcio, A. D. (2020). metan: an R package for multi-environment trial analysis. Methods Ecol. Evol. 11: 783-789. */\n",
+  "   Olivoto, T. y Lúcio, A. D. (2020). metan: an R package for multi-environment trial analysis. Methods Ecol. Evol. 11: 783-789;\n",
+  "   «hilo-mezcla»: Cornell, J. A. (2002). Experiments with Mixtures (3.ª ed.). Wiley. */\n",
   "window.SP_EJEMPLOS = ",
   jsonlite::toJSON(ejemplos, auto_unbox = TRUE, pretty = TRUE, null = "null"), ";\n")
 salida <- file("datos/ejemplos.js", open = "w", encoding = "UTF-8")

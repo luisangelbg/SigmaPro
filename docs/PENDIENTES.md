@@ -69,9 +69,9 @@ base común nueva). **La Fase 2 está completa.** Notas:
 - ~~Multiambiente~~: resuelto en el Hito 4.1 (4 oct 2026): imputación EM-AMMI, Huehn, Kang, Annicchiarico, WAAS y
   WAASY, análisis en dos etapas y las vistas del GGE (genotipo y ambiente ideales, comparar dos genotipos). Queda: las
   dos etapas toman los genotipos como fijos (sus BLUE); con genotipos aleatorios, el modelo mixto de localidades.
-- Superficies de respuesta: sin generador de diseños (central compuesto, Box-Behnken), sin mezclas ni optimización
-  de varias respuestas (deseabilidad); la codificación es automática (no se puede fijar a mano) y la gráfica de
-  superficie en 3D queda pendiente (hay curvas de nivel).
+- ~~Superficies de respuesta~~: resuelto en el Hito 4.2 (4 oct 2026): generador de diseños, codificación a mano,
+  mezclas de Scheffé, deseabilidad y la superficie en 3D. Queda: las mezclas con restricciones (límites inferiores y
+  superiores de cada componente, pseudocomponentes) y los diseños óptimos (D-óptimos) no están.
 - GLMM: solo aproximación de Laplace (nAGQ = 1); la cuadratura adaptativa de Gauss-Hermite, la familia gamma mixta y la
   prueba de razón de verosimilitudes de cada efecto aleatorio quedan pendientes.
 - GLM: los intervalos de las razones son de Wald (confint.default); los de verosimilitud perfilada quedan pendientes.

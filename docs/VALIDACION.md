@@ -425,7 +425,7 @@ escritorio con el que se calcula la referencia.
 | Orthodont (Potthoff y Roy 1964), BodyWeight (Crowder y Hand 1990), sleepstudy y el maíz de los ejemplos | medidas repetidas: siete estructuras de covarianza con elección por AIC y BIC, la no estructurada pedida, fechas desiguales (AR(1) continua), faltantes, bloques, sin tratamientos (`tests/r/repetidas.R`) |
 | Dyestuff, Dyestuff2, Penicillin y Pastes (Davies y Goldsmith 1972; Box y Tiao 1973), Rail y ergoStool (Pinheiro y Bates 2000), data_alpha, data_ge y data_ge2 (Olivoto y Lúcio 2020) | componentes de varianza cruzados, anidados y con interacción, frontera, desbalance; heredabilidad en completamente al azar, bloques, alfa-látice y varios ambientes; repetibilidad con y sin efectos fijos (`tests/r/geneticos.R`) |
 | data_ge y data_ge2 (Olivoto y Lúcio 2020, metan), plrv (agricolae) | ensayos multiambiente: análisis conjunto, Bartlett, Eberhart-Russell, Wricke, Shukla, Lin-Binns, Huehn, Kang, Annicchiarico, AMMI con Gollob y F_R, WAAS y WAASY, GGE con el genotipo y el ambiente ideales y la comparación de dos genotipos, análisis en dos etapas; parcelas perdidas, celdas vacías imputadas por EM-AMMI y una media por celda (`tests/r/multiambiente.R`) |
-| Centrales compuestos, Box-Behnken y factoriales con centros (sintéticos) | superficies de respuesta: segundo orden, interacciones y primer orden, bloques, sin error puro, silla, máximo y mínimo, dos a cuatro factores (`tests/r/superficie.R`) |
+| Centrales compuestos, Box-Behnken y factoriales con centros (sintéticos), el hilo de Cornell (2002) | superficies de respuesta: segundo orden, interacciones y primer orden, bloques, sin error puro, silla, máximo y mínimo, dos a cuatro factores, codificación a mano; generador de diseños (central compuesto, Box-Behnken, factorial, simplex-látice y simplex-centroide); mezclas de Scheffé; deseabilidad (`tests/r/superficie.R`) |
 | Orange, ChickWeight, DNase, Loblolly y Puromycin (R), lettuce (van Ewijk y Hoekstra 1993, drc), herbicidas, tóxico, germinación, trigo y nitrógeno (sintéticos) | regresión no lineal: doce modelos (con Brain-Cousens y Michaelis-Menten), una curva y varias por grupo, comparación de curvas y de cada parámetro (también en lineal-meseta), dosis cero, meseta por perfil, pesos, intervalos perfilados, dosis económica, elección por AIC (`tests/r/nolineal.R`) |
 | cbpp (Lesnoff et al. 2004), grouseticks (Elston et al. 2001) y el aguacate de los ejemplos | modelos lineales generalizados mixtos: binomial con ensayos, Poisson con dos agrupamientos y exposición, binomial negativa, efecto por observación, ajuste singular, Wald tipo II y III (`tests/r/glmm.R`) |
 | InsectSprays (Beall 1942), warpbreaks, snails, quine, Insurance y birthwt (MASS), escarabajos de Bliss (1935), coagulación (McCullagh y Nelder 1989) | modelos lineales generalizados: seis familias, cinco enlaces, exposición, familia automática, tipos I a III, medias y pares en la escala de la respuesta (`tests/r/glm.R`) |
@@ -437,6 +437,34 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
+
+## Superficies de respuesta ampliadas (Hito 4.2)
+
+- **Referencia** (`tests/r/superficie.R`, solo R base):
+  - **Diseños**: `sr_diseno` arma cada diseño en el orden estándar con las fórmulas de α escritas aparte (rotable
+    F^(1/4); ortogonal (F·Q/4)^(1/4) con Q = (√(F + 2k + n0) − √F)²; caras centradas 1; dos bloques ortogonales,
+    Box y Hunter 1957), la media fracción I = ABC… desde cinco factores, Box-Behnken por pares de factores, el
+    simplex-látice por recursión y el simplex-centroide por subconjuntos. 14 diseños de 2 a 6 factores o componentes:
+    las corridas coinciden exactamente (diferencia 0).
+  - **Codificación a mano**: `ref_superficie` con los niveles bajo y alto dados (−1 = 90 y 55, +1 = 210 y 85 en el
+    maíz de los ejemplos).
+  - **Mezclas**: `lm` sin intercepto con los términos de Scheffé sobre las proporciones, ANOVA contra la media y falta
+    de ajuste contra el error puro. La mejor mezcla sale por otro camino que en la app: `optim` (BFGS) sobre las
+    coordenadas libres de cada cara del simplex desde varios arranques, pulido con un segundo `optim` (la app resuelve
+    el sistema de Lagrange con Newton); por eso la mezcla se compara con tolerancia 1e-5. Datos: el alargamiento del
+    hilo de Cornell (2002) con los modelos lineal y cuadrático, máximo y mínimo; un sustrato en porcentaje con el
+    cúbico especial y cuatro componentes con tres centroides (sintéticos).
+  - **Deseabilidad**: cada respuesta con su modelo de segundo orden (`ref_superficie`), d y D en fórmula cerrada y la
+    mayor D con `optim` (Nelder-Mead de R) desde cada punto del diseño y el centro; dos casos (cubo, y esfera con
+    exponentes e importancias). Clase D: dos implementaciones de Nelder-Mead llegan a la misma D (1e-14), pero cerca del
+    óptimo la D es plana y el punto solo coincide a ~1e-7 (tolerancia 1e-4 en el punto y 1e-5 en sus predicciones).
+- **Resultado**: 32 casos de la familia (22 nuevos), 4 198 valores; diferencia escalada máxima 0 en los diseños,
+  5.9 × 10⁻⁹ en las mezclas y 1.1 × 10⁻⁸ en la deseabilidad.
+- **Código R** (`tests/codigo-r.mjs`): el central compuesto ortogonal de tres factores, el Box-Behnken de cuatro, la
+  superficie con la codificación a mano, el modelo de Scheffé del hilo y la D de cada corrida y del óptimo.
+- **Pruebas unitarias** (`tests/unidad/superficie.test.js`): el número de corridas, α y las propiedades de cada diseño
+  (la semilla da siempre el mismo orden); la codificación a mano da las mismas predicciones que la automática; la mejor
+  mezcla suma 1 y cumple las condiciones de Lagrange; las d en sus bordes y la D como media geométrica ponderada.
 
 ## Ensayos multiambiente ampliados (Hito 4.1)
 

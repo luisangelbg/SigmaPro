@@ -88,3 +88,83 @@ Z8 <- rbind(as.matrix(expand.grid(c(-1, 1), c(-1, 1), c(-1, 1))), matrix(0, 4, 3
 y8 <- 12 + 1.1 * Z8[, 1] + 0.6 * Z8[, 2] - 0.4 * Z8[, 3] + 0.5 * Z8[, 1] * Z8[, 2] - 0.3 * Z8[, 2] * Z8[, 3] + rnorm(12, 0, 0.2)
 fert <- data.frame(N = X8[, 1], S = X8[, 2], Zn = X8[, 3], rendimiento = round(y8, 2))
 caso_sr("factorial-interacciones", "superficie-respuesta", "Factorial 2³ con centros: primer orden con interacciones y su cresta", fert, "rendimiento", c("N", "S", "Zn"), orden = "interacciones")
+
+# ---- Fase 4 (Hito 4.2) ---------------------------------------------------------------------------------------
+# 9. codificación a mano: los niveles −1 y +1 de cada factor los da quien analiza (no el diseño)
+r9 <- ref_superficie(maiz, "rendimiento", c("N", "densidad"), "segundo", bajos = c(90, 55), altos = c(210, 85))
+sp_caso("maiz-codificacion-a-mano", objetivo = "superficie-respuesta", tipo = "metodo", titulo = "Central compuesto con la codificación a mano (−1 = 90 y 55, +1 = 210 y 85)",
+  fuente = F_SINT, clase = "B", datos = maiz, entradas = ent(respuesta = "rendimiento", factores = c("N", "densidad")),
+  opciones = list(orden = "segundo", objetivo = "maximo", codificacion = "manual", bajos = c(90, 55), altos = c(210, 85)), esperado = r9, paquetes = "stats",
+  codigo = "lm(rendimiento ~ segundo orden en z = (x − (bajo + alto)/2) / ((alto − bajo)/2)); eigen(B); uniroot (tests/r/superficie.R)")
+
+# 10. generador de diseños (sin datos): la matriz codificada en orden estándar, α y los bloques
+F_DIS <- "Construcción de los diseños: Box y Wilson (1951), Box y Hunter (1957), Box y Behnken (1960), Scheffé (1958, 1963)"
+caso_dis <- function(nombre, titulo, op) {
+  r <- do.call(sr_diseno, c(list(op$tipo, op$k), op[intersect(names(op), c("alfa", "centros", "grado"))]))
+  sp_caso(nombre, objetivo = "diseno-superficie", tipo = "metodo", titulo = titulo, fuente = F_DIS, clase = "A", entradas = list(), opciones = op,
+    esperado = r, paquetes = "base", codigo = "expand.grid, combn y las fórmulas de α en R base (tests/r/superficie.R, sr_diseno)")
+}
+caso_dis("ccd-rotable-dos", "Central compuesto rotable de dos factores (5 centros)", list(tipo = "ccd", k = 2, alfa = "rotable"))
+caso_dis("ccd-ortogonal-tres", "Central compuesto ortogonal de tres factores", list(tipo = "ccd", k = 3, alfa = "ortogonal"))
+caso_dis("ccd-caras-cuatro", "Central compuesto de caras centradas, cuatro factores y 3 centros", list(tipo = "ccd", k = 4, alfa = "cara", centros = 3))
+caso_dis("ccd-bloques-tres", "Central compuesto en dos bloques ortogonales, tres factores", list(tipo = "ccd", k = 3, alfa = "bloques", centros = 6))
+caso_dis("ccd-media-fraccion-cinco", "Central compuesto rotable de cinco factores con la media fracción", list(tipo = "ccd", k = 5, alfa = "rotable"))
+caso_dis("ccd-seis", "Central compuesto ortogonal de seis factores (media fracción)", list(tipo = "ccd", k = 6, alfa = "ortogonal"))
+caso_dis("bbd-tres", "Box-Behnken de tres factores", list(tipo = "bbd", k = 3))
+caso_dis("bbd-cuatro", "Box-Behnken de cuatro factores con 4 centros", list(tipo = "bbd", k = 4, centros = 4))
+caso_dis("bbd-cinco", "Box-Behnken de cinco factores", list(tipo = "bbd", k = 5))
+caso_dis("factorial-tres-centros", "Factorial 2³ con 4 centros", list(tipo = "factorial", k = 3))
+caso_dis("latice-tres-dos", "Simplex-látice {3, 2} con un centroide", list(tipo = "latice", k = 3, grado = 2, centros = 1))
+caso_dis("latice-cuatro-tres", "Simplex-látice {4, 3}", list(tipo = "latice", k = 4, grado = 3))
+caso_dis("centroide-tres", "Simplex-centroide de tres componentes con el centroide tres veces", list(tipo = "centroide", k = 3, centros = 3))
+caso_dis("centroide-cuatro", "Simplex-centroide de cuatro componentes", list(tipo = "centroide", k = 4))
+
+# 11. mezclas: el alargamiento del hilo (Cornell 2002, simplex-látice {3, 2} con repeticiones)
+F_HILO <- "Cornell, J. A. (2002), Experiments with Mixtures (3.ª ed.), Wiley: alargamiento del hilo (polietileno, poliestireno y polipropileno)"
+hilo <- data.frame(polietileno = c(1, 1, 0.5, 0.5, 0.5, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5), poliestireno = c(0, 0, 0.5, 0.5, 0.5, 1, 1, 0.5, 0.5, 0.5, 0, 0, 0, 0, 0),
+                   polipropileno = c(0, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5, 1, 1, 0.5, 0.5, 0.5), alargamiento = c(11.0, 12.4, 15.0, 14.8, 16.1, 8.8, 10.0, 10.0, 9.7, 11.8, 16.8, 16.0, 17.7, 16.4, 16.6))
+caso_mz <- function(nombre, titulo, fuente, datos, y, comps, modelo, meta = "maximo", clase = "B") {
+  r <- ref_mezclas(datos, y, comps, modelo, meta)
+  sp_caso(nombre, objetivo = "mezclas", tipo = "metodo", titulo = titulo, fuente = fuente, clase = clase, datos = datos, entradas = list(respuesta = y, componentes = comps),
+    opciones = list(modelo = modelo, objetivo = meta), esperado = r, paquetes = "stats",
+    comparacion = list(tolerancias = list("optimo.mezcla[*]" = list(tol = 1e-5, motivo = "la mejor mezcla en la referencia sale de optim (BFGS) sobre cada cara; la app resuelve el sistema de Lagrange"))),
+    codigo = sprintf("lm(%s ~ 0 + términos de Scheffé %s sobre las proporciones); ANOVA contra la media; la mejor mezcla con optim en cada cara del simplex", y, modelo))
+}
+caso_mz("hilo-cuadratico", "Alargamiento del hilo: modelo cuadrático de Scheffé (tantos coeficientes como mezclas distintas) y la mezcla de mayor alargamiento", F_HILO, hilo, "alargamiento", c("polietileno", "poliestireno", "polipropileno"), "cuadratico")
+caso_mz("hilo-lineal", "Alargamiento del hilo: modelo lineal (la mejor mezcla es un componente puro)", F_HILO, hilo, "alargamiento", c("polietileno", "poliestireno", "polipropileno"), "lineal")
+caso_mz("hilo-minimo", "Alargamiento del hilo: la mezcla de menor alargamiento", F_HILO, hilo, "alargamiento", c("polietileno", "poliestireno", "polipropileno"), "cuadratico", meta = "minimo")
+set.seed(89)
+cen <- sr_diseno("centroide", 3)$codificado; cen <- rbind(cen, cen[c(1, 4, 7), ]); colnames(cen) <- c("arcilla", "arena", "limo")
+ycc <- 30 * cen[, 1] + 22 * cen[, 2] + 26 * cen[, 3] + 18 * cen[, 1] * cen[, 2] - 10 * cen[, 2] * cen[, 3] + 85 * cen[, 1] * cen[, 2] * cen[, 3] + rnorm(nrow(cen), 0, 0.8)
+sustrato <- data.frame(100 * cen, crecimiento = round(ycc, 2))
+caso_mz("sustrato-cubico-especial", "Sustrato en porcentaje (suma 100): cúbico especial de Scheffé con el simplex-centroide", F_SINT, sustrato, "crecimiento", c("arcilla", "arena", "limo"), "cubico-especial")
+set.seed(90)
+l4 <- sr_diseno("latice", 4, grado = 2, centros = 3)$codificado; colnames(l4) <- c("A", "B", "C", "D")
+y4m <- 5 * l4[, 1] + 7 * l4[, 2] + 6 * l4[, 3] + 4 * l4[, 4] - 6 * l4[, 1] * l4[, 2] + 4 * l4[, 3] * l4[, 4] - 3 * l4[, 2] * l4[, 3] + rnorm(nrow(l4), 0, 0.3)
+caso_mz("cuatro-componentes-minimo", "Cuatro componentes (simplex-látice {4, 2} con tres centroides): la mezcla de menor respuesta", F_SINT, data.frame(l4, y = round(y4m, 3)), "y", c("A", "B", "C", "D"), "cuadratico", meta = "minimo")
+
+# 12. deseabilidad: central compuesto rotable de dos factores con tres respuestas (máxima, mínima y un valor meta)
+set.seed(91)
+Zd <- ccd(2, sqrt(2), 5); Xd <- a_natural(Zd, c(180, 25), c(40, 5))
+y1 <- 80 + 6 * Zd[, 1] + 3 * Zd[, 2] - 4 * Zd[, 1]^2 - 2.5 * Zd[, 2]^2 + 1.5 * Zd[, 1] * Zd[, 2] + rnorm(13, 0, 0.6)
+y2 <- 12 + 1.5 * Zd[, 1] - 0.8 * Zd[, 2] + 0.9 * Zd[, 1]^2 + 0.6 * Zd[, 2]^2 + rnorm(13, 0, 0.2)
+y3 <- 6.5 + 0.4 * Zd[, 1] + 0.5 * Zd[, 2] - 0.2 * Zd[, 1]^2 + rnorm(13, 0, 0.08)
+fruto <- data.frame(N = Xd[, 1], riego = Xd[, 2], rendimiento = round(y1, 2), costo = round(y2, 2), ph = round(y3, 2))
+caso_ds <- function(nombre, titulo, respuestas, region = "cubo") {
+  r <- ref_deseabilidad(fruto, c("N", "riego"), respuestas, region)
+  g <- function(campo, defecto) vapply(respuestas, function(rs) if (is.null(rs[[campo]])) defecto else rs[[campo]], defecto)
+  op <- list(metas = vapply(respuestas, function(rs) rs$meta, ""), inferiores = g("L", 0), superiores = g("U", 0), objetivos = g("T", 0),
+             exponentes = g("s", 1), exponentes2 = g("t", 1), importancias = g("r", 1), region = region)
+  sp_caso(nombre, objetivo = "deseabilidad", tipo = "metodo", titulo = titulo, fuente = F_SINT, clase = "D", datos = fruto,
+    entradas = list(respuestas = vapply(respuestas, function(rs) rs$nombre, ""), factores = c("N", "riego")), opciones = op, esperado = r, paquetes = "stats",
+    comparacion = list(tolerancias = list("optimo.codificado[*]" = list(tol = 1e-4, motivo = "Nelder-Mead en la app y en R: la D llega a 1e-14, el punto a ~1e-7 (cerca del óptimo la D es plana)"),
+                                          "optimo.natural[*]" = list(tol = 1e-4, motivo = "el punto en unidades originales, como el codificado"),
+                                          "optimo.prediccion[*]" = list(tol = 1e-5, motivo = "las respuestas en el punto óptimo heredan su precisión"),
+                                          "optimo.d[*]" = list(tol = 1e-5, motivo = "las deseabilidades en el punto óptimo heredan su precisión"))),
+    codigo = "segundo orden por respuesta (ref_superficie); d de Derringer y Suich en fórmula cerrada; la mayor D con optim (Nelder-Mead) desde cada punto")
+}
+caso_ds("fruto-tres-respuestas", "Deseabilidad: máximo rendimiento, mínimo costo y pH meta de 6.5, en el cubo del diseño",
+  list(list(nombre = "rendimiento", meta = "max", L = 70, U = 86), list(nombre = "costo", meta = "min", L = 11, U = 15), list(nombre = "ph", meta = "valor", L = 6, U = 7, T = 6.5)))
+caso_ds("fruto-importancias-esfera", "Deseabilidad con exponentes, importancias y la región esférica",
+  list(list(nombre = "rendimiento", meta = "max", L = 72, U = 84, s = 2, r = 3), list(nombre = "costo", meta = "min", L = 11, U = 14.5, s = 0.5, r = 1),
+       list(nombre = "ph", meta = "valor", L = 6.1, U = 6.9, T = 6.5, s = 1, t = 2, r = 2)), region = "esfera")
