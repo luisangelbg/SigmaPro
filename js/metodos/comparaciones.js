@@ -190,7 +190,7 @@ SP.definir('comparaciones', function (SP) {
   }
   /** Dunnett: cada nivel contra el testigo, p de un solo paso (single-step) exactos. */
   function dunnett(M, spec, dentro, testigo, alternativa) {
-    exigir(M.tipo === 'lineal', T('Dunnett necesita un solo error; en parcelas divididas compara con Bonferroni u Holm.'));
+    exigir(M.tipo === 'lineal', T('Dunnett necesita un solo error; en parcelas divididas compara con Bonferroni u Holm, que ajustan todos los pares (contra el testigo resultan conservadoras).'));
     return grupos(M, spec, dentro).map(G => {
       const ic = G.filas.findIndex(f => f.nombre === testigo);
       exigir(ic >= 0, T('El testigo «{t}» no es un nivel de lo que se compara.', { t: testigo }));
@@ -201,7 +201,7 @@ SP.definir('comparaciones', function (SP) {
       const m = L.length, rho = [];
       for (let i = 0; i < m; i++) { rho.push([]); for (let j = 0; j < m; j++) rho[i].push(M.covarianza(L[i], L[j]) / (se[i] * se[j])); }
       const lam = lambdasProducto(rho);
-      exigir(lam, T('Con estas medias (parcelas perdidas o bloques incompletos) las comparaciones contra el testigo no tienen la correlación de forma producto que necesita el Dunnett exacto.'), T('Usa Bonferroni u Holm contra el testigo.'));
+      exigir(lam, T('Con estas medias (parcelas perdidas o bloques incompletos) las comparaciones contra el testigo no tienen la correlación de forma producto que necesita el Dunnett exacto.'), T('Usa Bonferroni u Holm: ajustan todos los pares, así que las comparaciones contra el testigo quedan protegidas de más (conservadoras).'));
       const comps = otros.map((i, k) => {
         const d = G.filas[i].est - G.filas[ic].est, t = d / se[k];
         let p;

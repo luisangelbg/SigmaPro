@@ -13,6 +13,8 @@
 <link rel="stylesheet" href="css/labg-base.css">
 <link rel="stylesheet" href="css/sigma.css">
 <link rel="stylesheet" href="css/intro.css">
+<link rel="stylesheet" href="css/labg-suggest.css">
+<link rel="stylesheet" href="css/fundamentos.css">
 </head>
 <body>
 <script src="js/intro.js"></script>
@@ -46,6 +48,8 @@
       <button type="button" class="step-btn" data-step="6"><span class="step-num">6</span>Figuras</button>
       <button type="button" class="step-btn" data-step="7"><span class="step-num">7</span>Exportar</button>
       <button type="button" class="step-btn" data-step="8"><span class="step-num">8</span>Validación</button>
+      <button type="button" class="step-btn" data-step="9"><span class="step-num">9</span>Fundamentos</button>
+      <button type="button" class="step-btn" data-step="10"><span class="step-num">10</span>Suite LABG</button>
     </nav>
   </div>
 </header>
@@ -95,6 +99,12 @@
     <ul class="hitos" id="hitos"></ul>
   </div>
 
+  <div class="card" id="iniAnalisisCard" style="margin-top:var(--sp-5)">
+    <h3>Qué puedes analizar</h3>
+    <p class="small muted" style="margin-top:0">Cada nombre abre su ficha en Fundamentos: qué hace, qué datos necesita y cómo leer sus resultados.</p>
+    <ul class="ini-analisis" id="iniAnalisis"></ul>
+  </div>
+
   <div class="card acerca" id="acerca" style="margin-top:var(--sp-5)">
     <h3>Acerca de SigmaPro</h3>
     <p class="small muted" style="margin-top:0">Luis Ángel Barrera-Guzmán · licencia GPL-3.0 · parte de la LABG Suite: del dato a la decisión.</p>
@@ -104,6 +114,8 @@
     </div>
     <label class="imp-check"><input type="checkbox" id="introActiva" checked> Mostrar la intro al abrir (la versión corta después de la primera vez)</label>
   </div>
+
+  <div id="suiteInicio"></div>
 </section>
 
 <!-- ======================= 2 · DATOS ======================= -->
@@ -160,6 +172,8 @@
     <h3>Lo que SigmaPro ve en tu ensayo</h3>
     <ul class="dat-hallazgos" id="datHallazgos"><li class="info"><span class="ico" aria-hidden="true">i</span><span>Cuando cargues datos, aquí aparecerá la estructura del ensayo: tratamientos, bloques completos o incompletos, balance, faltantes y si parece un cuadro latino.</span></li></ul>
   </div>
+
+  <div id="datSuite"></div>
 
 </section>
 
@@ -380,6 +394,18 @@
   </div>
 </section>
 
+<!-- ======================= 9 · FUNDAMENTOS ======================= -->
+<section class="step-panel" id="panel-9" aria-labelledby="t9">
+  <div class="panel-title"><div><h2 id="t9">Fundamentos</h2><p>Qué hace cada análisis, su modelo y sus supuestos, qué datos necesita y cómo leer sus resultados, con datos de ejemplo y plantillas para preparar los tuyos.</p></div></div>
+  <div id="funRaiz"></div>
+</section>
+
+<!-- ======================= 10 · SUITE LABG ======================= -->
+<section class="step-panel" id="panel-10" aria-labelledby="t10">
+  <div class="panel-title"><div><h2 id="t10">Suite LABG</h2><p>Las apps hermanas de SigmaPro: para planear el diseño, explorar muchas variables, reducir dimensiones o formar grupos. Todas abren en el navegador y tus datos no salen del equipo.</p></div></div>
+  <div id="suiteBloque"></div>
+</section>
+
 </main>
 
 <footer class="pie-app">
@@ -427,6 +453,7 @@
 <script src="js/nucleo/asistente.js"></script>
 <script src="js/nucleo/aplicable.js"></script>
 <script src="js/nucleo/guias.js"></script>
+<script src="js/nucleo/formulas.js"></script>
 <script src="js/nucleo/constructor.js"></script>
 <script src="js/nucleo/informe.js"></script>
 <script src="js/metodos/descriptiva.js"></script>
@@ -486,6 +513,12 @@
 <script src="js/interfaz/figuras.js"></script>
 <script src="js/interfaz/exportar.js"></script>
 <script src="js/interfaz/autoguardado.js"></script>
+<script src="data/suite.js"></script>
+<script src="data/suite-rules.js"></script>
+<script src="data/fundamentos/indice.js"></script>
+<script src="js/labg-suggest.js"></script>
+<script src="js/interfaz/fundamentos.js"></script>
+<script src="js/interfaz/suite.js"></script>
 <script src="js/labg-figedit.js" data-key="sigmapro:figedit" data-panes="figure.sp-grafica" data-title="figcaption"></script>
 <script src="js/labg-figure-studio.js" defer></script>
 <script src="js/labg-navigator.js" defer></script>

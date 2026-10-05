@@ -256,7 +256,7 @@ SP.definir('guias', function (SP) {
       [/^lin y binns pi$/]],
     ['asv', 'genetica', 'ASV', T('Valor de estabilidad AMMI'), T('Distancia del genotipo al origen en el plano de los dos primeros ejes AMMI, con los ejes ponderados por lo que explican: menor es más estable.'),
       [/^asv$/]],
-    ['waas', 'genetica', 'WAAS', T('Promedio ponderado de los puntajes absolutos'), T('Promedio de los puntajes absolutos del genotipo en todos los ejes AMMI, ponderado por lo que explica cada eje: menor es más estable; WAASY lo combina con el rendimiento.'),
+    ['waas', 'genetica', 'WAAS', T('Promedio ponderado de los puntajes absolutos'), T('Promedio de los puntajes absolutos del genotipo en los ejes AMMI significativos (o los que elijas), ponderado por lo que explica cada eje: menor es más estable; WAASY lo combina con el rendimiento.'),
       [/^waas$/, /^waasy$/]],
     ['annicchiarico', 'genetica', 'Wi', T('Índice de confiabilidad de Annicchiarico'), T('Rendimiento relativo (en % de la media de cada ambiente) que el genotipo supera con alta probabilidad: mayor que 100 indica superar la media de manera confiable.'),
       [/^wi( favorables| desfavorables)?$/]],

@@ -51,7 +51,9 @@ así que cada número del manual se puede repetir con un clic; el principal es �
 | 14 | `06-bloque6.html` | Bloque 6 · Figuras |
 | 15 | `07-bloque7.html` | Bloque 7 · Exportar, el proyecto .labg y el guardado automático |
 | 16 | `08-bloque8.html` | Bloque 8 · Validación |
-| 17 | `09-apendices.html` | apéndices: archivos, mensajes y cuando algo no sale, glosario, referencias, licencia y cita |
+| 17 | `09-bloque9.html` | Bloque 9 · Fundamentos: el catálogo y el mapa de métodos, la ficha de cada análisis, datos necesarios y plantillas, la revisión de las fichas |
+| 18 | `10-bloque10.html` | Bloque 10 · Suite LABG: las apps hermanas, las sugerencias dentro del trabajo, enviar los datos y citar |
+| 19 | `11-apendices.html` | apéndices: archivos, mensajes y cuando algo no sale, glosario, referencias, licencia y cita |
 
 El capítulo N explica el Bloque N (secciones, figuras y cuadros N.x); la introducción no lleva número (I.x). El
 capítulo 4 es largo y va en siete archivos, pero es un solo capítulo con secciones 4.1, 4.2…
@@ -69,6 +71,8 @@ capítulo 4 es largo y va en siete archivos, pero es un solo capítulo con secci
 | 6 Figuras | violeta `#66509a` | `--b6` |
 | 7 Exportar | naranja tostado `#b0601c` | `--b7` |
 | 8 Validación | pizarra `#4f5d78` | `--b8` |
+| 9 Fundamentos | verde pino `#3d6b4f` | `--b9` |
+| 10 Suite LABG | oro viejo `#8c6d1a` | `--b10` |
 | Apéndices | sepia `#3a352c` | `--bx` |
 
 ## Cómo se trabaja

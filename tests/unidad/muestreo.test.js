@@ -8,8 +8,11 @@ SPT.describir('Muestreo · núcleo', () => {
     SPT.cerca(p.n0, 384.1458820694124, 1e-9);
     SPT.igual(p.n_entero, 385);
     const pf = M.tamano({ tipo: 'proporcion', p: 0.5, error: 0.05, N: 1500, confianza: 0.95 });
-    SPT.cerca(pf.n, 384.1458820694124 / (1 + 384.1458820694124 / 1500), 1e-12);
+    /* para la proporción, la corrección por población finita es n₀/[1 + (n₀ − 1)/N] (Cochran, 1977, cap. 4) */
+    SPT.cerca(pf.n, 384.1458820694124 / (1 + 383.1458820694124 / 1500), 1e-12);
     SPT.igual(pf.n_entero, 306);
+    const mf = M.tamano({ tipo: 'media', de: 18, error: 4.5, N: 200, confianza: 0.95 });
+    SPT.cerca(mf.n, mf.n0 / (1 + mf.n0 / 200), 1e-12);
     /* con CV y error relativos da lo mismo que con S y e absolutos de la misma proporción */
     const a = M.tamano({ tipo: 'media', de: 18, error: 4.5, N: 0, confianza: 0.95 }), r = M.tamano({ tipo: 'media', relativo: true, cv: 20, error: 5, N: 0, confianza: 0.95 });
     SPT.cerca(a.n0, r.n0, 1e-12);
@@ -30,6 +33,10 @@ SPT.describir('Muestreo · núcleo', () => {
     const s = SP.muestreo.simple({ y, N: 40, confianza: 0.95 });
     SPT.cerca(e.media, s.media, 1e-14); SPT.cerca(e.ee, s.ee, 1e-14); SPT.cerca(e.gl, y.length - 1, 1e-12); SPT.cerca(e.ic[1], s.ic[1], 1e-12);
     const y2 = [4, 5, 6, 5, 9, 12, 10, 11, 20, 26, 23], h = [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2];
+    /* censo: todos los estratos completos → EE = 0, sin NaN en los gl ni en el intervalo */
+    const cs = SP.muestreo.estratificado({ y: [2, 4, 3, 7, 9], estrato: [0, 0, 0, 1, 1], niveles: ['a', 'b'], Nh: [3, 2], confianza: 0.95, nTotal: 0 });
+    SPT.igual(cs.ee, 0);
+    SPT.afirmar(cs.ic.every(Number.isFinite) && cs.ic[0] === cs.media && cs.ic[1] === cs.media, 'el intervalo de un censo es el punto');
     const r = SP.muestreo.estratificado({ y: y2, estrato: h, niveles: ['a', 'b', 'c'], Nh: [100, 60, 30], confianza: 0.9, nTotal: 50 });
     SPT.cerca(r.asignacion.proporcional.reduce((a, b) => a + b, 0), 50, 1e-12);
     SPT.cerca(r.asignacion.neyman.reduce((a, b) => a + b, 0), 50, 1e-12);

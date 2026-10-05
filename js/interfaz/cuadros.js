@@ -8,7 +8,8 @@
      SP.cuadros.tsv(cuadro, visibles)                → texto separado por tabuladores (para pegar en una hoja)
      SP.cuadros.csv(cuadro, visibles)                → CSV (RFC 4180) con los valores sin redondear, para otro programa
      SP.cuadros.bajarCSV(cuadro, visibles)           → lo baja como archivo .csv (UTF-8 con BOM, para que Excel lea los acentos)
-     SP.cuadros.formato(valor, formato, fila, paraCopiar) */
+     SP.cuadros.formato(valor, formato, fila, paraCopiar)
+     SP.cuadros.desplazables()                       → marca los cuadros y fórmulas que se desplazan a los lados */
 (function () {
   'use strict';
   const T = SP.T, esc = SP.ui.esc;
@@ -96,5 +97,28 @@
     }
   }
 
-  SP.cuadros = { html, tsv, csv, bajarCSV, nombreArchivo, formato, copiar, columnasVisibles };
+  /* Un cuadro o una fórmula más ancho que su espacio se desplaza a los lados: entonces recibe el foco con Tab, como
+     región con el título del cuadro, para recorrerlo con las flechas (WCAG 2.1.1). Solo mientras se desplaza: los
+     demás no agregan paradas. Se revisa cuando cambia la página (resultados, fichas, bloques) y el ancho. */
+  const DESPLAZABLES = '.tabla-wrap, .fun-modelo';
+  function desplazables() {
+    document.querySelectorAll(DESPLAZABLES).forEach(el => {
+      const ancho = el.offsetParent !== null && el.scrollWidth > el.clientWidth + 1;
+      if (ancho && !el.hasAttribute('tabindex')) {
+        const cap = el.querySelector('caption');
+        el.tabIndex = 0; el.setAttribute('role', 'region'); el.dataset.desplazable = '1';
+        el.setAttribute('aria-label', cap ? cap.textContent.trim() : el.classList.contains('fun-modelo') ? T('Fórmula del modelo (se desplaza a los lados)') : T('Cuadro (se desplaza a los lados)'));
+      } else if (!ancho && el.dataset.desplazable) {
+        el.removeAttribute('tabindex'); el.removeAttribute('role'); el.removeAttribute('aria-label'); delete el.dataset.desplazable;
+      }
+    });
+  }
+  let pendiente = 0;
+  const revisar = () => { if (!pendiente) pendiente = requestAnimationFrame(() => { pendiente = 0; desplazables(); }); };
+  if (typeof MutationObserver === 'function' && typeof document !== 'undefined' && document.documentElement) {
+    new MutationObserver(revisar).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'open', 'class'] });
+    addEventListener('resize', revisar);
+  }
+
+  SP.cuadros = { html, tsv, csv, bajarCSV, nombreArchivo, formato, copiar, columnasVisibles, desplazables };
 })();

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · Manual de usuario · Capítulo 10</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 78%; }
+  figure.media figcaption { margin-left: 11%; margin-right: 11%; }
+  figure.ancha .marco { width: 70%; }
+  figure.ancha figcaption { margin-left: 15%; margin-right: 15%; }
+  table.reglas td:first-child { white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b10" data-pestana="B10" data-orden="10" style="--acento: var(--b10)">
+  <div class="cap-apertura">
+    <div class="cap-num">10</div>
+    <div class="cap-etiqueta">Bloque 10 · Suite LABG</div>
+    <h1>Suite LABG: dónde sigue el trabajo</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">SigmaPro es parte de la LABG Suite, un conjunto de apps libres que corren en el navegador. Algunos trabajos empiezan o terminan fuera de SigmaPro: planear y sortear el diseño, explorar muchas variables a la vez, reducir dimensiones, formar grupos. Este capítulo explica el bloque Suite LABG, las sugerencias que aparecen dentro del trabajo y cómo llevar los datos de una app a otra.</p>
+    <ul class="cap-contenido">
+      <li><b>10.1</b>El bloque Suite LABG</li>
+      <li><b>10.2</b>Las sugerencias dentro del trabajo</li>
+      <li><b>10.3</b>Dónde aparece cada app</li>
+      <li><b>10.4</b>Enviar los datos a otra app</li>
+      <li><b>10.5</b>Ocultar una sugerencia</li>
+      <li><b>10.6</b>Cómo citar las apps</li>
+    </ul>
+  </div>
+
+  <!-- 10.1 -->
+  <h2 id="s10-1"><span class="num">10.1</span>El bloque Suite LABG</h2>
+  <p class="lead">El bloque presenta cuatro apps hermanas de SigmaPro, las que más a menudo continúan un análisis agronómico. El mismo recuadro, «Explora la suite LABG», aparece también al final del bloque Inicio.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b10-suite.png" alt="El bloque Suite LABG: el recuadro negro y dorado Explora la suite LABG con cuatro tarjetas en dos columnas (PCAPro 1.1.0, ClusteringPro 1.0.1, AgriDesign 1.0 y CorrelationPro, marcada como pendiente), cada una con su logo, su lema, sus funciones y los botones Abrir app, Manual y Citar; al pie, el isotipo LABG, «Del dato a la decisión.» y el enlace a las aplicaciones de la suite."></div>
+    <figcaption><b>Figura 10.1.</b> El bloque Suite LABG.</figcaption>
+  </figure>
+  <p>Cada tarjeta trae:</p>
+  <ul>
+    <li>El <b>logo oficial</b> de la app, que es también un enlace a ella, su nombre y su <b>versión</b> publicada.</li>
+    <li>Su <b>lema</b> y de cuatro a seis <b>funciones</b>, tomadas de la documentación publicada de cada app.</li>
+    <li><span class="ui">Abrir app</span> y <span class="ui">Manual</span>, que abren la app o su manual en una pestaña nueva del navegador.</li>
+    <li><span class="ui">Citar</span>, que despliega la cita en formato APA y en BibTeX, con botones para copiarla (sección 10.6).</li>
+  </ul>
+  <p>Al pie, <span class="ui">Ver las 15+ aplicaciones de la suite</span> abre el portal con todas las apps. Una app que todavía no tiene versión pública aparece con su marca provisional, sus datos marcados como <b>PENDIENTE</b> y el botón <span class="ui">Próximamente</span> en lugar de los enlaces; hoy es el caso de CorrelationPro.</p>
+  <div class="caja nota"><div class="caja-t"><span class="ico">i</span>Nota</div><p>Las apps de la suite se abren en tu navegador, sin instalar nada, y procesan los datos en tu equipo, como SigmaPro. Abrir una de ellas no le manda nada: SigmaPro no hace peticiones a internet.</p></div>
+
+  <!-- 10.2 -->
+  <h2 id="s10-2"><span class="num">10.2</span>Las sugerencias dentro del trabajo</h2>
+  <p class="lead">Fuera del bloque 10, las apps de la suite solo aparecen donde continúan lo que estás haciendo, en una franja discreta titulada <span class="ui">Continúa en la suite LABG</span>. Nunca en ventanas emergentes y nunca como publicidad.</p>
+  <figure class="ancha">
+    <div class="marco"><img src="../img/b10-sugerencia.png" alt="La franja Continúa en la suite LABG al pie del resultado de una regresión lineal con los datos de café: la tarjeta de CorrelationPro, marcada Próximamente, que explora y visualiza las relaciones entre muchas variables a la vez, y la de PCAPro, que con predictores muy correlacionados los resume en ejes independientes, con el botón Enviar datos a PCAPro; cada tarjeta con su botón para ocultarla."></div>
+    <figcaption><b>Figura 10.2.</b> Al pie de una regresión lineal con los datos del café: las dos apps que siguen ese trabajo.</figcaption>
+  </figure>
+  <p>Cada tarjeta lleva el logo de la app como enlace (se abre en una pestaña nueva), una frase que dice por qué conviene ahí, <span class="ui">Enviar datos a …</span> cuando la app ya está publicada (10.4) y un botón ✕ para ocultarla (10.5). Las franjas aparecen en tres lugares:</p>
+  <ul>
+    <li><b>Al pie del resultado</b> de un análisis, en el bloque Análisis, y en el apartado 9 de su ficha de Fundamentos.</li>
+    <li><b>Al pie de una familia</b> en el catálogo de Fundamentos, como <span class="ui">Herramientas relacionadas</span>.</li>
+    <li><b>En el bloque Datos</b>, cuando la tabla cargada tiene una estructura que otra app aprovecha: un diseño con tratamientos y bloques, muchas variables numéricas, coordenadas o fechas. La tarjeta dice qué vio en la tabla («La tabla tiene 8 variables numéricas»).</li>
+  </ul>
+
+  <!-- 10.3 -->
+  <h2 id="s10-3"><span class="num">10.3</span>Dónde aparece cada app</h2>
+  <p class="lead">Las reglas están escritas en un archivo de la app (<code>data/suite-rules.js</code>) y son las mismas para todos: no dependen de lo que hayas usado antes.</p>
+  <table class="compacta reglas">
+    <caption><b>Cuadro 10.1.</b> Qué app se sugiere y dónde.</caption>
+    <thead><tr><th style="width:1.15in">App</th><th>Al pie de estos análisis</th><th style="width:1.7in">En el bloque Datos, si la tabla…</th></tr></thead>
+    <tbody>
+      <tr><td><b>AgriDesign</b></td><td>Los diseños experimentales (completamente al azar, bloques, cuadro latino, parcelas divididas, subdivididas y en franjas, bloques incompletos, látice) y sus versiones mixtas: para sortear el diseño, el croquis y la hoja de campo. El número de repeticiones y la potencia del ANOVA: para planear el ensayo.</td><td>tiene tratamientos y bloques o repeticiones</td></tr>
+      <tr><td><b>CorrelationPro</b></td><td>Correlación de dos variables, matriz de correlación, correlación parcial, regresión lineal, selección paso a paso y mejores subconjuntos.</td><td>tiene 8 o más variables numéricas</td></tr>
+      <tr><td><b>PCAPro</b></td><td>Las mismas correlaciones y regresiones (en regresión, por la colinealidad), MANOVA, discriminante, AMMI y GGE.</td><td>tiene 8 o más variables numéricas</td></tr>
+      <tr><td><b>ClusteringPro</b></td><td>MANOVA, discriminante, ensayos multiambiente, estabilidad, AMMI y GGE: para clasificar genotipos, sitios o individuos en grupos.</td><td>tiene 8 o más variables numéricas</td></tr>
+      <tr><td><b>BioModellingPro</b></td><td>—</td><td>tiene columnas de latitud y longitud</td></tr>
+      <tr><td><b>PhenologyPro</b></td><td>—</td><td>tiene fechas</td></tr>
+    </tbody>
+  </table>
+  <p>En el catálogo de Fundamentos, la franja <span class="ui">Herramientas relacionadas</span> sigue la misma lógica por familia: AgriDesign al pie de los diseños, las comparaciones de medias y la potencia; CorrelationPro y PCAPro al pie de la correlación y la regresión; PCAPro y ClusteringPro al pie del multivariado y de los ensayos multiambiente. Un análisis sin app relacionada lo dice en el apartado 9 de su ficha y remite a este bloque.</p>
+
+  <!-- 10.4 -->
+  <h2 id="s10-4"><span class="num">10.4</span>Enviar los datos a otra app</h2>
+  <p class="lead"><span class="ui">Enviar datos a …</span> no envía nada por internet: guarda la tabla del bloque Datos como un archivo CSV en tu equipo y abre la otra app en una pestaña nueva.</p>
+  <ol>
+    <li>Con la tabla cargada, pulsa <span class="ui">Enviar datos a PCAPro</span> (o a la app que corresponda).</li>
+    <li>El navegador descarga <code>sigmapro-para-pcapro.csv</code> y abre PCAPro; un aviso recuerda el nombre del archivo.</li>
+    <li>En la otra app, abre ese archivo desde su bloque de datos.</li>
+  </ol>
+  <p>El archivo lleva la tabla que SigmaPro está usando (con el filtro activo, si hay uno): los números con todas sus cifras, cada factor con el nombre de su nivel y los faltantes como celdas vacías, en UTF-8 para que los acentos lleguen bien. Para las apps que trabajan con variables numéricas, como PCAPro, el archivo lleva una columna de etiquetas (la primera que no es numérica) y todas las numéricas. Si no hay datos cargados, el botón lo dice y no descarga nada.</p>
+
+  <!-- 10.5 -->
+  <h2 id="s10-5"><span class="num">10.5</span>Ocultar una sugerencia</h2>
+  <p class="lead">El botón ✕ de una tarjeta la oculta en ese lugar (por ejemplo, PCAPro al pie de la regresión) y SigmaPro lo recuerda en este navegador. La misma app sigue apareciendo en los demás lugares.</p>
+  <p>Para que vuelvan todas, el bloque Suite LABG tiene, debajo de las tarjetas, <span class="ui">Volver a mostrar las sugerencias que ocultaste</span>. Si se ocultan todas las tarjetas de una franja, la franja desaparece completa.</p>
+
+  <!-- 10.6 -->
+  <h2 id="s10-6"><span class="num">10.6</span>Cómo citar las apps</h2>
+  <p class="lead">Si usaste otra app de la suite en tu trabajo, cítala como se cita SigmaPro: con su versión y su DOI.</p>
+  <p><span class="ui">Citar</span> despliega la cita de la app en formato APA y en BibTeX, armada con su versión, su año y su DOI publicados; <span class="ui">Copiar APA</span> y <span class="ui">Copiar BibTeX</span> la copian al portapapeles. Una app sin DOI se cita con su dirección. Por ejemplo, para PCAPro:</p>
+  <div class="caja ejemplo"><div class="caja-t"><span class="ico">✎</span>Ejemplo</div><p>Barrera-Guzmán, L. Á. (2026). PCAPro: an offline, browser-based platform for guided principal component analysis (Versión 1.1.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.22649709</p></div>
+  <p>Las citas salen de los datos publicados de cada app (su archivo de cita y sus metadatos), así que cambian con cada versión. La de SigmaPro está en el bloque Inicio y en el apéndice E.</p>
+</section>
+
+</body>
+</html>

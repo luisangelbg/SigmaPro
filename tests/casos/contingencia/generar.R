@@ -192,6 +192,12 @@ set.seed(103)
 sev <- matrix(c(30, 5, 1, 0, 6, 22, 4, 1, 1, 5, 18, 3, 0, 1, 4, 11), 4, byrow = TRUE, dimnames = list(paste0(0:3), paste0(0:3)))
 caso_kappa("severidad", "4 grados de severidad", "Datos sintéticos", sev, "cuadratica")
 caso_kappa("dos-categorias", "2 × 2", F_APPROVAL, approval, "lineal")
+# el evaluador 1 no usó una categoría: la escala sigue siendo 0 < 1 < 2 < 3 (R recibe la tabla completa, con la fila en cero)
+sev0 <- matrix(c(30, 5, 1, 0, 0, 0, 0, 0, 1, 5, 18, 3, 0, 1, 4, 11), 4, byrow = TRUE, dimnames = list(paste0(0:3), paste0(0:3)))
+sp_caso("severidad-sin-categoria", objetivo = "cont.kappaDe", titulo = "El evaluador 1 no usó una categoría (ponderada cuadrática)", fuente = "Datos sintéticos",
+  datos = droplevels(subset(a_datos(sev0, c("evaluador1", "evaluador2")), n > 0)),
+  argumentos = list(list(tabla = TRUE), list(evaluador1 = "evaluador1", evaluador2 = "evaluador2", frecuencia = "n"), list(ponderacion = "cuadratica", nivel = 0.95)),
+  esperado = ref_kappa(sev0, 2), paquetes = c("stats", "psych"), codigo = "psych::cohen.kappa(tabla con la fila en cero, w.exp = 2)")
 
 # los métodos completos
 sp_caso("metodo-tabla-gemelos", objetivo = "tabla-contingencia", tipo = "metodo", titulo = "Tabla 2 × 2 con Fisher y medidas", fuente = F_CONV, datos = a_datos(conv, c("gemelos", "condena")),

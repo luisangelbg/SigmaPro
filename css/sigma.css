@@ -313,6 +313,8 @@ table.imp-tabla thead th { vertical-align: top; position: sticky; top: 0; backgr
 .exp-casillas { border: 0; padding: 0; margin: 0; min-width: 0; display: flex; flex-wrap: wrap; gap: 4px 12px; }
 .exp-casillas legend { font-weight: 600; font-size: var(--fs-sm); padding: 0; margin-bottom: 6px; width: 100%; }
 .exp-casillas .imp-check { min-height: 28px; }
+#acerca .imp-check { min-height: 28px; }
+#acerca .imp-check input { margin: 4px; }
 .exp-casillas .field-help, .exp-casillas p { width: 100%; margin: 2px 0 0; }
 .exp-resultado { min-width: 0; }
 .exp-resultado:empty { display: none; }
@@ -637,3 +639,11 @@ button.cons-chip:focus-visible { outline: 2px solid var(--primary); outline-offs
 .cat-tarjeta.activo .cat-ilus { background: var(--card-bg); }
 .cat-tarjeta.e-falta .cat-ilus { opacity: .6; }
 .cat-rec-btn .cat-ilus { width: 72px; height: 45px; background: var(--btn-oro-suave); }
+
+/* enlace a la ficha de Fundamentos en cada tarjeta del catálogo */
+.cat-tarjeta { position: relative; }
+.cat-fund { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; text-decoration: none;
+  color: var(--text-muted); background: var(--card-bg); border: 1px solid var(--border); font-size: 14px; line-height: 1; }
+.cat-fund:hover { color: var(--btn-oro-texto); border-color: var(--btn-oro-texto); }
+.cat-fund:focus-visible { outline: 2px solid var(--btn-oro-texto); outline-offset: 2px; }
+.exp-ficha { margin-left: auto; }

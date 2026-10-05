@@ -463,9 +463,17 @@ SP.definir('contingencia', function (SP) {
   function analizarMcnemar(tabla, e, op) {
     op = Object.assign({ correccion: true, alfa: 0.05 }, op || {});
     const fa = SP.estructura.comoFactor(tabla, e.antes), fd = SP.estructura.comoFactor(tabla, e.despues);
-    /* las mismas categorías en los dos: unión en el orden del primero */
+    /* las mismas categorías en los dos y en el orden de la escala: la kappa ponderada depende de él. Una categoría que
+       solo usó el segundo evaluador entra después de la que la precede en su orden (antes iba al final y los pesos
+       quedaban mal); si todas son números, en orden numérico. */
     const niv = fa.niveles.slice();
-    for (const l of fd.niveles) if (!niv.includes(l)) niv.push(l);
+    fd.niveles.forEach((l, j) => {
+      if (niv.includes(l)) return;
+      let pos = -1;
+      for (let q = j - 1; q >= 0 && pos < 0; q--) pos = niv.indexOf(fd.niveles[q]);
+      niv.splice(pos + 1, 0, l);
+    });
+    if (niv.every(l => String(l).trim() !== '' && Number.isFinite(+l))) niv.sort((a, b) => +a - +b);
     const k = niv.length, x = Array.from({ length: k }, () => new Array(k).fill(0)), w = e.frecuencia ? tabla.col(e.frecuencia).valores : null;
     const ma = fa.niveles.map(l => niv.indexOf(l)), md = fd.niveles.map(l => niv.indexOf(l));
     let omitidas = 0;

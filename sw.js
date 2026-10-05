@@ -15,7 +15,7 @@
      copia guardada (y, con red, se guarda esa copia para la próxima vez sin conexión).
    · Solo maneja peticiones GET (y HEAD del motor) del mismo origen: nunca guarda ni envía datos de quien usa la app. */
 'use strict';
-const VERSION = '0.4.3-2026-10-04';
+const VERSION = '0.5.0-2026-10-05';
 const CACHE = 'sigmapro-' + VERSION;
 const MOTOR = 'sigmapro-motor-r-0.6.0';
 const EXTRAS = ['./', './index.html', './css/labg-figure-studio.css', './css/labg-navigator.css', './manifest.webmanifest'];
@@ -25,7 +25,11 @@ self.addEventListener('install', e => {
     const cache = await caches.open(CACHE);
     const html = await (await fetch('./index.html', { cache: 'no-store' })).text();
     const nombrados = [...html.matchAll(/(?:src|href)="([^"#:?]+\.(?:js|css|webmanifest|png|svg))"/g)].map(m => './' + m[1].replace(/^\.\//, ''));
-    const lista = [...new Set(EXTRAS.concat(nombrados))];
+    /* las fichas de Fundamentos (se cargan al abrirlas) y los logos de la suite, para que también funcionen sin red */
+    const extra = [];
+    try { const t = await (await fetch('./data/fundamentos/indice.js', { cache: 'no-store' })).text(); for (const m of t.matchAll(/^ "([a-z0-9-]+)": \{/gm)) extra.push('./data/fundamentos/' + m[1] + '.js'); } catch (e) { /* sin índice */ }
+    try { const t = await (await fetch('./data/suite.js', { cache: 'no-store' })).text(); for (const m of t.matchAll(/"logo": "([^"]+)"/g)) extra.push('./' + m[1]); } catch (e) { /* sin suite */ }
+    const lista = [...new Set(EXTRAS.concat(nombrados, extra))];
     /* uno por uno: un archivo que falte no impide guardar los demás */
     await Promise.all(lista.map(u => fetch(u, { cache: 'no-store' }).then(r => (r.ok ? cache.put(u, r) : null)).catch(() => null)));
     await self.skipWaiting();

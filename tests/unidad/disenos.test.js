@@ -130,5 +130,10 @@ SPT.describir('Diseños experimentales · reportes, avisos y anidamiento', () =>
     SPT.cerca(ef.relativa, 1, 1e-12);
     const lat = SP.disenos.eficienciaLatino(3, 3, 3, 5);
     for (const x of lat) SPT.cerca(x.relativa, 1, 1e-12);
+    /* filas muy distintas y columnas sin efecto: con las filas como bloques no se gana nada; con las columnas como bloques, sí */
+    const fil = SP.disenos.eficienciaLatino(30, 3, 3, 5);
+    SPT.igual(fil[1].contra, 'dbca-filas');
+    SPT.cerca(fil[1].relativa, 1, 1e-12);
+    SPT.afirmar(fil[2].contra === 'dbca-columnas' && fil[2].relativa > 2, 'con las columnas como bloques, las filas pasan al error');
   });
 });

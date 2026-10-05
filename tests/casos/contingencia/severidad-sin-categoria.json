@@ -1,0 +1,70 @@
+{
+  "esquema": 1,
+  "id": "cont.kappaDe/severidad-sin-categoria",
+  "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.kappaDe"
+  },
+  "titulo": "El evaluador 1 no usó una categoría (ponderada cuadrática)",
+  "fuente": "Datos sintéticos",
+  "clase": "A",
+  "datos": {
+    "columnas": {
+      "evaluador1": ["0", "2", "0", "2", "3", "0", "2", "3", "2", "3"],
+      "evaluador2": ["0", "0", "1", "1", "1", "2", "2", "2", "3", "3"],
+      "n": [30, 1, 5, 5, 1, 1, 18, 4, 3, 11]
+    },
+    "tipos": {
+      "evaluador1": {
+        "tipo": "factor",
+        "niveles": ["0", "2", "3"]
+      },
+      "evaluador2": {
+        "tipo": "factor",
+        "niveles": ["0", "1", "2", "3"]
+      },
+      "n": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "argumentos": [
+    {
+      "tabla": true
+    },
+    {
+      "evaluador1": "evaluador1",
+      "evaluador2": "evaluador2",
+      "frecuencia": "n"
+    },
+    {
+      "ponderacion": "cuadratica",
+      "nivel": 0.94999999999999996
+    }
+  ],
+  "esperado": {
+    "simple": {
+      "estimado": 0.63084112149532712,
+      "ee": 0.065210762016682369,
+      "ic": [0.50303037653821714, 0.7586518664524371],
+      "z": 8.9477347759411803,
+      "p": 3.6285161570537695e-19
+    },
+    "ponderada": {
+      "estimado": 0.87131382351289111,
+      "ee": 0.034968341493675156,
+      "ic": [0.80277713358619029, 0.93985051343959192],
+      "z": 7.7664198911740119,
+      "p": 8.0735601350759667e-15
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "psych": "2.4.12"
+    },
+    "codigo": "psych::cohen.kappa(tabla con la fila en cero, w.exp = 2)"
+  }
+}

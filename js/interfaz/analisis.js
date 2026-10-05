@@ -52,7 +52,7 @@
     ml: { respuesta: '', derecha: '', comoFactor: [], tipoSC: 3, alfa: 0.05, nivel: 0.95, _iniciado: false },
     mx: { respuesta: '', derecha: '', comoFactor: [], tipoSC: 3, gl: 'satterthwaite', estimacion: 'reml', compararMx: null, dentro: '', ajuste: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
     mxd: { respuesta: '', tratamientos: [], bloque: '', parcelaGrande: '', subparcela: '', subsubparcela: '', repeticion: '', tratamiento: '', genotipo: '', localidad: '',
-      repeticionAleatoria: false, localidadFija: false, compararMx: null, ajuste: 'tukey', gl: 'satterthwaite', estimacion: 'reml', alfa: 0.05, nivel: 0.95, _iniciado: false },
+      repeticionAleatoria: false, localidadFija: false, compararMx: null, dentro: '', ajuste: 'tukey', gl: 'satterthwaite', estimacion: 'reml', alfa: 0.05, nivel: 0.95, _iniciado: false },
     rep: { respuesta: '', tiempo: '', sujeto: '', tratamientos: [], bloque: '', estructura: 'auto', criterio: 'aic', compararMx: null, dentro: '', ajuste: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
     nl: { respuesta: '', x: '', grupo: '', pesos: '', modelo: '', nivel: 0.95, alfa: 0.05, intervalo: 'wald', precioProducto: '', precioInsumo: '', ejeLog: false, metodo: '', _iniciado: false },
     srf: { respuesta: '', factores: [], bloque: '', orden: 'segundo', objetivo: 'maximo', nivel: 0.95, alfa: 0.05, codificacion: 'auto', bajos: {}, altos: {}, _iniciado: false },
@@ -603,7 +603,7 @@
       const r = pedido(), f = SP.metodos[m];
       if (r && f) { f.validar(c.t, r.e, SP.opcionesCon(f, r.op)); } if (r && f) h += '<p class="small"><b>' + esc(T('Modelo:')) + '</b> <code>' + esc(q(s.respuesta) + ' ~ ' + SP.mixtos.opcionesDiseno(m, c.t, r.e, SP.opcionesCon(f, r.op)).derecha) + '</code></p>';
     } catch (err) { /* papeles incompletos */ }
-    h += formCompararMx('mxd', s, trats, false);
+    h += formCompararMx('mxd', s, trats, true);
     h += campo('mxd', 'gl', T('Grados de libertad de las pruebas'), [['satterthwaite', 'Satterthwaite'], ['kenward-roger', T('Kenward-Roger (más exacto con pocos grupos; tarda más)')]], s.gl);
     h += campo('mxd', 'estimacion', T('Estimación'), [['reml', T('REML (componentes de varianza sin sesgo)')], ['ml', T('Máxima verosimilitud')]], s.estimacion);
     h += '<p class="small muted">' + esc(T('Corre en el motor R dentro de tu navegador (lme4, lmerTest y emmeans).')) + '</p>';
@@ -1327,7 +1327,7 @@
       else if (m === 'mixto-latice') Object.assign(e, { tratamiento: s.tratamiento, repeticion: s.repeticion, bloque: s.bloque });
       else Object.assign(e, { genotipo: s.genotipo, localidad: s.localidad, repeticion: s.repeticion });
       return { e, op: Object.assign({ gl: s.gl, reml: s.estimacion !== 'ml', ajuste: s.ajuste, alfa: +s.alfa, nivel: +s.nivel },
-        s.compararMx ? { comparar: s.compararMx.slice() } : {}, m === 'mixto-latice' ? { repeticionAleatoria: !!s.repeticionAleatoria } : {}, m === 'mixto-localidades' ? { localidadFija: !!s.localidadFija } : {}) };
+        s.compararMx ? { comparar: s.compararMx.slice() } : {}, s.dentro ? { dentro: s.dentro } : {}, m === 'mixto-latice' ? { repeticionAleatoria: !!s.repeticionAleatoria } : {}, m === 'mixto-localidades' ? { localidadFija: !!s.localidadFija } : {}) };
     }
     if (CORREL.includes(m)) {
       const s = estado.cor;
@@ -1407,6 +1407,8 @@
     const ya = SP.app.reporte && SP.app.reporte.tiene(pedidoActual());
     return `<button type="button" class="btn ${ya ? 'btn-ghost' : 'btn-secondary'} btn-sm exp-reporte" data-accion="reporte"${ya ? ' aria-pressed="true"' : ''}>${esc(ya ? T('En el reporte ✓') : T('Agregar al reporte'))}</button>`;
   };
+  /* la ficha de Fundamentos del análisis (bloque 9) */
+  const botonFicha = () => (estado.metodo && SP.app.fundamentos ? `<button type="button" class="btn btn-ghost btn-sm exp-ficha" data-ficha="${esc(estado.metodo)}" title="${esc(T('Fundamentos: el modelo, los supuestos y los datos que necesita'))}"><span aria-hidden="true">ⓘ</span> ${esc(T('¿Qué es este análisis?'))}</button>` : '');
   const copiarHTML = i => `<div class="btn-row exp-acciones"><button type="button" class="btn btn-secondary btn-sm" data-accion="copiar" data-cuadro="${i}">${esc(T('Copiar cuadro'))}</button>` +
     `<button type="button" class="btn btn-ghost btn-sm" data-accion="csv" data-cuadro="${i}">${esc(T('Bajar en CSV'))}</button></div>`;
 
@@ -1441,7 +1443,7 @@
   function pintarSupuestos(r, rep, codigo, ms) {
     const rec = rep.recomendaciones;
     $('#anaResultado').innerHTML =
-      `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('modelo {m} · n = {n} · calculado en {ms} ms', { m: r.formula, n: r.n, ms: Math.max(1, Math.round(ms)) }))}</span>${botonReporte()}</div>` +
+      `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('modelo {m} · n = {n} · calculado en {ms} ms', { m: r.formula, n: r.n, ms: Math.max(1, Math.round(ms)) }))}</span>${botonFicha()}${botonReporte()}</div>` +
       semaforoHTML(rep.semaforo, r.global, ({ verde: T('Los supuestos se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[r.global]), T('Semáforo de los supuestos')) +
       (rec.length ? `<div class="callout exp-conclusion"><p><b>${esc(T('Qué hacer'))}</b></p><ul class="ana-rec">${rec.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '') +
       (r.excluidas ? `<p class="small muted">${esc(T('{k} filas con algún valor faltante en el modelo no entran.', { k: r.excluidas }))}</p>` : '') +
@@ -2088,14 +2090,15 @@
     const sem = rep.semaforo;
     const global = sem && sem.length ? sem.map(s => s.color).reduce((a, b) => (PEOR[b] > PEOR[a] ? b : a), 'verde') : null;
     $('#anaResultado').innerHTML =
-      `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span>${botonReporte()}</div>` +
+      `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span>${botonFicha()}${botonReporte()}</div>` +
       `<div class="callout exp-conclusion">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` +
       (global ? semaforoHTML(sem, global, ({ verde: T('Los supuestos de la prueba se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[global]), T('Semáforo de los supuestos')) : '') +
       graficasHTML(graficaMetodo(r)) +
       (r.diseno && !r.tipo && r.factores && r.factores.length ? `<div class="btn-row exp-acciones"><button type="button" class="btn btn-primary btn-sm" data-accion="comparar">${esc(T('Comparar las medias de este diseño'))}</button></div>` : '') +
       botonesModelo(r) +
       rep.cuadros.map((q, i) => SP.cuadros.html(q, { numero: i + 1 }) + copiarHTML(i)).join('') +
-      codigoHTML(codigo);
+      codigoHTML(codigo) +
+      (SP.app.suite ? SP.app.suite.franjaMetodo(estado.metodo) : '');
   }
   /** Tras la selección, botones que llevan el modelo elegido a la regresión lineal con todo su diagnóstico. */
   function botonesModelo(r) {
@@ -2246,11 +2249,15 @@
     } else if (CONTING.includes(m)) {
       pon(estado.cont, { frecuencia: e.frecuencia || '', fila: e.fila, columna: e.columna, estrato: e.estrato, antes: e.antes, despues: e.despues, evaluador1: e.evaluador1, evaluador2: e.evaluador2, ponderacion: op.ponderacion });
     } else if (m === 'prueba-t' || m === 'wilcoxon') {
-      pon(estado.dos, { modo: e.modo, respuesta: e.respuesta, grupo: e.grupo, variable: e.variable, antes: e.antes, despues: e.despues, varIguales: op.varIguales });
+      /* los dos grupos elegidos y las opciones de la prueba también vuelven (al reabrir desde el Reporte o una ficha) */
+      const niv = [].concat(e.niveles || []);
+      pon(estado.dos, { modo: e.modo, respuesta: e.respuesta, grupo: e.grupo, variable: e.variable, antes: e.antes, despues: e.despues, varIguales: op.varIguales,
+        nivelA: niv[0], nivelB: niv[1], mu: op.mu, alternativa: op.alternativa, nivel: op.nivel, exacta: op.exacta, correccion: op.correccion, alfa: op.alfa });
     } else if (m === 'kruskal-wallis' || m === 'friedman') {
-      pon(estado.rangos, { respuesta: e.respuesta, tratamiento: e.tratamiento, bloque: e.bloque || '' });
+      const ph = m === 'friedman' ? { posthocF: op.posthoc } : { posthocKW: op.posthoc };
+      pon(estado.rangos, Object.assign(ph, { respuesta: e.respuesta, tratamiento: e.tratamiento, bloque: e.bloque || '', ajuste: op.posthoc === 'nemenyi' ? undefined : op.ajuste, alfa: op.alfa }));
     } else if (m === 'supuestos') {
-      pon(estado.sup, { respuesta: e.respuesta, tratamientos: [].concat(e.tratamientos || []), bloque: e.bloque || '', orden: '' });
+      pon(estado.sup, { respuesta: e.respuesta, tratamientos: [].concat(e.tratamientos || []), bloque: e.bloque || '', orden: e.orden || '', alfa: op.alfa });
     } else if (m === 'modelo-lineal') {
       pon(estado.ml, { respuesta: e.respuesta, derecha: op.derecha, comoFactor: op.comoFactor || [], tipoSC: op.tipoSC });
     } else if (m === 'modelo-mixto') {
@@ -2311,7 +2318,7 @@
           : { respuesta: e.respuesta, individuo: e.individuo, fijosRep: [].concat(e.fijos || []) });
     } else if (MIXTOS_DIS.includes(m)) {
       pon(estado.mxd, Object.assign({}, e, { tratamientos: e.tratamientos ? [].concat(e.tratamientos) : undefined, subsubparcela: e.subsubparcela || '', bloque: e.bloque || '',
-        gl: op.gl, estimacion: op.reml === false ? 'ml' : op.reml === undefined ? undefined : 'reml', ajuste: op.ajuste, repeticionAleatoria: op.repeticionAleatoria, localidadFija: op.localidadFija }));
+        gl: op.gl, estimacion: op.reml === false ? 'ml' : op.reml === undefined ? undefined : 'reml', ajuste: op.ajuste, dentro: op.dentro || '', repeticionAleatoria: op.repeticionAleatoria, localidadFija: op.localidadFija }));
       estado.mxd.compararMx = op.comparar ? [].concat(op.comparar) : null;
     }
     /* las opciones que se llaman igual en el pedido y en el formulario (niveles, valores para predecir, pruebas exactas…):

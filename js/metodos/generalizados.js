@@ -341,7 +341,7 @@ SP.definir('generalizados', function (SP) {
         .concat(r.familia === 'binomial-negativa' ? [T('Con la θ del modelo completo en todos los submodelos.')] : []).concat(r.avisos) });
     const c = r.coeficientes, conR = !!r.razones, nomR = r.enlace === 'logit' ? T('Razón de momios') : ['gamma', 'inversa-gaussiana'].includes(r.familia) ? T('Razón de medias') : T('Razón de tasas');
     const perfil = r.intervalo === 'perfil', ics = T('IC {c} %', { c: Math.round(100 * r.nivel) });
-    const tipoIC = r.firth ? T('el perfil de la verosimilitud penalizada') : perfil ? T('el perfil de la verosimilitud') : T('Wald');
+    const tipoIC = r.firth ? T('del perfil de la verosimilitud penalizada') : perfil ? T('del perfil de la verosimilitud') : T('de Wald');
     cuadros.push({ id: 'coeficientes', titulo: T('Coeficientes (escala del enlace {e})', { e: enl }),
       columnas: [col('nombre', T('Término'), 'texto'), col('b', T('Estimado'), 'sig'), col('ee', T('EE'), 'sig'), col('z', r.prueba === 'chi2pl' ? 'χ²' : r.prueba === 'chi2' ? 'z' : 't', 'forma2'), col('p', 'p', 'pvalor')]
         .concat(conR ? [col('razon', nomR, 'sig'), col('ic', ics, 'intervaloSig')] : perfil ? [col('ic', ics, 'intervaloSig')] : []),
@@ -349,7 +349,7 @@ SP.definir('generalizados', function (SP) {
         razon: conR ? r.razones.razon[j] : NaN, ic: conR ? [r.razones.ic_inf[j], r.razones.ic_sup[j]] : perfil ? [c.ic_inf[j], c.ic_sup[j]] : null })),
       notas: [T('Contrastes de tratamiento: cada coeficiente compara su nivel con el primero.')]
         .concat(r.firth ? [T('Firth: EE de la información en el estimado penalizado; χ² y p de la razón de verosimilitudes penalizadas con el coeficiente fijo en 0.')] : [])
-        .concat(conR ? [T('{n}: exp(coeficiente), con el intervalo de {t}.', { n: nomR, t: tipoIC })] : perfil ? [T('Intervalo de {t}, en la escala del enlace.', { t: tipoIC })] : []) });
+        .concat(conR ? [T('{n}: exp(coeficiente), con el intervalo {t}.', { n: nomR, t: tipoIC })] : perfil ? [T('Intervalo {t}, en la escala del enlace.', { t: tipoIC })] : []) });
     for (const m of r.medias) {
       cuadros.push({ id: 'medias-' + m.factor, titulo: T('{e} estimada de cada nivel de «{f}»', { e: NOMBRE_ESCALA[m.escala], f: m.factor }) + (m.dentro ? T(' dentro de cada nivel de «{d}»', { d: m.dentro }) : ''),
         columnas: (m.dentro ? [col('por', m.dentro, 'texto')] : []).concat([col('nivel', m.factor, 'texto'), col('v', NOMBRE_ESCALA[m.escala], 'sig'), col('ee', T('EE'), 'sig'),

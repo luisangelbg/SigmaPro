@@ -73,14 +73,14 @@ window.SP_COMPROBACIONES = {
  "sin-conexion": {
   "titulo": "Privacidad y uso sin conexión",
   "ok": true,
-  "resumen": "Con datos, 7 análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, 310 peticiones GET sin datos, todas a la propia app; con doble clic, fuera del equipo solo se pide el código del motor R para el modelo mixto (43 descargas de webR y sus paquetes); servida por http con su repositorio propio, ni eso: el motor sale del mismo origen, todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo y el modelo mixto en el motor R guardado, exporta y verifica las huellas del proyecto.",
+  "resumen": "Con datos, 7 análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, 422 peticiones GET sin datos, todas a la propia app; con doble clic, fuera del equipo solo se pide el código del motor R para el modelo mixto (43 descargas de webR y sus paquetes); servida por http con su repositorio propio, ni eso: el motor sale del mismo origen, todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo y el modelo mixto en el motor R guardado, exporta y verifica las huellas del proyecto.",
   "renglones": [
-   "Doble clic: 186 peticiones; fuera del equipo, solo 43 descargas del motor R (webR y paquetes).",
-   "Servida por http: 310 peticiones GET a 156 archivos de la app, sin parámetros ni cuerpo.",
-   "Servicio sin conexión activo con 155 archivos guardados.",
+   "Doble clic: 199 peticiones; fuera del equipo, solo 43 descargas del motor R (webR y paquetes).",
+   "Servida por http: 422 peticiones GET a 249 archivos de la app, sin parámetros ni cuerpo.",
+   "Servicio sin conexión activo con 248 archivos guardados.",
    "Sin red: 7 análisis, reporte, 6 exportaciones y huellas del proyecto verificadas."
   ],
-  "fecha": "2026-10-05T05:20:15.292Z",
+  "fecha": "2026-10-05T13:53:13.366Z",
   "motor": "node v24.19.0"
  },
  "exportar": {
@@ -90,44 +90,60 @@ window.SP_COMPROBACIONES = {
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-10-05T05:19:13.651Z",
+  "fecha": "2026-10-05T06:43:38.215Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {
   "titulo": "El código R equivalente",
   "ok": true,
   "resumen": "99 escenarios de 65 métodos: el código R que muestra la app corre en R y da 1,626 números iguales a los de la app (tolerancia 1e-6)",
-  "fecha": "2026-10-05T05:06:55.851Z",
+  "fecha": "2026-10-05T06:33:06.170Z",
   "motor": "node v24.19.0"
  },
  "accesibilidad": {
   "titulo": "Accesibilidad (AA)",
   "ok": true,
-  "resumen": "204 revisiones de 102 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 125,498 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 550 paradas en los 8 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
+  "resumen": "216 revisiones de 108 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 167,490 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 1229 paradas en los 10 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
   "renglones": [],
-  "fecha": "2026-10-05T05:43:21.743Z",
+  "fecha": "2026-10-05T19:12:18.193Z",
   "motor": "node v24.19.0"
  },
  "idioma": {
   "titulo": "La interfaz en inglés",
   "ok": true,
-  "resumen": "6137 textos traducidos; 809 casos con los mismos números en los dos idiomas (71,548 valores); 272 resultados armados en inglés sin textos pendientes",
-  "fecha": "2026-10-05T05:14:23.423Z",
+  "resumen": "6253 textos traducidos; 810 casos con los mismos números en los dos idiomas (71,550 valores); 272 resultados armados en inglés sin textos pendientes",
+  "fecha": "2026-10-05T13:51:50.674Z",
   "motor": "node v24.19.0"
  },
  "regresion": {
   "titulo": "Regresión de resultados y reportes",
   "ok": true,
   "resumen": "272 casos, 70474 números; resultado cambiado en 0, reporte en 0",
-  "fecha": "2026-10-05T05:15:49.601Z",
+  "fecha": "2026-10-05T06:40:29.501Z",
   "motor": "node v24.19.0"
  },
  "intro": {
   "titulo": "Secuencia de apertura",
   "ok": true,
-  "resumen": "secuencia completa hasta «Start»: 5641 ms, 327 cuadros (58 por segundo; mediana 16.7 ms, p95 16.8 ms, 1 de más de 34 ms); 1 tareas largas del hilo principal en ese lapso (la mayor, 53 ms); peso: js/intro.js + css/intro.css = 39.2 KB (sin imágenes ni fuentes)",
+  "resumen": "secuencia completa hasta «Start»: 5640 ms, 328 cuadros (58 por segundo; mediana 16.7 ms, p95 16.8 ms, 1 de más de 34 ms); 1 tareas largas del hilo principal en ese lapso (la mayor, 60 ms); peso: js/intro.js + css/intro.css = 39.2 KB (sin imágenes ni fuentes)",
   "renglones": [],
-  "fecha": "2026-10-05T05:18:59.637Z",
+  "fecha": "2026-10-05T06:43:24.460Z",
+  "motor": "node v24.19.0"
+ },
+ "fundamentos": {
+  "titulo": "Fundamentos de cada análisis",
+  "ok": true,
+  "resumen": "78 de 78 fichas sin problemas (78 análisis); 63 ejemplos corridos en node; 1472 fórmulas convertidas a MathML",
+  "renglones": [],
+  "fecha": "2026-10-05T19:14:33.086Z",
+  "motor": "node v24.19.0"
+ },
+ "suite": {
+  "titulo": "Enlaces y logos de la suite LABG",
+  "ok": true,
+  "resumen": "CorrelationPro: PENDIENTE (sin repositorio público; logo marcador); 14 de 14 enlaces responden 200",
+  "renglones": [],
+  "fecha": "2026-10-05T06:44:34.057Z",
   "motor": "node v24.19.0"
  }
 };

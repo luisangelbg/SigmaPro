@@ -143,7 +143,8 @@ ef_bloques <- function(cmb, cme, r, t) {
 ef_latino <- function(cmf, cmc, cme, t) {
   g <- (t - 1) * (t - 2); k <- function(g2) if (g < 20) ((g + 1) * (g2 + 3)) / ((g + 3) * (g2 + 1)) else 1
   e1 <- (cmf + cmc + (t - 1) * cme) / ((t + 1) * cme); e2 <- (cmf + (t - 1) * cme) / (t * cme); e3 <- (cmc + (t - 1) * cme) / (t * cme)
-  list(list(relativa = e1, ajustada = e1 * k(t * (t - 1))), list(relativa = e2, ajustada = e2 * k((t - 1)^2)), list(relativa = e3, ajustada = e3 * k((t - 1)^2)))
+  # frente a bloques con las filas como bloques (las columnas pasan al error): e3, con el CM de columnas; luego con las columnas como bloques: e2
+  list(list(relativa = e1, ajustada = e1 * k(t * (t - 1))), list(relativa = e3, ajustada = e3 * k((t - 1)^2)), list(relativa = e2, ajustada = e2 * k((t - 1)^2)))
 }
 metodo_un <- function(nombre, diseno, titulo, fuente, datos, entradas, formula, tipo = 3, factores, eficiencia = NULL, tipo_usado = tipo, extra = list(), orden = FALSE) {
   m <- lm(if (orden) terms(as.formula(formula), keep.order = TRUE) else as.formula(formula), data = datos)

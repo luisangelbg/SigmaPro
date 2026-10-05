@@ -1,0 +1,24 @@
+/* LABGSuggest 1.0.0 — tarjetas «Continúa en la suite LABG» (js/labg-suggest.js). GPL-3.0-or-later.
+   Usa las variables de la suite con respaldo; el oro de la marca en el borde y el brillo del logo. */
+.lgs-franja { margin: var(--sp-4, 16px) 0 0; }
+.lgs-titulo { margin: 0 0 8px; font-size: var(--fs-2xs, .72rem); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted, #5b5750); }
+.lgs-tarjetas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 10px; }
+.lgs-tarjeta { position: relative; display: flex; gap: 12px; align-items: flex-start; padding: 12px 36px 12px 12px; border: 1px solid var(--border, #d6d1c4);
+  border-left: 3px solid var(--btn-oro-texto, #9a6a12); border-radius: var(--r-md, 10px); background: var(--card-bg, #fff); }
+.lgs-logo { flex: none; display: block; width: 44px; height: 44px; border-radius: 10px; transition: transform .25s ease, filter .25s ease; }
+.lgs-logo img { display: block; width: 44px; height: 44px; }
+a.lgs-logo:hover, a.lgs-logo:focus-visible { transform: translateY(-1px); filter: drop-shadow(0 0 6px rgba(201, 162, 39, .55)) brightness(1.06); }
+a.lgs-logo:focus-visible { outline: 2px solid var(--btn-oro-texto, #9a6a12); outline-offset: 3px; }
+.lgs-cuerpo { min-width: 0; }
+.lgs-nombre { margin: 0; font-weight: 700; font-size: var(--fs-sm, .9rem); }
+.lgs-pronto { font-weight: 600; font-size: var(--fs-2xs, .72rem); padding: 1px 8px; border-radius: 999px; background: var(--bg-soft, #f2efe8); color: var(--text-muted, #5b5750); }
+.lgs-motivo { margin: 2px 0 0; font-size: var(--fs-sm, .875rem); color: var(--text-muted, #5b5750); }
+.lgs-enviar { margin-top: 8px; padding: 5px 12px; border: 1px solid var(--btn-oro-texto, #9a6a12); border-radius: 999px; background: transparent; color: var(--text, #17150f);
+  font: inherit; font-size: var(--fs-xs, .8rem); font-weight: 600; cursor: pointer; }
+.lgs-enviar:hover { background: var(--btn-oro-suave, #f5e6c4); }
+.lgs-enviar:focus-visible, .lgs-cerrar:focus-visible { outline: 2px solid var(--btn-oro-texto, #9a6a12); outline-offset: 2px; }
+.lgs-cerrar { position: absolute; top: 6px; right: 6px; width: 26px; height: 26px; border: 0; border-radius: 50%; background: transparent; color: var(--text-muted, #5b5750);
+  font-size: 18px; line-height: 1; cursor: pointer; }
+.lgs-cerrar:hover { background: var(--bg-soft, #f2efe8); color: var(--text, #17150f); }
+.lgs-pendiente { border-left-color: var(--border, #d6d1c4); }
+@media (prefers-reduced-motion: reduce) { .lgs-logo { transition: none; } a.lgs-logo:hover { transform: none; } }

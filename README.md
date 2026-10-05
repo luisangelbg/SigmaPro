@@ -14,6 +14,9 @@ medias, regresión y, más adelante, modelos mixtos y ensayos multiambiente. For
 - **Sin instalación.** Se abre con doble clic en `index.html` y funciona sin conexión; publicada en la web, se
   guarda en el navegador la primera vez y después abre sin red.
 - **Rápido con tablas grandes.** Probado con 100 000 filas: una ANOVA con Tukey en menos de una décima de segundo.
+- **Explica lo que calcula.** Cada uno de los 78 análisis tiene su ficha de fundamentos (bloque 9): para qué sirve, el
+  modelo y sus hipótesis, los supuestos y cómo revisarlos, los datos que necesita con plantillas, cómo se lee y sus
+  referencias, en español y en inglés.
 
 ## Estado
 
@@ -91,6 +94,20 @@ potencia, y en los mixtos la gamma, la cuadratura de Gauss-Hermite y la prueba d
 asistente que **reconoce en los datos las parcelas divididas**, subdivididas y en franjas. En total, 848 casos y
 93 157 valores contra R. Y la **interfaz en inglés** (Hito 4.5): el selector ES | EN de la barra, o `?lang=en`.
 
+**Fase 5: Fundamentos y suite LABG** (versión 0.5.0; plan en [`propuesta/FASE5.md`](propuesta/FASE5.md)). El bloque 9,
+**Fundamentos**, con una ficha por análisis (78, en español y en inglés; datos en `data/fundamentos/`): para qué sirve,
+preguntas típicas, el fundamento con el modelo y las hipótesis en MathML (convertidor propio, sin bibliotecas), los
+supuestos con su revisión y su alternativa en la app, los **datos necesarios** con la tabla de ejemplo, «Cargar estos
+datos de ejemplo» y plantillas CSV y XLSX, la interpretación con un ejemplo de redacción, límites, métodos
+relacionados y referencias APA; con buscador, filtros por familia, respuesta, estructura y diseño, y un **mapa de
+métodos**. Se llega desde «¿Qué es este análisis?» en cada análisis y desde Inicio. Cada ficha pasó una revisión
+técnica independiente ([`docs/revision-fundamentos.md`](docs/revision-fundamentos.md); inventario en
+[`docs/inventario-analisis.md`](docs/inventario-analisis.md)), que además encontró y corrigió 18 errores de la app.
+Y el bloque 10, **Suite LABG**: las cuatro apps hermanas (PCAPro, ClusteringPro, AgriDesign y CorrelationPro) con su
+versión, sus funciones y su cita, y las sugerencias **LABGSuggest** solo donde continúan el trabajo (al pie de un
+resultado, en la ficha, al pie de una familia y en el bloque Datos), con «Enviar datos» como CSV; reglas en
+`data/suite-rules.js` y datos de las apps en `data/suite.js`.
+
 Lo que falta para publicar y las fases 2 y 3 están en [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
 [`propuesta/maqueta.html`](propuesta/maqueta.html); capturas de la app en [`docs/capturas/`](docs/capturas/).
@@ -107,6 +124,10 @@ node tests/sin-conexion.mjs       # privacidad y uso sin conexión
 node tests/rendimiento/medir.mjs  # rendimiento con 100 000 filas (--motor: también el motor R con 20 000)
 node tests/accesibilidad/auditar.mjs  # accesibilidad AA
 node tests/motor-r.mjs            # los métodos del motor R, en el navegador (necesita internet)
+node tests/fundamentos.mjs        # las 78 fichas: nueve apartados en ES y EN, ejemplos que corren, fórmulas, índice
+node tests/suite-enlaces.mjs      # datos y logos de la suite, reglas y enlaces vivos (--sin-red: sin revisar los enlaces)
+node tests/intro.mjs              # la secuencia de apertura
+node tests/regresion.mjs          # la huella de los resultados y de los reportes
 node tools/motor-r/armar.mjs      # arma motor-r/: webR y sus 70 paquetes, verificados (--fuentes: con su código)
 ```
 

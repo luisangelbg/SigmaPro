@@ -1,6 +1,6 @@
 {
  "generado": "node tests/regresion.mjs --actualizar",
- "version": "0.4.2",
+ "version": "0.5.0",
  "casos": {
   "ancova/metodo-ancova-anorexia": {
    "numeros": 333,
@@ -274,13 +274,13 @@
   },
   "cuadro-latino/latino-cinco": {
    "numeros": 80,
-   "resultado": "c9f4d308f45c19eac82e2813",
-   "reporte": "c8dad5e6ea7dff4612de0bf8"
+   "resultado": "a856b174d6ea0fde8f4bf199",
+   "reporte": "6409bc89906777c541239ad2"
   },
   "cuadro-latino/latino-huertos": {
    "numeros": 128,
-   "resultado": "033644a3401337e20b1170e7",
-   "reporte": "b96355f3e486ba69b1b8542a"
+   "resultado": "49ca6729631c0d53ef86fccb",
+   "reporte": "ce5319157414b1191d08764a"
   },
   "parcelas-subdivididas/subdivididas": {
    "numeros": 124,
@@ -380,12 +380,12 @@
   "glm-gamma/coagulacion-perfil": {
    "numeros": 150,
    "resultado": "f74a29836d763ddf56d5a3e0",
-   "reporte": "65d6b653e052680230c3f5b4"
+   "reporte": "9357d1a5707976f6f520e188"
   },
   "glm/degradacion-canonica": {
    "numeros": 164,
    "resultado": "4542b009847e90e9edf111f8",
-   "reporte": "3157c21a04e1eacaa2eaa5f5"
+   "reporte": "0e4280b2543d87c1605b179a"
   },
   "glm-gamma/dias-germinacion-log": {
    "numeros": 252,
@@ -400,7 +400,7 @@
   "glm/enfermedad-binaria-firth": {
    "numeros": 246,
    "resultado": "f55e2f503a36eb3b40beadb3",
-   "reporte": "b2dbc1655677517f694e9619"
+   "reporte": "b4970d1571208fafb2a05bc6"
   },
   "glm/escarabajos-cloglog": {
    "numeros": 74,
@@ -410,17 +410,17 @@
   "glm/escarabajos-firth": {
    "numeros": 81,
    "resultado": "7b2a3f0adeee9706a9b2a0fa",
-   "reporte": "24747f2e091ed77bcfa85e04"
+   "reporte": "66377730596a1dbeeec61792"
   },
   "glm/escarabajos-perfil": {
    "numeros": 80,
    "resultado": "c92815aa5bf80adad9299fc1",
-   "reporte": "1f2d928054824acf3f98ff6d"
+   "reporte": "74a5760e3fefeb49f61583da"
   },
   "glm-proporciones/escarificacion-firth": {
    "numeros": 224,
    "resultado": "f292c485d6da70a77519a73d",
-   "reporte": "a00ad55eff5a6767a82c47bc"
+   "reporte": "78b928121893c1af4e99de41"
   },
   "glm-proporciones/germinacion-automatica": {
    "numeros": 225,
@@ -430,7 +430,7 @@
   "glm-proporciones/germinacion-cuasi-perfil": {
    "numeros": 223,
    "resultado": "942f5e8fb7a0675549d9abd6",
-   "reporte": "15dc80f3b77bad58152ae7e0"
+   "reporte": "62c8122c384fcfdd048c1c35"
   },
   "glm-proporciones/germinacion-probit-tipo3": {
    "numeros": 196,
@@ -450,7 +450,7 @@
   "glm-conteos/insectos-perfil-nb": {
    "numeros": 549,
    "resultado": "39c7581687e4c5fe5848ea7a",
-   "reporte": "3965caa935588517f52d5966"
+   "reporte": "6c706c640dc6f35e25e6e38c"
   },
   "glm-conteos/insectos-raiz": {
    "numeros": 514,
@@ -590,7 +590,7 @@
   "muestreo-estratificado/brix-lotes-casi-censo": {
    "numeros": 45,
    "resultado": "b3cedd50bfc9ea86a4b8f9ee",
-   "reporte": "5faeb08928fb538c27d30b22"
+   "reporte": "41f9af9754267f0deb33c765"
   },
   "tamano-muestra/media-absoluta": {
    "numeros": 10,
@@ -610,7 +610,7 @@
   "muestreo-estratificado/plagas-cuatro-regiones-asignacion": {
    "numeros": 55,
    "resultado": "21e91d2b744c308ab06e10f9",
-   "reporte": "29a2ec928edb47b68dd3d79e"
+   "reporte": "1a892a2c7f18ebe481e4ca05"
   },
   "tamano-muestra/proporcion-90": {
    "numeros": 10,
@@ -629,8 +629,8 @@
   },
   "tamano-muestra/proporcion-finita-99": {
    "numeros": 10,
-   "resultado": "4e2a586692a18972294193cd",
-   "reporte": "4992b9f242be2cb4677b5cc2"
+   "resultado": "38fd0c441b3878e7a53be428",
+   "reporte": "abcaff7e2f72dcaeb17f1c9e"
   },
   "muestreo-estratificado/rendimiento-tres-suelos": {
    "numeros": 38,
@@ -1330,7 +1330,7 @@
   "supuestos/metodo-insectos": {
    "numeros": 718,
    "resultado": "7d82e29d1ec1a265711400a3",
-   "reporte": "0233c5ba664303bd90375c55"
+   "reporte": "54a1ba471472a731f957472f"
   },
   "supuestos/metodo-maiz": {
    "numeros": 522,
@@ -1340,7 +1340,7 @@
   "supuestos/metodo-ozono-ordenado": {
    "numeros": 1116,
    "resultado": "911058ef56d8325ab2fa16e3",
-   "reporte": "df58ebb0e53797b5b9298c43"
+   "reporte": "9a5dddf62799992826548965"
   },
   "supuestos/metodo-plantas": {
    "numeros": 334,

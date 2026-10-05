@@ -75,7 +75,7 @@ SPT.describir('Supuestos · piezas', () => {
     SPT.igual(r.un_factor, true);
     const rep = f.reporte(r);
     SPT.afirmar(rep.semaforo.length === 5 && rep.semaforo.every(x => x.texto), 'cinco renglones con texto');
-    if (r.semaforo[1].color !== 'verde') SPT.afirmar(rep.recomendaciones.some(x => /Welch/.test(x)) && rep.recomendaciones.some(x => /conteos/.test(x)), rep.recomendaciones.join(' | '));
+    if (r.semaforo[1].color !== 'verde') SPT.afirmar(rep.recomendaciones.some(x => /Games-Howell/.test(x)) && rep.recomendaciones.some(x => /conteos/.test(x)), rep.recomendaciones.join(' | '));
     const cod = f.codigoR({ respuesta: 'y', tratamientos: ['g'], bloque: 'b' }, {});
     SPT.afirmar(/nonadditivity\(datos\$y, datos\$b, g/.test(cod) && /dwtest\(m\)/.test(cod), cod);
   });

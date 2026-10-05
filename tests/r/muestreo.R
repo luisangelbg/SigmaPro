@@ -8,7 +8,8 @@ ref_tamano <- function(op) {
   n0 <- if (op$tipo == "proporcion") z^2 * op$p * (1 - op$p) / op$error^2
         else if (op$escala == "relativo") (z * op$cv / op$error)^2
         else (z * op$de / op$error)^2
-  n <- if (op$N > 0) n0 / (1 + n0 / op$N) else n0
+  # Cochran (1977, cap. 4): para la proporción la varianza lleva (N − n)/(N − 1)
+  n <- if (op$N > 0) (if (op$tipo == "proporcion") n0 / (1 + (n0 - 1) / op$N) else n0 / (1 + n0 / op$N)) else n0
   list(z = z, n0 = n0, n = n, n_entero = ceiling(n - 1e-9))
 }
 

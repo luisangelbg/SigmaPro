@@ -326,5 +326,41 @@ window.SP_EJEMPLOS = [
         "niveles": ["Bajo", "Medio", "Alto"]
       }
     }
+  },
+  {
+    "id": "arroz-subdivididas",
+    "nombre": "Arroz: riego × variedad × nitrógeno (parcelas subdivididas)",
+    "descripcion": "Ficticio: rendimiento (t/ha) con el riego en parcelas grandes, tres variedades en subparcelas y dos dosis de nitrógeno en sub-subparcelas, en tres bloques (36 sub-subparcelas).",
+    "csv": "\"bloque\",\"riego\",\"variedad\",\"nitrogeno\",\"rendimiento\"\n1,\"Riego\",\"V1\",\"N0\",7.15\n1,\"Riego\",\"V1\",\"N80\",8.12\n1,\"Riego\",\"V2\",\"N0\",7.11\n1,\"Riego\",\"V2\",\"N80\",8.2\n1,\"Riego\",\"V3\",\"N0\",6.71\n1,\"Riego\",\"V3\",\"N80\",7.7\n1,\"Temporal\",\"V1\",\"N0\",5.08\n1,\"Temporal\",\"V1\",\"N80\",6.12\n1,\"Temporal\",\"V2\",\"N0\",5.44\n1,\"Temporal\",\"V2\",\"N80\",6.46\n1,\"Temporal\",\"V3\",\"N0\",5.05\n1,\"Temporal\",\"V3\",\"N80\",5.73\n2,\"Riego\",\"V1\",\"N0\",6.4\n2,\"Riego\",\"V1\",\"N80\",7.64\n2,\"Riego\",\"V2\",\"N0\",6.08\n2,\"Riego\",\"V2\",\"N80\",7.37\n2,\"Riego\",\"V3\",\"N0\",5.82\n2,\"Riego\",\"V3\",\"N80\",7.07\n2,\"Temporal\",\"V1\",\"N0\",5.17\n2,\"Temporal\",\"V1\",\"N80\",5.76\n2,\"Temporal\",\"V2\",\"N0\",5.44\n2,\"Temporal\",\"V2\",\"N80\",6.15\n2,\"Temporal\",\"V3\",\"N0\",4.66\n2,\"Temporal\",\"V3\",\"N80\",5.3\n3,\"Riego\",\"V1\",\"N0\",5.38\n3,\"Riego\",\"V1\",\"N80\",6.82\n3,\"Riego\",\"V2\",\"N0\",5.91\n3,\"Riego\",\"V2\",\"N80\",6.82\n3,\"Riego\",\"V3\",\"N0\",5.12\n3,\"Riego\",\"V3\",\"N80\",6.34\n3,\"Temporal\",\"V1\",\"N0\",3.95\n3,\"Temporal\",\"V1\",\"N80\",4.59\n3,\"Temporal\",\"V2\",\"N0\",4.4\n3,\"Temporal\",\"V2\",\"N80\",5.14\n3,\"Temporal\",\"V3\",\"N0\",3.53\n3,\"Temporal\",\"V3\",\"N80\",4.05",
+    "tipos": {
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["1", "2", "3"]
+      },
+      "riego": {
+        "tipo": "factor",
+        "niveles": ["Temporal", "Riego"]
+      },
+      "nitrogeno": {
+        "tipo": "factor",
+        "niveles": ["N0", "N80"]
+      }
+    }
+  },
+  {
+    "id": "sorgo-bib",
+    "nombre": "Sorgo: siete líneas en bloques incompletos (BIB)",
+    "descripcion": "Ficticio: rendimiento (t/ha) de siete líneas en siete bloques de tres parcelas; cada par de líneas coincide en un bloque (bloques incompletos balanceados, λ = 1).",
+    "csv": "\"bloque\",\"linea\",\"rendimiento\"\n\"B1\",\"L2\",5.1\n\"B1\",\"L4\",5.16\n\"B1\",\"L1\",4.32\n\"B2\",\"L3\",3.64\n\"B2\",\"L5\",4.21\n\"B2\",\"L2\",4.45\n\"B3\",\"L6\",3.6\n\"B3\",\"L3\",3.32\n\"B3\",\"L4\",4.65\n\"B4\",\"L7\",4\n\"B4\",\"L5\",3.44\n\"B4\",\"L4\",4.5\n\"B5\",\"L6\",3.01\n\"B5\",\"L1\",3.31\n\"B5\",\"L5\",3.12\n\"B6\",\"L2\",3.74\n\"B6\",\"L6\",2.28\n\"B6\",\"L7\",3.87\n\"B7\",\"L3\",3.47\n\"B7\",\"L1\",4.01\n\"B7\",\"L7\",4.01",
+    "tipos": {
+      "bloque": {
+        "tipo": "factor",
+        "niveles": ["B1", "B2", "B3", "B4", "B5", "B6", "B7"]
+      },
+      "linea": {
+        "tipo": "factor",
+        "niveles": ["L1", "L2", "L3", "L4", "L5", "L6", "L7"]
+      }
+    }
   }
 ];

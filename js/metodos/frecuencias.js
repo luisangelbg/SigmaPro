@@ -15,7 +15,6 @@ SP.definir('frecuencias', function (SP) {
   'use strict';
   const T = SP.T;
   const { sqrt, max, min, abs } = Math;
-  const FALTANTE = '(faltante)';
   Object.assign(SP.nombresFunciones, { 'prop.ic': 'Intervalos de confianza de una proporción (seis métodos)' });
 
   /* ---------------- intervalos de una proporción ---------------- */
@@ -66,7 +65,7 @@ SP.definir('frecuencias', function (SP) {
   /** Códigos de un factor con la categoría «(faltante)» al final, si se pide y hay faltantes. */
   function codificar(f, conFaltantes) {
     const niveles = f.niveles.slice(), cod = Int32Array.from(f.codigos);
-    if (conFaltantes && cod.some(c => c < 0)) { const k = niveles.length; niveles.push(FALTANTE); for (let i = 0; i < cod.length; i++) if (cod[i] < 0) cod[i] = k; }
+    if (conFaltantes && cod.some(c => c < 0)) { const k = niveles.length; niveles.push(T('(faltante)')); for (let i = 0; i < cod.length; i++) if (cod[i] < 0) cod[i] = k; }
     return { niveles, cod };
   }
   function calcularFrecuencias(tabla, e, op) {

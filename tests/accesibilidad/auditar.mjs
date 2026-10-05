@@ -9,7 +9,7 @@
 //    medicion.js: nombres accesibles, imágenes sin alt, ids repetidos, campos sin etiqueta, contraste AA de todo el texto
 //    visible en claro y en oscuro, desborde lateral, Alt+→ y Alt+← entre bloques y el diálogo de atajos con «?».
 //    Sin el auditor (o fuera de Windows) esta parte se omite y se avisa.
-// 2. El foco con el teclado de verdad: recorre los 8 bloques con Tab (eventos de teclado del navegador, no simulados
+// 2. El foco con el teclado de verdad: recorre los 10 bloques con Tab (eventos de teclado del navegador, no simulados
 //    en la página) y revisa que cada elemento enfocado muestre su anillo. El auditor enfoca por programa después de
 //    clics, y ahí el navegador no aplica :focus-visible, así que este recorrido es el que cuenta para el foco.
 
@@ -118,7 +118,9 @@ const exe = [process.env.SIGMAPRO_NAVEGADOR, 'C:/Program Files (x86)/Microsoft/E
 const MIRA = `(() => { const e = document.activeElement; if (!e || e === document.body) return { nada: true };
   const c = getComputedStyle(e), r = e.getBoundingClientRect(), ve = s => (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0) || (s.boxShadow && s.boxShadow !== 'none');
   let padre = false; for (let p = e.parentElement, k = 0; p && k < 3; p = p.parentElement, k++) if (ve(getComputedStyle(p)) && p.matches(':focus-within')) padre = true;
-  return { fv: e.matches(':focus-visible'), anillo: ve(c) || padre, visible: r.width > 0 && r.height > 0,
+  /* uid: el elemento mismo (dos cuadros con el mismo título no son la misma parada) */
+  if (!e.__auditUid) e.__auditUid = (window.__auditUidN = (window.__auditUidN || 0) + 1);
+  return { uid: e.__auditUid, fv: e.matches(':focus-visible'), anillo: ve(c) || padre, visible: r.width > 0 && r.height > 0,
     que: e.tagName.toLowerCase() + (e.id ? '#' + e.id : '') + ' «' + (e.getAttribute('aria-label') || e.textContent || e.value || '').trim().slice(0, 24) + '»' }; })()`;
 async function foco(ancho, tema) {
   const puerto = 9640 + Math.floor(Math.random() * 40), perfil = mkdtempSync(join(tmpdir(), 'sigmapro-foco-'));
@@ -153,7 +155,7 @@ async function foco(ancho, tema) {
       document.querySelectorAll('.toast, .lw-toast, [class*=toast]').forEach(t => t.remove()); })()`);
     let paradas = 0;
     const sinAnillo = new Map(), sinFv = [];
-    for (const b of [1, 2, 3, 4, 5, 6, 7, 8]) {
+    for (const b of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
       await evaluar(`SP.app.ir(${b}); document.activeElement && document.activeElement.blur(); window.scrollTo(0, 0); null`);
       await dormir(350);
       const vistos = new Set();
@@ -161,8 +163,8 @@ async function foco(ancho, tema) {
         await tab();
         const m = await evaluar(MIRA);
         if (m.nada) continue;
-        if (vistos.has(m.que) && vistos.size > 5) break;   // el foco dio la vuelta
-        vistos.add(m.que); paradas++;
+        if (vistos.has(m.uid) && vistos.size > 5) break;   // el foco dio la vuelta
+        vistos.add(m.uid); paradas++;
         if (!m.fv) sinFv.push('bloque ' + b + ' ' + m.que);
         if (!m.anillo && m.visible) sinAnillo.set(m.que, b);
       }
@@ -183,7 +185,7 @@ if (!exe) avisos.push('Sin Edge ni Chrome: no se revisó el foco con el teclado.
 else for (const [ancho, tema] of [[1280, 'light'], [360, 'dark']]) {
   const r = await foco(ancho, tema);
   recorridos.push(r);
-  console.log('Foco con Tab real a ' + ancho + ' px, tema ' + (tema === 'dark' ? 'oscuro' : 'claro') + ': ' + r.paradas + ' paradas en los 8 bloques' +
+  console.log('Foco con Tab real a ' + ancho + ' px, tema ' + (tema === 'dark' ? 'oscuro' : 'claro') + ': ' + r.paradas + ' paradas en los 10 bloques' +
     (r.sinAnillo.length || r.sinFv.length || r.errores.length ? '' : ', todas con su anillo'));
   for (const s of r.sinAnillo) fallas.push('sin anillo de foco (' + ancho + ' px): ' + s);
   for (const s of r.sinFv) fallas.push('sin :focus-visible con Tab (' + ancho + ' px): ' + s);
@@ -194,7 +196,7 @@ const paradas = recorridos.reduce((s, r) => s + r.paradas, 0), nEsc = new Set(Ob
 for (const a of avisos) console.log('Aviso: ' + a);
 if (!filtro) guardar('accesibilidad', { titulo: 'Accesibilidad (AA)', ok: !fallas.length,
   resumen: (corridas ? corridas + ' revisiones de ' + nEsc + ' escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: ' + textos.toLocaleString('es-MX') + ' textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. ' : '') +
-    'El foco con Tab de verdad: ' + paradas + ' paradas en los 8 bloques (1280 px en claro y 360 px en oscuro)' + (fallas.length ? '.' : ', todas con su anillo visible.'),
+    'El foco con Tab de verdad: ' + paradas + ' paradas en los 10 bloques (1280 px en claro y 360 px en oscuro)' + (fallas.length ? '.' : ', todas con su anillo visible.'),
   renglones: fallas.slice(0, 30).concat(avisos) });
 console.log(fallas.length ? '\n' + fallas.length + ' FALLAS:\n  ' + fallas.slice(0, 40).join('\n  ') : '\nTODO APROBADO');
 process.exit(fallas.length ? 1 : 0);

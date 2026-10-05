@@ -313,6 +313,35 @@ agregar("riego-parcelas", "Trigo: riego × variedad (parcelas divididas)",
         "Ficticio: rendimiento (t/ha) de cuatro variedades (subparcelas) con tres láminas de riego (parcelas grandes) en cuatro bloques; la columna «parcela» numera las parcelas grandes, y con ella el asistente reconoce las parcelas divididas.", d,
         list(bloque = list(tipo = "factor", niveles = as.character(1:4)), parcela = list(tipo = "factor", niveles = as.character(1:12)), riego = list(tipo = "factor", niveles = c("Bajo", "Medio", "Alto"))))
 
+## 26. Arroz: riego × variedad × nitrógeno en parcelas subdivididas (ficticio)
+set.seed(93)
+d <- do.call(rbind, lapply(1:3, function(b) {
+  orden <- sample(2)   # el riego de cada parcela grande se sortea dentro del bloque
+  do.call(rbind, lapply(1:2, function(k) {
+    do.call(rbind, lapply(1:3, function(v) data.frame(bloque = b, riego = c("Temporal", "Riego")[orden[k]], variedad = paste0("V", v), nitrogeno = c("N0", "N80"))))
+  }))
+}))
+d <- d[order(d$bloque, d$riego, d$variedad, d$nitrogeno), ]
+r <- match(d$riego, c("Temporal", "Riego")); v <- as.integer(substr(d$variedad, 2, 2)); n <- match(d$nitrogeno, c("N0", "N80"))
+pg <- paste(d$bloque, d$riego); sp <- paste(pg, d$variedad)
+d$rendimiento <- round(4.5 + c(0, 1.1)[r] + c(0, 0.4, -0.3)[v] + c(0, 0.9)[n] + 0.3 * (r == 2 & n == 2) +
+  rnorm(3, 0, 0.25)[d$bloque] + rnorm(6, 0, 0.3)[match(pg, unique(pg))] + rnorm(18, 0, 0.2)[match(sp, unique(sp))] + rnorm(36, 0, 0.15), 2)
+rownames(d) <- NULL
+agregar("arroz-subdivididas", "Arroz: riego × variedad × nitrógeno (parcelas subdivididas)",
+        "Ficticio: rendimiento (t/ha) con el riego en parcelas grandes, tres variedades en subparcelas y dos dosis de nitrógeno en sub-subparcelas, en tres bloques (36 sub-subparcelas).", d,
+        list(bloque = list(tipo = "factor", niveles = as.character(1:3)), riego = list(tipo = "factor", niveles = c("Temporal", "Riego")),
+             nitrogeno = list(tipo = "factor", niveles = c("N0", "N80"))))
+
+## 27. Sorgo: siete líneas en bloques incompletos balanceados de tres parcelas (ficticio)
+set.seed(94)
+bloques <- list(c(1, 2, 4), c(2, 3, 5), c(3, 4, 6), c(4, 5, 7), c(5, 6, 1), c(6, 7, 2), c(7, 1, 3))   # BIB(7, 3, 1): cada par de líneas comparte un bloque
+d <- do.call(rbind, lapply(seq_along(bloques), function(b) data.frame(bloque = paste0("B", b), linea = paste0("L", sample(bloques[[b]])))))
+efecto <- c(0, 0.6, -0.4, 0.9, 0.2, -0.7, 0.4)
+d$rendimiento <- round(4 + efecto[as.integer(substr(d$linea, 2, 2))] + rnorm(7, 0, 0.5)[as.integer(substr(d$bloque, 2, 2))] + rnorm(21, 0, 0.25), 2)
+agregar("sorgo-bib", "Sorgo: siete líneas en bloques incompletos (BIB)",
+        "Ficticio: rendimiento (t/ha) de siete líneas en siete bloques de tres parcelas; cada par de líneas coincide en un bloque (bloques incompletos balanceados, λ = 1).", d,
+        list(bloque = list(tipo = "factor", niveles = paste0("B", 1:7)), linea = list(tipo = "factor", niveles = paste0("L", 1:7))))
+
 ## escribir datos/ejemplos.js
 js <- paste0(
   "/* SigmaPro — datos de ejemplo del bloque Datos. ARCHIVO GENERADO por datos/generar-ejemplos.R; no editar a mano.\n",

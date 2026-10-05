@@ -144,8 +144,7 @@
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(5)"
  },
  "val-8": {
-  "prep": "SP.app.ir(8), document.querySelectorAll('#panel-8 details').forEach(d => d.open = true)",
-  "ultimo": true
+  "prep": "SP.app.ir(8), document.querySelectorAll('#panel-8 details').forEach(d => d.open = true)"
  },
  "mixto-tarjeta": {
   "prep": "(function () { try { localStorage.removeItem('sigmapro.motorR.usado'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[0].click(); SP.app.ir(4); SP.app.analisis.motorAceptado = false; SP.app.analisis.usar('modelo-mixto', { respuesta: 'rend' }, { derecha: 'hibrido * dosis + (1 | bloque)', comoFactor: ['dosis'] }); })()"
@@ -160,7 +159,7 @@
  },
  "repetidas": {
   "espera": true,
-  "prep": "(async () => { window.__esperando = true; try { localStorage.setItem('sigmapro.motorR.usado', '1'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[14].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.ponerModo('catalogo'); document.querySelector('#anaCatalogo [data-metodo=\"medidas-repetidas\"]').click(); for (let k = 0; k < 400; k++) { await new Promise(r => setTimeout(r, 200)); const r = document.querySelector('#anaResultado'); if (r && !r.classList.contains('calculando') && (r.querySelector('.exp-cabeza h3') || r.querySelector('.msg-error'))) break; } document.querySelectorAll('#anaResultado details').forEach(d => d.open = true); window.__auditT0 = 0; window.__esperando = false; })()"
+  "prep": "(async () => { window.__esperando = true; try { localStorage.setItem('sigmapro.motorR.usado', '1'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[14].click(); for (let k = 0; k < 100 && !(SP.app.datos.hoja && SP.app.datos.hoja.n === 80); k++) await new Promise(r => setTimeout(r, 100)); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.ponerModo('catalogo'); document.querySelector('#anaCatalogo [data-metodo=\"medidas-repetidas\"]').click(); for (let k = 0; k < 400; k++) { await new Promise(r => setTimeout(r, 200)); const r = document.querySelector('#anaResultado'); if (r && !r.classList.contains('calculando') && (r.querySelector('.exp-cabeza h3') || r.querySelector('.msg-error'))) break; } document.querySelectorAll('#anaResultado details').forEach(d => d.open = true); window.__auditT0 = 0; window.__esperando = false; })()"
  },
  "gen-heredabilidad": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[12].click(), SP.app.ir(4), SP.app.analisis.usar('heredabilidad', { respuesta: 'rendimiento', genotipo: 'genotipo', repeticion: 'repeticion', bloque: 'bloque' }, { seleccion: 0.1, direccion: 'mayor' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
@@ -315,5 +314,24 @@
  },
  "graf-tema-cuadricula": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.metodo = 'dbca', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.dis, { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true), SP.temasGraficas.poner('cuadricula')"
+ },
+ "fun-catalogo": {
+  "prep": "SP.app.fundamentos.estado.vista = 'catalogo', SP.app.ir(9), SP.app.fundamentos.pintar()"
+ },
+ "fun-mapa": {
+  "prep": "SP.app.fundamentos.estado.vista = 'mapa', SP.app.ir(9), SP.app.fundamentos.pintar()"
+ },
+ "fun-ficha-dbca": {
+  "prep": "(async () => { window.__esperando = true; SP.app.fundamentos.abrir('dbca'); for (let k = 0; k < 100 && !document.querySelector('#panel-9 .fun-ficha'); k++) await new Promise(r => setTimeout(r, 100)); document.querySelectorAll('#panel-9 details').forEach(d => d.open = true); await new Promise(r => setTimeout(r, 200)); window.__esperando = false; })()"
+ },
+ "fun-ficha-regresion": {
+  "prep": "(async () => { window.__esperando = true; SP.app.fundamentos.abrir('regresion-lineal'); for (let k = 0; k < 100 && !document.querySelector('#panel-9 .fun-ficha'); k++) await new Promise(r => setTimeout(r, 100)); document.querySelectorAll('#panel-9 details').forEach(d => d.open = true); await new Promise(r => setTimeout(r, 200)); window.__esperando = false; })()"
+ },
+ "suite-10": {
+  "prep": "SP.app.ir(10)",
+  "ultimo": true
+ },
+ "datos-cafe-suite": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[9].click(), SP.app.ir(2)"
  }
 }

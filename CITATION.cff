@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "SigmaPro: estadística para la investigación agronómica y biológica"
+abstract: >-
+  SigmaPro is a self-contained web application for the statistical analysis of agronomic and
+  biological research, entirely in the browser, with no installation and no server-side
+  computation; the data never leave the computer. It covers experimental designs (completely
+  randomized, randomized complete blocks, Latin square, split plots, split-split plots, strip
+  plots, balanced incomplete blocks and lattices) with mean comparisons, contrasts and orthogonal
+  polynomials; assumption checking; t and nonparametric tests; ANCOVA, regression, correlation and
+  contingency tables; linear mixed models, repeated measures, variance components and
+  heritability; generalized linear and generalized linear mixed models; nonlinear regression;
+  response surfaces, mixtures and desirability; multi-environment trials with stability, AMMI and
+  GGE; sample size and power, sampling, survival, time series and multivariate analysis (78
+  analyses). A guided assistant and a visual model builder lead to each analysis, whose report
+  explains the conclusion in words, with publication tables and figures, a methods paragraph and
+  the equivalent R code. Each analysis has a theory sheet with its model and hypotheses, its
+  assumptions and how to check them, the data it needs with templates, how to read the output
+  and its references. Bilingual interface (Spanish and English). Every method was checked against
+  R, number by number.
+type: software
+authors:
+  - given-names: "Luis Ángel"
+    family-names: "Barrera-Guzmán"
+    orcid: "https://orcid.org/0000-0001-8057-2583"
+version: "0.5.0"
+# DOI, repository-code y url se completan al publicar la versión.
+license: GPL-3.0-or-later
+keywords:
+  - statistics
+  - experimental design
+  - agronomy
+  - analysis of variance
+  - mean comparisons
+  - mixed models
+  - generalized linear models
+  - response surfaces
+  - multi-environment trials
+  - sampling
+  - reproducible research
+  - web application

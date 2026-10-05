@@ -34,7 +34,7 @@
       <li><b>2.2</b>Cómo debe verse la tabla</li>
       <li><b>2.3</b>Importar un archivo</li>
       <li><b>2.4</b>Pegar una tabla y la hoja vacía</li>
-      <li><b>2.5</b>Los 22 ejemplos</li>
+      <li><b>2.5</b>Los 27 ejemplos</li>
       <li><b>2.6</b>La hoja de trabajo</li>
       <li><b>2.7</b>Los cinco tipos de variable</li>
       <li><b>2.8</b>Variables calculadas</li>
@@ -127,8 +127,8 @@
   <p><span class="ui">Hoja vacía…</span> pide los <b>nombres de las columnas</b>, separados por comas (por omisión <code>bloque, tratamiento, rend</code>), y el <b>número de filas</b> (hasta 100 000). Las columnas cuyo nombre indica un factor del diseño (bloque, tratamiento, variedad, repetición, lote…) nacen como factores; las demás, como numéricas. Luego se escribe en la rejilla como en cualquier hoja de cálculo (sección 2.6).</p>
 
   <!-- 2.5 -->
-  <h2 id="s2-5"><span class="num">2.5</span>Los 22 ejemplos</h2>
-  <p><span class="ui">Ejemplos ▾</span> despliega la lista de los ensayos de ejemplo, con una línea que dice para qué sirve cada uno. Cinco son datos publicados (Mendel, Box y Cox, Yates y dos de un paquete de R para ensayos multiambiente); los demás son ficticios, construidos para que cada análisis tenga un caso claro. Todos los resultados de este manual salen de ellos, así que cualquier número se puede repetir con un clic.</p>
+  <h2 id="s2-5"><span class="num">2.5</span>Los 27 ejemplos</h2>
+  <p><span class="ui">Ejemplos ▾</span> despliega la lista de los ensayos de ejemplo, con una línea que dice para qué sirve cada uno. Seis son datos publicados (Mendel, Box y Cox, Yates, Cornell y dos de un paquete de R para ensayos multiambiente); los demás son ficticios, construidos para que cada análisis tenga un caso claro. Todos los resultados de este manual salen de ellos, así que cualquier número se puede repetir con un clic.</p>
   <table class="compacta ejemplos">
     <caption><b>Cuadro 2.2.</b> Los ejemplos de SigmaPro y para qué sirve cada uno.</caption>
     <thead><tr><th>Ejemplo</th><th class="c">Filas</th><th>Diseño y variables</th><th>Para</th></tr></thead>
@@ -155,6 +155,11 @@
       <tr><td>Frijol: días a la germinación</td><td class="c">120</td><td>3 tratamientos; días hasta germinar, con censura</td><td>Kaplan-Meier, log-rank, Cox</td></tr>
       <tr><td>Estación: lluvia y temperatura</td><td class="c">96</td><td>Valores mensuales de 2017 a 2024</td><td>Series de tiempo, ARIMA</td></tr>
       <tr><td>Chile: medidas del fruto</td><td class="c">60</td><td>4 variedades en 3 bloques, 5 frutos por parcela</td><td>MANOVA, discriminante</td></tr>
+      <tr><td>Hilo: alargamiento de tres polímeros</td><td class="c">15</td><td>Cornell (2002): simplex-látice {3, 2} con repeticiones</td><td>Mezclas (modelos de Scheffé)</td></tr>
+      <tr><td>Fruto: rendimiento, costo y pH</td><td class="c">13</td><td>Central compuesto rotable: nitrógeno × riego, tres respuestas</td><td>Superficies, deseabilidad</td></tr>
+      <tr><td>Trigo: riego × variedad</td><td class="c">48</td><td>3 láminas de riego (parcelas grandes) × 4 variedades, 4 bloques</td><td>Parcelas divididas, el asistente</td></tr>
+      <tr><td>Arroz: riego × variedad × nitrógeno</td><td class="c">36</td><td>Parcelas subdivididas en 3 bloques</td><td>Parcelas subdivididas</td></tr>
+      <tr><td>Sorgo: siete líneas en bloques incompletos</td><td class="c">21</td><td>7 bloques de 3 parcelas; cada par de líneas coincide una vez (λ = 1)</td><td>Bloques incompletos balanceados</td></tr>
     </tbody>
   </table>
 

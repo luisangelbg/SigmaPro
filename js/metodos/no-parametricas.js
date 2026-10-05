@@ -408,7 +408,7 @@ SP.definir('no-parametricas', function (SP) {
     const k = tj.length, M = bj.map(() => new Array(k).fill(undefined));
     for (let i = 0; i < nf; i++) {
       const fila = M[posB.get(bloque.codigos[i])], c = posT.get(trat.codigos[i]);
-      exigir(fila[c] === undefined, T('Friedman necesita exactamente un dato por tratamiento en cada bloque, y hay repeticiones.'), T('Promedia las repeticiones de cada tratamiento en cada bloque (Datos → Reformar) y vuelve a intentarlo.'));
+      exigir(fila[c] === undefined, T('Friedman necesita exactamente un dato por tratamiento en cada bloque, y hay repeticiones.'), T('Promedia las repeticiones de cada tratamiento en cada bloque (por ejemplo, en tu hoja de cálculo), importa esa tabla de medias y vuelve a intentarlo.'));
       fila[c] = ys[i];
     }
     exigir(M.every(f => f.every(v => v !== undefined)), T('Friedman necesita los mismos tratamientos en todos los bloques, y faltan combinaciones.'), T('Revisa que cada bloque tenga una fila por tratamiento.'));

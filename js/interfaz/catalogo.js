@@ -75,7 +75,8 @@
     return `<li class="cat-tarjeta e-${r.estado}${activo ? ' activo' : ''}"><button type="button" data-metodo="${esc(m.id)}" aria-pressed="${activo}"` +
       ` aria-describedby="cat-d-${esc(m.id)}"><span class="cat-cab">${SP.ilustraciones ? SP.ilustraciones.svg(m.id) : ''}<span class="cat-nombre">${esc(m.nombre)}</span></span>` +
       `<span class="cat-estado" data-estado="${r.estado}">${esc(etiqueta)}${m.motor === 'r' ? ' · ' + esc(T('motor R')) : ''}</span>` +
-      `<span class="cat-resumen" id="cat-d-${esc(m.id)}">${esc(m.resumen || '')}${falta ? '<span class="cat-falta">' + esc(falta) + '</span>' : ''}</span></button></li>`;
+      `<span class="cat-resumen" id="cat-d-${esc(m.id)}">${esc(m.resumen || '')}${falta ? '<span class="cat-falta">' + esc(falta) + '</span>' : ''}</span></button>` +
+      (SP.app.fundamentos ? `<a class="cat-fund" href="#b9" data-ficha="${esc(m.id)}" aria-label="${esc(T('Fundamentos de {m}', { m: m.nombre }))}" title="${esc(T('¿Qué es este análisis?'))}">ⓘ</a>` : '') + '</li>';
   }
 
   /**

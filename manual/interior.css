@@ -23,6 +23,8 @@
   --b6: #66509a;  /* 6 · figuras */
   --b7: #b0601c;  /* 7 · exportar */
   --b8: #4f5d78;  /* 8 · validación */
+  --b9: #3d6b4f;  /* 9 · fundamentos */
+  --b10: #8c6d1a; /* 10 · suite LABG */
   --bx: #3a352c;  /* apéndices */
 
   --serif: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
@@ -164,7 +166,7 @@ caption b { color: var(--negro); font-weight: 500; }
 /* chips de bloque */
 .chip { display: inline-flex; align-items: center; justify-content: center; min-width: 1.6em; padding: 0.05em 0.42em; border-radius: 3px; color: #fff; font-family: var(--sans); font-size: 8pt; font-weight: 500; letter-spacing: 0.02em; white-space: nowrap; }
 .k1 { background: var(--b1); } .k2 { background: var(--b2); } .k3 { background: var(--b3); } .k4 { background: var(--b4); }
-.k5 { background: var(--b5); } .k6 { background: var(--b6); } .k7 { background: var(--b7); } .k8 { background: var(--b8); } .k0 { background: var(--b0); } .kx { background: var(--bx); }
+.k5 { background: var(--b5); } .k6 { background: var(--b6); } .k7 { background: var(--b7); } .k8 { background: var(--b8); } .k9 { background: var(--b9); } .k10 { background: var(--b10); } .k0 { background: var(--b0); } .kx { background: var(--bx); }
 
 /* ================================================================ figuras */
 figure { margin: 0.16in 0 0.22in; break-inside: avoid; }

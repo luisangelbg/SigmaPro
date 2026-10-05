@@ -326,7 +326,8 @@ SP.definir('mixtos', function (SP) {
     cuadros.push({ id: 'coeficientes', titulo: T('Coeficientes de los efectos fijos'),
       columnas: [col('termino', T('Término'), 'texto'), col('b', T('Estimado'), 'sig'), col('ee', T('EE'), 'sig'), col('gl', 'gl', 'forma2'), col('t', 't', 'forma2'), col('p', 'p', 'pvalor')],
       filas: c.nombre.map((nm, j) => ({ termino: nm === '(Intercept)' ? T('(Intercepto)') : nm, b: c.estimado[j], ee: c.ee[j], gl: c.gl[j], t: c.t[j], p: c.p[j] })),
-      notas: [T('Con contrastes de tratamiento: cada nivel comparado con el primero (como summary() de lmerTest).')] });
+      notas: [T('Con contrastes de tratamiento: cada nivel comparado con el primero (como summary() de lmerTest).')]
+        .concat(r.blup && r.blup.grupo.length > 120 ? [T('Las predicciones de los efectos aleatorios (BLUP) no se muestran: son {n} renglones (el cuadro llega hasta 120). El código R las da con ranef().', { n: r.blup.grupo.length })] : []) });
     if (r.blup && r.blup.grupo.length && r.blup.grupo.length <= 120) {
       const b = r.blup;
       cuadros.push({ id: 'blup', titulo: T('Predicciones de los efectos aleatorios (BLUP)'),

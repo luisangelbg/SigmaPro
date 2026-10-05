@@ -3,11 +3,12 @@
 
    Las fórmulas de Cochran (1977, Sampling Techniques, 3.ª ed.):
    - tamaño de muestra para una media: n₀ = (z·S/e)² (con e absoluto, o S = CV·media y e relativo); para una
-     proporción: n₀ = z²·p(1 − p)/e²; con población finita, n = n₀/(1 + n₀/N) (cap. 4); z = qnorm(1 − α/2);
+     proporción: n₀ = z²·p(1 − p)/e²; con población finita, n = n₀/(1 + n₀/N) para la media y n = n₀/[1 + (n₀ − 1)/N]
+     para la proporción, cuya varianza lleva el factor (N − n)/(N − 1) (cap. 4); z = qnorm(1 − α/2);
    - aleatorio simple (cap. 2 y 3): ȳ, s², EE(ȳ) = √((1 − f)·s²/n) con f = n/N; total Nȳ con EE N·EE(ȳ); una
      proporción p̂ con EE = √((1 − f)·p̂(1 − p̂)/(n − 1)); intervalos con t de n − 1 gl;
    - estratificado (cap. 5): ȳ_st = Σ W_h·ȳ_h con W_h = N_h/N, V(ȳ_st) = Σ W_h²·(1 − f_h)·s_h²/n_h; intervalos con t de
-     los gl efectivos de Satterthwaite (5.42); asignación proporcional n_h = n·N_h/N y de Neyman n_h = n·N_h·s_h/Σ N_h·s_h
+     los gl efectivos de Satterthwaite (ec. 5.16); asignación proporcional n_h = n·N_h/N y de Neyman n_h = n·N_h·s_h/Σ N_h·s_h
      para un tamaño total n. */
 SP.definir('muestreo', function (SP) {
   'use strict';
@@ -28,7 +29,7 @@ SP.definir('muestreo', function (SP) {
       else S = o.de;
       n0 = (z * S / e) ** 2;
     }
-    const n = o.N > 0 ? n0 / (1 + n0 / o.N) : n0;
+    const n = !(o.N > 0) ? n0 : o.tipo === 'proporcion' ? n0 / (1 + (n0 - 1) / o.N) : n0 / (1 + n0 / o.N);
     return { z, n0, n, n_entero: ceil(n - 1e-9) };
   }
 
@@ -58,8 +59,10 @@ SP.definir('muestreo', function (SP) {
     const mst = filas.reduce((s, x) => s + x.W * x.media, 0), V = filas.reduce((s, x) => s + x.aporte, 0), ee = sqrt(V);
     /* gl efectivos de Satterthwaite: (Σ g_h s_h²)² / Σ (g_h s_h²)²/(n_h − 1), con g_h = N_h(N_h − n_h)/n_h */
     const gs = filas.map(x => x.Nh * (x.Nh - x.nh) / x.nh * x.varianza);
-    const gl = gs.reduce((a, b) => a + b, 0) ** 2 / gs.reduce((s, v, h) => s + v * v / (filas[h].nh - 1), 0);
-    const t = D().qt(1 - (1 - o.confianza) / 2, gl, true);
+    /* con todos los estratos medidos completos (un censo) no hay error de muestreo: EE = 0 y el intervalo es el punto */
+    const den = gs.reduce((s, v, h) => s + v * v / (filas[h].nh - 1), 0);
+    const gl = den > 0 ? gs.reduce((a, b) => a + b, 0) ** 2 / den : Infinity;
+    const t = Number.isFinite(gl) ? D().qt(1 - (1 - o.confianza) / 2, gl, true) : D().qnorm(1 - (1 - o.confianza) / 2, 0, 1, true);
     const out = { N, n: o.y.length, estratos: filas, media: mst, ee, gl, t, ic: [mst - t * ee, mst + t * ee], total: N * mst, ee_total: N * ee, ic_total: [N * (mst - t * ee), N * (mst + t * ee)] };
     /* cómo repartir un tamaño total entre los estratos: proporcional y de Neyman (con las s_h de esta muestra) */
     if (o.nTotal > 0) {

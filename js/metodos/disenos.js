@@ -94,11 +94,13 @@ SP.definir('disenos', function (SP) {
   function eficienciaLatino(cmFila, cmCol, cmError, t) {
     const glLS = (t - 1) * (t - 2), aj = (gl2, er) => (glLS < 20 ? er * ajusteGl(glLS, gl2) : er);
     const vsDCA = (cmFila + cmCol + (t - 1) * cmError) / ((t + 1) * cmError);
-    const vsFila = (cmFila + (t - 1) * cmError) / (t * cmError), vsCol = (cmCol + (t - 1) * cmError) / (t * cmError);
+    /* frente a bloques con las filas como bloques, la variación de las columnas pasaría al error: esa eficiencia
+       depende del CM de columnas (y la de las columnas como bloques, del CM de filas) */
+    const vsFilas = (cmCol + (t - 1) * cmError) / (t * cmError), vsCols = (cmFila + (t - 1) * cmError) / (t * cmError);
     return [
       { contra: 'dca', relativa: vsDCA, ajustada: aj(t * (t - 1), vsDCA), factor: glLS < 20 ? ajusteGl(glLS, t * (t - 1)) : 1 },
-      { contra: 'dbca-filas', relativa: vsFila, ajustada: aj((t - 1) * (t - 1), vsFila), factor: glLS < 20 ? ajusteGl(glLS, (t - 1) * (t - 1)) : 1 },
-      { contra: 'dbca-columnas', relativa: vsCol, ajustada: aj((t - 1) * (t - 1), vsCol), factor: glLS < 20 ? ajusteGl(glLS, (t - 1) * (t - 1)) : 1 },
+      { contra: 'dbca-filas', relativa: vsFilas, ajustada: aj((t - 1) * (t - 1), vsFilas), factor: glLS < 20 ? ajusteGl(glLS, (t - 1) * (t - 1)) : 1 },
+      { contra: 'dbca-columnas', relativa: vsCols, ajustada: aj((t - 1) * (t - 1), vsCols), factor: glLS < 20 ? ajusteGl(glLS, (t - 1) * (t - 1)) : 1 },
     ];
   }
 
@@ -309,7 +311,10 @@ SP.definir('disenos', function (SP) {
         ? T('{t}: hay diferencias (F = {F}, p {p}).', { t: etiqueta(f.fuente), F: f3(f.F), p: fp(f.p) })
         : T('{t}: no hay evidencia de diferencias (F = {F}, p {p}).', { t: etiqueta(f.fuente), F: f3(f.F), p: fp(f.p) }));
     }
-    if (inter.length) conclusiones.push(T('La interacción {i} es significativa: el efecto de un factor depende del nivel del otro; interpreta los efectos simples y las medias de las combinaciones, no los efectos principales por separado.', { i: inter.map(f => etiqueta(f.fuente)).join(', ') }));
+    /* con estratos (parcelas divididas, franjas…) no hay cuadro de efectos simples: la vía es comparar dentro de cada nivel */
+    if (inter.length) conclusiones.push(r.estratos
+      ? T('La interacción {i} es significativa: el efecto de un factor depende del nivel del otro; compara un factor dentro de cada nivel del otro (Comparaciones de medias, «Dentro de cada nivel de»), no los efectos principales por separado.', { i: inter.map(f => etiqueta(f.fuente)).join(', ') })
+      : T('La interacción {i} es significativa: el efecto de un factor depende del nivel del otro; interpreta los efectos simples y las medias de las combinaciones, no los efectos principales por separado.', { i: inter.map(f => etiqueta(f.fuente)).join(', ') }));
     const rs = r.resumen;
     conclusiones.push(r.estratos
       ? T('Media general {m}; {cv}.', { m: f3(rs.media), cv: rs.cv.map(c => T('CV({e}) = {v} %', { e: c.error.replace('Error ', ''), v: c.cv.toFixed(1) })).join(', ') })

@@ -29,12 +29,12 @@ SP.definir('metodos-muestreo', function (SP) {
       cuadros: [{ id: 'tamano', titulo: T('Tamaño de muestra'), columnas: [col('m', T('Medida'), 'texto'), col('v', T('Valor'), 'sigEnt')],
         filas: [{ m: 'z', v: r.z }, { m: T('n sin la población finita (n₀)'), v: r.n0 }].concat(r.N > 0 ? [{ m: T('Población (N)'), v: r.N }] : [], [{ m: T('n'), v: r.n }, { m: T('n redondeada hacia arriba'), v: r.n_entero }]),
         notas: [r.que === 'proporcion' ? T('n₀ = z²·p(1 − p)/e² con p = {p}.', { p: dado(r.p) }) : r.escala === 'relativo' ? T('n₀ = (z·CV/e)² con CV = {cv} %.', { cv: dado(r.cv) }) : T('n₀ = (z·S/e)² con S = {s}.', { s: dado(r.de) }),
-          r.N > 0 ? T('Con población finita, n = n₀/(1 + n₀/N) (Cochran, 1977).') : T('Población grande (sin corrección).')] }] };
+          r.N > 0 ? (r.que === 'proporcion' ? T('Con población finita, n = n₀/[1 + (n₀ − 1)/N] (Cochran, 1977).') : T('Con población finita, n = n₀/(1 + n₀/N) (Cochran, 1977).')) : T('Población grande (sin corrección).')] }] };
   }
   function codigoTam(e, op) {
     const s0 = op.tipo === 'proporcion' ? `z^2 * ${op.p} * (1 - ${op.p}) / ${op.error}^2` : op.escala === 'relativo' ? `(z * ${op.cv} / ${op.error})^2` : `(z * ${op.de} / ${op.error})^2`;
     return ['# Tamaño de muestra (Cochran, 1977; código R equivalente a SigmaPro)', `z <- qnorm(1 - (1 - ${op.confianza}) / 2)`, `n0 <- ${s0}`,
-      +op.N > 0 ? `n <- n0 / (1 + n0 / ${op.N})` : 'n <- n0', 'c(n0 = n0, n = n, redondeada = ceiling(n - 1e-9))'].join('\n');
+      +op.N > 0 ? (op.tipo === 'proporcion' ? `n <- n0 / (1 + (n0 - 1) / ${op.N})` : `n <- n0 / (1 + n0 / ${op.N})`) : 'n <- n0', 'c(n0 = n0, n = n, redondeada = ceiling(n - 1e-9))'].join('\n');
   }
 
   /* ======================= aleatorio simple ======================= */
@@ -82,16 +82,22 @@ SP.definir('metodos-muestreo', function (SP) {
     return Object.assign(r, { tipo: 'muestreo', metodo: 'muestreo-estratificado', respuesta: e.respuesta, estrato: e.estrato, confianza: +op.confianza, excluidas: tabla.n - y.length });
   }
   function reporteEstr(r) {
-    const c = [T('La media estratificada de «{y}» es {m} (IC {c} %: {i} a {s}; EE = {e}, {g} gl efectivos).', { y: r.respuesta, m: sig(r.media), c: pc(r.confianza), i: sig(r.ic[0]), s: sig(r.ic[1]), e: sig(r.ee), g: Number.isInteger(r.gl) ? String(r.gl) : r.gl.toFixed(2) }),
+    /* sin gl finitos no hay variación que estimar: todos los estratos se midieron completos (o no varían) */
+    const censo = !Number.isFinite(r.gl);
+    const c = [censo ? T('La media estratificada de «{y}» es {m}, sin error de muestreo (EE = 0): todos los estratos se midieron completos o no varían.', { y: r.respuesta, m: sig(r.media) })
+      : T('La media estratificada de «{y}» es {m} (IC {c} %: {i} a {s}; EE = {e}, {g} gl efectivos).', { y: r.respuesta, m: sig(r.media), c: pc(r.confianza), i: sig(r.ic[0]), s: sig(r.ic[1]), e: sig(r.ee), g: Number.isInteger(r.gl) ? String(r.gl) : r.gl.toFixed(2) }),
       T('El total estimado en la población de {N} es {t} (IC: {i} a {s}).', { N: r.N, t: sig(r.total), i: sig(r.ic_total[0]), s: sig(r.ic_total[1]) })];
     const cuadros = [{ id: 'estratos', titulo: T('Estratos'), columnas: [col('e', r.estrato, 'texto'), col('N', 'N_h', 'entero'), col('n', 'n_h', 'entero'), col('W', 'W_h', 'forma'), col('m', T('Media'), 'sig'), col('s', T('DE'), 'sig'), col('a', T('Aporte a la varianza'), 'sig')],
       filas: r.estratos.map(x => ({ e: x.estrato, N: x.Nh, n: x.nh, W: x.W, m: x.media, s: x.de, a: x.aporte })), notas: [T('W_h = N_h/N; aporte = W_h²(1 − f_h)s_h²/n_h (Cochran, 1977, cap. 5).')] },
     { id: 'estimacion', titulo: T('Estimación estratificada'), columnas: [col('m', T('Medida'), 'texto'), col('v', T('Valor'), 'sigEnt')],
-      filas: [{ m: T('Media'), v: r.media }, { m: T('EE'), v: r.ee }, { m: T('gl efectivos (Satterthwaite)'), v: r.gl }, { m: T('IC inferior'), v: r.ic[0] }, { m: T('IC superior'), v: r.ic[1] },
-        { m: T('Total'), v: r.total }, { m: T('EE del total'), v: r.ee_total }] }];
+      filas: [{ m: T('Media'), v: r.media }, { m: T('EE'), v: r.ee }].concat(censo ? [] : [{ m: T('gl efectivos (Satterthwaite)'), v: r.gl }], [{ m: T('IC inferior'), v: r.ic[0] }, { m: T('IC superior'), v: r.ic[1] },
+        { m: T('Total'), v: r.total }, { m: T('EE del total'), v: r.ee_total }]) }];
     if (r.asignacion) {
       const lista = r.estratos.map((x, h) => T('{v} en {e}', { v: Math.ceil(r.asignacion.neyman[h] - 1e-9), e: x.estrato }));
-      c.push(T('Para una muestra de {n}, la asignación de Neyman (más unidades en los estratos grandes y variables) toma {l}.', { n: r.asignacion.n, l: lista.slice(0, -1).join(', ') + (lista.length > 1 ? T(' y ') : '') + lista[lista.length - 1] }));
+      /* al redondear cada estrato hacia arriba, la suma puede pasar del total pedido: se dice */
+      const suma = r.asignacion.neyman.reduce((a, v) => a + Math.ceil(v - 1e-9), 0);
+      c.push(T('Para una muestra de {n}, la asignación de Neyman (más unidades en los estratos grandes y variables) toma {l}.', { n: r.asignacion.n, l: lista.slice(0, -1).join(', ') + (lista.length > 1 ? T(' y ') : '') + lista[lista.length - 1] })
+        + (suma > r.asignacion.n ? T(' Al redondear hacia arriba suman {s}.', { s: suma }) : ''));
       cuadros.push({ id: 'asignacion', titulo: T('Cómo repartir una muestra de {n}', { n: r.asignacion.n }), columnas: [col('e', r.estrato, 'texto'), col('p', T('Proporcional'), 'forma2'), col('ny', T('Neyman'), 'forma2')],
         filas: r.estratos.map((x, h) => ({ e: x.estrato, p: r.asignacion.proporcional[h], ny: r.asignacion.neyman[h] })), notas: [T('Proporcional: n·N_h/N. Neyman: n·N_h·s_h/Σ N_h·s_h, con las s_h de esta muestra. Redondea hacia arriba.')] });
     }

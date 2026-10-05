@@ -61,11 +61,14 @@ res`;
 
   /* ======================= ANOVA ======================= */
   function mediasDe(op) { const m = String(op.medias || '').split(/[;,\s]+/).filter(Boolean).map(Number); return m.length >= 2 && m.every(Number.isFinite) ? m : null; }
+  /* al despejar la varianza detectable las medias no entran (solo dirían cuántos grupos hay) */
+  const mediasAnova = op => (op.calcular === 'varEntre' ? null : mediasDe(op));
+  const gruposAnova = (op, m) => (m ? m.length : +op.grupos || (mediasDe(op) || []).length);
   function calcularAnova(tabla, e, op) {
-    const m = mediasDe(op);
+    const m = mediasAnova(op);
     let varEntre = +op.varEntre;
     if (m) { const mu = m.reduce((a, b) => a + b, 0) / m.length; varEntre = m.reduce((s, v) => s + (v - mu) ** 2, 0) / (m.length - 1); }
-    const grupos = m ? m.length : +op.grupos;
+    const grupos = gruposAnova(op, m);
     const r = P().potenciaAnova({ grupos, n: +op.n, varEntre, varDentro: (+op.de) ** 2, alfa: +op.alfa, potencia: +op.potencia, calcular: op.calcular });
     return Object.assign(r, { tipo: 'potencia', metodo: 'potencia-anova', calcular: op.calcular, medias: m, de: +op.de });
   }
@@ -80,8 +83,8 @@ res`;
       cuadroCurva(r, T('Repeticiones'))], semaforo: [] };
   }
   function codigoAnova(e, op) {
-    const m = mediasDe(op), vb = m ? `var(c(${m.join(', ')}))` : (op.calcular === 'varEntre' ? 'NULL' : op.varEntre);
-    return `# Potencia del ANOVA de una vía (código R equivalente a SigmaPro)\nres <- power.anova.test(groups = ${m ? m.length : op.grupos}, n = ${op.calcular === 'n' ? 'NULL' : op.n}, between.var = ${vb},\n  within.var = ${op.de}^2, sig.level = ${op.alfa}, power = ${op.calcular === 'potencia' ? 'NULL' : op.potencia})
+    const m = mediasAnova(op), vb = m ? `var(c(${m.join(', ')}))` : (op.calcular === 'varEntre' ? 'NULL' : op.varEntre);
+    return `# Potencia del ANOVA de una vía (código R equivalente a SigmaPro)\nres <- power.anova.test(groups = ${gruposAnova(op, m)}, n = ${op.calcular === 'n' ? 'NULL' : op.n}, between.var = ${vb},\n  within.var = ${op.de}^2, sig.level = ${op.alfa}, power = ${op.calcular === 'potencia' ? 'NULL' : op.potencia})
 res`;
   }
 

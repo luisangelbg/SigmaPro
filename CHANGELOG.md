@@ -2,6 +2,63 @@
 
 ## Sin publicar
 
+### 0.5.0 · Fundamentos y suite LABG (5 oct 2026)
+
+- **Bloque 9, Fundamentos**: una ficha por cada uno de los 78 análisis, en español y en inglés, con nueve apartados:
+  para qué sirve (y sus otros nombres), preguntas típicas, el fundamento teórico con el modelo, sus términos y las
+  hipótesis, los supuestos con cómo revisarlos en la app y su alternativa (con botones que las abren), los **datos
+  necesarios** en un recuadro dorado (columnas con tipo y papel, tamaño mínimo, faltantes y desbalance, formato largo
+  frente a ancho, las primeras filas del ejemplo, errores frecuentes, «Cargar estos datos de ejemplo» y plantillas
+  CSV y XLSX), cómo se interpreta con un ejemplo de redacción y las guías de cada estadístico, limitaciones y métodos
+  relacionados, 3 a 5 referencias APA y «Continúa en la suite LABG». Catálogo con buscador (también por los otros
+  nombres) y filtros por familia, tipo de respuesta, grupos y factores y diseño; **mapa de métodos** en SVG
+  (respuesta × estructura, cada nombre abre su ficha). Se llega desde «¿Qué es este análisis?» en el catálogo y en
+  cada resultado, y desde la lista «Qué puedes analizar» de Inicio. Las fichas son datos (`data/fundamentos/<id>.js`,
+  con su índice generado por `tools/fundamentos/indice.mjs`), se cargan al abrirse y quedan en la caché sin conexión.
+- **Fórmulas en MathML** con un convertidor propio de TeX (`js/nucleo/formulas.js`): sin bibliotecas ni peticiones,
+  legibles con lector de pantalla.
+- **Bloque 10, Suite LABG** y **LABGSuggest 1.0.0** (`js/labg-suggest.js`, `css/labg-suggest.css`): el recuadro
+  «Explora la suite LABG» (también al final de Inicio) con PCAPro, ClusteringPro, AgriDesign y CorrelationPro: logo
+  como enlace, versión, lema, funciones tomadas de su documentación publicada, Abrir app, Manual y Citar (APA y
+  BibTeX). CorrelationPro, sin versión pública, va con marca provisional y sus datos como PENDIENTE. Las sugerencias
+  aparecen solo donde continúan el trabajo (al pie del resultado y en la ficha de los análisis de las reglas, al pie
+  de las familias y en el bloque Datos según la estructura de la tabla), sin ventanas emergentes; cada una se oculta
+  en su lugar y «Enviar datos a …» descarga la tabla en CSV y abre la app. Datos en `data/suite.js` y reglas en
+  `data/suite-rules.js`.
+- **Revisión técnica independiente** de las 78 fichas en seis grupos (`docs/revision-fundamentos.md`; inventario de
+  análisis y fichas en `docs/inventario-analisis.md`): 49 fichas corregidas. Dos conjuntos de ejemplo nuevos y
+  ficticios: `arroz-subdivididas` (parcelas subdivididas) y `sorgo-bib` (bloques incompletos balanceados).
+- **Errores de la app corregidos** que encontró la revisión:
+  - **Kappa ponderada**: si el primer evaluador no usaba alguna categoría, la ponderación usaba un orden falso. Caso
+    nuevo contra R (`contingencia/severidad-sin-categoria`).
+  - **Eficiencia relativa del cuadro latino**: las etiquetas «filas como bloques» y «columnas como bloques» estaban
+    invertidas. Casos `latino-cinco` y `latino-huertos` regenerados.
+  - **Tamaño de muestra de una proporción con población finita**: ahora n₀/[1 + (n₀ − 1)/N] (Cochran, 1977); la de la
+    media sigue igual. **Muestreo estratificado** con todos los estratos completos: el intervalo ya no sale `NaN`.
+  - **Potencia del ANOVA con la varianza entre medias**: el código R fallaba y las notas mostraban medias sin uso.
+  - Reabrir un análisis desde el Reporte o una ficha conserva los grupos y las opciones de la prueba t, Wilcoxon,
+    Kruskal-Wallis, Friedman y la revisión de supuestos.
+  - Los diseños mixtos (bloques y parcelas divididas) ofrecen «Dentro de cada nivel de»; los BLUP que no caben en el
+    cuadro lo avisan.
+  - Textos: recomendaciones de supuestos sin «Hito 1.5/1.6» ni un ANOVA de Welch inexistente; Friedman y Dunnett con
+    alternativas que existen; la interacción en diseños con estratos remite a comparar dentro de cada nivel; Neyman
+    avisa cuando la suma redondeada pasa del total; «del perfil», el nombre del modelo de mezclas, «(faltante)»
+    traducido, la guía del WAAS y el título de Cohen (1968).
+- Pruebas: `tests/fundamentos.mjs` (cobertura del 100 %, nueve apartados en los dos idiomas, 63 ejemplos corridos en
+  node, 1472 fórmulas, plantillas e índice) y `tests/suite-enlaces.mjs` (logos, datos PENDIENTE solo donde toca,
+  reglas y enlaces vivos), en la batería; seis escenarios de accesibilidad nuevos y el recorrido con Tab por los 10
+  bloques. El auditor reconoce cada parada del foco por el elemento (antes, dos cuadros con el mismo comienzo de título
+  cortaban el recorrido): ahora recorre más de 600 paradas en cada ancho, todas con su anillo de foco.
+- **Accesibilidad**: los cuadros y las fórmulas más anchos que su espacio reciben el foco con Tab, como región con el
+  título del cuadro, para recorrerlos a los lados con el teclado (solo mientras se desplazan); los enlaces de «Qué
+  puedes analizar» y la casilla de la intro miden al menos 24 px. Revisión con axe-core 4.13 (WCAG 2.1 A y AA) en
+  Inicio, Datos, el catálogo y el mapa de Fundamentos, dos fichas, la Suite y un resultado, en claro y oscuro, a 1280
+  y 360 px: sin violaciones, salvo la rejilla de Datos, que se recorre desde la cuadrícula (role="grid", flechas y
+  Re Pág/Av Pág). Lighthouse 12: accesibilidad 99–100, buenas prácticas 100 y SEO 100; el rendimiento de carga queda
+  en 28–50 (4.2 MB de JavaScript en 108 archivos al abrir) y pasa a un hito propio de la Fase 5.
+- Documentación: README, capítulos 9 (Fundamentos) y 10 (Suite LABG) del manual (los apéndices pasan al 11; el
+  cuadro de ejemplos, a 27), `codemeta.json` y `CITATION.cff`.
+
 ### 0.4.3 · Intro, logo σ e inventario de estadísticos (4 oct 2026)
 
 - **Secuencia de apertura** (`js/intro.js`, `css/intro.css`, ≈ 39 KB, sin imágenes, fuentes ni bibliotecas): un punto

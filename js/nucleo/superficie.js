@@ -353,7 +353,7 @@ SP.definir('superficie', function (SP) {
     if (n <= p) throw new SP.ErrorSP(T('Faltan datos: el modelo tiene {p} coeficientes y hay {n} mezclas.', { p, n }), T('Usa un modelo más sencillo o más mezclas.'));
     const cols = terms.map(t => Float64Array.from(X, f => valorTermino(f, t)));
     const mc = ajustarLM(cols, n, o.y);
-    if (mc.qr.rango < p) throw new SP.ErrorSP(T('Las mezclas no permiten estimar el modelo {m}.', { m: o.modelo }), T('El cuadrático necesita los puntos medios de las aristas; el cúbico especial, el centroide de cada cara de tres componentes.'));
+    if (mc.qr.rango < p) throw new SP.ErrorSP(T('Las mezclas no permiten estimar el modelo {m}.', { m: ({ lineal: T('lineal'), cuadratico: T('cuadrático'), 'cubico-especial': T('cúbico especial') })[o.modelo] || o.modelo }), T('El cuadrático necesita los puntos medios de las aristas; el cúbico especial, el centroide de cada cara de tres componentes.'));
     const gl = n - p, scr = mc.scResidual, s2 = scr / gl, Vu = covarianzas(mc), coef = Array.from(mc.coeficientes);
     const ee = coef.map((_, j) => sqrt(s2 * Vu[j][j])), tv = coef.map((b, j) => b / ee[j]);
     let media = 0; for (const v of o.y) media += v; media /= n;

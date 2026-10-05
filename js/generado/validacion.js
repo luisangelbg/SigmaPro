@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
- "version": "0.4.3",
- "generado": "2026-10-05T05:05:38.633Z",
+ "version": "0.5.0",
+ "generado": "2026-10-05T06:31:50.690Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,10 +11,10 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 848,
-  "aprobados": 848,
+  "casos": 849,
+  "aprobados": 849,
   "fallidos": 0,
-  "valores": 93157,
+  "valores": 93169,
   "difEscaladaMax": 0.000024564204685412263,
   "objetivos": 173
  },
@@ -16033,6 +16033,33 @@ window.SP_VALIDACION = {
    }
   },
   {
+   "id": "cont.kappaDe/severidad-sin-categoria",
+   "objetivo": {
+    "tipo": "funcion",
+    "nombre": "cont.kappaDe"
+   },
+   "titulo": "El evaluador 1 no usó una categoría (ponderada cuadrática)",
+   "fuente": "Datos sintéticos",
+   "clase": "A",
+   "valores": 12,
+   "difMax": 3.552713678800501e-15,
+   "difEscaladaMax": 2.8140242582278566e-14,
+   "peor": "ponderada.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "psych": "2.4.12"
+    },
+    "codigo": "psych::cohen.kappa(tabla con la fila en cero, w.exp = 2)"
+   }
+  },
+  {
    "id": "cont.kappaDe/severidad",
    "objetivo": {
     "tipo": "funcion",
@@ -20683,8 +20710,8 @@ window.SP_VALIDACION = {
    "clase": "A",
    "valores": 4,
    "difMax": 2.2737367544323206e-13,
-   "difEscaladaMax": 2.1932391871980479e-16,
-   "peor": "n0",
+   "difEscaladaMax": 3.7076015306947963e-16,
+   "peor": "n",
    "aprobado": true,
    "error": "",
    "fallas": [],

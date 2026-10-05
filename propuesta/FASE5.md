@@ -18,7 +18,7 @@ Contenido: 1. Decisiones · 2. Componentes · 3. Hitos · 4. Calidad · 5. Riesg
 | 4 | Módulos comunes | No se tocan el navegador, el estudio de figuras, el editor ✎ ni el núcleo LABG. Lo nuevo reutilizable va en módulos propios con nombre `labg-*` (LABGuide, LABGSuggest), con sus textos en español e inglés, listos para que otra app los adopte. |
 | 5 | Otras apps | No se modifican. «Enviar datos a…» deja un CSV y un formato de intercambio documentado; recibirlo directo será un cambio de cada app. |
 | 6 | Idioma | Todo texto nuevo pasa por `SP.T` y se traduce en el mismo hito (`tools/i18n/agregar.mjs`; `tests/idioma.mjs` falla si falta uno). |
-| 7 | Versión | Cada hito sube el tercer número; el cierre de la fase será la 0.5.0. La 1.0.0 queda para la publicación. No se publica nada sin confirmación. |
+| 7 | Versión | Cada hito sube el tercer número; Fundamentos y la suite fueron la 0.5.0 (sección 6) y el cierre de la fase será la 0.6.0. La 1.0.0 queda para la publicación. No se publica nada sin confirmación. |
 
 ## 2. Componentes
 
@@ -68,3 +68,14 @@ Contenido: 1. Decisiones · 2. Componentes · 3. Hitos · 4. Calidad · 5. Riesg
 3. Rendimiento con medidores en cada cuadro: se dibujan al abrir la tarjeta o en los modos Estándar y Experto.
 4. Escalas discutibles (CV «bajo» o «alto» depende del cultivo y la variable): siempre con la fuente citada y, para el
    CV, con el contexto que la persona puede cambiar.
+
+## 6. Avance y cambio de plan
+
+| Hito | Versión | Estado |
+|---|---|---|
+| 5.0 | 0.4.3 | Hecho (8cd1963): registro de estadísticos, inventario y `tests/regresion.mjs`. |
+| Fundamentos | 0.5.0 | Hecho (4 y 5 oct): no estaba en el plan original. Bloque 9 con una ficha por análisis (78, ES y EN) en `data/fundamentos/`, buscador, filtros y mapa de métodos; fórmulas en MathML con un convertidor propio (`js/nucleo/formulas.js`); plantillas CSV y XLSX; revisión técnica independiente (`docs/revision-fundamentos.md`) que corrigió 49 fichas y 18 errores de la app; `tests/fundamentos.mjs`. |
+| 5.6 | 0.5.0 | Hecho con Fundamentos: LABGSuggest 1.0.0 (`js/labg-suggest.js`) y el bloque 10, Suite LABG. Los datos van en `data/suite.js` y `data/suite-rules.js` (no `.json`, para que abran con doble clic); `tests/suite-enlaces.mjs`. |
+| 5.10 (parte) | 0.5.0 | README, capítulos 9 y 10 del manual (apéndices al 11), CHANGELOG, `codemeta.json` y `CITATION.cff`. El PDF del manual, al final. |
+| 5.1–5.5, 5.7–5.9 | 0.5.x | Pendientes, en el orden del cuadro de la sección 3. La versión del cierre de la fase será la 0.6.0. |
+| 5.11 (nuevo) | 0.5.x | **Rendimiento de carga** (Lighthouse en 0.5.0: accesibilidad 99–100, buenas prácticas y SEO 100, rendimiento 28–50). Causas medidas: 4.2 MB de JavaScript en 108 archivos que bloquean la primera pintura (FCP 3.8 s en escritorio; el reporte de validación, 687 KB, se carga aunque no se abra el bloque 8) y CLS de 0.3 por el encabezado y el contenido que se reacomodan al arrancar. Plan: cargar bajo demanda el reporte de validación y lo que solo usa un bloque, `defer` donde el orden lo permita, reservar el espacio del encabezado; meta ≥ 90 sin paso de compilación. |
