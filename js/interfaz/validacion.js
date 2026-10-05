@@ -21,7 +21,7 @@
     const [m, e] = x.toExponential(1).split('e');
     return m + ' × 10' + String(Number(e)).replace(/[-0-9]/g, c => SUP[c]);
   }
-  const miles = n => Number(n).toLocaleString('es-MX');
+  const miles = n => Number(n).toLocaleString(SP.LOCAL);
 
   function nombreObjetivo(o) {
     if (!o) return '';
@@ -29,7 +29,7 @@
       const f = SP.metodos && SP.metodos[o.nombre];
       return T('Método') + ' · ' + (f ? f.nombre : o.nombre);
     }
-    const nom = SP.nombresFunciones && SP.nombresFunciones[o.nombre];
+    const nom = SP.nombresFunciones && SP.nombresFunciones[o.nombre] && T(SP.nombresFunciones[o.nombre]);
     return (nom || T('Función del núcleo')) + ' · SP.' + o.nombre;
   }
   const nombreCaso = c => (c.id || '').split('/').slice(1).join('/');
@@ -43,7 +43,7 @@
     const regla = (cmp.modo === 'relativo' ? T('relativa') : T('mixta')) + ', ' + T('tolerancia') + ' ' + cientifico(tol) +
       (cmp.tolerancias ? ' · ' + T('con tolerancias propias por ruta') : '');
     let h = '<dl>' +
-      '<dt>' + T('Qué prueba') + '</dt><dd>' + esc(c.titulo) + '</dd>' +
+      '<dt>' + T('Qué prueba') + '</dt><dd>' + esc(T(c.titulo)) + '</dd>' +
       '<dt>' + T('Referencia') + '</dt><dd>' + esc((c.referencia && c.referencia.r) || '') + (paq ? ' · ' + esc(paq) : '') + '</dd>' +
       '<dt>' + T('Comparación') + '</dt><dd>' + esc(regla) + '</dd>' +
       '<dt>' + T('Valor más alejado') + '</dt><dd>' + esc(c.peor || '—') + '</dd>';
@@ -67,7 +67,7 @@
       const g = nombreObjetivo(c.objetivo);
       if (g !== grupo) { grupo = g; h += '<tr class="grupo"><td colspan="7">' + esc(g) + '</td></tr>'; }
       const idDet = 'valDet' + (i++);
-      h += '<tr><td class="izq">' + esc(c.titulo || nombreCaso(c)) + '<br><span class="muted small">' + esc(nombreCaso(c)) + '</span></td><td class="izq">' + esc(c.fuente) + '</td>' +
+      h += '<tr><td class="izq">' + esc(T(c.titulo || '') || nombreCaso(c)) + '<br><span class="muted small">' + esc(nombreCaso(c)) + '</span></td><td class="izq">' + esc(T(c.fuente || '')) + '</td>' +
         '<td>' + esc(c.clase) + '</td><td>' + miles(c.valores || 0) + '</td><td class="nowrap">' + cientifico(c.difEscaladaMax) + '</td>' +
         '<td><span class="veredicto ' + (c.aprobado ? 'ok' : 'falla') + '">' + (c.aprobado ? T('Aprobado') : T('Falla')) + '</span></td>' +
         '<td><button type="button" class="det" aria-expanded="false" aria-controls="' + idDet + '">' + T('Detalles') + '</button></td></tr>' +
@@ -93,7 +93,7 @@
     vacio.hidden = true; cont.hidden = false;
     const r = V.resumen;
     const fecha = V.generado ? new Date(V.generado) : null;
-    $('#valFecha').textContent = fecha ? T('Generado el {f}', { f: fecha.toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) }) : '';
+    $('#valFecha').textContent = fecha ? T('Generado el {f}', { f: fecha.toLocaleDateString(SP.LOCAL, { year: 'numeric', month: 'long', day: 'numeric' }) }) : '';
     $('#valTejas').innerHTML =
       '<div class="teja"><div class="k">' + T('Casos aprobados') + '</div><div class="v">' + r.aprobados + ' <small>' + T('de {n}', { n: r.casos }) + '</small></div></div>' +
       '<div class="teja"><div class="k">' + T('Valores comparados') + '</div><div class="v">' + miles(r.valores) + '</div></div>' +
@@ -111,7 +111,7 @@
     const claves = ORDEN.filter(k => C[k]).concat(Object.keys(C).filter(k => !ORDEN.includes(k)));
     el.closest('.card').hidden = !claves.length;
     el.innerHTML = claves.map(k => {
-      const x = C[k], f = x.fecha ? new Date(x.fecha).toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+      const x = C[k], f = x.fecha ? new Date(x.fecha).toLocaleDateString(SP.LOCAL, { year: 'numeric', month: 'long', day: 'numeric' }) : '';
       return '<li><p class="val-otra-cabeza"><span class="veredicto ' + (x.ok ? 'ok' : 'falla') + '">' + (x.ok ? T('Aprobado') : T('Con fallas')) + '</span> <b>' + esc(x.titulo) + '</b>' +
         (f ? ' <span class="small muted">· ' + esc(f) + '</span>' : '') + '</p><p class="small">' + esc(x.resumen) + '</p>' +
         (x.renglones && x.renglones.length ? '<details class="exp-extras"><summary>' + esc(T('Detalle')) + '</summary><ul class="small">' + x.renglones.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul></details>' : '') + '</li>';

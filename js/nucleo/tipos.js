@@ -99,7 +99,7 @@ SP.definir('tipos', function (SP) {
       return {
         tipo: 'numerica', textosComoFaltantes: raros,
         razon: T('{m} de {n} celdas son números; {k} con texto ({t}) se tomarán como faltantes.',
-          { m: nNum, n, k: n - nNum, t: raros.slice(0, 3).map(s => '«' + s + '»').join(', ') + (raros.length > 3 ? '…' : '') }),
+          { m: nNum, n, k: n - nNum, t: raros.slice(0, 3).map(s => SP.comillas(s)).join(', ') + (raros.length > 3 ? '…' : '') }),
       };
     }
     const textos = vals.map(String);

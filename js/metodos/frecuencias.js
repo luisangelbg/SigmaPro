@@ -21,8 +21,8 @@ SP.definir('frecuencias', function (SP) {
   /* ---------------- intervalos de una proporción ---------------- */
   const METODOS = ['wilson', 'wilson_cc', 'clopper_pearson', 'agresti_coull', 'jeffreys', 'wald'];
   const NOMBRES = {
-    wilson: 'Wilson', wilson_cc: 'Wilson con corrección', clopper_pearson: 'Clopper-Pearson (exacto)',
-    agresti_coull: 'Agresti-Coull', jeffreys: 'Jeffreys', wald: 'Wald',
+    wilson: T('Wilson'), wilson_cc: T('Wilson con corrección'), clopper_pearson: T('Clopper-Pearson (exacto)'),
+    agresti_coull: T('Agresti-Coull'), jeffreys: T('Jeffreys'), wald: T('Wald'),
   };
   function wilsonR(x, n, z, yates) {
     const est = x / n, z22n = z * z / (2 * n);
@@ -235,7 +235,7 @@ SP.definir('frecuencias', function (SP) {
   function reporteProporciones(r) {
     const t = r.tabla, nv = Math.round(r.nivel * 100), m0 = r.metodos.includes('wilson') ? 'wilson' : r.metodos[0];
     const conclusiones = [];
-    const nombreFila = i => [t.grupo[i], r.modo === 'categoria' ? '«' + t.categoria[i] + '»' : ''].filter(Boolean).join(' · ') || T('Total');
+    const nombreFila = i => [t.grupo[i], r.modo === 'categoria' ? T('«{c}»', { c: t.categoria[i] }) : ''].filter(Boolean).join(' · ') || T('Total');
     const muestra = Math.min(t.p.length, 4);
     for (let i = 0; i < muestra; i++) {
       conclusiones.push(T('{g}: {p} % ({x} de {n}); IC {nv} % de {m}: {a} a {b} %.', {

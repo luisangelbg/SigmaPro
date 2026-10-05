@@ -45,12 +45,12 @@ SP.definir('constructor-modelos', function (SP) {
     const comoFactor = rol.factores.concat(rol.bloques, rol.aleatorios).filter(v => info.numericas.includes(v));
     const formula = `${q(rol.respuesta)} ~ ${derecha}`, e = { respuesta: rol.respuesta };
     if (rol.familia === 'normal') {
-      descripcion.push(T('Modelo lineal mixto con {a} como efecto aleatorio (REML; corre en el motor R).', { a: rol.aleatorios.map(v => '«' + v + '»').join(', ') }));
+      descripcion.push(T('Modelo lineal mixto con {a} como efecto aleatorio (REML; corre en el motor R).', { a: rol.aleatorios.map(v => SP.comillas(v)).join(', ') }));
       return { metodo: 'modelo-mixto', e, op: { derecha, comoFactor, tipoSC: 3 }, formula, descripcion, avisos };
     }
     if (rol.familia === 'gamma' && rol.aleatorios.length) return falla(T('La familia gamma con efectos aleatorios no está en SigmaPro.'), T('Quita los efectos aleatorios o elige la distribución normal.'));
     if (rol.aleatorios.length) {
-      descripcion.push(T('Modelo lineal generalizado mixto de Poisson con {a} aleatorio (corre en el motor R).', { a: rol.aleatorios.map(v => '«' + v + '»').join(', ') }));
+      descripcion.push(T('Modelo lineal generalizado mixto de Poisson con {a} aleatorio (corre en el motor R).', { a: rol.aleatorios.map(v => SP.comillas(v)).join(', ') }));
       return { metodo: 'glmm', e, op: { derecha, comoFactor, familia: 'poisson', sobredispersion: 'auto', tipo: 2 }, formula, descripcion, avisos };
     }
     descripcion.push(rol.familia === 'conteo' ? T('Modelo lineal generalizado de Poisson (conteos).') : T('Modelo lineal generalizado gamma (respuesta positiva y asimétrica).'));
@@ -86,7 +86,7 @@ SP.definir('constructor-modelos', function (SP) {
     if (!rol.factores.length || rol.factores.length > 3) return falla(T('La MANOVA necesita de uno a tres factores de tratamiento.'), T('Pon de uno a tres factores en «Factores de tratamiento».'));
     if (resp.length > 10) return falla(T('Hasta 10 respuestas.'), '');
     const b = rol.bloques[0] || '', derecha = (b ? q(b) + ' + ' : '') + rol.factores.map(q).join(' * ');
-    descripcion.push(T('MANOVA de {k} respuestas: el efecto de {f} sobre todas juntas (Pillai, Wilks, Hotelling-Lawley y Roy).', { k: resp.length, f: rol.factores.map(f => '«' + f + '»').join(' × ') }));
+    descripcion.push(T('MANOVA de {k} respuestas: el efecto de {f} sobre todas juntas (Pillai, Wilks, Hotelling-Lawley y Roy).', { k: resp.length, f: rol.factores.map(f => SP.comillas(f)).join(' × ') }));
     if (rol.familia !== 'normal') avisos.push(T('La distribución no aplica a la MANOVA: se ignora.'));
     return { metodo: 'manova', e: Object.assign({ respuestas: resp, tratamientos: rol.factores }, b ? { bloque: b } : {}), op: { prueba: 'pillai' }, formula: `cbind(${resp.map(q).join(', ')}) ~ ${derecha}`, descripcion, avisos };
   }

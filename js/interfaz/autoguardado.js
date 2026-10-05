@@ -50,11 +50,11 @@
 
   const activo = () => { try { return localStorage.getItem(PREF) !== 'no'; } catch (e) { return true; } };
   const hayTrabajo = () => { const d = SP.app.datos; return !!(d && d.hoja && d.hoja.p) || SP.app.reporte.items.length > 0; };
-  const fechaDe = iso => new Date(iso).toLocaleString('es-MX', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
-  const horaDe = d => d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+  const fechaDe = iso => new Date(iso).toLocaleString(SP.LOCAL, { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+  const horaDe = d => d.toLocaleTimeString(SP.LOCAL, { hour: '2-digit', minute: '2-digit' });
   function describir(r) {
     const partes = [];
-    if (r.origen) partes.push('«' + r.origen + '»');
+    if (r.origen) partes.push(SP.comillas(r.origen));
     if (r.filas) partes.push(T('{n} filas y {p} columnas', { n: r.filas, p: r.columnas }));
     partes.push(r.analisis === 1 ? T('1 análisis en el reporte') : T('{k} análisis en el reporte', { k: r.analisis || 0 }));
     return partes.join(', ');

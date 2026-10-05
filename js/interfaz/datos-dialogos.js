@@ -104,13 +104,13 @@
         };
         const pintarVista = () => {
           const { nombres, columnas, inferidos, n } = actual;
-          c.querySelector('.imp-resumen').textContent = T('Se importarán {n} filas y {p} columnas. Revisa el tipo de cada columna: decide cómo se analiza.', { n: n.toLocaleString('es-MX'), p: nombres.length });
+          c.querySelector('.imp-resumen').textContent = T('Se importarán {n} filas y {p} columnas. Revisa el tipo de cada columna: decide cómo se analiza.', { n: n.toLocaleString(SP.LOCAL), p: nombres.length });
           const muestra = Math.min(n, 8);
           let h = '<table class="revista imp-tabla"><thead><tr>' + nombres.map((nom, j) =>
             `<th class="izq"><span class="imp-nom">${esc(nom)}</span><select data-tipo="${esc(nom)}" aria-label="${esc(T('Tipo de {c}', { c: nom }))}">${opcionesTipo(tiposElegidos[nom] || inferidos[j].tipo)}</select>` +
             `<span class="imp-razon" title="${esc(inferidos[j].razon)}">${esc(inferidos[j].razon)}</span></th>`).join('') + '</tr></thead><tbody>';
           for (let i = 0; i < muestra; i++) h += '<tr>' + nombres.map((nom, j) => celda(tiposElegidos[nom] || inferidos[j].tipo, columnas[nom][i])).join('') + '</tr>';
-          c.querySelector('.imp-vista').innerHTML = h + '</tbody></table>' + (n > muestra ? `<p class="small muted">${T('… y {k} filas más.', { k: (n - muestra).toLocaleString('es-MX') })}</p>` : '');
+          c.querySelector('.imp-vista').innerHTML = h + '</tbody></table>' + (n > muestra ? `<p class="small muted">${T('… y {k} filas más.', { k: (n - muestra).toLocaleString(SP.LOCAL) })}</p>` : '');
         };
         c.addEventListener('change', e => {
           const k = e.target.dataset.op, t = e.target.dataset.tipo;
@@ -396,7 +396,7 @@
           try {
             filas = SP.expresiones.filtrar(h, t);
             vista.className = 'fi-vista small msg ' + (filas.length ? 'msg-success' : 'msg-warning');
-            vista.textContent = T('Pasan {k} de {n} filas.', { k: filas.length.toLocaleString('es-MX'), n: h.n.toLocaleString('es-MX') });
+            vista.textContent = T('Pasan {k} de {n} filas.', { k: filas.length.toLocaleString(SP.LOCAL), n: h.n.toLocaleString(SP.LOCAL) });
           } catch (e) { vista.className = 'fi-vista small msg msg-error'; vista.textContent = e.message + (e.arreglo ? ' ' + e.arreglo : ''); }
         };
         area.addEventListener('input', evaluar);
@@ -447,7 +447,7 @@
           r = SP.reformar.aAncha(crudos(), { ids, clave: d.el.querySelector('#reClaveA').value, valor: d.el.querySelector('#reValorA').value });
           conservar(ids);
         }
-        ui().cargar(SP.hoja.crear({ nombres: r.nombres, columnas: r.columnas, tipos }), T('Tabla en forma {f}', { f: dir }), true);
+        ui().cargar(SP.hoja.crear({ nombres: r.nombres, columnas: r.columnas, tipos }), T('Tabla en forma {f}', { f: dir === 'larga' ? T('larga') : T('ancha') }), true);
         L() && L().toast(T('Tabla nueva de {n} filas; «Volver a la tabla anterior» la regresa.', { n: r.columnas[r.nombres[0]].length }), { type: 'success' });
       } }],
       alAbrir(d) {

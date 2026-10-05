@@ -8,6 +8,7 @@
 <meta name="theme-color" content="#111111">
 <link rel="apple-touch-icon" href="iconos/sigmapro-192.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ctext x='16' y='24' font-family='system-ui,sans-serif' font-size='22' font-weight='800' text-anchor='middle' fill='%23D4A848'%3E%CE%A3%3C/text%3E%3C/svg%3E">
+<script>/* idioma antes de cargar el núcleo: ?lang=en|es o el que se eligió; el catálogo inglés solo si hace falta */ (function () { var l = 'es'; try { var q = new URLSearchParams(location.search).get('lang'); if (q === 'en' || q === 'es') localStorage.setItem('sigmapro.idioma', q); l = localStorage.getItem('sigmapro.idioma') === 'en' ? 'en' : 'es'; } catch (e) { l = /[?&]lang=en/.test(location.search) ? 'en' : 'es'; } document.documentElement.lang = l; if (l === 'en') document.write('<script src="js/i18n/en.js"><\/script>'); })();</script>
 <script>/* tema antes de pintar, para que no parpadee */ try { var t = localStorage.getItem('sigmapro.theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
 <link rel="stylesheet" href="css/labg-base.css">
 <link rel="stylesheet" href="css/sigma.css">
@@ -22,6 +23,9 @@
         <span class="brand-sub">· estadística para la investigación agronómica y biológica</span></a>
       <div class="top-tools">
         <a class="suite-link" id="suiteLink" href="https://luisangelbg.github.io/" title="Volver al portal de la LABG Suite"><span class="suite-text">LABG Suite</span></a>
+        <div class="seg lang-seg" role="group" aria-label="Idioma / Language">
+          <button type="button" data-lang="es" title="Español" lang="es">ES</button><button type="button" data-lang="en" title="English" lang="en">EN</button>
+        </div>
         <button type="button" class="icon-btn theme-btn" id="themeBtn" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar entre tema claro y oscuro">
           <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
           <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
@@ -445,6 +449,7 @@
 <script src="js/generado/validacion.js"></script>
 <script src="js/generado/comprobaciones.js"></script>
 <!-- interfaz -->
+<script src="js/interfaz/idioma.js"></script>
 <script src="js/interfaz/app.js"></script>
 <script src="js/interfaz/validacion.js"></script>
 <script src="js/interfaz/ui.js"></script>

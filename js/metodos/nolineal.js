@@ -54,7 +54,7 @@ SP.definir('metodos-nolineal', function (SP) {
     bc5: BC, bc4: BC,
   };
   const sentidoDe = (modelo, par) => (SENTIDO_MODELO[modelo] || {})[par] || SENTIDO[par] || '';
-  const NOMBRE_DER = { inflexion: T('Punto de inflexión'), DE10: 'DE10', DE50: 'DE50', DE90: 'DE90', dosis_optima: T('Dosis óptima'), meseta: T('Valor en la meseta'),
+  const NOMBRE_DER = { inflexion: T('Punto de inflexión'), DE10: T('DE10'), DE50: T('DE50'), DE90: T('DE90'), dosis_optima: T('Dosis óptima'), meseta: T('Valor en la meseta'),
     dosis_maxima: T('Dosis de máxima respuesta (hormesis)'), respuesta_maxima: T('Respuesta máxima'), dosis_economica: T('Dosis económica óptima'), respuesta_economica: T('Respuesta en la dosis económica') };
   const SOLO_POSITIVA = new Set(['ll4', 'll3', 'bc5', 'bc4', 'mm2', 'mm3']);
 

@@ -87,7 +87,7 @@
       const items = metodos.length
         ? metodos.map(m => `<li><button type="button" class="ana-item${m.id === estado.metodo ? ' activo' : ''}" data-metodo="${esc(m.id)}" aria-pressed="${m.id === estado.metodo}" title="${esc(m.resumen)}"><b>${esc(m.nombre)}</b></button></li>`).join('')
         : `<li><span class="ana-item pronto"><b>${esc(T('Pronto'))}</b><span class="pill gris">${esc(T('Hito {h}', { h: HITO[f.id] || '' }))}</span></span></li>`;
-      return `<li class="ana-familia"><p class="ana-fam-titulo">${esc(T(f.nombre))}</p><ul>${items}</ul></li>`;
+      return `<li class="ana-familia"><p class="ana-fam-titulo">${esc(f.nombre)}</p><ul>${items}</ul></li>`;
     }).join('');
   }
 
@@ -491,7 +491,7 @@
   /** Lo que significa cada efecto aleatorio, en palabras. */
   function explicarAleatorio(a) {
     const g = a.agrupan, pend = a.variables.filter(v => v !== '1' && v !== '0');
-    const quien = a.grupos.includes('/') ? T('{b} dentro de {a}', { a: g[0], b: g.slice(1).join(' dentro de ') }) : a.grupos.includes(':') ? T('cada combinación {g}', { g: g.join(' × ') }) : g[0];
+    const quien = a.grupos.includes('/') ? T('{b} dentro de {a}', { a: g[0], b: g.slice(1).join(T(' dentro de ')) }) : a.grupos.includes(':') ? T('cada combinación {g}', { g: g.join(' × ') }) : g[0];
     if (!pend.length) return a.grupos.includes('/') ? T('efecto aleatorio de {a} y de {q}: cada uno tiene su propio nivel medio.', { a: g[0], q: quien }) : T('cada nivel de {q} tiene su propio nivel medio (intercepto aleatorio).', { q: quien });
     return T('la pendiente de {v} cambia en cada {q}{c}.', { v: pend.join(', '), q: quien, c: a.doble ? T(', sin correlación con el intercepto') : /^\s*0\s*\+/.test(a.expr) ? '' : T(', correlacionada con su intercepto') });
   }
@@ -1435,7 +1435,7 @@
     const rec = rep.recomendaciones;
     $('#anaResultado').innerHTML =
       `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('modelo {m} · n = {n} · calculado en {ms} ms', { m: r.formula, n: r.n, ms: Math.max(1, Math.round(ms)) }))}</span>${botonReporte()}</div>` +
-      semaforoHTML(rep.semaforo, r.global, T({ verde: 'Los supuestos se cumplen', ambar: 'Hay supuestos que revisar', rojo: 'Hay supuestos que no se cumplen', gris: 'Sin datos suficientes' }[r.global]), T('Semáforo de los supuestos')) +
+      semaforoHTML(rep.semaforo, r.global, ({ verde: T('Los supuestos se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[r.global]), T('Semáforo de los supuestos')) +
       (rec.length ? `<div class="callout exp-conclusion"><p><b>${esc(T('Qué hacer'))}</b></p><ul class="ana-rec">${rec.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '') +
       (r.excluidas ? `<p class="small muted">${esc(T('{k} filas con algún valor faltante en el modelo no entran.', { k: r.excluidas }))}</p>` : '') +
       graficasSupuestos(r) +
@@ -2083,7 +2083,7 @@
     $('#anaResultado').innerHTML =
       `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span>${botonReporte()}</div>` +
       `<div class="callout exp-conclusion">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` +
-      (global ? semaforoHTML(sem, global, T({ verde: 'Los supuestos de la prueba se cumplen', ambar: 'Hay supuestos que revisar', rojo: 'Hay supuestos que no se cumplen', gris: 'Sin datos suficientes' }[global]), T('Semáforo de los supuestos')) : '') +
+      (global ? semaforoHTML(sem, global, ({ verde: T('Los supuestos de la prueba se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[global]), T('Semáforo de los supuestos')) : '') +
       graficasHTML(graficaMetodo(r)) +
       (r.diseno && !r.tipo && r.factores && r.factores.length ? `<div class="btn-row exp-acciones"><button type="button" class="btn btn-primary btn-sm" data-accion="comparar">${esc(T('Comparar las medias de este diseño'))}</button></div>` : '') +
       botonesModelo(r) +

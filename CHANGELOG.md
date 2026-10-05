@@ -2,6 +2,25 @@
 
 ## Sin publicar
 
+### Hito 4.5 · Interfaz en inglés (4 oct 2026)
+
+- **Español e inglés**: el selector ES | EN de la barra cambia el idioma de toda la app (se guarda el trabajo y se
+  recarga); también `?lang=en` en la dirección. El idioma elegido se recuerda en el navegador. Español por omisión.
+- Catálogo inglés de 5,848 textos (`js/i18n/en.js`, que solo se carga con la interfaz en
+  inglés): controles, mensajes, resultados, conclusiones, semáforos, párrafos del informe con sus citas y referencias
+  en el estilo APA inglés, las figuras, el asistente, el constructor, los datos de ejemplo y el bloque de validación.
+  El hilo de cálculo recibe el mismo catálogo.
+- Textos que estaban fijos en español ahora pasan por la traducción: «dentro de» de los efectos aleatorios, las celdas
+  imputadas, los ejes del AMMI y del GGE (PC1, PC2), las DE (ED10, ED50, ED90), el nivel de la heredabilidad, la forma
+  de la tabla, las listas («y»), las comillas de los nombres de columnas («x» → “x”), las fechas y los números
+  (es-MX o en-US), el idioma del reporte HTML y del Word, los nombres de las familias del catálogo, de los diseños y
+  de las comparaciones en el informe y los hitos.
+- `tests/idioma.mjs` (también en `tests/pruebas.ps1`): cada texto del código, de la página y de los ejemplos tiene su
+  traducción con los mismos marcadores; 809 casos dan exactamente los mismos 71,548
+  números en español y en inglés, y al armar sus reportes, párrafos y código R en inglés no queda ningún texto sin
+  traducir. La auditoría de accesibilidad se puede correr en inglés (`SIGMAPRO_AA_IDIOMA=en`).
+- Quedan en español: los comentarios del código R equivalente y el manual de usuario.
+
 ### 0.4.0 · Hito 4.4 · El asistente reconoce las parcelas; cierre de los cálculos de la Fase 4 (4 oct 2026)
 
 - **Asistente**: cuando una columna identifica las parcelas (parcela, subparcela, franja…), reconoce en los datos las

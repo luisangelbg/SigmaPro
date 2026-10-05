@@ -1,6 +1,6 @@
 # Pendientes de SigmaPro
 
-Estado tras los cálculos de la Fase 4 (Hitos 4.0 a 4.4, versión 0.4.0, 4 de octubre de 2026; plan en [`propuesta/FASE4.md`](../propuesta/FASE4.md)), la ampliación de la Fase 3 (Hito 3.9) y los arreglos hallados al escribir el manual (0.3.3). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
+Estado tras la Fase 4 (Hitos 4.0 a 4.4, versión 0.4.0, y la interfaz en inglés del Hito 4.5, 4 de octubre de 2026; plan en [`propuesta/FASE4.md`](../propuesta/FASE4.md)), la ampliación de la Fase 3 (Hito 3.9) y los arreglos hallados al escribir el manual (0.3.3). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
 que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA.md`](../propuesta/PROPUESTA.md) §12).
 
 ## Antes de publicar
@@ -16,6 +16,8 @@ que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA
   PDF (pasos en [`manual/LEEME.md`](../manual/LEEME.md)) para que las pantallas digan 1.0.0. El manual describe la versión 0.3.3:
   le faltan las novedades de la Fase 4 (no lineal, multiambiente, superficies, mezclas, deseabilidad, generalizados y el
   asistente que reconoce las parcelas).
+- **Inglés**: la interfaz es bilingüe desde el Hito 4.5; quedan en español los comentarios del código R equivalente
+  (unos 260 fragmentos dentro del código de los métodos) y el manual de usuario.
 - **Publicación**: repositorio en GitHub, GitHub Pages (ahí funciona el servicio sin conexión), su ficha en el
   catálogo del portal de la suite y registro en Zenodo con DOI.
 - **INDAUTOR**: el ejemplar se arma solo con el código propio (núcleo, métodos, interfaz y exportadores). Los módulos

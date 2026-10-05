@@ -23,7 +23,8 @@ import { guardar } from '../lib/comprobaciones.mjs';
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const RAIZ = join(AQUI, '..', '..');
-const URL_APP = pathToFileURL(join(RAIZ, 'index.html')).href + '#b1';
+/* SIGMAPRO_AA_IDIOMA=en: la misma auditoría con la interfaz en inglés (los textos cambian de largo) */
+const URL_APP = pathToFileURL(join(RAIZ, 'index.html')).href + (process.env.SIGMAPRO_AA_IDIOMA === 'en' ? '?lang=en' : '') + '#b1';
 const AUDITOR = [process.env.SIGMAPRO_AUDITOR, join(RAIZ, '..', 'LABG-Design', 'labg-audit.ps1')].filter(Boolean).find(p => existsSync(p));
 const filtro = process.argv[2] || '';
 const ESC = JSON.parse(readFileSync(join(AQUI, 'escenarios.json'), 'utf8'));

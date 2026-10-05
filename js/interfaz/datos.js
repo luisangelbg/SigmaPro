@@ -107,8 +107,8 @@
     let falt = 0;
     for (let j = 0; j < h.p; j++) falt += h.faltantes(j);
     $('#datEstado').textContent = [
-      T('{n} filas', { n: h.n.toLocaleString('es-MX') }), T('{p} columnas', { p: h.p }),
-      falt ? T('{k} celdas faltantes', { k: falt.toLocaleString('es-MX') }) : T('sin faltantes'),
+      T('{n} filas', { n: h.n.toLocaleString(SP.LOCAL) }), T('{p} columnas', { p: h.p }),
+      falt ? T('{k} celdas faltantes', { k: falt.toLocaleString(SP.LOCAL) }) : T('sin faltantes'),
       estado.origen,
     ].filter(Boolean).join(' · ');
   }
@@ -159,10 +159,10 @@
   function menuEjemplos(boton) {
     const lista = window.SP_EJEMPLOS || [];
     SP.ui.menu(boton, lista.map(e => ({
-      texto: e.nombre, descripcion: e.descripcion,
+      texto: T(e.nombre), descripcion: T(e.descripcion),
       accion: () => {
         const leido = SP.csv.leerColumnas(e.csv, { delimitador: ',', decimal: '.' });
-        cargar(SP.hoja.crear({ nombres: leido.nombres, columnas: leido.columnas, tipos: e.tipos }), T('Ejemplo: {e}', { e: e.nombre }));
+        cargar(SP.hoja.crear({ nombres: leido.nombres, columnas: leido.columnas, tipos: e.tipos }), T('Ejemplo: {e}', { e: T(e.nombre) }));
       },
     })), { etiqueta: T('Datos de ejemplo') });
   }

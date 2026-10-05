@@ -71,7 +71,7 @@ SP.definir('metodos-muestreo', function (SP) {
       if (m) mapa.set(m[1].trim(), +m[2]);
     }
     const faltan = niveles.filter(l => !(mapa.get(l) > 0));
-    exigir(!faltan.length, T('Falta el tamaño de la población de {l}.', { l: faltan.map(l => '«' + l + '»').join(', ') }), T('Escribe cada estrato con su tamaño, como «{e}=120; …».', { e: niveles[0] }));
+    exigir(!faltan.length, T('Falta el tamaño de la población de {l}.', { l: faltan.map(l => SP.comillas(l)).join(', ') }), T('Escribe cada estrato con su tamaño, como «{e}=120; …».', { e: niveles[0] }));
     return niveles.map(l => mapa.get(l));
   }
   function calcularEstr(tabla, e, op) {

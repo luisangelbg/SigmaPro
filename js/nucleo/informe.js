@@ -215,7 +215,13 @@ SP.definir('informe', function (SP) {
     box1970: 'Box y Pierce, 1970', ljung1978: 'Ljung y Box, 1978', kendall1983: 'Kendall y Stuart, 1983', mann1945: 'Mann, 1945', kendall1975: 'Kendall, 1975', sen1968: 'Sen, 1968', pohlert2023: 'Pohlert, 2023',
     pillai1955: 'Pillai, 1955', wilks1932: 'Wilks, 1932', hotelling1951: 'Hotelling, 1951', roy1953: 'Roy, 1953', fisher1936: 'Fisher, 1936', box1949: 'Box, 1949', box1976: 'Box y Jenkins, 1976', gardner1980: 'Gardner et al., 1980',
   };
-  const referencia = k => (REF[k] ? REF[k]() : '');
+  /** En inglés, las citas y las referencias en el estilo APA inglés: «and» y «&» entre autores, «2nd ed.», «In», «[R package]». */
+  const ORD = { 2: '2nd', 3: '3rd', 4: '4th', 5: '5th', 6: '6th', 7: '7th', 8: '8th' };
+  const refIdioma = s => (SP.IDIOMA !== 'en' ? s : s.replace(/^([^(]*?) y /, '$1, & ').replace(/\((\d)\.ª ed\.\)/g, (m, d) => '(' + (ORD[d] || d + 'th') + ' ed.)')
+    .replace(/\. En ([^(]*?) y /, '. In $1, & ').replace(/\. En /, '. In ').replace(/\[Tesis doctoral\]/, '[Doctoral dissertation]').replace(/\[Programa de cómputo\]/, '[Computer software]')
+    .replace(/\[paquete de R\]/, '[R package]').replace(/\(versión /, '(version ').replace('SigmaPro: estadística para la investigación agronómica y biológica', 'SigmaPro: Statistics for agronomic and biological research'));
+  const citaDe = k => (SP.IDIOMA === 'en' ? String(CITA[k] || '').replace(/ y /g, ' and ').replace(/ y col\./g, ' et al.') : CITA[k]);
+  const referencia = k => (REF[k] ? refIdioma(REF[k]()) : '');
   /* Encuentra en un texto las obras de CITA, escritas como las escriben los métodos: «Landis y Koch (1977)»,
      «(Cochran y Cox, 1957)», «Holland y col. 2003», «Brown, Cai y DasGupta (2001)», «Agresti-Coull (1998)». Para cada
      obra, el primer apellido y el año; entre ellos, lo que corresponde a uno, dos o más autores (uno solo no acepta un
@@ -227,7 +233,7 @@ SP.definir('informe', function (SP) {
     if (!patrones) patrones = Object.entries(CITA).map(([k, c]) => {
       const i = c.lastIndexOf(', '), autores = c.slice(0, i), anio = escRE(c.slice(i + 2)), primero = escRE(autores.split(/[ ,]/)[0]);
       const medio = / et al\.$/.test(autores) ? '(?: y col\\.| et al\\.|,[^;()0-9]{1,60}?)'
-        : / y /.test(autores) ? '(?: y |-)' + escRE(autores.split(' y ').pop()) : '';
+        : / y /.test(autores) ? '(?: y | and | & |-)' + escRE(autores.split(' y ').pop()) : '';
       return [k, new RegExp('(?<![\\p{L}])' + primero + medio + '\\s?,?\\s?\\(?' + anio + '(?![0-9a-z])', 'u')];
     });
     for (const [k, re] of patrones) if (re.test(texto)) citas.add(k);
@@ -238,15 +244,15 @@ SP.definir('informe', function (SP) {
   const gl = g => (Number.isInteger(g) ? String(g) : F.fijo(g, 2));
   const fp = p => (!Number.isFinite(p) ? 'p = —' : p < 0.001 ? 'p < 0.001' : 'p = ' + F.fijo(p, 3));
   const pct = (x, d) => F.fijo(x, d === undefined ? 1 : d);
-  const y = xs => (xs.length <= 1 ? (xs[0] || '') : xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1]);
+  const y = xs => (xs.length <= 1 ? (xs[0] || '') : xs.slice(0, -1).join(', ') + T(' y ') + xs[xs.length - 1]);
   const ic = (a, nivel, fmt) => (Array.isArray(a) && (Number.isFinite(a[0]) || Number.isFinite(a[1])) ? T('IC {n} %: {a} a {b}', { n: Math.round(100 * (nivel || 0.95)), a: (fmt || s4)(a[0]), b: (fmt || s4)(a[1]) }) : '');
   const entre = s => (s ? ' (' + s + ')' : '');
   const minuscula = s => (s ? s.charAt(0).toLowerCase() + s.slice(1) : s);
   /* cita narrativa: «Satterthwaite (1946)» */
-  const narrativa = (k, citas) => { citas.add(k); const c = CITA[k] || ''; const i = c.lastIndexOf(', '); return i > 0 ? c.slice(0, i) + ' (' + c.slice(i + 2) + ')' : c; };
+  const narrativa = (k, citas) => { citas.add(k); const c = citaDe(k) || ''; const i = c.lastIndexOf(', '); return i > 0 ? c.slice(0, i) + ' (' + c.slice(i + 2) + ')' : c; };
   const lista = v => [].concat(v || []).filter(Boolean);
   const fin = s => (s && !/[.!?]$/.test(s.trim()) ? s.trim() + '.' : (s || '').trim());
-  const cita = (claves, citas) => { claves.forEach(k => citas.add(k)); return claves.map(k => CITA[k]).join('; '); };
+  const cita = (claves, citas) => { claves.forEach(k => citas.add(k)); return claves.map(citaDe).join('; '); };
   const cuadroDe = (rep, id) => (rep && rep.cuadros ? rep.cuadros.find(c => c.id === id || c.id.startsWith(id)) : null);
 
   /** Frases del ANOVA a partir de su cuadro: cada término con su F contra el error de su estrato (la fila «Error…»
@@ -276,17 +282,17 @@ SP.definir('informe', function (SP) {
   const oracion = frases => (frases.length ? fin(may(frases.join('; '))) : '');
 
   const DISENOS = {
-    dca: 'completamente al azar', dbca: 'de bloques completos al azar', 'cuadro-latino': 'en cuadro latino', 'parcelas-divididas': 'de parcelas divididas',
-    'parcelas-subdivididas': 'de parcelas subdivididas', franjas: 'de parcelas en franjas', bib: 'de bloques incompletos balanceados', latice: 'en látice',
+    dca: T('completamente al azar'), dbca: T('de bloques completos al azar'), 'cuadro-latino': T('en cuadro latino'), 'parcelas-divididas': T('de parcelas divididas'),
+    'parcelas-subdivididas': T('de parcelas subdivididas'), franjas: T('de parcelas en franjas'), bib: T('de bloques incompletos balanceados'), latice: T('en látice'),
   };
   const COMPARACION = {
-    tukey: ['la prueba de Tukey', ['tukey1949']], dms: ['la diferencia mínima significativa de Fisher', []], duncan: ['la prueba de rango múltiple de Duncan', ['duncan1955']],
-    snk: ['la prueba de Student-Newman-Keuls', []], scheffe: ['el método de Scheffé', ['scheffe1953']], bonferroni: ['pruebas t con la corrección de Bonferroni', []],
-    sidak: ['pruebas t con la corrección de Šidák', ['sidak1967']], holm: ['pruebas t con el ajuste de Holm', ['holm1979']], dunnett: ['la prueba de Dunnett contra el testigo', ['dunnett1955']],
-    'games-howell': ['la prueba de Games-Howell', ['games1976']],
+    tukey: [T('la prueba de Tukey'), ['tukey1949']], dms: [T('la diferencia mínima significativa de Fisher'), []], duncan: [T('la prueba de rango múltiple de Duncan'), ['duncan1955']],
+    snk: [T('la prueba de Student-Newman-Keuls'), []], scheffe: [T('el método de Scheffé'), ['scheffe1953']], bonferroni: [T('pruebas t con la corrección de Bonferroni'), []],
+    sidak: [T('pruebas t con la corrección de Šidák'), ['sidak1967']], holm: [T('pruebas t con el ajuste de Holm'), ['holm1979']], dunnett: [T('la prueba de Dunnett contra el testigo'), ['dunnett1955']],
+    'games-howell': [T('la prueba de Games-Howell'), ['games1976']],
   };
-  const AJUSTE = { holm: ['el método de Holm', ['holm1979']], bonferroni: ['la corrección de Bonferroni', []], BH: ['el método de Benjamini y Hochberg', ['benjamini1995']], none: ['ningún ajuste', []] };
-  const POSTHOC = { dunn: ['la prueba de Dunn', ['dunn1964']], conover: ['la prueba de Conover-Iman', ['conover1979']], nemenyi: ['la prueba de Nemenyi', ['nemenyi1963']], wilcoxon: ['pruebas de Wilcoxon pareadas', ['wilcoxon1945']] };
+  const AJUSTE = { holm: [T('el método de Holm'), ['holm1979']], bonferroni: [T('la corrección de Bonferroni'), []], BH: [T('el método de Benjamini y Hochberg'), ['benjamini1995']], none: [T('ningún ajuste'), []] };
+  const POSTHOC = { dunn: [T('la prueba de Dunn'), ['dunn1964']], conover: [T('la prueba de Conover-Iman'), ['conover1979']], nemenyi: [T('la prueba de Nemenyi'), ['nemenyi1963']], wilcoxon: [T('pruebas de Wilcoxon pareadas'), ['wilcoxon1945']] };
   const SC = t => ['', 'I', 'II', 'III'][Number(t) || 3];
 
   /* ---------------- párrafo por familia ---------------- */
@@ -759,7 +765,7 @@ SP.definir('informe', function (SP) {
   /** Regresión no lineal (núcleo JS). */
   function noLineal(r, citas) {
     const NL = SP.metodosNoLineal, A = r.ajuste, G = r.niveles.length;
-    const nom = z => { const n = NL.NOMBRE_DER[z]; return /^DE\d/.test(n) ? n : n.charAt(0).toLowerCase() + n.slice(1); };
+    const nom = z => { const n = NL.NOMBRE_DER[z]; return /^(DE|ED)\d/.test(n) ? n : n.charAt(0).toLowerCase() + n.slice(1); };
     const ref = r.modelo.startsWith('ll') ? ['seefeldt1995', 'ritz2015'] : r.modelo.startsWith('bc') ? ['brain1989', 'ritz2015'] : r.modelo.startsWith('mm') ? ['michaelis1913']
       : /meseta/.test(r.modelo) ? ['cerrato1990'] : ['archontoulis2015'];
     const perfil = r.intervalo === 'perfil', econ = r.derivados.some(z => z.nombre === 'dosis_economica');
@@ -912,13 +918,13 @@ SP.definir('informe', function (SP) {
     if (id === 'manova') {
       const nombre = { pillai: 'Pillai', wilks: 'Wilks', hotelling: 'Hotelling-Lawley', roy: 'Roy' }[r.prueba];
       const met = T('Las respuestas {y} se analizaron en conjunto con un análisis de varianza multivariado (MANOVA){d}, con la traza de {n} ({c}) y sumas de cuadrados secuenciales; después, cada respuesta con su ANOVA.',
-        { y: y(r.respuestas.map(v => '«' + v + '»')), d: r.bloque ? T(' en bloques') : '', n: nombre, c: cita([{ pillai: 'pillai1955', wilks: 'wilks1932', hotelling: 'hotelling1951', roy: 'roy1953' }[r.prueba]], citas) });
+        { y: y(r.respuestas.map(v => SP.comillas(v))), d: r.bloque ? T(' en bloques') : '', n: nombre, c: cita([{ pillai: 'pillai1955', wilks: 'wilks1932', hotelling: 'hotelling1951', roy: 'roy1953' }[r.prueba]], citas) });
       const res = r.terminos.filter(t => t.pruebas).map(t => { const x = t.pruebas[r.prueba]; return T('{t}: {n} = {v}, F({a}, {b}) = {f}, {p}', { t: t.termino, n: nombre, v: n3(x.estadistico), a: gl(x.gl1), b: gl(x.gl2), f: n2(x.F), p: fp(x.p) }); });
       return { metodos: met, resultados: T('Resultados de la MANOVA: {l}.', { l: res.join('; ') }) + box };
     }
     const pct = x => F.fijo(100 * x, 1);
     return { metodos: T('Los grupos de «{g}» se describieron con {v} mediante un análisis discriminante lineal ({c}) con previas iguales a las proporciones de los grupos, como lda de MASS ({m}); la clasificación se evaluó con validación cruzada dejando uno fuera.',
-      { g: r.grupo, v: y(r.variables.map(v => '«' + v + '»')), c: cita(['fisher1936'], citas), m: cita(['venables2002'], citas) }),
+      { g: r.grupo, v: y(r.variables.map(v => SP.comillas(v))), c: cita(['fisher1936'], citas), m: cita(['venables2002'], citas) }),
       resultados: T('La primera función discriminante explicó el {a} % de la separación entre grupos; con validación cruzada se clasificó correctamente el {b} % de las unidades.', { a: pct(r.proporcion[0]), b: pct(r.acierto_cv) }) + box };
   }
   function series(id, r, citas) {
@@ -1049,7 +1055,7 @@ SP.definir('informe', function (SP) {
     const motor = (items || []).map(it => it && it.r && it.r.versiones).find(x => x && x.R);
     return {
       texto: T('Los análisis se hicieron con SigmaPro {v} ({c}), cuyos cálculos se validan contra R{r} ({rc}){k} con una tolerancia de 1 × 10⁻⁶.', {
-        v: SP.VERSION, c: CITA.sigmapro, r: rv ? ' ' + rv : '', rc: CITA.rcore, k: casos ? T(' en {n} casos de prueba', { n: casos.toLocaleString('es-MX') }) : '' }) +
+        v: SP.VERSION, c: CITA.sigmapro, r: rv ? ' ' + rv : '', rc: CITA.rcore, k: casos ? T(' en {n} casos de prueba', { n: casos.toLocaleString(SP.LOCAL) }) : '' }) +
         (motor ? ' ' + T('Los análisis con paquetes de R se calcularon en R {r} dentro del propio navegador (webR {w}).', { r: motor.R, w: SP.motorR ? SP.motorR.CONFIG.version : '' }) : ''),
       citas: ['sigmapro', 'rcore'],
     };
@@ -1064,7 +1070,7 @@ SP.definir('informe', function (SP) {
   function bloques(items, opciones) {
     const o = Object.assign({ titulo: T('Reporte de análisis estadístico'), autor: '', conCodigo: true, conDetalles: true }, opciones || {});
     const out = [], citas = new Set();
-    const fecha = (o.fecha || new Date()).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+    const fecha = (o.fecha || new Date()).toLocaleDateString(SP.LOCAL, { day: 'numeric', month: 'long', year: 'numeric' });
     out.push({ tipo: 'titulo', texto: o.titulo });
     out.push({ tipo: 'subtitulo', texto: T('Reporte LABG de SigmaPro') });
     if (o.autor) out.push({ tipo: 'portada', texto: o.autor });
@@ -1180,7 +1186,7 @@ SP.definir('informe', function (SP) {
         default: return '';
       }
     });
-    return `<!doctype html>\n<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="SigmaPro ${escH(SP.VERSION)}">`
+    return `<!doctype html>\n<html lang="${SP.IDIOMA}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="SigmaPro ${escH(SP.VERSION)}">`
       + `<title>${escH(o.titulo || T('Reporte de análisis estadístico'))}</title><style>${ESTILO.replace(/size: letter/, 'size: ' + (o.hoja === 'a4' ? 'A4' : 'letter'))}</style></head><body><main>${partes.join('\n')}</main></body></html>`;
   }
 

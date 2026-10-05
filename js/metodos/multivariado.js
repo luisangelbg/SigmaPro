@@ -145,7 +145,7 @@ SP.definir('metodos-multivariado', function (SP) {
     const c = [k > 1 ? T('{k} funciones discriminantes: la primera explica el {p} % de la separación entre grupos.', { k, p: pct(r.proporcion[0]) })
       : T('Una función discriminante (con dos grupos, una sola basta para separarlos).'),
       T('Con validación cruzada (dejando uno fuera), el {a} % de las unidades se clasifica en su grupo (el {b} % con los mismos datos del ajuste, que es optimista).', { a: pct(r.acierto_cv), b: pct(r.acierto) })];
-    const top = r.variables.map((v, j) => [v, Math.abs(r.escala[j][0])]).sort((a, b) => b[1] - a[1]).slice(0, 3).map(x => '«' + x[0] + '»');
+    const top = r.variables.map((v, j) => [v, Math.abs(r.escala[j][0])]).sort((a, b) => b[1] - a[1]).slice(0, 3).map(x => SP.comillas(x[0]));
     c.push(T('Las variables con más peso en la primera función: {l} (coeficientes sin estandarizar: comparar solo si las escalas son parecidas).', { l: top.join(', ') }));
     const cuadros = [{ id: 'funciones', titulo: T('Funciones discriminantes'), columnas: [col('f', T('Función'), 'texto'), col('sv', T('Valor singular'), 'forma'), col('p', T('Proporción de la traza'), 'forma')],
       filas: r.sv.map((v, j) => ({ f: 'LD' + (j + 1), sv: v, p: r.proporcion[j] })), notas: [T('La proporción de la traza dice cuánto de la separación entre grupos explica cada función.')] },

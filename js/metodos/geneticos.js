@@ -84,7 +84,7 @@ SP.definir('geneticos', function (SP) {
         T('χ² (RV): razón de verosimilitudes restringidas contra el modelo sin ese componente; p con la mezcla ½χ²₀ + ½χ²₁, porque una varianza no puede ser negativa.')]
         .concat(r.componentes.some(c => c.frontera) ? [T('Un componente en cero quedó en la frontera del espacio de parámetros (su estimación sería negativa): no tiene EE.')] : []).concat(notaExtra || []) };
   }
-  const nivelH = h => (h < 0.3 ? T('baja') : h < 0.6 ? T('media') : T('alta'));
+  const nivelH = h => (h < 0.3 ? T('baja') : h < 0.6 ? T('media@@nivel') : T('alta'));
 
   /* ======================= componentes de varianza ======================= */
   const ESTRUCTURAS = { cruzados: 'Cruzados', anidados: 'Anidados (cada uno dentro de los anteriores)', 'cruzados-interaccion': 'Cruzados, con sus interacciones dobles' };

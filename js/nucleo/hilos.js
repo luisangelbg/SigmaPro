@@ -17,7 +17,8 @@ SP.definir('hilos', function (SP) {
 
   /** Texto que reconstruye el núcleo completo. */
   function fuenteNucleo() {
-    return '(' + SP._base.toString() + ')(self);\n' +
+    /* en inglés, el hilo recibe el mismo catálogo que la página */
+    return (SP.T.catalogo ? 'self.SP_CATALOGO = ' + JSON.stringify(SP.T.catalogo) + ';\n' : '') + '(' + SP._base.toString() + ')(self);\n' +
       SP.fabricas.map(([n, f]) => 'SP.definir(' + JSON.stringify(n) + ', ' + f.toString() + ');').join('\n');
   }
 

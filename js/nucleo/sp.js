@@ -38,16 +38,25 @@
   };
 
   /* ---------------- textos ----------------
-     La interfaz es solo en español. Aun así todo texto visible pasa por SP.T: si un
-     día se quiere otro idioma, basta un catálogo cuya clave sea el texto en español,
-     sin reescribir la app. Las variables van entre llaves: SP.T('{n} filas', { n: 48 }). */
+     Todo texto visible pasa por SP.T con el texto en español como clave; en inglés, el catálogo
+     (js/i18n/en.js deja self.SP_CATALOGO antes de cargar el núcleo; en el hilo de trabajo lo
+     antepone hilos.js) da la traducción. Las variables van entre llaves: SP.T('{n} filas', { n: 48 }).
+     Una palabra que en inglés depende del contexto lleva su contexto tras «@@» ('media@@nivel'):
+     sin catálogo se muestra sin él. */
   SP.T = function (es, vars) {
     const cat = SP.T.catalogo;
     let s = cat && Object.prototype.hasOwnProperty.call(cat, es) ? cat[es] : es;
+    if (s === es && es.indexOf('@@') > 0) s = es.slice(0, es.indexOf('@@'));
+    if (cat && s === es && SP.T.faltantes && !Object.prototype.hasOwnProperty.call(cat, es)) SP.T.faltantes.add(es);   // tests/idioma.mjs
     if (vars) s = s.replace(/\{(\w+)\}/g, (m, k) => (Object.prototype.hasOwnProperty.call(vars, k) ? String(vars[k]) : m));
     return s;
   };
-  SP.T.catalogo = null;
+  SP.T.catalogo = raiz.SP_CATALOGO || null;
+  /** Un nombre (columna, nivel) entre comillas: «x» en español, “x” en inglés. */
+  SP.comillas = x => SP.T('«{c}»', { c: x });
+  /** El idioma de la interfaz ('es' | 'en') y el formato local de fechas y números. */
+  SP.IDIOMA = SP.T.catalogo ? 'en' : 'es';
+  SP.LOCAL = SP.IDIOMA === 'en' ? 'en-US' : 'es-MX';
 
   /* ---------------- errores para la persona usuaria ----------------
      Un ErrorSP lleva el mensaje en lenguaje claro y, aparte, cómo resolverlo. Los

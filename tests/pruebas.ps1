@@ -40,6 +40,9 @@ $codigo = $LASTEXITCODE
 # el codigo R que muestra la app debe correr en R y dar los mismos numeros (se omite si no hay R)
 & $node (Join-Path $tests 'codigo-r.mjs')
 if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
+# la interfaz en ingles: catalogo completo y los mismos numeros en los dos idiomas
+& $node (Join-Path $tests 'idioma.mjs')
+if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
 if (-not $SoloNode) {
   & $node (Join-Path $tests 'navegador.mjs')
   if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }

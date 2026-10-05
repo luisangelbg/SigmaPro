@@ -438,6 +438,19 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
 
+## La interfaz en inglés (Hito 4.5)
+
+- **Catálogo** (`js/i18n/en.js`, 5,848 textos): clave = el texto en español tal como lo pasa el código a
+  `SP.T`; se carga solo en inglés y el hilo de cálculo lo recibe por texto.
+- **`tests/idioma.mjs`**: (1) cada literal de `T()` del código, cada texto fijo de `index.html` y cada nombre y
+  descripción de los ejemplos está en el catálogo, con los mismos marcadores {x}; (2) los 809 casos que corren en
+  el núcleo JS se calculan con el núcleo en español y en inglés y sus 71,548 números son
+  idénticos (ninguna cuenta depende de un texto traducido); (3) con el núcleo en inglés se arman el reporte, el párrafo
+  del informe y el código R de cada caso, y `SP.T` anota cualquier clave que no esté en el catálogo: ninguna.
+- **En el navegador**: se recorrieron los escenarios de accesibilidad con la interfaz en inglés buscando texto en
+  español fuera de los datos; lo que apareció (nombres en mapas que no pasaban por `T()`, comillas, fechas) se
+  corrigió. La auditoría de accesibilidad acepta `SIGMAPRO_AA_IDIOMA=en`.
+
 ## El asistente reconoce las parcelas (Hito 4.4, versión 0.4.0)
 
 - **Regla** (`detectarParcelas` en `js/nucleo/asistente.js`): solo las columnas que se llaman como parcelas (parcela,

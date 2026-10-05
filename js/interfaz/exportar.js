@@ -194,7 +194,7 @@
       const cambiados = v.archivos.filter(a => !a.ok).map(a => a.ruta);
       const cuerpo = (v.ok ? `<p>${esc(T('Las huellas SHA-256 de los {k} archivos coinciden con el manifiesto: el proyecto está tal como se guardó.', { k: v.archivos.length }))}</p>`
         : `<p class="msg msg-warning"><strong>${esc(T('Algunos archivos cambiaron después de guardarse (su huella no coincide): {l}.', { l: cambiados.join(', ') || T('el manifiesto') }))}</strong></p>`) +
-        `<p>${esc(T('Guardado el {f} con SigmaPro {v}: {n} filas, {c} columnas y {k} análisis.', { f: new Date(p.manifiesto.creado).toLocaleString('es-MX'), v: p.manifiesto.version_programa, n: p.hoja.n, c: p.hoja.p, k: (p.reporte.items || []).length }))}</p>` +
+        `<p>${esc(T('Guardado el {f} con SigmaPro {v}: {n} filas, {c} columnas y {k} análisis.', { f: new Date(p.manifiesto.creado).toLocaleString(SP.LOCAL), v: p.manifiesto.version_programa, n: p.hoja.n, c: p.hoja.p, k: (p.reporte.items || []).length }))}</p>` +
         (hayAlgo ? `<p>${esc(T('Abrirlo reemplaza los datos y el reporte actuales.'))}</p>` : '');
       if (v.ok && !hayAlgo) { aplicarProyecto(p); return; }
       SP.ui.dialogo({ titulo: T('Abrir el proyecto «{t}»', { t: p.manifiesto.titulo || archivo.name }), cuerpo, botones: [

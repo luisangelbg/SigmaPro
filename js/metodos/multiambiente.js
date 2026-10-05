@@ -18,7 +18,7 @@ SP.definir('metodos-multiambiente', function (SP) {
   const col = (clave, titulo, formato) => ({ clave, titulo, formato });
   const may = s => s.charAt(0).toUpperCase() + s.slice(1);
   const M = () => SP.multiambiente;
-  const lista = xs => (xs.length <= 1 ? (xs[0] || '') : xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1]);
+  const lista = xs => (xs.length <= 1 ? (xs[0] || '') : xs.slice(0, -1).join(', ') + T(' y ') + xs[xs.length - 1]);
   const NOMBRE = { 'ensayos-multiambiente': T('Ensayo en varios ambientes'), 'dos-etapas': T('Análisis en dos etapas'), estabilidad: T('Estabilidad'), ammi: 'AMMI', gge: T('Biplot GGE') };
 
   function datosDe(tabla, e) {
@@ -121,7 +121,7 @@ SP.definir('metodos-multiambiente', function (SP) {
     const im = r.imputacion;
     if (im) {
       conclusiones.push(T('Se imputaron {k} {c} genotipo × ambiente por EM-AMMI ({e} {x}, {i} vueltas): {l}. Los análisis usan la tabla completa; la interacción pierde un grado de libertad por celda imputada.',
-        { k: im.celdas.length, c: im.celdas.length === 1 ? T('celda vacía') : T('celdas vacías'), e: im.ejes, x: im.ejes === 1 ? T('eje') : T('ejes'), i: im.iteraciones, l: lista(im.celdas.slice(0, 6).map(z => z.genotipo + ' en ' + z.ambiente)) + (im.celdas.length > 6 ? '…' : '') }));
+        { k: im.celdas.length, c: im.celdas.length === 1 ? T('celda vacía') : T('celdas vacías'), e: im.ejes, x: im.ejes === 1 ? T('eje') : T('ejes'), i: im.iteraciones, l: lista(im.celdas.slice(0, 6).map(z => T('{g} en {a}', { g: z.genotipo, a: z.ambiente }))) + (im.celdas.length > 6 ? '…' : '') }));
       const fr = im.celdas.length / (Gn.length * An.length);
       semaforo.push({ nombre: T('Celdas imputadas'), color: fr <= 0.1 ? 'ambar' : 'rojo', texto: T('{k} de {t} celdas ({p} %) se estimaron con EM-AMMI.', { k: im.celdas.length, t: Gn.length * An.length, p: f2(100 * fr) }) });
     }
@@ -245,10 +245,10 @@ SP.definir('metodos-multiambiente', function (SP) {
       cuadros.push({ id: 'valores', titulo: T('Valores singulares'), columnas: [col('k', T('Eje'), 'entero'), col('d', T('Valor singular'), 'sig'), col('p', T('% de G + G × A'), 'forma2')],
         filas: Q.valores.map((d, k) => ({ k: k + 1, d, p: Q.pct[k] })),
         notas: [T('Tabla centrada por ambiente{e}; partición {p}.', { e: r.escala === 'desviacion' ? T(' y dividida por su desviación estándar') : '', p: { simetrica: T('simétrica'), genotipo: T('por genotipo (compara genotipos)'), ambiente: T('por ambiente (compara ambientes)') }[r.particion] })] });
-      cuadros.push({ id: 'ganadores', titulo: T('Quién ganó dónde'), columnas: [col('a', T('Ambiente'), 'texto'), col('g', T('Ganador en el biplot'), 'texto'), col('E1', 'EJE1', 'forma'), col('E2', 'EJE2', 'forma')],
+      cuadros.push({ id: 'ganadores', titulo: T('Quién ganó dónde'), columnas: [col('a', T('Ambiente'), 'texto'), col('g', T('Ganador en el biplot'), 'texto'), col('E1', T('EJE1'), 'forma'), col('E2', T('EJE2'), 'forma')],
         filas: An.map((n, j) => ({ a: n, g: Q.ganador[j], E1: Q.ambientes[j][0], E2: Q.ambientes[j][1] })),
         notas: [T('Ganador: el vértice del polígono con la mayor proyección sobre el vector del ambiente. Vértices: {v}.', { v: lista(Q.vertices) })] });
-      cuadros.push({ id: 'media_estabilidad', titulo: T('Media contra estabilidad'), columnas: [col('g', T('Genotipo'), 'texto'), col('m', T('Media'), 'sig'), col('E1', 'EJE1', 'forma'), col('E2', 'EJE2', 'forma'),
+      cuadros.push({ id: 'media_estabilidad', titulo: T('Media contra estabilidad'), columnas: [col('g', T('Genotipo'), 'texto'), col('m', T('Media'), 'sig'), col('E1', T('EJE1'), 'forma'), col('E2', T('EJE2'), 'forma'),
         col('pr', T('Desempeño (proyección)'), 'forma'), col('pe', T('Inestabilidad (distancia al eje)'), 'forma')],
         filas: orden.map(i => ({ g: Gn[i], m: r.medias[i], E1: Q.genotipos[i][0], E2: Q.genotipos[i][1], pr: Q.proyeccion[i], pe: Q.perpendicular[i] })),
         notas: [T('Ordenados por su proyección sobre el eje del ambiente promedio (Yan y Kang, 2003){o}.', { o: r.objetivo === 'minimo' ? T('; con la menor respuesta como objetivo, la tabla se invirtió') : '' })] });

@@ -380,7 +380,7 @@ SP.definir('asistente', function (SP) {
       const eKM = Object.assign({ tiempo: x.tEvento, evento: x.evento }, x.grupoEv ? { grupo: x.grupoEv } : {});
       const eCox = Object.assign({ tiempo: x.tEvento, evento: x.evento }, x.grupoEv ? { factores: [x.grupoEv] } : {}, x.covEv.length ? { covariables: x.covEv } : {});
       if (x.covEv.length) return Object.assign(base, { metodo: 'cox', e: eCox, op: { empates: 'efron' }, titulo: T('Modelo de riesgos proporcionales de Cox'),
-        resumen: T('El efecto de {v} sobre el riesgo del evento.', { v: [x.grupoEv].filter(Boolean).concat(x.covEv).map(n => '«' + n + '»').join(', ') }),
+        resumen: T('El efecto de {v} sobre el riesgo del evento.', { v: [x.grupoEv].filter(Boolean).concat(x.covEv).map(n => SP.comillas(n)).join(', ') }),
         porque: [T('Con covariables numéricas, Cox da la razón de riesgo de cada una ajustada por las demás, sin suponer una forma para la curva.'), T('Usa las unidades censuradas: saber que una semilla no germinó en 21 días también informa.')],
         despues: [{ texto: T('Las curvas de Kaplan-Meier{g}', { g: x.grupoEv ? T(' por «{g}»', { g: x.grupoEv }) : '' }), metodo: 'kaplan-meier', e: eKM, op: {} }] });
       return Object.assign(base, { metodo: 'kaplan-meier', e: eKM, op: { conf: 'log', rho: 0 }, titulo: T('Curvas de supervivencia (Kaplan-Meier)'),

@@ -89,7 +89,7 @@ respuesta** con el generador de diseños (central compuesto, Box-Behnken, simple
 con intervalos perfilados, la corrección de **Firth** para la separación, la gaussiana inversa y los enlaces de
 potencia, y en los mixtos la gamma, la cuadratura de Gauss-Hermite y la prueba de cada efecto aleatorio; y el
 asistente que **reconoce en los datos las parcelas divididas**, subdivididas y en franjas. En total, 848 casos y
-93 157 valores contra R. Falta la interfaz en inglés (Hito 4.5).
+93 157 valores contra R. Y la **interfaz en inglés** (Hito 4.5): el selector ES | EN de la barra, o `?lang=en`.
 
 Lo que falta para publicar y las fases 2 y 3 están en [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
