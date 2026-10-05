@@ -10,17 +10,17 @@ F_GE2 <- "Olivoto, T. y Lúcio, A. D. (2020), metan; conjunto data_ge2 (13 híbr
 F_PLRV <- "Mendiburu, F. de (2023), agricolae; conjunto plrv (28 clones de papa × 6 localidades × 3 repeticiones, Centro Internacional de la Papa)"
 
 PARTES <- list(
-  "ensayos-multiambiente" = c("genotipos", "ambientes_nombre", "anova", "genotipos_vs_ga", "ambientes", "bartlett", "tabla", "medias", "medias_ambiente", "media_general", "r", "cme", "gle"),
-  estabilidad = c("medias", "indice", "regresion", "eberhart_russell", "wricke", "shukla", "lin_binns"),
-  ammi = c("anova", "ammi"),
-  gge = c("medias", "gge"))
+  "ensayos-multiambiente" = c("genotipos", "ambientes_nombre", "anova", "genotipos_vs_ga", "ambientes", "bartlett", "tabla", "medias", "medias_ambiente", "media_general", "r", "cme", "gle", "imputacion"),
+  estabilidad = c("medias", "indice", "regresion", "eberhart_russell", "wricke", "shukla", "lin_binns", "huehn", "kang", "annicchiarico", "imputacion"),
+  ammi = c("anova", "ammi", "waas", "imputacion"),
+  gge = c("medias", "gge", "imputacion"))
 caso_ma <- function(nombre, objetivo, titulo, fuente, datos, y, rep = "repeticion", opciones = list()) {
-  arg <- c(list(datos, y, "genotipo", "ambiente", rep), opciones[intersect(names(opciones), c("escala", "particion", "objetivo", "eeb"))])
+  arg <- c(list(datos, y, "genotipo", "ambiente", rep), opciones[intersect(names(opciones), c("escala", "particion", "objetivo", "eeb", "ejesImputar", "ejesWaas", "pesoRespuesta", "probAnnicchiarico", "genotipoA", "genotipoB"))])
   r <- do.call(ref_multiambiente, arg)
   esperado <- r[intersect(PARTES[[objetivo]], names(r))]
   ent <- list(respuesta = y, genotipo = "genotipo", ambiente = "ambiente"); if (nzchar(rep)) ent$repeticion <- rep
   sp_caso(nombre, objetivo = objetivo, tipo = "metodo", titulo = titulo, fuente = fuente, clase = "B", datos = datos,
-    entradas = ent, opciones = if (length(opciones)) opciones else NULL, esperado = esperado, paquetes = "stats",
+    entradas = ent, opciones = if (length(opciones)) opciones else NULL, esperado = esperado, paquetes = c("stats", "agricolae", "metan"),
     codigo = sprintf("tapply + lm por ambiente; %s (tests/r/multiambiente.R)", c("ensayos-multiambiente" = "anova(lm(y ~ amb + amb:rep + gen + gen:amb))",
       estabilidad = "lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada", ammi = "svd de la interacción; Gollob y F_R", gge = "svd de la tabla centrada; chull")[[objetivo]]))
 }
@@ -56,3 +56,25 @@ pl <- local({ e <- new.env(); utils::data("plrv", package = "agricolae", envir =
 papa <- data.frame(ambiente = factor(pl$Locality), genotipo = factor(pl$Genotype), repeticion = factor(pl$Rep), rendimiento = pl$Yield)
 caso_ma("papa-ammi", "ammi", "Papa: 28 clones en 6 localidades, AMMI", F_PLRV, papa, "rendimiento")
 caso_ma("papa-estabilidad", "estabilidad", "Papa: estabilidad de 28 clones", F_PLRV, papa, "rendimiento")
+
+# ---- Fase 4 (Hito 4.1): celdas vacías con EM-AMMI, comparación de dos genotipos en el GGE y análisis en dos etapas
+vacias <- avena[!((avena$genotipo == "G1" & avena$ambiente %in% c("E1", "E2")) | (avena$genotipo == "G5" & avena$ambiente == "E7")), ]
+caso_ma("avena-celdas-vacias-conjunto", "ensayos-multiambiente", "Avena con tres celdas genotipo × ambiente vacías: imputación EM-AMMI y análisis conjunto", F_GE, vacias, "rendimiento")
+caso_ma("avena-celdas-vacias-ammi", "ammi", "Avena con celdas vacías: AMMI y WAAS sobre la tabla imputada (la interacción pierde 3 gl)", F_GE, vacias, "rendimiento")
+caso_ma("avena-celdas-vacias-dos-ejes", "estabilidad", "Avena con celdas vacías imputadas con dos ejes: estabilidad, Huehn, Kang y Annicchiarico", F_GE, vacias, "rendimiento", opciones = list(ejesImputar = 2))
+caso_ma("avena-waas-tres-ejes", "ammi", "Avena: WAAS con tres ejes y WAASY con 65 % a la respuesta", F_GE, avena, "rendimiento", opciones = list(ejesWaas = 3, pesoRespuesta = 65))
+caso_ma("avena-gge-ideal-par", "gge", "Avena: genotipo y ambiente ideales y la comparación de G8 con G3 (partición por genotipo)", F_GE, avena, "rendimiento", opciones = list(particion = "genotipo", genotipoA = "G8", genotipoB = "G3"))
+caso_ma("maiz-gge-par-escalado-menor", "gge", "Maíz: comparación de H5 con H11 con la tabla escalada y la menor altura como objetivo", F_GE2, maiz, "altura_mazorca", opciones = list(escala = "desviacion", objetivo = "minimo", genotipoA = "H5", genotipoB = "H11"))
+
+caso_dos <- function(nombre, titulo, fuente, datos, y, rep = "repeticion", opciones = list()) {
+  r <- ref_dos_etapas(datos, y, "genotipo", "ambiente", rep)
+  ent <- list(respuesta = y, genotipo = "genotipo", ambiente = "ambiente"); if (nzchar(rep)) ent$repeticion <- rep
+  sp_caso(nombre, objetivo = "dos-etapas", tipo = "metodo", titulo = titulo, fuente = fuente, clase = "D", datos = datos, entradas = ent,
+    opciones = if (length(opciones)) opciones else NULL, esperado = r[c("ambientes", "celdas", "sigma2_ga", "estimados", "wald")], paquetes = c("stats", "emmeans", "nlme"),
+    codigo = "emmeans en cada ambiente (lm y ~ rep + gen); REML de σ²_GA con V = diag(σ² + v) en R (optimize, comprobada contra nlme::lme con sigma = 1 y varFixed); GLS; Wald de los genotipos")
+}
+caso_dos("avena-dos-etapas", "Avena en 14 ambientes: dos etapas con la varianza de cada media", F_GE, avena, "rendimiento")
+set.seed(92)
+incompleta <- vacias; incompleta$rendimiento[sample(nrow(incompleta), 15)] <- NA
+caso_dos("avena-dos-etapas-incompleta", "Avena con celdas vacías y 15 parcelas perdidas: dos etapas sin imputar", F_GE, incompleta, "rendimiento")
+caso_dos("papa-dos-etapas", "Papa: 28 clones en 6 localidades con errores distintos", F_PLRV, papa, "rendimiento")

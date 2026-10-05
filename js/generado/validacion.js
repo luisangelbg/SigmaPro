@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
  "version": "0.3.3",
- "generado": "2026-10-04T19:01:34.584Z",
+ "generado": "2026-10-04T23:55:16.539Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -11,12 +11,12 @@ window.SP_VALIDACION = {
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
  "resumen": {
-  "casos": 795,
-  "aprobados": 795,
+  "casos": 812,
+  "aprobados": 812,
   "fallidos": 0,
-  "valores": 83645,
+  "valores": 89259,
   "difEscaladaMax": 0.000024564204685412263,
-  "objetivos": 169
+  "objetivos": 170
  },
  "casos": [
   {
@@ -20195,7 +20195,7 @@ window.SP_VALIDACION = {
    "titulo": "Avena: AMMI con Gollob, F_R de Cornelius, puntajes y ASV",
    "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
    "clase": "B",
-   "valores": 383,
+   "valores": 439,
    "difMax": 9.094947017729282e-13,
    "difEscaladaMax": 1.0698055321190836e-13,
    "peor": "ammi.fr.p[1]",
@@ -20207,7 +20207,65 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
+    },
+    "codigo": "tapply + lm por ambiente; svd de la interacción; Gollob y F_R (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "ammi/avena-celdas-vacias-ammi",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "ammi"
+   },
+   "titulo": "Avena con celdas vacías: AMMI y WAAS sobre la tabla imputada (la interacción pierde 3 gl)",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 449,
+   "difMax": 1.7557511000632076e-11,
+   "difEscaladaMax": 1.2580275563268943e-12,
+   "peor": "ammi.ejes.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
+    },
+    "codigo": "tapply + lm por ambiente; svd de la interacción; Gollob y F_R (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "ammi/avena-waas-tres-ejes",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "ammi"
+   },
+   "titulo": "Avena: WAAS con tres ejes y WAASY con 65 % a la respuesta",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 439,
+   "difMax": 9.094947017729282e-13,
+   "difEscaladaMax": 1.0698055321190836e-13,
+   "peor": "ammi.fr.p[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; svd de la interacción; Gollob y F_R (tests/r/multiambiente.R)"
    }
@@ -20221,10 +20279,10 @@ window.SP_VALIDACION = {
    "titulo": "Una media por celda: AMMI sin pruebas",
    "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan; conjunto data_ge2 (13 híbridos de maíz × 4 ambientes × 3 repeticiones)",
    "clase": "B",
-   "valores": 100,
-   "difMax": 2.842170943040401e-14,
-   "difEscaladaMax": 1.768733322789075e-14,
-   "peor": "anova.p[0]",
+   "valores": 158,
+   "difMax": 2.8421709430404007e-13,
+   "difEscaladaMax": 7.424364153765745e-14,
+   "peor": "waas.pct_respuesta[7]",
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -20233,7 +20291,9 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; svd de la interacción; Gollob y F_R (tests/r/multiambiente.R)"
    }
@@ -20247,7 +20307,7 @@ window.SP_VALIDACION = {
    "titulo": "Papa: 28 clones en 6 localidades, AMMI",
    "fuente": "Mendiburu, F. de (2023), agricolae; conjunto plrv (28 clones de papa × 6 localidades × 3 repeticiones, Centro Internacional de la Papa)",
    "clase": "B",
-   "valores": 299,
+   "valores": 419,
    "difMax": 7.275957614183426e-11,
    "difEscaladaMax": 2.8406980700766675e-13,
    "peor": "anova.p[3]",
@@ -20259,9 +20319,39 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; svd de la interacción; Gollob y F_R (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "ensayos-multiambiente/avena-celdas-vacias-conjunto",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "ensayos-multiambiente"
+   },
+   "titulo": "Avena con tres celdas genotipo × ambiente vacías: imputación EM-AMMI y análisis conjunto",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 324,
+   "difMax": 1.7621459846850485e-12,
+   "difEscaladaMax": 7.214049526159393e-13,
+   "peor": "anova.p[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
+    },
+    "codigo": "tapply + lm por ambiente; anova(lm(y ~ amb + amb:rep + gen + gen:amb)) (tests/r/multiambiente.R)"
    }
   },
   {
@@ -20285,7 +20375,9 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; anova(lm(y ~ amb + amb:rep + gen + gen:amb)) (tests/r/multiambiente.R)"
    }
@@ -20311,7 +20403,9 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; anova(lm(y ~ amb + amb:rep + gen + gen:amb)) (tests/r/multiambiente.R)"
    }
@@ -20337,9 +20431,39 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; anova(lm(y ~ amb + amb:rep + gen + gen:amb)) (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "estabilidad/avena-celdas-vacias-dos-ejes",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "estabilidad"
+   },
+   "titulo": "Avena con celdas vacías imputadas con dos ejes: estabilidad, Huehn, Kang y Annicchiarico",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 540,
+   "difMax": 6.016520615048648e-12,
+   "difEscaladaMax": 1.421178548955461e-12,
+   "peor": "eberhart_russell.p[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
+    },
+    "codigo": "tapply + lm por ambiente; lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada (tests/r/multiambiente.R)"
    }
   },
   {
@@ -20351,7 +20475,7 @@ window.SP_VALIDACION = {
    "titulo": "Avena: EE de b con el error combinado (como metan)",
    "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
    "clase": "B",
-   "valores": 194,
+   "valores": 530,
    "difMax": 3.979039320256561e-13,
    "difEscaladaMax": 8.42663202554184e-14,
    "peor": "eberhart_russell.p[4]",
@@ -20363,7 +20487,9 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada (tests/r/multiambiente.R)"
    }
@@ -20377,7 +20503,7 @@ window.SP_VALIDACION = {
    "titulo": "Avena: Eberhart-Russell (EE de b propio), Wricke, Shukla y Lin-Binns",
    "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
    "clase": "B",
-   "valores": 194,
+   "valores": 530,
    "difMax": 3.979039320256561e-13,
    "difEscaladaMax": 8.42663202554184e-14,
    "peor": "eberhart_russell.p[4]",
@@ -20389,7 +20515,9 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada (tests/r/multiambiente.R)"
    }
@@ -20403,10 +20531,10 @@ window.SP_VALIDACION = {
    "titulo": "Avena con parcelas perdidas: estabilidad con r armónica",
    "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
    "clase": "B",
-   "valores": 194,
+   "valores": 530,
    "difMax": 3.979039320256561e-13,
-   "difEscaladaMax": 3.35219696629243e-14,
-   "peor": "eberhart_russell.p[4]",
+   "difEscaladaMax": 4.3854915774767295e-14,
+   "peor": "kang.p[6]",
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -20415,7 +20543,9 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada (tests/r/multiambiente.R)"
    }
@@ -20429,7 +20559,7 @@ window.SP_VALIDACION = {
    "titulo": "Maíz: estabilidad de la altura de mazorca con la menor como objetivo (Lin y Binns)",
    "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan; conjunto data_ge2 (13 híbridos de maíz × 4 ambientes × 3 repeticiones)",
    "clase": "B",
-   "valores": 229,
+   "valores": 447,
    "difMax": 1.4210854715202004e-14,
    "difEscaladaMax": 1.6623353575340803e-14,
    "peor": "eberhart_russell.p[4]",
@@ -20441,7 +20571,9 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada (tests/r/multiambiente.R)"
    }
@@ -20455,10 +20587,10 @@ window.SP_VALIDACION = {
    "titulo": "Una media por celda: estabilidad sin error (sin S²d ni pruebas de Shukla)",
    "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan; conjunto data_ge2 (13 híbridos de maíz × 4 ambientes × 3 repeticiones)",
    "clase": "B",
-   "valores": 164,
-   "difMax": 1.5987211554602254e-14,
-   "difEscaladaMax": 7.549516567451064e-15,
-   "peor": "eberhart_russell.F[3]",
+   "valores": 477,
+   "difMax": 2.842170943040401e-14,
+   "difEscaladaMax": 1.0103029524088925e-14,
+   "peor": "annicchiarico.favorables.de[3]",
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -20467,7 +20599,9 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada (tests/r/multiambiente.R)"
    }
@@ -20481,7 +20615,7 @@ window.SP_VALIDACION = {
    "titulo": "Papa: estabilidad de 28 clones",
    "fuente": "Mendiburu, F. de (2023), agricolae; conjunto plrv (28 clones de papa × 6 localidades × 3 repeticiones, Centro Internacional de la Papa)",
    "clase": "B",
-   "valores": 456,
+   "valores": 1342,
    "difMax": 2.9103830456733704e-10,
    "difEscaladaMax": 1.1905761899375965e-13,
    "peor": "eberhart_russell.p[4]",
@@ -20493,9 +20627,123 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; lm por genotipo sobre el índice; Wricke, Shukla y Lin-Binns en fórmula cerrada (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "dos-etapas/avena-dos-etapas-incompleta",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dos-etapas"
+   },
+   "titulo": "Avena con celdas vacías y 15 parcelas perdidas: dos etapas sin imputar",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "D",
+   "valores": 107,
+   "difMax": 7.460698725481052e-13,
+   "difEscaladaMax": 2.1906734562817378e-14,
+   "peor": "estimados.media[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "nlme": "3.1.166"
+    },
+    "codigo": "emmeans en cada ambiente (lm y ~ rep + gen); REML de σ²_GA con V = diag(σ² + v) en R (optimize, comprobada contra nlme::lme con sigma = 1 y varFixed); GLS; Wald de los genotipos"
+   }
+  },
+  {
+   "id": "dos-etapas/avena-dos-etapas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dos-etapas"
+   },
+   "titulo": "Avena en 14 ambientes: dos etapas con la varianza de cada media",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "D",
+   "valores": 107,
+   "difMax": 3.765876499528531e-13,
+   "difEscaladaMax": 1.1141960994801737e-13,
+   "peor": "wald.p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "nlme": "3.1.166"
+    },
+    "codigo": "emmeans en cada ambiente (lm y ~ rep + gen); REML de σ²_GA con V = diag(σ² + v) en R (optimize, comprobada contra nlme::lme con sigma = 1 y varFixed); GLS; Wald de los genotipos"
+   }
+  },
+  {
+   "id": "dos-etapas/papa-dos-etapas",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dos-etapas"
+   },
+   "titulo": "Papa: 28 clones en 6 localidades con errores distintos",
+   "fuente": "Mendiburu, F. de (2023), agricolae; conjunto plrv (28 clones de papa × 6 localidades × 3 repeticiones, Centro Internacional de la Papa)",
+   "clase": "D",
+   "valores": 121,
+   "difMax": 6.217248937900877e-13,
+   "difEscaladaMax": 2.6867082458872394e-14,
+   "peor": "estimados.media[26]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "emmeans": "1.10.6",
+     "nlme": "3.1.166"
+    },
+    "codigo": "emmeans en cada ambiente (lm y ~ rep + gen); REML de σ²_GA con V = diag(σ² + v) en R (optimize, comprobada contra nlme::lme con sigma = 1 y varFixed); GLS; Wald de los genotipos"
+   }
+  },
+  {
+   "id": "gge/avena-gge-ideal-par",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "gge"
+   },
+   "titulo": "Avena: genotipo y ambiente ideales y la comparación de G8 con G3 (partición por genotipo)",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 173,
+   "difMax": 4.618527782440651e-14,
+   "difEscaladaMax": 2.1371793224034263e-14,
+   "peor": "gge.perpendicular[9]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
+    },
+    "codigo": "tapply + lm por ambiente; svd de la tabla centrada; chull (tests/r/multiambiente.R)"
    }
   },
   {
@@ -20507,7 +20755,7 @@ window.SP_VALIDACION = {
    "titulo": "Avena: GGE simétrico, quién ganó dónde y media contra estabilidad",
    "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan: an R package for multi-environment trial analysis; conjunto data_ge (10 genotipos de avena × 14 ambientes × 3 repeticiones)",
    "clase": "B",
-   "valores": 115,
+   "valores": 143,
    "difMax": 4.618527782440651e-14,
    "difEscaladaMax": 1.3600232051658168e-14,
    "peor": "gge.perpendicular[9]",
@@ -20519,7 +20767,9 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; svd de la tabla centrada; chull (tests/r/multiambiente.R)"
    }
@@ -20533,7 +20783,7 @@ window.SP_VALIDACION = {
    "titulo": "Maíz en 4 ambientes: GGE escalado por ambiente con partición por genotipo",
    "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan; conjunto data_ge2 (13 híbridos de maíz × 4 ambientes × 3 repeticiones)",
    "clase": "B",
-   "valores": 92,
+   "valores": 113,
    "difMax": 5.684341886080802e-14,
    "difEscaladaMax": 8.881784197001252e-15,
    "peor": "gge.genotipos[2][1]",
@@ -20545,7 +20795,9 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; svd de la tabla centrada; chull (tests/r/multiambiente.R)"
    }
@@ -20559,7 +20811,7 @@ window.SP_VALIDACION = {
    "titulo": "Maíz: menor altura de mazorca como objetivo, partición por ambiente",
    "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan; conjunto data_ge2 (13 híbridos de maíz × 4 ambientes × 3 repeticiones)",
    "clase": "B",
-   "valores": 94,
+   "valores": 115,
    "difMax": 2.842170943040401e-14,
    "difEscaladaMax": 3.0588068244412647e-15,
    "peor": "gge.pct[3]",
@@ -20571,7 +20823,37 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
+    },
+    "codigo": "tapply + lm por ambiente; svd de la tabla centrada; chull (tests/r/multiambiente.R)"
+   }
+  },
+  {
+   "id": "gge/maiz-gge-par-escalado-menor",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "gge"
+   },
+   "titulo": "Maíz: comparación de H5 con H11 con la tabla escalada y la menor altura como objetivo",
+   "fuente": "Olivoto, T. y Lúcio, A. D. (2020), metan; conjunto data_ge2 (13 híbridos de maíz × 4 ambientes × 3 repeticiones)",
+   "clase": "B",
+   "valores": 123,
+   "difMax": 1.4210854715202004e-14,
+   "difEscaladaMax": 5.662137425588298e-15,
+   "peor": "gge.genotipos[3][1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "agricolae": "1.3.7",
+     "metan": "1.19.0"
     },
     "codigo": "tapply + lm por ambiente; svd de la tabla centrada; chull (tests/r/multiambiente.R)"
    }
@@ -20847,7 +21129,7 @@ window.SP_VALIDACION = {
    "clase": "D",
    "valores": 117,
    "difMax": 1.1368683772161603e-12,
-   "difEscaladaMax": 4.116961644120597e-14,
+   "difEscaladaMax": 4.8219208297576514e-14,
    "peor": "parametros.p[0]",
    "aprobado": true,
    "error": "",
@@ -20889,6 +21171,32 @@ window.SP_VALIDACION = {
    }
   },
   {
+   "id": "dosis-respuesta/germinacion-pesos-perfil",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dosis-respuesta"
+   },
+   "titulo": "Log-logístico ponderado por el número de semillas de cada caja (un peso cero y un faltante), con perfiles",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 50,
+   "difMax": 3.3822615819190105e-8,
+   "difEscaladaMax": 1.3690304339541253e-8,
+   "peor": "parametros.p[3]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2"
+    },
+    "codigo": "nls(germinacion ~ <modelo ll4 con gradiente analítico>, weights = semillas) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC por perfil (uniroot de τ = ±t con los demás reajustados); método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
    "id": "dosis-respuesta/herbicidas-ll4",
    "objetivo": {
     "tipo": "metodo",
@@ -20912,6 +21220,89 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "nls(peso_seco ~ <modelo ll4 con gradiente analítico> por herbicida) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "dosis-respuesta/lechuga-aic",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dosis-respuesta"
+   },
+   "titulo": "Elección por AIC entre log-logísticos y Brain-Cousens con hormesis",
+   "fuente": "van Ewijk y Hoekstra (1993), Ecotoxicology and Environmental Safety 25: 25-32; conjunto lettuce de drc (Ritz et al. 2015)",
+   "clase": "D",
+   "valores": 83,
+   "difMax": 1.869267407528241e-9,
+   "difEscaladaMax": 1.869267407528241e-9,
+   "peor": "derivados[0].ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "drc": "3.0.1"
+    },
+    "codigo": "cada modelo (ll4, ll3, bc5, bc4) con nls pulido; AIC = −2 log L + 2(p + 1); ΔAIC y pesos de Akaike; el de menor AIC con su ajuste completo"
+   }
+  },
+  {
+   "id": "dosis-respuesta/lechuga-bc4-perfil",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dosis-respuesta"
+   },
+   "titulo": "Brain-Cousens de 4 parámetros con intervalos por verosimilitud perfilada",
+   "fuente": "van Ewijk y Hoekstra (1993), Ecotoxicology and Environmental Safety 25: 25-32; conjunto lettuce de drc (Ritz et al. 2015)",
+   "clase": "D",
+   "valores": 50,
+   "difMax": 1.869267407528241e-9,
+   "difEscaladaMax": 1.869267407528241e-9,
+   "peor": "derivados[0].ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "drc": "3.0.1",
+     "numDeriv": "2016.8.1.1"
+    },
+    "codigo": "nls(peso ~ <modelo bc4 con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC por perfil (uniroot de τ = ±t con los demás reajustados); método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "dosis-respuesta/lechuga-bc5",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "dosis-respuesta"
+   },
+   "titulo": "Brain-Cousens de 5 parámetros (hormesis): DE50, dosis y respuesta máximas",
+   "fuente": "van Ewijk y Hoekstra (1993), Ecotoxicology and Environmental Safety 25: 25-32; conjunto lettuce de drc (Ritz et al. 2015)",
+   "clase": "D",
+   "valores": 56,
+   "difMax": 0.0000018107802404188078,
+   "difEscaladaMax": 8.189064741952187e-8,
+   "peor": "derivados[0].ic[0]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "drc": "3.0.1",
+     "numDeriv": "2016.8.1.1"
+    },
+    "codigo": "nls(peso ~ <modelo bc5 con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
    }
   },
   {
@@ -20946,13 +21337,13 @@ window.SP_VALIDACION = {
     "tipo": "metodo",
     "nombre": "respuesta-meseta"
    },
-   "titulo": "Cuadrático-meseta por híbrido con la prueba de cada parámetro",
+   "titulo": "Cuadrático-meseta por híbrido con la prueba de cada parámetro y la dosis económica",
    "fuente": "Datos sintéticos (generados en este archivo)",
    "clase": "D",
-   "valores": 87,
-   "difMax": 3.410605131648481e-13,
-   "difEscaladaMax": 1.1297958674494277e-13,
-   "peor": "parametros.p[0]",
+   "valores": 111,
+   "difMax": 1.6265744307020213e-10,
+   "difEscaladaMax": 6.616762693312239e-12,
+   "peor": "derivados[3].ee",
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -20961,9 +21352,10 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "numDeriv": "2016.8.1.1"
     },
-    "codigo": "nls(rendimiento ~ <modelo cuadratico-meseta con gradiente analítico> por hibrido) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+    "codigo": "nls(rendimiento ~ <modelo cuadratico-meseta con gradiente analítico> por hibrido) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; dosis económica: f'(x) = 0.005 (D() y uniroot, gradiente de numDeriv); anova(curva común, una por grupo)"
    }
   },
   {
@@ -20976,9 +21368,9 @@ window.SP_VALIDACION = {
    "fuente": "Datos sintéticos (generados en este archivo)",
    "clase": "D",
    "valores": 32,
-   "difMax": 5.684341886080802e-14,
-   "difEscaladaMax": 1.1353060279842349e-14,
-   "peor": "parametros.p[1]",
+   "difMax": 1.1368683772161603e-13,
+   "difEscaladaMax": 1.0103029524088925e-14,
+   "peor": "ajuste.logLik",
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -20998,13 +21390,13 @@ window.SP_VALIDACION = {
     "tipo": "metodo",
     "nombre": "respuesta-meseta"
    },
-   "titulo": "Lineal-meseta por híbrido: dosis óptima, meseta y curva común",
+   "titulo": "Lineal-meseta por híbrido: dosis óptima, meseta, dosis económica, curva común y cada parámetro común",
    "fuente": "Datos sintéticos (generados en este archivo)",
    "clase": "D",
-   "valores": 60,
-   "difMax": 8.526512829121202e-14,
-   "difEscaladaMax": 1.9956821942928115e-14,
-   "peor": "parametros.p[5]",
+   "valores": 99,
+   "difMax": 1.311661890213145e-10,
+   "difEscaladaMax": 1.1161120013117214e-11,
+   "peor": "derivados[1].ee",
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -21013,9 +21405,10 @@ window.SP_VALIDACION = {
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-     "stats": "4.4.2"
+     "stats": "4.4.2",
+     "numDeriv": "2016.8.1.1"
     },
-    "codigo": "nls(rendimiento ~ <modelo lineal-meseta con gradiente analítico> por hibrido) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+    "codigo": "nls(rendimiento ~ <modelo lineal-meseta con gradiente analítico> por hibrido) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; dosis económica: f'(x) = 0.005 (D() y uniroot, gradiente de numDeriv); anova(curva común, una por grupo)"
    }
   },
   {
@@ -21042,6 +21435,114 @@ window.SP_VALIDACION = {
      "stats": "4.4.2"
     },
     "codigo": "nls(altura ~ <modelo mitscherlich con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "respuesta-meseta/puromicina-aic",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "respuesta-meseta"
+   },
+   "titulo": "Elección por AIC entre los cinco modelos con meseta",
+   "fuente": "Treloar (1974); Bates y Watts (1988), Nonlinear Regression Analysis and Its Applications; conjunto Puromycin de R",
+   "clase": "D",
+   "valores": 67,
+   "difMax": 3.410605131648481e-13,
+   "difEscaladaMax": 1.1640761724882178e-14,
+   "peor": "parametros.p[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "drc": "3.0.1"
+    },
+    "codigo": "cada modelo (lineal-meseta, cuadratico-meseta, mitscherlich, mm2, mm3) con nls pulido; AIC = −2 log L + 2(p + 1); ΔAIC y pesos de Akaike; el de menor AIC con su ajuste completo"
+   }
+  },
+  {
+   "id": "respuesta-meseta/puromicina-mm2-perfil",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "respuesta-meseta"
+   },
+   "titulo": "Michaelis-Menten con intervalos perfilados y la dosis económica",
+   "fuente": "Treloar (1974); Bates y Watts (1988), Nonlinear Regression Analysis and Its Applications; conjunto Puromycin de R",
+   "clase": "D",
+   "valores": 32,
+   "difMax": 8.3645090853679e-11,
+   "difEscaladaMax": 1.6726398044397683e-11,
+   "peor": "derivados[0].ic[1]",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "numDeriv": "2016.8.1.1"
+    },
+    "codigo": "nls(velocidad ~ <modelo mm2 con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC por perfil (uniroot de τ = ±t con los demás reajustados); método delta; dosis económica: f'(x) = 20 (D() y uniroot, gradiente de numDeriv); anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "respuesta-meseta/puromicina-mm3-estados",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "respuesta-meseta"
+   },
+   "titulo": "Michaelis-Menten con respuesta sin dosis por estado, perfiles y comparación de cada parámetro",
+   "fuente": "Treloar (1974); Bates y Watts (1988), Nonlinear Regression Analysis and Its Applications; conjunto Puromycin de R",
+   "clase": "D",
+   "valores": 63,
+   "difMax": 4.547473508864641e-13,
+   "difEscaladaMax": 5.3734794391857577e-14,
+   "peor": "comparacion.parametros[2].p",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "drc": "3.0.1"
+    },
+    "codigo": "nls(velocidad ~ <modelo mm3 con gradiente analítico> por estado) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC por perfil (uniroot de τ = ±t con los demás reajustados); método delta; anova(curva común, una por grupo)"
+   }
+  },
+  {
+   "id": "respuesta-meseta/trigo-mitscherlich-economica",
+   "objetivo": {
+    "tipo": "metodo",
+    "nombre": "respuesta-meseta"
+   },
+   "titulo": "Mitscherlich ponderado por parcelas con la dosis económica y su respuesta",
+   "fuente": "Datos sintéticos (generados en este archivo)",
+   "clase": "D",
+   "valores": 38,
+   "difMax": 1.177227204607334e-10,
+   "difEscaladaMax": 5.361340111375516e-12,
+   "peor": "derivados[0].ee",
+   "aprobado": true,
+   "error": "",
+   "fallas": [],
+   "comparacion": {},
+   "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+     "stats": "4.4.2",
+     "numDeriv": "2016.8.1.1"
+    },
+    "codigo": "nls(rendimiento ~ <modelo mitscherlich con gradiente analítico>, weights = parcelas) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; dosis económica: f'(x) = 0.00366667 (D() y uniroot, gradiente de numDeriv); anova(curva común, una por grupo)"
    }
   },
   {

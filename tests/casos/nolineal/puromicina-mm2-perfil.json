@@ -1,0 +1,80 @@
+{
+  "esquema": 1,
+  "id": "respuesta-meseta/puromicina-mm2-perfil",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "respuesta-meseta"
+  },
+  "titulo": "Michaelis-Menten con intervalos perfilados y la dosis económica",
+  "fuente": "Treloar (1974); Bates y Watts (1988), Nonlinear Regression Analysis and Its Applications; conjunto Puromycin de R",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "concentracion": [0.02, 0.02, 0.059999999999999998, 0.059999999999999998, 0.11, 0.11, 0.22, 0.22, 0.56000000000000005, 0.56000000000000005, 1.1000000000000001, 1.1000000000000001],
+      "velocidad": [76, 47, 97, 107, 123, 139, 159, 152, 191, 201, 207, 200]
+    },
+    "tipos": {
+      "concentracion": {
+        "tipo": "numerica"
+      },
+      "velocidad": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "velocidad",
+    "dosis": "concentracion"
+  },
+  "opciones": {
+    "modelo": "mm2",
+    "intervalo": "perfil",
+    "precioProducto": 10,
+    "precioInsumo": 200
+  },
+  "esperado": {
+    "parametros": {
+      "estimado": [212.68374314253586, 0.064121281681566736],
+      "ee": [6.9471551600407082, 0.0082809494984803153],
+      "t": [30.614508851892346, 7.7432282002606101],
+      "p": [3.2411632261580482e-11, 1.565133810650012e-05],
+      "ic_inf": [197.30193290028396, 0.046920342035170738],
+      "ic_sup": [229.28905505505335, 0.086156913427138715]
+    },
+    "ajuste": {
+      "n": 12,
+      "gl": 10,
+      "rss": 1195.4488144393595,
+      "sigma": 10.933658191288767,
+      "r2": 0.96126083014020169,
+      "logLik": -44.635484324473779,
+      "AIC": 95.270968648947559,
+      "BIC": 96.725688598311564
+    },
+    "derivados": [
+      {
+        "nombre": "dosis_economica",
+        "grupo": "",
+        "valor": 0.76163758757544964,
+        "ee": 0.056035659570955847,
+        "ic": [0.63678235738872646, 0.88649281776217281]
+      },
+      {
+        "nombre": "respuesta_economica",
+        "grupo": "",
+        "valor": 196.16856575739553,
+        "ee": 5.9016095126686885,
+        "ic": [183.01896031296664, 209.31817120182441]
+      }
+    ]
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "numDeriv": "2016.8.1.1"
+    },
+    "codigo": "nls(velocidad ~ <modelo mm2 con gradiente analítico>) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC por perfil (uniroot de τ = ±t con los demás reajustados); método delta; dosis económica: f'(x) = 20 (D() y uniroot, gradiente de numDeriv); anova(curva común, una por grupo)"
+  }
+}

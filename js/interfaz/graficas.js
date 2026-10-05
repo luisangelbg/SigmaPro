@@ -97,9 +97,11 @@
     let mx = marcas(x0, x1, 6);
     const my = marcas(y0, y1, 5);
     if (op.x.enteros) { const p = Math.max(1, Math.ceil(mx.paso)), lista = []; for (let v = Math.ceil(x0 / p) * p; v <= x1; v += p) lista.push(v); mx = { lista, paso: p }; }
+    /* marcas dadas (p. ej. un eje logarítmico: los valores ya transformados con su texto) */
+    if (op.x.marcas) mx = { lista: op.x.marcas.map(m => m.v), paso: mx.paso, textos: op.x.marcas.map(m => m.t) };
     const partes = [];
     partes.push(`<rect x="${M.l}" y="${M.t}" width="${W - M.l - M.r}" height="${H - M.t - M.b}" class="gr-fondo"/>`);
-    for (const v of mx.lista) partes.push(`<line x1="${X(v).toFixed(1)}" x2="${X(v).toFixed(1)}" y1="${M.t}" y2="${H - M.b}" class="gr-rejilla" data-role="grid"/><text x="${X(v).toFixed(1)}" y="${H - M.b + 16}" text-anchor="middle" class="gr-etq" data-role="xtick" ${TENUE}>${texto(v, mx.paso)}</text>`);
+    for (const v of mx.lista) partes.push(`<line x1="${X(v).toFixed(1)}" x2="${X(v).toFixed(1)}" y1="${M.t}" y2="${H - M.b}" class="gr-rejilla" data-role="grid"/><text x="${X(v).toFixed(1)}" y="${H - M.b + 16}" text-anchor="middle" class="gr-etq" data-role="xtick" ${TENUE}>${mx.textos ? esc(mx.textos[mx.lista.indexOf(v)]) : texto(v, mx.paso)}</text>`);
     for (const v of my.lista) partes.push(`<line x1="${M.l}" x2="${W - M.r}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" class="gr-rejilla" data-role="grid"/><text x="${M.l - 6}" y="${(Y(v) + 4).toFixed(1)}" text-anchor="end" class="gr-etq" data-role="ytick" ${TENUE}>${texto(v, my.paso)}</text>`);
     for (const b of bandas) {
       const ida = b.x.map((v, i) => `${X(v).toFixed(1)},${Y(b.sup[i]).toFixed(1)}`);
@@ -480,9 +482,9 @@
    * la misma escala en los dos ejes (los ángulos se leen bien).
    */
   function biplot(op) {
-    const G = op.genotipos || [], A = op.ambientes || [], todos = G.concat(A);
-    const xs = todos.map(p => p.x).concat(op.vectores || op.rayos || op.eje ? [0] : [], (op.referencias || []).filter(r => r.x !== undefined).map(r => r.x));
-    const ys = todos.map(p => p.y).concat(op.vectores || op.rayos || op.eje ? [0] : [], (op.referencias || []).filter(r => r.y !== undefined).map(r => r.y));
+    const G = op.genotipos || [], A = op.ambientes || [], todos = G.concat(A), extra = op.ideal ? [op.ideal] : [];
+    const xs = todos.concat(extra).map(p => p.x).concat(op.vectores || op.rayos || op.eje || op.par ? [0] : [], (op.referencias || []).filter(r => r.x !== undefined).map(r => r.x));
+    const ys = todos.concat(extra).map(p => p.y).concat(op.vectores || op.rayos || op.eje || op.par ? [0] : [], (op.referencias || []).filter(r => r.y !== undefined).map(r => r.y));
     let x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
     const hx = margen(x0, x1, 0.1), hy = margen(y0, y1, 0.1);
     x0 -= hx; x1 += hx; y0 -= hy; y1 += hy;
@@ -523,6 +525,18 @@
       for (const p of G) { const t = p.x * ux + p.y * uy; partes.push(`<line x1="${X(p.x).toFixed(1)}" y1="${Y(p.y).toFixed(1)}" x2="${X(t * ux).toFixed(1)}" y2="${Y(t * uy).toFixed(1)}" stroke="var(--text-muted)" stroke-dasharray="2 3"/>`); }
     }
     if (op.vectores) for (const p of A) partes.push(`<line x1="${X(0).toFixed(1)}" y1="${Y(0).toFixed(1)}" x2="${X(p.x).toFixed(1)}" y2="${Y(p.y).toFixed(1)}" stroke="${ORO}" stroke-opacity=".7" class="gr-vector"/>`);
+    /* «ideal»: el punto ideal con círculos concéntricos (radios en unidades de los datos; pide «iguales») */
+    if (op.ideal) {
+      const c = op.ideal, px = w / (x1 - x0);
+      for (const r of c.radios || []) partes.push(`<circle cx="${X(c.x).toFixed(1)}" cy="${Y(c.y).toFixed(1)}" r="${(r * px).toFixed(1)}" fill="none" stroke="var(--text-muted)" stroke-dasharray="3 3" class="gr-circulo"/>`);
+      partes.push(`<circle cx="${X(c.x).toFixed(1)}" cy="${Y(c.y).toFixed(1)}" r="5.5" fill="none" stroke="${ORO}" stroke-width="2.2" class="gr-ideal"/><circle cx="${X(c.x).toFixed(1)}" cy="${Y(c.y).toFixed(1)}" r="1.8" fill="${ORO}"/>`);
+    }
+    /* «par»: comparar dos genotipos: la recta que los une y su perpendicular por el origen (divide los ambientes) */
+    if (op.par) {
+      const [a, b] = op.par.map(i => G[i]), [ex, ey] = alBorde(-(b.y - a.y), b.x - a.x), [fx, fy] = alBorde(b.y - a.y, -(b.x - a.x));
+      partes.push(`<line x1="${X(a.x).toFixed(1)}" y1="${Y(a.y).toFixed(1)}" x2="${X(b.x).toFixed(1)}" y2="${Y(b.y).toFixed(1)}" stroke="${ORO}" stroke-width="1.6" class="gr-par"/>`,
+        `<line x1="${X(fx).toFixed(1)}" y1="${Y(fy).toFixed(1)}" x2="${X(ex).toFixed(1)}" y2="${Y(ey).toFixed(1)}" class="gr-ref disc" ${REF}/>`);
+    }
     /* las etiquetas de ambientes y genotipos se apartan unas de otras y de los puntos */
     const poner = colocador([M.l, M.t, W - M.r, H - M.b], todos.map(p => [X(p.x), Y(p.y)]));
     const etq = (p, color) => { const l = poner(X(p.x), Y(p.y), p.nombre); return `<text x="${l.x.toFixed(1)}" y="${l.y.toFixed(1)}"${anclaSVG(l)} class="gr-etq gr-etq-punto" fill="${color}" stroke="var(--card-bg)" stroke-width="3" paint-order="stroke">${esc(p.nombre)}</text>`; };

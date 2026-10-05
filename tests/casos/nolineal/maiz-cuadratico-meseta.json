@@ -5,7 +5,7 @@
     "tipo": "metodo",
     "nombre": "respuesta-meseta"
   },
-  "titulo": "Cuadrático-meseta por híbrido con la prueba de cada parámetro",
+  "titulo": "Cuadrático-meseta por híbrido con la prueba de cada parámetro y la dosis económica",
   "fuente": "Datos sintéticos (generados en este archivo)",
   "clase": "D",
   "datos": {
@@ -37,7 +37,9 @@
     "grupo": "hibrido"
   },
   "opciones": {
-    "modelo": "cuadratico-meseta"
+    "modelo": "cuadratico-meseta",
+    "precioProducto": 5000,
+    "precioInsumo": 25
   },
   "esperado": {
     "parametros": {
@@ -74,6 +76,20 @@
         "ic": [8.7870296612796306, 9.4122476686077103]
       },
       {
+        "nombre": "dosis_economica",
+        "grupo": "H1",
+        "valor": 202.49670405403836,
+        "ee": 13.725758807464043,
+        "ic": [174.92770613080918, 230.06570197726754]
+      },
+      {
+        "nombre": "respuesta_economica",
+        "grupo": "H1",
+        "valor": 9.0340332249936406,
+        "ee": 0.14987891517345525,
+        "ic": [8.7329925642102193, 9.3350738857770619]
+      },
+      {
         "nombre": "dosis_optima",
         "grupo": "H2",
         "valor": 275.33886188161284,
@@ -86,6 +102,20 @@
         "valor": 9.0445173337350404,
         "ee": 0.27399973178458736,
         "ic": [8.4941726757459435, 9.5948619917241373]
+      },
+      {
+        "nombre": "dosis_economica",
+        "grupo": "H2",
+        "valor": 243.3114097798113,
+        "ee": 20.942329371641843,
+        "ic": [201.24750329178468, 285.37531626783795]
+      },
+      {
+        "nombre": "respuesta_economica",
+        "grupo": "H2",
+        "valor": 8.9644487034805351,
+        "ee": 0.26329144403673049,
+        "ic": [8.4356122744223931, 9.4932851325386771]
       }
     ],
     "comparacion": {
@@ -124,8 +154,9 @@
     "r": "R version 4.4.2 (2024-10-31 ucrt)",
     "plataforma": "x86_64-w64-mingw32",
     "paquetes": {
-      "stats": "4.4.2"
+      "stats": "4.4.2",
+      "numDeriv": "2016.8.1.1"
     },
-    "codigo": "nls(rendimiento ~ <modelo cuadratico-meseta con gradiente analítico> por hibrido) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; anova(curva común, una por grupo)"
+    "codigo": "nls(rendimiento ~ <modelo cuadratico-meseta con gradiente analítico> por hibrido) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC de Wald con t; método delta; dosis económica: f'(x) = 0.005 (D() y uniroot, gradiente de numDeriv); anova(curva común, una por grupo)"
   }
 }

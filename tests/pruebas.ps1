@@ -20,8 +20,14 @@ if (-not $node) { Write-Host 'No encontre node. Instalalo o indica su ruta en la
 if ($R) {
   $rs = (Get-Command Rscript -ErrorAction SilentlyContinue).Source
   if (-not $rs) {
-    $ult = Get-ChildItem 'C:\Program Files\R' -Directory -ErrorAction SilentlyContinue | Sort-Object Name -Descending | Select-Object -First 1
-    if ($ult) { $rs = Join-Path $ult.FullName 'bin\Rscript.exe' }
+    # la version con que se generaron las referencias (tests/r/sesion.txt): una version recien instalada llega sin paquetes
+    $ref = Select-String -Path (Join-Path $tests 'r\sesion.txt') -Pattern 'R version (\d+\.\d+\.\d+)' -ErrorAction SilentlyContinue | Select-Object -First 1
+    $dirRef = if ($ref) { Join-Path 'C:\Program Files\R' ('R-' + $ref.Matches[0].Groups[1].Value) } else { $null }
+    if ($dirRef -and (Test-Path $dirRef)) { $rs = Join-Path $dirRef 'bin\Rscript.exe' }
+    else {
+      $ult = Get-ChildItem 'C:\Program Files\R' -Directory -ErrorAction SilentlyContinue | Sort-Object Name -Descending | Select-Object -First 1
+      if ($ult) { $rs = Join-Path $ult.FullName 'bin\Rscript.exe' }
+    }
   }
   if (-not $rs -or -not (Test-Path $rs)) { Write-Host 'No encontre Rscript.'; exit 2 }
   Write-Host "Referencias con $rs"

@@ -53,8 +53,10 @@ SP.definir('formatos', function (SP) {
       case 'num': s = Number.isFinite(v) ? (Number.isInteger(v) ? String(v) : fijo(v, 2)) : '—'; break;
       default:
         if (INTERVALOS[f]) {
-          if (!Array.isArray(v) || !Number.isFinite(v[0])) return '—';
-          const a = texto(v[0], INTERVALOS[f], fila, paraCopiar), b = texto(v[1], INTERVALOS[f], fila, paraCopiar);
+          /* un extremo faltante (un perfil que no llega por ese lado) se muestra como — y el otro sí */
+          if (!Array.isArray(v) || !(Number.isFinite(v[0]) || (Number.isNaN(v[0]) && Number.isFinite(v[1])))) return '—';
+          const lado = x => (Number.isNaN(x) ? (paraCopiar ? '' : '—') : texto(x, INTERVALOS[f], fila, paraCopiar));
+          const a = lado(v[0]), b = lado(v[1]);
           return paraCopiar ? a + '\t' + b : a + ' – ' + b;
         }
         s = String(v);

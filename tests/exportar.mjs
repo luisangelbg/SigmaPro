@@ -24,19 +24,13 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { BANDERAS, paginaPropia } from './lib/navegador.mjs';
 import { guardar } from './lib/comprobaciones.mjs';
+import { rscript } from './lib/rscript.mjs';
 
 const TESTS = dirname(fileURLToPath(import.meta.url));
 const RAIZ = join(TESTS, '..');
 const PUERTO = 9480 + Math.floor(Math.random() * 60);
 const exe = [process.env.SIGMAPRO_NAVEGADOR, 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
   'C:/Program Files/Google/Chrome/Application/chrome.exe', '/usr/bin/google-chrome', '/usr/bin/chromium'].filter(Boolean).find(p => existsSync(p));
-function rscript() {
-  if (process.env.SIGMAPRO_RSCRIPT) return process.env.SIGMAPRO_RSCRIPT;
-  try { execFileSync('Rscript', ['--version'], { stdio: 'ignore' }); return 'Rscript'; } catch { /* no está en el PATH */ }
-  const b = 'C:/Program Files/R';
-  if (existsSync(b)) { const v = readdirSync(b).filter(d => /^R-/.test(d)).sort().pop(); if (v) return join(b, v, 'bin', 'Rscript.exe'); }
-  return null;
-}
 const RS = rscript();
 if (!exe || !RS) { console.error('Hace falta ' + (!exe ? 'Edge o Chrome' : 'Rscript') + '.'); process.exit(2); }
 

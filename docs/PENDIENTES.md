@@ -1,6 +1,6 @@
 # Pendientes de SigmaPro
 
-Estado tras la ampliación de la Fase 3 (Hito 3.9, 4 de octubre de 2026) y los arreglos hallados al escribir el manual (versión 0.3.3). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
+Estado tras la ampliación de la Fase 3 (Hito 3.9, 4 de octubre de 2026), los arreglos hallados al escribir el manual (versión 0.3.3) y los Hitos 4.0 y 4.1 de la Fase 4 (plan en [`propuesta/FASE4.md`](../propuesta/FASE4.md)). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
 que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA.md`](../propuesta/PROPUESTA.md) §12).
 
 ## Antes de publicar
@@ -62,13 +62,13 @@ base común nueva). **La Fase 2 está completa.** Notas:
   motor y lo validan sus casos (`tests/motor-r.mjs`).
 - El asistente no propone la heredabilidad ni los componentes de varianza (se eligen en el catálogo); el constructor
   no arma estructuras de covarianza de medidas repetidas ni la binomial con ensayos (están en el catálogo).
-- Regresión no lineal: los intervalos son de Wald (los de verosimilitud perfilada quedan pendientes), no hay elección
-  automática del modelo por AIC ni pesos, y lineal-meseta no tiene la prueba de cada parámetro común (sí la global).
-  Faltan Michaelis-Menten, Brain-Cousens (hormesis), la dosis económica óptima con precios y el eje logarítmico de la
-  dosis en la gráfica.
-- Multiambiente: cada genotipo debe estar en cada ambiente (falta la imputación EM-AMMI de BreedingPro); faltan las
-  estadísticas de rangos de Huehn, Kang, Annicchiarico, WAAS, el análisis en dos etapas con una varianza por ambiente
-  y las vistas del GGE de comparar dos genotipos y del ambiente ideal.
+- ~~Regresión no lineal~~: resuelto en el Hito 4.0 (4 oct 2026): intervalos perfilados, elección por AIC, pesos, la
+  prueba de cada parámetro común en lineal-meseta, Michaelis-Menten, Brain-Cousens, la dosis económica y el eje
+  logarítmico. Queda: los valores derivados (DE50, dosis óptima, dosis económica) siguen con intervalos de Wald por el
+  método delta, y lineal-meseta con intervalos de Wald.
+- ~~Multiambiente~~: resuelto en el Hito 4.1 (4 oct 2026): imputación EM-AMMI, Huehn, Kang, Annicchiarico, WAAS y
+  WAASY, análisis en dos etapas y las vistas del GGE (genotipo y ambiente ideales, comparar dos genotipos). Queda: las
+  dos etapas toman los genotipos como fijos (sus BLUE); con genotipos aleatorios, el modelo mixto de localidades.
 - Superficies de respuesta: sin generador de diseños (central compuesto, Box-Behnken), sin mezclas ni optimización
   de varias respuestas (deseabilidad); la codificación es automática (no se puede fijar a mano) y la gráfica de
   superficie en 3D queda pendiente (hay curvas de nivel).

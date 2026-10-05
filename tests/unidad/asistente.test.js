@@ -171,7 +171,7 @@ SPT.describir('Asistente y constructor de modelos', () => {
     const r = R(t);
     SPT.igual(r.metodo, 'ensayos-multiambiente');
     SPT.igualJSON(r.e, { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' });
-    SPT.igualJSON(r.despues.map(d => d.metodo), ['estabilidad', 'ammi', 'gge', 'mixto-localidades']);
+    SPT.igualJSON(r.despues.map(d => d.metodo), ['estabilidad', 'ammi', 'gge', 'dos-etapas', 'mixto-localidades']);
     existe(r);
     for (const [k, m] of [['estabilidad', 'estabilidad'], ['ammi', 'ammi'], ['gge', 'gge']]) SPT.igual(R(t, { interesMA: k }).metodo, m);
     const sin = R(t, { repMA: '' });

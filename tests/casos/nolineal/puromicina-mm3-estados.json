@@ -1,0 +1,100 @@
+{
+  "esquema": 1,
+  "id": "respuesta-meseta/puromicina-mm3-estados",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "respuesta-meseta"
+  },
+  "titulo": "Michaelis-Menten con respuesta sin dosis por estado, perfiles y comparación de cada parámetro",
+  "fuente": "Treloar (1974); Bates y Watts (1988), Nonlinear Regression Analysis and Its Applications; conjunto Puromycin de R",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "estado": ["treated", "treated", "treated", "treated", "treated", "treated", "treated", "treated", "treated", "treated", "treated", "treated", "untreated", "untreated", "untreated", "untreated", "untreated", "untreated", "untreated", "untreated", "untreated", "untreated", "untreated"],
+      "concentracion": [0.02, 0.02, 0.059999999999999998, 0.059999999999999998, 0.11, 0.11, 0.22, 0.22, 0.56000000000000005, 0.56000000000000005, 1.1000000000000001, 1.1000000000000001, 0.02, 0.02, 0.059999999999999998, 0.059999999999999998, 0.11, 0.11, 0.22, 0.22, 0.56000000000000005, 0.56000000000000005, 1.1000000000000001],
+      "velocidad": [76, 47, 97, 107, 123, 139, 159, 152, 191, 201, 207, 200, 67, 51, 84, 86, 98, 115, 131, 124, 144, 158, 160]
+    },
+    "tipos": {
+      "estado": {
+        "tipo": "factor",
+        "niveles": ["treated", "untreated"]
+      },
+      "concentracion": {
+        "tipo": "numerica"
+      },
+      "velocidad": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "velocidad",
+    "dosis": "concentracion",
+    "grupo": "estado"
+  },
+  "opciones": {
+    "modelo": "mm3",
+    "intervalo": "perfil"
+  },
+  "esperado": {
+    "parametros": {
+      "estimado": [31.704874748942903, 37.884627340249672, 221.66963796522722, 172.5256464169974, 0.10466609312673204, 0.1087259607991663],
+      "ee": [11.331836206381448, 11.313485109621906, 7.3266827836721058, 8.9217032670039202, 0.023379589490018431, 0.036687171837004498],
+      "t": [2.7978585439744101, 3.3486257305478317, 30.255116061422715, 19.337747653530158, 4.4768148376350956, 2.9635961387871252],
+      "p": [0.012360974105446464, 0.0038082946720865291, 3.1711153810442607e-16, 5.1850456803016271e-13, 0.00033180787108322242, 0.0087040561884152174],
+      "ic_inf": [4.0664435961127987, 8.4426107644330557, 207.14820872345942, 155.76885725856044, 0.06443210185692147, 0.052165651961141958],
+      "ic_sup": [53.47147500706992, 58.556224516065519, 238.78779896066271, 194.8155608692737, 0.16960056732523984, 0.22507423351147135]
+    },
+    "ajuste": {
+      "n": 23,
+      "gl": 17,
+      "rss": 1199.3275652587647,
+      "sigma": 8.399326181863584,
+      "r2": 0.97585180276235917,
+      "logLik": -78.106840419468483,
+      "AIC": 170.21368083893697,
+      "BIC": 178.16214035044101
+    },
+    "derivados": [],
+    "comparacion": {
+      "global": {
+        "F": 23.32896675557911,
+        "gl1": 3,
+        "gl2": 17,
+        "p": 2.9329191254487997e-06
+      },
+      "parametros": [
+        {
+          "parametro": "c",
+          "F": 0.14664530522706185,
+          "gl1": 1,
+          "gl2": 17,
+          "p": 0.70650812451717648
+        },
+        {
+          "parametro": "d",
+          "F": 12.380999524425958,
+          "gl1": 1,
+          "gl2": 17,
+          "p": 0.0026352082408135145
+        },
+        {
+          "parametro": "e",
+          "F": 0.0088133219194873168,
+          "gl1": 1,
+          "gl2": 17,
+          "p": 0.92630263962443748
+        }
+      ]
+    }
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "drc": "3.0.1"
+    },
+    "codigo": "nls(velocidad ~ <modelo mm3 con gradiente analítico> por estado) pulido con Gauss-Newton; EE de σ²(J'J)⁻¹; IC por perfil (uniroot de τ = ±t con los demás reajustados); método delta; anova(curva común, una por grupo)"
+  }
+}

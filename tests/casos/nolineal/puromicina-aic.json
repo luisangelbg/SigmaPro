@@ -1,0 +1,115 @@
+{
+  "esquema": 1,
+  "id": "respuesta-meseta/puromicina-aic",
+  "objetivo": {
+    "tipo": "metodo",
+    "nombre": "respuesta-meseta"
+  },
+  "titulo": "Elección por AIC entre los cinco modelos con meseta",
+  "fuente": "Treloar (1974); Bates y Watts (1988), Nonlinear Regression Analysis and Its Applications; conjunto Puromycin de R",
+  "clase": "D",
+  "datos": {
+    "columnas": {
+      "concentracion": [0.02, 0.02, 0.059999999999999998, 0.059999999999999998, 0.11, 0.11, 0.22, 0.22, 0.56000000000000005, 0.56000000000000005, 1.1000000000000001, 1.1000000000000001],
+      "velocidad": [76, 47, 97, 107, 123, 139, 159, 152, 191, 201, 207, 200]
+    },
+    "tipos": {
+      "concentracion": {
+        "tipo": "numerica"
+      },
+      "velocidad": {
+        "tipo": "numerica"
+      }
+    }
+  },
+  "entradas": {
+    "respuesta": "velocidad",
+    "dosis": "concentracion"
+  },
+  "opciones": {
+    "modelo": "auto"
+  },
+  "esperado": {
+    "modelo": "mm3",
+    "seleccion": [
+      {
+        "modelo": "lineal-meseta",
+        "parametros": 3,
+        "AIC": 103.04191738915284,
+        "BIC": 104.98154398830485,
+        "sigma": 14.657943313699086,
+        "r2": 0.93733747232360587,
+        "delta": 10.613021347413365,
+        "peso": 0.0032595846266639506
+      },
+      {
+        "modelo": "cuadratico-meseta",
+        "parametros": 3,
+        "AIC": 99.476568742466071,
+        "BIC": 101.41619534161808,
+        "sigma": 12.634437246901145,
+        "r2": 0.95344421657987732,
+        "delta": 7.0476727007265936,
+        "peso": 0.019380629647196057
+      },
+      {
+        "modelo": "mitscherlich",
+        "parametros": 3,
+        "AIC": 95.237713774603776,
+        "BIC": 97.177340373755783,
+        "sigma": 10.588910175814728,
+        "r2": 0.96729874935975002,
+        "delta": 2.8088177328642985,
+        "peso": 0.16137027666073248
+      },
+      {
+        "modelo": "mm2",
+        "parametros": 2,
+        "AIC": 95.270968648947559,
+        "BIC": 96.725688598311564,
+        "sigma": 10.933658191288767,
+        "r2": 0.96126083014020169,
+        "delta": 2.8420726072080811,
+        "peso": 0.15870928655413338
+      },
+      {
+        "modelo": "mm3",
+        "parametros": 3,
+        "AIC": 92.428896041739478,
+        "BIC": 94.368522640891484,
+        "sigma": 9.4194167583976203,
+        "r2": 0.97412324232762204,
+        "delta": 0,
+        "peso": 0.65728022251127416
+      }
+    ],
+    "parametros": {
+      "estimado": [31.704874748942924, 221.66963796522725, 0.1046660931267321],
+      "ee": [12.708077476058167, 8.2165017885604037, 0.026219019511619351],
+      "t": [2.4948600454061167, 26.978590605779633, 3.9919911223357438],
+      "p": [0.034148611194795002, 6.3953078749686375e-10, 0.0031482526207839271],
+      "ic_inf": [2.9572062610834102, 203.08261959109109, 0.045354550336976496],
+      "ic_sup": [60.452543236802441, 240.25665633936342, 0.1639776359164877]
+    },
+    "ajuste": {
+      "n": 12,
+      "gl": 9,
+      "rss": 798.52870861543738,
+      "sigma": 9.4194167583976203,
+      "r2": 0.97412324232762204,
+      "logLik": -42.214448020869739,
+      "AIC": 92.428896041739478,
+      "BIC": 94.368522640891484
+    },
+    "derivados": []
+  },
+  "referencia": {
+    "r": "R version 4.4.2 (2024-10-31 ucrt)",
+    "plataforma": "x86_64-w64-mingw32",
+    "paquetes": {
+      "stats": "4.4.2",
+      "drc": "3.0.1"
+    },
+    "codigo": "cada modelo (lineal-meseta, cuadratico-meseta, mitscherlich, mm2, mm3) con nls pulido; AIC = −2 log L + 2(p + 1); ΔAIC y pesos de Akaike; el de menor AIC con su ajuste completo"
+  }
+}

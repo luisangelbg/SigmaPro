@@ -424,9 +424,9 @@ escritorio con el que se calcula la referencia.
 | data_alpha (Olivoto y Lúcio 2020) | alfa-látice de 24 genotipos, con repeticiones fijas y aleatorias |
 | Orthodont (Potthoff y Roy 1964), BodyWeight (Crowder y Hand 1990), sleepstudy y el maíz de los ejemplos | medidas repetidas: siete estructuras de covarianza con elección por AIC y BIC, la no estructurada pedida, fechas desiguales (AR(1) continua), faltantes, bloques, sin tratamientos (`tests/r/repetidas.R`) |
 | Dyestuff, Dyestuff2, Penicillin y Pastes (Davies y Goldsmith 1972; Box y Tiao 1973), Rail y ergoStool (Pinheiro y Bates 2000), data_alpha, data_ge y data_ge2 (Olivoto y Lúcio 2020) | componentes de varianza cruzados, anidados y con interacción, frontera, desbalance; heredabilidad en completamente al azar, bloques, alfa-látice y varios ambientes; repetibilidad con y sin efectos fijos (`tests/r/geneticos.R`) |
-| data_ge y data_ge2 (Olivoto y Lúcio 2020, metan), plrv (agricolae) | ensayos multiambiente: análisis conjunto, Bartlett, Eberhart-Russell, Wricke, Shukla, Lin-Binns, AMMI con Gollob y F_R, GGE; parcelas perdidas y una media por celda (`tests/r/multiambiente.R`) |
+| data_ge y data_ge2 (Olivoto y Lúcio 2020, metan), plrv (agricolae) | ensayos multiambiente: análisis conjunto, Bartlett, Eberhart-Russell, Wricke, Shukla, Lin-Binns, Huehn, Kang, Annicchiarico, AMMI con Gollob y F_R, WAAS y WAASY, GGE con el genotipo y el ambiente ideales y la comparación de dos genotipos, análisis en dos etapas; parcelas perdidas, celdas vacías imputadas por EM-AMMI y una media por celda (`tests/r/multiambiente.R`) |
 | Centrales compuestos, Box-Behnken y factoriales con centros (sintéticos) | superficies de respuesta: segundo orden, interacciones y primer orden, bloques, sin error puro, silla, máximo y mínimo, dos a cuatro factores (`tests/r/superficie.R`) |
-| Orange, ChickWeight, DNase y Loblolly (R), herbicidas, tóxico y nitrógeno (sintéticos) | regresión no lineal: ocho modelos, una curva y varias por grupo, comparación de curvas, dosis cero, meseta por perfil (`tests/r/nolineal.R`) |
+| Orange, ChickWeight, DNase, Loblolly y Puromycin (R), lettuce (van Ewijk y Hoekstra 1993, drc), herbicidas, tóxico, germinación, trigo y nitrógeno (sintéticos) | regresión no lineal: doce modelos (con Brain-Cousens y Michaelis-Menten), una curva y varias por grupo, comparación de curvas y de cada parámetro (también en lineal-meseta), dosis cero, meseta por perfil, pesos, intervalos perfilados, dosis económica, elección por AIC (`tests/r/nolineal.R`) |
 | cbpp (Lesnoff et al. 2004), grouseticks (Elston et al. 2001) y el aguacate de los ejemplos | modelos lineales generalizados mixtos: binomial con ensayos, Poisson con dos agrupamientos y exposición, binomial negativa, efecto por observación, ajuste singular, Wald tipo II y III (`tests/r/glmm.R`) |
 | InsectSprays (Beall 1942), warpbreaks, snails, quine, Insurance y birthwt (MASS), escarabajos de Bliss (1935), coagulación (McCullagh y Nelder 1989) | modelos lineales generalizados: seis familias, cinco enlaces, exposición, familia automática, tipos I a III, medias y pares en la escala de la respuesta (`tests/r/glm.R`) |
 | data_ge (Olivoto y Lúcio 2020) y plrv (CIP, agricolae) | ensayos en varias localidades: localidad, repetición y G × L aleatorios; localidades fijas con 28 clones (378 pares de Tukey) |
@@ -437,6 +437,69 @@ solo descargas de código de webR y de su repositorio de paquetes, sin datos.
 
 Comprobado aparte: el tipo III de lmerTest da las mismas F con contrastes de tratamiento o de suma cero aun con datos
 desbalanceados, así que los coeficientes conservan los contrastes de tratamiento (como `summary()`).
+
+## Ensayos multiambiente ampliados (Hito 4.1)
+
+- **Referencia** (`tests/r/multiambiente.R`), en R base con comprobaciones contra los paquetes:
+  - **EM-AMMI**: `metan::impute_missing_val(algorithm = "EM-AMMI")` con tolerancia 1e-14 (la app usa el mismo algoritmo
+    con 1e-12). Con celdas imputadas, la interacción y el residuo AMMI (y la F_R) pierden un gl por celda; el análisis
+    conjunto sale de las parcelas, como `anova(lm())` con celdas vacías.
+  - **Huehn** (S1, S2, S3, S6 y sus Z): fórmulas de Nassar y Huehn (1987) en R base; S1, S2 y Z2 coinciden con
+    `agricolae::stability.nonpar`. Dos hallazgos: su Z1 usa g² en lugar de g² − 1 en la varianza de S1 (una errata), y
+    `metan::Huehn` no sirve de referencia: su S1 compara un solo par de ambientes (el bucle deja el índice en el último)
+    y redondea a 4 decimales.
+  - **Kang (YS)**: en R base y comprobado contra `agricolae::stability.par` (rango, ajuste por la DMS, calificación por
+    la varianza de Shukla y YS) con datos balanceados (sus gl son m·(g − 1)·(r − 1)).
+  - **Annicchiarico**: en R base y comprobado contra `metan::Annicchiarico` con las parcelas.
+  - **WAAS y WAASY**: en R base con los puntajes de la descomposición; `metan::waas` da lo mismo hasta la cuarta cifra
+    porque pondera con las proporciones de cada eje redondeadas.
+  - **GGE**: el genotipo y el ambiente ideales (Yan y Tinker 2006) y la comparación de dos genotipos, en R base.
+  - **Dos etapas**: `emmeans` en cada ambiente; la REML de σ²_GA escrita en R con matrices densas y pulida con la raíz
+    del score, comprobada contra `metafor::rma` (el mismo modelo: varianzas conocidas más un efecto aleatorio) y su
+    Wald (QM). Hallazgo: `nlme::lme` con `lmeControl(sigma = 1)` y `varFixed` no sirve como referencia: con sigma fija
+    su REML no es la de Harville (0.0435 contra 0.0541 en la avena; la REML por contrastes de error y metafor dan
+    0.0541, y su ML sí coincide).
+- **Empates**: los rangos (Huehn, Kang, Annicchiarico) se toman con 12 cifras en la app y en la referencia, porque dos
+  medias iguales sumadas en otro orden difieren en la última cifra (lo descubrió el maíz con la menor altura como
+  objetivo: S3 y S6 cambiaban medio rango).
+- **Resultado**: 24 casos de 5 métodos (9 nuevos y los 15 anteriores regenerados con las estadísticas nuevas), 8 360
+  valores, diferencia escalada máxima 1.4 × 10⁻¹². Las dos etapas, con la raíz del score, 1.1 × 10⁻¹³.
+- **Código R** (`tests/codigo-r.mjs`): Huehn, Kang con agricolae, Annicchiarico, WAAS y WAASY, el ideal y la
+  comparación del GGE y las dos etapas con metafor (con `threshold = 1e-10`: con la de omisión, el Wald queda a 2e-6).
+- **Pruebas unitarias** (`tests/unidad/multiambiente.test.js`): cada celda imputada es el valor del modelo de la tabla
+  completa; sin interacción, S1 = S2 = 0; WAAS como promedio ponderado; el ideal sobre el eje del ambiente promedio;
+  con dos ambientes, la diferencia prevista del par es la observada; en dos etapas, la media ajustada es
+  ȳ.. + Σ w_j (y_ij − ȳ.j) / Σ w_j con la tabla completa, y con celdas vacías y parcelas perdidas sigue.
+
+## Regresión no lineal ampliada (Hito 4.0)
+
+- **Referencia** (`tests/r/nolineal.R`): los modelos nuevos (Brain-Cousens de 5 y 4 parámetros, Michaelis-Menten con
+  y sin respuesta en la dosis cero) con su gradiente analítico en nls, arrancando del ajuste de drc (BC.5, BC.4, MM.3) o
+  de SSmicmen. Pesos con `nls(weights = )` (la log-verosimilitud se comprueba contra `logLik()` del propio nls).
+  Intervalos perfilados: la raíz exacta (uniroot, tolerancia 1e-13) de τ(β) = ±t con los demás parámetros reajustados
+  en cada β; `confint()` de nls interpola su perfil y queda a unos 1e-5 de la raíz (se imprime al generar, no se
+  compara). DE50 y dosis de máxima respuesta de Brain-Cousens (como ED y MAX de drc) y la dosis económica (la raíz de
+  la derivada simbólica de la curva, `stats::D`) con el gradiente numérico de numDeriv (Richardson): no usa las
+  fórmulas de la app. Lineal-meseta con parámetros comunes: x0 común por optimize en cada par de intervalos; x0 por
+  grupo con a o b comunes, optim (L-BFGS-B) en cada combinación de intervalos de los grupos. La elección por AIC ajusta
+  cada modelo de la familia; el log-logístico de cuatro parámetros arranca además de una rejilla de b y log e (con b y
+  e fijos la curva es lineal en c y d) y de drc, y gana la menor suma de cuadrados.
+- **Dos errores hallados**:
+  1. El pulido final de Gauss-Newton puro (de la app y de la referencia) no converge cuando los residuos son grandes
+     (un log-logístico ante datos con hormesis): tras 200 pasos se quedaba en el último punto, marcado como
+     convergido, con más suma de cuadrados que el óptimo (0.2132 contra 0.2071 en la lechuga). Ahora el paso se
+     amortigua (μ a la mitad mientras los pasos no se achican a la mitad) y, si no llega o termina con más suma de
+     cuadrados, queda el punto de Levenberg-Marquardt. Los casos anteriores no cambian.
+  2. Con e ≤ 0, (x/e)^b no existe y el log-logístico devolvía su límite inferior como si (x/e)^b fuera infinito; ahora
+     da un faltante (fuera del dominio) y el perfil, cuando un ajuste falla, parte el paso a la mitad.
+- **Resultado**: 18 casos de 3 métodos (8 nuevos y 2 regenerados: lineal-meseta y cuadrático-meseta por híbrido con la
+  dosis económica y la prueba de cada parámetro), 1 074 valores, diferencia escalada máxima 8.2 × 10⁻⁸ (en el
+  Brain-Cousens de cinco parámetros de la lechuga).
+- **Código R** (`tests/codigo-r.mjs`): Brain-Cousens, Michaelis-Menten con la dosis económica por `car::deltaMethod`
+  y nls con `weights`.
+- **Pruebas unitarias** (`tests/unidad/nolineal.test.js`): gradientes de los cuatro modelos nuevos, el dominio, el
+  óptimo del log-logístico ante hormesis, la dosis económica recortada a cero, el intervalo con un lado faltante, los
+  pesos (cero fuera, negativos con error), la elección por AIC y el perfil exacto de lineal-meseta con grupos.
 
 ## Cox y MANOVA desde el constructor (Hito 3.8)
 

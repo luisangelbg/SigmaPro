@@ -398,7 +398,8 @@ SP.definir('asistente', function (SP) {
       };
       const [metodo, titulo, resumen, porque] = MA[x.interesMA];
       const despues = Object.keys(MA).filter(k => k !== x.interesMA).map(k => ({ texto: MA[k][1], metodo: MA[k][0], e, op: {} }));
-      if (x.repMA) despues.push({ texto: T('Genotipos y localidades aleatorios con BLUP (modelo mixto, motor R)'), metodo: 'mixto-localidades', e: { respuesta: y, genotipo: x.genotipo, localidad: x.ambiente, repeticion: x.repMA }, op: {} });
+      if (x.repMA) despues.push({ texto: T('Análisis en dos etapas (errores distintos entre ambientes o genotipos que faltan)'), metodo: 'dos-etapas', e, op: {} },
+        { texto: T('Genotipos y localidades aleatorios con BLUP (modelo mixto, motor R)'), metodo: 'mixto-localidades', e: { respuesta: y, genotipo: x.genotipo, localidad: x.ambiente, repeticion: x.repMA }, op: {} });
       if (!x.repMA) avisos.push(T('Sin repeticiones no hay error dentro de los ambientes: la interacción hace de error y no se prueban S²d, Shukla ni los ejes AMMI.'));
       return Object.assign(base, { metodo, e, op: {}, titulo, resumen, porque, despues });
     }

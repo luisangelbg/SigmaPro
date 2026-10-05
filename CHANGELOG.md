@@ -2,6 +2,51 @@
 
 ## Sin publicar
 
+### Hito 4.1 · Ensayos multiambiente ampliados (4 oct 2026)
+
+- **Celdas genotipo × ambiente vacías**: se imputan por EM-AMMI (Gauch y Zobel, 1990), como metan, con los ejes que se
+  elijan (1 por omisión); el reporte lista las celdas imputadas y la interacción pierde un grado de libertad por cada
+  una. Desactivar la casilla devuelve el aviso de antes.
+- **Estabilidad**: las estadísticas no paramétricas de Huehn (S1, S2 con sus pruebas Z; S3 y S6), el YS de Kang
+  (rendimiento y estabilidad, con los genotipos seleccionados) y el índice de confianza de Annicchiarico (en todos
+  los ambientes, los favorables y los desfavorables).
+- **AMMI**: WAAS (estabilidad con los ejes significativos, o los que se pidan) y WAASY (respuesta y estabilidad con el
+  peso que se elija), con su cuadro y la gráfica de respuesta contra estabilidad.
+- **GGE**: el genotipo ideal y el ambiente ideal (con su gráfica de anillos) y la comparación de dos genotipos: en
+  qué ambientes es mejor cada uno según el biplot y según los datos.
+- **Análisis en dos etapas** (método nuevo): las medias ajustadas de cada ambiente con su varianza y el análisis
+  conjunto ponderado, con la varianza de la interacción por REML; sirve con errores distintos entre ambientes y con
+  genotipos que faltan, sin imputar. El asistente lo sugiere después del análisis conjunto.
+- Validación: 9 casos nuevos y 15 regenerados (24 de multiambiente, 8 360 valores, diferencia máxima 1.4 × 10⁻¹²);
+  cuatro escenarios del código R y cinco pruebas unitarias. Hallazgos documentados: la errata de agricolae en la varianza
+  de S1, el S1 de metan, y que nlme con sigma fija no da la REML estándar.
+
+### Hito 4.0 · Regresión no lineal ampliada (4 oct 2026)
+
+Primer hito de la Fase 4 (`propuesta/FASE4.md`): las mejoras que quedaban pendientes para versiones futuras.
+
+- **Brain-Cousens** (hormesis: estímulo a dosis bajas), de 5 y 4 parámetros, en dosis-respuesta: la DE50 después del
+  máximo, la dosis de máxima respuesta y la respuesta máxima, con su EE por la derivada implícita (como ED y MAX de
+  drc). Sin estímulo (f ≤ 0 o b ≤ 1), la conclusión lo dice.
+- **Michaelis-Menten**, con y sin respuesta en la dosis cero, en la respuesta con meseta.
+- **Dosis económica óptima**: con el precio del producto y el del insumo, la dosis en que la pendiente de la curva
+  iguala la razón de precios, y la respuesta en ella, con su EE (cuadrático-meseta, lineal-meseta, Mitscherlich y
+  Michaelis-Menten). Si la curva empieza más plana que la razón, la dosis es cero y lo dice.
+- **Pesos** por observación (una columna; las filas con peso cero no entran), como `nls(weights = )`.
+- **Intervalos por verosimilitud perfilada** (opción del formulario): pueden ser asimétricos y, si los datos no acotan
+  un parámetro por un lado, ese límite queda como «—». Lineal-meseta queda con Wald (su quiebre no deja perfilar).
+- **Elegir el modelo por AIC**: ajusta todos los de la familia y los ordena en un cuadro con ΔAIC y pesos de Akaike.
+- **Lineal-meseta con grupos**: también la prueba de cada parámetro común, con el óptimo exacto por perfil.
+- **Gráfica con la dosis en escala logarítmica** (casilla del formulario), con la dosis cero una década debajo de la
+  menor, como el eje partido de drc.
+- **Error corregido**: con residuos grandes (un log-logístico ante hormesis), el pulido final de Gauss-Newton se
+  alejaba del óptimo y el ajuste quedaba marcado como convergido con más suma de cuadrados (0.2132 contra 0.2071 en la
+  lechuga de van Ewijk y Hoekstra). Ahora el paso se amortigua y, si no llega, queda el punto de Levenberg-Marquardt.
+  Con e ≤ 0 el log-logístico ya no devuelve su límite inferior: queda fuera del dominio.
+- Validación: 8 casos nuevos y 2 regenerados (18 de regresión no lineal, 1 074 valores, diferencia máxima 8.2 × 10⁻⁸),
+  tres escenarios del código R y ocho pruebas unitarias. Las pruebas que corren R usan la versión con que se generaron
+  las referencias (`tests/r/sesion.txt`), porque una versión recién instalada llega sin paquetes.
+
 ### 0.3.3 · Arreglos encontrados al escribir el manual (4 oct 2026)
 
 Al escribir el manual de usuario, cada resultado se revisó en la pantalla y salieron estos errores:

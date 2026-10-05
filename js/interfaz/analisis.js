@@ -27,7 +27,7 @@
   const GLMS = ['glm-conteos', 'glm-proporciones', 'glm-gamma', 'glm', 'glmm-bloques', 'glmm'];
   const NOLINEAL = ['curva-crecimiento', 'dosis-respuesta', 'respuesta-meseta'];
   const SUPERFICIES = ['superficie-respuesta', 'ascenso-pronunciado'];
-  const MULTI = ['ensayos-multiambiente', 'estabilidad', 'ammi', 'gge'];
+  const MULTI = ['ensayos-multiambiente', 'dos-etapas', 'estabilidad', 'ammi', 'gge'];
   const POTENCIA = ['potencia-medias', 'potencia-anova', 'potencia-proporciones', 'potencia-correlacion', 'repeticiones'];
   const MUESTREO = ['tamano-muestra', 'muestreo-simple', 'muestreo-estratificado'];
   const SUPERVIVENCIA = ['kaplan-meier', 'cox'];
@@ -54,9 +54,10 @@
     mxd: { respuesta: '', tratamientos: [], bloque: '', parcelaGrande: '', subparcela: '', subsubparcela: '', repeticion: '', tratamiento: '', genotipo: '', localidad: '',
       repeticionAleatoria: false, localidadFija: false, compararMx: null, ajuste: 'tukey', gl: 'satterthwaite', estimacion: 'reml', alfa: 0.05, nivel: 0.95, _iniciado: false },
     rep: { respuesta: '', tiempo: '', sujeto: '', tratamientos: [], bloque: '', estructura: 'auto', criterio: 'aic', compararMx: null, dentro: '', ajuste: 'tukey', alfa: 0.05, nivel: 0.95, _iniciado: false },
-    nl: { respuesta: '', x: '', grupo: '', modelo: '', nivel: 0.95, alfa: 0.05, metodo: '', _iniciado: false },
+    nl: { respuesta: '', x: '', grupo: '', pesos: '', modelo: '', nivel: 0.95, alfa: 0.05, intervalo: 'wald', precioProducto: '', precioInsumo: '', ejeLog: false, metodo: '', _iniciado: false },
     srf: { respuesta: '', factores: [], bloque: '', orden: 'segundo', objetivo: 'maximo', nivel: 0.95, alfa: 0.05, _iniciado: false },
-    ma: { respuesta: '', genotipo: '', ambiente: '', repeticion: '', eeb: 'propio', objetivo: 'maximo', escala: 'ninguna', particion: 'simetrica', alfa: 0.05, _iniciado: false },
+    ma: { respuesta: '', genotipo: '', ambiente: '', repeticion: '', eeb: 'propio', objetivo: 'maximo', escala: 'ninguna', particion: 'simetrica', alfa: 0.05, imputar: true, ejesImputar: 1,
+      ejesWaas: 0, pesoRespuesta: 50, probAnnicchiarico: 0.25, genotipoA: '', genotipoB: '', _iniciado: false },
     pot: { calcular: 'n', n: 10, diferencia: 1, de: 1, tipo: 'dos', alternativa: 'bilateral', alfa: 0.05, potencia: 0.8, grupos: 4, medias: '', varEntre: 1, p1: 0.5, p2: 0.7, r: 0.3,
       cv: 12, difPct: 20, tratamientos: 5, diseno: 'dbca' },
     mue: { que: 'media', escala: 'absoluto', de: 1, errorAbs: 0.25, cv: 20, errorPct: 10, p: 0.5, errorProp: 0.05, N: 0, confianza: 0.95, respuesta: '', estrato: '', tipoSimple: 'auto', nTotal: 0, _iniciado: false },
@@ -787,14 +788,27 @@
       if (!s._iniciado) s.respuesta = (c.pap.respuestas.filter(n => n !== s.x).slice(-1)[0]) || num.find(n => n !== s.x) || '';
       s._iniciado = true; s.metodo = m;
     }
-    if (!NL.MODELOS_DE[m].includes(s.modelo)) s.modelo = NL.MODELOS_DE[m][0];
+    if (s.modelo !== 'auto' && !NL.MODELOS_DE[m].includes(s.modelo)) s.modelo = NL.MODELOS_DE[m][0];
     if (!num.includes(s.respuesta)) s.respuesta = num.find(n => n !== s.x) || '';
     if (s.grupo && !agr.includes(s.grupo)) s.grupo = '';
+    if (s.pesos && (!num.includes(s.pesos) || [s.respuesta, s.x].includes(s.pesos))) s.pesos = '';
     let h = campo('nl', 'respuesta', T('Variable de respuesta'), lista(num), s.respuesta);
     h += campo('nl', 'x', m === 'curva-crecimiento' ? T('Tiempo (días, semanas)') : T('Dosis'), [['', T('— elige —')]].concat(num.filter(n => n !== s.respuesta).map(n => [n, n])), s.x);
     h += campo('nl', 'grupo', T('Grupos que comparar (opcional)'), [['', T('— una sola curva —')]].concat(agr.filter(n => n !== s.respuesta && n !== s.x).map(n => [n, n])), s.grupo,
       T('Con grupos (variedades, productos), una curva por grupo y la prueba de si difieren.'));
-    h += campo('nl', 'modelo', T('Modelo'), NL.MODELOS_DE[m].map(k => [k, NL.NOMBRE[k].charAt(0).toUpperCase() + NL.NOMBRE[k].slice(1)]), s.modelo, NL.ECUACION[s.modelo]);
+    const may = k => NL.NOMBRE[k].charAt(0).toUpperCase() + NL.NOMBRE[k].slice(1);
+    h += campo('nl', 'modelo', T('Modelo'), [['auto', T('El de menor AIC (ajusta todos y compara)')]].concat(NL.MODELOS_DE[m].map(k => [k, may(k)])), s.modelo,
+      s.modelo === 'auto' ? T('Ajusta {l} a los mismos datos y se queda con el de menor AIC.', { l: NL.MODELOS_DE[m].map(k => NL.NOMBRE[k]).join(', ') }) : NL.ECUACION[s.modelo]);
+    h += campo('nl', 'pesos', T('Pesos (opcional)'), [['', T('— sin pesos —')]].concat(num.filter(n => n !== s.respuesta && n !== s.x).map(n => [n, n])), s.pesos,
+      T('Una columna con el peso de cada fila (p. ej. el número de plantas de la media): cuenta más la fila con más peso. Las filas con peso cero no entran.'));
+    h += campo('nl', 'intervalo', T('Intervalos de los parámetros'), [['wald', T('De Wald (estimado ± t·EE)')], ['perfil', T('Por verosimilitud perfilada')]], s.intervalo,
+      s.intervalo === 'perfil' ? T('Más exactos cuando la curva es muy no lineal (pueden ser asimétricos); tardan más. Lineal-meseta queda con Wald.') : '');
+    if (m === 'respuesta-meseta') {
+      h += numero('nl', 'precioProducto', T('Precio del producto (por unidad de respuesta)'), s.precioProducto, '', ' min="0" placeholder="' + esc(T('opcional')) + '"') +
+        numero('nl', 'precioInsumo', T('Precio del insumo (por unidad de dosis)'), s.precioInsumo, '', ' min="0" placeholder="' + esc(T('opcional')) + '"');
+      h += '<p class="small muted">' + esc(T('Con los dos precios, la dosis económica óptima: donde la última unidad de insumo todavía se paga con lo que agrega.')) + '</p>';
+    }
+    if (m !== 'curva-crecimiento') h += `<label class="imp-check"><input type="checkbox" data-grupo="nl" data-campo="ejeLog"${s.ejeLog ? ' checked' : ''}> ${esc(T('Dosis en escala logarítmica en la gráfica'))}</label>`;
     h += '<p class="small muted">' + esc(T('Corre en tu navegador (mínimos cuadrados no lineales con gradiente analítico, validado contra nls de R).')) + '</p>';
     return h + campo('nl', 'nivel', T('Nivel de confianza'), NIVELES, s.nivel) + campo('nl', 'alfa', T('Nivel de significancia'), ALFAS, s.alfa);
   }
@@ -843,10 +857,29 @@
     h += campo('ma', 'ambiente', T('Ambientes (localidades, años, fechas)'), op([s.genotipo, s.repeticion], T('— elige —')), s.ambiente);
     h += campo('ma', 'repeticion', T('Repeticiones o bloques (opcional)'), op([s.genotipo, s.ambiente], T('— una media por celda —')), s.repeticion,
       T('Con repeticiones, el error de cada ambiente sale de sus bloques; sin ellas, cada fila es la media de un genotipo en un ambiente.'));
-    if (m === 'estabilidad') h += campo('ma', 'eeb', T('Error estándar de b'), [['propio', T('De la regresión de cada genotipo')], ['error', T('Del error combinado de los ambientes')]], s.eeb);
+    if (m === 'estabilidad') {
+      h += campo('ma', 'eeb', T('Error estándar de b'), [['propio', T('De la regresión de cada genotipo')], ['error', T('Del error combinado de los ambientes')]], s.eeb);
+      h += campo('ma', 'probAnnicchiarico', T('Riesgo del índice de Annicchiarico'), [[0.25, '0.25 (z = 0.67)'], [0.1, '0.10 (z = 1.28)'], [0.05, '0.05 (z = 1.64)']], s.probAnnicchiarico,
+        T('Wi = media − z·DE de la respuesta en % de la media del ambiente: un riesgo menor castiga más la inestabilidad.'));
+    }
+    if (m === 'ammi') {
+      h += campo('ma', 'ejesWaas', T('Ejes del WAAS'), [[0, T('Los significativos (F de Gollob)')]].concat([1, 2, 3, 4, 5].map(k => [k, String(k)])), s.ejesWaas);
+      h += numero('ma', 'pesoRespuesta', T('Peso de la respuesta en el WAASY (%)'), s.pesoRespuesta, T('0: solo estabilidad; 100: solo la respuesta.'), ' min="0" max="100" step="5"');
+    }
+    if (m === 'dos-etapas') h += '<p class="small muted">' + esc(T('Cada ambiente necesita error propio: repeticiones o varias parcelas por genotipo. Los genotipos que faltan en un ambiente no estorban.')) + '</p>';
     if (m === 'gge') {
       h += campo('ma', 'escala', T('Tabla'), [['ninguna', T('Centrada por ambiente')], ['desviacion', T('Centrada y dividida por la desviación de cada ambiente')]], s.escala);
       h += campo('ma', 'particion', T('Partición del valor singular'), [['simetrica', T('Simétrica')], ['genotipo', T('Por genotipo (para comparar genotipos)')], ['ambiente', T('Por ambiente (para comparar ambientes)')]], s.particion);
+      const gens = s.genotipo ? nivelesDe(c, s.genotipo) : [];
+      if (!gens.includes(s.genotipoA)) s.genotipoA = '';
+      if (!gens.includes(s.genotipoB)) s.genotipoB = '';
+      h += campo('ma', 'genotipoA', T('Comparar dos genotipos (opcional)'), [['', T('— ninguno —')]].concat(gens.map(n => [n, n])), s.genotipoA);
+      if (s.genotipoA) h += campo('ma', 'genotipoB', T('… con'), [['', T('— elige —')]].concat(gens.filter(n => n !== s.genotipoA).map(n => [n, n])), s.genotipoB,
+        T('En qué ambientes es mejor cada uno, según el biplot y según los datos.'));
+    }
+    if (m !== 'dos-etapas') {
+      h += '<label class="imp-check"><input type="checkbox" data-grupo="ma" data-campo="imputar"' + (s.imputar ? ' checked' : '') + '> ' + esc(T('Imputar las celdas genotipo × ambiente vacías (EM-AMMI)')) + '</label>';
+      if (s.imputar) h += campo('ma', 'ejesImputar', T('Ejes de la imputación'), [[0, T('0 (solo efectos aditivos)')], [1, '1'], [2, '2'], [3, '3']], s.ejesImputar);
     }
     h += campo('ma', 'objetivo', T('Lo mejor es'), [['maximo', T('La mayor respuesta')], ['minimo', T('La menor respuesta')]], s.objetivo);
     h += '<p class="small muted">' + esc(T('Corre en tu navegador (validado contra lm y svd de R).')) + '</p>';
@@ -1128,7 +1161,10 @@
     if (MULTI.includes(m)) {
       const s = estado.ma, e = { respuesta: s.respuesta, genotipo: s.genotipo, ambiente: s.ambiente };
       if (s.repeticion) e.repeticion = s.repeticion;
-      return { e, op: Object.assign({ objetivo: s.objetivo, alfa: +s.alfa }, m === 'estabilidad' ? { eeb: s.eeb } : {}, m === 'gge' ? { escala: s.escala, particion: s.particion } : {}) };
+      const imp = m === 'dos-etapas' ? {} : { imputar: !!s.imputar, ejesImputar: +s.ejesImputar };
+      return { e, op: Object.assign({ objetivo: s.objetivo, alfa: +s.alfa }, imp, m === 'estabilidad' ? { eeb: s.eeb, probAnnicchiarico: +s.probAnnicchiarico } : {},
+        m === 'ammi' ? { ejesWaas: +s.ejesWaas, pesoRespuesta: +s.pesoRespuesta } : {},
+        m === 'gge' ? Object.assign({ escala: s.escala, particion: s.particion }, s.genotipoA && s.genotipoB && s.genotipoA !== s.genotipoB ? { genotipoA: s.genotipoA, genotipoB: s.genotipoB } : {}) : {}) };
     }
     if (SUPERFICIES.includes(m)) {
       const s = estado.srf, e = { respuesta: s.respuesta, factores: s.factores.slice() };
@@ -1139,7 +1175,11 @@
       const s = estado.nl, e = { respuesta: s.respuesta };
       e[m === 'curva-crecimiento' ? 'x' : 'dosis'] = s.x;
       if (s.grupo) e.grupo = s.grupo;
-      return { e, op: { modelo: s.modelo, nivel: +s.nivel, alfa: +s.alfa } };
+      if (s.pesos) e.pesos = s.pesos;
+      const op = { modelo: s.modelo, nivel: +s.nivel, alfa: +s.alfa, intervalo: s.intervalo };
+      if (m === 'respuesta-meseta' && (+s.precioProducto > 0 || +s.precioInsumo > 0)) Object.assign(op, { precioProducto: +s.precioProducto || 0, precioInsumo: +s.precioInsumo || 0 });
+      if (m !== 'curva-crecimiento' && s.ejeLog) op.ejeLog = true;
+      return { e, op };
     }
     if (GLMS.includes(m)) {
       const s = estado.glm, binomial = ['binomial', 'cuasibinomial'].includes(s.familia) || (s.familia === 'auto' && m === 'glm-proporciones');
@@ -1485,12 +1525,35 @@
     return out.join('');
   }
   /** Regresión no lineal: los datos con la curva ajustada (una por grupo) y los residuos. */
+  /**
+   * Dosis en escala logarítmica (como el eje partido de drc): log10 de cada dosis positiva; la dosis cero va una década
+   * debajo de la menor positiva, con la marca «0». La curva se vuelve a trazar con puntos repartidos en el logaritmo.
+   */
+  function ejeLogaritmico(r) {
+    const pos = r.valores.x.filter(x => x > 0);
+    if (!r.ejeLog || pos.length < 2) return null;
+    const L1 = Math.log10(Math.min(...pos)), L2 = Math.log10(Math.max(...pos)), cero = r.valores.x.some(x => x <= 0), L0 = L1 - 1;
+    const tx = x => (x > 0 ? Math.log10(x) : L0), marcas = [];
+    const num = k => { const v = 10 ** k; return v >= 1 ? String(Math.round(v)) : v.toFixed(-k); };
+    /* con menos de tres potencias de 10 dentro del rango, también los 2 y los 5 de cada década */
+    let decadas = 0;
+    for (let k = Math.ceil(L1 - 1e-9); k <= L2 + 1e-9; k++) decadas++;
+    for (let k = Math.floor(L1); k <= Math.ceil(L2); k++) for (const m of decadas >= 3 ? [1] : [1, 2, 5]) {
+      const v = Math.log10(m) + k;
+      if (v >= L1 - 1e-9 && v <= L2 + 1e-9) marcas.push({ v, t: m === 1 ? num(k) : String(+(m * 10 ** k).toPrecision(6)) });
+    }
+    if (cero) marcas.unshift({ v: L0, t: '0' });
+    const desde = cero ? L0 : L1, M = SP.nolineal.MODELOS[r.modelo];
+    const malla = Array.from({ length: 161 }, (_, k) => 10 ** (desde + (L2 - desde) * k / 160));
+    return { tx, marcas, curvas: r.curvas.map(c => ({ x: malla.map(Math.log10), y: malla.map(x => M.f(x, c.parametros)[0]) })) };
+  }
   function graficasNoLineal(r) {
-    const v = r.valores, G = r.niveles.length, out = [];
-    out.push(SP.graficas.dispersion({ titulo: T('Curva ajustada: modelo {m}', { m: SP.metodosNoLineal.NOMBRE[r.modelo] }), x: { titulo: r.x }, y: { titulo: r.respuesta },
-      descripcion: T('Cada punto es una observación; la línea es la curva ajustada{g}.', { g: G ? T(', una por cada nivel de «{f}»', { f: r.grupo }) : '' }),
-      puntos: SP.graficas.adelgazar(v.x.map((x, i) => ({ x, y: v.y[i], serie: G ? v.g[i] : undefined })), 2500),
-      lineas: r.curvas.map((c, k) => ({ x: c.x, y: c.y, serie: G ? k : undefined })),
+    const v = r.valores, G = r.niveles.length, out = [], lg = ejeLogaritmico(r);
+    const tx = lg ? lg.tx : (x => x), curvas = lg && r.curvas.every(c => c.parametros) ? lg.curvas : r.curvas;
+    out.push(SP.graficas.dispersion({ titulo: T('Curva ajustada: modelo {m}', { m: SP.metodosNoLineal.NOMBRE[r.modelo] }), x: lg ? { titulo: T('{x} (escala logarítmica)', { x: r.x }), marcas: lg.marcas } : { titulo: r.x }, y: { titulo: r.respuesta },
+      descripcion: T('Cada punto es una observación; la línea es la curva ajustada{g}.', { g: G ? T(', una por cada nivel de «{f}»', { f: r.grupo }) : '' }) + (lg && v.x.some(x => x <= 0) ? ' ' + T('La dosis cero va a la izquierda, una década debajo de la menor dosis.') : ''),
+      puntos: SP.graficas.adelgazar(v.x.map((x, i) => ({ x: tx(x), y: v.y[i], serie: G ? v.g[i] : undefined })), 2500),
+      lineas: curvas.map((c, k) => ({ x: c.x, y: c.y, serie: G ? k : undefined })),
       leyenda: G ? { titulo: r.grupo, series: r.niveles } : undefined }));
     out.push(SP.graficas.dispersion({ titulo: T('Residuos contra valores ajustados'), x: { titulo: T('Valor ajustado') }, y: { titulo: T('Residuo') },
       descripcion: T('Sin patrón (una nube pareja alrededor de cero) el modelo describe bien la forma de los datos; una curva en los residuos indica que falta forma.'),
@@ -1649,6 +1712,18 @@
         descripcion: T('Los dos primeros ejes de la interacción; un genotipo y un ambiente en la misma dirección interactúan a favor.'),
         genotipos: Gn.map((g, i) => ({ x: X.genotipos[i][0], y: X.genotipos[i][1], nombre: g })), ambientes: An.map((a, j) => ({ x: X.ambientes[j][0], y: X.ambientes[j][1], nombre: a })),
         vectores: true, iguales: true, leyenda: [T('Genotipos'), T('Ambientes')] }));
+      if (r.waas) {
+        const Wa = r.waas, mW = Wa.genotipos.reduce((a, b) => a + b, 0) / Gn.length;
+        out.push(SP.graficas.biplot({ titulo: T('Respuesta contra estabilidad (WAAS)'), x: { titulo: T('Media de «{y}»', { y: r.respuesta }) }, y: { titulo: T('WAAS ({k} {e})', { k: Wa.ejes, e: Wa.ejes === 1 ? T('eje') : T('ejes') }) },
+          descripcion: T('Cada genotipo con su media y su WAAS; abajo, más estable. Las líneas son la media general y el WAAS medio: el cuadrante de {c} junta respuesta y estabilidad.', { c: r.objetivo === 'minimo' ? T('abajo a la izquierda') : T('abajo a la derecha') }),
+          genotipos: Gn.map((g, i) => ({ x: r.medias[i], y: Wa.genotipos[i], nombre: g })), referencias: [{ x: r.media_general }, { y: mW }] }));
+      }
+    }
+    if (r.metodo === 'dos-etapas') {
+      const X = r.estimados, z = SP.dist.qnorm(0.975), s = r.objetivo === 'minimo' ? -1 : 1, orden = Gn.map((_, i) => i).sort((a, b) => s * (X.media[b] - X.media[a]));
+      out.push(SP.graficas.medias({ titulo: T('Medias ajustadas en el conjunto de ambientes'), y: { titulo: r.respuesta },
+        descripcion: T('Media de cada genotipo en el análisis en dos etapas, con su intervalo de 95 % (± 1.96 EE).'),
+        grupos: orden.map(i => ({ nombre: Gn[i], media: X.media[i], inf: X.media[i] - z * X.ee[i], sup: X.media[i] + z * X.ee[i] })) }));
     }
     if (r.metodo === 'gge') {
       const Q = r.gge, ejes = { x: { titulo: T('EJE1 ({p} %)', { p: f1(Q.pct[0]) }) }, y: { titulo: T('EJE2 ({p} %)', { p: f1(Q.pct[1]) }) } };
@@ -1657,6 +1732,19 @@
         genotipos: gs, ambientes: as, poligono: Q.indices_vertices, rayos: true, iguales: true, leyenda: [T('Genotipos'), T('Ambientes')] }, ejes)));
       out.push(SP.graficas.biplot(Object.assign({ titulo: T('Media contra estabilidad'), descripcion: T('El eje del ambiente promedio (la flecha señala la mejor respuesta): la proyección de cada genotipo sobre él es su desempeño y la distancia al eje, su inestabilidad.'),
         genotipos: gs, ambientes: as, eje: Q.media_ambiente, iguales: true, leyenda: [T('Genotipos'), T('Ambientes')] }, ejes)));
+      if (Q.genotipo_ideal) {
+        const anillos = (d, n) => { const mx = Math.max(...d); return Array.from({ length: n }, (_, k) => mx * (k + 1) / n); };
+        out.push(SP.graficas.biplot(Object.assign({ titulo: T('Genotipos respecto del ideal'), descripcion: T('El círculo dorado es el genotipo ideal (alto y estable), sobre el eje del ambiente promedio; los anillos marcan la distancia a él: más adentro, mejor.'),
+          genotipos: gs, eje: Q.media_ambiente, ideal: { x: Q.genotipo_ideal[0], y: Q.genotipo_ideal[1], radios: anillos(Q.distancia_genotipos, 4) }, iguales: true }, ejes)));
+        out.push(SP.graficas.biplot(Object.assign({ titulo: T('Ambientes respecto del ideal'), descripcion: T('El ambiente ideal discrimina mucho entre genotipos y representa a los demás; los anillos marcan la distancia a él.'),
+          ambientes: as, vectores: true, eje: Q.media_ambiente, ideal: { x: Q.ambiente_ideal[0], y: Q.ambiente_ideal[1], radios: anillos(Q.distancia_ambientes, 4) }, iguales: true }, ejes)));
+      }
+      if (Q.comparacion) {
+        const ia = Gn.indexOf(Q.comparacion.a), ib = Gn.indexOf(Q.comparacion.b);
+        out.push(SP.graficas.biplot(Object.assign({ titulo: T('{a} contra {b}', { a: Q.comparacion.a, b: Q.comparacion.b }),
+          descripcion: T('La recta une a los dos genotipos; la perpendicular por el origen divide a los ambientes: del lado de cada genotipo, ese genotipo es mejor según el biplot.'),
+          genotipos: gs, ambientes: as, par: [ia, ib], vectores: true, iguales: true, leyenda: [T('Genotipos'), T('Ambientes')] }, ejes)));
+      }
     }
     return out.join('');
   }
@@ -2030,11 +2118,14 @@
       } else pon(s, { respuesta: e.respuesta, estrato: e.estrato, N: op.N, tipoSimple: op.tipo, nTotal: op.nTotal, confianza: op.confianza });
       for (const parte of String(op.poblaciones || '').split(/[;\n]+/)) { const x = parte.match(/^\s*(.+)[=:]\s*([\d.]+)\s*$/); if (x) estado.mueN[x[1].trim()] = +x[2]; }
     } else if (MULTI.includes(m)) {
-      pon(estado.ma, { respuesta: e.respuesta, genotipo: e.genotipo, ambiente: e.ambiente, repeticion: e.repeticion || '', eeb: op.eeb, objetivo: op.objetivo, escala: op.escala, particion: op.particion });
+      pon(estado.ma, { respuesta: e.respuesta, genotipo: e.genotipo, ambiente: e.ambiente, repeticion: e.repeticion || '', eeb: op.eeb, objetivo: op.objetivo, escala: op.escala, particion: op.particion,
+        imputar: op.imputar !== false, ejesImputar: op.ejesImputar === undefined ? 1 : op.ejesImputar, ejesWaas: op.ejesWaas || 0, pesoRespuesta: op.pesoRespuesta === undefined ? 50 : op.pesoRespuesta,
+        probAnnicchiarico: op.probAnnicchiarico || 0.25, genotipoA: op.genotipoA || '', genotipoB: op.genotipoB || '' });
     } else if (SUPERFICIES.includes(m)) {
       pon(estado.srf, { respuesta: e.respuesta, factores: [].concat(e.factores || []), bloque: e.bloque || '', orden: op.orden, objetivo: op.objetivo, nivel: op.nivel });
     } else if (NOLINEAL.includes(m)) {
-      pon(estado.nl, { respuesta: e.respuesta, x: e.x || e.dosis, grupo: e.grupo || '', modelo: op.modelo, nivel: op.nivel, metodo: m });
+      pon(estado.nl, { respuesta: e.respuesta, x: e.x || e.dosis, grupo: e.grupo || '', pesos: e.pesos || '', modelo: op.modelo, nivel: op.nivel, intervalo: op.intervalo || 'wald',
+        precioProducto: op.precioProducto > 0 ? op.precioProducto : '', precioInsumo: op.precioInsumo > 0 ? op.precioInsumo : '', ejeLog: !!op.ejeLog, metodo: m });
     } else if (GLMS.includes(m)) {
       estado.glm.metodo = m;
       pon(estado.glm, { respuesta: e.respuesta, tratamientos: e.tratamientos ? [].concat(e.tratamientos) : undefined, bloque: e.bloque || '', covariables: [].concat(e.covariables || []),

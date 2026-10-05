@@ -200,6 +200,9 @@
  "nl-meseta": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.usar('respuesta-meseta', { respuesta: 'rend', dosis: 'dosis', grupo: 'hibrido' }, { modelo: 'lineal-meseta' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },
+ "nl-meseta-aic": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.usar('respuesta-meseta', { respuesta: 'rend', dosis: 'dosis' }, { modelo: 'auto', intervalo: 'perfil', precioProducto: 5000, precioInsumo: 25, ejeLog: true }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
  "srf-segundo": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[17].click(), SP.app.ir(4), SP.app.analisis.usar('superficie-respuesta', { respuesta: 'rendimiento', factores: ['N', 'K'] }, { orden: 'segundo', objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },
@@ -217,6 +220,12 @@
  },
  "ma-gge": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[13].click(), SP.app.ir(4), SP.app.analisis.usar('gge', { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, { escala: 'ninguna', particion: 'simetrica', objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "ma-gge-par": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[13].click(), SP.app.ir(4), SP.app.analisis.usar('gge', { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, { escala: 'ninguna', particion: 'genotipo', objetivo: 'maximo', genotipoA: 'G8', genotipoB: 'G3' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "ma-dos-etapas": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[13].click(), SP.app.ir(4), SP.app.analisis.usar('dos-etapas', { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, { objetivo: 'maximo' }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },
  "asis-ambientes": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[13].click(), SP.app.ir(4), SP.app.analisis.ponerModo('asistente')"

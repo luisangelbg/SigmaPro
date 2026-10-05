@@ -106,6 +106,8 @@ SP.definir('informe', function (SP) {
     ritz2015: () => 'Ritz, C., Baty, F., Streibig, J. C. y Gerhard, D. (2015). Dose-response analysis using R. PLoS ONE, 10(12), e0146021.',
     seefeldt1995: () => 'Seefeldt, S. S., Jensen, J. E. y Fuerst, E. P. (1995). Log-logistic analysis of herbicide dose-response relationships. Weed Technology, 9(2), 218–227.',
     cerrato1990: () => 'Cerrato, M. E. y Blackmer, A. M. (1990). Comparison of models for describing corn yield response to nitrogen fertilizer. Agronomy Journal, 82(1), 138–143.',
+    brain1989: () => 'Brain, P. y Cousens, R. (1989). An equation to describe dose responses where there is stimulation of growth at low doses. Weed Research, 29(2), 93–96.',
+    michaelis1913: () => 'Michaelis, L. y Menten, M. L. (1913). Die Kinetik der Invertinwirkung. Biochemische Zeitschrift, 49, 333–369.',
     box1951: () => 'Box, G. E. P. y Wilson, K. B. (1951). On the experimental attainment of optimum conditions. Journal of the Royal Statistical Society B, 13(1), 1–45.',
     myers2016: () => 'Myers, R. H., Montgomery, D. C. y Anderson-Cook, C. M. (2016). Response surface methodology: process and product optimization using designed experiments (4.ª ed.). Wiley.',
     hoerl1959: () => 'Hoerl, A. E. (1959). Optimum solution of many variables equations. Chemical Engineering Progress, 55, 69–78.',
@@ -121,6 +123,15 @@ SP.definir('informe', function (SP) {
     cornelius1992: () => 'Cornelius, P. L., Seyedsadr, M. y Crossa, J. (1992). Using the shifted multiplicative model to search for «separability» in crop cultivar trials. Theoretical and Applied Genetics, 84(1–2), 161–172.',
     purchase2000: () => 'Purchase, J. L., Hatting, H. y van Deventer, C. S. (2000). Genotype × environment interaction of winter wheat (Triticum aestivum L.) in South Africa: II. Stability analysis of yield performance. South African Journal of Plant and Soil, 17(3), 101–107.',
     yan2000: () => 'Yan, W., Hunt, L. A., Sheng, Q. y Szlavnics, Z. (2000). Cultivar evaluation and mega-environment investigation based on the GGE biplot. Crop Science, 40(3), 597–605.',
+    gauch1990: () => 'Gauch, H. G. y Zobel, R. W. (1990). Imputing missing yield trial data. Theoretical and Applied Genetics, 79(6), 753–761.',
+    nassar1987: () => 'Nassar, R. y Huehn, M. (1987). Studies on estimation of phenotypic stability: tests of significance for nonparametric measures of phenotypic stability. Biometrics, 43(1), 45–53.',
+    huehn1990: () => 'Huehn, M. (1990). Nonparametric measures of phenotypic stability. Part 1: Theory. Euphytica, 47(3), 189–194.',
+    kang1993: () => 'Kang, M. S. (1993). Simultaneous selection for yield and stability in crop performance trials: consequences for growers. Agronomy Journal, 85(3), 754–757.',
+    annicchiarico1992: () => 'Annicchiarico, P. (1992). Cultivar adaptation and recommendation from alfalfa trials in Northern Italy. Journal of Genetics and Breeding, 46, 269–278.',
+    olivoto2019: () => 'Olivoto, T., Lúcio, A. D. C., da Silva, J. A. G., Marchioro, V. S., de Souza, V. Q. y Jost, E. (2019). Mean performance and stability in multi-environment trials I: combining features of AMMI and BLUP techniques. Agronomy Journal, 111(6), 2949–2960.',
+    yan2006: () => 'Yan, W. y Tinker, N. A. (2006). Biplot analysis of multi-environment trial data: principles and applications. Canadian Journal of Plant Science, 86(3), 623–645.',
+    smith2001: () => 'Smith, A., Cullis, B. y Gilmour, A. (2001). The analysis of crop variety evaluation data in Australia. Australian and New Zealand Journal of Statistics, 43(2), 129–145.',
+    piepho2012: () => 'Piepho, H.-P., Möhring, J., Schulz-Streeck, T. y Ogutu, J. O. (2012). A stage-wise approach for the analysis of multi-environment trials. Biometrical Journal, 54(6), 844–860.',
     yan2003: () => 'Yan, W. y Kang, M. S. (2003). GGE biplot analysis: a graphical tool for breeders, geneticists, and agronomists. CRC Press.',
     cohen1988: () => 'Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2.ª ed.). Lawrence Erlbaum.',
     cochranCox1957: () => 'Cochran, W. G. y Cox, G. M. (1957). Experimental designs (2.ª ed.). Wiley.',
@@ -180,11 +191,12 @@ SP.definir('informe', function (SP) {
     cullis2006: 'Cullis et al., 2006', piepho2007: 'Piepho y Möhring, 2007', schmidt2019: 'Schmidt et al., 2019', falconer1996: 'Falconer y Mackay, 1996',
     cruz2012: 'Cruz et al., 2012', nelder1972: 'Nelder y Wedderburn, 1972', mccullagh1989: 'McCullagh y Nelder, 1989', venables2002: 'Venables y Ripley, 2002',
     wedderburn1974: 'Wedderburn, 1974', lenth2016: 'Lenth, 2016', bolker2009: 'Bolker et al., 2009', harrison2014: 'Harrison, 2014', fox2019: 'Fox y Weisberg, 2019',
-    bates1988: 'Bates y Watts, 1988', archontoulis2015: 'Archontoulis y Miguez, 2015', ritz2015: 'Ritz et al., 2015', seefeldt1995: 'Seefeldt et al., 1995', cerrato1990: 'Cerrato y Blackmer, 1990',
+    bates1988: 'Bates y Watts, 1988', archontoulis2015: 'Archontoulis y Miguez, 2015', ritz2015: 'Ritz et al., 2015', seefeldt1995: 'Seefeldt et al., 1995', cerrato1990: 'Cerrato y Blackmer, 1990', brain1989: 'Brain y Cousens, 1989', michaelis1913: 'Michaelis y Menten, 1913',
     box1951: 'Box y Wilson, 1951', myers2016: 'Myers et al., 2016', hoerl1959: 'Hoerl, 1959', draper1963: 'Draper, 1963',
     bartlett1937: 'Bartlett, 1937', finlay1963: 'Finlay y Wilkinson, 1963', eberhart1966: 'Eberhart y Russell, 1966', wricke1962: 'Wricke, 1962', shukla1972: 'Shukla, 1972',
     lin1988: 'Lin y Binns, 1988', gauch1988: 'Gauch, 1988', gollob1968: 'Gollob, 1968', cornelius1992: 'Cornelius et al., 1992', purchase2000: 'Purchase et al., 2000',
-    yan2000: 'Yan et al., 2000', yan2003: 'Yan y Kang, 2003', cohen1988: 'Cohen, 1988', cochranCox1957: 'Cochran y Cox, 1957', agresti2002: 'Agresti, 2002', belsley1980: 'Belsley et al., 1980', fleiss1969: 'Fleiss et al., 1969',
+    yan2000: 'Yan et al., 2000', yan2003: 'Yan y Kang, 2003', gauch1990: 'Gauch y Zobel, 1990', nassar1987: 'Nassar y Huehn, 1987', huehn1990: 'Huehn, 1990',
+    kang1993: 'Kang, 1993', annicchiarico1992: 'Annicchiarico, 1992', olivoto2019: 'Olivoto et al., 2019', yan2006: 'Yan y Tinker, 2006', smith2001: 'Smith et al., 2001', piepho2012: 'Piepho et al., 2012', cohen1988: 'Cohen, 1988', cochranCox1957: 'Cochran y Cox, 1957', agresti2002: 'Agresti, 2002', belsley1980: 'Belsley et al., 1980', fleiss1969: 'Fleiss et al., 1969',
     hyndman1996: 'Hyndman y Fan, 1996', joanes1998: 'Joanes y Gill, 1998', landis1977: 'Landis y Koch, 1977', steiger1997: 'Steiger y Fouladi, 1997', champely2020: 'Champely, 2020', cochran1977: 'Cochran, 1977',
     kaplan1958: 'Kaplan y Meier, 1958', greenwood1926: 'Greenwood, 1926', mantel1966: 'Mantel, 1966', peto1972: 'Peto y Peto, 1972', cox1972: 'Cox, 1972',
     efron1977: 'Efron, 1977', breslow1974: 'Breslow, 1974', grambsch1994: 'Grambsch y Therneau, 1994', harrell1982: 'Harrell et al., 1982', therneau2024: 'Therneau, 2024',
@@ -727,13 +739,21 @@ SP.definir('informe', function (SP) {
   function noLineal(r, citas) {
     const NL = SP.metodosNoLineal, A = r.ajuste, G = r.niveles.length;
     const nom = z => { const n = NL.NOMBRE_DER[z]; return /^DE\d/.test(n) ? n : n.charAt(0).toLowerCase() + n.slice(1); };
-    const ref = r.modelo.startsWith('ll') ? ['seefeldt1995', 'ritz2015'] : /meseta/.test(r.modelo) ? ['cerrato1990'] : ['archontoulis2015'];
-    const metodos = T('Se ajustó el modelo {m} ({e}) por mínimos cuadrados no lineales ({c}){g}.', { m: NL.NOMBRE[r.modelo], e: NL.ECUACION[r.modelo], c: cita(['bates1988'].concat(ref), citas),
-      g: G ? T(', con un juego de parámetros para cada nivel de {f}', { f: r.grupo }) : '' }) +
-      (r.derivados.length ? ' ' + T('Los valores derivados ({d}) y sus errores estándar se obtuvieron por el método delta; los intervalos son de Wald con t de {g} grados de libertad.', { d: y([...new Set(r.derivados.map(z => nom(z.nombre)))]), g: A.gl })
-        : ' ' + T('Los intervalos de los parámetros son de Wald con t de {g} grados de libertad.', { g: A.gl })) +
+    const ref = r.modelo.startsWith('ll') ? ['seefeldt1995', 'ritz2015'] : r.modelo.startsWith('bc') ? ['brain1989', 'ritz2015'] : r.modelo.startsWith('mm') ? ['michaelis1913']
+      : /meseta/.test(r.modelo) ? ['cerrato1990'] : ['archontoulis2015'];
+    const perfil = r.intervalo === 'perfil', econ = r.derivados.some(z => z.nombre === 'dosis_economica');
+    const metodos = (r.seleccion ? T('Entre {k} modelos ajustados a los mismos datos se eligió el de menor criterio de información de Akaike ({c}).', { k: r.seleccion.filter(z => !z.error).length, c: cita(['akaike1974'], citas) }) + ' ' : '') +
+      T('Se ajustó el modelo {m} ({e}) por mínimos cuadrados no lineales{w} ({c}){g}.', { m: NL.NOMBRE[r.modelo], e: NL.ECUACION[r.modelo], c: cita(['bates1988'].concat(ref), citas),
+        w: r.pesos ? T(' ponderados por «{p}»', { p: r.pesos }) : '', g: G ? T(', con un juego de parámetros para cada nivel de {f}', { f: r.grupo }) : '' }) +
+      (perfil ? ' ' + T('Los intervalos de los parámetros se obtuvieron por verosimilitud perfilada ({c}).', { c: cita(['bates1988'], citas) }) : '') +
+      (r.derivados.length ? ' ' + (perfil ? T('Los valores derivados ({d}) y sus errores estándar se obtuvieron por el método delta, con intervalos de Wald con t de {g} grados de libertad.', { d: y([...new Set(r.derivados.map(z => nom(z.nombre)))]), g: A.gl })
+        : T('Los valores derivados ({d}) y sus errores estándar se obtuvieron por el método delta; los intervalos son de Wald con t de {g} grados de libertad.', { d: y([...new Set(r.derivados.map(z => nom(z.nombre)))]), g: A.gl }))
+        : perfil ? '' : ' ' + T('Los intervalos de los parámetros son de Wald con t de {g} grados de libertad.', { g: A.gl })) +
+      (econ ? ' ' + T('La dosis económica óptima es la dosis en que la pendiente de la curva iguala la razón entre el precio del insumo y el del producto ({r}; {c}).', { r: s4(r.precios.razon), c: cita(['cerrato1990'], citas) }) : '') +
       (r.comparacion ? ' ' + T('Las curvas se compararon con la prueba F de la suma de cuadrados extra ({c}).', { c: cita(['bates1988'], citas) }) : '');
-    const der = r.derivados.map(z => T('{n}{g} = {v} (IC: {i} a {s})', { n: nom(z.nombre), g: z.grupo ? T(' de {x}', { x: z.grupo }) : '', v: s4(z.valor), i: s4(z.ic[0]), s: s4(z.ic[1]) }));
+    const der = r.derivados.filter(z => !(z.recortada && z.nombre === 'respuesta_economica')).map(z => (z.recortada
+      ? T('{n}{g} = 0 (a esos precios no conviene aplicar)', { n: nom(z.nombre), g: z.grupo ? T(' de {x}', { x: z.grupo }) : '' })
+      : T('{n}{g} = {v} (IC: {i} a {s})', { n: nom(z.nombre), g: z.grupo ? T(' de {x}', { x: z.grupo }) : '', v: s4(z.valor), i: s4(z.ic[0]), s: s4(z.ic[1]) })));
     const c = r.comparacion, comp = c ? (c.global.p < (r.alfa || 0.05) ? T('Las curvas de {f} difirieron (F({a}, {b}) = {v}; {p}).', { f: r.grupo, a: c.global.gl1, b: c.global.gl2, v: n2(c.global.F), p: fp(c.global.p) })
       : T('Las curvas de {f} no difirieron (F({a}, {b}) = {v}; {p}).', { f: r.grupo, a: c.global.gl1, b: c.global.gl2, v: n2(c.global.F), p: fp(c.global.p) })) : '';
     return { metodos, resultados: [T('El modelo explicó el {p} % de la variación (R² = {r}; error estándar residual = {s}).', { p: pct(100 * A.r2), r: n3(A.r2), s: s4(A.sigma) }),
@@ -769,8 +789,16 @@ SP.definir('informe', function (SP) {
   }
 
   function multiambiente(id, r, citas) {
-    const G = r.genotipos, E = r.ambientes_nombre, a = r.alfa || 0.05, an = r.anova, iGA = an.fuente.indexOf(T('G × A')), iG = an.fuente.indexOf(T('Genotipos'));
-    const base = T('Se evaluaron {g} genotipos en {e} ambientes{r}.', { g: G.length, e: E.length, r: r.repeticion ? T(' con repeticiones (r = {r})', { r: n2(r.r) }) : T(' (una media por genotipo y ambiente)') });
+    const G = r.genotipos, E = r.ambientes_nombre, a = r.alfa || 0.05;
+    if (id === 'dos-etapas') {
+      const X = r.estimados, W = r.wald, s = r.objetivo === 'minimo' ? -1 : 1, mejor = G.map((_, i) => i).sort((p, q) => s * (X.media[q] - X.media[p]))[0];
+      return { metodos: T('Se evaluaron {g} genotipos en {e} ambientes con un análisis en dos etapas ({c}): en cada ambiente se estimaron las medias ajustadas de los genotipos y su varianza, y en el análisis conjunto cada media se ponderó por el inverso de su varianza más la de la interacción genotipo × ambiente, estimada por máxima verosimilitud restringida.', { g: G.length, e: E.length, c: cita(['smith2001', 'piepho2012'], citas) }),
+        resultados: [T('La varianza de la interacción genotipo × ambiente fue {v}.', { v: s4(r.sigma2_ga) }),
+          T('Los genotipos {d} (F({a}, {b}) = {f}; {p}); la mayor media ajustada fue la de {m} ({v}).', { d: W.p < a ? T('difirieron') : T('no difirieron'), a: W.gl1, b: W.gl2, f: n2(W.F), p: fp(W.p), m: G[mejor], v: s4(X.media[mejor]) })].join(' ') };
+    }
+    const an = r.anova, iGA = an.fuente.indexOf(T('G × A')), iG = an.fuente.indexOf(T('Genotipos'));
+    const im = r.imputacion ? ' ' + T('Las {k} celdas genotipo × ambiente vacías se imputaron por EM-AMMI con {e} {x} ({c}).', { k: r.imputacion.celdas.length, e: r.imputacion.ejes, x: r.imputacion.ejes === 1 ? T('eje') : T('ejes'), c: cita(['gauch1990'], citas) }) : '';
+    const base = T('Se evaluaron {g} genotipos en {e} ambientes{r}.', { g: G.length, e: E.length, r: r.repeticion ? T(' con repeticiones (r = {r})', { r: n2(r.r) }) : T(' (una media por genotipo y ambiente)') }) + im;
     const ga = iGA >= 0 ? T('La interacción genotipo × ambiente {s} (F({a}, {b}) = {v}; {p}).', { s: an.p[iGA] < a ? T('fue significativa') : T('no fue significativa'), a: an.gl[iGA], b: an.gl[an.gl.length - 1], v: n2(an.F[iGA]), p: fp(an.p[iGA]) }) : '';
     if (id === 'ensayos-multiambiente') {
       const metodos = base + ' ' + T('Después del análisis de cada ambiente se hizo el análisis de varianza conjunto ({c}){h}.', { c: cita(['gomez1984'], citas),
@@ -783,19 +811,23 @@ SP.definir('informe', function (SP) {
     if (id === 'estabilidad') {
       const R = r.regresion, estables = G.filter((_, i) => R.p[i] >= a && (!R.p_dev || R.p_dev[i] >= a));
       const kW = r.wricke.W.indexOf(Math.min(...r.wricke.W)), kL = r.lin_binns.indexOf(Math.min(...r.lin_binns));
-      return { metodos: base + ' ' + T('La estabilidad se evaluó con la regresión sobre el índice ambiental ({c1}), la ecovalencia ({c2}), la varianza de estabilidad ({c3}) y la superioridad ({c4}).',
-        { c1: cita(['finlay1963', 'eberhart1966'], citas), c2: cita(['wricke1962'], citas), c3: cita(['shukla1972'], citas), c4: cita(['lin1988'], citas) }),
+      return { metodos: base + ' ' + T('La estabilidad se evaluó con la regresión sobre el índice ambiental ({c1}), la ecovalencia ({c2}), la varianza de estabilidad ({c3}), la superioridad ({c4}) y las medidas no paramétricas de Huehn ({c5}){k}{n}.',
+        { c1: cita(['finlay1963', 'eberhart1966'], citas), c2: cita(['wricke1962'], citas), c3: cita(['shukla1972'], citas), c4: cita(['lin1988'], citas), c5: cita(['huehn1990', 'nassar1987'], citas),
+          k: r.kang ? T(', el estadístico de rendimiento y estabilidad YS ({c})', { c: cita(['kang1993'], citas) }) : '', n: r.annicchiarico ? T(' y el índice de confianza ({c})', { c: cita(['annicchiarico1992'], citas) }) : '' }),
       resultados: [T('Las pendientes fueron de {a} a {b}.', { a: n2(Math.min(...R.b)), b: n2(Math.max(...R.b)) }),
         estables.length ? T('No se apartaron de b = 1{s}: {l}.', { s: R.p_dev ? T(' ni de S²d = 0') : '', l: y(estables) }) : T('Todos los genotipos se apartaron de b = 1{s}.', { s: R.p_dev ? T(' o de S²d = 0') : '' }),
-        T('La menor ecovalencia fue la de {g} ({p} % de la interacción) y la mejor superioridad, la de {l}.', { g: G[kW], p: n2(r.wricke.pct[kW]), l: G[kL] })].join(' ') };
+        T('La menor ecovalencia fue la de {g} ({p} % de la interacción) y la mejor superioridad, la de {l}.', { g: G[kW], p: n2(r.wricke.pct[kW]), l: G[kL] }),
+        r.kang ? T('Por el YS se seleccionaron {l}.', { l: y(G.filter((_, i) => r.kang.seleccionado[i])) || T('ninguno') }) : ''].filter(Boolean).join(' ') };
     }
     if (id === 'ammi') {
       const X = r.ammi, ej = X.ejes;
       const metodos = base + ' ' + T('Se ajustó el modelo AMMI ({c1}); los ejes de la interacción se probaron con la prueba F ({c2}) y la prueba F_R ({c3}){s}.',
-        { c1: cita(['gauch1988'], citas), c2: cita(['gollob1968'], citas), c3: cita(['cornelius1992'], citas), s: X.asv ? T(', y la estabilidad se midió con el ASV ({c})', { c: cita(['purchase2000'], citas) }) : '' });
+        { c1: cita(['gauch1988'], citas), c2: cita(['gollob1968'], citas), c3: cita(['cornelius1992'], citas), s: (X.asv ? T(', la estabilidad se midió con el ASV ({c})', { c: cita(['purchase2000'], citas) }) : '') +
+          (r.waas ? T(' y con el WAAS en {k} {e}, combinado con la respuesta en el WAASY ({c})', { k: r.waas.ejes, e: r.waas.ejes === 1 ? T('eje') : T('ejes'), c: cita(['olivoto2019'], citas) }) : '') });
       const res = [ga, T('Los dos primeros ejes explicaron el {p} % de la suma de cuadrados de la interacción.', { p: pct(ej.acum[Math.min(1, ej.acum.length - 1)]) })];
       if (X.fr) res.push(T('La prueba F_R retuvo {n} {e}.', { n: X.n_fr, e: X.n_fr === 1 ? T('eje') : T('ejes') }));
       if (X.asv) { const k = X.asv.indexOf(Math.min(...X.asv)); res.push(T('El genotipo más estable según el ASV fue {g}.', { g: G[k] })); }
+      if (r.waas) { const k = r.waas.waasy.indexOf(Math.max(...r.waas.waasy)); res.push(T('El mayor WAASY fue el de {g}.', { g: G[k] })); }
       return { metodos, resultados: res.filter(Boolean).join(' ') };
     }
     const Q = r.gge, megas = [...new Set(Q.ganador)];
@@ -804,7 +836,8 @@ SP.definir('informe', function (SP) {
       e: r.escala === 'desviacion' ? T(' y escalada por su desviación estándar') : '', p: { simetrica: T('simétrica'), genotipo: T('por genotipo'), ambiente: T('por ambiente') }[r.particion] }),
     resultados: [T('Los dos primeros ejes explicaron el {p} % de G + G × A.', { p: pct(Q.pct[0] + Q.pct[1]) }),
       megas.length > 1 ? T('Se distinguieron {k} megaambientes, con {l} como ganadores.', { k: megas.length, l: y(megas) }) : T('{g} ganó en todos los ambientes.', { g: megas[0] }),
-      T('El mejor desempeño promedio fue el de {g}.', { g: G[orden[0]] })].join(' ') };
+      T('El mejor desempeño promedio fue el de {g}.', { g: G[orden[0]] }),
+      Q.distancia_genotipos ? T('El genotipo más cercano al ideal ({c}) fue {g}.', { c: cita(['yan2006'], citas), g: G[Q.distancia_genotipos.indexOf(Math.min(...Q.distancia_genotipos))] }) : ''].filter(Boolean).join(' ') };
   }
 
   function potencia(id, r, citas) {
@@ -945,7 +978,7 @@ SP.definir('informe', function (SP) {
     else if (id === 'glmm-bloques' || id === 'glmm') p = generalizadoMixto(r, citas);
     else if (['curva-crecimiento', 'dosis-respuesta', 'respuesta-meseta'].includes(id)) p = noLineal(r, citas);
     else if (['superficie-respuesta', 'ascenso-pronunciado'].includes(id)) p = superficie(r, citas);
-    else if (['ensayos-multiambiente', 'estabilidad', 'ammi', 'gge'].includes(id)) p = multiambiente(id, r, citas);
+    else if (['ensayos-multiambiente', 'dos-etapas', 'estabilidad', 'ammi', 'gge'].includes(id)) p = multiambiente(id, r, citas);
     else if (['potencia-medias', 'potencia-anova', 'potencia-proporciones', 'potencia-correlacion', 'repeticiones'].includes(id)) p = potencia(id, r, citas);
     else if (['tamano-muestra', 'muestreo-simple', 'muestreo-estratificado'].includes(id)) p = muestreo(id, r, citas);
     else if (id === 'kaplan-meier' || id === 'cox') p = supervivencia(id, r, citas);

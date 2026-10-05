@@ -14,6 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import vm from 'node:vm';
 import { guardar } from './lib/comprobaciones.mjs';
+import { rscript } from './lib/rscript.mjs';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 const html = readFileSync(join(RAIZ, 'index.html'), 'utf8');
@@ -23,13 +24,6 @@ for (const s of scripts) vm.runInContext(readFileSync(join(RAIZ, s), 'utf8'), ct
 vm.runInContext(readFileSync(join(RAIZ, 'datos/ejemplos.js'), 'utf8').replace('window.SP_EJEMPLOS', 'globalThis.SP_EJEMPLOS'), ctx);
 const SP = ctx.SP, EJ = ctx.SP_EJEMPLOS;
 
-function rscript() {
-  if (process.env.SIGMAPRO_RSCRIPT) return process.env.SIGMAPRO_RSCRIPT;
-  try { execFileSync('Rscript', ['--version'], { stdio: 'ignore' }); return 'Rscript'; } catch { /* no está en el PATH */ }
-  const base = 'C:/Program Files/R';
-  if (existsSync(base)) { const v = readdirSync(base).filter(d => /^R-/.test(d)).sort().pop(); if (v) return join(base, v, 'bin', 'Rscript.exe'); }
-  return null;
-}
 const R = rscript();
 if (!R) { console.log('No encontré Rscript: se omite la prueba del código R.'); process.exit(0); }
 
@@ -182,6 +176,14 @@ const ESCENARIOS = [
     r: 'c(coef(m), summary(m)$coefficients[, 2], AIC(m))', js: res => [...res.parametros.estimado, ...res.parametros.ee, res.ajuste.AIC] },
   { ej: 'maiz', id: 'respuesta-meseta', e: { respuesta: 'rend', dosis: 'dosis' }, op: { modelo: 'cuadratico-meseta' },
     r: 'c(coef(m), summary(m)$sigma)', js: res => [...res.parametros.estimado, res.ajuste.sigma] },
+  /* Hito 4.0: Brain-Cousens, Michaelis-Menten con la dosis económica (car::deltaMethod) y pesos (nls con weights) */
+  { ej: 'herbicida-dosis', id: 'dosis-respuesta', e: { respuesta: 'peso_seco', dosis: 'dosis' }, op: { modelo: 'bc5' },
+    r: 'c(coef(m), deviance(m), AIC(m))', js: res => [...res.parametros.estimado, res.ajuste.rss, res.ajuste.AIC] },
+  { ej: 'maiz', id: 'respuesta-meseta', e: { respuesta: 'rend', dosis: 'dosis' }, op: { modelo: 'mm3', precioProducto: 5000, precioInsumo: 25 },
+    r: 'c(coef(m), unlist(car::deltaMethod(m, "sqrt((d - c) * e / 0.005) - e")[1:2]), unlist(car::deltaMethod(m, "c + (d - c) * (sqrt((d - c) * e / 0.005) - e) / (e + (sqrt((d - c) * e / 0.005) - e))")[1:2]))',
+    js: res => { const z = n => res.derivados.find(v => v.nombre === n); return [...res.parametros.estimado, z('dosis_economica').valor, z('dosis_economica').ee, z('respuesta_economica').valor, z('respuesta_economica').ee]; } },
+  { ej: 'tomate-superficie', id: 'respuesta-meseta', e: { respuesta: 'rendimiento', dosis: 'N', pesos: 'K' }, op: { modelo: 'cuadratico-meseta' },
+    r: 'c(coef(m), deviance(m), AIC(m), nrow(d))', js: res => [...res.parametros.estimado, res.ajuste.rss, res.ajuste.AIC, res.n] },
   { ej: 'guayabo-cosechas', id: 'repetibilidad', e: { respuesta: 'rendimiento', individuo: 'arbol', fijos: ['cosecha'] }, op: {},
     r: 'c(r, mh * r / (1 + (mh - 1) * r), R2 * (1 - r) / ((1 - R2) * r))', js: res => [res.repetibilidad.r, res.repetibilidad.R2, ...res.necesarias.map(x => x.medidas)] },
   { ej: 'tomate-superficie', id: 'superficie-respuesta', e: { respuesta: 'rendimiento', factores: ['N', 'K'] }, op: { orden: 'segundo', objetivo: 'maximo' },
@@ -197,6 +199,16 @@ const ESCENARIOS = [
     r: 'c(sc, F, scr / glr / cme)', js: res => [...res.ammi.ejes.sc, ...res.ammi.ejes.F, ...res.ammi.fr.F] },
   { ej: 'avena-ambientes', id: 'gge', e: { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, op: {},
     r: '(100 * s$d^2 / sum(s$d^2))[1:4]', js: res => res.gge.pct.slice(0, 4) },
+  /* Hito 4.1: Huehn, Kang (agricolae), Annicchiarico, WAAS, las vistas del GGE y las dos etapas (metafor) */
+  { ej: 'avena-ambientes', id: 'estabilidad', e: { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, op: {},
+    r: 'c(apply(Rc, 1, function(v) mean(abs(outer(v, v, "-"))[upper.tri(diag(length(v)))])), apply(Rc, 1, var), rowSums((Ry - rowMeans(Ry))^2) / rowMeans(Ry), agricolae::stability.par(Y, rep = r, MSerror = cme)$stability$YSi, rowMeans(P) - qnorm(0.75) * apply(P, 1, sd))',
+    js: res => [...res.huehn.S1, ...res.huehn.S2, ...res.huehn.S3, ...res.kang.YS, ...res.annicchiarico.general.Wi] },
+  { ej: 'avena-ambientes', id: 'ammi', e: { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, op: { pesoRespuesta: 60 },
+    r: 'c(WAAS, (PR * 60 + PW * 40) / 100)', js: res => [...res.waas.genotipos, ...res.waas.waasy] },
+  { ej: 'avena-ambientes', id: 'gge', e: { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, op: { particion: 'genotipo', genotipoA: 'G8', genotipoB: 'G3' },
+    r: 'c(sqrt(rowSums(sweep(G, 2, max(sqrt(rowSums(G^2))) * u)^2)), drop((G["G8", ] - G["G3", ]) %*% t(E)))', js: res => [...res.gge.distancia_genotipos, ...res.gge.comparacion.prevista] },
+  { ej: 'avena-ambientes', id: 'dos-etapas', e: { respuesta: 'rendimiento', genotipo: 'genotipo', ambiente: 'ambiente', repeticion: 'repeticion' }, op: {},
+    r: 'c(m2$tau2, drop(L %*% coef(m2)), W)', js: res => [res.sigma2_ga, ...res.estimados.media, res.wald.W] },
   { ej: 'maiz', id: 'potencia-medias', e: {}, op: { calcular: 'n', diferencia: 0.5, de: 0.4 }, r: 'c(res$n, res$power)', js: res => [res.n, res.potencia] },
   { ej: 'maiz', id: 'potencia-anova', e: {}, op: { calcular: 'potencia', medias: '4.2, 4.8, 5.1, 5.6', de: 0.6, n: 4 }, r: 'c(res$power, res$between.var)', js: res => [res.potencia, res.varEntre] },
   { ej: 'maiz', id: 'potencia-proporciones', e: {}, op: { calcular: 'n', p1: 0.65, p2: 0.8 }, r: 'res$n', js: res => [res.n] },
