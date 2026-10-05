@@ -2,6 +2,21 @@
 
 ## Sin publicar
 
+### 0.4.2 · Ilustraciones en el catálogo y temas de las gráficas (4 oct 2026)
+
+- **Ilustraciones del catálogo**: cada uno de los 78 análisis tiene su miniatura vectorial propia
+  (`js/interfaz/ilustraciones.js`): el croquis del diseño, la curva, las barras con letras, el escalón de
+  supervivencia… En su tarjeta, en la recomendación del asistente y en la barra del análisis elegido. Siguen el tema
+  claro u oscuro y son decorativas para los lectores de pantalla (el nombre y el resumen dicen lo mismo).
+- **Seis temas para todas las gráficas** (`js/interfaz/temas-graficas.js`): SigmaPro (oro y negro, el de siempre),
+  Minimalista (grises, sin rejilla), Cuadrícula (panel gris con rejilla blanca), Revista (blanco y negro, letra con
+  serifas, fondo blanco aun en oscuro), Daltonismo (paleta de Okabe e Ito) y Presentación (letras grandes y trazos
+  gruesos). El selector está arriba de las gráficas de cada análisis, en el bloque Figuras y en el Estudio de figuras
+  (con los ajustes de la app); se recuerda en el navegador. Las descargas SVG, PNG, TIFF y PDF y el reporte salen con
+  el tema elegido (Revista, con letra Times).
+- Pruebas: cada análisis tiene su ilustración y es un SVG bien formado; los temas (seis, el desconocido vuelve a
+  SigmaPro); dos escenarios de accesibilidad con el selector y un tema puesto.
+
 ### 0.4.1 · Catálogo nuevo, cuadros en CSV y un arreglo (4 oct 2026)
 
 - **Catálogo de análisis rediseñado**: arriba, «Con tus datos» (filas, numéricas, factores con sus niveles, bloques,

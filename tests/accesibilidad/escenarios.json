@@ -309,5 +309,11 @@
  },
  "mue-estratificado": {
   "prep": "document.querySelector('#datEjemplos').click(), [...document.querySelectorAll('.sp-menu-item')].find(b => /tres huertas/.test(b.textContent)).click(), SP.app.ir(4), SP.app.analisis.usar('muestreo-estratificado', { respuesta: 'rendimiento_kg', estrato: 'huerta' }, { poblaciones: 'Ladera=420; Planicie=900; Vega=260', nTotal: 60 }), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
+ },
+ "graf-tema-revista": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.metodo = 'dbca', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.dis, { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true), SP.temasGraficas.poner('revista')"
+ },
+ "graf-tema-cuadricula": {
+  "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.metodo = 'dbca', SP.app.analisis.calcular(), Object.assign(SP.app.analisis.dis, { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true), SP.temasGraficas.poner('cuadricula')"
  }
 }

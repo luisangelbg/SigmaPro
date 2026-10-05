@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="iconos/sigmapro-192.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ctext x='16' y='24' font-family='system-ui,sans-serif' font-size='22' font-weight='800' text-anchor='middle' fill='%23D4A848'%3E%CE%A3%3C/text%3E%3C/svg%3E">
 <script>/* idioma antes de cargar el núcleo: ?lang=en|es o el que se eligió; el catálogo inglés solo si hace falta */ (function () { var l = 'es'; try { var q = new URLSearchParams(location.search).get('lang'); if (q === 'en' || q === 'es') localStorage.setItem('sigmapro.idioma', q); l = localStorage.getItem('sigmapro.idioma') === 'en' ? 'en' : 'es'; } catch (e) { l = /[?&]lang=en/.test(location.search) ? 'en' : 'es'; } document.documentElement.lang = l; if (l === 'en') document.write('<script src="js/i18n/en.js"><\/script>'); })();</script>
-<script>/* tema antes de pintar, para que no parpadee */ try { var t = localStorage.getItem('sigmapro.theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
+<script>/* tema antes de pintar, para que no parpadee */ try { var t = localStorage.getItem('sigmapro.theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); var g = localStorage.getItem('sigmapro.graficas.tema'); if (g && g !== 'sigmapro') document.documentElement.setAttribute('data-graficas', g); } catch (e) {}</script>
 <link rel="stylesheet" href="css/labg-base.css">
 <link rel="stylesheet" href="css/sigma.css">
 </head>
@@ -252,6 +252,8 @@
         <button type="button" data-barras="ee" aria-pressed="true">± 1 EE</button>
         <button type="button" data-barras="ic" aria-pressed="false">IC 95 %</button>
       </div>
+      <label class="field fig-tema"><span>Tema de las gráficas</span>
+        <select class="select" data-graf-tema><option value="sigmapro">SigmaPro (oro y negro)</option><option value="minimalista">Minimalista (grises, sin rejilla)</option><option value="cuadricula">Cuadrícula (panel gris)</option><option value="revista">Revista (blanco y negro, serifas)</option><option value="daltonismo">Daltonismo (paleta Okabe-Ito)</option><option value="presentacion">Presentación (letras grandes)</option></select></label>
       <label class="field fig-ancho"><span>Ancho en el documento y en las descargas</span>
         <select class="select" id="figAncho"><option value="8.5">8.5 cm (una columna)</option><option value="12">12 cm</option><option value="16">16 cm (ancho de página)</option><option value="17.5">17.5 cm (dos columnas)</option></select></label>
     </div>
@@ -461,6 +463,8 @@
 <script src="js/interfaz/cuadros.js"></script>
 <script src="js/interfaz/explorar.js"></script>
 <script src="js/interfaz/graficas.js"></script>
+<script src="js/interfaz/ilustraciones.js"></script>
+<script src="js/interfaz/temas-graficas.js"></script>
 <script src="js/interfaz/catalogo.js"></script>
 <script src="js/interfaz/analisis.js"></script>
 <script src="js/interfaz/asistente.js"></script>

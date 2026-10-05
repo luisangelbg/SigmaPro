@@ -2123,7 +2123,7 @@
     return '';
   }
   /* una gráfica ocupa una columna de lectura; varias (comparaciones dentro de cada nivel) van en rejilla */
-  const graficasHTML = g => (g ? `<div class="ana-graficas${(g.match(/<figure/g) || []).length > 1 ? '' : ' ana-una'}">${g}</div>` : '');
+  const graficasHTML = g => (g ? (SP.temasGraficas ? SP.temasGraficas.selector() : '') + `<div class="ana-graficas${(g.match(/<figure/g) || []).length > 1 ? '' : ' ana-una'}">${g}</div>` : '');
 
   function calcular() {
     estado.pendiente = false;

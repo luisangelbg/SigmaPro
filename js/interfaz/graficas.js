@@ -46,8 +46,9 @@
   const PUNTO = 'fill="var(--text)"', PUNTO_MARCA = `fill="${ORO}" stroke="var(--card-bg)"`, TITULO = 'fill="var(--text)" font-weight="600"';
   const BIGOTE = 'stroke="var(--text-muted)"', REF = 'stroke="var(--text-muted)"', LETRA = 'fill="var(--text)" font-weight="700"';
   /* cada serie de lineas(): su línea, el relleno y el borde de su marcador (las dos últimas, huecas) */
-  const SERIE = [['var(--text)', 'var(--text)', 'var(--card-bg)'], [ORO, ORO, 'var(--card-bg)'], ['var(--text-muted)', 'var(--text-muted)', 'var(--card-bg)'],
-    ['var(--text)', 'var(--card-bg)', 'var(--text)'], [ORO, 'var(--card-bg)', ORO]];
+  /* con las variables --g-s1 … --g-s5 que cambian los temas (css/sigma.css); sin tema, las de siempre */
+  const S1 = 'var(--g-s1, var(--text))', S2 = 'var(--g-s2, var(--btn-oro-texto))', S3 = 'var(--g-s3, var(--text-muted))', S4 = 'var(--g-s4, var(--text))', S5 = 'var(--g-s5, var(--btn-oro-texto))';
+  const SERIE = [[S1, S1, 'var(--card-bg)'], [S2, S2, 'var(--card-bg)'], [S3, S3, 'var(--card-bg)'], [S4, 'var(--card-bg)', S4], [S5, 'var(--card-bg)', S5]];
   const marcaDe = i => ` fill="${SERIE[i % 5][1]}" stroke="${SERIE[i % 5][2]}"`;
   /* en dispersion(), de la sexta serie en adelante el marcador se repite pero con otro color y trazo: la serie 5 no se
      confunde con la 0 */

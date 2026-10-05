@@ -570,3 +570,69 @@ button.cons-chip:focus-visible { outline: 2px solid var(--primary); outline-offs
 .val-otras > li:first-child { border-top: 0; padding-top: 0; }
 .val-otra-cabeza { margin: 0 0 4px; display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: baseline; }
 .val-otras p.small { margin: 0; max-width: 90ch; }
+
+/* ================= temas de las gráficas =================
+   <html data-graficas="…"> (lo pone el selector «Tema de las gráficas»; SigmaPro es el de omisión). Cada tema cambia,
+   dentro de cada .sp-grafica, las variables con que se dibujan (acento, relleno suave, rejilla, series) y algunos
+   trazos y letras. Las descargas resuelven estos colores (js/interfaz/figuras.js) y el Estudio de figuras los toma tal
+   cual. En «Cuadrícula» el área de la gráfica (.gr-fondo) es gris. */
+
+/* Minimalista: grises, sin rejilla, ejes finos */
+:root[data-graficas="minimalista"] .sp-grafica { --btn-oro-texto: #4d4d4d; --btn-oro-suave: #e9e9e9; --g-s2: #4d4d4d; --g-s5: #4d4d4d; }
+:root[data-graficas="minimalista"] .sp-grafica .gr-rejilla { display: none; }
+:root[data-graficas="minimalista"] .sp-grafica .gr-eje { stroke-width: .8; }
+:root[data-graficas="minimalista"] .sp-grafica .gr-caja, :root[data-graficas="minimalista"] .sp-grafica .gr-serie { stroke-width: 1.2; }
+
+/* Cuadrícula: panel gris con rejilla blanca, sin ejes (como ggplot2) */
+:root[data-graficas="cuadricula"] .sp-grafica { --btn-oro-texto: #1f4e79; --btn-oro-suave: #c5d6e8; --g-s2: #1f4e79; --g-s5: #1f4e79; }
+:root[data-graficas="cuadricula"] .sp-grafica .gr-fondo { fill: #ebebeb; }
+:root[data-graficas="cuadricula"] .sp-grafica .gr-rejilla { stroke: #ffffff; stroke-width: 1.1; }
+:root[data-graficas="cuadricula"] .sp-grafica .gr-eje { stroke: transparent; }
+
+/* Revista: blanco y negro, letra con serifas, fondo blanco aun con la app en oscuro */
+:root[data-graficas="revista"] .sp-grafica { --text: #000000; --text-muted: #333333; --card-bg: #ffffff; --border: #d0d0d0; --btn-oro-texto: #000000; --btn-oro-suave: #ffffff;
+  --g-s2: #000000; --g-s3: #555555; --g-s5: #000000; }
+:root[data-graficas="revista"] .sp-grafica svg { background: #ffffff; }
+:root[data-graficas="revista"] .sp-grafica text { font-family: 'Times New Roman', Times, serif; }
+:root[data-graficas="revista"] .sp-grafica .gr-rejilla { display: none; }
+:root[data-graficas="revista"] .sp-grafica .gr-eje { stroke: #000000; stroke-width: 1; }
+:root[data-graficas="revista"] .sp-grafica .gr-caja, :root[data-graficas="revista"] .sp-grafica .gr-banda { stroke: #000000; }
+
+/* Daltonismo: la paleta de Okabe e Ito, distinguible con cualquier tipo de daltonismo */
+:root[data-graficas="daltonismo"] .sp-grafica { --btn-oro-texto: #d55e00; --btn-oro-suave: rgba(230, 159, 0, .28);
+  --g-s1: #0072b2; --g-s2: #e69f00; --g-s3: #009e73; --g-s4: #cc79a7; --g-s5: #56b4e9; }
+
+/* Presentación: letras grandes y trazos gruesos, para proyectar */
+:root[data-graficas="presentacion"] .sp-grafica { --btn-oro-texto: #a8740f; --g-s2: #a8740f; --g-s5: #a8740f; }
+:root[data-graficas="presentacion"] .sp-grafica .gr-etq { font-size: 15px; }
+:root[data-graficas="presentacion"] .sp-grafica .gr-titulo-eje { font-size: 16px; font-weight: 700; }
+:root[data-graficas="presentacion"] .sp-grafica .gr-letra { font-size: 17px; }
+:root[data-graficas="presentacion"] .sp-grafica .gr-linea, :root[data-graficas="presentacion"] .sp-grafica .gr-serie { stroke-width: 3; }
+:root[data-graficas="presentacion"] .sp-grafica .gr-eje { stroke-width: 2; }
+:root[data-graficas="presentacion"] .sp-grafica .gr-caja, :root[data-graficas="presentacion"] .sp-grafica .gr-mediana { stroke-width: 2.6; }
+:root[data-graficas="presentacion"] .sp-grafica .gr-bigote, :root[data-graficas="presentacion"] .sp-grafica .gr-media, :root[data-graficas="presentacion"] .sp-grafica .gr-ref { stroke-width: 2.2; }
+
+/* en oscuro: los temas de color conservan el contraste con el fondo de la tarjeta */
+:root[data-theme="dark"][data-graficas="minimalista"] .sp-grafica { --btn-oro-texto: #bdbdbd; --btn-oro-suave: #333333; --g-s2: #bdbdbd; --g-s5: #bdbdbd; }
+:root[data-theme="dark"][data-graficas="cuadricula"] .sp-grafica { --btn-oro-texto: #8cbbe6; --btn-oro-suave: #25384b; --g-s2: #8cbbe6; --g-s5: #8cbbe6; }
+:root[data-theme="dark"][data-graficas="cuadricula"] .sp-grafica .gr-fondo { fill: #2a2a2a; }
+:root[data-theme="dark"][data-graficas="cuadricula"] .sp-grafica .gr-rejilla { stroke: #444444; }
+:root[data-theme="dark"][data-graficas="presentacion"] .sp-grafica { --btn-oro-texto: #e2b552; --g-s2: #e2b552; --g-s5: #e2b552; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"])[data-graficas="minimalista"] .sp-grafica { --btn-oro-texto: #bdbdbd; --btn-oro-suave: #333333; --g-s2: #bdbdbd; --g-s5: #bdbdbd; }
+  :root:not([data-theme="light"])[data-graficas="cuadricula"] .sp-grafica { --btn-oro-texto: #8cbbe6; --btn-oro-suave: #25384b; --g-s2: #8cbbe6; --g-s5: #8cbbe6; }
+  :root:not([data-theme="light"])[data-graficas="cuadricula"] .sp-grafica .gr-fondo { fill: #2a2a2a; }
+  :root:not([data-theme="light"])[data-graficas="cuadricula"] .sp-grafica .gr-rejilla { stroke: #444444; }
+  :root:not([data-theme="light"])[data-graficas="presentacion"] .sp-grafica { --btn-oro-texto: #e2b552; --g-s2: #e2b552; --g-s5: #e2b552; }
+}
+
+/* el selector de tema, junto a las gráficas */
+.graf-tema { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 0 var(--sp-2); font-size: var(--fs-sm); }
+.graf-tema select { font: inherit; font-size: var(--fs-sm); padding: 4px 8px; border: 1px solid var(--border); border-radius: var(--r-pill); background: var(--bg); color: var(--text); }
+
+/* ilustraciones de los análisis en el catálogo */
+.cat-cab { display: flex; align-items: center; gap: 10px; }
+.cat-ilus { width: 58px; height: 36px; flex: none; color: var(--text-muted); background: var(--bg-soft); border-radius: 8px; padding: 2px; }
+.cat-tarjeta.activo .cat-ilus { background: var(--card-bg); }
+.cat-tarjeta.e-falta .cat-ilus { opacity: .6; }
+.cat-rec-btn .cat-ilus { width: 72px; height: 45px; background: var(--btn-oro-suave); }

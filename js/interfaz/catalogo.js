@@ -63,7 +63,7 @@
     if (!r || !r.metodo || !SP.metodos[r.metodo] || !SP.metodoDisponible(r.metodo)) return '';
     const despues = (r.despues || []).filter(d => d.metodo && SP.metodos[d.metodo] && SP.metodoDisponible(d.metodo)).slice(0, 3);
     return `<div class="cat-rec"><p class="cat-rec-eti">${esc(T('Recomendado para tus datos'))}</p>` +
-      `<button type="button" class="cat-rec-btn" data-metodo="${esc(r.metodo)}">${icono(SP.metodos[r.metodo].familia)}<span><b>${esc(r.titulo || SP.metodos[r.metodo].nombre)}</b>` +
+      `<button type="button" class="cat-rec-btn" data-metodo="${esc(r.metodo)}">${SP.ilustraciones ? SP.ilustraciones.svg(r.metodo) : icono(SP.metodos[r.metodo].familia)}<span><b>${esc(r.titulo || SP.metodos[r.metodo].nombre)}</b>` +
       `<span>${esc((r.porque || [])[0] || r.resumen || SP.metodos[r.metodo].resumen || '')}</span></span><span class="cat-rec-ir" aria-hidden="true">→</span></button>` +
       (despues.length ? `<p class="cat-rec-despues"><span>${esc(T('Después:'))}</span> ` + despues.map(d => `<button type="button" class="cat-mini" data-metodo="${esc(d.metodo)}">${esc(d.texto || SP.metodos[d.metodo].nombre)}</button>`).join(' ') + '</p>' : '') +
       `<p class="cat-rec-nota small muted">${esc(T('Lo propone el asistente con lo que ve en la tabla; con sus preguntas afinas la elección.'))}</p></div>`;
@@ -73,7 +73,7 @@
   function tarjeta(m, r, activo) {
     const etiqueta = ESTADO()[r.estado], falta = r.falta.length ? T('Falta: {f}.', { f: r.falta.join('; ') }) : '';
     return `<li class="cat-tarjeta e-${r.estado}${activo ? ' activo' : ''}"><button type="button" data-metodo="${esc(m.id)}" aria-pressed="${activo}"` +
-      ` aria-describedby="cat-d-${esc(m.id)}"><span class="cat-nombre">${esc(m.nombre)}</span>` +
+      ` aria-describedby="cat-d-${esc(m.id)}"><span class="cat-cab">${SP.ilustraciones ? SP.ilustraciones.svg(m.id) : ''}<span class="cat-nombre">${esc(m.nombre)}</span></span>` +
       `<span class="cat-estado" data-estado="${r.estado}">${esc(etiqueta)}${m.motor === 'r' ? ' · ' + esc(T('motor R')) : ''}</span>` +
       `<span class="cat-resumen" id="cat-d-${esc(m.id)}">${esc(m.resumen || '')}${falta ? '<span class="cat-falta">' + esc(falta) + '</span>' : ''}</span></button></li>`;
   }
@@ -107,7 +107,7 @@
       (p ? `<label class="imp-check cat-solo"><input type="checkbox" data-cat="listos"${est.soloListos ? ' checked' : ''}> ${esc(T('Solo los que puedo hacer con mis datos'))}</label>` : '') +
       `<label class="cat-fam-sel"><span class="sr-only">${esc(T('Familia'))}</span><select data-cat="familia"><option value="">${esc(T('Todas las familias'))}</option>` +
       fams.map(f => `<option value="${f.id}"${est.familia === f.id ? ' selected' : ''}>${esc(f.nombre)}</option>`).join('') + '</select></label></div>';
-    const barra = `<div class="cat-barra"><div class="cat-barra-txt">${sel ? icono(sel.familia) : ''}<span><span class="cat-barra-eti">${esc(T('Análisis elegido'))}</span>` +
+    const barra = `<div class="cat-barra"><div class="cat-barra-txt">${sel ? (SP.ilustraciones ? SP.ilustraciones.svg(sel.id) : icono(sel.familia)) : ''}<span><span class="cat-barra-eti">${esc(T('Análisis elegido'))}</span>` +
       `<b>${esc(sel ? sel.nombre : T('ninguno'))}</b></span></div><button type="button" class="btn btn-secondary btn-sm" data-cat="alternar" aria-expanded="${est.abierto}" aria-controls="cat-cuerpo">` +
       `${esc(est.abierto ? T('Cerrar el catálogo') : T('Ver el catálogo ({k} análisis)', { k: total }))}</button></div>`;
     raiz.innerHTML = barra + `<div id="cat-cuerpo"${est.abierto ? '' : ' hidden'}>` +

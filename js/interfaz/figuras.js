@@ -35,7 +35,7 @@
           const v = cs.getPropertyValue(p);
           if (v !== '') d.setAttribute(p, v.replace(/(\d)px/g, '$1'));
         }
-        if (/^(text|tspan)$/i.test(o.tagName)) d.setAttribute('font-family', FUENTE);
+        if (/^(text|tspan)$/i.test(o.tagName)) d.setAttribute('font-family', /times|serif/i.test(cs.fontFamily) && !/sans-serif/i.test(cs.fontFamily) ? '"Times New Roman", Times, serif' : FUENTE);
         d.removeAttribute('class'); d.removeAttribute('style');
       });
       /* lo que agregan el editor y el estudio para trabajar (asas, marcos) no va en el archivo */
@@ -92,6 +92,15 @@
       const svg = el && (el.tagName && el.tagName.toLowerCase() === 'svg' ? el : el.querySelector && el.querySelector('svg'));
       if (!svg || !svg.hasAttribute('data-sigmapro-figura')) return null;
       return { label: 'SigmaPro', formats: ['pdf'], preview: false, render: (fmt, o) => pdf(svg, (o.wmm || 160) / 10, o.hmm ? o.hmm / 10 : null).then(b => new Blob([b], { type: 'application/pdf' })) };
+    },
+    /* el tema de las gráficas (js/interfaz/temas-graficas.js) también en el estudio: el selector junto a la figura o, si
+       no hay, el del bloque Figuras */
+    controlsFor(rec) {
+      const h = rec && rec.host;
+      if (!h || !h.closest || !(h.closest('.sp-grafica') || (h.querySelector && h.querySelector('.sp-grafica')))) return null;
+      const card = h.closest('.card, section');
+      const nodo = (card && card.querySelector('.graf-tema, .fig-tema')) || document.querySelector('.fig-tema');
+      return nodo ? { node: nodo, title: ['Tema de las gráficas', 'Chart theme'] } : null;
     },
   });
 
