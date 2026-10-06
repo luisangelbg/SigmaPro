@@ -21,7 +21,7 @@
     <div class="cap-etiqueta">Bloque 4 · Análisis</div>
     <h1>Análisis: del diseño a la conclusión</h1>
     <div class="cap-regla"></div>
-    <p class="cap-resumen">El corazón de SigmaPro: 70 análisis en 17 familias, del análisis de varianza de un diseño experimental a los modelos mixtos, la supervivencia y las series de tiempo. Se eligen con el asistente, en el catálogo o en el constructor de modelos, y todos responden igual: conclusión en palabras, cuadros, gráficas, supuestos y el código R que da los mismos números.</p>
+    <p class="cap-resumen">El corazón de SigmaPro: 74 análisis en 17 familias, del análisis de varianza de un diseño experimental a los modelos mixtos, la supervivencia y las series de tiempo (los otros 4 resúmenes están en Explorar, capítulo 3). Se eligen con el asistente, en el catálogo o en el constructor de modelos, y todos responden igual: conclusión en palabras, cuadros, gráficas, supuestos, el código R que da los mismos números y su ficha en Fundamentos.</p>
     <ul class="cap-contenido">
       <li><b>4.1</b>Tres maneras de elegir un análisis</li>
       <li><b>4.2</b>El asistente</li>
@@ -89,15 +89,24 @@
   </figure>
   <div class="caja nota">
     <div class="caja-t"><span class="ico">i</span>Las preguntas que más cambian el análisis</div>
-    <p>Dos preguntas merecen especial cuidado, porque los datos no las contestan (sección 2.13): si <b>algún factor se aplicó a parcelas grandes</b> (riego, labranza, fecha de siembra: entonces son parcelas divididas o franjas, y cada factor tiene su propio error) y si <b>la misma unidad se midió varias veces</b> (medidas repetidas). Responderlas mal no produce un error visible, sino pruebas F equivocadas.</p>
+    <p>Dos preguntas merecen especial cuidado, porque los datos casi nunca las contestan (sección 2.13): si <b>algún factor se aplicó a parcelas grandes</b> (riego, labranza, fecha de siembra: entonces son parcelas divididas o franjas, y cada factor tiene su propio error) y si <b>la misma unidad se midió varias veces</b> (medidas repetidas). Responderlas mal no produce un error visible, sino pruebas F equivocadas.</p>
+    <p>La excepción son las parcelas: si la tabla trae una columna que las numera (<code>parcela</code>, <code>subparcela</code>, <code>franja</code>…), el asistente reconoce en los datos las parcelas divididas (un factor que no cambia dentro de cada parcela del bloque), las subdivididas y las franjas, las propone en su pregunta y en la recomendación dice lo que vio. Sin bloques, la parcela queda como la repetición de cada parcela grande. Lo que contestes en la pregunta manda. El ejemplo «Trigo: riego × variedad» viene así.</p>
   </div>
 
   <!-- 4.3 -->
   <h2 id="s4-3"><span class="num">4.3</span>El catálogo</h2>
-  <p>El catálogo muestra todos los análisis del bloque, agrupados por familia. Un clic en un método lo abre: debajo de la lista aparecen, a la izquierda, su formulario (el <b>modelo del experimento</b>: qué columna es la respuesta, cuáles son los tratamientos, el bloque y las opciones) y, a la derecha, el resultado, que se recalcula al cambiar cualquier campo. El método abierto va resaltado en la lista.</p>
+  <p class="lead">El catálogo muestra los 74 análisis del bloque, agrupados en sus 17 familias, y dice cuáles se pueden hacer con la tabla cargada.</p>
+  <p>Arriba, dos tarjetas leen los datos:</p>
+  <ul>
+    <li><b>Con tus datos</b>: lo que hay en la tabla (filas, columnas numéricas, factores con sus niveles, bloques, parcelas, fechas, conteos, proporciones y columnas 0/1) y cuántos análisis se pueden hacer con ella (con el maíz, «Puedes hacer 57 de los 74 análisis del catálogo con esta tabla.»).</li>
+    <li><b>Recomendado para tus datos</b>: el análisis que propone el asistente con lo que ve en la tabla, con su porqué y, en <b>Después:</b>, los análisis que suelen seguir, cada uno como un botón. Con las preguntas del asistente se afina la elección (sección 4.2).</li>
+  </ul>
+  <p>Abajo, cada familia muestra sus análisis en <b>tarjetas</b>, con la ilustración del análisis, su nombre, para qué sirve y su estado: <span class="ui">Listo con tus datos</span>; <span class="ui">Le falta</span>, con lo que falta (con el maíz, la MANOVA dice «Falta: al menos dos respuestas numéricas.»); o <span class="ui">No necesita datos</span>. Los que corren en el motor R lo dicen (<span class="ui">motor R</span>, sección 4.6). El ícono <span class="ui">ⓘ</span> de cada tarjeta abre la ficha del análisis en Fundamentos (capítulo 9). Junto al nombre de cada familia se lee cuántos de sus análisis se pueden hacer (con el maíz, Diseños experimentales dice «8 de 9 con tus datos»).</p>
+  <p>Tres controles acotan la lista: la búsqueda por texto (<span class="ui">Buscar: Tukey, bloques, conteos, regresión…</span>), la casilla <span class="ui">Solo los que puedo hacer con mis datos</span>, que se recuerda, y el selector de familia (<span class="ui">Todas las familias</span>).</p>
+  <p>Un clic en una tarjeta abre el análisis: el catálogo se recoge en una barra con el <b>Análisis elegido</b> y el botón <span class="ui">Ver el catálogo (74 análisis)</span> para volver a abrirlo, y debajo aparecen, a la izquierda, su formulario (el <b>modelo del experimento</b>: qué columna es la respuesta, cuáles son los tratamientos, el bloque y las opciones) y, a la derecha, el resultado, que se recalcula al cambiar cualquier campo. Sin datos cargados, el catálogo solo ofrece los cálculos que no los necesitan: el tamaño de muestra y la potencia (sección 4.22).</p>
   <figure class="media">
-    <div class="marco"><img src="../img/b4-catalogo.png" alt="El catálogo de análisis: las 17 familias con sus métodos como botones, de Supuestos del modelo, Pruebas t y Pruebas no paramétricas a Supervivencia y series de tiempo"></div>
-    <figcaption><b>Figura 4.3.</b> El catálogo completo. Los descriptivos, frecuencias, proporciones y la bondad de ajuste están en Explorar (capítulo 3).</figcaption>
+    <div class="marco"><img src="../img/b4-catalogo.png" alt="El catálogo de análisis abierto con el ejemplo del maíz: arriba, la barra Análisis elegido con el botón Cerrar el catálogo; la tarjeta Con tus datos con filas, numéricas, factores y bloques y cuántos análisis se pueden hacer; la tarjeta Recomendado para tus datos; la búsqueda, la casilla Solo los que puedo hacer con mis datos y el selector de familia; y las primeras familias con sus tarjetas, cada una con su ilustración, su nombre, para qué sirve y su estado"></div>
+    <figcaption><b>Figura 4.3.</b> El catálogo abierto con el ejemplo del maíz: arriba, lo que hay en los datos y la recomendación; abajo, las familias con sus tarjetas. Los descriptivos, frecuencias, proporciones y la bondad de ajuste están en Explorar (capítulo 3).</figcaption>
   </figure>
   <p>Al abrir un método, la app propone las variables de su formulario a partir de los datos (la respuesta, los factores, el bloque que reconoce), igual que el asistente. Con otra tabla, las propuestas se rehacen; con cambios en la misma tabla, se respetan las elecciones hechas.</p>
   <div class="caja importante">
@@ -148,7 +157,7 @@
       <tr><td>Solo covariables</td><td>Regresión lineal (con bloques, el modelo lineal general)</td></tr>
       <tr><td>Factores y covariables (hasta 2 y 2, con un bloque como máximo)</td><td>ANCOVA</td></tr>
       <tr><td>Algún efecto aleatorio</td><td>Modelo lineal mixto (motor R); con parcela grande, también su error <code>(1 | bloque:parcela)</code></td></tr>
-      <tr><td>Distribución de conteo o gamma</td><td>Modelo lineal generalizado; con aleatorios, el generalizado mixto de Poisson</td></tr>
+      <tr><td>Distribución de conteo o gamma</td><td>Modelo lineal generalizado; con aleatorios, el generalizado mixto (de Poisson o gamma, en el motor R)</td></tr>
       <tr><td>Un evento</td><td>Modelo de Cox (el bloque como estrato); sin factores ni covariables, Kaplan-Meier</td></tr>
       <tr><td>Más respuestas</td><td>MANOVA (con el bloque y los factores cruzados)</td></tr>
       <tr><td>Cualquier otra combinación (más de tres factores, covariables con parcelas…)</td><td>El modelo lineal general, con un aviso</td></tr>
@@ -191,13 +200,14 @@
   <table class="compacta">
     <thead><tr><th style="width:1.75in">Parte</th><th>Qué es</th></tr></thead>
     <tbody>
-      <tr><td><b>Título</b></td><td>El análisis, con el tiempo de cálculo y <span class="ui">Agregar al reporte</span>.</td></tr>
+      <tr><td><b>Título</b></td><td>El análisis, con el tiempo de cálculo, <span class="ui">ⓘ ¿Qué es este análisis?</span>, que abre su ficha en Fundamentos (capítulo 9), y <span class="ui">Agregar al reporte</span>.</td></tr>
       <tr><td><b>Conclusión</b></td><td>Una frase por efecto o por resultado clave, con su estadístico y su valor <i>p</i>: «hibrido: hay diferencias (F = 60.635, p &lt; 0.001)». Al final, los indicadores de ajuste (media general, CV, R²).</td></tr>
-      <tr><td><b>Semáforo de los supuestos</b></td><td>En las pruebas que dependen de supuestos (pruebas t, correlación, regresión…), un renglón por supuesto en verde, ámbar o rojo, con la prueba que lo decide (sección 4.7). En los diseños, el análisis de varianza no trae semáforo: sus supuestos se revisan con <span class="ui">Revisar los supuestos del modelo</span> (sección 4.7), y en el reporte se revisan solos.</td></tr>
-      <tr><td><b>Gráficas</b></td><td>Las que corresponden al análisis: la interacción de dos factores, las medias con su error estándar, la recta de regresión con sus bandas, el diagnóstico de los residuos, las curvas de supervivencia… Cada una tiene su leyenda y el botón ✎ del editor de figuras (capítulo 6).</td></tr>
+      <tr><td><b>Semáforo de los supuestos</b></td><td>En las pruebas que dependen de supuestos (pruebas t, regresión, ANCOVA, modelos generalizados…), un renglón por supuesto en verde, ámbar o rojo, con la prueba que lo decide (sección 4.7). En los diseños, el análisis de varianza no trae semáforo: sus supuestos se revisan con <span class="ui">Revisar los supuestos del modelo</span> (sección 4.7); en el reporte, los de completamente al azar y bloques completos al azar se revisan solos.</td></tr>
+      <tr><td><b>Gráficas</b></td><td>Las que corresponden al análisis: la interacción de dos factores, las medias con su error estándar, la recta de regresión con sus bandas, el diagnóstico de los residuos, las curvas de supervivencia… Arriba, el selector <span class="ui">Tema de las gráficas</span> cambia el estilo de todas a la vez (los seis temas están en el cuadro 6.1). Cada gráfica tiene su leyenda y el botón ✎ del editor de figuras (capítulo 6).</td></tr>
       <tr><td><b>Siguiente paso</b></td><td>Botones que llevan al análisis que suele seguir: <span class="ui">Comparar las medias de este diseño</span> en los diseños, <span class="ui">Analizar el modelo elegido</span> tras una selección de variables, el CSV para otras apps en el multivariado.</td></tr>
-      <tr><td><b>Cuadros</b></td><td>Numerados, cada uno con <span class="ui">Copiar cuadro</span>: el análisis de varianza, el resumen del ensayo, las medias, las comparaciones…</td></tr>
+      <tr><td><b>Cuadros</b></td><td>Numerados, cada uno con <span class="ui">Copiar cuadro</span> y <span class="ui">Bajar en CSV</span> (con los números completos, sin el redondeo de la pantalla): el análisis de varianza, el resumen del ensayo, las medias, las comparaciones… Un cuadro más ancho que la pantalla se desplaza a los lados; con el teclado, Tab lo enfoca y las flechas lo recorren.</td></tr>
       <tr><td><b>Código R equivalente</b></td><td>Plegado al final, con <span class="ui">Copiar el código</span>.</td></tr>
+      <tr><td><b>Continúa en la suite LABG</b></td><td>Al pie de algunos análisis, una franja con la app de la suite que continúa el trabajo: AgriDesign tras un diseño experimental, CorrelationPro y PCAPro tras una correlación o una regresión, PCAPro y ClusteringPro tras el multivariado o el multiambiente. Cada tarjeta dice por qué conviene y se puede ocultar (capítulo 10).</td></tr>
     </tbody>
   </table>
   <figure class="media">

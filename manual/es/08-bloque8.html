@@ -47,7 +47,7 @@
     <figcaption><b>Figura 8.1.</b> El bloque Validación: el resumen, los filtros y los primeros casos, con los detalles de uno abiertos.</figcaption>
   </figure>
   <ul>
-    <li>El <b>resumen</b>: cuántos casos aprobaron de cuántos hay, cuántos números se compararon, la mayor diferencia escalada y la versión de R de las referencias.</li>
+    <li>El <b>resumen</b>: cuántos casos aprobaron de cuántos hay, cuántos números se compararon, la mayor diferencia escalada y la versión de R de las referencias, con cuántas funciones y métodos cubren los casos. Si la mayor diferencia pasa de 10<sup>−6</sup>, la teja dice cuántos casos tienen una tolerancia propia documentada (sección 8.3).</li>
     <li>Los <b>filtros</b> <span class="ui">Todos</span>, <span class="ui">Aprobados</span> y <span class="ui">Con fallas</span>, y un buscador por función, método o fuente de los datos.</li>
     <li>El <b>cuadro de los casos</b>, agrupados por la función o el método que prueban. Cada caso dice qué prueba, de dónde salen sus datos, su clase (sección 8.3), cuántos números compara, la diferencia más grande y si aprobó.</li>
     <li><span class="ui">Detalles</span> abre lo que hay detrás de cada caso: la función de R y las versiones de sus paquetes, la regla de comparación (con su tolerancia; si el caso tiene tolerancias propias en algunas rutas, lo dice), el valor que más se alejó y el código R que calculó la referencia, para repetirlo.</li>
@@ -71,7 +71,7 @@
 
   <!-- 8.4 -->
   <h2 id="s8-4"><span class="num">8.4</span>Más allá de los números</h2>
-  <p class="lead">Además de los casos contra R, la batería de pruebas comprueba otras cinco cosas, cada una con su programa independiente.</p>
+  <p class="lead">Además de los casos contra R, la batería de pruebas comprueba otras diez cosas, cada una con su programa independiente. Cada una deja su resultado, con su fecha, en la tarjeta de otras comprobaciones del bloque Validación.</p>
   <table class="compacta">
     <thead><tr><th style="width:1.6in">Comprobación</th><th>Qué se revisa</th></tr></thead>
     <tbody>
@@ -80,6 +80,11 @@
       <tr><td><b>Rendimiento</b></td><td>Con cerca de 100 000 filas, cada análisis común dentro de su meta de tiempo.</td></tr>
       <tr><td><b>Privacidad y uso sin conexión</b></td><td>Con datos, análisis y exportaciones, ningún dato sale del navegador; sin red, la app abre, calcula y exporta.</td></tr>
       <tr><td><b>Accesibilidad</b></td><td>Cada bloque y los análisis de todas las familias, a lo ancho de una pantalla y de un teléfono, en claro y en oscuro: contraste AA de los textos, nombres y etiquetas para lectores de pantalla, sin desborde lateral y con el teclado.</td></tr>
+      <tr><td><b>La interfaz en inglés</b></td><td>Cada texto de la interfaz, de los resultados y de los ejemplos tiene su traducción; cada caso de validación da los mismos números en español y en inglés; y ningún resultado armado en inglés deja textos sin traducir.</td></tr>
+      <tr><td><b>Regresión de resultados y reportes</b></td><td>La huella de cada resultado (todos sus números) y de su reporte (cuadros, conclusiones, semáforo y notas) se compara con la guardada: un número o un texto que cambia sin querer se ve antes de publicar una versión.</td></tr>
+      <tr><td><b>Secuencia de apertura</b></td><td>La pantalla de apertura (sección 1.6) aparece antes que la interfaz, termina en <span class="ui">Start</span>, se quita con Esc, respeta la preferencia de reducir el movimiento, cabe en un teléfono y corre fluida.</td></tr>
+      <tr><td><b>Fundamentos de cada análisis</b></td><td>Cada análisis tiene su ficha (capítulo 9) con sus nueve apartados en español y en inglés; sus análisis relacionados, su conjunto de ejemplo y sus columnas existen en la app; el ejemplo corre con el método; y cada fórmula se convierte para mostrarse.</td></tr>
+      <tr><td><b>Enlaces y logos de la suite LABG</b></td><td>Cada app de la suite (capítulo 10) tiene su logo y sus datos, o «PENDIENTE» declarado; las reglas de sugerencia nombran apps que existen; y la página, el repositorio y el manual de cada app publicada responden. Es la única prueba que sale a internet; la app no lo hace nunca.</td></tr>
     </tbody>
   </table>
 
@@ -92,11 +97,13 @@
   <p class="lead">La validación no depende de quien la hizo: con R y node instalados, cualquiera puede regenerar las referencias con su propio R y volver a comparar.</p>
   <p>Hacen falta R (4.4 o posterior) con los paquetes que pide cada caso y node (20 o posterior; no hace falta instalar nada con npm). Desde la carpeta de SigmaPro:</p>
   <pre class="codigo">Rscript tests/r/generar-todo.R      # regenera las referencias con tu R
+node tests/motor-r.mjs              # los métodos del motor R, en el navegador
 node tests/correr.mjs               # compara y escribe los reportes
 node tests/navegador.mjs            # lo mismo en el navegador, por file://
 node tests/codigo-r.mjs             # el código R de la app da lo mismo en R
 node tests/exportar.mjs             # las exportaciones, con lectores independientes</pre>
-  <p>En Windows, <code>tests/pruebas.ps1</code> busca R, node y el navegador y corre las pruebas; con <code>-Completo</code>, también las exportaciones, la privacidad, el rendimiento y la accesibilidad. <code>correr.mjs</code> escribe el reporte que muestra el bloque Validación y una versión para publicar, en HTML y en CSV.</p>
+  <p><code>motor-r.mjs</code> abre la app en el navegador y descarga el motor R, así que necesita internet; va antes de <code>correr.mjs</code>, que integra sus casos al reporte. <code>correr.mjs</code> escribe el reporte que muestra el bloque Validación y una versión para publicar, en HTML y en CSV. Las demás comprobaciones de la sección 8.4 tienen su propio programa en <code>tests/</code>: <code>idioma.mjs</code>, <code>regresion.mjs</code>, <code>intro.mjs</code>, <code>fundamentos.mjs</code>, <code>suite-enlaces.mjs</code> (con internet), <code>sin-conexion.mjs</code>, <code>rendimiento/medir.mjs</code> y <code>accesibilidad/auditar.mjs</code>.</p>
+  <p>En Windows, <code>tests/pruebas.ps1</code> busca R, node y el navegador y corre la comparación contra R, el código R equivalente, la interfaz en inglés y la prueba en el navegador; con <code>-R</code>, antes regenera las referencias, y con <code>-Completo</code> agrega las exportaciones, la privacidad, el rendimiento y la accesibilidad (unos 15 minutos).</p>
 </section>
 
 </body>

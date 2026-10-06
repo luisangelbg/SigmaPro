@@ -25,32 +25,54 @@
     <tbody>
       <tr><td><span class="ui">Variable de respuesta</span></td><td>La respuesta del modelo.</td></tr>
       <tr><td><span class="ui">Tratamientos (hasta 3, cruzados)</span></td><td>Los factores; las varianzas se comparan entre sus combinaciones.</td></tr>
-      <tr><td><span class="ui">Bloques</span></td><td>El bloque, si lo hay. Con bloques se revisa además la aditividad bloque × tratamiento.</td></tr>
-      <tr><td><span class="ui">Orden para la independencia</span></td><td>En qué orden se buscan residuos vecinos parecidos: el de las filas o el de una columna (la posición en el campo, la fecha de medición).</td></tr>
-      <tr><td><span class="ui">Nivel de significancia</span></td><td>El α de las pruebas.</td></tr>
+      <tr><td><span class="ui">Bloques</span></td><td>El bloque, si lo hay (<span class="ui">— sin bloques —</span> si no). Con bloques se revisa además la aditividad bloque × tratamiento.</td></tr>
+      <tr><td><span class="ui">Orden para la independencia</span></td><td>En qué orden se buscan residuos vecinos parecidos: <span class="ui">— el de las filas —</span> o el de una columna numérica o de fechas (la posición en el campo, la fecha de medición).</td></tr>
+      <tr><td><span class="ui">Nivel de significancia</span></td><td>El α de las pruebas (0.05, 0.01 o 0.10), que también fija los cortes de los colores del semáforo.</td></tr>
     </tbody>
   </table>
+  <p>La revisión ajusta el modelo <code>respuesta ~ bloque + A * B * C</code> con lo elegido; la cabecera del resultado lo escribe, con el número de residuos (<i>n</i>), y una línea avisa cuántas filas con algún faltante no entran.</p>
   <figure class="media">
-    <div class="marco"><img src="../img/b4-sup-verde.png" alt="La revisión de los supuestos del maíz: el modelo rend ~ bloque + hibrido * dosis con n = 48; el semáforo en verde con normalidad, varianzas iguales, aditividad, independencia y valores atípicos en BIEN, cada uno con su prueba; qué hacer; y las tres gráficas: Q-Q normal de los residuos con su banda, residuos contra valores ajustados y residuos en el orden de las filas"></div>
+    <div class="marco"><img src="../img/b4-sup-verde.png" alt="La revisión de los supuestos del maíz: la cabecera con el modelo rend ~ bloque + hibrido * dosis, n = 48, y los botones ¿Qué es este análisis? y Agregar al reporte; el semáforo en verde con normalidad (Shapiro-Wilk p = 0.366), varianzas iguales (Brown-Forsythe p = 0.538), aditividad (Tukey p = 0.671), independencia (Durbin-Watson = 1.981, p = 0.331) y valores atípicos en BIEN; qué hacer; y las tres gráficas: Q-Q normal de los residuos con su banda, residuos contra valores ajustados y residuos en el orden de las filas"></div>
     <figcaption><b>Figura 4.10.</b> Los supuestos del ensayo del maíz se cumplen: los cinco renglones del semáforo en verde.</figcaption>
   </figure>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Qué modelos revisa</div>
+    <p>La revisión admite tratamientos y un solo factor de bloque: revisa bien los diseños completamente al azar, en bloques y sus factoriales. En un cuadro latino (pon una de las dos direcciones en <span class="ui">Bloques</span>), un látice o unas parcelas divididas la revisión es aproximada, porque no separa los otros bloqueos ni el error de la parcela grande; tampoco acepta covariables. Al agregar al reporte (capítulo 5) un diseño completamente al azar o en bloques completos, el reporte le agrega por su cuenta el semáforo de esta revisión, con el mismo modelo. La ficha de cada análisis en Fundamentos (capítulo 9) dice, supuesto por supuesto, cómo revisarlo aquí y qué alternativa usar si falla.</p>
+  </div>
   <h3>El semáforo</h3>
   <p>Arriba del resultado, un renglón por supuesto, cada uno con su color, su estado y una frase con la prueba que lo decide. El color global es el del peor renglón: <b>Los supuestos se cumplen</b>, <b>Hay supuestos que revisar</b> o <b>Hay supuestos que no se cumplen</b>.</p>
   <table class="compacta">
     <thead><tr><th style="width:1.85in">Supuesto</th><th style="width:1.9in">Prueba que decide</th><th>También se calculan</th></tr></thead>
     <tbody>
-      <tr><td>Normalidad de los residuos</td><td>Shapiro-Wilk</td><td>Lilliefors, Anderson-Darling; la asimetría G₁ y la curtosis G₂</td></tr>
+      <tr><td>Normalidad de los residuos</td><td>Shapiro-Wilk (de 3 a 5000 residuos; con más, Anderson-Darling)</td><td>Lilliefors, Anderson-Darling; la asimetría <i>G</i>₁ y la curtosis <i>G</i>₂</td></tr>
       <tr><td>Varianzas iguales entre tratamientos</td><td>Brown-Forsythe (Levene con la mediana)</td><td>Levene, Bartlett (sensible a la falta de normalidad), Fligner-Killeen (por rangos); cuántas veces es la mayor varianza la menor</td></tr>
       <tr><td>Aditividad bloque × tratamiento</td><td>No aditividad de Tukey (con bloques)</td><td>—</td></tr>
-      <tr><td>Independencia de los residuos</td><td>Durbin-Watson, con su <i>p</i> exacto</td><td>Rachas</td></tr>
+      <tr><td>Independencia de los residuos</td><td>Durbin-Watson, contra la autocorrelación positiva; <i>p</i> exacto con menos de 100 residuos</td><td>Rachas arriba y abajo de la mediana (<i>p</i> exacto con menos de 30 residuos)</td></tr>
       <tr><td>Valores atípicos</td><td>El mayor residuo estudentizado, con <i>p</i> de Bonferroni</td><td>—</td></tr>
     </tbody>
   </table>
-  <p>Los colores siguen el valor <i>p</i> de la prueba principal: <b>verde</b> si <i>p</i> ≥ 0.05 (BIEN), <b>ámbar</b> entre 0.01 y 0.05 (REVISAR), <b>rojo</b> si <i>p</i> &lt; 0.01 (PROBLEMA). Un renglón en gris dice NO APLICA (por ejemplo, la aditividad sin bloques) o que faltan datos.</p>
+  <p>Los colores siguen el valor <i>p</i> de la prueba principal y el α elegido: <b>verde</b> si <i>p</i> ≥ α (BIEN), <b>ámbar</b> si queda entre α/5 y α (REVISAR) y <b>rojo</b> si <i>p</i> &lt; α/5 (PROBLEMA). Con α = 0.05, los cortes son 0.05 y 0.01. Un renglón en gris dice NO APLICA (la aditividad sin bloques; las varianzas sin tratamientos o con algún tratamiento de una sola observación) o que hay muy pocas observaciones para la prueba.</p>
+  <p>La normalidad tiene una excepción: con 50 residuos o más y una forma casi normal (|<i>G</i>₁| &lt; 0.5 y |<i>G</i>₂| &lt; 1), el renglón no pasa de ámbar aunque la prueba rechace, y su frase dice que la desviación es pequeña. Con tantos datos cualquier desviación resulta significativa y el análisis de varianza la tolera.</p>
   <h3>Qué hacer</h3>
-  <p>Debajo del semáforo, el recuadro <b>Qué hacer</b> traduce el resultado en acciones concretas. Con los venenos de Box y Cox, por ejemplo, la normalidad y las varianzas fallan y hay un residuo atípico (figura 4.11): la app estima la transformación de Box-Cox con ese mismo modelo (λ = −0.816, intervalo de −1.294 a −0.341), sugiere el recíproco y recuerda que la columna original no cambia; para la fila atípica, propone revisar primero que no sea un error de captura y, si el valor es real, analizar con y sin ella y reportarlo.</p>
+  <p>Debajo del semáforo, el recuadro <b>Qué hacer</b> traduce el resultado en acciones concretas. Cada recomendación aparece solo cuando se cumple su condición:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.2in">Cuándo</th><th>Qué propone</th></tr></thead>
+    <tbody>
+      <tr><td>Todo en verde</td><td>Que el análisis de varianza y las comparaciones de medias serán confiables.</td></tr>
+      <tr><td>Falla la normalidad o las varianzas y la respuesta es positiva</td><td>La transformación de Box-Cox estimada con el mismo modelo (λ con su intervalo de 95 %) y la transformación sencilla que le corresponde (raíz cuadrada, logaritmo, recíproco de la raíz, recíproco…), para hacerla en el bloque Datos (sección 2.9) y volver a revisar.</td></tr>
+      <tr><td>Falla la normalidad o las varianzas y la respuesta son conteos (enteros no negativos)</td><td>√(<i>x</i> + 0.5), o un modelo de Poisson o binomial negativo (sección 4.17).</td></tr>
+      <tr><td>Falla la normalidad o las varianzas y la respuesta es un porcentaje (el nombre de la columna lo dice y los valores van de 0 a 100)</td><td>El arcoseno de la raíz, o un modelo binomial con el total de cada fila (sección 4.17).</td></tr>
+      <tr><td>Varianzas distintas con un solo factor y sin bloques</td><td>Comparar las medias con Games-Howell (sección 4.11) o usar Kruskal-Wallis (sección 4.9): ninguna supone varianzas iguales.</td></tr>
+      <tr><td>Varianzas distintas con varios factores o bloques, sin Box-Cox posible</td><td>Transformar la respuesta; un modelo con varianzas distintas por tratamiento aún no está en SigmaPro.</td></tr>
+      <tr><td>Falla solo la normalidad</td><td>Con 30 residuos o más, que el análisis de varianza es robusto a esa falta de normalidad; con menos, comparar con Kruskal-Wallis o, con bloques, Friedman (sección 4.9).</td></tr>
+      <tr><td>Falla la aditividad</td><td>El logaritmo (vuelve aditivo un efecto multiplicativo) o, con repeticiones dentro de cada bloque, incluir la interacción en el modelo.</td></tr>
+      <tr><td>Falla la independencia</td><td>Revisar el orden de las filas; bloques más chicos (el análisis espacial aún no está en SigmaPro).</td></tr>
+      <tr><td>Hay un atípico</td><td>Revisar esa fila: primero que no sea un error de captura; si el valor es real, analizar con y sin ella y reportarlo.</td></tr>
+    </tbody>
+  </table>
+  <p>Con los venenos de Box y Cox, por ejemplo, la normalidad y las varianzas fallan y hay un residuo atípico (figura 4.11): la app estima la transformación de Box-Cox con ese mismo modelo (λ = −0.816, intervalo de −1.294 a −0.341), sugiere el recíproco y recuerda que la columna original no cambia; para la fila 24, propone revisar primero que no sea un error de captura. Si se revisa solo el veneno, sin el tratamiento, el modelo queda de un factor y las varianzas salen en ámbar (Brown-Forsythe, <i>p</i> = 0.021): entonces el recuadro agrega Games-Howell y Kruskal-Wallis.</p>
   <figure class="media">
-    <div class="marco"><img src="../img/b4-sup-rojo.png" alt="Los supuestos de los venenos: Hay supuestos que no se cumplen; normalidad PROBLEMA (Shapiro-Wilk p = 0.002); varianzas PROBLEMA (Brown-Forsythe p menor que 0.001, la mayor 678.6 veces la menor); aditividad NO APLICA; independencia BIEN; valores atípicos REVISAR (fila 24); y Qué hacer: transformar con Box-Cox, λ = −0.816, el recíproco, y revisar la fila 24"></div>
+    <div class="marco"><img src="../img/b4-sup-rojo.png" alt="Los supuestos de los venenos: Hay supuestos que no se cumplen; normalidad PROBLEMA (Shapiro-Wilk p = 0.002); varianzas PROBLEMA (Brown-Forsythe p menor que 0.001, la mayor 678.6 veces la menor); aditividad NO APLICA; independencia BIEN; valores atípicos REVISAR (fila 24, p de Bonferroni = 0.021); y Qué hacer: transformar con Box-Cox, λ = −0.816, el recíproco, y revisar la fila 24"></div>
     <figcaption><b>Figura 4.11.</b> El caso contrario: los tiempos de supervivencia de los venenos no cumplen los supuestos, y la app propone el recíproco.</figcaption>
   </figure>
   <h3>Las gráficas y el cuadro</h3>
@@ -59,14 +81,15 @@
     <li><b>Residuos contra valores ajustados</b>: debe verse una nube sin forma. Un embudo (más dispersión con valores mayores) delata varianzas desiguales; las líneas en ±2 señalan los residuos grandes.</li>
     <li><b>Residuos en el orden</b> de las filas o de la columna elegida: rachas largas de un mismo signo delatan dependencia (parcelas vecinas parecidas).</li>
   </ul>
-  <p>El cuadro 1 trae todas las pruebas, con su estadístico, sus grados de libertad, su <i>p</i> y qué revisa; la principal de cada supuesto va marcada. En <span class="ui">Varianza de los residuos por tratamiento</span> (plegado) está la varianza de cada combinación, para ver cuál es la que se aparta.</p>
+  <p>Este resultado no tiene su propio selector <span class="ui">Tema de las gráficas</span>: sus tres gráficas toman el tema elegido en otro resultado o en el bloque Figuras (capítulo 6). Tampoco lleva la franja de la suite LABG al pie.</p>
+  <p>El cuadro 1 trae todas las pruebas, con su estadístico, su valor, sus grados de libertad, su <i>p</i> y qué revisa; la principal de cada supuesto va marcada como «(principal)», y la nota recuerda los cortes del semáforo. En <span class="ui">Varianza de los residuos por tratamiento</span> (plegado) está la varianza de cada combinación, para ver cuál es la que se aparta.</p>
   <figure class="media">
-    <div class="marco"><img src="../img/b4-sup-cuadro.png" alt="El cuadro de las pruebas de los supuestos de los venenos: Shapiro-Wilk, Lilliefors, Anderson-Darling, Brown-Forsythe, Levene, Bartlett, Fligner-Killeen, Durbin-Watson, rachas y el residuo estudentizado con Bonferroni, cada una con estadístico, valor, gl, p y qué revisa"></div>
+    <div class="marco"><img src="../img/b4-sup-cuadro.png" alt="El cuadro de las pruebas de los supuestos de los venenos: Shapiro-Wilk, Lilliefors, Anderson-Darling, Brown-Forsythe, Levene, Bartlett, Fligner-Killeen, Durbin-Watson, rachas y el residuo estudentizado con Bonferroni (fila 24), cada una con estadístico, valor, gl, p y qué revisa"></div>
     <figcaption><b>Figura 4.12.</b> El cuadro de las pruebas, con la principal de cada supuesto marcada.</figcaption>
   </figure>
   <div class="caja teoria">
     <div class="caja-t"><span class="ico">Σ</span>Por qué Brown-Forsythe y no Bartlett</div>
-    <p>La prueba de Bartlett es muy sensible a la falta de normalidad: con residuos de colas pesadas rechaza la igualdad de varianzas aunque las varianzas sean iguales. La de Brown-Forsythe (la de Levene con la mediana en lugar de la media) es robusta a eso, y por eso decide el renglón; Bartlett queda en el cuadro como referencia. Por la misma razón, con datos muy grandes conviene mirar las gráficas además de los valores <i>p</i>: con miles de residuos, desviaciones mínimas de la normal ya resultan significativas.</p>
+    <p>La prueba de Bartlett es muy sensible a la falta de normalidad: con residuos de colas pesadas rechaza la igualdad de varianzas aunque las varianzas sean iguales. La de Brown-Forsythe (la de Levene con la mediana en lugar de la media) es robusta a eso, y por eso decide el renglón; Bartlett queda en el cuadro como referencia. Por una razón parecida, con datos muy grandes conviene mirar las gráficas además de los valores <i>p</i>: con miles de residuos, desviaciones mínimas de la normal ya resultan significativas (de ahí la excepción de la normalidad con 50 residuos o más).</p>
   </div>
 
   <!-- 4.8 -->
@@ -75,24 +98,25 @@
   <table class="compacta">
     <thead><tr><th style="width:1.9in">Tipo</th><th>Qué pide</th><th style="width:1.6in">Ejemplo</th></tr></thead>
     <tbody>
-      <tr><td><b>Dos grupos independientes</b></td><td>La respuesta, la columna de los grupos y los dos niveles que se comparan (si el factor tiene más).</td><td>Tiempo de supervivencia con los tratamientos A y B.</td></tr>
-      <tr><td><b>Mediciones pareadas</b></td><td>Dos columnas medidas en las mismas unidades; se compara primera − segunda.</td><td>Altura de la misma planta a los 15 y a los 30 días.</td></tr>
-      <tr><td><b>Una muestra contra un valor</b></td><td>La variable y el valor de referencia (μ₀).</td><td>¿La germinación media difiere del 50 %?</td></tr>
+      <tr><td><span class="ui">Dos grupos independientes</span></td><td>La <span class="ui">Variable de respuesta</span>, la <span class="ui">Columna de los grupos</span> y, si esa columna tiene más de dos niveles, los que se comparan en <span class="ui">Grupo 1</span> y <span class="ui">Grupo 2</span>.</td><td>Tiempo de supervivencia con los tratamientos A y B.</td></tr>
+      <tr><td><span class="ui">Mediciones pareadas</span></td><td>La <span class="ui">Primera medición</span> y la <span class="ui">Segunda medición</span>, dos columnas medidas en las mismas unidades (cada fila, una unidad); se compara primera − segunda.</td><td>Altura de la misma planta a los 15 y a los 30 días.</td></tr>
+      <tr><td><span class="ui">Una muestra contra un valor</span></td><td>La <span class="ui">Variable</span> y el <span class="ui">Valor de referencia (μ₀)</span>.</td><td>¿La germinación media difiere del 50 %?</td></tr>
     </tbody>
   </table>
-  <p>Las demás opciones: la <span class="ui">Diferencia bajo H₀</span> (normalmente 0), la <span class="ui">Hipótesis alternativa</span> (bilateral ≠, menor &lt; o mayor &gt;), el <span class="ui">Nivel de confianza</span> del intervalo y, con dos grupos, la casilla <span class="ui">Suponer varianzas iguales (t de Student)</span>. Sin marcar, se usa la <b>t de Welch</b>, que no supone varianzas iguales y es la recomendada: con varianzas iguales da casi lo mismo que la de Student, y con varianzas distintas sigue siendo válida.</p>
+  <p>Las demás opciones: la <span class="ui">Diferencia bajo H₀</span> (en dos grupos y en pareadas; normalmente 0), la <span class="ui">Hipótesis alternativa</span> (<span class="ui">Bilateral (≠)</span>, <span class="ui">Menor (&lt;)</span> o <span class="ui">Mayor (&gt;)</span>), el <span class="ui">Nivel de confianza</span> del intervalo (95, 99 o 90 %), el <span class="ui">Nivel de significancia</span> y, con dos grupos, la casilla <span class="ui">Suponer varianzas iguales (t de Student)</span>. Sin marcar, se usa la <b>t de Welch</b>, que no supone varianzas iguales y es la recomendada: con varianzas iguales da casi lo mismo que la de Student, y con varianzas distintas sigue siendo válida.</p>
   <figure>
-    <div class="marco"><img src="../img/b4-t.png" alt="La prueba t de Welch con los venenos, tratamientos A y B: el formulario con tipo de comparación, variable de respuesta tiempo, grupos A y B, diferencia bajo H0, hipótesis bilateral, confianza 95 % y la casilla de varianzas iguales sin marcar; el resultado: la media de A (0.314) difiere de la de B (0.677), diferencia −0.362, t = −3.729, gl = 13.21, p = 0.002; tamaño del efecto grande, g de Hedges −1.470; el semáforo de normalidad y varianzas; y la gráfica de cajas de los dos grupos con sus puntos"></div>
+    <div class="marco"><img src="../img/b4-t.png" alt="La prueba t de Welch con los venenos, tratamientos A y B: el formulario con tipo de comparación, variable de respuesta tiempo, columna de los grupos, grupos A y B, diferencia bajo H0, hipótesis bilateral, confianza 95 % y la casilla de varianzas iguales sin marcar; el resultado: la media de A (0.314) difiere de la de B (0.677), diferencia −0.362, t = −3.729, gl = 13.21, p = 0.002; tamaño del efecto grande, g de Hedges −1.470; el semáforo de normalidad y varianzas; el selector del tema de las gráficas y la gráfica de cajas de los dos grupos con sus puntos y su media"></div>
     <figcaption><b>Figura 4.13.</b> La t de Welch: el tratamiento B prolonga la supervivencia frente a A. La gráfica muestra cada valor, la caja de cuartiles y la media (rombo).</figcaption>
   </figure>
   <p>El resultado trae:</p>
   <ul>
-    <li>la <b>conclusión</b> con las dos medias, la diferencia y su intervalo, y t, gl y <i>p</i>;</li>
-    <li>el <b>tamaño del efecto</b> en palabras (pequeño, mediano, grande, según la guía de Cohen: 0.2, 0.5 y 0.8): la <i>d</i> de Cohen y la <i>g</i> de Hedges (la <i>d</i> corregida por el sesgo de las muestras chicas), con intervalos por la t no central (Steiger y Fouladi, 1997);</li>
-    <li>el <b>semáforo</b>: la normalidad de cada grupo (o de las diferencias, en pareadas) por Shapiro-Wilk y, con dos grupos, la comparación de varianzas (prueba F), que avisa si conviene Welch;</li>
-    <li>la <b>gráfica</b> de los valores por grupo (o de las diferencias pareadas);</li>
-    <li>los <b>cuadros</b>: la prueba elegida (con la otra t como referencia), las medias y desviaciones, y el tamaño del efecto.</li>
+    <li>la <b>conclusión</b> con las dos medias, la diferencia y su intervalo, y <i>t</i>, gl y <i>p</i>;</li>
+    <li>el <b>tamaño del efecto</b> en palabras, según la <i>g</i> de Hedges y la guía de Cohen: muy pequeño (menos de 0.2), pequeño (desde 0.2), mediano (desde 0.5) o grande (desde 0.8). En pareadas se calcula sobre las diferencias (<i>d<sub>z</sub></i>) y en una muestra, contra el valor de referencia;</li>
+    <li>el <b>semáforo</b>: la normalidad de cada grupo (o de las diferencias, en pareadas) por Shapiro-Wilk y, con dos grupos, la comparación de las varianzas con la prueba <i>F</i>. Con la t de Welch, ese renglón (<span class="ui">Varianzas (t de Welch)</span>) queda en verde aunque las varianzas difieran, porque Welch no las supone iguales; con la de Student (<span class="ui">Varianzas iguales</span>) se colorea según la <i>F</i> y, si difieren, aconseja Welch;</li>
+    <li>la <b>gráfica</b> de los valores de cada grupo (en pareadas, de las diferencias), con la caja de cuartiles y la media; en pareadas y en una muestra, una línea discontinua marca el valor de referencia;</li>
+    <li>los <b>cuadros</b>: la prueba elegida (con dos grupos, la otra t abajo como referencia), las medias y desviaciones, y el tamaño del efecto: la <i>d</i> de Cohen y la <i>g</i> de Hedges (la <i>d</i> corregida por el sesgo de las muestras chicas), con intervalos por la t no central (Steiger y Fouladi, 1997).</li>
   </ul>
+  <p>Con los tratamientos A y B de los venenos, las varianzas difieren mucho (<i>F</i> = 0.102, <i>p</i> &lt; 0.001). Con Welch, la prueba usa 13.21 gl (<i>p</i> = 0.002) y el renglón de las varianzas dice que sigue siendo válida; si se marca la casilla de Student, la prueba usa 22 gl (<i>p</i> = 0.001) y el mismo renglón sale en rojo con «Conviene la t de Welch, que no las supone iguales».</p>
   <div class="caja nota">
     <div class="caja-t"><span class="ico">i</span>Una prueba t no es para más de dos tratamientos</div>
     <p>Con tres tratamientos o más, comparar de dos en dos con pruebas t infla la probabilidad de encontrar diferencias que no existen. El camino es el análisis de varianza del diseño (sección 4.10) seguido de una comparación de medias que controle ese error (sección 4.11).</p>
@@ -100,7 +124,7 @@
 
   <!-- 4.9 -->
   <h2 id="s4-9"><span class="num">4.9</span>Pruebas no paramétricas</h2>
-  <p>Cuando los datos no cumplen la normalidad y una transformación no la logra, o cuando la respuesta es una escala ordenada (daño de 1 a 5, una calificación), las pruebas de rangos comparan grupos sin suponer una distribución. Ordenan todos los valores y trabajan con su posición. SigmaPro calcula sus <b>distribuciones exactas</b> cuando el tamaño lo permite, como R.</p>
+  <p>Cuando los datos no cumplen la normalidad y una transformación no la logra, o cuando la respuesta es una escala ordenada (daño de 1 a 5, una calificación), las pruebas de rangos comparan grupos sin suponer una distribución. Ordenan todos los valores y trabajan con su posición. SigmaPro calcula sus <b>distribuciones exactas</b> cuando el tamaño lo permite, como R. Ninguna de las tres trae semáforo.</p>
   <table class="compacta">
     <thead><tr><th style="width:1.75in">Prueba</th><th style="width:1.7in">Equivale a</th><th>Cuándo</th></tr></thead>
     <tbody>
@@ -110,18 +134,25 @@
     </tbody>
   </table>
   <h3>Wilcoxon y Mann-Whitney</h3>
-  <p>El formulario es el de la prueba t, con dos opciones más: <span class="ui">Valor p</span> (<b>Exacto si se puede</b>, el exacto, o la aproximación normal: el exacto se usa con menos de 50 datos por grupo y sin empates, como en R) y <span class="ui">Corrección por continuidad</span> para la aproximación normal. El resultado da el estadístico (W o V), el <i>p</i> y, como medida del efecto, el <b>estimador de Hodges-Lehmann</b> del desplazamiento entre los grupos (la mediana de todas las diferencias entre un valor de cada grupo) con su intervalo, más un cuadro de medianas y cuartiles.</p>
+  <p>El formulario es el de la prueba t (sin la casilla de las varianzas), con dos opciones más: <span class="ui">Valor p</span> (<span class="ui">Exacto si se puede</span>, <span class="ui">Exacto</span> o <span class="ui">Aproximación normal</span>) y <span class="ui">Corrección por continuidad</span>, marcada de entrada, para la aproximación normal. Con <span class="ui">Exacto si se puede</span>, el <i>p</i> exacto se usa con menos de 50 datos por grupo y sin empates (ni diferencias iguales al valor de referencia, en los rangos con signo), como en R; con empates la app usa la aproximación normal aunque se pida el exacto, y la nota del cuadro dice cuál se usó.</p>
+  <p>El resultado da el estadístico (<i>W</i> en dos grupos, <i>V</i> en pareadas y una muestra), el <i>p</i> y, como medida del efecto, el <b>estimador de Hodges-Lehmann</b> del desplazamiento entre los grupos (la mediana de todas las diferencias entre un valor de cada grupo; en pareadas y una muestra, la seudomediana) con su intervalo, más un cuadro de medianas y cuartiles y una gráfica de cajas. Si con tan pocos datos el intervalo no alcanza la confianza pedida, una nota dice cuál alcanza. Con los tratamientos A y B de los venenos, que tienen empates: <i>W</i> = 20.5, <i>p</i> = 0.003, y un desplazamiento de −0.360 (IC 95 %: −0.610 a −0.090), con la aproximación normal corregida por continuidad y por empates.</p>
   <h3>Kruskal-Wallis</h3>
   <figure class="media">
     <div class="marco"><img src="../img/b4-kruskal.png" alt="Kruskal-Wallis con los venenos: al menos un tratamiento difiere (H = 25.584, gl = 2, p menor que 0.001); η² de H = 0.524; comparaciones de Dunn con Holm: 2 de 3 pares difieren; la gráfica de tiempo por veneno con las letras a, a y b; y el cuadro de tratamientos ordenados por rango medio con mediana, cuartiles y grupo"></div>
     <figcaption><b>Figura 4.14.</b> Kruskal-Wallis con los tres venenos: el veneno III acorta la supervivencia frente a I y II (letras distintas).</figcaption>
   </figure>
-  <p>Se eligen la respuesta, los tratamientos, el método de <span class="ui">Comparaciones por pares</span> (Dunn, Conover-Iman o Nemenyi) y el <span class="ui">Ajuste de los valores p</span> por las comparaciones múltiples (Holm, Bonferroni, Benjamini-Hochberg o sin ajuste). El resultado da H con sus grados de libertad y su <i>p</i> (corregido por empates), el tamaño del efecto η² de H, y las comparaciones: un cuadro con cada par y otro con los tratamientos ordenados por su rango medio y sus <b>letras</b> (tratamientos con una letra en común no difieren), que también aparecen sobre la gráfica.</p>
+  <p>Se eligen la <span class="ui">Variable de respuesta</span>, los <span class="ui">Tratamientos</span>, el método de <span class="ui">Comparaciones por pares</span> (Dunn, Conover-Iman o Nemenyi) y el <span class="ui">Ajuste de los valores p</span> por las comparaciones múltiples: <span class="ui">Holm</span> (de entrada), <span class="ui">Bonferroni</span>, <span class="ui">Benjamini-Hochberg (FDR)</span> o <span class="ui">Sin ajuste</span>; con Conover-Iman, también <span class="ui">Tukey (un paso)</span>. Nemenyi no pide ajuste: su <i>p</i> ya sale del rango estudentizado. El resultado da <i>H</i> con sus grados de libertad y su <i>p</i> (corregido por empates), el tamaño del efecto η² de <i>H</i>, y las comparaciones: el cuadro <span class="ui">Tratamientos ordenados por rango medio</span>, con la mediana, los cuartiles y sus <b>letras</b> (tratamientos con una letra en común no difieren), que también aparecen sobre la gráfica, y el de cada par, con la diferencia de rangos medios, el estadístico, el <i>p</i> sin ajustar y el ajustado.</p>
   <h3>Friedman</h3>
-  <p>Pide además la columna de los <span class="ui">Bloques</span>, con un dato por tratamiento en cada bloque. Las comparaciones por pares pueden ser de Conover, Nemenyi o Wilcoxon pareada, y el ajuste incluye Tukey (un paso). Además de χ² y su <i>p</i>, da la <b>W de Kendall</b>, la concordancia entre bloques (de 0, ninguna, a 1, todos los bloques ordenan igual a los tratamientos). Un bloque con algún dato faltante queda fuera, como en R, y la app lo dice.</p>
+  <p>Pide además la columna de los <span class="ui">Bloques</span>, con un dato por tratamiento en cada bloque. Las comparaciones por pares pueden ser de Conover (en el resultado figura como Conover-Iman), Nemenyi o Wilcoxon pareada, con los mismos ajustes; <span class="ui">Tukey (un paso)</span> solo con Conover. Además de χ² y su <i>p</i>, da la <b>W de Kendall</b>, la concordancia entre bloques (de 0, ninguna, a 1, todos los bloques ordenan igual a los tratamientos), y el cuadro de los tratamientos ordenados por su suma de rangos, con sus letras.</p>
+  <p>Los datos tienen que formar una tabla completa de bloques por tratamientos:</p>
+  <ul>
+    <li>Un bloque con la respuesta vacía en algún tratamiento queda fuera, como en R, y una nota dice cuántos. Con los trips del aguacate, dos de los seis bloques tienen una parcela sin dato: la prueba usa los otros cuatro (χ² = 8.308, gl = 4, <i>p</i> = 0.081; <i>W</i> = 0.519) y la gráfica muestra solo esos bloques.</li>
+    <li>Si falta la fila de alguna combinación de bloque y tratamiento, la app se detiene: «Friedman necesita los mismos tratamientos en todos los bloques, y faltan combinaciones».</li>
+    <li>Si un tratamiento tiene más de un dato en un bloque (repeticiones, o un factorial en bloques), también se detiene, y propone promediar las repeticiones de cada tratamiento en cada bloque en la hoja de cálculo, importar esa tabla de medias y volver a intentarlo. Es lo que pasa con el maíz si se piden los híbridos en bloques: cada bloque tiene cuatro parcelas de cada híbrido, una por dosis.</li>
+  </ul>
   <div class="caja nota">
     <div class="caja-t"><span class="ico">i</span>Lo que se pierde con los rangos</div>
-    <p>Las pruebas de rangos dicen si un grupo tiende a tener valores más altos que otro, no cuánto difieren sus medias, y con datos normales tienen algo menos de potencia que el ANOVA. Antes de recurrir a ellas conviene intentar la transformación que sugiere la revisión de los supuestos, o un modelo lineal generalizado si la respuesta es un conteo o una proporción (sección 4.17).</p>
+    <p>Las pruebas de rangos dicen si un grupo tiende a tener valores más altos que otro, no cuánto difieren sus medias, y con datos normales tienen algo menos de potencia que el ANOVA. Antes de recurrir a ellas conviene intentar la transformación que sugiere la revisión de los supuestos (sección 4.7), o un modelo lineal generalizado si la respuesta es un conteo o una proporción (sección 4.17).</p>
   </div>
 </section>
 

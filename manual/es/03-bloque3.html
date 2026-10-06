@@ -21,7 +21,7 @@
     <div class="cap-etiqueta">Bloque 3 · Explorar</div>
     <h1>Explorar: mirar los datos antes de analizarlos</h1>
     <div class="cap-regla"></div>
-    <p class="cap-resumen">Antes de probar hipótesis conviene conocer los datos: dónde está el centro, cuánto varían, si hay valores raros, cuántas observaciones tiene cada grupo. Explorar ofrece cuatro resúmenes (descriptivos, frecuencias, proporciones y bondad de ajuste), cada uno con su intervalo de confianza, su conclusión en palabras y el código R que da lo mismo. Todo lo que aquí se calcula también puede ir al reporte.</p>
+    <p class="cap-resumen">Antes de probar hipótesis conviene conocer los datos: dónde está el centro, cuánto varían, si hay valores raros, cuántas observaciones tiene cada grupo. Explorar ofrece cuatro resúmenes (descriptivos, frecuencias, proporciones y bondad de ajuste), cada uno con su intervalo de confianza, su conclusión en palabras, el código R que da lo mismo y su ficha en Fundamentos. Todo lo que aquí se calcula también puede ir al reporte.</p>
     <ul class="cap-contenido">
       <li><b>3.1</b>Los cuatro resúmenes</li>
       <li><b>3.2</b>Cómo se lee un resultado</li>
@@ -48,7 +48,7 @@
       <tr><td><span class="ui">Bondad de ajuste</span></td><td>Si unas frecuencias observadas siguen una proporción esperada (por ejemplo, la segregación 9:3:3:1).</td><td>3.6</td></tr>
     </tbody>
   </table>
-  <p>Si en el bloque Datos hay un filtro activo, una nota arriba de las opciones lo recuerda: «Con el filtro del bloque Datos: se usan 27 de 48 filas». Sin datos cargados, el bloque ofrece ir a Datos y, para quien está planeando un ensayo, el botón <span class="ui">Calcular un tamaño de muestra o una potencia</span>, que no necesita datos (sección 4.x).</p>
+  <p>Si en el bloque Datos hay un filtro activo, una nota arriba de las opciones lo recuerda: «Con el filtro del bloque Datos: se usan 27 de 48 filas». Sin datos cargados, el bloque ofrece ir a Datos y, para quien está planeando un ensayo, el botón <span class="ui">Calcular un tamaño de muestra o una potencia</span>, que no necesita datos (sección 4.22).</p>
   <div class="caja nota">
     <div class="caja-t"><span class="ico">i</span>Explorar describe; Análisis decide</div>
     <p>Los resúmenes de este bloque dicen cómo son los datos, no si las diferencias entre grupos son reales. Que el híbrido H-66 tenga la media más alta es una descripción; que sea significativamente mayor que H-52 lo dice un análisis de varianza con su comparación de medias, en el bloque Análisis (capítulo 4). Por eso las conclusiones de Explorar terminan, cuando hay grupos, con «Si las diferencias son reales se prueba en el bloque Análisis».</p>
@@ -65,11 +65,14 @@
     <thead><tr><th style="width:1.75in">Parte</th><th>Qué es</th></tr></thead>
     <tbody>
       <tr><td><b>Título</b></td><td>Qué se calculó y sobre qué variables. Junto a él, el tiempo de cálculo en milisegundos.</td></tr>
+      <tr><td><span class="ui">Cambiar las opciones ↓</span></td><td>Lleva a las opciones del resumen; útil en una pantalla angosta, donde quedan debajo del resultado.</td></tr>
+      <tr><td><span class="ui">ⓘ ¿Qué es este análisis?</span></td><td>Abre la ficha del resumen en Fundamentos: para qué sirve, qué supone, qué datos necesita y cómo se lee (capítulo 9).</td></tr>
       <tr><td><span class="ui">Agregar al reporte</span></td><td>Lleva el resultado al bloque Resultados (capítulo 5). El botón cambia a <span class="ui">En el reporte ✓</span>; el reporte guarda el análisis, no los números, y lo recalcula si los datos cambian.</td></tr>
       <tr><td><b>Conclusión</b></td><td>El resultado en palabras, con las cifras que lo sostienen. Es lo primero que conviene leer.</td></tr>
-      <tr><td><b>Cuadro</b></td><td>Numerado y con sus notas al pie, en el formato de una revista: líneas solo arriba, abajo y bajo los encabezados; cifras alineadas; decimales según la precisión de los datos. Si es más ancho que la pantalla, se desplaza a los lados.</td></tr>
+      <tr><td><b>Cuadro</b></td><td>Numerado y con sus notas al pie, en el formato de una revista: líneas solo arriba, abajo y bajo los encabezados; cifras alineadas; decimales según la precisión de los datos. Si es más ancho que la pantalla, se desplaza a los lados; con el teclado, Tab lo enfoca y las flechas lo recorren.</td></tr>
       <tr><td>Botones de vista</td><td>Cuando un resultado tiene varios cuadros, unos botones eligen cuál se ve (por ejemplo, frecuencias o porcentajes).</td></tr>
       <tr><td><span class="ui">Copiar cuadro</span></td><td>Copia el cuadro con todas sus cifras, listo para pegarse en una hoja de cálculo o en un procesador de textos.</td></tr>
+      <tr><td><span class="ui">Bajar en CSV</span></td><td>Guarda el cuadro como archivo CSV, con los valores sin redondear, para abrirlo en otro programa. El archivo va en UTF-8, así que los acentos llegan bien a una hoja de cálculo.</td></tr>
       <tr><td><span class="ui">Más estadísticos en el cuadro</span></td><td>(En descriptivos.) Casillas que agregan columnas al cuadro.</td></tr>
       <tr><td><span class="ui">Código R equivalente</span></td><td>El código que da los mismos números en R, con el botón <span class="ui">Copiar el código</span>. Empieza con un comentario sobre cómo leer los datos y los paquetes que pide.</td></tr>
     </tbody>
@@ -99,7 +102,7 @@
     <p>El intervalo de la <b>mediana</b> se forma con dos observaciones ordenadas, <i>x</i><sub>(k)</sub> y <i>x</i><sub>(n−k+1)</sub>, con <i>k</i> tomado de la distribución binomial (<i>n</i>, ½); por eso su confianza real («Confianza real (%)») es la primera que alcanza o supera la pedida, no exactamente ella. El de la <b>varianza</b> sale de la ji cuadrada, (<i>n</i> − 1)<i>s</i>² / χ²; supone normalidad, y el de la DE es su raíz.</p>
   </div>
   <h3>Las conclusiones</h3>
-  <p>Sin grupos, la conclusión resume la variable: «rend (n = 48): media 5.938 (IC 95 %: 5.644 a 6.232), desviación estándar 1.013 y coeficiente de variación 17.1 %». Con grupos, dice cuál tiene la media más alta y cuál la más baja. Además, avisa en dos casos: cuando en un grupo de ocho o más observaciones la <b>asimetría es mayor que el doble de su error estándar</b> (señal de valores atípicos o de que conviene una transformación, sección 2.9), y cuando algunas filas quedaron fuera por no tener nivel en un factor de agrupación.</p>
+  <p>Sin grupos, la conclusión resume la variable: ««rend» (n = 48): media 5.938 (IC 95 %: 5.644 a 6.232), desviación estándar 1.013 y coeficiente de variación 17.1 %». Con grupos, dice cuál tiene la media más alta y cuál la más baja. Además, avisa en dos casos: cuando en un grupo de ocho o más observaciones la <b>asimetría es mayor que el doble de su error estándar</b> (señal de valores atípicos o de que conviene una transformación, sección 2.9), y cuando algunas filas quedaron fuera por no tener nivel en un factor de agrupación.</p>
   <div class="caja nota">
     <div class="caja-t"><span class="ico">i</span>El CV en experimentos agrícolas</div>
     <p>El CV de un grupo describe la variación de los datos crudos; mezcla la variación entre bloques y la del error. El CV que se publica para un ensayo es otro: el del análisis de varianza, calculado con el cuadrado medio del error (en el maíz, 3.6 % contra el 16 % de los datos crudos por híbrido). Ese lo da el análisis del diseño en el bloque Análisis.</p>
@@ -113,7 +116,7 @@
     <figcaption><b>Figura 3.3.</b> Las calificaciones de roya de los dos evaluadores, cruzadas. Las celdas de la diagonal son las hojas en que coincidieron.</figcaption>
   </figure>
   <p>Una tabla cruzada tiene cuatro vistas, que eligen sus botones: <span class="ui">Frecuencias</span>, <span class="ui">% por fila</span> (cada fila suma 100), <span class="ui">% por columna</span> y <span class="ui">% del total</span>. La conclusión dice el tamaño de la tabla y cuántas celdas no tienen ninguna observación. Una tabla de un solo factor trae, además del conteo, el porcentaje y los acumulados.</p>
-  <p>La tabla de frecuencias describe; para <b>probar</b> si dos factores están asociados (por ejemplo, si la germinación depende del tratamiento), o si dos evaluadores concuerdan, están la tabla de contingencia, la prueba de McNemar y Bowker y el kappa de Cohen, en el bloque Análisis (sección 4.x).</p>
+  <p>La tabla de frecuencias describe; para <b>probar</b> si dos factores están asociados (por ejemplo, si la germinación depende del tratamiento), o si dos evaluadores concuerdan, están la tabla de contingencia, la prueba de McNemar y Bowker y el kappa de Cohen, en el bloque Análisis (sección 4.14).</p>
 
   <!-- 3.5 -->
   <h2 id="s3-5"><span class="num">3.5</span>Proporciones e intervalos</h2>
@@ -138,7 +141,7 @@
       <tr><td><b>Wald</b></td><td>La aproximación normal de los libros, <i>p̂</i> ± <i>z</i>√(<i>p̂</i>(1 − <i>p̂</i>)/<i>n</i>). Solo como referencia: con menos de 30 ensayos o proporciones cercanas a 0 o 1 falla, y la app lo advierte.</td></tr>
     </tbody>
   </table>
-  <p>La recomendación de Wilson y Jeffreys viene de la revisión de Brown, Cai y DasGupta (2001), que compararon la cobertura real de estos intervalos. La conclusión muestra las primeras cuatro proporciones en palabras, con el intervalo de Wilson, y avisa cuántas más hay en el cuadro.</p>
+  <p>La recomendación de Wilson y Jeffreys viene de la revisión de Brown, Cai y DasGupta (2001), que compararon la cobertura real de estos intervalos. La conclusión muestra las primeras cuatro proporciones en palabras, con el intervalo de Wilson (si se quitó Wilson, con el del primer método marcado), y avisa cuántas más hay en el cuadro.</p>
 
   <!-- 3.6 -->
   <h2 id="s3-6"><span class="num">3.6</span>Bondad de ajuste</h2>

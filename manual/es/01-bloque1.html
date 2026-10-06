@@ -21,19 +21,22 @@
     <div class="cap-etiqueta">Bloque 1 · Inicio</div>
     <h1>Inicio: qué promete SigmaPro y cómo va</h1>
     <div class="cap-regla"></div>
-    <p class="cap-resumen">El primer bloque es la puerta de la app. Dice en una frase para qué sirve, ofrece tres caminos (tus datos, la validación y la maqueta del flujo), resume sus tres compromisos (exactitud comprobada contra R, código reproducible y privacidad total) y muestra en qué punto está su desarrollo, hito por hito. Si la última vez se cerró la pestaña con trabajo a medias, aquí aparece el aviso para recuperarlo.</p>
+    <p class="cap-resumen">El primer bloque es la puerta de la app. Dice en una frase para qué sirve, ofrece tres caminos (tus datos, la validación y la maqueta del flujo), resume sus tres compromisos (exactitud comprobada contra R, código reproducible y privacidad total) y muestra en qué punto está su desarrollo. Más abajo lista todo lo que se puede analizar, con un enlace a la ficha de cada análisis, guarda los datos del programa y los ajustes de la pantalla de apertura, y presenta las apps hermanas de la suite. Si la última vez se cerró la pestaña con trabajo a medias, aquí aparece el aviso para recuperarlo.</p>
     <ul class="cap-contenido">
       <li><b>1.1</b>Lo que se ve al abrir la app</li>
       <li><b>1.2</b>Los tres compromisos</li>
       <li><b>1.3</b>El estado del desarrollo</li>
       <li><b>1.4</b>Si quedó un trabajo guardado</li>
+      <li><b>1.5</b>Qué puedes analizar</li>
+      <li><b>1.6</b>Acerca de SigmaPro y la pantalla de apertura</li>
+      <li><b>1.7</b>Explora la suite LABG</li>
     </ul>
   </div>
 
   <!-- 1.1 -->
   <h2 id="s1-1"><span class="num">1.1</span>Lo que se ve al abrir la app</h2>
-  <p class="lead">SigmaPro abre siempre en este bloque. El título resume la idea de toda la app: <b>del experimento a la conclusión, con cifras que se pueden comprobar</b>. Debajo, una frase dice lo que hace: diseños experimentales, comparaciones de medias, regresión y modelos mixtos, con un asistente que entiende el ensayo, reportes listos para publicar y el código R de cada análisis.</p>
-  <p>La ilustración de la derecha es un resumen en miniatura de un resultado típico: medias de tratamientos unidas por una curva, cada una con la letra que indica qué medias difieren entre sí, y abajo la fórmula del análisis que las produjo (<code>rend ~ bloque + híbrido × N</code>). Es decorativa; los números reales aparecen cuando se cargan datos.</p>
+  <p class="lead">SigmaPro abre siempre en este bloque, después de la pantalla de apertura (sección 1.6): al pulsar <span class="ui">Start</span>, el logo y el nombre viajan a su lugar en la barra de arriba y aparece Inicio. El título resume la idea de toda la app: <b>del experimento a la conclusión, con cifras que se pueden comprobar</b>. Debajo, una frase dice lo que hace: diseños experimentales, comparaciones de medias, regresión y modelos mixtos, con un asistente que entiende el ensayo, reportes listos para publicar y el código R de cada análisis.</p>
+  <p>La ilustración de la derecha es un resumen en miniatura de un resultado típico: medias de tratamientos unidas por una curva, cada una con la letra que indica qué medias difieren entre sí, y abajo la fórmula del análisis que las produjo (<code>rend ~ bloque + híbrido × N</code>), con la σ del logo al fondo. Es decorativa; los números reales aparecen cuando se cargan datos.</p>
   <figure>
     <div class="marco"><img src="../img/b1-inicio.png" alt="El bloque Inicio: a la izquierda la barra de los diez bloques; al centro el título «Del experimento a la conclusión, con cifras que se pueden comprobar», el texto que resume la app, los botones Empezar con tus datos, Ver la validación y Ver la maqueta del flujo, y la nota de privacidad; a la derecha, una gráfica de medias con letras y la fórmula de un análisis"></div>
     <figcaption><b>Figura 1.1.</b> El bloque Inicio, tal como aparece al abrir SigmaPro. La barra de la izquierda lleva a los diez bloques; el contenido del bloque ocupa el centro.</figcaption>
@@ -47,7 +50,7 @@
       <tr><td><i>Tus datos nunca salen de este navegador.</i></td><td>Recuerda que todo se calcula en la computadora de quien usa la app (sección 1.2).</td></tr>
     </tbody>
   </table>
-  <p>Al final de cada bloque hay dos botones, <span class="ui">← Anterior</span> y <span class="ui">Siguiente →</span>, con el nombre del bloque al que llevan; en Inicio solo aparece el segundo. El recorrido natural es el de la barra: de los datos al análisis, al reporte, a las figuras y a la exportación. Pero cada bloque se puede abrir en cualquier momento.</p>
+  <p>Al final de cada bloque hay dos botones, <span class="ui">← Anterior</span> y <span class="ui">Siguiente →</span>, con el nombre del bloque al que llevan; en Inicio solo aparece el segundo y en Suite LABG, el último, solo el primero. El recorrido natural es el de la barra: de los datos al análisis, al reporte, a las figuras y a la exportación. Pero cada bloque se puede abrir en cualquier momento.</p>
 
   <!-- 1.2 -->
   <h2 id="s1-2"><span class="num">1.2</span>Los tres compromisos</h2>
@@ -74,16 +77,18 @@
   <p>Que la diferencia sea de una millonésima significa que, en la práctica, las cifras de SigmaPro y las de R son las mismas en todos los decimales que se publican. Una F de 60.635 en SigmaPro es una F de 60.635 en R; un valor <i>p</i> de 0.0034 es 0.0034. Cuando un método no puede alcanzar esa exactitud porque el propio R introduce un ruido numérico mayor (por ejemplo, ciertos ajustes iterativos), el caso lleva una tolerancia propia con su motivo escrito, y así aparece en la validación (capítulo 8).</p>
   <!-- 1.3 -->
   <h2 id="s1-3"><span class="num">1.3</span>El estado del desarrollo</h2>
-  <p>Más abajo, la tarjeta <b>Estado del desarrollo</b> explica cómo se construye SigmaPro: por <b>hitos</b>, y cada hito se cierra solo cuando todas sus comparaciones contra R y todas sus pruebas automáticas pasan. La lista marca con <span class="ui">✓</span> los hitos terminados y con <span class="ui">●</span> el siguiente; el número de cada hito dice a qué fase pertenece. Hoy están terminados todos, del 1.0 al 3.9, y el siguiente es la publicación de la versión 1.0.0.</p>
+  <p>Más abajo, la tarjeta <b>Estado del desarrollo</b> explica cómo se construye SigmaPro: por <b>hitos</b>, y cada hito se cierra solo cuando todas sus comparaciones contra R y todas sus pruebas automáticas pasan. La lista marca con <span class="ui">✓</span> los hitos terminados y con <span class="ui">○</span> los pendientes; el número de cada hito dice a qué fase pertenece. Están terminados todos, del 1.0 al 5.0; el último de la lista es la publicación de la versión 1.0.0.</p>
   <table class="compacta">
     <thead><tr><th style="width:0.9in">Fase</th><th style="width:0.9in">Hitos</th><th>Qué trajo</th></tr></thead>
     <tbody>
       <tr><td><b>Fase 1</b></td><td>1.0 a 1.12</td><td>Los cimientos y lo que más se usa en el campo: la hoja de datos, los descriptivos, los supuestos con semáforo, las pruebas t y no paramétricas, el análisis de varianza de los diseños experimentales, las comparaciones de medias, la ANCOVA, la regresión, la correlación, las tablas de contingencia, el asistente, el constructor de modelos, el reporte, las figuras y las exportaciones.</td></tr>
       <tr><td><b>Fase 2</b></td><td>2.0 a 2.10</td><td>Los modelos que piden más cálculo: los mixtos (en el motor R dentro del navegador), las medidas repetidas, los componentes de varianza y la heredabilidad, los modelos lineales generalizados y sus versiones mixtas, la regresión no lineal y la dosis-respuesta, las superficies de respuesta y los ensayos multiambiente con su estabilidad.</td></tr>
       <tr><td><b>Fase 3</b></td><td>3.0 a 3.9</td><td>El tamaño de muestra y la potencia, el muestreo, la supervivencia, las series de tiempo, el multivariado (MANOVA y discriminante) y, como ampliación, los estratos en la supervivencia, la prueba M de Box, los modelos ARIMA, Cox y la MANOVA en el constructor y el guardado automático del trabajo.</td></tr>
+      <tr><td><b>Fase 4</b></td><td>4.0 a 4.5</td><td>Los cálculos completos: la regresión no lineal con hormesis, Michaelis-Menten y la dosis económica; el multiambiente con imputación de celdas, WAAS y el análisis en dos etapas; el generador de diseños de superficies, las mezclas, la deseabilidad y la superficie en 3D; los generalizados con intervalos perfilados y la corrección de Firth; el asistente que reconoce las parcelas divididas en los datos; y la interfaz en inglés.</td></tr>
+      <tr><td><b>Fase 5</b></td><td>5.0</td><td>La app que explica lo que calcula: las fichas de Fundamentos de los 78 análisis, el bloque Suite LABG con las sugerencias de las apps hermanas, la pantalla de apertura, las ilustraciones del catálogo y los temas de las gráficas.</td></tr>
     </tbody>
   </table>
-  <p>El número que aparece al pie de cada página de la app (<i>SigmaPro v0.3.2</i>) es la versión. Este manual describe la versión 0.3.2; la 1.0.0 será la de la publicación, con el mismo contenido.</p>
+  <p>El número que aparece al pie de cada página de la app (<i>SigmaPro v1.0.0</i>) es la versión. Este manual describe la versión 1.0.0.</p>
 
   <!-- 1.4 -->
   <h2 id="s1-4"><span class="num">1.4</span>Si quedó un trabajo guardado</h2>
@@ -101,6 +106,39 @@
     <div class="caja-t"><span class="ico">!</span>El guardado automático no reemplaza al proyecto</div>
     <p>Lo guardado vive en <b>ese navegador de esa computadora</b>. No viaja a otra máquina, se pierde si se borran los datos del navegador y, en una ventana privada, se borra al cerrarla. Para conservar un trabajo, compartirlo o llevarlo a otro equipo, se guarda el <b>proyecto .labg</b> en el bloque Exportar (sección 7.5).</p>
   </div>
+
+  <!-- 1.5 -->
+  <h2 id="s1-5"><span class="num">1.5</span>Qué puedes analizar</h2>
+  <p class="lead">La tarjeta <b>Qué puedes analizar</b> lista los 78 análisis de SigmaPro, agrupados en sus 18 familias, de los descriptivos a la supervivencia y las series de tiempo. Sirve para ver de un vistazo lo que hace el programa antes de cargar datos.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b1-analisis.png" alt="La tarjeta Qué puedes analizar: el título, la nota que dice que cada nombre abre su ficha en Fundamentos y la lista de análisis en columnas, agrupados por familia (Descriptivos e intervalos, Supuestos del modelo, Pruebas t, Pruebas no paramétricas, Diseños experimentales…)"></div>
+    <figcaption><b>Figura 1.4.</b> El principio de la tarjeta Qué puedes analizar. Cada nombre es un enlace a la ficha de ese análisis.</figcaption>
+  </figure>
+  <p>Cada nombre abre la <b>ficha del análisis</b> en el bloque 9, Fundamentos: para qué sirve, el modelo y sus supuestos, los datos que necesita, cómo se lee el resultado y sus referencias (capítulo 9). Desde la ficha, <span class="ui">Abrir este análisis</span> lleva al análisis y <span class="ui">Cargar los datos de ejemplo</span> lo abre ya con su ejemplo cargado, así que esta lista es también un atajo para probar cualquier método.</p>
+
+  <!-- 1.6 -->
+  <h2 id="s1-6"><span class="num">1.6</span>Acerca de SigmaPro y la pantalla de apertura</h2>
+  <p class="lead">La tarjeta <b>Acerca de SigmaPro</b> dice quién hizo el programa y con qué licencia, y reúne los controles de la pantalla de apertura.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b1-acerca.png" alt="La tarjeta Acerca de SigmaPro: Luis Ángel Barrera-Guzmán, licencia GPL-3.0, parte de la LABG Suite; los botones Ver la intro y Pantalla de presentación y la casilla Mostrar la intro al abrir"></div>
+    <figcaption><b>Figura 1.5.</b> La tarjeta Acerca de SigmaPro.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Control</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Ver la intro</span></td><td>Muestra otra vez la pantalla de apertura completa, hasta <span class="ui">Start</span>.</td></tr>
+      <tr><td><span class="ui">Pantalla de presentación</span></td><td>La escena de la apertura en bucle, sin botón, para proyectarla en una clase o en un stand. Se sale con cualquier tecla o con un clic.</td></tr>
+      <tr><td><span class="ui">Mostrar la intro al abrir</span></td><td>Marcada (como viene), la apertura sale al abrir la app: completa la primera vez y en versión corta (un segundo y medio) las siguientes. Desmarcada, SigmaPro abre directo en Inicio. La elección se recuerda en el navegador.</td></tr>
+    </tbody>
+  </table>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Nota</div>
+    <p>La apertura nunca estorba el trabajo: <span class="ui">Saltar</span> o Esc la quitan en cualquier momento, no se repite al recargar la misma pestaña y, si el sistema pide reducir el movimiento, aparece quieta. Mientras se ve, la app termina de cargar detrás.</p>
+  </div>
+
+  <!-- 1.7 -->
+  <h2 id="s1-7"><span class="num">1.7</span>Explora la suite LABG</h2>
+  <p>Al final de Inicio, el recuadro negro y dorado <b>Explora la suite LABG</b> presenta cuatro apps hermanas de SigmaPro, las que más a menudo continúan un análisis agronómico: PCAPro (componentes principales), ClusteringPro (conglomerados), AgriDesign (diseño y sorteo de experimentos) y CorrelationPro (correlación). Cada tarjeta trae su logo, su versión, sus funciones y los botones <span class="ui">Abrir app</span>, <span class="ui">Manual</span> y <span class="ui">Citar</span>; una app que todavía no tiene versión pública aparece con <span class="ui">Próximamente</span> en lugar de los botones. Es el mismo recuadro del bloque 10; el capítulo 10 lo explica completo (Figura 10.1).</p>
 </section>
 
 </body>

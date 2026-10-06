@@ -14,6 +14,9 @@
   figure.angosta .marco { width: 40%; }
   figure.angosta figcaption { margin-left: 30%; margin-right: 30%; }
   table.ejemplos td:first-child { white-space: nowrap; }
+  table.ejemplos td { padding-top: 0.015in; padding-bottom: 0.015in; }
+  figure.casi .marco { width: 88%; margin: 0 auto; }
+  figure.casi figcaption { margin-left: 6%; margin-right: 6%; }
   figure.mitad .marco { width: 50%; margin: 0 auto; }
   figure.mitad figcaption { margin-left: 25%; margin-right: 25%; }
   figure.estrecha .marco { width: 70%; margin: 0 auto; }
@@ -28,7 +31,7 @@
     <div class="cap-etiqueta">Bloque 2 · Datos</div>
     <h1>Datos: la tabla del ensayo</h1>
     <div class="cap-regla"></div>
-    <p class="cap-resumen">Todo análisis empieza con una tabla bien hecha. En este bloque se importa un archivo, se pega una tabla o se abre un ejemplo; se revisa el tipo de cada variable, que decide cómo se analiza; se crean variables calculadas y transformadas; se filtran filas sin borrarlas; se cambia la forma de la tabla y se lee lo que SigmaPro reconoce del diseño del ensayo. Nada de esto toca el archivo original.</p>
+    <p class="cap-resumen">Todo análisis empieza con una tabla bien hecha. En este bloque se importa un archivo, se pega una tabla o se abre un ejemplo; se revisa el tipo de cada variable, que decide cómo se analiza; se crean variables calculadas y transformadas; se filtran filas sin borrarlas; se cambia la forma de la tabla y se lee lo que SigmaPro reconoce del diseño del ensayo. Al pie, según lo que tenga la tabla, el bloque sugiere la app de la suite que puede continuar el trabajo. Nada de esto toca el archivo original.</p>
     <ul class="cap-contenido">
       <li><b>2.1</b>Cuatro maneras de empezar</li>
       <li><b>2.2</b>Cómo debe verse la tabla</li>
@@ -43,6 +46,7 @@
       <li><b>2.11</b>Tabla ancha y tabla larga</li>
       <li><b>2.12</b>Deshacer, rehacer y volver</li>
       <li><b>2.13</b>Lo que SigmaPro ve en tu ensayo</li>
+      <li><b>2.14</b>Continúa en la suite LABG</li>
     </ul>
   </div>
 
@@ -58,7 +62,7 @@
     <tbody>
       <tr><td><span class="ui">Importar archivo…</span></td><td>Abre un archivo de texto (CSV, TSV, TXT) o un libro de hoja de cálculo (.xlsx, .xlsm, .ods). El archivo se lee en la computadora; no se sube a ningún lado.</td><td>2.3</td></tr>
       <tr><td><span class="ui">Pegar tabla…</span></td><td>Recibe un rango copiado de una hoja de cálculo, con su fila de nombres.</td><td>2.4</td></tr>
-      <tr><td><span class="ui">Ejemplos ▾</span></td><td>Abre uno de los 22 ensayos de ejemplo, cada uno pensado para un tipo de análisis.</td><td>2.5</td></tr>
+      <tr><td><span class="ui">Ejemplos ▾</span></td><td>Abre uno de los 27 ensayos de ejemplo, cada uno pensado para un tipo de análisis.</td><td>2.5</td></tr>
       <tr><td><span class="ui">Hoja vacía…</span></td><td>Crea una tabla en blanco con los nombres de columna y el número de filas que se pidan, para capturar a mano.</td><td>2.4</td></tr>
     </tbody>
   </table>
@@ -166,8 +170,8 @@
   <!-- 2.6 -->
   <h2 id="s2-6"><span class="num">2.6</span>La hoja de trabajo</h2>
   <p>Con una tabla cargada, el bloque se divide en tres partes: la lista de variables a la izquierda, la rejilla con los datos al centro y, debajo de la lista, el detalle de la variable elegida. La figura 2.3 las señala.</p>
-  <figure>
-    <div class="marco"><img src="../img/b2-hoja.png" alt="La hoja de trabajo con el ejemplo del maíz: la barra de herramientas, la lista de variables (bloque, hibrido, dosis, rend con su tipo), el detalle de bloque con la razón de su tipo, el selector de tipo y sus cuatro niveles con 12 observaciones cada uno, la rejilla con las primeras 19 filas y la línea de estado con 48 filas, 4 columnas, sin faltantes"><span class="marca" style="left:55.5%;top:4.5%">1</span><span class="marca" style="left:64.5%;top:9.1%">2</span><span class="marca" style="left:89%;top:9.1%">3</span><span class="marca" style="left:14.5%;top:17.3%">4</span><span class="marca" style="left:11%;top:50%">5</span><span class="marca" style="left:87%;top:17.6%">6</span><span class="marca" style="left:83%;top:92.7%">7</span></div>
+  <figure class="casi">
+    <div class="marco"><img src="../img/b2-hoja.png" alt="La hoja de trabajo con el ejemplo del maíz: la barra de herramientas, la lista de variables (bloque, hibrido, dosis, rend con su tipo), el detalle de bloque con la razón de su tipo, el selector de tipo y sus cuatro niveles con 12 observaciones cada uno, la rejilla con las primeras 19 filas y la línea de estado con 48 filas, 4 columnas, sin faltantes"><span class="marca" style="left:55.2%;top:4.4%">1</span><span class="marca" style="left:32.5%;top:14.6%">2</span><span class="marca" style="left:89.7%;top:9.1%">3</span><span class="marca" style="left:24%;top:27.5%">4</span><span class="marca" style="left:26.4%;top:68.6%">5</span><span class="marca" style="left:85.7%;top:17.6%">6</span><span class="marca" style="left:83.6%;top:91.2%">7</span></div>
     <figcaption><b>Figura 2.3.</b> La hoja de trabajo con el ejemplo del maíz.</figcaption>
   </figure>
   <ul class="leyenda-marcas">
@@ -330,7 +334,7 @@
   </ol>
   <div class="caja nota">
     <div class="caja-t"><span class="ico">i</span>Las medias de una variable transformada</div>
-    <p>Las medias y sus diferencias quedan en la escala transformada. Para presentarlas en las unidades originales se aplica la transformación inversa a las medias (por ejemplo, el cuadrado de las medias de √x), sabiendo que el resultado es una mediana, no una media. Una alternativa que evita el problema son los modelos lineales generalizados (sección 4.x), que modelan los conteos y las proporciones en su propia escala.</p>
+    <p>Las medias y sus diferencias quedan en la escala transformada. Para presentarlas en las unidades originales se aplica la transformación inversa a las medias (por ejemplo, el cuadrado de las medias de √x), sabiendo que el resultado es una mediana, no una media. Una alternativa que evita el problema son los modelos lineales generalizados (sección 4.17), que modelan los conteos y las proporciones en su propia escala.</p>
   </div>
 
   <!-- 2.10 -->
@@ -346,7 +350,7 @@
       <p>Todo lo que viene después usa solo las filas que pasan: los resúmenes del detalle, el diagnóstico de la sección 2.13, Explorar, Análisis y el reporte. El proyecto .labg guarda la condición del filtro.</p>
       <p>Algunas condiciones útiles:</p>
       <ul>
-        <li><code>sitio == "Chapingo"</code></li>
+        <li><code>sitio == "Norte"</code></li>
         <li><code>bloque != "4"</code></li>
         <li><code>!is.na(rend)</code></li>
         <li><code>hibrido %in% c("H-52", "H-66")</code></li>
@@ -397,21 +401,43 @@
     <tbody>
       <tr><td>La respuesta</td><td>Qué columna se tomó como respuesta y si tiene faltantes (el análisis usará las observaciones completas).</td></tr>
       <tr><td>Columnas que no son factores</td><td>Un identificador (un valor distinto en cada fila), unas submuestras (el número de fruto o de planta dentro de cada parcela, 1, 2, …, que no es un tratamiento) o una numérica con pocos valores repetidos tomada como factor del diseño (una dosis).</td></tr>
-      <tr><td>Combinaciones y balance</td><td>Si es un factorial y si cada combinación tiene el mismo número de observaciones. Si no, avisa que las sumas de cuadrados tipo I, II y III darán resultados distintos (sección 4.x); si hay combinaciones vacías, que la tipo III no está definida.</td></tr>
+      <tr><td>Combinaciones y balance</td><td>Si es un factorial y si cada combinación tiene el mismo número de observaciones. Si no, avisa que las sumas de cuadrados tipo I, II y III darán resultados distintos (sección 4.10); si hay combinaciones vacías, que la tipo III no está definida.</td></tr>
       <tr><td>Bloques</td><td>Si cada bloque tiene todos los tratamientos (bloques completos al azar), cuántos están incompletos y si un tratamiento aparece más de una vez en un bloque.</td></tr>
       <tr><td>Cuadro latino</td><td>Con columnas de fila y columna, si cada tratamiento aparece una vez en cada fila y en cada columna.</td></tr>
-      <tr><td>Dosis</td><td>Si los niveles de un factor numérico están igualmente espaciados, que se puede estudiar la tendencia con polinomios ortogonales (sección 4.x).</td></tr>
+      <tr><td>Dosis</td><td>Si los niveles de un factor numérico están igualmente espaciados, que se puede estudiar la tendencia con polinomios ortogonales (sección 4.11).</td></tr>
       <tr><td>El terreno</td><td>Sin columnas de fila y columna de campo no se puede revisar si quedó un gradiente en el terreno.</td></tr>
     </tbody>
   </table>
   <figure>
     <div class="marco"><img src="../img/b2-estructura-avena.png" alt="La tarjeta del ensayo de avena: nitrógeno numérica tomada como factor; factorial 3 × 4 balanceado con 6 observaciones por combinación; 6 bloques completos; niveles de nitrógeno igualmente espaciados; sin columnas de fila y columna"></div>
-    <figcaption><b>Figura 2.13.</b> El ensayo de avena de Yates: la tarjeta lo lee como un factorial en bloques completos. Que las variedades estén en parcelas grandes no se ve en los datos; hay que indicarlo.</figcaption>
+    <figcaption><b>Figura 2.13.</b> El ensayo de avena de Yates: la tarjeta lo lee como un factorial en bloques completos. Que las variedades estén en parcelas grandes no se ve en estos datos; hay que indicarlo (o agregar la columna de la parcela, abajo).</figcaption>
   </figure>
   <div class="caja importante">
     <div class="caja-t"><span class="ico">!</span>Lo que los datos no dicen</div>
     <p>La tarjeta lee la tabla, no el croquis del campo. Un ensayo en <b>parcelas divididas</b> tiene las mismas columnas que un factorial en bloques (figura 2.13): la diferencia está en cómo se aleatorizó, y eso no queda en los datos. Lo mismo pasa con las medidas repetidas sin una columna que diga cuál es la unidad medida. En esos casos el diseño se indica en el asistente, en el catálogo o en el constructor de modelos (capítulo 4); analizar unas parcelas divididas como un factorial en bloques daría pruebas F equivocadas para el factor de la parcela grande.</p>
   </div>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Una columna que numere las parcelas</div>
+    <p>Si la tabla trae una columna que numera las parcelas grandes (o las franjas), con un nombre como <code>parcela</code>, <code>parcela_grande</code>, <code>pg</code>, <code>subparcela</code> o <code>franja</code>, SigmaPro no la toma como tratamiento y el <b>asistente</b> la usa para reconocer solo las parcelas divididas, subdivididas o en franjas: si un factor no cambia dentro de cada parcela, es el de la parcela grande (sección 4.2). Así viene el ejemplo «Trigo: riego × variedad». La tarjeta de esta sección no lo dice; lo dice el asistente al proponer el análisis.</p>
+  </div>
+
+  <!-- 2.14 -->
+  <h2 id="s2-14"><span class="num">2.14</span>Continúa en la suite LABG</h2>
+  <p>Debajo de la tarjeta del ensayo puede aparecer la franja <span class="ui">Continúa en la suite LABG</span>, con la app hermana que aprovecha la estructura de la tabla. Cada tarjeta dice qué vio en los datos y por qué conviene esa app.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b2-suite.png" alt="La franja Continúa en la suite LABG del bloque Datos con el ejemplo del maíz: la tarjeta de AgriDesign, que dice que la tabla tiene tratamientos y bloques o repeticiones y que la app genera la aleatorización, el croquis y la hoja de campo del diseño, con el botón Enviar datos a AgriDesign y el botón para ocultarla"></div>
+    <figcaption><b>Figura 2.14.</b> Con el ejemplo del maíz, que tiene tratamientos y bloques, Datos sugiere AgriDesign.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2.4in">Si la tabla tiene…</th><th>Sugiere</th></tr></thead>
+    <tbody>
+      <tr><td>tratamientos y bloques o repeticiones</td><td>AgriDesign: la aleatorización, el croquis y la hoja de campo del diseño.</td></tr>
+      <tr><td>8 o más variables numéricas</td><td>PCAPro, CorrelationPro y ClusteringPro: reducir dimensiones, ver las relaciones entre muchas variables o formar grupos.</td></tr>
+      <tr><td>columnas de latitud y longitud</td><td>BioModellingPro: mapear los sitios, extraer variables de clima y suelo y modelar la distribución de una especie.</td></tr>
+      <tr><td>fechas</td><td>PhenologyPro: con fechas y clima diario, grados día, evapotranspiración, etapas fenológicas y riesgo de heladas.</td></tr>
+    </tbody>
+  </table>
+  <p><span class="ui">Enviar datos a …</span> guarda la tabla en un archivo CSV (con el filtro activo, si lo hay) y abre la app en una pestaña nueva; los datos no viajan por internet. El botón ✕ oculta esa sugerencia en este lugar. El capítulo 10 explica todo esto con detalle.</p>
 </section>
 
 </body>

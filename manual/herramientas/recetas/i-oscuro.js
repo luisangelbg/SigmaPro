@@ -3,5 +3,5 @@
   await ejemplo('Maíz: híbridos');
   await usar('dbca', { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, {});
   $('#themeBtn').click(); await W(500);
-  const r = $('#anaResultado'); irA(r, 150); await W(400); limpio();
+  const r = $('#anaResultado'); irA(r, 240); await W(400); limpio();
 })()

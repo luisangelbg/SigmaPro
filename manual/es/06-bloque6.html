@@ -21,10 +21,10 @@
     <div class="cap-etiqueta">Bloque 6 · Figuras</div>
     <h1>Figuras: listas para publicar</h1>
     <div class="cap-regla"></div>
-    <p class="cap-resumen">Las gráficas de los análisis del reporte se juntan en este bloque, numeradas y con su leyenda, en el orden del reporte. Desde aquí se eligen las barras de error y el ancho, se descargan en SVG, PDF vectorial, PNG o TIFF a 600 ppp, se retocan con el editor ✎ y, para el tamaño exacto que pide una revista, se abren en el Estudio de figuras.</p>
+    <p class="cap-resumen">Las gráficas de los análisis del reporte se juntan en este bloque, numeradas y con su leyenda, en el orden del reporte. Desde aquí se eligen las barras de error, el tema de las gráficas y el ancho, se descargan en SVG, PDF vectorial, PNG o TIFF a 600 ppp, se retocan con el editor ✎ y, para el tamaño exacto que pide una revista, se abren en el Estudio de figuras.</p>
     <ul class="cap-contenido">
       <li><b>6.1</b>Las figuras del reporte</li>
-      <li><b>6.2</b>Barras de error y ancho</li>
+      <li><b>6.2</b>Barras de error, tema y ancho</li>
       <li><b>6.3</b>Las descargas</li>
       <li><b>6.4</b>El editor ✎</li>
       <li><b>6.5</b>El Estudio de figuras</li>
@@ -35,27 +35,41 @@
   <h2 id="s6-1"><span class="num">6.1</span>Las figuras del reporte</h2>
   <p class="lead">El bloque muestra todas las figuras de los análisis del reporte que tienen gráficas (diseños, comparaciones, regresión, correlación, contingencia y casi todos los demás), en una galería de tarjetas. Si el reporte no tiene ninguna, el bloque lo dice y ofrece ir a Resultados.</p>
   <figure>
-    <div class="marco"><img src="../img/b6-galeria.png" alt="El bloque Figuras con el reporte del maíz: arriba, el selector de barras de error ± 1 EE o IC 95 % y el ancho en el documento, 16 cm; el resumen 3 figuras de 3 análisis; y las dos primeras tarjetas: la interacción híbrido × dosis del análisis 1 y las medias de los híbridos con sus letras del análisis 2, cada una con su leyenda numerada y los botones Abrir en el estudio, SVG, PDF, PNG 600 ppp y TIFF 600 ppp"></div>
+    <div class="marco"><img src="../img/b6-galeria.png" alt="El bloque Figuras con el reporte del maíz: arriba, el selector de barras de error ± 1 EE o IC 95 %, el tema de las gráficas y el ancho en el documento, 16 cm; el resumen 3 figuras de 3 análisis; y las dos primeras tarjetas: la interacción híbrido × dosis del análisis 1 y las medias de los híbridos con sus letras del análisis 2, cada una con su leyenda numerada y los botones Abrir en el estudio, SVG, PDF, PNG 600 ppp y TIFF 600 ppp"></div>
     <figcaption><b>Figura 6.1.</b> Las figuras del reporte del maíz. Cada tarjeta dice de qué análisis viene y trae su leyenda numerada y sus descargas.</figcaption>
   </figure>
   <p>Cada tarjeta dice de qué análisis viene («Del análisis 2: Comparación de medias: Tukey · rend») y trae la figura con su <b>leyenda</b>: el número (el mismo que tiene en el reporte y en el documento exportado), el título y una descripción de lo que muestra, que también es el texto alternativo de la figura para los lectores de pantalla. En las gráficas de medias, la leyenda declara las barras de error («con ± un error estándar»), como piden las revistas.</p>
 
   <!-- 6.2 -->
-  <h2 id="s6-2"><span class="num">6.2</span>Barras de error y ancho</h2>
-  <p class="lead">Arriba de la galería, dos ajustes valen para todas las figuras del reporte, en la pantalla, en el documento exportado y en las descargas. La app los recuerda en el navegador.</p>
+  <h2 id="s6-2"><span class="num">6.2</span>Barras de error, tema y ancho</h2>
+  <p class="lead">Arriba de la galería, tres ajustes valen para todas las figuras del reporte, en la pantalla, en el documento exportado y en las descargas. La app los recuerda en el navegador.</p>
   <ul>
     <li><b>Barras de error</b>: <span class="ui">± 1 EE</span> (el error estándar de cada media, la opción por omisión) o <span class="ui">IC 95 %</span> (el intervalo de confianza). Al cambiarlas, las gráficas de medias se redibujan y sus leyendas cambian.</li>
+    <li><span class="ui">Tema de las gráficas</span>: el aspecto de las figuras, entre los seis del cuadro 6.1. El tema vale para todas las gráficas de la app, también las de Explorar. El mismo selector aparece encima de las gráficas de los análisis en Análisis y en Resultados, y cambiar cualquiera de ellos los cambia todos.</li>
     <li><span class="ui">Ancho en el documento y en las descargas</span>: 8.5 cm (una columna), 12 cm, 16 cm (ancho de página, la opción por omisión) o 17.5 cm (dos columnas). El alto sale de la proporción de cada figura.</li>
   </ul>
+  <table class="compacta">
+    <caption><b>Cuadro 6.1.</b> Los temas de las gráficas.</caption>
+    <thead><tr><th style="width:1.9in">Tema</th><th>Cómo se ven las figuras</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">SigmaPro (oro y negro)</span></td><td>El de omisión: textos y trazos en negro (en blanco con la app en oscuro), acentos dorados y rejilla tenue.</td></tr>
+      <tr><td><span class="ui">Minimalista (grises, sin rejilla)</span></td><td>Solo grises, sin rejilla y con ejes finos.</td></tr>
+      <tr><td><span class="ui">Cuadrícula (panel gris)</span></td><td>El área de la gráfica en gris con la rejilla en blanco y sin línea de ejes; acentos en azul.</td></tr>
+      <tr><td><span class="ui">Revista (blanco y negro, serifas)</span></td><td>Blanco y negro, letra con serifas (Times New Roman), sin rejilla y con ejes negros: el estilo que piden muchas revistas impresas.</td></tr>
+      <tr><td><span class="ui">Daltonismo (paleta Okabe-Ito)</span></td><td>Las series con la paleta de Okabe e Ito (azul, naranja, verde, rosa y celeste), que se distinguen con cualquier tipo de daltonismo.</td></tr>
+      <tr><td><span class="ui">Presentación (letras grandes)</span></td><td>Letras más grandes y trazos más gruesos, para proyectar en una sala.</td></tr>
+    </tbody>
+  </table>
+  <p>El tema cambia los colores, las letras y los trazos, no los números: cada figura muestra los mismos datos con cualquiera de los seis. Lo que se haya retocado con el editor ✎ (sección 6.4) se conserva al cambiar de tema.</p>
 
   <!-- 6.3 -->
   <h2 id="s6-3"><span class="num">6.3</span>Las descargas</h2>
-  <p class="lead">Cada tarjeta descarga su figura al ancho elegido en cuatro formatos. Todas salen con los colores del tema claro, aunque la app esté en oscuro, y con lo que se haya cambiado con el editor ✎ o el estudio.</p>
+  <p class="lead">Cada tarjeta descarga su figura al ancho elegido en cuatro formatos. Todas salen con el tema de las gráficas elegido, en su versión clara aunque la app esté en oscuro, y con lo que se haya cambiado con el editor ✎ o el estudio.</p>
   <table class="compacta">
     <thead><tr><th style="width:1.2in">Formato</th><th>Qué es y para qué</th></tr></thead>
     <tbody>
       <tr><td><b>SVG</b></td><td>Vectorial, con el tamaño en milímetros. Se abre y se edita en cualquier programa de dibujo vectorial y se amplía sin perder nitidez.</td></tr>
-      <tr><td><b>PDF</b></td><td>Vectorial, con trazos y texto (en Helvetica, una de las letras estándar de PDF): pesa poco, se amplía sin perder nitidez y el texto se puede buscar. Es el formato que prefieren muchas revistas.</td></tr>
+      <tr><td><b>PDF</b></td><td>Vectorial, con trazos y texto en una de las letras estándar de PDF (Helvetica; Times con el tema Revista): pesa poco, se amplía sin perder nitidez y el texto se puede buscar. Es el formato que prefieren muchas revistas.</td></tr>
       <tr><td><b>PNG 600 ppp</b></td><td>Imagen a 600 puntos por pulgada, con la resolución escrita dentro del archivo: se inserta en un procesador de textos con su tamaño correcto.</td></tr>
       <tr><td><b>TIFF 600 ppp</b></td><td>La misma imagen en TIFF, el formato que algunas revistas y editoriales exigen.</td></tr>
     </tbody>
@@ -86,14 +100,14 @@
   <h2 id="s6-5"><span class="num">6.5</span>El Estudio de figuras</h2>
   <p class="lead">Para dejar una figura del tamaño exacto que pide una revista, <span class="ui">Abrir en el estudio</span> la lleva al Estudio de figuras LABG, el mismo de todas las apps de la suite: una pantalla dividida con la figura a la izquierda, a escala y con la silueta de su tamaño de salida, y el inspector a la derecha.</p>
   <figure>
-    <div class="marco"><img src="../img/b6-estudio.png" alt="El Estudio de figuras con la figura de las medias de los híbridos: arriba, la barra con deshacer, rehacer, comparar, zoom, regla, Preajustes, Exportar y Cerrar estudio; a la izquierda, la figura dentro de la silueta de 1.5 columnas, con su tamaño de salida en milímetros, pulgadas, ppp y pixeles; a la derecha, el inspector con el buscador de controles, los ajustes de la figura de SigmaPro (barras de error y ancho) y la edición fina del editor ✎"></div>
+    <div class="marco"><img src="../img/b6-estudio.png" alt="El Estudio de figuras con la figura de las medias de los híbridos: arriba, la barra con deshacer, rehacer, comparar, zoom, regla, Preajustes, Exportar y Cerrar estudio; a la izquierda, la figura dentro de la silueta de 1.5 columnas, con su tamaño de salida en milímetros, pulgadas, ppp y pixeles; a la derecha, el inspector con el buscador de controles, los ajustes de la figura de SigmaPro (barras de error, ancho y tema de las gráficas) y la edición fina del editor ✎"></div>
     <figcaption><b>Figura 6.3.</b> El Estudio de figuras: la figura a escala de salida a la izquierda y el inspector a la derecha, con los ajustes que la figura tiene en SigmaPro y el editor ✎ acoplado.</figcaption>
   </figure>
   <ul>
     <li><b>Tamaños de revista</b>: una, una y media o dos columnas, en milímetros o pulgadas, con la letra y el grosor de las líneas pensados para el tamaño de salida. Debajo de la figura, el tamaño final y los pixeles que tendrá.</li>
     <li><b>Paletas científicas</b>, con una simulación de cómo vería la figura una persona con daltonismo.</li>
     <li><b>La leyenda</b> dentro de la gráfica (ocho lugares), fuera a la derecha, debajo en fila u oculta, y se arrastra sobre la figura.</li>
-    <li><b>Lo de SigmaPro, dentro</b>: las barras de error y el ancho del bloque Figuras aparecen en el inspector (cada cambio se hace en la app), y el editor ✎ se acopla como «Edición fina de esta figura».</li>
+    <li><b>Lo de SigmaPro, dentro</b>: las barras de error, el ancho y el tema de las gráficas del bloque Figuras aparecen en el inspector, en <span class="ui">Ajustes de la figura</span> (cada cambio se hace en la app), y el editor ✎ se acopla como «Edición fina de esta figura».</li>
     <li><b>Trabajo cómodo</b>: deshacer y rehacer, comparar antes y ahora con una cortina (tecla B), zoom, doble clic en un texto para cambiarlo, un buscador de controles, preajustes de un clic (y propios, que se guardan en JSON) y la tecla ? para ver los atajos.</li>
     <li><b>Exportar</b>: PNG, SVG, PDF y TIFF, a 300, 600 o 1200 ppp, con fondo transparente si se quiere. Para el PDF, el estudio le pide a SigmaPro la figura vectorial en lugar de una imagen.</li>
   </ul>

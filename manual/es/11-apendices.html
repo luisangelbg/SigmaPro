@@ -50,6 +50,8 @@
   <table class="compacta ficheros">
     <thead><tr><th style="width:0.55in">Bloque</th><th style="width:2.1in">Archivo</th><th>Qué contiene</th></tr></thead>
     <tbody>
+      <tr><td><span class="chip k2">2</span> <span class="chip k4">4</span> <span class="chip k9">9</span></td><td><code>.csv</code></td><td><span class="ui">Enviar datos a …</span> en la franja de la suite: la tabla en uso, con el filtro activo, como <code>sigmapro-para-pcapro.csv</code> (o la app que corresponda), para abrirla en otra app de la suite (sección 10.4).</td></tr>
+      <tr><td><span class="chip k3">3</span> <span class="chip k4">4</span></td><td><code>.csv</code></td><td><span class="ui">Bajar en CSV</span>: un cuadro de un resultado, con los valores sin redondear (secciones 3.2 y 4.5).</td></tr>
       <tr><td><span class="chip k4">4</span></td><td><code>.csv</code></td><td>Desde la MANOVA y el discriminante, las variables con su grupo, para abrirlas en PCAPro o en ClusteringPro (sección 4.21).</td></tr>
       <tr><td><span class="chip k6">6</span></td><td><code>.svg</code> · <code>.pdf</code> · <code>.png</code> · <code>.tif</code></td><td>Una figura, al ancho elegido; los PNG y TIFF a 600 ppp (sección 6.3).</td></tr>
       <tr><td><span class="chip k7">7</span></td><td><code>.docx</code> · <code>.html</code> · PDF</td><td>El reporte completo; el PDF se guarda desde el cuadro de impresión del navegador (sección 7.2).</td></tr>
@@ -69,7 +71,7 @@
       <tr><td>Una columna de números de bloque o de dosis no se toma como factor</td><td>Cámbiale el tipo a <i>factor</i> en la lista de variables o en su menú ⋮ (sección 2.7). En los análisis, las numéricas con pocos valores aparecen como «(numérica)» y se pueden usar como factor.</td></tr>
       <tr><td>Las mediciones de varias fechas están en columnas separadas</td><td>Pasa la tabla a forma larga con <span class="ui">Ancha ⇄ larga…</span> (sección 2.11).</td></tr>
       <tr><td>«No existe la columna…» al escribir una fórmula</td><td>Revisa cómo está escrito el nombre (mayúsculas, acentos); los nombres con espacios van entre comillas invertidas: <code>`peso seco`</code>.</td></tr>
-      <tr><td>«No se pudo cargar el motor R» o «No se pudo instalar el paquete…»</td><td>La primera vez, el motor R se descarga de internet (unos 25 MB): revisa la conexión y vuelve a intentarlo. Después queda guardado en el navegador (sección 4.6).</td></tr>
+      <tr><td>«No se pudo cargar el motor R» o «No se pudo instalar el paquete…»</td><td>Con la app abierta con doble clic, la primera vez el motor R se descarga de internet (unos 25 MB): revisa la conexión y vuelve a intentarlo. Después queda guardado en el navegador (sección 4.6).</td></tr>
       <tr><td>Un modelo mixto dice «Ajuste singular»</td><td>Algún componente de varianza quedó en cero: los datos no dan para estimarlo. Quita ese efecto aleatorio o simplifica el modelo (secciones 4.15 y 4.17).</td></tr>
       <tr><td>«Este análisis todavía no tiene su validación contra R aprobada»</td><td>El método no pasó su validación y la app no lo calcula (sección 8.5). No debería verse en una versión publicada.</td></tr>
       <tr><td>Un análisis del reporte dice que no se pudo calcular</td><td>Se borró o se renombró una columna que usaba, o el filtro dejó muy pocas filas. Regrésala o ajusta el filtro, y el análisis vuelve (sección 5.6).</td></tr>
@@ -172,6 +174,7 @@
     <li>Cruz, C. D., Regazzi, A. J. y Carneiro, P. C. S. (2012). Modelos biométricos aplicados ao melhoramento genético (4.ª ed., vol. 1). Editora UFV.</li>
     <li>Cullis, B. R., Smith, A. B. y Coombes, N. E. (2006). On the design of early generation variety trials with correlated data. Journal of Agricultural, Biological, and Environmental Statistics, 11(4), 381–393.</li>
     <li>Falconer, D. S. y Mackay, T. F. C. (1996). Introduction to quantitative genetics (4.ª ed.). Longman.</li>
+    <li>Firth, D. (1993). Bias reduction of maximum likelihood estimates. Biometrika, 80(1), 27–38.</li>
     <li>Harrison, X. A. (2014). Using observation-level random effects to model overdispersion in count data in ecology and evolution. PeerJ, 2, e616.</li>
     <li>Holland, J. B., Nyquist, W. E. y Cervantes-Martínez, C. T. (2003). Estimating and interpreting heritability for plant breeding: an update. Plant Breeding Reviews, 22, 9–112.</li>
     <li>Kuznetsova, A., Brockhoff, P. B. y Christensen, R. H. B. (2017). lmerTest package: tests in linear mixed effects models. Journal of Statistical Software, 82(13), 1–26.</li>
@@ -184,20 +187,34 @@
   </ol>
   <h3>No lineal, superficies y ensayos multiambiente</h3>
   <ol class="refs">
+    <li>Annicchiarico, P. (1992). Cultivar adaptation and recommendation from alfalfa trials in Northern Italy. Journal of Genetics and Breeding, 46, 269–278.</li>
+    <li>Box, G. E. P. y Behnken, D. W. (1960). Some new three level designs for the study of quantitative variables. Technometrics, 2(4), 455–475.</li>
     <li>Box, G. E. P. y Wilson, K. B. (1951). On the experimental attainment of optimum conditions. Journal of the Royal Statistical Society B, 13(1), 1–45.</li>
+    <li>Brain, P. y Cousens, R. (1989). An equation to describe dose responses where there is stimulation of growth at low doses. Weed Research, 29(2), 93–96.</li>
     <li>Cerrato, M. E. y Blackmer, A. M. (1990). Comparison of models for describing corn yield response to nitrogen fertilizer. Agronomy Journal, 82(1), 138–143.</li>
     <li>Cornelius, P. L., Seyedsadr, M. y Crossa, J. (1992). Using the shifted multiplicative model to search for «separability» in crop cultivar trials. Theoretical and Applied Genetics, 84(1–2), 161–172.</li>
     <li>Cornell, J. A. (2002). Experiments with mixtures: designs, models, and the analysis of mixture data (3.ª ed.). Wiley.</li>
+    <li>Derringer, G. y Suich, R. (1980). Simultaneous optimization of several response variables. Journal of Quality Technology, 12(4), 214–219.</li>
     <li>Eberhart, S. A. y Russell, W. A. (1966). Stability parameters for comparing varieties. Crop Science, 6(1), 36–40.</li>
     <li>Finlay, K. W. y Wilkinson, G. N. (1963). The analysis of adaptation in a plant-breeding programme. Australian Journal of Agricultural Research, 14(6), 742–754.</li>
+    <li>Gauch, H. G. (1988). Model selection and validation for yield trials with interaction. Biometrics, 44(3), 705–715.</li>
+    <li>Gauch, H. G. y Zobel, R. W. (1990). Imputing missing yield trial data. Theoretical and Applied Genetics, 79(6), 753–761.</li>
     <li>Gollob, H. F. (1968). A statistical model which combines features of factor analytic and analysis of variance techniques. Psychometrika, 33(1), 73–115.</li>
+    <li>Huehn, M. (1990). Nonparametric measures of phenotypic stability. Part 1: Theory. Euphytica, 47(3), 189–194.</li>
+    <li>Kang, M. S. (1993). Simultaneous selection for yield and stability in crop performance trials: consequences for growers. Agronomy Journal, 85(3), 754–757.</li>
     <li>Lin, C. S. y Binns, M. R. (1988). A superiority measure of cultivar performance for cultivar × location data. Canadian Journal of Plant Science, 68(1), 193–198.</li>
     <li>Myers, R. H., Montgomery, D. C. y Anderson-Cook, C. M. (2016). Response surface methodology: process and product optimization using designed experiments (4.ª ed.). Wiley.</li>
+    <li>Nassar, R. y Huehn, M. (1987). Studies on estimation of phenotypic stability: tests of significance for nonparametric measures of phenotypic stability. Biometrics, 43(1), 45–53.</li>
+    <li>Olivoto, T., Lúcio, A. D. C., da Silva, J. A. G., Marchioro, V. S., de Souza, V. Q. y Jost, E. (2019). Mean performance and stability in multi-environment trials I: combining features of AMMI and BLUP techniques. Agronomy Journal, 111(6), 2949–2960.</li>
+    <li>Piepho, H.-P., Möhring, J., Schulz-Streeck, T. y Ogutu, J. O. (2012). A stage-wise approach for the analysis of multi-environment trials. Biometrical Journal, 54(6), 844–860.</li>
     <li>Purchase, J. L., Hatting, H. y van Deventer, C. S. (2000). Genotype × environment interaction of winter wheat (Triticum aestivum L.) in South Africa: II. Stability analysis of yield performance. South African Journal of Plant and Soil, 17(3), 101–107.</li>
+    <li>Scheffé, H. (1958). Experiments with mixtures. Journal of the Royal Statistical Society B, 20(2), 344–360.</li>
     <li>Seefeldt, S. S., Jensen, J. E. y Fuerst, E. P. (1995). Log-logistic analysis of herbicide dose-response relationships. Weed Technology, 9(2), 218–227.</li>
     <li>Shukla, G. K. (1972). Some statistical aspects of partitioning genotype-environmental components of variability. Heredity, 29(2), 237–245.</li>
+    <li>Smith, A., Cullis, B. y Gilmour, A. (2001). The analysis of crop variety evaluation data in Australia. Australian and New Zealand Journal of Statistics, 43(2), 129–145.</li>
     <li>Wricke, G. (1962). Über eine Methode zur Erfassung der ökologischen Streubreite in Feldversuchen. Zeitschrift für Pflanzenzüchtung, 47, 92–96.</li>
     <li>Yan, W. y Kang, M. S. (2003). GGE biplot analysis: a graphical tool for breeders, geneticists, and agronomists. CRC Press.</li>
+    <li>Yan, W. y Tinker, N. A. (2006). Biplot analysis of multi-environment trial data: principles and applications. Canadian Journal of Plant Science, 86(3), 623–645.</li>
     <li>Yan, W., Hunt, L. A., Sheng, Q. y Szlavnics, Z. (2000). Cultivar evaluation and mega-environment investigation based on the GGE biplot. Crop Science, 40(3), 597–605.</li>
   </ol>
   <h3>Multivariado, potencia, muestreo, supervivencia y series</h3>
