@@ -140,7 +140,7 @@ SP.definir('comparaciones', function (SP) {
   }
 
   /* ---------------- Dunnett ---------------- */
-  /* Gauss-Kronrod de 21 puntos (QUADPACK), con bisección adaptativa */
+  /* Gauss-Kronrod de 21 puntos (QUADPACK), con bisección adaptativa de criterio global */
   const XGK = [0.995657163025808080735527280689003, 0.973906528517171720077964012084452, 0.930157491355708226001207180059508, 0.865063366688984510732096688423493,
     0.780817726586416897063717578345042, 0.679409568299024406234327365114874, 0.562757134668604683339000099272694, 0.433395394129247190799265943165784,
     0.294392862701460198131126603103866, 0.148874338981631210884826001129720, 0];
@@ -156,23 +156,31 @@ SP.definir('comparaciones', function (SP) {
       k += WGK[j] * s;
       if (j % 2 === 1) g += WG[(j - 1) / 2] * s;
     }
-    return { v: k * h, err: abs((k - g) * h) };
+    return { v: k * h, err: abs((k - g) * h), a, b };
   }
-  function integrar(f, a, b, tol, prof) {
-    const r = gk21(f, a, b);
-    if (prof > 40 || r.err <= max(tol * abs(r.v), 1e-300)) return r.v;
-    const m = (a + b) / 2;
-    return integrar(f, a, m, tol, prof + 1) + integrar(f, m, b, tol, prof + 1);
+  /* Como QUADPACK (integrate de R): se parte el tramo de mayor error hasta que la SUMA de los errores quede bajo
+     tol·|integral|, con 1000 tramos a lo más. Exigir tol a cada tramo por separado multiplicaba las bisecciones donde
+     el integrando es despreciable (las colas de un p chico: 44 s por p con t = 8) sin ganar cifras en el total. */
+  function integrar(f, a, b, tol) {
+    const tramos = [gk21(f, a, b)];
+    for (;;) {
+      let v = 0, err = 0, k = 0;
+      for (let i = 0; i < tramos.length; i++) { v += tramos[i].v; err += tramos[i].err; if (tramos[i].err > tramos[k].err) k = i; }
+      if (err <= max(tol * abs(v), 1e-300) || tramos.length >= 1000) return v;
+      const r = tramos[k], m = (r.a + r.b) / 2;
+      tramos[k] = gk21(f, r.a, m); tramos.push(gk21(f, m, r.b));
+    }
   }
   /**
    * P(algún |Tᵢ| > c) (bilateral) o P(algún Tᵢ > c) (una cola) para t multivariada con gl y correlaciones λᵢλⱼ:
    * ∫ f(s) ∫ φ(z) [1 − Πᵢ (1 − qᵢ(z, s))] dz ds, con qᵢ la cola de Zᵢ = λᵢz + √(1 − λᵢ²)eᵢ más allá de c·s.
-   * Se integra el complemento para conservar cifras relativas en los p chicos.
+   * Se integra el complemento para conservar cifras relativas en los p chicos. En la bilateral qᵢ(z) = qᵢ(−z) con
+   * cualquier signo de λᵢ: basta el doble de la integral en [0, 9].
    */
   function dunnettProb(c, lambdas, gl, bilateral) {
     bilateral = bilateral !== false;
     const sig = lambdas.map(l => sqrt(1 - l * l));
-    const interior = s => integrar(z => {
+    const interior = s => (bilateral ? 2 : 1) * integrar(z => {
       let suma = 0;
       for (let i = 0; i < lambdas.length; i++) {
         const lz = lambdas[i] * z;
@@ -181,12 +189,12 @@ SP.definir('comparaciones', function (SP) {
         suma += Math.log1p(-min(qv, 1));
       }
       return exp(-0.5 * z * z) / sqrt(2 * Math.PI) * -Math.expm1(suma);
-    }, -9, 9, 1e-12, 0);
+    }, bilateral ? 0 : -9, 9, 1e-12);
     if (!Number.isFinite(gl)) return interior(1);
     const cte = log(2) + (gl / 2) * log(gl / 2) - D().lgamma(gl / 2);
     const dens = s => exp(cte + (gl - 1) * log(s) - gl * s * s / 2);
     const s0 = sqrt(D().qchisq(1e-15, gl) / gl), s1 = sqrt(D().qchisq(1e-15, gl, false) / gl);
-    return integrar(s => dens(s) * interior(s), s0, s1, 1e-11, 0);
+    return integrar(s => dens(s) * interior(s), s0, s1, 1e-11);
   }
   /** Dunnett: cada nivel contra el testigo, p de un solo paso (single-step) exactos. */
   function dunnett(M, spec, dentro, testigo, alternativa) {

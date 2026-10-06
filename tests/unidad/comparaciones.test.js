@@ -68,4 +68,23 @@ SPT.describir('Comparaciones de medias · Dunnett, errores y reportes', () => {
     SPT.cerca(r.grupos[0].optimo.x, 125, 1e-8, 'máximo de 10 + 0.1x − 0.0004x² en x = 125');
     SPT.igual(r.grupos[0].optimo.tipo, 'maximo');
   });
+
+  SPT.caso('Dunnett exacto con p chicos en segundos: BIB de 7 tratamientos contra T1 (6 comparaciones, 8 gl, λ² = 0.5) en menos de 10 s', () => {
+    /* tests/casos/disenos/bib-siete.csv; con la bisección de tolerancia por tramo tardaba 153 s en node */
+    const t = SP.tabla.crear({
+      y: [11.6, 13.07, 13.85, 11.62, 12.18, 12.78, 11.51, 11.4, 12.67, 12.78, 12.77, 15.07, 17.84, 17.95, 15.08, 13.63, 14.37, 10.57, 14.98, 11.34, 12.57],
+      bloque: ['b1', 'b1', 'b1', 'b2', 'b2', 'b2', 'b3', 'b3', 'b3', 'b4', 'b4', 'b4', 'b5', 'b5', 'b5', 'b6', 'b6', 'b6', 'b7', 'b7', 'b7'],
+      trat: ['T1', 'T2', 'T4', 'T2', 'T3', 'T5', 'T3', 'T4', 'T6', 'T4', 'T5', 'T7', 'T5', 'T6', 'T1', 'T6', 'T7', 'T2', 'T7', 'T1', 'T3'],
+    }, { bloque: { tipo: 'factor' }, trat: { tipo: 'factor' } });
+    const t0 = Date.now();
+    const r = SP.ejecutar('comparaciones-medias', t, { diseno: 'bib', respuesta: 'y', tratamientos: ['trat'], bloque: 'bloque', comparar: ['trat'] }, { metodo: 'dunnett', testigo: 'T1' }).resultado;
+    const ms = Date.now() - t0;
+    SPT.afirmar(ms < 10000, 'tardó ' + (ms / 1000).toFixed(1) + ' s');
+    /* R 4.4.2: la misma integral doble con integrate(rel.tol = 1e-12) (dunnett_r de tests/casos/comparaciones/generar.R)
+       con las t de contrast(emmeans(lm(y ~ bloque + trat), "trat"), "trt.vs.ctrl"); error relativo como en los casos */
+    const R = { T2: 0.12750847275387789, T3: 0.0057080661641649979, T4: 0.0025717623381685483, T5: 0.00076884880948623947, T6: 9.4779401458790943e-05, T7: 1.0741429918452737e-05 };
+    const comps = r.grupos[0].comparaciones;
+    SPT.igual(comps.length, 6);
+    for (const x of comps) SPT.cerca(x.p_ajustado / R[x.nivel], 1, 1e-6, 'p de ' + x.nivel);
+  });
 });

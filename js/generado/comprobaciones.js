@@ -80,7 +80,7 @@ window.SP_COMPROBACIONES = {
    "Servicio sin conexión activo con 248 archivos guardados.",
    "Sin red: 7 análisis, reporte, 6 exportaciones y huellas del proyecto verificadas."
   ],
-  "fecha": "2026-10-05T13:53:13.366Z",
+  "fecha": "2026-10-06T04:23:58.544Z",
   "motor": "node v24.19.0"
  },
  "exportar": {
@@ -90,44 +90,44 @@ window.SP_COMPROBACIONES = {
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-10-05T06:43:38.215Z",
+  "fecha": "2026-10-06T01:33:14.882Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {
   "titulo": "El código R equivalente",
   "ok": true,
   "resumen": "99 escenarios de 65 métodos: el código R que muestra la app corre en R y da 1,626 números iguales a los de la app (tolerancia 1e-6)",
-  "fecha": "2026-10-05T06:33:06.170Z",
+  "fecha": "2026-10-06T01:31:13.095Z",
   "motor": "node v24.19.0"
  },
  "accesibilidad": {
   "titulo": "Accesibilidad (AA)",
   "ok": true,
-  "resumen": "216 revisiones de 108 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 167,490 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 1229 paradas en los 10 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
+  "resumen": "216 revisiones de 108 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 174,290 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 1229 paradas en los 10 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
   "renglones": [],
-  "fecha": "2026-10-05T19:12:18.193Z",
+  "fecha": "2026-10-06T12:46:06.877Z",
   "motor": "node v24.19.0"
  },
  "idioma": {
   "titulo": "La interfaz en inglés",
   "ok": true,
   "resumen": "6253 textos traducidos; 810 casos con los mismos números en los dos idiomas (71,550 valores); 272 resultados armados en inglés sin textos pendientes",
-  "fecha": "2026-10-05T13:51:50.674Z",
+  "fecha": "2026-10-06T01:32:30.525Z",
   "motor": "node v24.19.0"
  },
  "regresion": {
   "titulo": "Regresión de resultados y reportes",
   "ok": true,
   "resumen": "272 casos, 70474 números; resultado cambiado en 0, reporte en 0",
-  "fecha": "2026-10-05T06:40:29.501Z",
+  "fecha": "2026-10-06T01:32:34.220Z",
   "motor": "node v24.19.0"
  },
  "intro": {
   "titulo": "Secuencia de apertura",
   "ok": true,
-  "resumen": "secuencia completa hasta «Start»: 5640 ms, 328 cuadros (58 por segundo; mediana 16.7 ms, p95 16.8 ms, 1 de más de 34 ms); 1 tareas largas del hilo principal en ese lapso (la mayor, 60 ms); peso: js/intro.js + css/intro.css = 39.2 KB (sin imágenes ni fuentes)",
+  "resumen": "secuencia completa hasta «Start»: 5638 ms, 325 cuadros (58 por segundo; mediana 16.7 ms, p95 16.9 ms, 1 de más de 34 ms); 2 tareas largas del hilo principal en ese lapso (la mayor, 72 ms); peso: js/intro.js + css/intro.css = 39.2 KB (sin imágenes ni fuentes)",
   "renglones": [],
-  "fecha": "2026-10-05T06:43:24.460Z",
+  "fecha": "2026-10-06T01:32:58.511Z",
   "motor": "node v24.19.0"
  },
  "fundamentos": {
@@ -135,7 +135,7 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "78 de 78 fichas sin problemas (78 análisis); 63 ejemplos corridos en node; 1472 fórmulas convertidas a MathML",
   "renglones": [],
-  "fecha": "2026-10-05T19:14:33.086Z",
+  "fecha": "2026-10-06T03:31:26.864Z",
   "motor": "node v24.19.0"
  },
  "suite": {
@@ -143,7 +143,7 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "CorrelationPro: PENDIENTE (sin repositorio público; logo marcador); 14 de 14 enlaces responden 200",
   "renglones": [],
-  "fecha": "2026-10-05T06:44:34.057Z",
+  "fecha": "2026-10-06T03:31:28.342Z",
   "motor": "node v24.19.0"
  }
 };

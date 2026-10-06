@@ -59,8 +59,8 @@ if (AUDITOR && process.platform === 'win32') {
       "addEventListener('unhandledrejection', ev => window.__errores.push(String(ev.reason && ev.reason.message || ev.reason))), SP.app.analisis.modo = 'catalogo')";
     const prep = '(() => { try { const r = (' + t.e.prep + '); if (r && typeof r.catch === "function") r.catch(e => { window.__errorPrep = String(e && e.message || e); window.__esperando = false; }); } catch (e) { window.__errorPrep = String(e && e.message || e); window.__esperando = false; } })()';
     writeFileSync(archivo, `(${GUARDA} ? (window.__prep = 1, window.__auditT0 = 0, ${antes}, ${prep}, null) : window.__esperando ? null : ` + MEDICION);
-    execFile('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', AUDITOR, '-Url', URL_APP, '-EvalFile', archivo, '-Width', String(t.ancho), '-Port', String(puerto), '-Timeout', t.e.espera ? '180' : '120'],
-      { maxBuffer: 1 << 24, timeout: 300000 }, (err, out, errores) => ok(String(out || '') ||
+    execFile('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', AUDITOR, '-Url', URL_APP, '-EvalFile', archivo, '-Width', String(t.ancho), '-Port', String(puerto), '-Timeout', t.e.espera ? '300' : '120'],
+      { maxBuffer: 1 << 24, timeout: 420000 }, (err, out, errores) => ok(String(out || '') ||
         String(err && err.message).split('\n')[0].slice(0, 80) + ' … ' + String(errores || '').trim().split('\n').slice(-3).join(' ')));
   });
   /* una corrida sin salida legible se repite una vez (el navegador pudo tardar en abrir con el equipo cargado) */

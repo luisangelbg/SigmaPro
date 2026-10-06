@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### 0.5.1 · Dunnett exacto en segundos (5 oct 2026)
+
+- **La probabilidad exacta de Dunnett ya no se dispara con los p chicos** (`comp.dunnettProb`). La cuadratura
+  adaptativa de Gauss-Kronrod partía cada tramo hasta que *su propio* error relativo bajara de 1e-12, aun donde el
+  integrando es despreciable (las colas de un p chico), y las bisecciones se multiplicaban. Ahora el criterio es
+  global, como QUADPACK (`integrate` de R, con el que se generan las referencias): se parte el tramo de mayor error
+  hasta que la suma de los errores quede bajo 1e-12 (integral interior) y 1e-11 (exterior) del total, con 1000 tramos
+  a lo más; los p chicos conservan sus cifras relativas. En la bilateral el integrando interior es simétrico en z y
+  basta el doble de la integral en [0, 9]. Con 6 comparaciones, 8 gl y λ² = 0.5, un p pasa de 1.6 s (t = 2), 9 s
+  (t = 5) y 44 s (t = 8) a 0.2–0.4 s en node; el Dunnett de `bib-siete` contra T1, de 153 s a 2 s.
+- **Mismos resultados**: frente al cálculo anterior los p cambian a lo más en los últimos bits (4.8e-16 relativo en
+  360 combinaciones de 2 a 5 comparaciones, λ de 0.05 a 0.97 con signos mezclados, gl de 1 a ∞, una y dos colas; el
+  conjunto tardó 919 s antes y 38 s ahora); los 7 casos de Dunnett contra R siguen con la mayor diferencia escalada de 5.7e-14, y en 13 configuraciones extremas
+  (p hasta 3e-10, 12 comparaciones, gl de 2 a ∞, λ de 0.999) la versión nueva difiere de `integrate` en 6.1e-14 a lo
+  más. La huella de `tests/regresion.mjs` de `metodo-dunnett-bloques` se actualizó: sus cuatro p cambiaron en 1 o 2
+  ulp (3.3e-16 relativo), sin cambio visible en el reporte.
+- Prueba unitaria nueva: el Dunnett de `bib-siete` contra T1 tarda menos de 10 s y da los seis p de R a 1e-6
+  relativo.
+- La auditoría de accesibilidad da hasta 300 s a los escenarios del motor R (el arranque de webR en el navegador
+  sin ventana a veces pasaba de los 180 s y la medición no terminaba).
+
 ### 0.5.0 · Fundamentos y suite LABG (5 oct 2026)
 
 - **Bloque 9, Fundamentos**: una ficha por cada uno de los 78 análisis, en español y en inglés, con nueve apartados:
