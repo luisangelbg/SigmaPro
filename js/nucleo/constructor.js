@@ -48,10 +48,10 @@ SP.definir('constructor-modelos', function (SP) {
       descripcion.push(T('Modelo lineal mixto con {a} como efecto aleatorio (REML; corre en el motor R).', { a: rol.aleatorios.map(v => SP.comillas(v)).join(', ') }));
       return { metodo: 'modelo-mixto', e, op: { derecha, comoFactor, tipoSC: 3 }, formula, descripcion, avisos };
     }
-    if (rol.familia === 'gamma' && rol.aleatorios.length) return falla(T('La familia gamma con efectos aleatorios no está en SigmaPro.'), T('Quita los efectos aleatorios o elige la distribución normal.'));
     if (rol.aleatorios.length) {
-      descripcion.push(T('Modelo lineal generalizado mixto de Poisson con {a} aleatorio (corre en el motor R).', { a: rol.aleatorios.map(v => SP.comillas(v)).join(', ') }));
-      return { metodo: 'glmm', e, op: { derecha, comoFactor, familia: 'poisson', sobredispersion: 'auto', tipo: 2 }, formula, descripcion, avisos };
+      const gam = rol.familia === 'gamma', a = rol.aleatorios.map(v => SP.comillas(v)).join(', ');
+      descripcion.push(gam ? T('Modelo lineal generalizado mixto gamma con {a} aleatorio (corre en el motor R).', { a }) : T('Modelo lineal generalizado mixto de Poisson con {a} aleatorio (corre en el motor R).', { a }));
+      return { metodo: 'glmm', e, op: { derecha, comoFactor, familia: gam ? 'gamma' : 'poisson', sobredispersion: 'auto', tipo: 2 }, formula, descripcion, avisos };
     }
     descripcion.push(rol.familia === 'conteo' ? T('Modelo lineal generalizado de Poisson (conteos).') : T('Modelo lineal generalizado gamma (respuesta positiva y asimétrica).'));
     return { metodo: 'glm', e, op: { derecha, comoFactor, familia: rol.familia === 'conteo' ? 'poisson' : 'gamma', tipo: 2 }, formula, descripcion, avisos };

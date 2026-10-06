@@ -398,7 +398,11 @@ SPT.describir('Asistente y constructor de modelos', () => {
     const gm = M({ respuesta: 'insectos', factores: ['hibrido'], aleatorios: ['localidad', 'bloque'], familia: 'conteo' });
     SPT.igual(gm.metodo, 'glmm');
     SPT.igual(gm.op.derecha, 'hibrido + (1 | localidad) + (1 | bloque)');
-    SPT.afirmar(M({ respuesta: 'rend', factores: ['hibrido'], aleatorios: ['bloque'], familia: 'gamma' }).error, 'gamma mixto no existe');
+    /* gamma con un aleatorio: el GLMM gamma (Hito 4.3) */
+    const gg = M({ respuesta: 'rend', factores: ['hibrido'], aleatorios: ['bloque'], familia: 'gamma' });
+    SPT.igual(gg.metodo, 'glmm');
+    SPT.igual(gg.op.familia, 'gamma');
+    SPT.igual(gg.op.derecha, 'hibrido + (1 | bloque)');
     SPT.afirmar(M({ respuesta: 'insectos', factores: ['riego', 'hibrido'], parcelaGrande: 'riego', bloques: ['bloque'], familia: 'conteo' }).error, 'parcela grande pide el bloque aleatorio');
     for (const m of [mx, gl, gm]) SPT.afirmar(SP.metodos[m.metodo], m.metodo);
     const lec = SP.constructorModelos.interpretar('rend', 'hibrido + (1 | bloque)', info);

@@ -2,6 +2,16 @@
 
 ## Sin publicar
 
+### 0.5.2 · Arreglos encontrados al actualizar el manual (6 oct 2026)
+
+- **Explorar**: cada resumen (descriptivos, frecuencias, proporciones y bondad de ajuste) tiene en su cabecera el botón
+  «ⓘ ¿Qué es este análisis?», que abre su ficha en Fundamentos, como los análisis del bloque Análisis.
+- **Constructor de modelos**: con la distribución gamma y efectos aleatorios ya no dice «La familia gamma con efectos
+  aleatorios no está en SigmaPro»: arma el modelo lineal generalizado mixto gamma (motor R), que existe desde el
+  Hito 4.3.
+- **Inicio**: «Estado del desarrollo» cuenta la Fase 5 (Fundamentos, Suite LABG, pantalla de apertura, ilustraciones
+  del catálogo y temas de las gráficas) y la lista de hitos tiene el 5.0.
+
 ### 0.5.1 · Dunnett exacto en segundos (5 oct 2026)
 
 - **La probabilidad exacta de Dunnett ya no se dispara con los p chicos** (`comp.dunnettProb`). La cuadratura

@@ -154,6 +154,8 @@
     const ya = p && SP.app.reporte && SP.app.reporte.tiene(p);
     return `<button type="button" class="btn ${ya ? 'btn-ghost' : 'btn-secondary'} btn-sm exp-reporte" data-accion="reporte"${ya ? ' aria-pressed="true"' : ''}>${esc(ya ? T('En el reporte ✓') : T('Agregar al reporte'))}</button>`;
   };
+  /* la ficha de Fundamentos del resumen (bloque 9) */
+  const botonFicha = () => (SP.app.fundamentos ? `<button type="button" class="btn btn-ghost btn-sm exp-ficha" data-ficha="${esc(METODO[estado.tipo])}" title="${esc(T('Fundamentos: el modelo, los supuestos y los datos que necesita'))}"><span aria-hidden="true">ⓘ</span> ${esc(T('¿Qué es este análisis?'))}</button>` : '');
   function pintarResultado(rep, codigo, ms) {
     const r = $('#expResultado');
     const varios = rep.cuadros.length > 1;
@@ -163,7 +165,7 @@
     const extrasDisp = cuadro.columnasExtra || [];
     r.innerHTML =
       `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span>` +
-      `<a class="exp-a-opciones small" href="#expOpciones">${esc(T('Cambiar las opciones ↓'))}</a>${botonReporte()}</div>` +
+      `<a class="exp-a-opciones small" href="#expOpciones">${esc(T('Cambiar las opciones ↓'))}</a>${botonFicha()}${botonReporte()}</div>` +
       `<div class="callout exp-conclusion">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` +
       (varios ? `<div class="seg exp-vistas" role="group" aria-label="${esc(T('Cuadro que se muestra'))}">${rep.cuadros.map(x => `<button type="button" data-vista="${esc(x.id)}" aria-pressed="${x === cuadro}">${esc({ conteos: T('Frecuencias'), 'pct-fila': T('% por fila'), 'pct-columna': T('% por columna'), 'pct-total': T('% del total') }[x.id] || x.titulo)}</button>`).join('')}</div>` : '') +
       SP.cuadros.html(cuadro, { numero: 1, visibles: extras }) +
