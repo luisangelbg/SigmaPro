@@ -84,7 +84,7 @@
       <tr><td><b>Regresión de resultados y reportes</b></td><td>La huella de cada resultado (todos sus números) y de su reporte (cuadros, conclusiones, semáforo y notas) se compara con la guardada: un número o un texto que cambia sin querer se ve antes de publicar una versión.</td></tr>
       <tr><td><b>Secuencia de apertura</b></td><td>La pantalla de apertura (sección 1.6) aparece antes que la interfaz, termina en <span class="ui">Start</span>, se quita con Esc, respeta la preferencia de reducir el movimiento, cabe en un teléfono y corre fluida.</td></tr>
       <tr><td><b>Fundamentos de cada análisis</b></td><td>Cada análisis tiene su ficha (capítulo 9) con sus nueve apartados en español y en inglés; sus análisis relacionados, su conjunto de ejemplo y sus columnas existen en la app; el ejemplo corre con el método; y cada fórmula se convierte para mostrarse.</td></tr>
-      <tr><td><b>Enlaces y logos de la suite LABG</b></td><td>Cada app de la suite (capítulo 10) tiene su logo y sus datos, o «PENDIENTE» declarado; las reglas de sugerencia nombran apps que existen; y la página, el repositorio y el manual de cada app publicada responden. Es la única prueba que sale a internet; la app no lo hace nunca.</td></tr>
+      <tr><td><b>Enlaces y logos de la suite LABG</b></td><td>Cada app de la suite (capítulo 10) tiene su logo y sus datos, o «PENDIENTE» declarado; las reglas de sugerencia nombran apps que existen; y la página, el repositorio y el manual de cada app publicada responden. Necesita internet: revisa las páginas de las otras apps, algo que la app nunca hace.</td></tr>
     </tbody>
   </table>
 
@@ -103,7 +103,7 @@ node tests/navegador.mjs            # lo mismo en el navegador, por file://
 node tests/codigo-r.mjs             # el código R de la app da lo mismo en R
 node tests/exportar.mjs             # las exportaciones, con lectores independientes</pre>
   <p><code>motor-r.mjs</code> abre la app en el navegador y descarga el motor R, así que necesita internet; va antes de <code>correr.mjs</code>, que integra sus casos al reporte. <code>correr.mjs</code> escribe el reporte que muestra el bloque Validación y una versión para publicar, en HTML y en CSV. Las demás comprobaciones de la sección 8.4 tienen su propio programa en <code>tests/</code>: <code>idioma.mjs</code>, <code>regresion.mjs</code>, <code>intro.mjs</code>, <code>fundamentos.mjs</code>, <code>suite-enlaces.mjs</code> (con internet), <code>sin-conexion.mjs</code>, <code>rendimiento/medir.mjs</code> y <code>accesibilidad/auditar.mjs</code>.</p>
-  <p>En Windows, <code>tests/pruebas.ps1</code> busca R, node y el navegador y corre la comparación contra R, el código R equivalente, la interfaz en inglés y la prueba en el navegador; con <code>-R</code>, antes regenera las referencias, y con <code>-Completo</code> agrega las exportaciones, la privacidad, el rendimiento y la accesibilidad (unos 15 minutos).</p>
+  <p>En Windows, <code>tests/pruebas.ps1</code> busca R, node y el navegador y corre la comparación contra R, el código R equivalente, la interfaz en inglés, la regresión, las fichas, la prueba en el navegador y la secuencia de apertura. Con <code>-R</code>, antes regenera las referencias; con <code>-Completo</code> agrega las exportaciones, la privacidad, el rendimiento y la accesibilidad (unos 15 minutos), y con <code>-Red</code>, las dos que necesitan internet: el motor R y los enlaces de la suite.</p>
 </section>
 
 </body>
