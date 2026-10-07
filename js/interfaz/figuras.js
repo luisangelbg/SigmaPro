@@ -192,5 +192,5 @@
     document.addEventListener('sp:datos', repintar);
     document.addEventListener('sp:bloque', e => { if (e.detail.bloque === 6 && est.pendiente) pintar(); });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+  SP.alArrancar(iniciar);
 })();

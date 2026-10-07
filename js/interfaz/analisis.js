@@ -2474,5 +2474,5 @@
     if (SP.motorR) SP.motorR.al(s => { const el = document.querySelector('#anaResultado [data-motor-paso]'); if (el && s.paso) el.textContent = s.paso; });
     if (panel.classList.contains('active')) calcular();
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+  SP.alArrancar(iniciar);
 })();

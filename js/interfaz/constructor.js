@@ -202,5 +202,5 @@
     A().pintores.constructor = pintar;
     SP.app.constructorUI = { desde, estado: est };
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+  SP.alArrancar(iniciar);
 })();

@@ -21,7 +21,7 @@ for (let i = 0; i < args.length; i++) { if (args[i].startsWith('--')) opc[args[i
 if (!recetas.length) { console.error('Uso: node manual/herramientas/captura.mjs <receta> [--ancho 1400] [--alto 900]'); process.exit(2); }
 const ancho = opc.ancho || 1400, alto = opc.alto || 900;
 let URL_APP = pathToFileURL(join(APP, 'index.html')).href;
-const LISTO = '!!(window.SP && SP.app && SP.app.ir && SP.datosUI && SP.app.analisis && SP.app.reporte && SP.app.autoguardado && document.querySelector(".lnav-body, .labg-bar, body"))';
+const LISTO = '!!(window.SP && SP.app && SP.app.ir && SP.datosUI && SP.app.analisis && SP.app.reporte && SP.app.autoguardado && document.documentElement.hasAttribute("data-sp-listo") && document.querySelector(".lnav-body, .labg-bar, body"))';
 const AYUDAS = readFileSync(join(AQUI, 'recetas', '_ayudas.js'), 'utf8');
 
 const n = await abrir({ ancho, alto, escala: 2 });

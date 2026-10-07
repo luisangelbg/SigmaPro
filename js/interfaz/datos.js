@@ -211,5 +211,5 @@
   }
 
   SP.datosUI = { cargar, cambio, estado: () => estado, seleccionada: () => seleccionada, refrescar: remedir => { rejilla.refrescar(remedir); cambio(); } };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+  SP.alArrancar(iniciar);
 })();

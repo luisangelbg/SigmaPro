@@ -245,5 +245,5 @@
     document.addEventListener('sp:bloque', ev => { if (ev.detail.bloque === 7) pintar(); });
     pintar();
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+  SP.alArrancar(iniciar);
 })();

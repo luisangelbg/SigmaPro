@@ -29,7 +29,7 @@ const AUDITOR = [process.env.SIGMAPRO_AUDITOR, join(RAIZ, '..', 'LABG-Design', '
 const filtro = process.argv[2] || '';
 const ESC = JSON.parse(readFileSync(join(AQUI, 'escenarios.json'), 'utf8'));
 const MEDICION = readFileSync(join(AQUI, 'medicion.js'), 'utf8');
-const GUARDA = 'window.SP && SP.app && SP.app.ir && SP.datosUI && SP.app.analisis && SP.app.reporte && !window.__prep';
+const GUARDA = 'window.SP && SP.app && SP.app.ir && SP.datosUI && SP.app.analisis && SP.app.reporte && document.documentElement.hasAttribute("data-sp-listo") && !window.__prep';
 const dormir = ms => new Promise(r => setTimeout(r, ms));
 const fallas = [], avisos = [];
 let corridas = 0, textos = 0;
@@ -145,7 +145,7 @@ async function foco(ancho, tema) {
     await enviar('Emulation.setDeviceMetricsOverride', { width: ancho, height: 900, deviceScaleFactor: 1, mobile: ancho < 500 });
     await enviar('Emulation.setFocusEmulationEnabled', { enabled: true });
     await enviar('Page.navigate', { url: URL_APP });
-    for (let k = 0; k < 50; k++) { await dormir(200); if (await evaluar('!!(window.SP && SP.app && SP.app.reporte && SP.datosUI)')) break; }
+    for (let k = 0; k < 50; k++) { await dormir(200); if (await evaluar('!!(window.SP && SP.app && SP.app.reporte && SP.datosUI && document.documentElement.hasAttribute("data-sp-listo"))')) break; }
     /* datos, un análisis y un reporte, para que cada bloque tenga sus controles */
     await evaluar(`document.documentElement.setAttribute('data-theme', '${tema}'); (async () => {
       document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[0].click(); await new Promise(r => setTimeout(r, 300));

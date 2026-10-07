@@ -574,6 +574,16 @@ button.cons-chip:focus-visible { outline: 2px solid var(--primary); outline-offs
 .val-otra-cabeza { margin: 0 0 4px; display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: baseline; }
 .val-otras p.small { margin: 0; max-width: 90ch; }
 
+/* ================= arranque (hito 5.11) =================
+   Mientras la barra común se arma, la página ocupa su lugar pero no se ve (visibility, no display: no se reacomoda al
+   aparecer). La pantalla de apertura queda fuera de esta regla. */
+html.sp-arranque .topbar, html.sp-arranque main, html.sp-arranque .pie-app { visibility: hidden; }
+/* el bloque activo ocupa al menos la pantalla: lo que se dibuja después de la primera pintura (el catálogo de Fundamentos, el
+   reporte de Validación, el pie Anterior / Siguiente) no empuja el pie de la app */
+.step-panel.active { min-height: 100vh; }
+/* el pie Anterior / Siguiente se ve cuando la app terminó de cargar (antes lo empujaría el contenido que se dibuja) */
+html:not([data-sp-listo]) .step-footer { visibility: hidden; }
+
 /* ================= temas de las gráficas =================
    <html data-graficas="…"> (lo pone el selector «Tema de las gráficas»; SigmaPro es el de omisión). Cada tema cambia,
    dentro de cada .sp-grafica, las variables con que se dibujan (acento, relleno suave, rejilla, series) y algunos

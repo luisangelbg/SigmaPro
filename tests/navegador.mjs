@@ -80,7 +80,7 @@ try {
         titulo: document.title,
         bloque: (document.querySelector('.step-panel.active') || {}).id,
         filas: t ? t.querySelectorAll('tr:not(.grupo):not(.detalle)').length : 0,
-        validacion: !!window.SP_VALIDACION,
+        validacion: !!window.SP_VALIDACION && !!window.SP_VALIDACION_RESUMEN,
         navegador: !!(window.LABGNavigator && window.LABGNavigator.version),
         estudio: !!window.LABGFigureStudio || !!window.LABGFS || !!document.querySelector('[data-lfs]'),
         ancho: document.documentElement.scrollWidth, vista: innerWidth,

@@ -275,5 +275,5 @@
     document.addEventListener('sp:bloque', e => { if (e.detail.bloque === 3 && estado.pendiente) calcular(); });
     if (panel.classList.contains('active')) calcular();
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+  SP.alArrancar(iniciar);
 })();

@@ -1049,7 +1049,7 @@ SP.definir('informe', function (SP) {
 
   /** La frase del programa (va una vez, al final de los métodos); con los análisis, también el motor R si alguno lo usó. */
   function software(items) {
-    const v = typeof globalThis !== 'undefined' && globalThis.SP_VALIDACION ? globalThis.SP_VALIDACION : null;
+    const v = SP.validacion ? SP.validacion.actual() : null;
     const rv = v && v.referencias && v.referencias[0] ? (String(v.referencias[0]).match(/R version ([\d.]+)/) || [])[1] : '';
     const casos = v && v.resumen ? v.resumen.casos : null;
     const motor = (items || []).map(it => it && it.r && it.r.versiones).find(x => x && x.R);

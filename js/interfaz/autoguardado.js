@@ -200,5 +200,5 @@
   }
 
   SP.app.autoguardado = { guardar: () => { est.sucio = true; return guardar(); }, revisar, recuperar, descartar, borrar, poner, activo, estado: est };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+  SP.alArrancar(iniciar);
 })();

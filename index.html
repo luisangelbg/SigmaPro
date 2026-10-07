@@ -14,6 +14,33 @@
 <link rel="stylesheet" href="css/sigma.css">
 <link rel="stylesheet" href="css/intro.css">
 <link rel="stylesheet" href="css/labg-suggest.css">
+<!-- la hoja de la barra común desde el principio (el módulo no la vuelve a cargar si ya está: data-lnav-css) -->
+<link rel="stylesheet" href="css/labg-navigator.css" data-lnav-css>
+<script>/* el arranque (hito 5.11), en dos tiempos:
+   1. La página se muestra cuando la barra común termina de armarse, para que nada se mueva después (la pantalla de
+      apertura no se oculta). El reporte de Validación se dibuja cuando llega (y su índice de secciones aparece
+      entonces): con un enlace directo a ese bloque se espera al reporte (evento sp:validacion).
+   2. Ya mostrada la página, se piden los guiones de la app (evento sp:cargar, que escucha el cargador al final del
+      <body>): así no le quitan red a lo que se ve primero.
+   Si la barra común falla o tarda más de 3 s, se carga la app y se muestra la página igual. */
+(function () {
+  var d = document, raiz = d.documentElement;
+  raiz.classList.add('sp-arranque');
+  var m = /^#b(\d+)/.exec(location.hash), conApp = !!(m && m[1] === '8');
+  var mostrar = function () { raiz.classList.remove('sp-arranque'); };
+  var pedido = false, cargar = function () { if (!pedido) { pedido = true; d.dispatchEvent(new Event('sp:cargar')); } };
+  var despues = function () { requestAnimationFrame(function () { requestAnimationFrame(mostrar); }); };
+  d.addEventListener(conApp ? 'sp:validacion' : 'sp:listo', despues);
+  d.addEventListener('DOMContentLoaded', function () {
+    var nav = window.LABGNavigator;
+    try {
+      if (nav && nav.on) nav.on('ready', function () { requestAnimationFrame(function () { if (!conApp) mostrar(); setTimeout(cargar, 0); }); });
+      else { mostrar(); cargar(); }
+    } catch (e) { mostrar(); cargar(); }
+    setTimeout(function () { cargar(); if (!conApp) mostrar(); }, 3000);
+    setTimeout(mostrar, 8000);
+  });
+})();</script>
 <link rel="stylesheet" href="css/fundamentos.css">
 </head>
 <body>
@@ -40,7 +67,7 @@
       </div>
     </div>
     <nav class="stepper" id="stepper" aria-label="Bloques">
-      <button type="button" class="step-btn" data-step="1"><span class="step-num">1</span>Inicio</button>
+      <button type="button" class="step-btn active" data-step="1"><span class="step-num">1</span>Inicio</button>
       <button type="button" class="step-btn" data-step="2"><span class="step-num">2</span>Datos</button>
       <button type="button" class="step-btn" data-step="3"><span class="step-num">3</span>Explorar</button>
       <button type="button" class="step-btn" data-step="4"><span class="step-num">4</span>Análisis</button>
@@ -57,7 +84,7 @@
 <main id="main" tabindex="-1">
 
 <!-- ======================= 1 · INICIO ======================= -->
-<section class="step-panel" id="panel-1" aria-labelledby="t1">
+<section class="step-panel active" id="panel-1" aria-labelledby="t1">
   <div class="rec-caja" data-recuperar hidden></div>
   <div class="hero">
     <div>
@@ -348,6 +375,7 @@
       <p>Cada resultado del programa se compara contra R con datos publicados o clásicos. Un caso aprueba si |SigmaPro − R| ≤ 10⁻⁶ · máx(1, |R|) en cada número.</p></div>
     <span class="pill gris" id="valFecha"></span>
   </div>
+  <p class="small muted" id="valCargando" role="status" hidden>Cargando el reporte de validación…</p>
   <div id="valVacio" class="soon-box" hidden>
     <h3>Aún no hay reporte de validación</h3>
     <p>Se genera al correr las pruebas: <code>tests/pruebas.ps1</code> (o <code>node tests/correr.mjs</code>).</p>
@@ -414,7 +442,12 @@
   <span>Todo se calcula en tu navegador.</span>
 </footer>
 
-<script src="js/labg-core.js"></script>
+<!-- La app en dos tiempos (hito 5.11): primero se pinta la página y se arma la barra común (labg-navigator.js, al
+     final), y enseguida se cargan estos guiones, en este orden, sin detener la primera pintura. Un <template> no ejecuta
+     lo que contiene: el cargador de abajo crea cada <script> con async = false, que respeta el orden, y al terminar el
+     último marca <html data-sp-listo> y avisa con el evento sp:listo. Siguen nombrados aquí con su src para el servicio
+     sin conexión (sw.js) y para las pruebas que leen la lista. -->
+<template id="spGuiones">
 <!-- núcleo (sin DOM; lo mismo corre en hilos de trabajo y en las pruebas de node) -->
 <script src="js/nucleo/sp.js"></script>
 <script src="js/nucleo/numerico.js"></script>
@@ -490,7 +523,7 @@
 <script src="js/exportar/pdf.js"></script>
 <script src="js/exportar/proyecto.js"></script>
 <!-- generado por tests/correr.mjs -->
-<script src="js/generado/validacion.js"></script>
+<script src="js/generado/validacion-resumen.js"></script>
 <script src="js/generado/comprobaciones.js"></script>
 <!-- interfaz -->
 <script src="js/interfaz/idioma.js"></script>
@@ -521,7 +554,33 @@
 <script src="js/interfaz/fundamentos.js"></script>
 <script src="js/interfaz/suite.js"></script>
 <script src="js/labg-figedit.js" data-key="sigmapro:figedit" data-panes="figure.sp-grafica" data-title="figcaption"></script>
-<script src="js/labg-figure-studio.js" defer></script>
+<script src="js/labg-figure-studio.js"></script>
+</template>
+<script>/* el cargador de los guiones de la app */ (function () {
+  /* un enlace directo a otro bloque (#b9, #b8/seccion…) se muestra desde la primera pintura; la app lo confirma al cargar */
+  var m = /^#b(\d+)/.exec(location.hash), p = m && document.getElementById('panel-' + m[1]);
+  if (p) { var ps = document.querySelectorAll('.step-panel'), bs = document.querySelectorAll('.stepper .step-btn[data-step]');
+    for (var j = 0; j < ps.length; j++) ps[j].classList.toggle('active', ps[j] === p);
+    for (var q = 0; q < bs.length; q++) bs[q].classList.toggle('active', bs[q].getAttribute('data-step') === m[1]); }
+  /* los guiones se piden cuando la página ya se ve, para no quitarle red a lo que se muestra primero */
+  var cargar = function () {
+  var t = document.getElementById('spGuiones'), lista = t ? t.content.querySelectorAll('script') : [];
+  for (var i = 0; i < lista.length; i++) {
+    var o = lista[i], s = document.createElement('script');
+    for (var k = 0; k < o.attributes.length; k++) s.setAttribute(o.attributes[k].name, o.attributes[k].value);
+    s.async = false;
+    if (i === lista.length - 1) s.onload = function () { document.documentElement.setAttribute('data-sp-listo', ''); document.dispatchEvent(new Event('sp:listo')); };
+    document.body.appendChild(s);
+  }
+  };
+  /* la señal la da el arranque de la cabecera, cuando la página ya se ve */
+  document.addEventListener('sp:cargar', cargar);
+})();</script>
+<!-- la configuración de la barra común: Fundamentos no lleva el índice de secciones de la derecha (cada ficha trae el
+     suyo, «En esta ficha», y el catálogo se filtra por familia); así el catálogo aparece sin reacomodar la página -->
+<script>window.LABG_NAV = { noToc: ['9'] };</script>
+<!-- antes que la barra común: los botones del encabezado ya están cuando la página se muestra -->
+<script src="js/labg-core.js" defer></script>
 <script src="js/labg-navigator.js" defer></script>
 </body>
 </html>

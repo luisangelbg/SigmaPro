@@ -325,9 +325,12 @@
       if (t.dataset.ficha) { e.preventDefault(); abrir(t.dataset.ficha); }
       else if (t.dataset.abrirMetodo) { e.preventDefault(); abrirMetodo(t.dataset.abrirMetodo, false); }
     });
-    pintar();
+    /* el catálogo (unos 1500 elementos) se dibuja la primera vez que se abre el bloque, no al arrancar la app */
+    const panel = $('#panel-9');
+    if (panel && panel.classList.contains('active')) pintar();
+    document.addEventListener('sp:bloque', e => { if (e.detail.bloque === 9 && !raiz.firstElementChild) pintar(); });
   }
   SP.app = SP.app || {};
   SP.app.fundamentos = { abrir, cargar, pintar, estado: est, fichas };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+  SP.alArrancar(iniciar);
 })();

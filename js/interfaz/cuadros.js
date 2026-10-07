@@ -102,8 +102,14 @@
      demás no agregan paradas. Se revisa cuando cambia la página (resultados, fichas, bloques) y el ancho. */
   const DESPLAZABLES = '.tabla-wrap, .fun-modelo';
   function desplazables() {
-    document.querySelectorAll(DESPLAZABLES).forEach(el => {
-      const ancho = el.offsetParent !== null && el.scrollWidth > el.clientWidth + 1;
+    /* primero se mide todo y después se escribe (medir y escribir alternados obliga al navegador a recalcular la página
+       en cada cuadro); los de un bloque que no se ve no se miden */
+    const medidas = [...document.querySelectorAll(DESPLAZABLES)].map(el => {
+      const oculto = !!el.closest('.step-panel:not(.active), [hidden]');
+      return { el, ancho: !oculto && el.offsetParent !== null && el.scrollWidth > el.clientWidth + 1, oculto };
+    });
+    medidas.forEach(({ el, ancho, oculto }) => {
+      if (oculto && !el.dataset.desplazable) return;
       if (ancho && !el.hasAttribute('tabindex')) {
         const cap = el.querySelector('caption');
         el.tabIndex = 0; el.setAttribute('role', 'region'); el.dataset.desplazable = '1';

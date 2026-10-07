@@ -89,7 +89,7 @@ try {
   await enviar('Runtime.enable'); await enviar('Page.enable');
   await enviar('Emulation.setDeviceMetricsOverride', { width: 1366, height: 900, deviceScaleFactor: 1, mobile: false });
   await enviar('Page.navigate', { url: pathToFileURL(join(RAIZ, 'index.html')).href + '#b5' });
-  for (let k = 0; k < 50; k++) { await dormir(200); if (await evaluar('!!(window.SP && SP.app && SP.app.exportar && SP.datosUI)')) break; }
+  for (let k = 0; k < 50; k++) { await dormir(200); if (await evaluar('!!(window.SP && SP.app && SP.app.exportar && SP.datosUI && document.documentElement.hasAttribute("data-sp-listo"))')) break; }
   const t0 = Date.now();
   const { salida, esperado } = JSON.parse(await evaluar(PAGINA));
   const tPagina = Date.now() - t0;
@@ -111,7 +111,7 @@ try {
      figuras recibe de SigmaPro un PDF vectorial de sus gráficas */
   await enviar('Page.navigate', { url: 'about:blank' }); await dormir(300);
   await enviar('Page.navigate', { url: pathToFileURL(join(RAIZ, 'index.html')).href + '#b7' });
-  for (let k = 0; k < 50; k++) { await dormir(200); if (await evaluar('!!(window.SP && SP.app && SP.app.exportar && SP.datosUI)')) break; }
+  for (let k = 0; k < 50; k++) { await dormir(200); if (await evaluar('!!(window.SP && SP.app && SP.app.exportar && SP.datosUI && document.documentElement.hasAttribute("data-sp-listo"))')) break; }
   const reabierto = JSON.parse(await evaluar(`(async () => {
     const bin = atob(${JSON.stringify(salida.proyecto.b64)}), u = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
@@ -140,7 +140,7 @@ try {
   await evaluar('SP.app.autoguardado.guardar().then(() => true)');
   await enviar('Page.navigate', { url: 'about:blank' }); await dormir(300);
   await enviar('Page.navigate', { url: pathToFileURL(join(RAIZ, 'index.html')).href + '#b1' });
-  for (let k = 0; k < 50; k++) { await dormir(200); if (await evaluar('!!(window.SP && SP.app && SP.app.autoguardado && SP.app.autoguardado.estado.encontrado)')) break; }
+  for (let k = 0; k < 50; k++) { await dormir(200); if (await evaluar('!!(window.SP && SP.app && SP.app.autoguardado && SP.app.autoguardado.estado.encontrado && document.documentElement.hasAttribute("data-sp-listo"))')) break; }
   const recuperado = JSON.parse(await evaluar(`(async () => {
     const espera = ms => new Promise(r => setTimeout(r, ms));
     const leerBD = k => new Promise(ok => { const r = indexedDB.open('sigmapro'); r.onerror = () => ok('error'); r.onsuccess = () => { const g = r.result.transaction('trabajo').objectStore('trabajo').get(k); g.onsuccess = () => { ok(g.result === undefined ? null : g.result); r.result.close(); }; }; });

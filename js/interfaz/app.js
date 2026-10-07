@@ -88,6 +88,7 @@
     ['hecho', '4.4', T('Asistente: parcelas divididas desde los datos; cierre de los cálculos (0.4.0)')],
     ['hecho', '4.5', T('Interfaz en inglés')],
     ['hecho', '5.0', T('Fundamentos de los 78 análisis, Suite LABG, pantalla de apertura, ilustraciones del catálogo y temas de las gráficas')],
+    ['hecho', '5.11', T('La app abre rápido: primero la página y la barra de bloques, después el resto; el reporte de validación, al abrir su bloque')],
     ['', '1.0', T('Publicación: revisión del nombre, repositorio y DOI (versión 1.0.0)')],
   ];
   function hitos() {
@@ -153,6 +154,5 @@
     if (document.readyState === 'complete') registrar(); else window.addEventListener('load', registrar);
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
-  else iniciar();
+  SP.alArrancar(iniciar);
 })();

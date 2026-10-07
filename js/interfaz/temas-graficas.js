@@ -28,6 +28,6 @@
   document.addEventListener('change', e => { if (e.target && e.target.matches && e.target.matches('select[data-graf-tema]')) poner(e.target.value); });
   /* los selectores escritos en index.html arrancan con el tema guardado */
   const sincronizar = () => document.querySelectorAll('select[data-graf-tema]').forEach(s => { s.value = actual(); });
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sincronizar); else sincronizar();
+  SP.alArrancar(sincronizar);
   SP.temasGraficas = { TEMAS, actual, poner, selector };
 })();

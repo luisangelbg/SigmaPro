@@ -54,7 +54,7 @@ try {
   await enviar('Runtime.enable'); await enviar('Page.enable');
   await enviar('Emulation.setDeviceMetricsOverride', { width: 1366, height: 900, deviceScaleFactor: 1, mobile: false });
   await enviar('Page.navigate', { url: pathToFileURL(join(RAIZ, 'index.html')).href + '#b1' });
-  for (let k = 0; k < 50; k++) { await dormir(200); if (await evaluar('!!(window.SP && SP.app && SP.app.exportar && SP.datosUI)')) break; }
+  for (let k = 0; k < 50; k++) { await dormir(200); if (await evaluar('!!(window.SP && SP.app && SP.app.exportar && SP.datosUI && document.documentElement.hasAttribute("data-sp-listo"))')) break; }
   const t0 = Date.now();
   const solo = (process.argv.find(a => a.startsWith('--solo=')) || '').slice(7);
   if (solo) await evaluar('window.__soloGrupo = ' + JSON.stringify(solo));

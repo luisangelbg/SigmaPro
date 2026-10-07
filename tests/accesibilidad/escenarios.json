@@ -144,7 +144,7 @@
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(5)"
  },
  "val-8": {
-  "prep": "SP.app.ir(8), document.querySelectorAll('#panel-8 details').forEach(d => d.open = true)"
+  "prep": "(async () => { window.__esperando = true; SP.app.ir(8); await SP.app.validacion.listo(); document.querySelectorAll('#panel-8 details').forEach(d => d.open = true); window.__esperando = false; })()"
  },
  "mixto-tarjeta": {
   "prep": "(function () { try { localStorage.removeItem('sigmapro.motorR.usado'); } catch (e) {} document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[0].click(); SP.app.ir(4); SP.app.analisis.motorAceptado = false; SP.app.analisis.usar('modelo-mixto', { respuesta: 'rend' }, { derecha: 'hibrido * dosis + (1 | bloque)', comoFactor: ['dosis'] }); })()"

@@ -10,7 +10,7 @@
 //    se corren en el navegador con tests/motor-r.mjs: aquí se toma su último resultado (tests/generado/motor-r.json)
 //    solo si el caso no cambió desde entonces; si no, queda sin aprobar.
 // 5. Escribe: tests/generado/casos.js (los casos para la página de pruebas),
-//    js/generado/validacion.js (el reporte que muestra la app),
+//    js/generado/validacion.js (el reporte que muestra la app) y validacion-resumen.js (lo que la app lee al abrir),
 //    tests/reporte-validacion.html y tests/reporte-validacion.csv.
 // Sale con código 1 si algo falla.
 
@@ -161,6 +161,13 @@ if (opt.escribir && !opt.solo) {
   const cab = '/* Generado por tests/correr.mjs — no editar a mano. */\n';
   escribirSiCambia(join(TESTS, 'generado', 'casos.js'), cab + 'window.SP_CASOS = ' + JSON.stringify(casos) + ';\n');
   escribirSiCambia(join(RAIZ, 'js', 'generado', 'validacion.js'), cab + 'window.SP_VALIDACION = ' + JSON.stringify(V, null, 1) + ';\n', quitarFecha);
+  /* lo que la app necesita al abrir (la regla de liberación, los detalles técnicos y el párrafo de software): el resumen
+     y, por cada función o método, cuántos casos tiene y cuántos aprobaron. El reporte completo pesa unos 700 KB y solo
+     lo usa el bloque Validación, que lo carga al abrirse. */
+  const objetivos = {};
+  for (const c of V.casos) { if (!c.objetivo) continue; const k = c.objetivo.tipo + ':' + c.objetivo.nombre, o = objetivos[k] || (objetivos[k] = [0, 0]); o[0]++; if (c.aprobado) o[1]++; }
+  const VR = { version: V.version, generado: V.generado, referencias: V.referencias, resumen: V.resumen, objetivos };
+  escribirSiCambia(join(RAIZ, 'js', 'generado', 'validacion-resumen.js'), cab + 'window.SP_VALIDACION_RESUMEN = ' + JSON.stringify(VR, null, 1) + ';\n', quitarFecha);
   escribirSiCambia(join(TESTS, 'reporte-validacion.html'), reporteHTML(V), quitarFecha);
   escribirSiCambia(join(TESTS, 'reporte-validacion.csv'), reporteCSV(V), quitarFecha);
 }

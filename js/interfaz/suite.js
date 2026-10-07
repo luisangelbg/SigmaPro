@@ -146,5 +146,5 @@
   }
   SP.app = SP.app || {};
   SP.app.suite = { franjaMetodo, franjaFamilia, franjaDatos, tarjetasSuite, cita, enviar };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+  SP.alArrancar(iniciar);
 })();

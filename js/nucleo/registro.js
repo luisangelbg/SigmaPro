@@ -161,15 +161,33 @@ SP.definir('registro', function (SP) {
     return SP.ejecutar(id, SP.tabla.dePlano(plano), entradas, opciones).resultado;
   };
 
+  /* La validación que hay en la página: el reporte completo (SP_VALIDACION, que el bloque Validación carga al abrirse)
+     o el resumen que se carga con la app (SP_VALIDACION_RESUMEN: el resumen y, por función o método, [casos, aprobados]). */
+  const global = () => (typeof globalThis !== 'undefined' ? globalThis : {});
+  function conteo(v, nombre, tipo) {
+    let casos = 0, aprobados = 0;
+    if (v && Array.isArray(v.casos)) {
+      for (const c of v.casos) if (c.objetivo && c.objetivo.nombre === nombre && (!tipo || c.objetivo.tipo === tipo)) { casos++; if (c.aprobado) aprobados++; }
+    } else if (v && v.objetivos) {
+      for (const [k, x] of Object.entries(v.objetivos)) { const i = k.indexOf(':'); if (k.slice(i + 1) === nombre && (!tipo || k.slice(0, i) === tipo)) { casos += x[0]; aprobados += x[1]; } }
+    }
+    return { casos, aprobados };
+  }
+  SP.validacion = {
+    /** El reporte completo si ya se cargó; si no, el resumen; null si no hay ninguno. */
+    actual: () => global().SP_VALIDACION || global().SP_VALIDACION_RESUMEN || null,
+    /** Casos de una función o método (de cualquier tipo, o solo del tipo dado) y cuántos aprobaron. */
+    casosDe: (nombre, tipo) => conteo(SP.validacion.actual(), nombre, tipo),
+  };
+
   /**
    * ¿El método tiene casos de validación y aprobaron todos?
    * @param {string} id
-   * @param {object} [validacion]  el reporte generado (por omisión, SP_VALIDACION de la página)
+   * @param {object} [validacion]  el reporte generado o su resumen (por omisión, el de la página)
    */
   SP.metodoDisponible = function (id, validacion) {
-    const v = validacion || (typeof globalThis !== 'undefined' ? globalThis.SP_VALIDACION : null);
-    if (!v || !Array.isArray(v.casos)) return false;
-    const suyos = v.casos.filter(c => c.objetivo && c.objetivo.tipo === 'metodo' && c.objetivo.nombre === id);
-    return suyos.length > 0 && suyos.every(c => c.aprobado);
+    const v = validacion !== undefined ? validacion : SP.validacion.actual();
+    const k = conteo(v, id, 'metodo');
+    return k.casos > 0 && k.aprobados === k.casos;
   };
 });

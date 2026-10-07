@@ -2,6 +2,50 @@
 
 ## Sin publicar
 
+### 0.5.4 · Hito 5.11: la app abre rápido (6 oct 2026)
+
+Lighthouse, sin paso de compilación y sin tocar los módulos compartidos. Antes era la 0.5.3 y ahora la 0.5.4; los
+números son el puntaje de rendimiento (0–100):
+
+| Página | Escritorio, antes → ahora | Teléfono, antes → ahora |
+| --- | --- | --- |
+| Inicio | 39 → 98 (LCP 4.9 → 0.8 s, CLS 0.32 → 0) | 15 → 69 (LCP 26.6 → 3.5 s) |
+| Fundamentos (#b9) | 28 → 97 (CLS 0.58 → 0) | — → 70 |
+| Suite LABG (#b10) | — → 96 | — → 76 |
+| Validación (#b8) | — → 66 | — → 56 |
+
+Accesibilidad 99–100, buenas prácticas y SEO 100 en todas.
+
+- **La página bajó de 23 928 a 1 545 elementos al abrir.**
+  - El reporte de validación completo (`js/generado/validacion.js`, 700 KB, 20 935 elementos en su cuadro) se carga
+    al abrir el bloque Validación. Al arrancar basta `validacion-resumen.js` (8 KB): el resumen y, por función o
+    método, sus casos y cuántos aprobaron. `tests/correr.mjs` escribe los dos.
+  - La regla de liberación, los detalles técnicos y el párrafo de software usan `SP.validacion` (el completo si ya
+    está; si no, el resumen).
+  - El catálogo de Fundamentos se dibuja al abrir su bloque.
+- **La app se carga en dos tiempos.**
+  - Primero se pinta la página y se arma la barra común. Inicio, o el bloque del enlace directo, es visible desde el
+    HTML.
+  - Ya mostrada la página, se piden los guiones de la app, en el mismo orden. Siguen nombrados en `index.html`, dentro
+    de un `<template>`, para el servicio sin conexión y para las pruebas. El cargador crea cada `<script>` con
+    `async = false`.
+  - La página se oculta (`visibility`) hasta que la barra común está armada, para que nada se mueva. Si la barra común
+    falla o tarda más de 3 s, se muestra igual.
+  - Al terminar el último guion, `<html data-sp-listo>` y el evento `sp:listo`. Los módulos de la interfaz arrancan
+    entonces con `SP.alArrancar` (en el mismo orden que antes en `DOMContentLoaded`), y las pruebas y las capturas
+    esperan esa marca.
+  - Con un enlace directo a Validación, la página se muestra cuando llega su reporte (evento `sp:validacion`), para
+    que su índice de secciones no reacomode la página. Por eso esa página puntúa menos.
+- **Sin desplazamientos.**
+  - La hoja de la barra común se carga desde el principio y `labg-core.js` corre antes que la barra: los botones del
+    encabezado ya están.
+  - El bloque activo ocupa al menos la pantalla, y el pie Anterior / Siguiente aparece con la app.
+  - Fundamentos no lleva el índice de secciones de la derecha (`LABG_NAV.noToc`), porque cada ficha trae el suyo.
+- **Cuadros desplazables** (`SP.cuadros.desplazables`): miden solo lo visible, y primero miden y después escriben. Al
+  arrancar gastaban 358 ms obligando a recalcular la página.
+- **Pendiente en el teléfono:** el tiempo bloqueado (340–500 ms) viene de ejecutar unos 3 MB de JavaScript. Bajarlo
+  pide cargar por bloque lo que solo usa un bloque.
+
 ### 0.5.3 · Segundo lote de arreglos hallados en el manual (6 oct 2026)
 
 - **Errores corregidos**:

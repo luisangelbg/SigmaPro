@@ -119,5 +119,17 @@
     return String(Number(x.toPrecision(4)));
   }
 
-  SP.ui = { dialogo, menu, esc, num };
+  /** Carga un guion de la app una sola vez y avisa cuando está listo (una promesa por archivo). */
+  const cargados = new Map();
+  function cargarScript(src) {
+    if (!cargados.has(src)) cargados.set(src, new Promise((ok, mal) => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = () => ok();
+      s.onerror = () => { cargados.delete(src); s.remove(); mal(new Error(T('No se pudo cargar {f}.', { f: src }))); };
+      document.head.appendChild(s);
+    }));
+    return cargados.get(src);
+  }
+  SP.ui = { dialogo, menu, esc, num, cargarScript };
 })();

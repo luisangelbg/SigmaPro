@@ -200,7 +200,7 @@ try {
 
   /* 7. la presentación en bucle sale con cualquier tecla */
   await abrir('#b1');
-  for (let k = 0; k < 100 && !(await evaluar('!!(window.SP && SP.app && window.SigmaIntro)')); k++) await dormir(100);
+  for (let k = 0; k < 100 && !(await evaluar('!!(window.SP && SP.app && window.SigmaIntro && document.documentElement.hasAttribute("data-sp-listo"))')); k++) await dormir(100);
   await evaluar(`SigmaIntro.play({ mode: 'loop' })`);
   await dormir(600);
   ok(await evaluar(`(document.getElementById('sigmaIntro') || {}).dataset?.modo === 'loop'`), 'el modo de presentación no se abrió');

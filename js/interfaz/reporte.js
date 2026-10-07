@@ -146,8 +146,7 @@
   const describir = o => Object.entries(o || {}).filter(([, v]) => v !== undefined && v !== '' && !(Array.isArray(v) && !v.length))
     .map(([k, v]) => k + ' = ' + (Array.isArray(v) ? v.join(', ') : typeof v === 'object' ? JSON.stringify(v) : v)).join('; ') || '—';
   function detalles(it, res, t) {
-    const v = typeof window !== 'undefined' && window.SP_VALIDACION ? window.SP_VALIDACION : null;
-    const casos = v ? v.casos.filter(c => c.objetivo && (c.objetivo.nombre === it.metodo || (c.objetivo.tipo === 'metodo' && c.objetivo.nombre === it.metodo))).length : 0;
+    const v = SP.validacion.actual(), casos = SP.validacion.casosDe(it.metodo).casos;
     const d = SP.app.datos, filtro = d && d.filtro;
     return [
       [T('Método'), res.ficha.nombre + ' (' + it.metodo + ')'],
@@ -289,5 +288,5 @@
     document.addEventListener('sp:bloque', e => { if (e.detail.bloque === 5 && est.pendiente) pintar(); });
     if (panel.classList.contains('active')) pintar();
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+  SP.alArrancar(iniciar);
 })();

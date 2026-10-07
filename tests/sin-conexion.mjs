@@ -65,7 +65,7 @@ const esMotorR = p => MOTOR_R.test(p.url) && (p.metodo === 'GET' || p.metodo ===
 /* el descargador de webR lee el encabezado Content-Encoding de su propio servidor, que no lo expone: el navegador lo
    anota en su registro; no viene de SigmaPro ni afecta el cálculo */
 const ESPERADO = /Refused to get unsafe header "Content-Encoding"/;
-const esperarApp = async () => { for (let k = 0; k < 75; k++) { await dormir(200); try { if (await evaluar('!!(window.SP && SP.app && SP.app.exportar && SP.datosUI && document.readyState === "complete")')) return true; } catch { /* recargando */ } } return false; };
+const esperarApp = async () => { for (let k = 0; k < 75; k++) { await dormir(200); try { if (await evaluar('!!(window.SP && SP.app && SP.app.exportar && SP.datosUI && document.readyState === "complete" && document.documentElement.hasAttribute("data-sp-listo"))')) return true; } catch { /* recargando */ } } return false; };
 
 /* el uso: datos, análisis de cada familia (y el modelo mixto del motor R, si se pide), reporte, figuras y exportaciones */
 const USO = conMotorR => `(async () => {

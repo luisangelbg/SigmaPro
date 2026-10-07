@@ -118,8 +118,26 @@
     }).join('');
   }
 
+  /* el reporte completo (js/generado/validacion.js, unos 700 KB) se carga la primera vez que se abre el bloque; al
+     arrancar, la marca del bloque en la barra sale del resumen que carga la app */
+  let listo = null;
+  function cargar() {
+    if (!listo) {
+      const vacio = $('#valVacio'), estado = $('#valCargando');
+      if (estado) estado.hidden = false;
+      listo = (window.SP_VALIDACION ? Promise.resolve() : SP.ui.cargarScript('js/generado/validacion.js'))
+        .then(() => { if (estado) estado.hidden = true; pintar(); document.dispatchEvent(new Event('sp:validacion')); })
+        .catch(() => { if (estado) estado.hidden = true; if (vacio) vacio.hidden = false; listo = null; });
+    }
+    return listo;
+  }
+  SP.app.validacion = { listo: cargar };
   function iniciar() {
-    pintar();
+    const VR = window.SP_VALIDACION_RESUMEN;
+    if (VR && VR.resumen && window.LABG) window.LABG.markStep(8, VR.resumen.fallidos ? 'warn' : 'done');
+    const panel = $('#panel-8');
+    if (panel && panel.classList.contains('active')) cargar();
+    document.addEventListener('sp:bloque', e => { if (e.detail.bloque === 8) cargar(); });
     const cont = $('#valContenido');
     if (!cont) return;
     cont.addEventListener('click', e => {
@@ -142,6 +160,5 @@
     if (b) b.addEventListener('input', () => { busqueda = b.value; pintarTabla(window.SP_VALIDACION); });
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
-  else iniciar();
+  SP.alArrancar(iniciar);
 })();

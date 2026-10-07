@@ -1,6 +1,6 @@
 {
  "generado": "node tools/inventario/inventario.mjs",
- "version": "0.5.3",
+ "version": "0.5.4",
  "metodos": [
   {
    "id": "bondad-ajuste",

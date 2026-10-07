@@ -23,7 +23,18 @@
   'use strict';
 
   const SP = raiz.SP || (raiz.SP = {});
-  SP.VERSION = '0.5.3';
+  SP.VERSION = '0.5.4';
+  /* El arranque de los módulos de la interfaz. index.html carga los guiones en dos tiempos (hito 5.11): primero la
+     página y la barra común, después los de la app, que llegan cuando la página ya se leyó. Cada módulo arranca cuando
+     están todos (evento sp:listo, en el orden de carga, como antes en DOMContentLoaded); en una página que los carga
+     como siempre, al terminar de leerla. En un hilo de trabajo o en node no hace nada. */
+  SP.alArrancar = function (fn) {
+    if (typeof document === 'undefined') return;
+    if (document.documentElement.hasAttribute('data-sp-listo')) fn();
+    else if (document.getElementById('spGuiones')) document.addEventListener('sp:listo', fn, { once: true });
+    else if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  };
   SP._base = sigmaproBase;            // para reconstruir el núcleo en un hilo
   SP.fabricas = SP.fabricas || [];    // [[nombre, fábrica]] en orden de carga
 
