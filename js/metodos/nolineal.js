@@ -24,9 +24,9 @@ SP.definir('metodos-nolineal', function (SP) {
 
   const MODELOS_DE = { 'curva-crecimiento': ['logistico', 'gompertz', 'weibull'], 'dosis-respuesta': ['ll4', 'll3', 'bc5', 'bc4'],
     'respuesta-meseta': ['lineal-meseta', 'cuadratico-meseta', 'mitscherlich', 'mm2', 'mm3'] };
-  const NOMBRE = { logistico: T('logístico'), gompertz: 'Gompertz', weibull: 'Weibull', ll4: T('log-logístico de 4 parámetros'), ll3: T('log-logístico de 3 parámetros'),
+  const NOMBRE = SP.T.perezoso(() => ({ logistico: T('logístico'), gompertz: 'Gompertz', weibull: 'Weibull', ll4: T('log-logístico de 4 parámetros'), ll3: T('log-logístico de 3 parámetros'),
     bc5: T('Brain-Cousens de 5 parámetros (hormesis)'), bc4: T('Brain-Cousens de 4 parámetros (hormesis)'),
-    'lineal-meseta': T('lineal-meseta'), 'cuadratico-meseta': T('cuadrático-meseta'), mitscherlich: 'Mitscherlich', mm2: 'Michaelis-Menten', mm3: T('Michaelis-Menten con respuesta sin dosis') };
+    'lineal-meseta': T('lineal-meseta'), 'cuadratico-meseta': T('cuadrático-meseta'), mitscherlich: 'Mitscherlich', mm2: 'Michaelis-Menten', mm3: T('Michaelis-Menten con respuesta sin dosis') }));
   const ECUACION = { logistico: 'y = Asym / (1 + exp((xmid − x) / scal))', gompertz: 'y = Asym · exp(−b2 · b3^x)', weibull: 'y = Asym − Drop · exp(−exp(lrc) · x^pwr)',
     ll4: 'y = c + (d − c) / (1 + exp(b · (log x − log e)))', ll3: 'y = d / (1 + exp(b · (log x − log e)))', mitscherlich: 'y = a − b · exp(−c · x)',
     bc5: 'y = c + (d − c + f·x) / (1 + exp(b · (log x − log e)))', bc4: 'y = (d + f·x) / (1 + exp(b · (log x − log e)))',
@@ -37,25 +37,25 @@ SP.definir('metodos-nolineal', function (SP) {
     bc5: 'c + (d - c + f * x) / (1 + exp(b * (log(x) - log(e))))', bc4: '(d + f * x) / (1 + exp(b * (log(x) - log(e))))',
     mm2: 'd * x / (e + x)', mm3: 'c + (d - c) * x / (e + x)',
     'cuadratico-meseta': 'ifelse(x < -b / (2 * c), a + b * x + c * x^2, a - b^2 / (4 * c))', 'lineal-meseta': 'a + b * pmin(x, x0)' };
-  const SENTIDO = {
+  const SENTIDO = SP.T.perezoso(() => ({
     Asym: T('asíntota (valor máximo)'), xmid: T('x del punto de inflexión'), scal: T('escala (menor = subida más rápida)'), b2: T('desplazamiento'), b3: T('tasa (0 < b3 < 1)'),
     Drop: T('caída desde la asíntota'), lrc: T('log de la tasa'), pwr: T('potencia del tiempo'), b: T('pendiente en la DE50'), c: T('límite inferior'), d: T('límite superior'),
     e: T('DE50 (dosis de 50 % de efecto)'), a: T('intercepto o máximo'), x0: T('dosis óptima (inicio de la meseta)'),
-  };
+  }));
   /* a, b y c no significan lo mismo en todos los modelos: en el lineal-meseta, b es la pendiente antes de la meseta, no la
      del log-logístico en la DE50 */
-  const BC = { b: T('pendiente de la caída'), c: T('límite inferior'), d: T('respuesta sin dosis (testigo)'), e: T('posición de la caída (no es la DE50)'), f: T('estímulo a dosis bajas (hormesis si f > 0)') };
-  const SENTIDO_MODELO = {
+  const BC = () => ({ b: T('pendiente de la caída'), c: T('límite inferior'), d: T('respuesta sin dosis (testigo)'), e: T('posición de la caída (no es la DE50)'), f: T('estímulo a dosis bajas (hormesis si f > 0)') });
+  const SENTIDO_MODELO = SP.T.perezoso(() => ({
     'lineal-meseta': { a: T('respuesta sin dosis (intercepto)'), b: T('aumento por unidad de dosis antes de la meseta') },
     'cuadratico-meseta': { a: T('respuesta sin dosis (intercepto)'), b: T('término lineal'), c: T('término cuadrático (negativo: la curva baja)') },
     mitscherlich: { a: T('asíntota (respuesta máxima)'), b: T('lo que la dosis puede agregar (a menos la respuesta sin dosis)'), c: T('tasa de acercamiento a la asíntota') },
     mm2: { d: T('respuesta máxima (asíntota)'), e: T('dosis con la mitad de la respuesta máxima') },
     mm3: { c: T('respuesta sin dosis'), d: T('respuesta máxima (asíntota)'), e: T('dosis con la mitad del aumento') },
-    bc5: BC, bc4: BC,
-  };
+    bc5: BC(), bc4: BC(),
+  }));
   const sentidoDe = (modelo, par) => (SENTIDO_MODELO[modelo] || {})[par] || SENTIDO[par] || '';
-  const NOMBRE_DER = { inflexion: T('Punto de inflexión'), DE10: T('DE10'), DE50: T('DE50'), DE90: T('DE90'), dosis_optima: T('Dosis óptima'), meseta: T('Valor en la meseta'),
-    dosis_maxima: T('Dosis de máxima respuesta (hormesis)'), respuesta_maxima: T('Respuesta máxima'), dosis_economica: T('Dosis económica óptima'), respuesta_economica: T('Respuesta en la dosis económica') };
+  const NOMBRE_DER = SP.T.perezoso(() => ({ inflexion: T('Punto de inflexión'), DE10: T('DE10'), DE50: T('DE50'), DE90: T('DE90'), dosis_optima: T('Dosis óptima'), meseta: T('Valor en la meseta'),
+    dosis_maxima: T('Dosis de máxima respuesta (hormesis)'), respuesta_maxima: T('Respuesta máxima'), dosis_economica: T('Dosis económica óptima'), respuesta_economica: T('Respuesta en la dosis económica') }));
   const SOLO_POSITIVA = new Set(['ll4', 'll3', 'bc5', 'bc4', 'mm2', 'mm3']);
 
   /** Datos completos (con pesos positivos, si los hay) y el grupo. */

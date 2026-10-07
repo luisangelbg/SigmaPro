@@ -1424,6 +1424,15 @@
     } catch (e) { return ''; }
   }
   const aplicarDetalle = () => { if (SP.detalle) SP.detalle.aplicar($('#anaResultado')); };
+  /* en pocas palabras y cómo reportarlo (hito 5.4, js/interfaz/reportar.js) */
+  const claroHTML = (r, rep) => (SP.reportar ? SP.reportar.claro(estado.metodo, r, rep) : '');
+  function reportarHTML(r) {
+    if (!SP.reportar) return '';
+    try {
+      const p = pedidoActual();
+      return SP.reportar.html({ metodo: estado.metodo, r, e: p.e, op: SP.opcionesCon(SP.metodos[estado.metodo], p.op), tabla: SP.app.tablaAnalisis() });
+    } catch (e) { return ''; }
+  }
   /* las alternativas cuando un supuesto falla (hito 5.3, js/nucleo/alternativas.js): un botón por remedio que corre el
      análisis con las mismas variables (con la columna transformada, si hace falta) */
   function alternativasHTML(r, rep) {
@@ -1499,7 +1508,7 @@
       (SP.temasGraficas ? SP.temasGraficas.selector() : '') + graficasSupuestos(r) +
       SP.cuadros.html(rep.cuadros[0], { numero: 1, contexto: SP.lectura && SP.lectura.contexto(r) }) + copiarHTML(0) +
       (rep.cuadros[1] ? `<details class="exp-extras"><summary>${esc(T('Varianza de los residuos por tratamiento'))}</summary>${SP.cuadros.html(rep.cuadros[1], { numero: 2 })}</details>` : '') +
-      tecnicoHTML(r, ms) + codigoHTML(codigo) +
+      reportarHTML(r) + tecnicoHTML(r, ms) + codigoHTML(codigo) +
       (SP.app.suite ? SP.app.suite.franjaMetodo('supuestos') : '');
     aplicarDetalle();
   }
@@ -2140,16 +2149,17 @@
   function pintarMetodo(r, rep, codigo, ms) {
     const sem = rep.semaforo;
     const global = sem && sem.length ? sem.map(s => s.color).reduce((a, b) => (PEOR[b] > PEOR[a] ? b : a), 'verde') : null;
+    const claro = claroHTML(r, rep);
     $('#anaResultado').innerHTML =
       `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span>${botonFicha()}${botonReporte()}</div>` +
-      detalleHTML() +
-      `<div class="callout exp-conclusion">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` + avisoBasicoHTML() +
+      detalleHTML() + claro +
+      `<div class="callout exp-conclusion${claro ? ' conclusion-tecnica' : ''}">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` + avisoBasicoHTML() +
       (global ? semaforoHTML(sem, global, ({ verde: T('Los supuestos de la prueba se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[global]), T('Semáforo de los supuestos')) + alternativasHTML(r, rep) : '') +
       graficasHTML(graficaMetodo(r)) +
       (r.diseno && !r.tipo && r.factores && r.factores.length ? `<div class="btn-row exp-acciones"><button type="button" class="btn btn-primary btn-sm" data-accion="comparar">${esc(T('Comparar las medias de este diseño'))}</button></div>` : '') +
       botonesModelo(r) +
       rep.cuadros.map((q, i) => SP.cuadros.html(q, { numero: i + 1, contexto: SP.lectura && SP.lectura.contexto(r) }) + copiarHTML(i)).join('') +
-      tecnicoHTML(r, ms) + codigoHTML(codigo) +
+      reportarHTML(r) + tecnicoHTML(r, ms) + codigoHTML(codigo) +
       (SP.app.suite ? SP.app.suite.franjaMetodo(estado.metodo) : '');
     aplicarDetalle();
   }

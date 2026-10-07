@@ -18,6 +18,9 @@
  "alternativas-venenos": {
   "prep": "(async () => { window.__esperando = true; document.querySelector('#datEjemplos').click(); await new Promise(r => setTimeout(r, 200)); [...document.querySelectorAll('.sp-menu-item')].find(b => /Venenos/.test(b.textContent)).click(); await new Promise(r => setTimeout(r, 400)); SP.app.ir(4); SP.app.analisis.usar('supuestos', { respuesta: 'tiempo', tratamientos: ['veneno'] }, {}); await new Promise(r => setTimeout(r, 1200)); window.__esperando = false; })()"
  },
+ "reportar-dbca": {
+  "prep": "(async () => { window.__esperando = true; document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[0].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.usar('dbca', { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, {}); await new Promise(r => setTimeout(r, 900)); const d = document.querySelector('#anaResultado details.sp-reportar'); d.open = true; await new Promise(r => setTimeout(r, 400)); d.querySelector('[data-rp-idioma=en]').click(); await new Promise(r => setTimeout(r, 2500)); window.__esperando = false; })()"
+ },
  "analisis-0": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },

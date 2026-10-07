@@ -2,6 +2,36 @@
 
 ## Sin publicar
 
+### 0.5.8 · Hito 5.4: «En pocas palabras» y «Cómo reportarlo» (7 oct 2026)
+
+- **En pocas palabras** (Análisis y reporte; en Explorar la conclusión ya va en palabras): un recuadro sobre la
+  conclusión con el resultado sin símbolos estadísticos, hasta cuatro frases (`js/nucleo/claro.js`,
+  `SP.claro.frases`; no calcula nada nuevo).
+  - Diseños experimentales: con el cuadro del ANOVA y las medias de cada factor, qué factor cambia la respuesta, su
+    nivel más alto y el más bajo con sus medias, si hay interacción y la precisión del ensayo (el CV y su guía).
+  - Los demás análisis: las frases de su conclusión sin los paréntesis ni las cláusulas con estadística (F, p, gl,
+    intervalos); se descartan las que solo dicen un número o son técnicas.
+  - En Básico se ve el recuadro y se oculta la conclusión técnica; en Estándar y Experto, los dos.
+- **Cómo reportarlo (APA)**: un desplegable bajo cada resultado (Análisis, revisión de los supuestos, Explorar y
+  reporte) con los párrafos de métodos y de resultados del reporte
+  con las convenciones de APA 7: símbolos en cursiva, p y los estadísticos que no pasan de 1 sin el cero inicial, comas
+  entre estadísticos, intervalos entre corchetes, la media como M y, en inglés, el porcentaje pegado a la cifra
+  (`js/interfaz/reportar.js`, `SP.claro.apa`).
+  - Pestañas Español e English: el otro idioma se arma sin cambiar el de la app (el catálogo inglés se carga la
+    primera vez que se pide). En los métodos del núcleo el resultado se vuelve a calcular con ese catálogo, porque
+    guarda nombres ya traducidos.
+  - «Copiar» lleva el texto y su versión con cursivas, que un procesador de textos conserva.
+  - En Experto el desplegable se abre solo.
+- Para que el texto del otro idioma salga completo, las citas del reporte siguen al catálogo en uso (no al idioma con
+  el que abrió la app) y los nombres fijos de los no lineales, las superficies, la potencia y los generalizados se
+  traducen al leerlos (`SP.T.perezoso`).
+- Corregido: en inglés, las comparaciones por pares de Kruskal-Wallis y Friedman decían «Wilcoxon pareada» y
+  «Tukey (un paso)» en la conclusión, el título del cuadro y su nota; ahora «Paired Wilcoxon» y
+  «Tukey (single-step)».
+- Pruebas: `tests/unidad/claro.test.js` (la plantilla de los diseños, la limpieza de la conclusión, las reglas de APA y
+  el desplegable); `tests/idioma.mjs` arma 70 análisis en el otro idioma al vuelo y comprueba que el texto sea igual al
+  de la app abierta en ese idioma; escenario de accesibilidad reportar-dbca. 17 textos nuevos en inglés.
+
 ### 0.5.7 · Hito 5.3: semáforo con íconos y alternativas que se corren (7 oct 2026)
 
 - **Íconos en el semáforo** (Análisis y reporte): palomita, exclamación, cruz o raya dentro de cada luz, además del color

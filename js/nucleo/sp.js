@@ -23,7 +23,7 @@
   'use strict';
 
   const SP = raiz.SP || (raiz.SP = {});
-  SP.VERSION = '0.5.7';
+  SP.VERSION = '0.5.8';
   /* El arranque de los módulos de la interfaz. index.html carga los guiones en dos tiempos (hito 5.11): primero la
      página y la barra común, después los de la app, que llegan cuando la página ya se leyó. Cada módulo arranca cuando
      están todos (evento sp:listo, en el orden de carga, como antes en DOMContentLoaded); en una página que los carga
@@ -71,6 +71,13 @@
   };
   SP.T.catalogo = raiz.SP_CATALOGO || null;
   SP.T.origen = new Map();
+  /** Una tabla de textos que se traducen al leerse, con el catálogo activo en ese momento (no con el que había al cargar
+      el módulo): «Cómo reportarlo» arma el texto del otro idioma cambiando el catálogo mientras escribe (hito 5.4). */
+  SP.T.perezoso = function (fabrica) {
+    const o = {};
+    for (const k of Object.keys(fabrica())) Object.defineProperty(o, k, { enumerable: true, get: () => fabrica()[k] });
+    return o;
+  };
   /** Un nombre (columna, nivel) entre comillas: «x» en español, “x” en inglés. */
   SP.comillas = x => SP.T('«{c}»', { c: x });
   /** El idioma de la interfaz ('es' | 'en') y el formato local de fechas y números. */

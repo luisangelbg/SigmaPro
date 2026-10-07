@@ -164,7 +164,7 @@
       return p ? SP.detalle.tecnico({ metodo: p.metodo, e: p.e, opciones: SP.opcionesCon(SP.metodos[p.metodo], p.op), ms, tabla: SP.app.tablaAnalisis() }) : '';
     } catch (e) { return ''; }
   }
-  function pintarResultado(rep, codigo, ms) {
+  function pintarResultado(rep, codigo, ms, pedido) {
     const r = $('#expResultado');
     const varios = rep.cuadros.length > 1;
     const vista = estado.tipo === 'frec' ? estado.frec.vista : null;
@@ -183,7 +183,7 @@
       `<span class="small muted">${esc(T('Se pega como tabla en una hoja de cálculo o en un procesador de textos.'))}</span></div>` +
       (extrasDisp.length ? `<details class="exp-extras"><summary>${esc(T('Más estadísticos en el cuadro'))}</summary><div class="chips">` +
         extrasDisp.map(x => `<label class="imp-check"><input type="checkbox" data-extra="${esc(x.clave)}"${extras.includes(x.clave) ? ' checked' : ''}> ${esc(x.titulo)}</label>`).join('') + '</div></details>' : '') +
-      tecnicoExplorar(ms) +
+      (pedido && SP.reportar ? SP.reportar.html(pedido) : '') + tecnicoExplorar(ms) +
       `<details class="exp-codigo"><summary>${esc(T('Código R equivalente'))}</summary><pre><code>${esc(codigo)}</code></pre>` +
       `<button type="button" class="btn btn-ghost btn-sm" data-accion="copiar-r">${esc(T('Copiar el código'))}</button></details>`;
     r.dataset.codigo = codigo;
@@ -218,7 +218,7 @@
       const { entradas, opciones, ctx } = armar(c);
       const ficha = SP.metodos[id];
       const { resultado, ms } = SP.ejecutar(id, c.t, entradas, opciones);
-      pintarResultado(ficha.reporte(resultado, ctx), ficha.codigoR(entradas, opciones, ctx), ms);
+      pintarResultado(ficha.reporte(resultado, ctx), ficha.codigoR(entradas, opciones, ctx), ms, { metodo: id, r: resultado, e: entradas, op: opciones, ctx, tabla: c.t });
     } catch (e) {
       if (!(e instanceof SP.ErrorSP) && !(e && e.arreglo !== undefined)) console.error(e);
       pintarError(e);

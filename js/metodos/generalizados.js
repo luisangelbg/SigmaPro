@@ -34,10 +34,11 @@ SP.definir('generalizados', function (SP) {
   const sig = x => SP.formatos.texto(x, 'sig');
   const col = (clave, titulo, formato) => ({ clave, titulo, formato });
   const may = s => s.charAt(0).toUpperCase() + s.slice(1);
-  const NOMBRE_FAM = { binomial: 'binomial', cuasibinomial: 'cuasibinomial', poisson: 'Poisson', cuasipoisson: 'cuasi-Poisson', 'binomial-negativa': 'binomial negativa', gamma: 'gamma',
-    'inversa-gaussiana': T('gaussiana inversa') };
-  const NOMBRE_ENL = { logit: 'logit', probit: 'probit', cloglog: 'log-log complementario', log: 'logaritmo', inverso: 'inverso', identidad: 'identidad', raiz: T('raíz cuadrada'),
-    inverso2: '1/μ²', potencia: T('potencia') };
+  /* los nombres se traducen al leerse (SP.T.perezoso): también en inglés y con el catálogo que esté activo */
+  const NOMBRE_FAM = SP.T.perezoso(() => ({ binomial: 'binomial', cuasibinomial: T('cuasibinomial'), poisson: 'Poisson', cuasipoisson: T('cuasi-Poisson'), 'binomial-negativa': T('binomial negativa'), gamma: 'gamma',
+    'inversa-gaussiana': T('gaussiana inversa') }));
+  const NOMBRE_ENL = SP.T.perezoso(() => ({ logit: 'logit', probit: 'probit', cloglog: T('log-log complementario'), log: T('logaritmo'), inverso: T('inverso'), identidad: T('identidad'), raiz: T('raíz cuadrada'),
+    inverso2: '1/μ²', potencia: T('potencia') }));
   /** El nombre del enlace (la potencia con su λ). */
   const nombreEnl = (enlace, lambda) => (enlace === 'potencia' ? T('potencia (μ^{l})', { l: +Number(lambda).toPrecision(6) }) : NOMBRE_ENL[enlace] || enlace);
   const AJUSTES = { tukey: 'tukey', bonferroni: 'bonferroni', holm: 'holm', sidak: 'sidak', none: 'dms' };
@@ -315,7 +316,7 @@ SP.definir('generalizados', function (SP) {
       texto: !A.convergio ? T('No convergió.') : r.avisos.some(x => /separación/.test(x)) ? T('Hay separación: probabilidades ajustadas en 0 o 1.') : A.iteraciones === 1 ? T('Convergió en una iteración.') : T('Convergió en {k} iteraciones.', { k: A.iteraciones }) });
     return out;
   }
-  const NOMBRE_ESCALA = { probabilidad: T('Probabilidad'), tasa: T('Tasa'), media: T('Media') };
+  const NOMBRE_ESCALA = SP.T.perezoso(() => ({ probabilidad: T('Probabilidad'), tasa: T('Tasa'), media: T('Media') }));
   function reporte(r) {
     const a = r.alfa, conclusiones = [], cuadros = [], est = r.prueba === 'F' ? 'F' : 'χ²', enl = nombreEnl(r.enlace, r.lambda);
     if (r.firth) conclusiones.push(r.separacionML ? T('Corrección de Firth: el ajuste ordinario tenía separación ({k} probabilidades en 0 o 1) y la verosimilitud penalizada da estimados finitos.', { k: r.separacionML })

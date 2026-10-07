@@ -37,7 +37,7 @@
       if (m === 'basico') d.open = true;
       else if (antes === 'basico') d.open = false;
     });
-    raiz.querySelectorAll('details.exp-codigo, details.exp-tecnico, details.rep-tecnico').forEach(d => {
+    raiz.querySelectorAll('details.exp-codigo, details.exp-tecnico, details.rep-tecnico, details.sp-reportar').forEach(d => {
       if (m === 'experto') d.open = true;
       else if (antes === 'experto') d.open = false;
     });

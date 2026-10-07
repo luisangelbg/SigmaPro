@@ -17,8 +17,8 @@ SP.definir('metodos-superficie', function (SP) {
   const col = (clave, titulo, formato) => ({ clave, titulo, formato });
   const may = s => s.charAt(0).toUpperCase() + s.slice(1);
   const S = () => SP.superficie;
-  const ORDEN = { segundo: T('segundo orden'), interacciones: T('primer orden con interacciones'), primer: T('primer orden') };
-  const NATURALEZA = { maximo: T('un máximo'), minimo: T('un mínimo'), silla: T('un punto silla') };
+  const ORDEN = SP.T.perezoso(() => ({ segundo: T('segundo orden'), interacciones: T('primer orden con interacciones'), primer: T('primer orden') }));
+  const NATURALEZA = SP.T.perezoso(() => ({ maximo: T('un máximo'), minimo: T('un mínimo'), silla: T('un punto silla') }));
 
   function datosDe(tabla, e) {
     const yv = tabla.col(e.respuesta).valores, xs = e.factores.map(f => tabla.col(f).valores), bc = e.bloque ? SP.estructura.comoFactor(tabla, e.bloque) : null;
@@ -241,7 +241,7 @@ SP.definir('metodos-superficie', function (SP) {
   }
 
   /* ======================= mezclas ======================= */
-  const MODELOS_MEZCLA = { lineal: T('lineal'), cuadratico: T('cuadrático'), 'cubico-especial': T('cúbico especial') };
+  const MODELOS_MEZCLA = SP.T.perezoso(() => ({ lineal: T('lineal'), cuadratico: T('cuadrático'), 'cubico-especial': T('cúbico especial') }));
   function validarMezclas(t, e, op) {
     exigir(e.respuesta && t.columnas[e.respuesta], T('Elige la variable de respuesta.'));
     exigir(Array.isArray(e.componentes) && e.componentes.length >= 2 && e.componentes.length <= 6, T('Elige de 2 a 6 componentes (las proporciones de la mezcla).'));

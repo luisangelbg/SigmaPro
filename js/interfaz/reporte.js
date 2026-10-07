@@ -104,7 +104,7 @@
       const ctx = Object.assign({ factoresNumericos: numFactor }, it.ctx || {});
       let rep = it.bloque === 3 ? ficha.reporte(resultado, ctx) : ficha.reporte(resultado);
       if (it.vista) rep = Object.assign({}, rep, { cuadros: rep.cuadros.filter(q => q.id === it.vista).concat(rep.cuadros.some(q => q.id === it.vista) ? [] : rep.cuadros.slice(0, 1)) });
-      Object.assign(res, { r: resultado, rep, ms, opciones, tabla: t, ficha,
+      Object.assign(res, { r: resultado, rep, ms, opciones, tabla: t, ficha, ctx,
         codigo: ficha.codigoR(it.e || {}, opciones, Object.assign({ resultado }, ctx)) });
       /* en completamente al azar y bloques, los supuestos del mismo modelo se revisan solos */
       if (SUPUESTOS_SOLOS.includes(it.metodo) && SP.metodos.supuestos) {
@@ -204,16 +204,17 @@
         figs = div.innerHTML;
       }
       const sup = res.supuestos ? semaforo(res.supuestos.rep.semaforo, res.supuestos.rep.recomendaciones) : semaforo(res.rep.semaforo, res.rep.recomendaciones);
-      const p = res.parrafo;
+      const p = res.parrafo, claro = SP.reportar && it.bloque !== 3 ? SP.reportar.claro(it.metodo, res.r, res.rep) : '';
       partes.push(`<article class="rep-item" id="repItem${it.id}" aria-labelledby="${idt}">` +
         `<header class="rep-item-cabeza"><h3 id="${idt}">${esc(num + '. ' + res.titulo)}</h3>${barra}</header>` + ajustes +
-        `<div class="callout exp-conclusion">${res.rep.conclusiones.map(x => `<p>${esc(x)}</p>`).join('')}</div>` +
+        claro + `<div class="callout exp-conclusion${claro ? ' conclusion-tecnica' : ''}">${res.rep.conclusiones.map(x => `<p>${esc(x)}</p>`).join('')}</div>` +
         cuadros + figs +
         (sup ? `<h4 class="rep-sub">${esc(T('Supuestos'))}</h4>${sup}` : '') +
         `<section class="rep-parrafo" aria-label="${esc(T('Párrafo para la tesis o el artículo'))}"><h4 class="rep-sub">${esc(T('Para tu tesis o artículo'))}</h4>` +
         (p.metodos ? `<p><b>${esc(T('Métodos.'))}</b> ${esc(p.metodos)}</p>` : '') + (p.resultados ? `<p><b>${esc(T('Resultados.'))}</b> ${esc(p.resultados)}</p>` : '') +
         `<div class="btn-row"><button type="button" class="btn btn-secondary btn-sm" data-rep="copiar-parrafo" data-id="${it.id}">${esc(T('Copiar el párrafo'))}</button>` +
-        `<span class="small muted">${esc(T('Es un punto de partida: revisa la redacción y agrega tu interpretación.'))}</span></div></section>` +
+        `<span class="small muted">${esc(T('Es un punto de partida: revisa la redacción y agrega tu interpretación.'))}</span></div>` +
+        (SP.reportar ? SP.reportar.html({ metodo: it.metodo, r: res.r, e: it.e || {}, op: res.opciones, ctx: it.bloque === 3 ? res.ctx : null, tabla: res.tabla }) : '') + '</section>' +
         `<details class="exp-extras rep-tecnico"><summary>${esc(T('Detalles técnicos'))}</summary><dl class="dat-kv rep-detalles">${res.detalles.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></details>` +
         `<details class="exp-codigo"><summary>${esc(T('Código R equivalente'))}</summary><pre><code>${esc(res.codigo)}</code></pre>` +
         `<button type="button" class="btn btn-ghost btn-sm" data-rep="copiar-r" data-id="${it.id}">${esc(T('Copiar el código'))}</button></details></article>`);

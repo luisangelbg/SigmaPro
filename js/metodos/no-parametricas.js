@@ -639,9 +639,11 @@ SP.definir('no-parametricas', function (SP) {
       : T('No hay evidencia de diferencias entre tratamientos en «{v}» ({e}).', { v: r.respuesta, e: est }));
     conclusiones.push(kw ? T('Tamaño del efecto: η² de H = {e}.', { e: f3(pr.eta2) }) : T('Concordancia entre bloques: W de Kendall = {w} ({n} bloques).', { w: f3(pr.W), n: pr.n }));
     const orden = pr.grupos.map((g, j) => j).sort((x, y) => (kw ? pr.grupos[y].rangoMedio - pr.grupos[x].rangoMedio : pr.grupos[y].sumaRangos - pr.grupos[x].sumaRangos) || x - y);
-    const npar = m => (!kw && m === 'conover' ? 'Conover' : NOMBRE_PAR[m]);
+    /* los nombres propios quedan igual; se traducen los que no lo son */
+    const npar = m => (!kw && m === 'conover' ? 'Conover' : m === 'wilcoxon' ? T('Wilcoxon pareada') : NOMBRE_PAR[m]);
+    const naj = k => (k === 'tukey' ? T('Tukey (un paso)') : k === 'ninguno' ? T('sin ajuste') : NOMBRE_AJUSTE[k]);
     const distintos = cp.pares.filter(p => p.p_ajustado < a).length;
-    conclusiones.push(T('Comparaciones de {m} ({aj}): {d} de {t} pares difieren con α = {a}. Tratamientos con una letra en común no difieren.', { m: npar(cp.metodo), aj: NOMBRE_AJUSTE[cp.ajuste], d: distintos, t: cp.pares.length, a }));
+    conclusiones.push(T('Comparaciones de {m} ({aj}): {d} de {t} pares difieren con α = {a}. Tratamientos con una letra en común no difieren.', { m: npar(cp.metodo), aj: naj(cp.ajuste), d: distintos, t: cp.pares.length, a }));
     const notas = [];
     if (pr.empates) notas.push(T('Hay empates: el estadístico está corregido por empates.'));
     if (!kw && pr.excluidos) notas.push(T('{k} bloques con algún faltante no entran (como en R).', { k: pr.excluidos }));
@@ -652,11 +654,11 @@ SP.definir('no-parametricas', function (SP) {
       cuadros: [
         { id: 'grupos', titulo: T('Tratamientos ordenados por {c}', { c: kw ? T('rango medio') : T('suma de rangos') }),
           columnas: [col('nombre', T('Tratamiento'), 'texto'), col('n', kw ? 'n' : T('Bloques'), 'entero'), col('mediana', T('Mediana'), 'escala')].concat(kw ? [col('q1', T('Q1'), 'escala'), col('q3', T('Q3'), 'escala'), col('rangoMedio', T('Rango medio'), 'num2')] : [col('sumaRangos', T('Suma de rangos'), 'num'), col('rangoMedio', T('Rango medio'), 'num2')]).concat([col('letras', T('Grupo'), 'texto')]),
-          filas: orden.map(j => Object.assign({ _dec: r.dec, letras: r.letras[j] }, pr.grupos[j])), notas: [T('Letras por {m} con ajuste {aj} y α = {a}.', { m: npar(cp.metodo), aj: NOMBRE_AJUSTE[cp.ajuste], a })] },
+          filas: orden.map(j => Object.assign({ _dec: r.dec, letras: r.letras[j] }, pr.grupos[j])), notas: [T('Letras por {m} con ajuste {aj} y α = {a}.', { m: npar(cp.metodo), aj: naj(cp.ajuste), a })] },
         { id: 'prueba', titulo: kw ? T('Prueba de Kruskal-Wallis') : T('Prueba de Friedman'),
           columnas: [col('prueba', T('Prueba'), 'texto'), col('est', kw ? 'H' : 'χ²', 'forma'), col('gl', 'gl', 'entero'), col('p', 'p', 'pvalor'), col('efecto', kw ? T('η² de H') : T('W de Kendall'), 'forma')],
           filas: [filaPrueba], notas },
-        { id: 'pares', titulo: T('Comparaciones por pares: {m} ({aj})', { m: npar(cp.metodo), aj: NOMBRE_AJUSTE[cp.ajuste] }),
+        { id: 'pares', titulo: T('Comparaciones por pares: {m} ({aj})', { m: npar(cp.metodo), aj: naj(cp.ajuste) }),
           columnas: [col('par', T('Par'), 'texto'), col('dif', cp.metodo === 'wilcoxon' ? T('Mediana de las diferencias') : kw || cp.metodo === 'nemenyi' ? T('Dif. de rangos medios') : T('Dif. de sumas de rangos'), cp.metodo === 'wilcoxon' ? 'escala' : 'num2'),
             col('estadistico', titEst, cp.estadistico === 'V' ? 'num' : 'forma'), col('p', T('p sin ajustar'), 'pvalor'), col('p_ajustado', T('p ajustado'), 'pvalor'), col('decision', T('¿Difieren?'), 'texto')],
           filas: cp.pares.map(p => ({ par: cp.niveles[p.a] + ' – ' + cp.niveles[p.b], dif: p.dif, estadistico: p.estadistico, p: p.p, p_ajustado: p.p_ajustado, decision: p.p_ajustado < a ? T('sí') : T('no'), _dec: r.dec })),

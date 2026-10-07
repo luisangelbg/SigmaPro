@@ -127,6 +127,35 @@ for (const c of casos) {
     if (!(Object.is(x, y) || (Number.isNaN(x) && Number.isNaN(y)))) { distintos.push(c.id + ' ' + r + ': ' + x + ' ≠ ' + y); break; }
   }
 }
+/* 4. «Cómo reportarlo» (hito 5.4) arma el texto del otro idioma cambiando el catálogo al vuelo y volviendo a calcular:
+   el párrafo del informe y «En pocas palabras» deben salir iguales que con el núcleo cargado en ese idioma (ningún texto
+   se traduce al cargar un módulo; las tablas de textos usan SP.T.perezoso) */
+let alVuelo = 0;
+const mezclados = [];
+function textoDe(ctx, c, cat) {
+  const SP = ctx.SP, f = SP.metodos[c.objetivo.nombre], antes = SP.T.catalogo;
+  if (cat !== undefined) SP.T.catalogo = cat;
+  try {
+    const d = c.datos || { columnas: {} }, tabla = Object.keys(d.columnas || {}).length ? SP.tabla.crear(d.columnas, d.tipos) : null;
+    const op = SP.opcionesCon(f, c.opciones || {}), r = SP.ejecutar(c.objetivo.nombre, tabla, c.entradas || {}, op).resultado, rep = f.reporte(r);
+    const p = SP.informe.parrafo(c.objetivo.nombre, r, rep, c.entradas || {}, op);
+    return [p.metodos, p.resultados, SP.claro ? SP.claro.frases(c.objetivo.nombre, r, rep).join(' | ') : ''].join(' ‖ ');
+  } finally { SP.T.catalogo = antes; }
+}
+{
+  const vistos = new Set();
+  for (const c of casos) {
+    if (c.objetivo.tipo !== 'metodo') continue;
+    const f = ES.SP.metodos[c.objetivo.nombre];
+    if (!f || f.motor === 'r' || !f.reporte || vistos.has(f.id)) continue;
+    let x;
+    try { x = [textoDe(ES, c, CAT), textoDe(EN, c), textoDe(EN, c, null), textoDe(ES, c)]; } catch (e) { continue; }   // los casos que deben fallar
+    vistos.add(f.id); alVuelo++;
+    if (x[0] !== x[1]) mezclados.push(f.id + ' (inglés)');
+    if (x[2] !== x[3]) mezclados.push(f.id + ' (español)');
+  }
+}
+for (const m of mezclados.slice(0, 20)) problemas.push('el texto armado al vuelo en el otro idioma no es el mismo que el original: ' + m);
 for (const d of distintos.slice(0, 20)) problemas.push('el idioma cambió un cálculo: ' + d);
 const faltantes = [...EN.SP.T.faltantes].filter(k => /[a-záéíóúñ]/i.test(k));
 for (const k of faltantes.slice(0, 40)) problemas.push('texto sin traducir al armar resultados: «' + k + '»');
@@ -135,6 +164,7 @@ if (faltantes.length > 40) problemas.push('… y ' + (faltantes.length - 40) + '
 console.log('\nSigmaPro · la interfaz en inglés');
 console.log('  catálogo: ' + Object.keys(CAT).length + ' textos; en el código: ' + literales.size + ' literales de T()');
 console.log('  ' + comparados + ' casos corridos en español y en inglés (' + valores.toLocaleString('es-MX') + ' números), ' + armados + ' reportes, párrafos y códigos R armados en inglés');
+console.log('  ' + alVuelo + ' análisis armados en el otro idioma al vuelo («Cómo reportarlo»): ' + (mezclados.length ? mezclados.length + ' distintos' : 'todos iguales al original'));
 for (const p of problemas) console.log('  ✗ ' + p);
 console.log(problemas.length ? '\nHAY FALLAS (' + problemas.length + ')' : '\nTODO APROBADO');
 guardar('idioma', { titulo: 'La interfaz en inglés', ok: !problemas.length,

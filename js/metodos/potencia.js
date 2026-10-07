@@ -19,7 +19,7 @@ SP.definir('metodos-potencia', function (SP) {
   const P = () => SP.potencia;
   const num = (v, nombre, cond, msg) => { exigir(Number.isFinite(+v) && (!cond || cond(+v)), msg || T('Revisa el valor de «{n}».', { n: nombre })); return +v; };
   const prob = (v, nombre) => num(v, nombre, x => x > 0 && x < 1, T('«{n}» va entre 0 y 1.', { n: nombre }));
-  const CALCULO = { potencia: T('la potencia'), n: T('el tamaño de muestra'), diferencia: T('la diferencia detectable'), varEntre: T('la variación entre medias detectable'), r: T('la correlación detectable') };
+  const CALCULO = SP.T.perezoso(() => ({ potencia: T('la potencia'), n: T('el tamaño de muestra'), diferencia: T('la diferencia detectable'), varEntre: T('la variación entre medias detectable'), r: T('la correlación detectable') }));
 
   function validarComun(op, opcionesCalc) {
     exigir(opcionesCalc.includes(op.calcular), T('Elige qué calcular.'));
@@ -36,7 +36,7 @@ SP.definir('metodos-potencia', function (SP) {
   const fmtN = x => (Number.isInteger(x) ? String(x) : sig(x));
 
   /* ======================= medias ======================= */
-  const TIPOS_T = { dos: T('dos muestras independientes'), una: T('una muestra contra un valor'), pareada: T('muestras pareadas') };
+  const TIPOS_T = SP.T.perezoso(() => ({ dos: T('dos muestras independientes'), una: T('una muestra contra un valor'), pareada: T('muestras pareadas') }));
   function calcularT(tabla, e, op) {
     const r = P().potenciaT({ n: +op.n, diferencia: +op.diferencia, de: +op.de, alfa: +op.alfa, potencia: +op.potencia, tipo: op.tipo, alternativa: op.alternativa, calcular: op.calcular });
     return Object.assign(r, { tipo: 'potencia', metodo: 'potencia-medias', calcular: op.calcular, tipoT: op.tipo, alternativa: op.alternativa });
@@ -122,7 +122,7 @@ res`;
 res`;
 
   /* ======================= repeticiones ======================= */
-  const DISENOS = { dca: T('completamente al azar'), dbca: T('bloques completos al azar') };
+  const DISENOS = SP.T.perezoso(() => ({ dca: T('completamente al azar'), dbca: T('bloques completos al azar') }));
   function calcularRep(tabla, e, op) {
     const r = P().repeticiones({ cv: +op.cv, diferencia: +op.diferencia, tratamientos: +op.tratamientos, alfa: +op.alfa, potencia: +op.potencia, diseno: op.diseno });
     return Object.assign(r, { tipo: 'potencia', metodo: 'repeticiones', cv: +op.cv, diferencia: +op.diferencia, tratamientos: +op.tratamientos, alfa: +op.alfa, potencia: +op.potencia, diseno: op.diseno });

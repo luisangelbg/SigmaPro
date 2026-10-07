@@ -217,10 +217,11 @@ SP.definir('informe', function (SP) {
   };
   /** En inglés, las citas y las referencias en el estilo APA inglés: «and» y «&» entre autores, «2nd ed.», «In», «[R package]». */
   const ORD = { 2: '2nd', 3: '3rd', 4: '4th', 5: '5th', 6: '6th', 7: '7th', 8: '8th' };
-  const refIdioma = s => (SP.IDIOMA !== 'en' ? s : s.replace(/^([^(]*?) y /, '$1, & ').replace(/\((\d)\.ª ed\.\)/g, (m, d) => '(' + (ORD[d] || d + 'th') + ' ed.)')
+  const ingles = () => !!SP.T.catalogo;
+  const refIdioma = s => (!ingles() ? s : s.replace(/^([^(]*?) y /, '$1, & ').replace(/\((\d)\.ª ed\.\)/g, (m, d) => '(' + (ORD[d] || d + 'th') + ' ed.)')
     .replace(/\. En ([^(]*?) y /, '. In $1, & ').replace(/\. En /, '. In ').replace(/\[Tesis doctoral\]/, '[Doctoral dissertation]').replace(/\[Programa de cómputo\]/, '[Computer software]')
     .replace(/\[paquete de R\]/, '[R package]').replace(/\(versión /, '(version ').replace('SigmaPro: estadística para la investigación agronómica y biológica', 'SigmaPro: Statistics for agronomic and biological research'));
-  const citaDe = k => (SP.IDIOMA === 'en' ? String(CITA[k] || '').replace(/ y /g, ' and ').replace(/ y col\./g, ' et al.') : CITA[k]);
+  const citaDe = k => (ingles() ? String(CITA[k] || '').replace(/ y /g, ' and ').replace(/ y col\./g, ' et al.') : CITA[k]);
   const referencia = k => (REF[k] ? refIdioma(REF[k]()) : '');
   /* Encuentra en un texto las obras de CITA, escritas como las escriben los métodos: «Landis y Koch (1977)»,
      «(Cochran y Cox, 1957)», «Holland y col. 2003», «Brown, Cai y DasGupta (2001)», «Agresti-Coull (1998)». Para cada
@@ -281,18 +282,18 @@ SP.definir('informe', function (SP) {
   const may = s => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
   const oracion = frases => (frases.length ? fin(may(frases.join('; '))) : '');
 
-  const DISENOS = {
+  const DISENOS = () => ({
     dca: T('completamente al azar'), dbca: T('de bloques completos al azar'), 'cuadro-latino': T('en cuadro latino'), 'parcelas-divididas': T('de parcelas divididas'),
     'parcelas-subdivididas': T('de parcelas subdivididas'), franjas: T('de parcelas en franjas'), bib: T('de bloques incompletos balanceados'), latice: T('en látice'),
-  };
-  const COMPARACION = {
+  });
+  const COMPARACION = () => ({
     tukey: [T('la prueba de Tukey'), ['tukey1949']], dms: [T('la diferencia mínima significativa de Fisher'), []], duncan: [T('la prueba de rango múltiple de Duncan'), ['duncan1955']],
     snk: [T('la prueba de Student-Newman-Keuls'), []], scheffe: [T('el método de Scheffé'), ['scheffe1953']], bonferroni: [T('pruebas t con la corrección de Bonferroni'), []],
     sidak: [T('pruebas t con la corrección de Šidák'), ['sidak1967']], holm: [T('pruebas t con el ajuste de Holm'), ['holm1979']], dunnett: [T('la prueba de Dunnett contra el testigo'), ['dunnett1955']],
     'games-howell': [T('la prueba de Games-Howell'), ['games1976']],
-  };
-  const AJUSTE = { holm: [T('el método de Holm'), ['holm1979']], bonferroni: [T('la corrección de Bonferroni'), []], BH: [T('el método de Benjamini y Hochberg'), ['benjamini1995']], none: [T('ningún ajuste'), []] };
-  const POSTHOC = { dunn: [T('la prueba de Dunn'), ['dunn1964']], conover: [T('la prueba de Conover-Iman'), ['conover1979']], nemenyi: [T('la prueba de Nemenyi'), ['nemenyi1963']], wilcoxon: [T('pruebas de Wilcoxon pareadas'), ['wilcoxon1945']] };
+  });
+  const AJUSTE = () => ({ holm: [T('el método de Holm'), ['holm1979']], bonferroni: [T('la corrección de Bonferroni'), []], BH: [T('el método de Benjamini y Hochberg'), ['benjamini1995']], none: [T('ningún ajuste'), []] });
+  const POSTHOC = () => ({ dunn: [T('la prueba de Dunn'), ['dunn1964']], conover: [T('la prueba de Conover-Iman'), ['conover1979']], nemenyi: [T('la prueba de Nemenyi'), ['nemenyi1963']], wilcoxon: [T('pruebas de Wilcoxon pareadas'), ['wilcoxon1945']] });
   const SC = t => ['', 'I', 'II', 'III'][Number(t) || 3];
 
   /* ---------------- párrafo por familia ---------------- */
@@ -311,7 +312,7 @@ SP.definir('informe', function (SP) {
     if (id === 'franjas') estratos = T(', con {a} y {b} en franjas que se cruzan; cada factor y su interacción se probaron contra su propio error', { a: e.franjaA, b: e.franjaB });
     const refs = ['gomez1984'].concat(id === 'bib' ? ['yates1936b'] : id === 'latice' ? ['yates1936l', 'patterson1976'] : []);
     const sc = r.tipoSC && !r.estratos ? T(' Se usaron sumas de cuadrados tipo {t}.', { t: SC(r.tipoSC) }) : '';
-    const metodos = T('Los datos de {y} se analizaron con un análisis de varianza para un diseño {d}{a}{b}{s} ({c}).', { y: r.respuesta, d: DISENOS[id] || id, a: arreglo, b: bloques, s: estratos, c: cita(refs, citas) }) + sc;
+    const metodos = T('Los datos de {y} se analizaron con un análisis de varianza para un diseño {d}{a}{b}{s} ({c}).', { y: r.respuesta, d: DISENOS()[id] || id, a: arreglo, b: bloques, s: estratos, c: cita(refs, citas) }) + sc;
     const frases = frasesAnova(cuadroDe(rep, 'anova'), r.alfa || 0.05, r.resumen && r.resumen.glError, [e.bloque, e.repeticion]);
     let resumen = '';
     const rs = r.resumen || {};
@@ -350,7 +351,7 @@ SP.definir('informe', function (SP) {
       const res = r.grupos.slice(0, 6).map(g => conGrupo(g, T('Medias: {l}.', { l: g.filas.map(f => T('{n}: {m}{i}', { n: f.nombre, m: s4(f.media), i: entre(ic(f.ic, r.nivel)) })).join('; ') })));
       return { metodos, resultados: res.join(' ') };
     }
-    const [nombre, refs] = COMPARACION[r.metodo] || [r.metodo, []];
+    const [nombre, refs] = COMPARACION()[r.metodo] || [r.metodo, []];
     const metodos = T('Las medias de {q}{d} se compararon con {m} ({c}α = {a}).', { q: que, d: dentro, m: nombre, c: refs.length ? cita(refs, citas) + '; ' : '', a: alfa }) + satt;
     let res;
     if (r.tipo === 'dunnett') {
@@ -396,7 +397,7 @@ SP.definir('informe', function (SP) {
       const resultados = (meds.length ? y(meds) + '. ' : '') + T('{w} = {v}; {p}{x}; estimador de Hodges-Lehmann = {h}{i}.', { w: ind ? 'W' : 'V', v: n2(p.estadistico), p: fp(p.p), x: p.exacta ? T(' (exacta)') : '', h: s4(p.estimado), i: entre(ic(p.ic, p.nivel || r.nivel)) });
       return { metodos, resultados };
     }
-    const kw = id === 'kruskal-wallis', c = r.comparaciones || {}, [ph, phr] = POSTHOC[c.metodo] || [c.metodo, []], [aj, ajr] = AJUSTE[c.ajuste] || [c.ajuste, []];
+    const kw = id === 'kruskal-wallis', c = r.comparaciones || {}, [ph, phr] = POSTHOC()[c.metodo] || [c.metodo, []], [aj, ajr] = AJUSTE()[c.ajuste] || [c.ajuste, []];
     const metodos = (kw ? T('La variable {y} se comparó entre los niveles de {t} con la prueba de Kruskal-Wallis ({c})', { y: r.respuesta, t: r.tratamiento, c: cita(['kruskal1952'], citas) })
       : T('La variable {y} se comparó entre los niveles de {t} dentro de cada {b} con la prueba de Friedman ({c}) y la W de Kendall ({w})', { y: r.respuesta, t: r.tratamiento, b: r.bloque, c: cita(['friedman1937'], citas), w: cita(['kendall1939'], citas) }))
       + (ph ? T('; las comparaciones por pares se hicieron con {p}{c} y valores p ajustados con {a}{d}.', { p: ph, c: phr.length ? ' (' + cita(phr, citas) + ')' : '', a: aj, d: ajr.length ? ' (' + cita(ajr, citas) + ')' : '' }) : '.');
@@ -451,7 +452,7 @@ SP.definir('informe', function (SP) {
 
   function ancova(r, rep, e, citas) {
     const covs = lista(r.covariables), trs = lista(r.tratamientos);
-    const [nm, refs] = COMPARACION[r.metodo] || [r.metodo, []];
+    const [nm, refs] = COMPARACION()[r.metodo] || [r.metodo, []];
     const metodos = T('Se realizó un análisis de covarianza ({c}) de {y} con {v} como {cv} y {t} como {ft}{b}; se usaron sumas de cuadrados tipo {s}.', {
       c: cita(['cochran1957'], citas), y: r.respuesta, v: y(covs), cv: covs.length > 1 ? T('covariables') : T('covariable'), t: trs.join(' × '),
       ft: trs.length > 1 ? T('factores de tratamiento') : T('factor de tratamiento'), b: r.bloque ? T(', en bloques completos al azar ({b})', { b: r.bloque }) : '', s: SC(r.tipoSC) })
@@ -472,7 +473,7 @@ SP.definir('informe', function (SP) {
     const NOMBRE = { pearson: ['de Pearson', ['pearson1895'], 'r'], spearman: ['de Spearman', ['spearman1904'], 'ρ'], kendall: ['de Kendall', ['kendall1938'], 'τ'] };
     const [nm, refs, sim] = NOMBRE[r.metodo] || NOMBRE.pearson;
     if (id === 'matriz-correlacion') {
-      const [aj, ajr] = AJUSTE[r.ajuste] || [r.ajuste, []];
+      const [aj, ajr] = AJUSTE()[r.ajuste] || [r.ajuste, []];
       const metodos = T('Se calculó la matriz de correlaciones {n} ({c}) entre {k} variables ({v}), con los valores p ajustados con {a}{d}.', { n: nm, c: cita(refs, citas), k: r.variables.length, v: y(r.variables), a: aj, d: ajr.length ? ' (' + cita(ajr, citas) + ')' : '' });
       const sig = r.pares.filter(p => p.p_ajustado < r.alfa).sort((a, b) => Math.abs(b.r) - Math.abs(a.r));
       const resultados = T('{s} de las {m} correlaciones fueron significativas después del ajuste (α = {a})', { s: sig.length, m: r.pares.length, a: r.alfa })
@@ -1016,7 +1017,7 @@ SP.definir('informe', function (SP) {
     e = e || {}; op = op || {};
     const citas = new Set();
     let p = null;
-    if (DISENOS[id]) p = diseno(id, r, rep, e, op, citas);
+    if (DISENOS()[id]) p = diseno(id, r, rep, e, op, citas);
     else if (['comparaciones-medias', 'contrastes', 'polinomios', 'medias-ajustadas'].includes(id)) p = comparaciones(id, r, rep, e, op, citas);
     else if (id === 'prueba-t') p = pruebaT(r, e, citas);
     else if (['wilcoxon', 'kruskal-wallis', 'friedman'].includes(id)) p = rangos(id, r, rep, e, citas);

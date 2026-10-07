@@ -92,6 +92,7 @@
     ['hecho', '5.1', T('Cómo leer cada cuadro: medidores con las guías publicadas (p, tamaños del efecto, R², CV, VIF…) y la curva de referencia de cada prueba')],
     ['hecho', '5.2', T('Tarjetas de interpretación con los números del caso, la guía del CV por cultivo y variable, y los niveles Básico, Estándar y Experto')],
     ['hecho', '5.3', T('Semáforo con íconos y un botón que corre la alternativa: la transformación, la prueba por rangos, Welch o la binomial negativa')],
+    ['hecho', '5.4', T('En pocas palabras: la conclusión sin símbolos; y «Cómo reportarlo» en APA 7, en español y en inglés, listo para copiar')],
     ['', '1.0', T('Publicación: revisión del nombre, repositorio y DOI (versión 1.0.0)')],
   ];
   function hitos() {
