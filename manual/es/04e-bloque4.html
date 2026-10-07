@@ -100,7 +100,7 @@
     </figure>
     <div>
       <p>El tratamiento solo no tiene efecto (<i>F</i>(3, 57) = 1.39, <i>p</i> = 0.256), pero la interacción con el tiempo sí (<i>F</i>(12, 57) = 4.29, <i>p</i> &lt; 0.001): a los 15 días las cuatro dosis miden lo mismo y desde los 30 días el testigo sin nitrógeno se queda atrás. Por eso la app propone comparar los tratamientos <span class="ui">Dentro de cada nivel de</span> la fecha, y su cuadro de medias da las letras de cada fecha por separado. Otro cuadro da la matriz estimada de covarianzas y correlaciones entre fechas.</p>
-      <p>Las pruebas usan los grados de libertad del error, <i>N</i> − <i>p</i>, para todos los términos, como <code>nlme</code>. El semáforo revisa la normalidad de los residuos normalizados (Shapiro-Wilk) y la igualdad de sus varianzas entre fechas (Levene); si alguno falla, propone una estructura heterogénea o una transformación.</p>
+      <p>Las pruebas usan los grados de libertad del error, <i>N</i> − <i>p</i>, para todos los términos, como <code>nlme</code>. El semáforo revisa la normalidad de los residuos normalizados (Shapiro-Wilk) y la igualdad de sus varianzas entre fechas (Levene); si alguno falla, propone una estructura heterogénea o una transformación, y con la respuesta positiva <span class="ui">Probar la alternativa</span> corre el logaritmo (sección 4.7).</p>
     </div>
   </div>
 

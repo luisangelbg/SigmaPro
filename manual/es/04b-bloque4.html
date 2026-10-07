@@ -40,7 +40,7 @@
     <p>La revisión admite tratamientos y un solo factor de bloque: revisa bien los diseños completamente al azar, en bloques y sus factoriales. En un cuadro latino (pon una de las dos direcciones en <span class="ui">Bloques</span>), un látice o unas parcelas divididas la revisión es aproximada, porque no separa los otros bloqueos ni el error de la parcela grande; tampoco acepta covariables. Al agregar al reporte (capítulo 5) un diseño completamente al azar o en bloques completos, el reporte le agrega por su cuenta el semáforo de esta revisión, con el mismo modelo. La ficha de cada análisis en Fundamentos (capítulo 9) dice, supuesto por supuesto, cómo revisarlo aquí y qué alternativa usar si falla.</p>
   </div>
   <h3>El semáforo</h3>
-  <p>Arriba del resultado, un renglón por supuesto, cada uno con su color, su estado y una frase con la prueba que lo decide. El color global es el del peor renglón: <b>Los supuestos se cumplen</b>, <b>Hay supuestos que revisar</b> o <b>Hay supuestos que no se cumplen</b>.</p>
+  <p>Arriba del resultado, un renglón por supuesto, cada uno con su color, su ícono (✓ bien, ! revisar, ✕ problema, – no aplica), su estado y una frase con la prueba que lo decide. El ícono y la palabra dicen lo mismo que el color, para que no haga falta distinguir los colores. El color global es el del peor renglón: <b>Los supuestos se cumplen</b>, <b>Hay supuestos que revisar</b> o <b>Hay supuestos que no se cumplen</b>.</p>
   <table class="compacta">
     <thead><tr><th style="width:1.85in">Supuesto</th><th style="width:1.9in">Prueba que decide</th><th>También se calculan</th></tr></thead>
     <tbody>
@@ -71,9 +71,27 @@
     </tbody>
   </table>
   <p>Con los venenos de Box y Cox, por ejemplo, la normalidad y las varianzas fallan y hay un residuo atípico (figura 4.16): la app estima la transformación de Box-Cox con ese mismo modelo (λ = −0.816, intervalo de −1.294 a −0.341), sugiere el recíproco y recuerda que la columna original no cambia; para la fila 24, propone revisar primero que no sea un error de captura. Si se revisa solo el veneno, sin el tratamiento, el modelo queda de un factor y las varianzas salen en ámbar (Brown-Forsythe, <i>p</i> = 0.021): entonces el recuadro agrega Games-Howell y Kruskal-Wallis.</p>
+  <h3>Probar la alternativa</h3>
+  <p>Cuando algún renglón del semáforo falla, debajo (en esta revisión, debajo de <b>Qué hacer</b>) aparece el recuadro <span class="ui">Probar la alternativa</span>, con un botón por remedio. Cada botón corre el análisis que atiende el supuesto, con las mismas variables; los números del resultado anterior no cambian, y se vuelve a él eligiéndolo en el catálogo. Los botones dependen del análisis:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">Análisis</th><th style="width:2.1in">Cuándo</th><th>Qué corre el botón</th></tr></thead>
+    <tbody>
+      <tr><td>Revisión de los supuestos</td><td>Fallan la normalidad o las varianzas y Box-Cox propone una transformación</td><td>Crea la columna transformada en Datos (<code>ln_</code>, <code>raiz_</code>, <code>inv_</code> o <code>bc_</code> más el nombre de la respuesta) y vuelve a revisar con ella.</td></tr>
+      <tr><td></td><td>… y la respuesta son conteos</td><td>Los modelos de conteos con la familia que elija la sobredispersión (sección 4.17).</td></tr>
+      <tr><td></td><td>Con un solo factor: varianzas distintas, o normalidad con menos de 30 residuos</td><td>Kruskal-Wallis, o Friedman si hay bloques (sección 4.9); con varianzas distintas y sin bloques, también Games-Howell (sección 4.11).</td></tr>
+      <tr><td>Prueba t</td><td>Varianzas distintas con la t de Student</td><td>La t de Welch.</td></tr>
+      <tr><td></td><td>Falla la normalidad</td><td>Wilcoxon: de Mann-Whitney con dos grupos, de rangos con signo con una muestra o pareada (sección 4.9).</td></tr>
+      <tr><td>Regresión lineal y polinomial</td><td>Fallan la normalidad o la varianza constante</td><td>Con la respuesta positiva, su logaritmo en una columna nueva y el ajuste otra vez; con conteos, el modelo de conteos con los predictores como covariables (hasta dos).</td></tr>
+      <tr><td></td><td>Falla la forma, con un predictor</td><td>La regresión polinomial de grado 2.</td></tr>
+      <tr><td></td><td>Colinealidad, con tres o más predictores</td><td>Los mejores subconjuntos (sección 4.12).</td></tr>
+      <tr><td>Modelos generalizados</td><td>Sobredispersión con la Poisson o la binomial</td><td>La binomial negativa o la cuasibinomial.</td></tr>
+      <tr><td>Modelos mixtos y medidas repetidas</td><td>Fallan la normalidad o las varianzas y la respuesta es positiva</td><td>Su logaritmo en una columna nueva y el ajuste otra vez.</td></tr>
+    </tbody>
+  </table>
+  <p>La columna transformada se crea una sola vez: si ya existe con la misma transformación, se usa esa. Un aviso dice su nombre, y la original no cambia (sección 2.9). Con los venenos, <span class="ui">Transformar con el recíproco y volver a revisar</span> crea <code>inv_tiempo</code> y la revisión con ella sale con todos los renglones en verde, salvo la aditividad, que no aplica sin bloques. Los atípicos, la aditividad y la independencia no tienen botón: piden revisar los datos o el diseño.</p>
   <figure class="media">
-    <div class="marco"><img src="../img/b4-sup-rojo.png" alt="Los supuestos de los venenos: Hay supuestos que no se cumplen; normalidad PROBLEMA (Shapiro-Wilk p = 0.002); varianzas PROBLEMA (Brown-Forsythe p menor que 0.001, la mayor 678.6 veces la menor); aditividad NO APLICA; independencia BIEN; valores atípicos REVISAR (fila 24, p de Bonferroni = 0.021); y Qué hacer: transformar con Box-Cox, λ = −0.816, el recíproco, y revisar la fila 24"></div>
-    <figcaption><b>Figura 4.16.</b> El caso contrario: los tiempos de supervivencia de los venenos no cumplen los supuestos, y la app propone el recíproco.</figcaption>
+    <div class="marco"><img src="../img/b4-sup-rojo.png" alt="Los supuestos de los venenos: Hay supuestos que no se cumplen; normalidad PROBLEMA (Shapiro-Wilk p = 0.002); varianzas PROBLEMA (Brown-Forsythe p menor que 0.001, la mayor 678.6 veces la menor); aditividad NO APLICA; independencia BIEN; valores atípicos REVISAR (fila 24, p de Bonferroni = 0.021); y Qué hacer: transformar con Box-Cox, λ = −0.816, el recíproco, y revisar la fila 24; debajo, Probar la alternativa con el botón Transformar con el recíproco y volver a revisar"></div>
+    <figcaption><b>Figura 4.16.</b> El caso contrario: los tiempos de supervivencia de los venenos no cumplen los supuestos; la app propone el recíproco y lo ofrece en <span class="ui">Probar la alternativa</span>.</figcaption>
   </figure>
   <h3>Las gráficas y el cuadro</h3>
   <ul>
@@ -112,7 +130,7 @@
   <ul>
     <li>la <b>conclusión</b> con las dos medias, la diferencia y su intervalo, y <i>t</i>, gl y <i>p</i>;</li>
     <li>el <b>tamaño del efecto</b> en palabras, según la <i>g</i> de Hedges y la guía de Cohen: muy pequeño (menos de 0.2), pequeño (desde 0.2), mediano (desde 0.5) o grande (desde 0.8). En pareadas se calcula sobre las diferencias (<i>d<sub>z</sub></i>) y en una muestra, contra el valor de referencia;</li>
-    <li>el <b>semáforo</b>: la normalidad de cada grupo (o de las diferencias, en pareadas) por Shapiro-Wilk y, con dos grupos, la comparación de las varianzas con la prueba <i>F</i>. Con la t de Welch, ese renglón (<span class="ui">Varianzas (t de Welch)</span>) queda en verde aunque las varianzas difieran, porque Welch no las supone iguales; con la de Student (<span class="ui">Varianzas iguales</span>) se colorea según la <i>F</i> y, si difieren, aconseja Welch;</li>
+    <li>el <b>semáforo</b>: la normalidad de cada grupo (o de las diferencias, en pareadas) por Shapiro-Wilk y, con dos grupos, la comparación de las varianzas con la prueba <i>F</i>. Con la t de Welch, ese renglón (<span class="ui">Varianzas (t de Welch)</span>) queda en verde aunque las varianzas difieran, porque Welch no las supone iguales; con la de Student (<span class="ui">Varianzas iguales</span>) se colorea según la <i>F</i> y, si difieren, <span class="ui">Probar la alternativa</span> corre la de Welch (si falla la normalidad, Wilcoxon);</li>
     <li>la <b>gráfica</b> de los valores de cada grupo (en pareadas, de las diferencias), con la caja de cuartiles y la media; en pareadas y en una muestra, una línea discontinua marca el valor de referencia;</li>
     <li>los <b>cuadros</b>: la prueba elegida (con dos grupos, la otra t abajo como referencia), las medias y desviaciones, y el tamaño del efecto: la <i>d</i> de Cohen y la <i>g</i> de Hedges (la <i>d</i> corregida por el sesgo de las muestras chicas), con intervalos por la t no central (Steiger y Fouladi, 1997).</li>
   </ul>
