@@ -90,3 +90,87 @@ SPT.describir('Registro · el CV de los descriptivos', () => {
     SPT.igual(SP.guias.escala('cv', { descriptivo: true }), null);
   });
 });
+
+SPT.describir('Registro · tarjetas de interpretación (hito 5.2)', () => {
+  const G = () => SP.guias;
+  /* valores de prueba por estadístico: en cada zona, en sus bordes y con signo */
+  const VALORES = {
+    p: [0.0004, 0.001, 0.0049, 0.023, 0.05, 0.31], 'p-ajustado': [0.0002, 0.04, 0.6], 'd-cohen': [-0.85, 0.1, 0.5], 'g-hedges': [0.3], 'h-cohen': [-0.6],
+    'f-cohen': [0.05, 0.27, 0.5], 'eta2-h': [-0.01, 0.08], 'w-kendall': [0.62], r: [-0.72, 0.05], rho: [0.4, -0.2], phi: [-0.35], 'v-cramer': [0.31],
+    'razon-momios': [0.38, 1, 2.62, 9], kappa: [-0.1, 0.2, 0.56, 0.93], r2: [0.969, 0.01], 'r2-ajustada': [0.95, -0.02], cv: [3.5734, 12, 31.5],
+    eficiencia: [160.2, 92], vif: [1.3, 7.2, 12.1], condicion: [3, 34.2], 'durbin-watson': [1.12, 2.01, 3.2], 'residuo-std': [2.6, -0.4], cook: [0.02, 1.2],
+    asimetria: [1.3, -0.7, 0.2], heredabilidad: [0.72, 0.1], potencia: [0.65, 0.9], 'delta-aic': [0, 1.4, 12],
+  };
+  const ctxDe = id => ({ alfa: 0.05, n: 30, gl: 2, titulo: id === 'eficiencia' ? 'Eficiencia relativa frente a completamente al azar, %' : '' });
+  SPT.caso('Coherencia texto-número: cada tarjeta cita su valor como el medidor y su zona', () => {
+    for (const f of G().fichas()) {
+      const e = G().escala(f.id, ctxDe(f.id));
+      if (!e) continue;
+      SPT.afirmar(VALORES[f.id], f.id + ': tiene valores de prueba');
+      for (const v of VALORES[f.id]) {
+        const t = G().interpretar(f.id, [{ valor: v, etiqueta: '' }], ctxDe(f.id)).join(' ');
+        SPT.afirmar(t.length > 20 && !/undefined|NaN|\{\w+\}/.test(t), f.id + ' ' + v + ': ' + t);
+        const fv = G().formatoDe(f.id), z = G().zona(f.id, v, ctxDe(f.id));
+        const cita = [fv(v), fv(Math.abs(v)), v < 0.001 ? '< 0.001' : '= ' + v.toFixed(3)].some(x => t.indexOf(x) >= 0);
+        SPT.afirmar(cita, f.id + ' ' + v + ' cita el valor: ' + t);
+        /* la zona: su etiqueta, o lo que la sustituye (p ≥ α, κ < 0, ΔAIC = 0, η²H ≤ 0, DW cerca de 2; la R² y la eficiencia la dicen con sus cuentas) */
+        const sustituye = { p: v >= 0.05, 'p-ajustado': v >= 0.05, kappa: v < 0, 'delta-aic': v === 0, 'eta2-h': v <= 0, 'r2-ajustada': true, r2: true, 'durbin-watson': v >= 1.5 && v <= 2.5, eficiencia: true }[f.id];
+        SPT.afirmar(sustituye || t.indexOf(z.etiqueta) >= 0, f.id + ' ' + v + ' nombra su zona («' + z.etiqueta + '»): ' + t);
+      }
+    }
+  });
+  SPT.caso('Las cuentas de la tarjeta salen del valor: R², CV con su media, eficiencia, momios y VIF', () => {
+    const t = (id, v, c) => G().interpretar(id, [{ valor: v, etiqueta: '' }], c || {}).join(' ');
+    SPT.afirmar(/explica el 96\.9\s%.*el 3\.1\s% restante/.test(t('r2', 0.9692)), t('r2', 0.9692));
+    SPT.afirmar(/error, 0\.212, es el 3\.57\s% de la media general, 5\.94/.test(t('cv', 3.5734, { media: 5.938 })), 'σ = CV × media / 100');
+    SPT.afirmar(/completamente al azar habría hecho falta 1\.60 veces/.test(t('eficiencia', 160.2, { titulo: 'Eficiencia relativa frente a completamente al azar, %' })), 'ER / 100');
+    SPT.afirmar(/\(62\s% menores\); se lee por su inversa, 2\.63/.test(t('razon-momios', 0.38)), '1 − OR y 1 / OR');
+    SPT.afirmar(/su error estándar, 2\.68 veces/.test(t('vif', 7.2)), '√VIF');
+    SPT.afirmar(/en el 2\.3\s% de las repeticiones/.test(t('p', 0.023)) && /en menos del 0\.1\s%/.test(t('p', 0.0004)), 'el p como porcentaje');
+  });
+  SPT.caso('Con varios valores: cuántos y cuáles caen en cada zona', () => {
+    const p = G().interpretar('p', [{ valor: 1e-6, etiqueta: 'A' }, { valor: 0.003, etiqueta: 'B' }, { valor: 0.22, etiqueta: 'A × B' }], { alfa: 0.05 });
+    SPT.igual(p[0], '2 de 3 con p < α = 0.05: A y B.'); SPT.igual(p[1], 'Sin evidencia suficiente (p ≥ α): A × B.');
+    const r = G().interpretar('r', [{ valor: -0.72, etiqueta: 'a' }, { valor: 0.15, etiqueta: 'b' }, { valor: 0.41, etiqueta: 'c' }], {});
+    SPT.igual(r[0], 'Por zona: grande: a (−0.720); mediano: c (0.410); pequeño: b (0.150).');
+    const res = G().interpretar('residuo-std', [2.5, -3.2, 0.1, 0.4, -1].map((valor, i) => ({ valor, etiqueta: String(i + 1) })), {});
+    SPT.igual(res[0], 'De 5 residuos, 2 pasan de ±2 y 1 de ±3: 2 (−3.20).');
+    const ck = G().interpretar('cook', [0.01, 1.2, 0.2, 0.05].map((valor, i) => ({ valor, etiqueta: String(i + 1) })), { n: 40 });
+    SPT.igual(ck.join(' '), 'De 4 observaciones, 2 pasan de 0.100, donde conviene revisarlas: 2 (1.20) y 3 (0.200). Una llega a 1: es influyente.');
+  });
+  SPT.caso('La frase de la curva: el valor frente al crítico', () => {
+    SPT.igual(G().interpretarPrueba({ x: 1.47, criticos: [2.39], colas: 'derecha', p: 0.2198, alfa: 0.05 }), 'Antes del valor crítico 2.39: p = 0.220 ≥ α = 0.05.');
+    SPT.igual(G().interpretarPrueba({ x: 60.6, criticos: [3.28], colas: 'derecha', p: 1e-12, alfa: 0.05 }), 'Más allá del valor crítico 3.28: p < 0.001 < α = 0.05.');
+    SPT.igual(G().interpretarPrueba({ x: -2.5, criticos: [-2.23, 2.23], colas: 'dos', p: 0.031, alfa: 0.05 }), 'Fuera de los valores críticos ±2.23: p = 0.031 < α = 0.05.');
+  });
+});
+
+SPT.describir('Registro · la guía del CV por cultivo y variable (hito 5.2)', () => {
+  const zcv = (v, g) => SP.guias.zona('cv', v, { guiaCV: g }).etiqueta;
+  SPT.caso('Maíz, rendimiento de grano (Fritsche-Neto et al., 2012, cuadro 2): los bordes publicados', () => {
+    const g = { id: 'maiz-rendimiento' };
+    SPT.igual(zcv(8.24, g), 'bajo (alta precisión)'); SPT.igual(zcv(8.25, g), 'medio'); SPT.igual(zcv(15.49, g), 'medio');
+    SPT.igual(zcv(15.5, g), 'alto'); SPT.igual(zcv(19.11, g), 'alto'); SPT.igual(zcv(19.12, g), 'muy alto (baja precisión)');
+    SPT.igual(SP.guias.escala('cv', { guiaCV: g }).fuenteCorta, 'Fritsche-Neto et al. (2012)');
+    SPT.igualJSON(SP.guias.guiasCV().map(x => x.id), ['general', 'maiz-rendimiento', 'maiz-altura-planta', 'maiz-altura-mazorca', 'maiz-diametro-mazorca', 'maiz-mazorcas-planta', 'maiz-peso-mazorcas', 'maiz-peso-100']);
+  });
+  SPT.caso('La general sigue siendo la de Pimentel-Gomes, sin incluir el límite', () => {
+    SPT.igual(zcv(9.99, null), 'bajo (alta precisión)'); SPT.igual(zcv(10, null), 'medio'); SPT.igual(zcv(30, null), 'muy alto (baja precisión)');
+    SPT.igual(SP.guias.escala('cv', {}).max, 50);
+  });
+  SPT.caso('Garcia (1989): media − DE, media + DE y media + 2 DE de los CV de ensayos parecidos', () => {
+    const r = SP.guias.limitesGarcia([12, 8, 15, 10, 20, 11, 9, 14]);
+    SPT.igual(r.n, 8); SPT.cerca(r.media, 12.375, 1e-12); SPT.cerca(r.de, Math.sqrt(105.875 / 7), 1e-12);
+    SPT.igualJSON(r.limites, [8.49, 16.26, 20.15]);
+    SPT.igual(SP.guias.limitesGarcia([10, 12]), null, 'con dos CV no alcanza');
+    SPT.igual(SP.guias.limitesGarcia([1, 1, 30]), null, 'media − DE negativa');
+  });
+  SPT.caso('Límites propios: se usan si son positivos y crecientes; si no, la general', () => {
+    const g = { id: 'propia', cultivo: 'Frijol', variable: 'rendimiento', limites: [9, 18, 24] };
+    SPT.igual(zcv(9, g), 'bajo (alta precisión)', 'los límites propios se incluyen'); SPT.igual(zcv(24.1, g), 'muy alto (baja precisión)');
+    SPT.igual(SP.guias.escala('cv', { guiaCV: g }).fuenteCorta, 'Límites propios');
+    SPT.igual(SP.guias.escala('cv', { guiaCV: Object.assign({}, g, { garcia: { n: 8, media: 12.4, de: 3.9 } }) }).fuenteCorta, 'Garcia (1989)');
+    SPT.igual(SP.guias.guiaCV({ id: 'propia', limites: [9, 8, 24] }).id, 'general', 'no crecientes');
+    SPT.igual(SP.guias.guiaCV({ id: 'otra' }).id, 'general');
+  });
+});

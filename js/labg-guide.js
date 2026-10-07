@@ -1,4 +1,4 @@
-/* LABG Suite — LABGuide 1.0.0: medidores y curvas de referencia para leer estadísticos
+/* LABG Suite — LABGuide 1.1.0: medidores y curvas de referencia para leer estadísticos
    Copyright (C) 2026  Luis Ángel Barrera-Guzmán
    This program is free software: you can redistribute it and/or modify it under
    the terms of the GNU General Public License as published by the Free Software
@@ -14,22 +14,26 @@
                  con su texto; con varias, una imagen descrita y la lista de valores con su zona.
      2. Curva    la densidad de referencia (t, F, χ² o normal) con el valor crítico, el observado y el área del p
                  sombreada, para ver dónde cae el estadístico de una prueba.
+     3. Tarjeta  (1.1.0) bajo un medidor, los párrafos que lo interpretan con los números del caso y, plegado, qué es
+                 el estadístico; bajo una curva, una frase de lectura.
    No sabe de ningún análisis en particular: la app le pasa la escala (límites, zonas y fuente) y los valores. Los
    colores salen de las variables de css/labg-guide.css, que siguen el tema claro u oscuro de la app.
 
    Uso
    ---
      LABGuide.medidor({ min, max, eje, zonas: [{ hasta, etiqueta, tono }], marcas: [{ valor, etiqueta }],
-                        referencias: [{ valor, etiqueta }], formato, formatoEje, titulo, fuente, nota })  → HTML
+                        referencias: [{ valor, etiqueta }], formato, formatoEje, titulo, fuente, nota,
+                        tarjeta: { textos: [párrafo…], que: { titulo, texto }, extra: HTML } })      → HTML
      LABGuide.curva({ dist: 't' | 'F' | 'chi2' | 'z', gl1, gl2, observado, criticos: [x…], colas: 'derecha' |
-                      'izquierda' | 'dos', p, alfa, titulo, formato })                            → HTML
+                      'izquierda' | 'dos', p, alfa, titulo, formato, lectura })                   → HTML
+   En la tarjeta, «extra» es HTML de la app (ya escapado) que va al final, como un formulario para ajustar la guía.
      LABGuide.densidad(dist, x, gl1, gl2)                                                          → número
    eje: 'lineal', 'log', 'abs' (el valor absoluto) o 'logabs' (una razón: 1/2 se lee como 2). tono: 'n0' a 'n3'
    (magnitud) u 'ok', 'ok2' (bien, más claro), 'aviso', 'mal' (calidad). Los textos propios siguen el idioma de <html lang>. */
 (function (raiz) {
   'use strict';
   if (raiz.LABGuide && raiz.LABGuide.version) return;
-  const VERSION = '1.0.0';
+  const VERSION = '1.1.0';
   const en = () => typeof document !== 'undefined' && (document.documentElement.lang || 'es').slice(0, 2) === 'en';
   const tx = (es, ing) => (en() ? ing : es);
   const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -137,14 +141,18 @@
     const id = uid('m'), titulo = o.titulo ? `<p class="lg-tit" id="${id}">${esc(o.titulo)}</p>` : '';
     const vb = `viewBox="0 0 ${W} ${BAR_Y + BAR_H + 22}"`;
     const fuente = o.fuente ? `<p class="lg-fuente">${esc(tx('Guía: ', 'Guide: ') + o.fuente)}${o.nota ? ' · ' + esc(o.nota) : ''}</p>` : '';
+    /* la tarjeta va fuera del role="meter": un medidor no puede tener controles dentro (el «¿Qué es?» se despliega) */
+    const t = o.tarjeta || {};
+    const tarjeta = (t.textos && t.textos.length) || t.que || t.extra ? `<div class="lg-tarjeta">${(t.textos || []).map(x => `<p>${esc(x)}</p>`).join('')}` +
+      (t.que && t.que.texto ? `<details class="lg-que"><summary>${esc(t.que.titulo || tx('¿Qué es?', 'What is it?'))}</summary><p>${esc(t.que.texto)}</p></details>` : '') + (t.extra || '') + '</div>' : '';
     if (marcas.length === 1) {
       const m = marcas[0];
-      return `<div class="lg-medidor" role="meter" aria-valuemin="${o.min}" aria-valuemax="${o.max}" aria-valuenow="${Math.max(o.min, Math.min(o.max, o.eje === 'abs' ? Math.abs(m.valor) : o.eje === 'logabs' ? Math.max(m.valor, 1 / m.valor) : m.valor))}"` +
+      return `<div class="lg-medidor"><div class="lg-meter" role="meter" aria-valuemin="${o.min}" aria-valuemax="${o.max}" aria-valuenow="${Math.max(o.min, Math.min(o.max, o.eje === 'abs' ? Math.abs(m.valor) : o.eje === 'logabs' ? Math.max(m.valor, 1 / m.valor) : m.valor))}"` +
         ` aria-valuetext="${esc(textoMarca(m))}"${titulo ? ` aria-labelledby="${id}"` : ''}>${titulo}<p class="lg-valor">${esc(textoMarca(m))}</p>` +
-        `<svg class="lg-regla" ${vb} aria-hidden="true" focusable="false">${svg}${extremos}</svg>${leyenda}${fuente}</div>`;
+        `<svg class="lg-regla" ${vb} aria-hidden="true" focusable="false">${svg}${extremos}</svg></div>${leyenda}${tarjeta}${fuente}</div>`;
     }
     const desc = (o.titulo ? o.titulo + '. ' : '') + tx('Regla de {a} a {b} con zonas: ', 'Scale from {a} to {b} with zones: ').replace('{a}', fmt(o.min)).replace('{b}', fmt(o.max)) + zonas.map(q => q.etiqueta).join(', ') + '.';
-    return `<div class="lg-medidor">${titulo}<svg class="lg-regla" ${vb} role="img" aria-label="${esc(desc)}" focusable="false">${svg}${extremos}</svg>${lista}${leyenda}${fuente}</div>`;
+    return `<div class="lg-medidor">${titulo}<svg class="lg-regla" ${vb} role="img" aria-label="${esc(desc)}" focusable="false">${svg}${extremos}</svg>${lista}${leyenda}${tarjeta}${fuente}</div>`;
   }
 
   /* ---------------- curva de referencia ---------------- */
@@ -215,7 +223,7 @@
     const svg = `<svg class="lg-curva" viewBox="0 0 ${CW} ${CH}" role="img" aria-label="${esc(desc)}" focusable="false">${areas}<path class="lg-dens" d="${linea}"/>${eje}${criticos}${observado}${marcasEje}</svg>`;
     const pie = `<figcaption><span class="lg-cl"><span class="lg-cuadrito lg-area-c" aria-hidden="true"></span>${esc(tx('área = ', 'area = ') + (pTxt || 'p'))}</span>` +
       (critTxt ? ` <span class="lg-cl"><span class="lg-raya" aria-hidden="true"></span>${esc(tx('crítico ', 'critical ') + critTxt + ' (α = ' + alfa + ')')}</span>` : '') + '</figcaption>';
-    return `<figure class="lg-curva-fig">${o.titulo ? `<p class="lg-tit">${esc(o.titulo)}</p>` : ''}${svg}${pie}</figure>`;
+    return `<figure class="lg-curva-fig">${o.titulo ? `<p class="lg-tit">${esc(o.titulo)}</p>` : ''}${svg}${pie}${o.lectura ? `<p class="lg-curva-lee">${esc(o.lectura)}</p>` : ''}</figure>`;
   }
 
   raiz.LABGuide = { version: VERSION, medidor, curva, densidad, posicion };

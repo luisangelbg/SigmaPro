@@ -1,6 +1,7 @@
 /* Pruebas de «Cómo leer este cuadro» (hito 5.1): las densidades de LABGuide contra las del núcleo, lo que la lectura
    saca de un cuadro (por columna y por fila) y lo que dibujan el medidor y la curva. Corren en el navegador (necesitan
-   js/labg-guide.js, js/interfaz/cuadros.js y js/interfaz/lectura.js). */
+   js/labg-guide.js, js/interfaz/cuadros.js y js/interfaz/lectura.js). Hito 5.2: tarjetas, guía del CV y nivel de detalle
+   (js/interfaz/detalle.js). */
 SPT.describir('Lectura de los cuadros · LABGuide', () => {
   const G = () => window.LABGuide;
   SPT.caso('Las densidades de LABGuide son las del núcleo (t, F, χ² y normal)', () => {
@@ -47,5 +48,72 @@ SPT.describir('Lectura de los cuadros · qué se lee en cada cuadro', () => {
   SPT.caso('Un cuadro sin estadísticos con guía no lleva desplegable', () => {
     const c = { titulo: 'Medias', columnas: [col('nivel', 'Nivel', 'texto'), col('media', 'Media', 'forma')], filas: [{ nivel: 'a', media: 2 }] };
     SPT.igual(SP.lectura.html(c, {}), '');
+  }, { navegador: true });
+});
+
+SPT.describir('Lectura de los cuadros · tarjetas y guía del CV (hito 5.2)', () => {
+  const col = (clave, titulo, formato) => ({ clave, titulo, formato });
+  SPT.caso('El medidor lleva su tarjeta fuera del role="meter"; la curva, su frase', () => {
+    const e = SP.guias.escala('cv');
+    const d = document.createElement('div');
+    d.innerHTML = window.LABGuide.medidor(Object.assign({}, e, { titulo: 'CV', marcas: [{ valor: 3.57, etiqueta: '' }], tarjeta: { textos: ['uno', 'dos'], que: { titulo: 'Qué es', texto: 'tres' } } }));
+    SPT.igualJSON([...d.querySelectorAll('.lg-tarjeta p')].map(p => p.textContent), ['uno', 'dos', 'tres']);
+    SPT.afirmar(!!d.querySelector('[role="meter"]') && !d.querySelector('[role="meter"] details, [role="meter"] .lg-tarjeta'), 'nada desplegable dentro del medidor');
+    const c = window.LABGuide.curva({ dist: 'F', gl1: 2, gl2: 33, observado: 1.5, criticos: [3.28], colas: 'derecha', p: 0.24, alfa: 0.05, lectura: 'Antes del valor crítico 3.28' });
+    SPT.afirmar(/class="lg-curva-lee">Antes del valor crítico 3\.28</.test(c), c.slice(-200));
+  }, { navegador: true });
+  SPT.caso('Al abrir el desplegable, cada medidor trae su tarjeta con los números del cuadro; el del CV, su guía', () => {
+    const c = { titulo: 'Resumen', columnas: [col('medida', 'Medida', 'texto'), col('valor', 'Valor', 'escala')],
+      filas: [{ medida: 'Media general', valor: 5.938 }, { medida: 'Coeficiente de variación, %', valor: 3.5734 }, { medida: 'R²', valor: 0.9692 }] };
+    const raiz = document.createElement('div');
+    raiz.innerHTML = SP.cuadros.html(c, { numero: 2 });
+    document.body.appendChild(raiz);
+    const antes = SP.lectura.guiaCV();
+    try {
+      SP.lectura.ponerGuiaCV(null);
+      const det = raiz.querySelector('details.lg-lectura');
+      SPT.afirmar(/Lectura · Cuadro 2\. Resumen/.test(det.querySelector('summary').textContent), 'el resumen nombra el cuadro (para Básico)');
+      det.dataset.lgPintado = '1';
+      SP.lectura.pintar(det);
+      const t = () => [...det.querySelectorAll('.lg-tarjeta > p')].map(p => p.textContent).join(' ');
+      SPT.afirmar(/error, 0\.212, es el 3\.57\s% de la media general, 5\.94/.test(t()), t());
+      SPT.afirmar(/explica el 96\.9\s%/.test(t()), 'R²');
+      SPT.afirmar(!!det.querySelector('.lg-item[data-ficha="cv"] select[data-cvguia="id"]'), 'formulario de la guía del CV');
+      SP.lectura.ponerGuiaCV({ id: 'maiz-rendimiento' });
+      SPT.afirmar(/guía de maíz para rendimiento de grano/.test(t()) && /Fritsche-Neto et al\. \(2012\)/.test(det.querySelector('.lg-item[data-ficha="cv"] .lg-fuente').textContent), 'se vuelve a dibujar con la guía nueva');
+      SP.lectura.ponerGuiaCV({ id: 'propia', cultivo: 'Frijol', variable: 'rendimiento', limites: [2, 3, 4] });
+      SPT.afirmar(/tus límites \(Frijol, rendimiento\), el CV es alto/.test(t()), t());
+    } finally { SP.lectura.ponerGuiaCV(antes); raiz.remove(); }
+  }, { navegador: true });
+});
+
+SPT.describir('Nivel de detalle · Básico, Estándar y Experto (hito 5.2)', () => {
+  SPT.caso('Básico abre las lecturas; Experto, las notas técnicas y el código; Estándar deja todo como siempre', () => {
+    const antes = SP.detalle.actual();
+    const raiz = document.createElement('div');
+    raiz.innerHTML = SP.detalle.selector() + '<details class="lg-lectura" data-lg-pintado="1"><summary>a</summary><div class="lg-cuerpo"></div></details>' +
+      '<details class="exp-tecnico"><summary>b</summary></details><details class="exp-codigo"><summary>c</summary></details>';
+    document.body.appendChild(raiz);
+    const [lec, tec, cod] = raiz.querySelectorAll('details');
+    const pulsado = () => raiz.querySelector('[aria-pressed="true"]').dataset.detallePoner;
+    try {
+      SP.detalle.poner('basico');
+      SPT.igual(document.documentElement.getAttribute('data-detalle'), 'basico'); SPT.igual(pulsado(), 'basico');
+      SPT.afirmar(lec.open && !tec.open && !cod.open, 'Básico: la lectura abierta');
+      SP.detalle.poner('experto');
+      SPT.afirmar(!lec.open && tec.open && cod.open, 'Experto: notas técnicas y código abiertos; la lectura vuelve a cerrarse');
+      SP.detalle.poner('estandar');
+      SPT.igual(document.documentElement.hasAttribute('data-detalle'), false); SPT.igual(pulsado(), 'estandar');
+      SPT.afirmar(!lec.open && !tec.open && !cod.open, 'Estándar: todo cerrado, como siempre');
+      raiz.querySelector('[data-detalle-poner="basico"]').click();
+      SPT.igual(SP.detalle.actual(), 'basico', 'el botón cambia el nivel');
+    } finally { SP.detalle.poner(antes); raiz.remove(); }
+  }, { navegador: true });
+  SPT.caso('Las notas técnicas: los detalles del reporte y el lugar del modelo de su ficha', () => {
+    const h = SP.detalle.tecnico({ metodo: 'dbca', e: { respuesta: 'rend', tratamientos: ['hibrido'], bloque: 'bloque' }, opciones: { alfa: 0.05 }, r: { n: 48 }, ms: 3.2, tabla: { n: 48 } });
+    const d = document.createElement('div'); d.innerHTML = h;
+    const kv = Object.fromEntries([...d.querySelectorAll('dt')].map(dt => [dt.textContent, dt.nextElementSibling.textContent]));
+    SPT.igual(kv['Entradas'], 'respuesta = rend; tratamientos = hibrido; bloque = bloque'); SPT.igual(kv['Filas usadas'], '48'); SPT.igual(kv['Calculado en'], '3 ms');
+    SPT.afirmar(!!d.querySelector('details.exp-tecnico .exp-modelo[data-modelo="dbca"]'), 'el modelo se carga de la ficha dbca');
   }, { navegador: true });
 });

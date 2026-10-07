@@ -9,6 +9,12 @@
  "lectura-dbca": {
   "prep": "(async () => { window.__esperando = true; document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[0].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.usar('dbca', { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, {}); await new Promise(r => setTimeout(r, 800)); document.querySelectorAll('#anaResultado details.lg-lectura').forEach(d => d.open = true); await new Promise(r => setTimeout(r, 400)); document.querySelectorAll('#anaResultado details.lg-refs').forEach(d => d.open = true); window.__esperando = false; })()"
  },
+ "detalle-basico": {
+  "prep": "(async () => { window.__esperando = true; document.documentElement.setAttribute('data-detalle', 'basico'); document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[0].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.usar('dbca', { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, {}); await new Promise(r => setTimeout(r, 900)); SP.detalle.aplicar(document.querySelector('#anaResultado')); await new Promise(r => setTimeout(r, 400)); document.querySelectorAll('#anaResultado details.lg-que, #anaResultado details.lg-cv-guia, #anaResultado details.lg-cv-garcia').forEach(d => d.open = true); const s = document.querySelector('#anaResultado select[data-cvguia=\"id\"]'); if (s) { s.value = 'propia'; s.dispatchEvent(new Event('change', { bubbles: true })); } await new Promise(r => setTimeout(r, 200)); window.__esperando = false; })()"
+ },
+ "detalle-experto": {
+  "prep": "(async () => { window.__esperando = true; document.documentElement.setAttribute('data-detalle', 'experto'); document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[0].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.usar('dbca', { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, {}); await new Promise(r => setTimeout(r, 900)); SP.detalle.aplicar(document.querySelector('#anaResultado')); await new Promise(r => setTimeout(r, 1200)); window.__esperando = false; })()"
+ },
  "analisis-0": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },

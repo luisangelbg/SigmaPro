@@ -1410,8 +1410,20 @@
   };
   /* la ficha de Fundamentos del análisis (bloque 9) */
   const botonFicha = () => (estado.metodo && SP.app.fundamentos ? `<button type="button" class="btn btn-ghost btn-sm exp-ficha" data-ficha="${esc(estado.metodo)}" title="${esc(T('Fundamentos: el modelo, los supuestos y los datos que necesita'))}"><span aria-hidden="true">ⓘ</span> ${esc(T('¿Qué es este análisis?'))}</button>` : '');
-  const copiarHTML = i => `<div class="btn-row exp-acciones"><button type="button" class="btn btn-secondary btn-sm" data-accion="copiar" data-cuadro="${i}">${esc(T('Copiar cuadro'))}</button>` +
+  const copiarHTML = i => `<div class="btn-row exp-acciones cuadro-acciones"><button type="button" class="btn btn-secondary btn-sm" data-accion="copiar" data-cuadro="${i}">${esc(T('Copiar cuadro'))}</button>` +
     `<button type="button" class="btn btn-ghost btn-sm" data-accion="csv" data-cuadro="${i}">${esc(T('Bajar en CSV'))}</button></div>`;
+
+  /* el nivel de detalle (js/interfaz/detalle.js): el selector, el aviso de Básico y las notas técnicas de Experto */
+  const detalleHTML = () => (SP.detalle ? SP.detalle.selector() : '');
+  const avisoBasicoHTML = () => (SP.detalle ? SP.detalle.avisoBasico() : '');
+  function tecnicoHTML(r, ms) {
+    if (!SP.detalle) return '';
+    try {
+      const p = pedidoActual();
+      return SP.detalle.tecnico({ metodo: estado.metodo, e: p.e, opciones: SP.opcionesCon(SP.metodos[estado.metodo], p.op), r, ms, tabla: SP.app.tablaAnalisis() });
+    } catch (e) { return ''; }
+  }
+  const aplicarDetalle = () => { if (SP.detalle) SP.detalle.aplicar($('#anaResultado')); };
 
   function graficasSupuestos(r) {
     const g = r.graficas, qq = g.qq;
@@ -1445,14 +1457,16 @@
     const rec = rep.recomendaciones;
     $('#anaResultado').innerHTML =
       `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('modelo {m} · n = {n} · calculado en {ms} ms', { m: r.formula, n: r.n, ms: Math.max(1, Math.round(ms)) }))}</span>${botonFicha()}${botonReporte()}</div>` +
+      detalleHTML() + avisoBasicoHTML() +
       semaforoHTML(rep.semaforo, r.global, ({ verde: T('Los supuestos se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[r.global]), T('Semáforo de los supuestos')) +
       (rec.length ? `<div class="callout exp-conclusion"><p><b>${esc(T('Qué hacer'))}</b></p><ul class="ana-rec">${rec.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '') +
       (r.excluidas ? `<p class="small muted">${esc(T('{k} filas con algún valor faltante en el modelo no entran.', { k: r.excluidas }))}</p>` : '') +
       (SP.temasGraficas ? SP.temasGraficas.selector() : '') + graficasSupuestos(r) +
       SP.cuadros.html(rep.cuadros[0], { numero: 1, contexto: SP.lectura && SP.lectura.contexto(r) }) + copiarHTML(0) +
       (rep.cuadros[1] ? `<details class="exp-extras"><summary>${esc(T('Varianza de los residuos por tratamiento'))}</summary>${SP.cuadros.html(rep.cuadros[1], { numero: 2 })}</details>` : '') +
-      codigoHTML(codigo) +
+      tecnicoHTML(r, ms) + codigoHTML(codigo) +
       (SP.app.suite ? SP.app.suite.franjaMetodo('supuestos') : '');
+    aplicarDetalle();
   }
 
   /** Gráficas de la regresión: la recta o curva con sus bandas (o observados contra ajustados) y el diagnóstico. */
@@ -2093,14 +2107,16 @@
     const global = sem && sem.length ? sem.map(s => s.color).reduce((a, b) => (PEOR[b] > PEOR[a] ? b : a), 'verde') : null;
     $('#anaResultado').innerHTML =
       `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span>${botonFicha()}${botonReporte()}</div>` +
-      `<div class="callout exp-conclusion">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` +
+      detalleHTML() +
+      `<div class="callout exp-conclusion">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` + avisoBasicoHTML() +
       (global ? semaforoHTML(sem, global, ({ verde: T('Los supuestos de la prueba se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[global]), T('Semáforo de los supuestos')) : '') +
       graficasHTML(graficaMetodo(r)) +
       (r.diseno && !r.tipo && r.factores && r.factores.length ? `<div class="btn-row exp-acciones"><button type="button" class="btn btn-primary btn-sm" data-accion="comparar">${esc(T('Comparar las medias de este diseño'))}</button></div>` : '') +
       botonesModelo(r) +
       rep.cuadros.map((q, i) => SP.cuadros.html(q, { numero: i + 1, contexto: SP.lectura && SP.lectura.contexto(r) }) + copiarHTML(i)).join('') +
-      codigoHTML(codigo) +
+      tecnicoHTML(r, ms) + codigoHTML(codigo) +
       (SP.app.suite ? SP.app.suite.franjaMetodo(estado.metodo) : '');
+    aplicarDetalle();
   }
   /** Tras la selección, botones que llevan el modelo elegido a la regresión lineal con todo su diagnóstico. */
   function botonesModelo(r) {

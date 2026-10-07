@@ -337,6 +337,32 @@ table.imp-tabla thead th { vertical-align: top; position: sticky; top: 0; backgr
 .lg-refs { margin-top: var(--sp-3); font-size: var(--fs-xs); }
 .lg-refs summary { cursor: pointer; color: var(--btn-oro-texto); font-weight: 600; }
 .lg-refs ul { margin: var(--sp-1) 0 0; padding-left: 1.2em; color: var(--text-muted); }
+/* la guía del CV por cultivo y variable (hito 5.2) */
+.lg-cv-guia { margin: 6px 0 2px; font-size: var(--fs-sm); }
+.lg-cv-guia > summary { cursor: pointer; color: var(--btn-oro-texto); font-weight: 600; }
+.lg-cv-form { display: grid; gap: var(--sp-2); padding: var(--sp-2) 0 0; max-width: 40rem; }
+.lg-cv-propia { display: grid; gap: var(--sp-2); margin: 0; padding: var(--sp-2) var(--sp-3) var(--sp-3); border: 1px solid var(--border); border-radius: var(--r-md); }
+.lg-cv-propia legend { padding: 0 4px; font-weight: 600; }
+.lg-cv-fila { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-3); }
+.lg-cv-fila .field { flex: 1 1 8rem; min-width: 7rem; margin: 0; }
+.lg-cv-garcia summary { cursor: pointer; color: var(--btn-oro-texto); }
+.lg-cv-msg:empty { display: none; }
+/* nivel de detalle (hito 5.2): Básico oculta los cuadros de Análisis y del reporte y abre «Lectura»; Experto muestra las notas técnicas */
+.sp-detalle { margin: 0 0 var(--sp-3); flex-wrap: wrap; max-width: 100%; }
+.sp-detalle button { font-size: var(--fs-sm); letter-spacing: 0; padding: 5px 14px; min-height: 32px; }
+.sp-detalle-fila { margin-top: var(--sp-3); }
+.lg-sum-basico, .sp-basico-aviso { display: none; }
+.exp-tecnico { display: none; margin: var(--sp-3) 0; }
+.exp-tecnico > summary { cursor: pointer; font-weight: 600; }
+.exp-modelo-t { margin: var(--sp-3) 0 0; font-weight: 600; }
+.exp-tecnico-dl { max-width: 52rem; }
+.exp-tecnico-dl dd { text-align: left; }
+:root[data-detalle="experto"] .exp-tecnico { display: block; }
+:root[data-detalle="basico"] .sp-basico-aviso { display: block; }
+:root[data-detalle="basico"] :is(#anaResultado, #repItems) .lg-sum-basico { display: inline; }
+:root[data-detalle="basico"] :is(#anaResultado, #repItems) .lg-sum-std { display: none; }
+:root[data-detalle="basico"] :is(#anaResultado, #repItems) :is(.tabla-wrap, .pie-cuadro, .cuadro-acciones, .exp-extras:not(.rep-ajustes)) { display: none; }
+:root[data-detalle="basico"] :is(#anaResultado, #repItems, #expResultado) .exp-codigo { display: none; }
 .exp-codigo pre { margin: var(--sp-2) 0; padding: 12px 14px; border-radius: var(--r-md); background: #111; color: #EEE9DF; overflow: auto; font-size: var(--fs-xs); line-height: 1.55; white-space: pre; }
 table.revista.sp-cuadro caption b { font-weight: 800; }
 table.revista.sp-cuadro tbody th { font-weight: 600; padding: 6px 10px; text-align: left; vertical-align: top; }

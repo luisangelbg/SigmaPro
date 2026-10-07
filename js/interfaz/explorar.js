@@ -156,6 +156,14 @@
   };
   /* la ficha de Fundamentos del resumen (bloque 9) */
   const botonFicha = () => (SP.app.fundamentos ? `<button type="button" class="btn btn-ghost btn-sm exp-ficha" data-ficha="${esc(METODO[estado.tipo])}" title="${esc(T('Fundamentos: el modelo, los supuestos y los datos que necesita'))}"><span aria-hidden="true">ⓘ</span> ${esc(T('¿Qué es este análisis?'))}</button>` : '');
+  /* las notas técnicas del nivel Experto (js/interfaz/detalle.js) */
+  function tecnicoExplorar(ms) {
+    if (!SP.detalle) return '';
+    try {
+      const p = pedidoActual();
+      return p ? SP.detalle.tecnico({ metodo: p.metodo, e: p.e, opciones: SP.opcionesCon(SP.metodos[p.metodo], p.op), ms, tabla: SP.app.tablaAnalisis() }) : '';
+    } catch (e) { return ''; }
+  }
   function pintarResultado(rep, codigo, ms) {
     const r = $('#expResultado');
     const varios = rep.cuadros.length > 1;
@@ -166,17 +174,20 @@
     r.innerHTML =
       `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span>` +
       `<a class="exp-a-opciones small" href="#expOpciones">${esc(T('Cambiar las opciones ↓'))}</a>${botonFicha()}${botonReporte()}</div>` +
+      (SP.detalle ? SP.detalle.selector() : '') +
       `<div class="callout exp-conclusion">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` +
       (varios ? `<div class="seg exp-vistas" role="group" aria-label="${esc(T('Cuadro que se muestra'))}">${rep.cuadros.map(x => `<button type="button" data-vista="${esc(x.id)}" aria-pressed="${x === cuadro}">${esc({ conteos: T('Frecuencias'), 'pct-fila': T('% por fila'), 'pct-columna': T('% por columna'), 'pct-total': T('% del total') }[x.id] || x.titulo)}</button>`).join('')}</div>` : '') +
       SP.cuadros.html(cuadro, { numero: 1, visibles: extras, contexto: { descriptivo: true } }) +
-      `<div class="btn-row exp-acciones"><button type="button" class="btn btn-secondary btn-sm" data-accion="copiar">${esc(T('Copiar cuadro'))}</button>` +
+      `<div class="btn-row exp-acciones cuadro-acciones"><button type="button" class="btn btn-secondary btn-sm" data-accion="copiar">${esc(T('Copiar cuadro'))}</button>` +
       `<button type="button" class="btn btn-ghost btn-sm" data-accion="csv">${esc(T('Bajar en CSV'))}</button>` +
       `<span class="small muted">${esc(T('Se pega como tabla en una hoja de cálculo o en un procesador de textos.'))}</span></div>` +
       (extrasDisp.length ? `<details class="exp-extras"><summary>${esc(T('Más estadísticos en el cuadro'))}</summary><div class="chips">` +
         extrasDisp.map(x => `<label class="imp-check"><input type="checkbox" data-extra="${esc(x.clave)}"${extras.includes(x.clave) ? ' checked' : ''}> ${esc(x.titulo)}</label>`).join('') + '</div></details>' : '') +
+      tecnicoExplorar(ms) +
       `<details class="exp-codigo"><summary>${esc(T('Código R equivalente'))}</summary><pre><code>${esc(codigo)}</code></pre>` +
       `<button type="button" class="btn btn-ghost btn-sm" data-accion="copiar-r">${esc(T('Copiar el código'))}</button></details>`;
     r.dataset.codigo = codigo;
+    if (SP.detalle) SP.detalle.aplicar(r);
   }
   function pintarError(e) {
     ultimo = null;

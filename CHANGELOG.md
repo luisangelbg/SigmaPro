@@ -2,6 +2,45 @@
 
 ## Sin publicar
 
+### 0.5.6 · Hito 5.2: tarjetas de interpretación y niveles de detalle (6 oct 2026)
+
+- **Tarjetas de interpretación**: bajo cada medidor de «Cómo leer este cuadro», unas frases que lo traducen con los
+  números del caso (`SP.guias.interpretar`).
+  - Con un valor: qué parte de la variación explica la R², a cuánto equivale la desviación del error según el CV y la
+    media general, cuántas veces las repeticiones da la eficiencia relativa, cuántas desviaciones estándar separan a
+    las medias, qué tan probable es un resultado así sin efecto (el p)…, y su zona con la guía que la define.
+  - Con varios valores: cuántos y cuáles caen en cada zona (los p contra α, los residuos que pasan de ±2 y ±3, las
+    observaciones que pasan de 4/n en la distancia de Cook, el mayor VIF…).
+  - Plegado, «Qué es» con la definición de la ficha del estadístico.
+  - Bajo cada curva, dónde cae el valor frente al crítico; encima de las curvas, cómo se lee el área del p.
+  - Los números se escriben como en el medidor; el CV, con dos decimales (los límites publicados los tienen).
+- **La guía del CV por cultivo y variable** (pasó del hito 5.1): bajo el medidor del CV, «Ajustar la guía del CV a tu
+  cultivo y variable».
+  - La general sigue siendo la de Pimentel-Gomes (2009).
+  - Siete variables de maíz con los límites del cuadro 2 de Fritsche-Neto et al. (2012): rendimiento de grano,
+    altura de planta, altura de mazorca, diámetro de mazorca, mazorcas por planta, peso de mazorcas comerciales y peso
+    de 100 granos. Se dejaron fuera dos renglones de ese cuadro (acame y días a floración) que no coinciden con la
+    media y la DE de su cuadro 1.
+  - Límites propios, escritos o calculados con los CV de ensayos parecidos por el método de Garcia (1989): media − 1 DE,
+    media + 1 DE y media + 2 DE (`SP.guias.limitesGarcia`).
+  - La guía se recuerda en el navegador y se aplica a todos los cuadros abiertos, en Análisis y en el reporte.
+- **Nivel de detalle Básico, Estándar y Experto** (`js/interfaz/detalle.js`), en la cabecera de cada resultado y del
+  reporte; se recuerda en el navegador.
+  - Básico: la conclusión, las gráficas, el semáforo y la lectura de cada cuadro abierta, con el nombre del cuadro; los
+    cuadros de Análisis y del reporte, el código R y los detalles técnicos se ocultan. En Explorar el cuadro es el
+    resumen y se ve siempre.
+  - Experto: además, las notas técnicas (método, entradas, opciones, datos, filas usadas, programa y tiempo) con el
+    modelo y sus hipótesis de la ficha de Fundamentos, y el código R abiertos.
+  - Los documentos exportados no cambian con el nivel.
+  - Los detalles técnicos del reporte salen ahora de `SP.detalle.filas` (los mismos textos).
+- **LABGuide 1.1.0**: la tarjeta va bajo el medidor y fuera del `role="meter"` (un medidor no puede tener controles
+  dentro); la curva acepta su frase de lectura.
+- Fuentes nuevas: Fritsche-Neto et al. (2012) y Garcia (1989).
+- Pruebas: coherencia texto-número de las 27 escalas en sus zonas y bordes, las cuentas de las tarjetas, los bordes
+  publicados del maíz, el método de Garcia y los límites propios (node); tarjetas, guía del CV y niveles (navegador);
+  escenarios de accesibilidad detalle-basico y detalle-experto.
+- 126 textos nuevos en inglés.
+
 ### 0.5.5 · Hito 5.1: cómo leer cada cuadro (6 oct 2026)
 
 - **«Cómo leer este cuadro»**: debajo de cada cuadro con estadísticos que tienen una guía de lectura publicada, un

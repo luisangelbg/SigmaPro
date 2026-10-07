@@ -1,4 +1,4 @@
-/* LABG Suite — LABGuide 1.0.0: medidores y curvas de referencia (estilo)
+/* LABG Suite — LABGuide 1.1.0: medidores y curvas de referencia (estilo)
    Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later.
    Los colores salen de las variables de la app (--text, --success, --warning, --danger…) con un respaldo propio: las
    zonas de magnitud van en dorados de claro a oscuro; las de calidad, en verde, ámbar y rojo, como el semáforo. Ningún
@@ -46,3 +46,11 @@
 .lg-curva-fig figcaption { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 2px; font-size: var(--fs-xs, .8rem); color: var(--lg-texto); }
 .lg-cl { display: inline-flex; align-items: center; gap: 6px; }
 .lg-raya { display: inline-block; width: 16px; border-top: 2px dashed var(--lg-tenue); }
+
+/* 1.1.0: la tarjeta de interpretación bajo el medidor y la frase bajo la curva */
+.lg-tarjeta { margin: 8px 0 0; padding: 6px 0 2px 12px; border-left: 3px solid var(--lg-n2); max-width: 46rem; }
+.lg-tarjeta p { margin: 0 0 4px; font-size: var(--fs-sm, .9rem); color: var(--lg-texto); line-height: 1.5; }
+.lg-que { margin: 2px 0 2px; font-size: var(--fs-xs, .8rem); }
+.lg-que summary { cursor: pointer; color: var(--lg-tenue); font-weight: 600; }
+.lg-que p { margin: 4px 0 0; font-size: var(--fs-xs, .8rem); color: var(--lg-tenue); }
+.lg-curva-lee { margin: 2px 0 0; font-size: var(--fs-xs, .8rem); color: var(--lg-texto); }

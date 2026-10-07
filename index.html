@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="iconos/sigmapro-192.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ctext x='16' y='23.3' font-family='Georgia,serif' font-size='35' text-anchor='middle' fill='%23D4A848'%3E%CF%83%3C/text%3E%3C/svg%3E">
 <script>/* idioma antes de cargar el núcleo: ?lang=en|es o el que se eligió; el catálogo inglés solo si hace falta */ (function () { var l = 'es'; try { var q = new URLSearchParams(location.search).get('lang'); if (q === 'en' || q === 'es') localStorage.setItem('sigmapro.idioma', q); l = localStorage.getItem('sigmapro.idioma') === 'en' ? 'en' : 'es'; } catch (e) { l = /[?&]lang=en/.test(location.search) ? 'en' : 'es'; } document.documentElement.lang = l; if (l === 'en') document.write('<script src="js/i18n/en.js"><\/script>'); })();</script>
-<script>/* tema antes de pintar, para que no parpadee */ try { var t = localStorage.getItem('sigmapro.theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); var g = localStorage.getItem('sigmapro.graficas.tema'); if (g && g !== 'sigmapro') document.documentElement.setAttribute('data-graficas', g); } catch (e) {}</script>
+<script>/* tema antes de pintar, para que no parpadee */ try { var t = localStorage.getItem('sigmapro.theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); var g = localStorage.getItem('sigmapro.graficas.tema'); if (g && g !== 'sigmapro') document.documentElement.setAttribute('data-graficas', g); var dl = localStorage.getItem('sigmapro.detalle'); if (dl === 'basico' || dl === 'experto') document.documentElement.setAttribute('data-detalle', dl); } catch (e) {}</script>
 <link rel="stylesheet" href="css/labg-base.css">
 <link rel="stylesheet" href="css/sigma.css">
 <link rel="stylesheet" href="css/intro.css">
@@ -286,6 +286,7 @@
         <button type="button" class="btn btn-ghost btn-sm" data-ir="6">Ver las figuras</button>
         <button type="button" class="btn btn-primary btn-sm" data-ir="7">Exportar</button>
       </div>
+      <div class="sp-detalle-fila" id="repDetalle"></div>
     </div>
     <nav class="rep-indice" aria-label="Análisis del reporte"><ol id="repIndice"></ol></nav>
     <div id="repItems"></div>
@@ -538,6 +539,7 @@
 <script src="js/labg-guide.js"></script>
 <script src="js/interfaz/cuadros.js"></script>
 <script src="js/interfaz/lectura.js"></script>
+<script src="js/interfaz/detalle.js"></script>
 <script src="js/interfaz/explorar.js"></script>
 <script src="js/interfaz/graficas.js"></script>
 <script src="js/interfaz/ilustraciones.js"></script>

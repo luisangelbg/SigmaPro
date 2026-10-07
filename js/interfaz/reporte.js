@@ -143,24 +143,8 @@
       return { titulo: (f.querySelector('figcaption') || {}).textContent || '', descripcion: svg ? svg.getAttribute('aria-label') || '' : '' };
     });
   }
-  const describir = o => Object.entries(o || {}).filter(([, v]) => v !== undefined && v !== '' && !(Array.isArray(v) && !v.length))
-    .map(([k, v]) => k + ' = ' + (Array.isArray(v) ? v.join(', ') : typeof v === 'object' ? JSON.stringify(v) : v)).join('; ') || '—';
-  function detalles(it, res, t) {
-    const v = SP.validacion.actual(), casos = SP.validacion.casosDe(it.metodo).casos;
-    const d = SP.app.datos, filtro = d && d.filtro;
-    return [
-      [T('Método'), res.ficha.nombre + ' (' + it.metodo + ')'],
-      [T('Entradas'), describir(it.e)],
-      [T('Opciones'), describir(res.opciones)],
-      [T('Datos'), (d && d.origen ? d.origen + ' · ' : '') + T('{n} filas', { n: t.n }) + (filtro ? T(' · filtro: {f}', { f: filtro.expresion }) : '')],
-      [T('Filas usadas'), String(res.r && Number.isFinite(res.r.n) ? res.r.n : (res.r && res.r.resumen && res.r.resumen.n) || t.n)],
-      res.ficha.motor === 'r'
-        ? [T('Programa'), T('SigmaPro {v}; motor R en el navegador (webR {w}, R {r}{p}); validado contra R en {k} casos de este método', { v: SP.VERSION, w: SP.motorR.CONFIG.version,
-          r: (res.r.versiones && res.r.versiones.R) || '', p: Object.entries(res.r.versiones || {}).filter(([k]) => k !== 'R').map(([k, x]) => '; ' + k + ' ' + x).join(''), k: casos })]
-        : [T('Programa'), T('SigmaPro {v}; núcleo propio validado contra R en {n} casos{c}', { v: SP.VERSION, n: v ? v.resumen.casos : '—', c: casos ? T(' ({k} de este método completo)', { k: casos }) : '' })],
-      [T('Calculado en'), T('{ms} ms', { ms: Math.max(1, Math.round(res.ms || 0)) })],
-    ].concat(it.nota ? [[T('Nota'), it.nota]] : []);
-  }
+  /* los detalles técnicos (los mismos de las notas técnicas de Análisis en el nivel Experto: js/interfaz/detalle.js) */
+  const detalles = (it, res, t) => SP.detalle.filas({ metodo: it.metodo, e: it.e, opciones: res.opciones, r: res.r, ms: res.ms, nota: it.nota, tabla: t });
   /** Todo lo que necesita el documento: un elemento por análisis que se pudo calcular. */
   est.elementos = () => est.items.map(it => ({ it, res: calcular(it) })).filter(x => !x.res.error && !x.res.pendiente).map(({ it, res }) => ({
     item: it, titulo: res.titulo, id: it.metodo, e: it.e, op: res.opciones, r: res.r, rep: res.rep, codigo: res.codigo, supuestos: res.supuestos,
@@ -210,7 +194,7 @@
           `<div class="msg msg-error"><strong>${esc(T('Este análisis no se pudo calcular con los datos actuales: {m}', { m: res.error.message }))}</strong>${res.error.arreglo ? `<span class="msg-fix">${esc(res.error.arreglo)}</span>` : ''}</div></article>`);
         return;
       }
-      const cuadros = res.rep.cuadros.map(q => { nc++; return SP.cuadros.html(q, { numero: nc, visibles: it.visibles, contexto: Object.assign(SP.lectura ? SP.lectura.contexto(res.r, res.opciones) : {}, it.bloque === 3 ? { descriptivo: true } : {}) }) + `<div class="btn-row exp-acciones"><button type="button" class="btn btn-secondary btn-sm" data-rep="copiar-cuadro" data-id="${it.id}" data-cuadro="${esc(q.id)}">${esc(T('Copiar cuadro {n}', { n: nc }))}</button></div>`; }).join('');
+      const cuadros = res.rep.cuadros.map(q => { nc++; return SP.cuadros.html(q, { numero: nc, visibles: it.visibles, contexto: Object.assign(SP.lectura ? SP.lectura.contexto(res.r, res.opciones) : {}, it.bloque === 3 ? { descriptivo: true } : {}) }) + `<div class="btn-row exp-acciones cuadro-acciones"><button type="button" class="btn btn-secondary btn-sm" data-rep="copiar-cuadro" data-id="${it.id}" data-cuadro="${esc(q.id)}">${esc(T('Copiar cuadro {n}', { n: nc }))}</button></div>`; }).join('');
       let figs = '';
       if (res.figurasHTML) {
         const t = document.createElement('template');
@@ -230,7 +214,7 @@
         (p.metodos ? `<p><b>${esc(T('Métodos.'))}</b> ${esc(p.metodos)}</p>` : '') + (p.resultados ? `<p><b>${esc(T('Resultados.'))}</b> ${esc(p.resultados)}</p>` : '') +
         `<div class="btn-row"><button type="button" class="btn btn-secondary btn-sm" data-rep="copiar-parrafo" data-id="${it.id}">${esc(T('Copiar el párrafo'))}</button>` +
         `<span class="small muted">${esc(T('Es un punto de partida: revisa la redacción y agrega tu interpretación.'))}</span></div></section>` +
-        `<details class="exp-extras"><summary>${esc(T('Detalles técnicos'))}</summary><dl class="dat-kv rep-detalles">${res.detalles.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></details>` +
+        `<details class="exp-extras rep-tecnico"><summary>${esc(T('Detalles técnicos'))}</summary><dl class="dat-kv rep-detalles">${res.detalles.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></details>` +
         `<details class="exp-codigo"><summary>${esc(T('Código R equivalente'))}</summary><pre><code>${esc(res.codigo)}</code></pre>` +
         `<button type="button" class="btn btn-ghost btn-sm" data-rep="copiar-r" data-id="${it.id}">${esc(T('Copiar el código'))}</button></details></article>`);
     });
@@ -239,6 +223,9 @@
       d: d && d.origen ? T(' · datos: {o}', { o: d.origen }) : '', e: errores ? T(' · {e} sin calcular', { e: errores }) : '' });
     $('#repIndice').innerHTML = indice.join('');
     $('#repItems').innerHTML = partes.join('');
+    /* el nivel de detalle (js/interfaz/detalle.js): Básico abre las lecturas; Experto, los detalles y el código */
+    $('#repDetalle').innerHTML = SP.detalle.selector() + SP.detalle.avisoBasico();
+    SP.detalle.aplicar($('#repItems'));
   }
   est.pintar = pintar;
 

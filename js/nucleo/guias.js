@@ -9,6 +9,14 @@
      SP.guias.fichas()               todas, en el orden del glosario
      SP.guias.ficha(id)              una por su id
      SP.guias.buscar(clave, titulo)  la ficha del estadístico de una columna (o de una fila, sin clave), o null
+     SP.guias.escala(id, contexto), SP.guias.zona(id, valor, contexto)
+                                     el medidor de un estadístico y la zona en que cae un valor (hito 5.1)
+     SP.guias.interpretar(id, marcas, contexto)
+                                     la tarjeta de interpretación: párrafos con los números del caso (hito 5.2)
+     SP.guias.interpretarPrueba({ x, criticos, colas, p, alfa })
+                                     la frase bajo la curva de una prueba
+     SP.guias.guiasCV(), guiaCV(dato), limitesGarcia(cvs)
+                                     las guías del CV por cultivo y variable, y los límites propios por el método de Garcia
 
    Los títulos se reconocen en español; con la interfaz en inglés, SP.T.origen devuelve el título en español del que
    salió cada texto traducido. */
@@ -298,6 +306,8 @@ SP.definir('guias', function (SP) {
     landis1977: ['Landis y Koch (1977)', 'Landis, J. R. y Koch, G. G. (1977). The measurement of observer agreement for categorical data. Biometrics, 33(1), 159–174.'],
     chen2010: ['Chen, Cohen y Chen (2010)', 'Chen, H., Cohen, P. y Chen, S. (2010). How big is a big odds ratio? Interpreting the magnitudes of odds ratios in epidemiological studies. Communications in Statistics—Simulation and Computation, 39(4), 860–864.'],
     pimentel2009: ['Pimentel-Gomes (2009)', 'Pimentel-Gomes, F. (2009). Curso de estatística experimental (15.ª ed.). FEALQ.'],
+    fritsche2012: ['Fritsche-Neto et al. (2012)', 'Fritsche-Neto, R., Vieira, R. A., Scapim, C. A., Miranda, G. V. y Rezende, L. M. (2012). Updating the ranking of the coefficients of variation from maize experiments. Acta Scientiarum. Agronomy, 34(1), 99–101.'],
+    garcia1989: ['Garcia (1989)', 'Garcia, C. H. (1989). Tabelas para classificação do coeficiente de variação (Circular Técnica 171). Instituto de Pesquisas e Estudos Florestais.'],
     gomez1984: ['Gomez y Gomez (1984)', 'Gomez, K. A. y Gomez, A. A. (1984). Statistical procedures for agricultural research (2.ª ed.). Wiley.'],
     james2013: ['James et al. (2013)', 'James, G., Witten, D., Hastie, T. y Tibshirani, R. (2013). An introduction to statistical learning. Springer.'],
     montgomery2012: ['Montgomery, Peck y Vining (2012)', 'Montgomery, D. C., Peck, E. A. y Vining, G. G. (2012). Introduction to linear regression analysis (5.ª ed.). Wiley.'],
@@ -309,6 +319,63 @@ SP.definir('guias', function (SP) {
     johnson1955: ['Johnson, Robinson y Comstock (1955)', 'Johnson, H. W., Robinson, H. F. y Comstock, R. E. (1955). Estimates of genetic and environmental variability in soybeans. Agronomy Journal, 47(7), 314–318.'],
     burnham2002: ['Burnham y Anderson (2002)', 'Burnham, K. P. y Anderson, D. R. (2002). Model selection and multimodel inference: a practical information-theoretic approach (2.ª ed.). Springer.'],
   };
+  /* ---------------- guías del CV por cultivo y variable (hito 5.2) ----------------
+     La general (Pimentel-Gomes) vale para cualquier ensayo de campo. La de un cultivo y una variable sale de los CV de
+     muchos ensayos publicados (Garcia, 1989): bajo hasta la media − 1 DE, medio hasta la media + 1 DE, alto hasta la
+     media + 2 DE, muy alto después, con los límites incluidos. Las de maíz son las del cuadro 2 de Fritsche-Neto et al.
+     (2012), con los CV de 143 artículos publicados en Brasil de 2005 a 2010; dos renglones de ese cuadro (acame y días a
+     floración) no coinciden con la media y la DE de su cuadro 1 y se dejaron fuera. */
+  const CV_MAIZ = () => [
+    ['rendimiento', T('Rendimiento de grano'), [8.24, 15.49, 19.11]],
+    ['altura-planta', T('Altura de planta'), [3.55, 8.25, 10.60]],
+    ['altura-mazorca', T('Altura de mazorca'), [4.58, 10.76, 13.85]],
+    ['diametro-mazorca', T('Diámetro de mazorca'), [3.82, 13.78, 18.75]],
+    ['mazorcas-planta', T('Mazorcas por planta'), [6.13, 19.26, 25.81]],
+    ['peso-mazorcas', T('Peso de mazorcas comerciales'), [10.46, 17.37, 20.82]],
+    ['peso-100', T('Peso de 100 granos'), [4.81, 20.04, 27.66]],
+  ];
+  /** Las guías del CV que trae la app: la general y las de cada variable de maíz. */
+  function guiasCV() {
+    return [{ id: 'general', nombre: T('Ensayos de campo en general'), fuente: 'pimentel2009', limites: [10, 20, 30], inclusivo: false,
+      nota: T('Guía general para ensayos de campo: cada cultivo y variable tiene la suya (los conteos y las plagas suelen dar CV más altos).') }]
+      .concat(CV_MAIZ().map(([k, v, l]) => ({ id: 'maiz-' + k, cultivo: T('Maíz'), variable: v, nombre: T('Maíz') + ', ' + v.toLowerCase(), fuente: 'fritsche2012', limites: l, inclusivo: true,
+        nota: T('Límites para maíz, {v}: CV de ensayos publicados en Brasil de 2005 a 2010.', { v: v.toLowerCase() }) })));
+  }
+  const r2d = v => Math.round(v * 100) / 100;
+  /**
+   * La guía del CV que pide el contexto: { id } de una de guiasCV(), o { id: 'propia', cultivo, variable, limites: [bajo,
+   * medio, alto], garcia: { n, media, de } } con los límites de quien analiza (escritos o calculados con limitesGarcia).
+   * Sin guía o con una que no sirve, la general.
+   */
+  function guiaCV(d) {
+    const todas = guiasCV();
+    if (d && d.id === 'propia') {
+      const l = (d.limites || []).map(Number);
+      if (l.length === 3 && l.every(x => Number.isFinite(x) && x > 0) && l[0] < l[1] && l[1] < l[2]) {
+        const quien = [d.cultivo, d.variable].map(s => String(s || '').trim()).filter(Boolean).join(', ');
+        const ga = d.garcia && d.garcia.n >= 3 ? d.garcia : null;
+        return { id: 'propia', nombre: quien || T('límites propios'), cultivo: d.cultivo || '', variable: d.variable || '', limites: l, inclusivo: true,
+          fuente: ga ? 'garcia1989' : 'propia', fuenteTexto: ga ? null : [T('Límites propios'), T('Límites propios del CV, escritos por quien hace el análisis.')],
+          garcia: ga, nota: (quien ? quien + ': ' : '') + (ga ? T('límites calculados con {n} CV de ensayos parecidos (media {m} %, DE {s} %).', { n: ga.n, m: r2d(ga.media), s: r2d(ga.de) })
+            : T('bajo hasta {a} %, medio hasta {b} %, alto hasta {c} %.', { a: l[0], b: l[1], c: l[2] })) };
+      }
+    }
+    return todas.find(g => d && g.id === d.id) || todas[0];
+  }
+  /**
+   * Los límites del CV por el método de Garcia (1989) con los CV (%) de ensayos parecidos: { n, media, de, limites }
+   * (media − DE, media + DE y media + 2 DE, a dos decimales); null con menos de tres CV o si media − DE no es positiva.
+   */
+  function limitesGarcia(cvs) {
+    const x = (cvs || []).map(Number).filter(v => Number.isFinite(v) && v > 0);
+    const n = x.length;
+    if (n < 3) return null;
+    const m = x.reduce((a, b) => a + b, 0) / n;
+    const s = Math.sqrt(x.reduce((a, b) => a + (b - m) * (b - m), 0) / (n - 1));
+    if (!(s > 0) || !(r2d(m - s) > 0)) return null;
+    return { n, media: m, de: s, limites: [r2d(m - s), r2d(m + s), r2d(m + 2 * s)] };
+  }
+
   /* una zona llega hasta su límite (sin incluirlo, salvo en las escalas inclusivas; «estricta» lo excluye siempre) */
   const z = (hasta, etiqueta, tono, estricta) => ({ hasta, etiqueta, tono, estricta: !!estricta });
   const alfaDe = c => (c && c.alfa > 0 && c.alfa < 1 ? +c.alfa : 0.05);
@@ -348,10 +415,15 @@ SP.definir('guias', function (SP) {
       zonas: [z(0.02, T('menor que pequeño'), 'n0'), z(0.13, T('pequeño'), 'n1'), z(0.26, T('mediano'), 'n2'), z(1, T('grande'), 'n3')],
       nota: T('En experimentos diseñados la R² suele ser alta; compárala con la de ensayos parecidos.') }),
     'r2-ajustada': c => ESCALAS.r2(c),
-    /* la guía es la del CV del error de un experimento: en los descriptivos (el CV de los datos de cada grupo) no aplica */
-    cv: c => (c && c.descriptivo ? null : { min: 0, max: 50, eje: 'lineal', fuente: 'pimentel2009', titulo: T('Precisión del experimento'),
-      zonas: [z(10, T('bajo (alta precisión)'), 'ok'), z(20, T('medio'), 'ok2'), z(30, T('alto'), 'aviso'), z(50, T('muy alto (baja precisión)'), 'mal')],
-      nota: T('Guía general para ensayos de campo: cada cultivo y variable tiene la suya (los conteos y las plagas suelen dar CV más altos).') }),
+    /* la guía es la del CV del error de un experimento: en los descriptivos (el CV de los datos de cada grupo) no aplica.
+       contexto.guiaCV cambia la general por la de un cultivo y variable o por límites propios (hito 5.2, guiaCV) */
+    cv: c => {
+      if (c && c.descriptivo) return null;
+      const g = guiaCV(c && c.guiaCV), l = g.limites, max = Math.max(5, Math.ceil(1.6 * l[2] / 5) * 5);
+      return { min: 0, max, eje: 'lineal', fuente: g.fuente, fuenteTexto: g.fuenteTexto, titulo: T('Precisión del experimento'), inclusivo: !!g.inclusivo, guia: g,
+        zonas: [z(l[0], T('bajo (alta precisión)'), 'ok'), z(l[1], T('medio'), 'ok2'), z(l[2], T('alto'), 'aviso'), z(max, T('muy alto (baja precisión)'), 'mal')],
+        nota: g.nota };
+    },
     /* eficiencia relativa en %: más de 100 % quiere decir que el diseño (o la covariable) ganó precisión */
     eficiencia: c => (c && c.titulo && !/%/.test(c.titulo) ? null : { min: 0, max: 300, eje: 'lineal', fuente: 'gomez1984',
       zonas: [z(100, T('no ganó precisión'), 'aviso'), z(300, T('ganó precisión'), 'ok')] }),
@@ -389,7 +461,7 @@ SP.definir('guias', function (SP) {
     if (!f) return null;
     const e = f(contexto || {});
     if (!e) return null;
-    const fu = FUENTES[e.fuente] || [e.fuente, e.fuente];
+    const fu = e.fuenteTexto || FUENTES[e.fuente] || [e.fuente, e.fuente];
     return Object.assign({ id, inclusivo: false, referencias: [], abierto: !(e.max === 1 || (id === 'durbin-watson')) }, e, { fuenteCorta: fu[0], fuenteCompleta: fu[1] });
   }
   /** El valor como lo lee su escala (absoluto, o la razón mayor que 1). */
@@ -404,6 +476,199 @@ SP.definir('guias', function (SP) {
     if (i < 0) i = e.zonas.length - 1;
     return { indice: i, etiqueta: e.zonas[i].etiqueta, tono: e.zonas[i].tono, escala: e };
   }
+  /* ---------------- tarjetas de interpretación (hito 5.2) ----------------
+     Cada estadístico con escala se explica con los números del caso: con un valor, una frase que lo traduce (qué parte
+     de la variación, cuántas desviaciones estándar, cuántas veces las repeticiones…) y su zona; con varios, cuáles caen
+     en cada zona. Los números se escriben como en el medidor (formato y formatoP), para que el texto y la regla digan
+     lo mismo. */
+  /** Un número como lo escribe el medidor: 0 decimales desde 100, 1 desde 10, 2 desde 1, 3 desde 0.01; si no, 2 cifras. */
+  function formato(v) {
+    if (typeof v !== 'number' || !Number.isFinite(v)) return '—';
+    const a = Math.abs(v);
+    const s = a >= 100 ? v.toFixed(0) : a >= 10 ? v.toFixed(1) : a >= 1 ? v.toFixed(2) : a >= 0.01 ? v.toFixed(3) : v === 0 ? '0' : v.toPrecision(2);
+    return s.replace(/^-/, '−');
+  }
+  const formatoP = v => (v < 0.001 ? '< 0.001' : v.toFixed(3));
+  /* el CV, con dos decimales como los límites publicados (15.49 y 15.50 caen en zonas distintas) */
+  const formatoCV = v => (typeof v !== 'number' || !Number.isFinite(v) ? '—' : Number.isInteger(v) ? String(v) : v.toFixed(2));
+  /** El formato de los valores de un estadístico en su medidor y su tarjeta. */
+  const formatoDe = id => (id === 'p' || id === 'p-ajustado' ? formatoP : id === 'cv' ? formatoCV : formato);
+  const pIgual = v => (v < 0.001 ? '< 0.001' : '= ' + v.toFixed(3));
+  const pct1 = v => (Math.round(v * 1000) / 10).toFixed(1);
+  const listaY = (xs, max) => {
+    const v = xs.slice(0, max || 6), resto = xs.length - v.length;
+    if (resto > 0) return T('{a} y {k} más', { a: v.join(', '), k: resto });
+    return v.length > 1 ? T('{a} y {b}', { a: v.slice(0, -1).join(', '), b: v[v.length - 1] }) : v[0] || '';
+  };
+  const pref = m => (m.etiqueta ? m.etiqueta + ': ' : '');
+  const conValor = (m, f) => (m.etiqueta ? m.etiqueta + ' (' + f(m.valor) + ')' : f(m.valor));
+  const absF = v => formato(Math.abs(v));
+  /* la alternativa de una eficiencia relativa, por el título de su renglón (en español: SP.T.origen) */
+  function alternativaER(titulo) {
+    const o = norm((SP.T.origen && SP.T.origen.get(titulo)) || titulo || '');
+    if (/frente a completamente al azar/.test(o)) return T('un diseño completamente al azar');
+    if (/las filas como bloques/.test(o)) return T('bloques formados por las filas');
+    if (/las columnas como bloques/.test(o)) return T('bloques formados por las columnas');
+    if (/de la covarianza/.test(o)) return T('el ANOVA sin covariable');
+    return '';
+  }
+  /* la guía con que se leyó un CV, en palabras */
+  function nombreGuiaCV(g) {
+    if (!g || g.id === 'general') return T('la guía general de Pimentel-Gomes (2009)');
+    if (g.id === 'propia') return g.garcia ? T('tus límites ({n}; método de Garcia, 1989)', { n: g.nombre }) : T('tus límites ({n})', { n: g.nombre });
+    return T('la guía de maíz para {v} (Fritsche-Neto et al., 2012)', { v: String(g.variable || '').toLowerCase() });
+  }
+  /* con un valor: la frase de cada estadístico (m = { valor, etiqueta }, c = contexto, zz = su zona) */
+  const UNA = {
+    p: (m, c, zz) => {
+      const a = alfaDe(c), v = m.valor, q = pref(m);
+      if (v < a) {
+        const f = v < 0.001 ? T('menos del 0.1 %') : T('el {x} %', { x: v < 0.01 ? (v * 100).toPrecision(2) : pct1(v) });
+        return T('{q}p {p} es menor que α = {a}: si no hubiera efecto, un resultado así de extremo o más saldría en {f} de las repeticiones del estudio. Evidencia {z} contra la hipótesis nula.', { q, p: pIgual(v), a, f, z: zz.etiqueta });
+      }
+      return T('{q}p {p} no es menor que α = {a}: estos datos no muestran evidencia suficiente de un efecto. No quiere decir que el efecto sea cero, sino que no se distingue del azar.', { q, p: pIgual(v), a });
+    },
+    'd-cohen': (m, c, zz) => T('{q}|d| = {v}: las medias se separan {v} desviaciones estándar; un efecto {z} según Cohen (1988).', { q: pref(m), v: absF(m.valor), z: zz.etiqueta }),
+    'g-hedges': (m, c, zz) => T('{q}|g| = {v}: las medias se separan {v} desviaciones estándar (con la corrección para muestras pequeñas); un efecto {z} según Cohen (1988).', { q: pref(m), v: absF(m.valor), z: zz.etiqueta }),
+    'h-cohen': (m, c, zz) => T('{q}|h| = {v}: un efecto {z} según Cohen (1988) en la diferencia entre las dos proporciones (medida en la escala del arcoseno).', { q: pref(m), v: absF(m.valor), z: zz.etiqueta }),
+    'f-cohen': (m, c, zz) => T('{q}f = {v}: la dispersión de las medias de los tratamientos es {v} veces la del error; un efecto {z} según Cohen (1988).', { q: pref(m), v: formato(m.valor), z: zz.etiqueta }),
+    'eta2-h': (m, c, zz) => (m.valor > 0
+      ? T('{q}η²H = {v}: los grupos explican cerca del {x} % de la variación de los rangos; un efecto {z} (Tomczak y Tomczak, 2014).', { q: pref(m), v: formato(m.valor), x: pct1(m.valor), z: zz.etiqueta })
+      : T('{q}η²H = {v}: los grupos no explican variación de los rangos más allá del azar.', { q: pref(m), v: formato(m.valor) })),
+    'w-kendall': (m, c, zz) => T('{q}W = {v}: los bloques ordenan a los tratamientos de forma parecida en un grado {z} (0, sin acuerdo; 1, todos igual), según Tomczak y Tomczak (2014).', { q: pref(m), v: formato(m.valor), z: zz.etiqueta }),
+    r: (m, c, zz) => T('{q}r = {v}: asociación lineal {d} de tamaño {z} (Cohen, 1988). r² = {r2}: cerca del {x} % de la variación de una variable va junto con la de la otra. No implica causa.',
+      { q: pref(m), v: formato(m.valor), d: m.valor < 0 ? T('negativa') : T('positiva'), z: zz.etiqueta, r2: formato(m.valor * m.valor), x: pct1(m.valor * m.valor) }),
+    rho: (m, c, zz) => T('{q}ρ = {v}: asociación monótona {d} de tamaño {z} (Cohen, 1988): cuando una variable sube, la otra tiende a {t}.',
+      { q: pref(m), v: formato(m.valor), d: m.valor < 0 ? T('negativa') : T('positiva'), z: zz.etiqueta, t: m.valor < 0 ? T('bajar') : T('subir') }),
+    phi: (m, c, zz) => T('{q}φ = {v}: asociación {d} de tamaño {z} entre los dos factores de la tabla 2 × 2 (Cohen, 1988).', { q: pref(m), v: formato(m.valor), d: m.valor < 0 ? T('negativa') : T('positiva'), z: zz.etiqueta }),
+    'v-cramer': (m, c, zz) => T('{q}V = {v}: asociación de tamaño {z} entre los dos factores (0, independientes; 1, uno determina al otro).', { q: pref(m), v: formato(m.valor), z: zz.etiqueta }),
+    'razon-momios': (m, c, zz) => (m.valor >= 1
+      ? T('{q}OR = {v}: los momios del evento son {v} veces los de la referencia; un efecto {z} (Chen, Cohen y Chen, 2010).', { q: pref(m), v: formato(m.valor), z: zz.etiqueta })
+      : T('{q}OR = {v}: los momios del evento son {v} veces los de la referencia ({x} % menores); se lee por su inversa, {i}: un efecto {z} (Chen, Cohen y Chen, 2010).',
+        { q: pref(m), v: formato(m.valor), x: Math.round((1 - m.valor) * 100), i: formato(1 / m.valor), z: zz.etiqueta })),
+    kappa: (m, c, zz) => (m.valor < 0
+      ? T('{q}κ = {v}: las dos calificaciones coinciden menos de lo que coincidirían por azar.', { q: pref(m), v: formato(m.valor) })
+      : T('{q}κ = {v}: concordancia {z} entre las dos calificaciones, descontada la que se esperaría por azar (0, como el azar; 1, perfecta), según Landis y Koch (1977).', { q: pref(m), v: formato(m.valor), z: zz.etiqueta })),
+    r2: (m, c, zz) => {
+      const x = pct1(m.valor);
+      return T('{q}R² = {v}: el modelo explica el {x} % de la variación de la respuesta; el {y} % restante queda sin explicar (es el error).', { q: pref(m), v: formato(m.valor), x, y: (100 - +x).toFixed(1) });
+    },
+    'r2-ajustada': (m, c, zz) => (m.valor > 0
+      ? T('{q}R² ajustada = {v}: descontado el número de términos del modelo, explica el {x} % de la variación de la respuesta.', { q: pref(m), v: formato(m.valor), x: pct1(m.valor) })
+      : T('{q}R² ajustada = {v}: descontado el número de términos, el modelo no explica más de lo que explicaría el azar.', { q: pref(m), v: formato(m.valor) })),
+    cv: (m, c, zz) => {
+      const v = formatoCV(m.valor), q = pref(m);
+      const base = Number.isFinite(c.media) && c.media > 0
+        ? T('{q}CV = {v} %: la desviación estándar del error, {s}, es el {v} % de la media general, {m}.', { q, v, s: formato(m.valor * c.media / 100), m: formato(c.media) })
+        : T('{q}CV = {v} %: la desviación estándar del error es el {v} % de la media.', { q, v });
+      return base + ' ' + T('Con {g}, el CV es {z}.', { g: nombreGuiaCV(zz.escala.guia), z: zz.etiqueta });
+    },
+    eficiencia: (m, c, zz) => {
+      const alt = alternativaER(c.titulo), q = pref(m), v = formato(m.valor);
+      if (m.valor > 100) return alt
+        ? T('{q}ER = {v} %: para lograr la misma precisión con {alt} habría hecho falta {k} veces el número de repeticiones.', { q, v, alt, k: formato(m.valor / 100) })
+        : T('{q}ER = {v} %: la alternativa más sencilla habría necesitado {k} veces el número de repeticiones para lograr la misma precisión.', { q, v, k: formato(m.valor / 100) });
+      return alt ? T('{q}ER = {v} %: {alt} habría dado la misma precisión o más con las mismas repeticiones; el diseño no ganó precisión.', { q, v, alt })
+        : T('{q}ER = {v} %: el diseño no ganó precisión frente a la alternativa más sencilla.', { q, v });
+    },
+    vif: (m, c, zz) => T('{q}VIF = {v}: la varianza del coeficiente es {v} veces la que tendría si el predictor no se correlacionara con los demás (su error estándar, {s} veces); {z}.',
+      { q: pref(m), v: formato(m.valor), s: formato(Math.sqrt(Math.max(m.valor, 0))), z: zz.etiqueta }),
+    condicion: (m, c, zz) => T('{q}Índice de condición = {v}: dependencia {z} entre los predictores (Belsley, Kuh y Welsch, 1980).', { q: pref(m), v: formato(m.valor), z: zz.etiqueta }),
+    'durbin-watson': (m, c, zz) => {
+      const q = pref(m), v = formato(m.valor);
+      const t = m.valor < 1.5 ? T('{q}DW = {v}, menor que 2: los residuos consecutivos tienden a parecerse ({z}).', { q, v, z: zz.etiqueta })
+        : m.valor > 2.5 ? T('{q}DW = {v}, mayor que 2: los residuos consecutivos tienden a alternar de signo ({z}).', { q, v, z: zz.etiqueta })
+          : T('{q}DW = {v}, cerca de 2: sin señal de que los residuos consecutivos se parezcan.', { q, v });
+      return t + ' ' + T('La decisión la da el p de la prueba.');
+    },
+    'residuo-std': (m, c, zz) => T('{q}Residuo = {v}: {z}.', { q: pref(m), v: formato(m.valor), z: zz.etiqueta }),
+    cook: (m, c, zz) => T('{q}D = {v}: {z}.', { q: pref(m), v: formato(m.valor), z: zz.etiqueta }),
+    asimetria: (m, c, zz) => (Math.abs(m.valor) >= 0.5
+      ? T('{q}G₁ = {v}: {z}, con la cola larga a la {l}.', { q: pref(m), v: formato(m.valor), z: zz.etiqueta, l: m.valor > 0 ? T('derecha') : T('izquierda') })
+      : T('{q}G₁ = {v}: {z}.', { q: pref(m), v: formato(m.valor), z: zz.etiqueta })),
+    heredabilidad: (m, c, zz) => T('{q}H² = {v}: cerca del {x} % de la variación se debe a diferencias genéticas; heredabilidad {z} según Johnson, Robinson y Comstock (1955).', { q: pref(m), v: formato(m.valor), x: pct1(m.valor), z: zz.etiqueta }),
+    potencia: (m, c, zz) => T('{q}1 − β = {v}: si el efecto supuesto existe, el estudio lo detectaría en {k} de cada 100 repeticiones; {z}.', { q: pref(m), v: formato(m.valor), k: Math.round(m.valor * 100), z: zz.etiqueta }),
+    'delta-aic': (m, c, zz) => (m.valor === 0 ? T('{q}ΔAIC = 0: es el mejor modelo de los comparados.', { q: pref(m) })
+      : T('{q}ΔAIC = {v}: {z} frente al mejor modelo (Burnham y Anderson, 2002).', { q: pref(m), v: formato(m.valor), z: zz.etiqueta })),
+  };
+  UNA['p-ajustado'] = UNA.p;
+  /* con varios valores: cuántos caen en cada zona y cuáles (las magnitudes, de la mayor a la menor) */
+  function porZona(id, ms, c, f) {
+    const e = escala(id, c), grupos = e.zonas.map(() => []);
+    ms.forEach(m => { const zz = zona(id, m.valor, c); if (zz) grupos[zz.indice].push(m); });
+    const conEtq = ms.some(m => m.etiqueta), asc = id === 'delta-aic' || !/^n/.test(e.zonas[0].tono || 'n');
+    const orden = grupos.map((g, i) => i);
+    if (!asc) orden.reverse();
+    const partes = orden.filter(i => grupos[i].length).map(i => (conEtq
+      ? T('{z}: {l}', { z: e.zonas[i].etiqueta, l: listaY(grupos[i].map(m => conValor(m, f || formato))) })
+      : T('{z}: {k}', { z: e.zonas[i].etiqueta, k: grupos[i].length })));
+    return T('Por zona: {p}.', { p: partes.join('; ') });
+  }
+  const VARIAS = {
+    p: (ms, c) => {
+      const a = alfaDe(c), si = ms.filter(m => m.valor < a), no = ms.filter(m => !(m.valor < a)), n = ms.length;
+      const fp = m => m.etiqueta || 'p ' + pIgual(m.valor);
+      const out = [si.length ? T('{k} de {n} con p < α = {a}: {l}.', { k: si.length, n, a, l: listaY(si.map(fp), 8) }) : T('Ninguno de los {n} tiene p < α = {a}.', { n, a })];
+      if (si.length && no.length) out.push(T('Sin evidencia suficiente (p ≥ α): {l}.', { l: listaY(no.map(fp), 8) }));
+      out.push(T('Un p menor que α dice que la diferencia difícilmente es azar; qué tan grande es lo dicen el tamaño del efecto y las medias.'));
+      return out;
+    },
+    'residuo-std': ms => {
+      const n = ms.length, k2 = ms.filter(m => Math.abs(m.valor) >= 2).length, t3 = ms.filter(m => Math.abs(m.valor) >= 3);
+      const l = t3.length && t3.some(m => m.etiqueta) ? ': ' + listaY(t3.map(m => conValor(m, formato))) : '';
+      return [(k2 === 1 ? T('De {n} residuos, 1 pasa de ±2 y {j} de ±3{l}.', { n, j: t3.length, l }) : T('De {n} residuos, {k} pasan de ±2 y {j} de ±3{l}.', { n, k: k2, j: t3.length, l })),
+        T('Con errores normales, cerca del 4.6 % ({e} de {n}) pasaría de ±2 por azar.', { e: (0.0455 * n).toFixed(1), n })];
+    },
+    cook: (ms, c) => {
+      const e = escala('cook', c), a = e.zonas[0].hasta, n = ms.length;
+      const revisar = ms.filter(m => m.valor >= a), infl = ms.filter(m => m.valor >= 1);
+      const l = revisar.length && revisar.some(m => m.etiqueta) ? ': ' + listaY(revisar.map(m => conValor(m, formato))) : '';
+      const primera = revisar.length === 1 ? T('De {n} observaciones, 1 pasa de {a}, donde conviene revisarla{l}.', { n, a: formato(a), l })
+        : T('De {n} observaciones, {k} pasan de {a}, donde conviene revisarlas{l}.', { n, k: revisar.length, a: formato(a), l });
+      return [primera, infl.length === 1 ? T('Una llega a 1: es influyente.') : infl.length ? T('{j} llegan a 1: son influyentes.', { j: infl.length }) : T('Ninguna llega a 1, el límite de una observación influyente.')];
+    },
+    vif: (ms, c) => {
+      const max = ms.reduce((x, m) => (m.valor > x.valor ? m : x), ms[0]);
+      return [porZona('vif', ms, c), T('El mayor: {m}.', { m: conValor(max, formato) })];
+    },
+    condicion: (ms, c) => {
+      const max = ms.reduce((x, m) => (m.valor > x.valor ? m : x), ms[0]), zz = zona('condicion', max.valor, c);
+      return [T('El mayor índice de condición es {v}: dependencia {z} entre los predictores (Belsley, Kuh y Welsch, 1980).', { v: formato(max.valor), z: zz.etiqueta })];
+    },
+  };
+  VARIAS['p-ajustado'] = VARIAS.p;
+  /**
+   * La tarjeta de interpretación de un estadístico: los párrafos que lo explican con los números del caso.
+   * marcas = [{ valor, etiqueta }] (las del medidor); contexto = el de su escala ({ alfa, n, gl, titulo, media, guiaCV }).
+   */
+  function interpretar(id, marcas, contexto) {
+    const c = contexto || {};
+    const ms = (marcas || []).filter(m => m && typeof m.valor === 'number' && Number.isFinite(m.valor));
+    if (!ms.length || !escala(id, c)) return [];
+    let out;
+    if (ms.length === 1 && UNA[id]) { const zz = zona(id, ms[0].valor, c); out = zz ? [UNA[id](ms[0], c, zz)] : []; }
+    else if (VARIAS[id]) out = VARIAS[id](ms, c);
+    else out = [porZona(id, ms, c, formatoDe(id))];
+    if (id === 'p-ajustado') out.push(T('Es el p ajustado: ya toma en cuenta que se hicieron varias comparaciones a la vez.'));
+    /* el % no se separa de su número al final de un renglón */
+    return out.filter(Boolean).map(t => t.replace(/(\d) %/g, '$1\u00a0%'));
+  }
+  /**
+   * Una frase para la curva de una prueba: dónde cae el valor observado frente al crítico.
+   * o = { x, criticos, colas ('derecha' | 'izquierda' | 'dos'), p, alfa }
+   */
+  function interpretarPrueba(o) {
+    const a = o.alfa > 0 && o.alfa < 1 ? o.alfa : 0.05, c = (o.criticos || [])[o.colas === 'dos' ? 1 : 0];
+    if (!Number.isFinite(c) || !Number.isFinite(o.x) || !Number.isFinite(o.p)) return '';
+    const cf = formato(Math.abs(c));
+    if (o.colas === 'dos') return Math.abs(o.x) > Math.abs(c)
+      ? T('Fuera de los valores críticos ±{c}: p {p} < α = {a}.', { c: cf, p: pIgual(o.p), a })
+      : T('Entre los valores críticos ±{c}: p {p} ≥ α = {a}.', { c: cf, p: pIgual(o.p), a });
+    const mas = o.colas === 'izquierda' ? o.x < c : o.x > c;
+    return mas ? T('Más allá del valor crítico {c}: p {p} < α = {a}.', { c: formato(c), p: pIgual(o.p), a })
+      : T('Antes del valor crítico {c}: p {p} ≥ α = {a}.', { c: formato(c), p: pIgual(o.p), a });
+  }
+
   /* la distribución de referencia de cada estadístico de prueba (para su curva) */
   const DIST = { F: 'F', levene: 'F', 'brown-forsythe': 'F', reset: 'F', 'falta-ajuste': 'F', 'tukey-aditividad': 'F',
     t: 't', z: 'z', rachas: 'z',
@@ -435,5 +700,13 @@ SP.definir('guias', function (SP) {
     zona,
     distribucion: id => DIST[id] || null,
     fuentes: () => Object.keys(FUENTES).map(k => ({ id: k, corta: FUENTES[k][0], completa: FUENTES[k][1] })),
+    formato,
+    formatoP,
+    formatoDe,
+    interpretar,
+    interpretarPrueba,
+    guiasCV,
+    guiaCV,
+    limitesGarcia,
   };
 });
