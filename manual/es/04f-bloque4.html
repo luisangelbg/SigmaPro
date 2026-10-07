@@ -47,7 +47,7 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b4-crecimiento.png" alt="Las curvas logísticas de la altura del maíz contra los días después de la siembra, una por dosis de nitrógeno, con los datos de cada planta: N0 queda abajo a partir de los 40 días"></div>
-      <figcaption><b>Figura 4.37.</b> Una curva logística por dosis: el nitrógeno cambia la altura final, no el momento del crecimiento.</figcaption>
+      <figcaption><b>Figura 4.39.</b> Una curva logística por dosis: el nitrógeno cambia la altura final, no el momento del crecimiento.</figcaption>
     </figure>
     <div>
       <p>La comparación por parámetro dice qué cambió: la <b>asíntota</b> (la altura final) difiere entre dosis (<i>F</i> = 9.46, <i>p</i> &lt; 0.001), de 229.3 sin nitrógeno (N0) a 268.0 con N180; el <b>punto de inflexión</b> (cerca de los 39 días en las cuatro) y la <b>escala</b> no difieren (<i>p</i> = 0.414 y 0.895).</p>
@@ -60,7 +60,7 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b4-dosis.png" alt="Las curvas log-logísticas del peso seco de la maleza contra la dosis de dos herbicidas, glifosato y glufosinato: la del glifosato baja antes"></div>
-      <figcaption><b>Figura 4.38.</b> El peso seco de la maleza con dos herbicidas: el glifosato llega a la mitad del efecto con menos producto.</figcaption>
+      <figcaption><b>Figura 4.40.</b> El peso seco de la maleza con dos herbicidas: el glifosato llega a la mitad del efecto con menos producto.</figcaption>
     </figure>
     <div>
       <p>La DE50 del glifosato es 75.13 (IC 95 %: 63.32 a 86.94) y la del glufosinato 174.2 (121.6 a 226.7): hace falta 2.3 veces más glufosinato para el mismo efecto. Las curvas difieren (<i>F</i> = 52.14), pero solo por la DE50 (<i>F</i> = 29.45); la pendiente y los dos límites pueden ser comunes (<i>p</i> = 0.732, 0.508 y 0.178).</p>
@@ -77,7 +77,7 @@
   <h3>Respuesta a la dosis con meseta</h3>
   <p>Para la fertilización y el riego, cinco modelos que se detienen en un máximo: el <b>lineal-meseta</b> (sube en línea recta hasta la dosis <i>x</i><sub>0</sub> y luego se queda plano), el <b>cuadrático-meseta</b> (una parábola hasta su máximo y plano después), el de <b>Mitscherlich</b> y el de <b>Michaelis-Menten</b>, que se acercan a su asíntota sin llegar; el Michaelis-Menten parte de cero sin dosis y la variante <span class="ui">Michaelis-Menten con respuesta sin dosis</span> estima también esa respuesta. Con el maíz y una curva por híbrido, el lineal-meseta explica el 93.7 % de la variación y las curvas difieren (<i>F</i> = 12.38 con 6 y 39 gl).</p>
   <table class="compacta salida" style="width:74%">
-    <caption><b>Cuadro 4.12.</b> La dosis óptima (inicio de la meseta) y el rendimiento en la meseta de cada híbrido, modelo lineal-meseta.</caption>
+    <caption><b>Cuadro 4.13.</b> La dosis óptima (inicio de la meseta) y el rendimiento en la meseta de cada híbrido, modelo lineal-meseta.</caption>
     <thead><tr><th>Híbrido</th><th class="n">Dosis óptima <i>x</i><sub>0</sub></th><th class="n">IC 95 %</th><th class="n">Meseta (t/ha)</th><th class="n">IC 95 %</th></tr></thead>
     <tbody>
       <tr><td>H-40</td><td class="n">102.1</td><td class="n">74.15 – 130.1</td><td class="n">6.250</td><td class="n">6.051 – 6.449</td></tr>
@@ -88,7 +88,7 @@
   <p>La comparación por parámetro precisa la diferencia: entre híbridos cambia el rendimiento sin nitrógeno, <i>a</i> (<i>F</i> = 3.93, <i>p</i> = 0.028); la pendiente y la dosis óptima pueden ser comunes (<i>p</i> = 0.357 y 0.498). Con <span class="ui">El de menor AIC (ajusta todos y compara)</span> gana el lineal-meseta (peso de Akaike 0.75), seguido del cuadrático-meseta (ΔAIC = 2.28, peso 0.24), el Mitscherlich (9.13) y el Michaelis-Menten con respuesta sin dosis (12.23). El Michaelis-Menten sin ella queda último, con R² negativo: pasa por cero en la dosis cero, y el maíz rinde más de 4 t/ha sin nitrógeno.</p>
   <p>La dosis que da más rendimiento no siempre es la que más conviene: cada kilogramo de nitrógeno cuesta. Con los dos precios, la app calcula la <b>dosis económica óptima</b>, donde la pendiente de la curva iguala la razón de precios (el del insumo entre el del producto): ahí la última unidad de insumo todavía se paga con lo que agrega. Con el grano a 5000 por tonelada y el nitrógeno a 25 por kilogramo, en la misma moneda, la razón es 0.005: cada kilogramo más debe dar al menos 0.005 t (5 kg) de grano. La calculan el cuadrático-meseta, el lineal-meseta, el Mitscherlich y los dos Michaelis-Menten, con su EE por el método delta y la respuesta en esa dosis.</p>
   <table class="compacta salida" style="width:86%">
-    <caption><b>Cuadro 4.13.</b> La dosis óptima y la dosis económica de cada híbrido, modelo cuadrático-meseta, con el grano a 5000 por tonelada y el nitrógeno a 25 por kilogramo.</caption>
+    <caption><b>Cuadro 4.14.</b> La dosis óptima y la dosis económica de cada híbrido, modelo cuadrático-meseta, con el grano a 5000 por tonelada y el nitrógeno a 25 por kilogramo.</caption>
     <thead><tr><th>Híbrido</th><th class="n">Dosis óptima</th><th class="n">Meseta (t/ha)</th><th class="n">Dosis económica</th><th class="n">IC 95 %</th><th class="n">Respuesta (t/ha)</th></tr></thead>
     <tbody>
       <tr><td>H-40</td><td class="n">147.1</td><td class="n">6.246</td><td class="n">120.8</td><td class="n">85.74 – 155.9</td><td class="n">6.180</td></tr>
@@ -96,7 +96,7 @@
       <tr><td>H-66</td><td class="n">154.0</td><td class="n">7.241</td><td class="n">130.1</td><td class="n">98.17 – 162.1</td><td class="n">7.181</td></tr>
     </tbody>
   </table>
-  <p>Con el cuadrático-meseta, la dosis económica queda de 18 a 26 kg/ha por debajo de la óptima y sacrifica menos de 0.07 t/ha de grano. En el lineal-meseta la pendiente es constante: mientras pague el insumo (aquí, de 0.020 a 0.026 t por kilogramo, mucho más que 0.005), la dosis económica es el inicio de la meseta, la misma <i>x</i><sub>0</sub> del cuadro 4.12. Si la curva empieza más plana que la razón de precios, la dosis económica es 0 y la conclusión dice que a esos precios la primera unidad de insumo ya no se paga.</p>
+  <p>Con el cuadrático-meseta, la dosis económica queda de 18 a 26 kg/ha por debajo de la óptima y sacrifica menos de 0.07 t/ha de grano. En el lineal-meseta la pendiente es constante: mientras pague el insumo (aquí, de 0.020 a 0.026 t por kilogramo, mucho más que 0.005), la dosis económica es el inicio de la meseta, la misma <i>x</i><sub>0</sub> del cuadro 4.13. Si la curva empieza más plana que la razón de precios, la dosis económica es 0 y la conclusión dice que a esos precios la primera unidad de insumo ya no se paga.</p>
   <p>Con la parábola (sección 4.11), el óptimo salía en 147.7 kg/ha; con la meseta, entre 84 y 102. La diferencia es conocida: la parábola obliga a la curva a bajar después del máximo y lo empuja hacia dosis más altas. Cuando los datos se aplanan, como aquí entre 120 y 180 kg, el modelo con meseta suele recomendar menos fertilizante; la comparación por AIC y la gráfica de residuos ayudan a decidir qué forma describe mejor los datos.</p>
 
   <!-- 4.19 -->
@@ -117,7 +117,7 @@
   <h3>Generar el diseño</h3>
   <p>El generador no necesita datos. Se elige el <span class="ui">Diseño</span> (<span class="ui">Central compuesto</span>, <span class="ui">Box-Behnken</span>, <span class="ui">Factorial 2^k con centros</span>, <span class="ui">Simplex-látice (mezclas)</span> o <span class="ui">Simplex-centroide (mezclas)</span>), el número de <span class="ui">Factores</span> o de <span class="ui">Componentes</span> (de 2 a 6; de 3 a 5 en el Box-Behnken) y los <span class="ui">Puntos centrales</span> o las <span class="ui">Repeticiones del centroide</span> (vacío: los de omisión del diseño). En el central compuesto, <span class="ui">α</span> fija la distancia de los puntos axiales: <span class="ui">Rotable (α = F^¼)</span>, con la misma precisión a la misma distancia del centro; <span class="ui">Ortogonal</span>; <span class="ui">Caras centradas (α = 1)</span>, con solo tres niveles por factor, o <span class="ui">Dos bloques ortogonales</span>, con la parte factorial y la axial en días o lotes distintos. Desde cinco factores usa la media fracción del factorial. En el simplex-látice se elige además el <span class="ui">Grado del látice</span> (2, 3 o 4).</p>
   <table class="compacta salida" style="width:86%">
-    <caption><b>Cuadro 4.14.</b> El tamaño de cada diseño con tres factores o componentes y los puntos centrales de omisión.</caption>
+    <caption><b>Cuadro 4.15.</b> El tamaño de cada diseño con tres factores o componentes y los puntos centrales de omisión.</caption>
     <thead><tr><th>Diseño</th><th class="n">Corridas</th><th>Cómo se forman</th></tr></thead>
     <tbody>
       <tr><td>Central compuesto rotable</td><td class="n">20</td><td>8 factoriales, 6 axiales con α = 1.6818 y 6 centros</td></tr>
@@ -140,7 +140,7 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b4-superficie.png" alt="Los contornos del rendimiento del tomate en el plano nitrógeno por potasio, con los puntos del diseño, el máximo marcado con un rombo y la cresta de máxima respuesta como línea discontinua desde el centro"></div>
-      <figcaption><b>Figura 4.39.</b> Los contornos del rendimiento del tomate: el máximo (rombo) y la cresta (línea discontinua) que sale del centro del diseño.</figcaption>
+      <figcaption><b>Figura 4.41.</b> Los contornos del rendimiento del tomate: el máximo (rombo) y la cresta (línea discontinua) que sale del centro del diseño.</figcaption>
     </figure>
     <div>
       <p>El <b>punto estacionario</b> es un máximo en N = 210.8 y K = 166.0, con 63.75 de rendimiento estimado (IC 95 %: 62.61 a 64.89). Está dentro de la región experimental: a 0.61 unidades codificadas del centro, cuando los datos llegan a 1.42.</p>
@@ -162,7 +162,7 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b4-mezclas.png" alt="El triángulo de la mezcla del hilo, con polietileno abajo a la izquierda, poliestireno abajo a la derecha y polipropileno arriba, sombreado según el alargamiento estimado por el modelo cuadrático (más oscuro, mayor; más claro hacia el poliestireno), con las seis mezclas del ensayo como puntos y un círculo dorado con la etiqueta «máximo» sobre el lado polietileno–polipropileno, en 29.4 % de polietileno y 70.6 % de polipropileno"></div>
-      <figcaption><b>Figura 4.40.</b> El alargamiento del hilo en el triángulo de la mezcla: la mejor mezcla (círculo) junta polietileno y polipropileno, sin poliestireno.</figcaption>
+      <figcaption><b>Figura 4.42.</b> El alargamiento del hilo en el triángulo de la mezcla: la mejor mezcla (círculo) junta polietileno y polipropileno, sin poliestireno.</figcaption>
     </figure>
     <div>
       <p>Con el alargamiento del hilo de Cornell (2002), un simplex-látice de polietileno, poliestireno y polipropileno con repeticiones, el modelo cuadrático explica el 95.1 % de la variación. El coeficiente de cada componente es la respuesta del componente puro (11.7, 9.4 y 16.4), y el de cada par, cuánto se aparta la mezcla de lo que suman sus partes: el polietileno con el poliestireno (β = 19.0, <i>p</i> &lt; 0.001) y con el polipropileno (β = 11.4, <i>p</i> = 0.002) son <b>sinergias</b>; el poliestireno con el polipropileno, un <b>antagonismo</b> (β = −9.6, <i>p</i> = 0.005).</p>
@@ -177,7 +177,7 @@
   <div class="dos mas-angosta flota">
     <figure>
       <div class="marco"><img src="../img/b4-deseabilidad.png" alt="Las curvas de nivel de la deseabilidad global D en el plano de nitrógeno (N, de 123 a 237) por lámina de riego (de 17.9 a 32.1), con el rombo dorado de la combinación más deseable, rotulado «D = 0.79», en N = 175.9 y riego = 25.89; D baja a cero hacia las orillas"></div>
-      <figcaption><b>Figura 4.41.</b> La deseabilidad global del fruto: el rombo marca la combinación de nitrógeno y riego que mejor equilibra rendimiento, costo y pH.</figcaption>
+      <figcaption><b>Figura 4.43.</b> La deseabilidad global del fruto: el rombo marca la combinación de nitrógeno y riego que mejor equilibra rendimiento, costo y pH.</figcaption>
     </figure>
     <div>
       <p>En el fruto (un central compuesto de nitrógeno y lámina de riego), con el rendimiento mayor entre 70 y 86, el costo menor entre 11 y 15 y el pH con meta de 6.5 entre 6 y 7, la combinación más deseable es N = 175.9 y riego = 25.89, con <i>D</i> = 0.786. Ahí el rendimiento estimado es 79.50 (<i>d</i> = 0.593), el costo 11.72 (<i>d</i> = 0.819) y el pH 6.500 (<i>d</i> = 1.000). Con la esfera sale el mismo punto, porque queda cerca del centro.</p>
@@ -219,11 +219,11 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b4-estabilidad.png" alt="La media de cada genotipo de avena contra su pendiente b, con líneas de referencia en la media general y en b = 1: G3 y G8 a la derecha, cerca de b = 1; G9 y G10 arriba a la izquierda"></div>
-      <figcaption><b>Figura 4.42.</b> Media contra pendiente: a la derecha y cerca de la línea de <i>b</i> = 1 están los genotipos buenos en todas partes.</figcaption>
+      <figcaption><b>Figura 4.44.</b> Media contra pendiente: a la derecha y cerca de la línea de <i>b</i> = 1 están los genotipos buenos en todas partes.</figcaption>
     </figure>
     <div>
       <table class="compacta salida">
-        <caption><b>Cuadro 4.15.</b> Tres genotipos de avena según cada medida de estabilidad.</caption>
+        <caption><b>Cuadro 4.16.</b> Tres genotipos de avena según cada medida de estabilidad.</caption>
         <thead><tr><th></th><th class="n">G8</th><th class="n">G3</th><th class="n">G10</th></tr></thead>
         <tbody>
           <tr><td>Media</td><td class="n">3.004</td><td class="n">2.955</td><td class="n">2.471</td></tr>
@@ -247,7 +247,7 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b4-gge.png" alt="El biplot GGE quién ganó dónde de la avena: el polígono con vértices en G10, G4, G7, G8 y G9, los rayos desde el origen que dividen el plano en sectores y los ambientes como rombos dorados, la mayoría en el sector de G8"></div>
-      <figcaption><b>Figura 4.43.</b> Quién ganó dónde: el genotipo del vértice de cada sector es el mejor en los ambientes que caen en él.</figcaption>
+      <figcaption><b>Figura 4.45.</b> Quién ganó dónde: el genotipo del vértice de cada sector es el mejor en los ambientes que caen en él.</figcaption>
     </figure>
     <div>
       <p>En <b>quién ganó dónde</b>, el polígono une los genotipos más alejados del origen y los rayos dividen el plano en sectores. En la avena hay 4 sectores, que la conclusión llama «megaambientes posibles»: G8 gana en nueve ambientes, G9 en E3 y E4, G7 en E7 y E14 y G4 en E9. Con los datos de un solo ciclo no son más que eso: para declararlos megaambientes, el patrón tiene que repetirse entre años (Yan y col., 2000).</p>

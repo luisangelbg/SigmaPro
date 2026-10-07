@@ -206,6 +206,7 @@
       <tr><td><b>Gráficas</b></td><td>Las que corresponden al análisis: la interacción de dos factores, las medias con su error estándar, la recta de regresión con sus bandas, el diagnóstico de los residuos, las curvas de supervivencia… Arriba, el selector <span class="ui">Tema de las gráficas</span> cambia el estilo de todas a la vez (los seis temas están en el cuadro 6.1). Cada gráfica tiene su leyenda y el botón ✎ del editor de figuras (capítulo 6).</td></tr>
       <tr><td><b>Siguiente paso</b></td><td>Botones que llevan al análisis que suele seguir: <span class="ui">Comparar las medias de este diseño</span> en los diseños, <span class="ui">Analizar el modelo elegido</span> tras una selección de variables, el CSV para otras apps en el multivariado.</td></tr>
       <tr><td><b>Cuadros</b></td><td>Numerados, cada uno con <span class="ui">Copiar cuadro</span> y <span class="ui">Bajar en CSV</span> (con los números completos, sin el redondeo de la pantalla): el análisis de varianza, el resumen del ensayo, las medias, las comparaciones… Un cuadro más ancho que la pantalla se desplaza a los lados; con el teclado, Tab lo enfoca y las flechas lo recorren.</td></tr>
+      <tr><td><b>Cómo leer este cuadro</b></td><td>Plegado bajo cada cuadro que trae un estadístico con guía de lectura: un medidor por estadístico y la curva de referencia de cada prueba (figuras 4.9 y 4.10, más abajo).</td></tr>
       <tr><td><b>Código R equivalente</b></td><td>Plegado al final, con <span class="ui">Copiar el código</span>.</td></tr>
       <tr><td><b>Continúa en la suite LABG</b></td><td>Al pie de algunos análisis, una franja con la app de la suite que continúa el trabajo: AgriDesign tras un diseño experimental, CorrelationPro y PCAPro tras una correlación o una regresión, PCAPro y ClusteringPro tras el multivariado o el multiambiente. Cada tarjeta dice por qué conviene y se puede ocultar (capítulo 10).</td></tr>
     </tbody>
@@ -214,6 +215,48 @@
     <div class="marco"><img src="../img/b4-resultado-cuadros.png" alt="Los cuadros del mismo resultado: el análisis de varianza con fuente de variación, gl, SC, CM, F y p; el resumen del ensayo con media general, observaciones, CV, R² y eficiencia relativa; las medias de híbrido y de dosis con su error estándar"></div>
     <figcaption><b>Figura 4.8.</b> Los dos primeros cuadros del mismo análisis: el ANOVA y el resumen del ensayo. Siguen las medias marginales de cada factor y de sus combinaciones.</figcaption>
   </figure>
+  <h3>Cómo leer este cuadro</h3>
+  <p>Bajo cada cuadro que trae un estadístico con guía de lectura publicada va un desplegable cerrado, <span class="ui">Cómo leer este cuadro</span>. Se dibuja al abrirlo, así que no hace más lento el resultado. Trae dos cosas:</p>
+  <ul>
+    <li><b>Un medidor por estadístico.</b> Una regla dividida en las zonas de su guía, con un triángulo en el valor de cada renglón del cuadro (con más de doce valores, puntos y la cuenta por zona). Abajo van el valor con su zona y la guía que la define, con una nota cuando la guía tiene matices. Las zonas de magnitud (el <i>p</i>, los tamaños del efecto, la R²) van en dorados, de claro a oscuro; las de calidad (el CV, la colinealidad, los residuos), en verde, ámbar y rojo, como el semáforo de los supuestos. El cuadro 4.1 reúne las guías.</li>
+    <li><b>La curva de referencia de cada prueba.</b> Para cada F, t, z o χ² del cuadro (hasta ocho), la densidad con los grados de libertad de esa prueba: la raya punteada es el valor crítico al α del análisis, la raya de color es el valor observado y el área sombreada es el <i>p</i>. Si el valor queda más allá de la gráfica, una flecha lo anuncia («60.6 →»). En los diseños con varios errores (parcelas divididas, bloques divididos), cada F se dibuja con los grados de libertad del error que le corresponde. Si el cuadro da un <i>p</i> ajustado o exacto, una nota lo dice: la curva muestra el de la distribución de referencia.</li>
+  </ul>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-lectura-resumen.png" alt="Cómo leer este cuadro bajo el resumen del ensayo: el coeficiente de variación, 3.57 %, en la zona bajo, alta precisión, de una regla de 0 a 50 en verde, verde claro, ámbar y rojo; la R², 0.969, en la zona grande; y la eficiencia relativa frente a completamente al azar, 160 %, en la zona ganó precisión; cada medidor con su guía"></div>
+    <figcaption><b>Figura 4.9.</b> <span class="ui">Cómo leer este cuadro</span> abierto bajo el resumen del ensayo del maíz: el CV, la R² y la eficiencia relativa, cada uno en su regla y con su guía.</figcaption>
+  </figure>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-lectura.png" alt="Cómo leer este cuadro, abierto bajo el análisis de varianza del maíz: el medidor del valor p, una regla en escala logarítmica de 0.0001 a 1 con zonas muy fuerte, fuerte, suficiente e insuficiente y la raya del α en 0.05, con la lista bloque, híbrido y dosis menores que 0.001, muy fuerte, e híbrido por dosis 0.220, insuficiente; y cuatro curvas F, una por término, con el valor crítico punteado: bloque, híbrido y dosis con flechas a 10.4, 60.6 y 292, fuera de la gráfica, e híbrido por dosis con F = 1.47 y el área del p, 0.220, sombreada"></div>
+    <figcaption><b>Figura 4.10.</b> El mismo desplegable bajo el ANOVA: el medidor del <i>p</i> de los cuatro términos y la curva F de cada uno. Solo la interacción (F = 1.47) cae antes del valor crítico, 2.39.</figcaption>
+  </figure>
+  <p>Al pie, <span class="ui">Fuentes de las guías</span> da las referencias completas (están también en el apéndice D). Las guías son convenciones que orientan la lectura, no reglas: el cultivo, la variable y el ensayo pesan más. Un CV de 25 % puede ser bueno en un conteo de plagas y malo en el rendimiento de grano. Algunos medidores dependen del contexto: el del CV no aparece en los descriptivos de Explorar (ahí el CV es el de los datos, no el del error de un ensayo), el de la <i>V</i> de Cramér ajusta sus límites al tamaño de la tabla y el de la distancia de Cook usa 4/<i>n</i> con el número de observaciones del análisis.</p>
+  <table class="compacta">
+    <caption><b>Cuadro 4.1.</b> Las guías de los medidores. Cada límite es el inicio de la zona siguiente.</caption>
+    <thead><tr><th style="width:1.6in">Estadístico</th><th>Zonas</th><th style="width:1.55in">Guía</th></tr></thead>
+    <tbody>
+      <tr><td>Valor <i>p</i> (también el ajustado)</td><td>muy fuerte &lt;&nbsp;0.001; fuerte &lt;&nbsp;0.01; suficiente &lt;&nbsp;α; insuficiente desde&nbsp;α. Una raya marca el α del análisis.</td><td>Wasserstein y Lazar (2016)</td></tr>
+      <tr><td><i>d</i> y <i>h</i> de Cohen, <i>g</i> de Hedges (valor absoluto)</td><td>pequeño desde&nbsp;0.2; mediano desde&nbsp;0.5; grande desde&nbsp;0.8</td><td>Cohen (1988)</td></tr>
+      <tr><td><i>f</i> de Cohen</td><td>pequeño desde&nbsp;0.10; mediano desde&nbsp;0.25; grande desde&nbsp;0.40</td><td>Cohen (1988)</td></tr>
+      <tr><td><i>r</i> de Pearson, ρ de Spearman, φ (valor absoluto)</td><td>pequeño desde&nbsp;0.1; mediano desde&nbsp;0.3; grande desde&nbsp;0.5</td><td>Cohen (1988)</td></tr>
+      <tr><td><i>V</i> de Cramér</td><td>los de φ divididos entre √(min(filas, columnas) − 1)</td><td>Cohen (1988)</td></tr>
+      <tr><td>R² y R² ajustada</td><td>pequeño desde&nbsp;0.02; mediano desde&nbsp;0.13; grande desde&nbsp;0.26</td><td>Cohen (1988)</td></tr>
+      <tr><td>Potencia</td><td>adecuada desde&nbsp;0.80</td><td>Cohen (1988)</td></tr>
+      <tr><td>η² de <i>H</i> (Kruskal-Wallis)</td><td>pequeño desde&nbsp;0.01; mediano desde&nbsp;0.06; grande desde&nbsp;0.14</td><td>Tomczak y Tomczak (2014)</td></tr>
+      <tr><td><i>W</i> de Kendall</td><td>pequeño desde&nbsp;0.1; mediano desde&nbsp;0.3; grande desde&nbsp;0.5</td><td>Tomczak y Tomczak (2014)</td></tr>
+      <tr><td>Razón de momios</td><td>pequeño desde&nbsp;1.68; mediano desde&nbsp;3.47; grande desde&nbsp;6.71. Una razón menor que 1 se lee por su inversa.</td><td>Chen, Cohen y Chen (2010)</td></tr>
+      <tr><td>κ de Cohen</td><td>peor que el azar &lt;&nbsp;0; leve hasta&nbsp;0.20; aceptable hasta&nbsp;0.40; moderada hasta&nbsp;0.60; considerable hasta&nbsp;0.80; casi perfecta</td><td>Landis y Koch (1977)</td></tr>
+      <tr><td>Coeficiente de variación del ensayo</td><td>bajo &lt;&nbsp;10 %; medio &lt;&nbsp;20 %; alto &lt;&nbsp;30 %; muy alto desde&nbsp;30 %</td><td>Pimentel-Gomes (2009)</td></tr>
+      <tr><td>Eficiencia relativa, %</td><td>ganó precisión desde&nbsp;100 %</td><td>Gomez y Gomez (1984)</td></tr>
+      <tr><td>Heredabilidad</td><td>baja &lt;&nbsp;0.3; media &lt;&nbsp;0.6; alta desde&nbsp;0.6</td><td>Johnson, Robinson y Comstock (1955)</td></tr>
+      <tr><td>Factor de inflación de la varianza</td><td>sin colinealidad que preocupe &lt;&nbsp;5; moderada &lt;&nbsp;10; grave desde&nbsp;10</td><td>James et al. (2013)</td></tr>
+      <tr><td>Índice de condición</td><td>débil &lt;&nbsp;10; moderada &lt;&nbsp;30; fuerte desde&nbsp;30</td><td>Belsley, Kuh y Welsch (1980)</td></tr>
+      <tr><td>Durbin-Watson</td><td>sin autocorrelación aparente de&nbsp;1.5 a&nbsp;2.5; posible de&nbsp;1 a&nbsp;1.5 y de&nbsp;2.5 a&nbsp;3; fuerte fuera de&nbsp;1 a&nbsp;3</td><td>Durbin y Watson (1950)</td></tr>
+      <tr><td>Residuo estudentizado (valor absoluto)</td><td>común &lt;&nbsp;2; poco común &lt;&nbsp;3; posible atípico desde&nbsp;3</td><td>Montgomery, Peck y Vining (2012)</td></tr>
+      <tr><td>Distancia de Cook</td><td>revisar desde&nbsp;4/<i>n</i>; influyente desde&nbsp;1</td><td>Bollen y Jackman (1990); Cook y Weisberg (1982)</td></tr>
+      <tr><td>Asimetría (valor absoluto)</td><td>aproximadamente simétrica &lt;&nbsp;0.5; moderada &lt;&nbsp;1; marcada desde&nbsp;1</td><td>Bulmer (1979)</td></tr>
+      <tr><td>Diferencia de AIC</td><td>apoyo sustancial &lt;&nbsp;2; bastante menos apoyo &lt;&nbsp;7; muy poco apoyo &lt;&nbsp;10; prácticamente sin apoyo desde&nbsp;10</td><td>Burnham y Anderson (2002)</td></tr>
+    </tbody>
+  </table>
   <div class="caja nota">
     <div class="caja-t"><span class="ico">i</span>El párrafo para la tesis está en el reporte</div>
     <p>En el bloque Análisis el resultado se explora: se cambian opciones, se prueban modelos. Al agregarlo al reporte (capítulo 5), SigmaPro le suma lo que pide un documento: el párrafo de métodos y resultados con la cita de cada prueba, los detalles técnicos y la numeración de cuadros y figuras de todo el reporte.</p>
@@ -224,10 +267,10 @@
   <p>Casi todos los análisis de SigmaPro están programados en el propio núcleo de la app, en JavaScript, y validados contra R. Unos cuantos, los que piden la maquinaria de ajuste de los modelos mixtos, corren en un <b>R completo que funciona dentro del navegador</b> (webR, R compilado a WebAssembly): los modelos lineales mixtos y sus diseños (sección 4.15), las medidas repetidas y los modelos lineales generalizados mixtos (sección 4.17). Los datos tampoco salen del equipo: R corre en la misma pestaña.</p>
   <figure class="media">
     <div class="marco"><img src="../img/b4-motor.png" alt="El aviso Este análisis usa el motor R dentro de tu navegador: la primera vez se descargan R y sus paquetes, unos 25 MB, con internet; después quedan en la caché del navegador; tus datos no salen del equipo; botón Cargar el motor R y calcular"></div>
-    <figcaption><b>Figura 4.9.</b> La primera vez que se usa un análisis del motor R, la app pide permiso antes de descargarlo.</figcaption>
+    <figcaption><b>Figura 4.11.</b> La primera vez que se usa un análisis del motor R, la app pide permiso antes de descargarlo.</figcaption>
   </figure>
   <ol class="pasos">
-    <li>La primera vez, en lugar del resultado aparece el aviso de la figura 4.9. <span class="ui">Cargar el motor R y calcular</span> descarga R y sus paquetes (unos 25 MB) y calcula.</li>
+    <li>La primera vez, en lugar del resultado aparece el aviso de la figura 4.11. <span class="ui">Cargar el motor R y calcular</span> descarga R y sus paquetes (unos 25 MB) y calcula.</li>
     <li>Mientras tanto, arriba del resultado se lee cada paso («Descargando el motor R (la primera vez tarda más)…», «Instalando lme4 en el motor R (solo la primera vez)…», «Calculando en el motor R…») y un botón <span class="ui">Cancelar</span>. La primera carga tarda de unos segundos a un par de minutos, según la conexión; un cálculo, unos segundos.</li>
     <li>Después, el motor queda en la caché del navegador: ya no hace falta internet ni vuelve a preguntar.</li>
   </ol>
