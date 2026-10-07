@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### 0.5.7 · Hito 5.3: semáforo con íconos y alternativas que se corren (7 oct 2026)
+
+- **Íconos en el semáforo** (Análisis y reporte): palomita, exclamación, cruz o raya dentro de cada luz, además del color
+  y de la palabra (Bien, Revisar, Problema, No aplica). `SP.ui.luz(color)`.
+- **Probar la alternativa**: cuando un supuesto falla, bajo el semáforo (o bajo «Qué hacer» en la revisión de los
+  supuestos) van botones que corren el análisis que lo atiende, con las mismas variables
+  (`js/nucleo/alternativas.js`, `SP.alternativas.de`; no cambia ningún cálculo).
+  - Revisión de los supuestos: la transformación que propone Box-Cox (logaritmo, raíz, recíproco, recíproco de la raíz,
+    cuadrado) en una columna nueva de Datos y la revisión otra vez con ella; el modelo de conteos si la respuesta son
+    conteos; con un solo factor, Kruskal-Wallis (o Friedman con bloques) y Games-Howell.
+  - Prueba t: la t de Welch si las varianzas difieren; Wilcoxon (Mann-Whitney o de rangos con signo) si falla la
+    normalidad.
+  - Regresión: el logaritmo de la respuesta positiva, el modelo de conteos, la curva de grado 2 si falla la forma y los
+    mejores subconjuntos si hay colinealidad.
+  - Modelos generalizados: la binomial negativa (o la cuasibinomial) si hay sobredispersión.
+  - Modelos mixtos y medidas repetidas: el logaritmo de la respuesta positiva.
+  - La columna transformada se crea una sola vez (si ya existe igual, se usa) y un aviso dice su nombre; la original no
+    cambia.
+- Pruebas: `tests/unidad/alternativas.test.js` (cada familia, y que cada pedido corra con su método); escenario de
+  accesibilidad alternativas-venenos. 21 textos nuevos en inglés.
+
 ### 0.5.6 · Hito 5.2: tarjetas de interpretación y niveles de detalle (6 oct 2026)
 
 - **Tarjetas de interpretación**: bajo cada medidor de «Cómo leer este cuadro», unas frases que lo traducen con los

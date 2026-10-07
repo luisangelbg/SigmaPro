@@ -437,6 +437,17 @@ table.revista.sp-cuadro tr.total th, table.revista.sp-cuadro tr.total td { borde
 .semaforo .s-ambar .luz, .semaforo.s-ambar > .semaforo-global .luz { background: var(--warning); }
 .semaforo .s-rojo .luz, .semaforo.s-rojo > .semaforo-global .luz { background: var(--danger); }
 .semaforo .s-gris .luz { background: transparent; border: 2px solid var(--border-strong); box-shadow: none; }
+/* el ícono de cada luz (hito 5.3): blanco sobre verde y rojo, oscuro sobre ámbar */
+.semaforo .luz { display: inline-grid; place-items: center; width: 18px; height: 18px; }
+.semaforo .luz svg { width: 12px; height: 12px; stroke: #fff; fill: #fff; stroke-width: 2.3; stroke-linecap: round; stroke-linejoin: round; }
+.semaforo .s-ambar .luz svg, .semaforo.s-ambar > .semaforo-global .luz svg { stroke: #2a1f00; fill: #2a1f00; }
+.semaforo .s-gris .luz svg { stroke: var(--text-muted); fill: var(--text-muted); width: 10px; height: 10px; }
+.semaforo-global .luz { width: 22px; height: 22px; }
+.semaforo-global .luz svg { width: 14px; height: 14px; }
+/* las alternativas cuando un supuesto falla (hito 5.3) */
+.sp-alternativas { margin: 0 0 var(--sp-4); padding: var(--sp-2) var(--sp-3) var(--sp-3); border: 1px dashed var(--border-strong); border-radius: var(--r-md); }
+.sp-alt-t { margin: 0 0 var(--sp-2); }
+.sp-alternativas .small.muted:last-child { margin: var(--sp-2) 0 0; }
 .semaforo-global { display: flex; align-items: center; gap: 10px; margin: 2px 0 var(--sp-3); font-size: var(--fs-md); }
 .semaforo-global .luz { width: 18px; height: 18px; }
 .semaforo ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }

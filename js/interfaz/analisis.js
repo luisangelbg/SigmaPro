@@ -1397,8 +1397,8 @@
   const PEOR = { gris: 0, verde: 1, ambar: 2, rojo: 3 };
   function semaforoHTML(lista, global, titulo, aria) {
     return `<div class="semaforo s-${global}" role="group" aria-label="${esc(aria)}">` +
-      `<p class="semaforo-global"><span class="luz" aria-hidden="true"></span><b>${esc(titulo)}</b></p>` +
-      `<ul>${lista.map(s => `<li class="s-${s.color}"><span class="luz" aria-hidden="true"></span><span class="nombre">${esc(s.nombre)}</span><span class="estado">${esc(T(ETIQUETA[s.color]))}</span><span class="texto">${esc(s.texto)}</span></li>`).join('')}</ul></div>`;
+      `<p class="semaforo-global">${SP.ui.luz(global)}<b>${esc(titulo)}</b></p>` +
+      `<ul>${lista.map(s => `<li class="s-${s.color}">${SP.ui.luz(s.color)}<span class="nombre">${esc(s.nombre)}</span><span class="estado">${esc(T(ETIQUETA[s.color]))}</span><span class="texto">${esc(s.texto)}</span></li>`).join('')}</ul></div>`;
   }
   const codigoHTML = codigo => `<details class="exp-codigo"><summary>${esc(T('Código R equivalente'))}</summary><pre><code>${esc(codigo)}</code></pre>` +
     `<button type="button" class="btn btn-ghost btn-sm" data-accion="copiar-r">${esc(T('Copiar el código'))}</button></details>`;
@@ -1424,6 +1424,40 @@
     } catch (e) { return ''; }
   }
   const aplicarDetalle = () => { if (SP.detalle) SP.detalle.aplicar($('#anaResultado')); };
+  /* las alternativas cuando un supuesto falla (hito 5.3, js/nucleo/alternativas.js): un botón por remedio que corre el
+     análisis con las mismas variables (con la columna transformada, si hace falta) */
+  function alternativasHTML(r, rep) {
+    estado.alternativas = [];
+    if (!SP.alternativas) return '';
+    try {
+      const p = pedidoActual();
+      estado.alternativas = SP.alternativas.de({ metodo: estado.metodo, e: p.e, op: SP.opcionesCon(SP.metodos[estado.metodo], p.op), r, rep, tabla: SP.app.tablaAnalisis() });
+    } catch (e) { estado.alternativas = []; }
+    const lista = estado.alternativas;
+    if (!lista.length) return '';
+    return `<div class="sp-alternativas" role="group" aria-labelledby="anaAltTitulo"><p class="sp-alt-t" id="anaAltTitulo"><b>${esc(T('Probar la alternativa'))}</b> ` +
+      `<span class="small muted">${esc(T('Se calcula con las mismas variables.'))}</span></p><div class="btn-row">` +
+      lista.map((a, i) => `<button type="button" class="btn btn-secondary btn-sm" data-accion="alternativa" data-i="${i}">${esc(a.texto)}</button>`).join('') + '</div>' +
+      (lista.some(a => a.transformar) ? `<p class="small muted">${esc(T('La transformación crea una columna nueva en Datos; la original no cambia.'))}</p>` : '') + '</div>';
+  }
+  /** Crea en Datos la columna transformada de una alternativa (o usa la que ya se creó igual) y devuelve su nombre. */
+  function columnaTransformada(tr) {
+    const h = SP.app.datos.hoja, j = h.cols.findIndex(c => c.nombre === tr.columna);
+    if (j < 0) throw new SP.ErrorSP(T('No se encontró la columna «{c}».', { c: tr.columna }));
+    const ya = h.cols.find(c => c.nombre === tr.nombre && c.detalle === tr.detalle);
+    if (ya) return ya.nombre;
+    const nom = h.agregarColumna({ nombre: tr.nombre, tipo: 'numerica', datos: SP.transformar.aplicar(tr.tipo, h.cols[j].datos, tr.parametros), posicion: j + 1, origen: 'transformada', detalle: tr.detalle });
+    if (SP.datosUI) SP.datosUI.refrescar(true);
+    L() && L().toast(T('Columna «{c}» creada en Datos ({d}); la original no cambió.', { c: nom, d: tr.detalle }), { type: 'success' });
+    return nom;
+  }
+  function correrAlternativa(a) {
+    let e = a.e;
+    if (a.transformar) {
+      try { e = Object.assign({}, a.e, { respuesta: columnaTransformada(a.transformar) }); } catch (err) { L() && L().toast(err.message, { type: 'error' }); return; }
+    }
+    usar(a.metodo, e, a.op || {});
+  }
 
   function graficasSupuestos(r) {
     const g = r.graficas, qq = g.qq;
@@ -1460,6 +1494,7 @@
       detalleHTML() + avisoBasicoHTML() +
       semaforoHTML(rep.semaforo, r.global, ({ verde: T('Los supuestos se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[r.global]), T('Semáforo de los supuestos')) +
       (rec.length ? `<div class="callout exp-conclusion"><p><b>${esc(T('Qué hacer'))}</b></p><ul class="ana-rec">${rec.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '') +
+      alternativasHTML(r, rep) +
       (r.excluidas ? `<p class="small muted">${esc(T('{k} filas con algún valor faltante en el modelo no entran.', { k: r.excluidas }))}</p>` : '') +
       (SP.temasGraficas ? SP.temasGraficas.selector() : '') + graficasSupuestos(r) +
       SP.cuadros.html(rep.cuadros[0], { numero: 1, contexto: SP.lectura && SP.lectura.contexto(r) }) + copiarHTML(0) +
@@ -2109,7 +2144,7 @@
       `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span>${botonFicha()}${botonReporte()}</div>` +
       detalleHTML() +
       `<div class="callout exp-conclusion">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` + avisoBasicoHTML() +
-      (global ? semaforoHTML(sem, global, ({ verde: T('Los supuestos de la prueba se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[global]), T('Semáforo de los supuestos')) : '') +
+      (global ? semaforoHTML(sem, global, ({ verde: T('Los supuestos de la prueba se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[global]), T('Semáforo de los supuestos')) + alternativasHTML(r, rep) : '') +
       graficasHTML(graficaMetodo(r)) +
       (r.diseno && !r.tipo && r.factores && r.factores.length ? `<div class="btn-row exp-acciones"><button type="button" class="btn btn-primary btn-sm" data-accion="comparar">${esc(T('Comparar las medias de este diseño'))}</button></div>` : '') +
       botonesModelo(r) +
@@ -2456,6 +2491,11 @@
         if (SP.app.reporte.tiene(p)) { SP.app.ir(5); return; }
         SP.app.reporte.agregar(p);
         a.outerHTML = botonReporte();
+        return;
+      }
+      if (a.dataset.accion === 'alternativa') {
+        const alt = (estado.alternativas || [])[+a.dataset.i];
+        if (alt) correrAlternativa(alt);
         return;
       }
       if (a.dataset.accion === 'comparar') {

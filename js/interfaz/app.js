@@ -91,6 +91,7 @@
     ['hecho', '5.11', T('La app abre rápido: primero la página y la barra de bloques, después el resto; el reporte de validación, al abrir su bloque')],
     ['hecho', '5.1', T('Cómo leer cada cuadro: medidores con las guías publicadas (p, tamaños del efecto, R², CV, VIF…) y la curva de referencia de cada prueba')],
     ['hecho', '5.2', T('Tarjetas de interpretación con los números del caso, la guía del CV por cultivo y variable, y los niveles Básico, Estándar y Experto')],
+    ['hecho', '5.3', T('Semáforo con íconos y un botón que corre la alternativa: la transformación, la prueba por rangos, Welch o la binomial negativa')],
     ['', '1.0', T('Publicación: revisión del nombre, repositorio y DOI (versión 1.0.0)')],
   ];
   function hitos() {

@@ -157,8 +157,8 @@
   function semaforo(sem, recs) {
     if (!sem || !sem.length) return '';
     const g = sem.map(s => s.color).reduce((a, b) => (PEOR[b] > PEOR[a] ? b : a), 'verde');
-    return `<div class="semaforo s-${g}" role="group" aria-label="${esc(T('Semáforo de los supuestos'))}"><p class="semaforo-global"><span class="luz" aria-hidden="true"></span><b>${esc(({ verde: T('Los supuestos se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[g]))}</b></p>` +
-      `<ul>${sem.map(s => `<li class="s-${s.color}"><span class="luz" aria-hidden="true"></span><span class="nombre">${esc(s.nombre)}</span><span class="estado">${esc(T(ETIQUETA[s.color]))}</span><span class="texto">${esc(s.texto)}</span></li>`).join('')}</ul></div>` +
+    return `<div class="semaforo s-${g}" role="group" aria-label="${esc(T('Semáforo de los supuestos'))}"><p class="semaforo-global">${SP.ui.luz(g)}<b>${esc(({ verde: T('Los supuestos se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[g]))}</b></p>` +
+      `<ul>${sem.map(s => `<li class="s-${s.color}">${SP.ui.luz(s.color)}<span class="nombre">${esc(s.nombre)}</span><span class="estado">${esc(T(ETIQUETA[s.color]))}</span><span class="texto">${esc(s.texto)}</span></li>`).join('')}</ul></div>` +
       (recs && recs.length ? `<div class="callout"><p><b>${esc(T('Qué hacer'))}</b></p><ul class="ana-rec">${recs.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '');
   }
   function pintar() {

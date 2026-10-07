@@ -131,5 +131,13 @@
     }));
     return cargados.get(src);
   }
-  SP.ui = { dialogo, menu, esc, num, cargarScript };
+  /* el ícono de una luz del semáforo (hito 5.3): palomita, exclamación, cruz o raya; el estado se lee también en palabras */
+  const LUZ = {
+    verde: '<path d="M3.6 8.4l2.9 2.9 5.9-6.6" fill="none"/>',
+    ambar: '<path d="M8 3.4v5.6" fill="none"/><circle cx="8" cy="12.3" r="1.25" stroke="none"/>',
+    rojo: '<path d="M4.6 4.6l6.8 6.8M11.4 4.6l-6.8 6.8" fill="none"/>',
+    gris: '<path d="M4.6 8h6.8" fill="none"/>',
+  };
+  const luz = color => `<span class="luz" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false">${LUZ[color] || LUZ.gris}</svg></span>`;
+  SP.ui = { dialogo, menu, esc, num, cargarScript, luz };
 })();
