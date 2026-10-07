@@ -2,6 +2,38 @@
 
 ## Sin publicar
 
+### 0.5.5 · Hito 5.1: cómo leer cada cuadro (6 oct 2026)
+
+- **«Cómo leer este cuadro»**: debajo de cada cuadro con estadísticos que tienen una guía de lectura publicada, un
+  desplegable que se dibuja al abrirlo. Está en Análisis, en Explorar y en el reporte.
+  - **Medidores**: una regla con las zonas de la guía y una marca por fila, con el valor, su zona y la fuente.
+    Abarcan el p contra el α del análisis, los tamaños del efecto (d, g, h, f, η² de H, W de Kendall, r, ρ, φ y la V
+    de Cramér según el tamaño de la tabla), la razón de momios, kappa (Landis y Koch), la R² con las magnitudes de f²,
+    el CV del error, la eficiencia relativa, el VIF, el índice de condición, Durbin-Watson, los residuos
+    estudentizados, la distancia de Cook (con 4/n), la asimetría, la heredabilidad, la potencia y la ΔAIC.
+  - **Curvas de referencia**: la densidad de F, t, χ² o la normal de cada prueba del cuadro, con el valor crítico al α
+    del análisis, el observado (una flecha si cae fuera) y el área del p.
+    - La F toma los gl del error de su estrato (la fila «Error» que sigue).
+    - En t y z, las colas se deducen del p del cuadro.
+    - Si el cuadro da el p ajustado o uno exacto, una nota lo dice.
+  - El estadístico se reconoce por el título de la columna o, en los cuadros «Medida · Valor», por el nombre de la
+    fila.
+  - El CV de los descriptivos de Explorar no lleva la guía de Pimentel-Gomes, que es para el CV del error de un
+    experimento.
+- **Registro de escalas** (`SP.guias`): `escala(id, contexto)`, `zona(id, valor, contexto)`, `distribucion(id)` y
+  `fuentes()`.
+  - 27 estadísticos con escala y 19 con curva, con 16 fuentes completas.
+  - Fichas nuevas de asimetría y curtosis.
+  - Las guías se nombran con las palabras de su fuente y llevan su nota de cautela.
+- **LABGuide 1.0.0** (`js/labg-guide.js`, `css/labg-guide.css`): un módulo propio y reutilizable por las demás apps
+  de la suite.
+  - Medidores accesibles: con una marca son `role="meter"`; con varias, una imagen descrita y la lista de valores.
+  - Curvas con sus propias densidades (iguales a las del núcleo a 1e-12).
+  - Sigue el tema claro u oscuro y el idioma de la página.
+- **Pruebas**: 6 del registro en node y 6 de la lectura en el navegador. Nuevo escenario `lectura-dbca` en la
+  auditoría de accesibilidad.
+- **Pendiente para el hito 5.2**: el contexto editable del CV (cultivo y variable).
+
 ### 0.5.4 · Hito 5.11: la app abre rápido (6 oct 2026)
 
 Lighthouse, sin paso de compilación y sin tocar los módulos compartidos. Antes era la 0.5.3 y ahora la 0.5.4; los

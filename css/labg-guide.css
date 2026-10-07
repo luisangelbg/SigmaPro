@@ -1,0 +1,48 @@
+/* LABG Suite — LABGuide 1.0.0: medidores y curvas de referencia (estilo)
+   Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later.
+   Los colores salen de las variables de la app (--text, --success, --warning, --danger…) con un respaldo propio: las
+   zonas de magnitud van en dorados de claro a oscuro; las de calidad, en verde, ámbar y rojo, como el semáforo. Ningún
+   texto va sobre un color de zona: la etiqueta de cada zona va en la leyenda, en el color de texto de la app. */
+:root {
+  --lg-n0: #f1e9d2; --lg-n1: #e2cd8f; --lg-n2: #c9a227; --lg-n3: #8c6d1a;
+  --lg-ok: var(--success, #2f7d4f); --lg-ok2: #9ccfaa; --lg-aviso: var(--warning, #c98a12); --lg-mal: var(--danger, #b3261e);
+  --lg-texto: var(--text, #1d1d1b); --lg-tenue: var(--text-muted, #5c5a54); --lg-linea: var(--border, #d8d2c4);
+  --lg-area: rgba(201, 162, 39, .45); --lg-obs: #7a5a0c;
+}
+:root[data-theme="dark"] { --lg-ok2: #2f6b45; --lg-n0: #3a3424; --lg-n1: #6f5c27; --lg-n2: #b08c22; --lg-n3: #e6c65c; --lg-area: rgba(230, 198, 92, .38); --lg-obs: #e6c65c; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --lg-ok2: #2f6b45; --lg-n0: #3a3424; --lg-n1: #6f5c27; --lg-n2: #b08c22; --lg-n3: #e6c65c; --lg-area: rgba(230, 198, 92, .38); --lg-obs: #e6c65c; }
+}
+
+.lg-medidor { margin: 0 0 14px; }
+.lg-tit { margin: 0 0 2px; font-weight: 700; font-size: var(--fs-sm, .9rem); color: var(--lg-texto); }
+.lg-valor { margin: 0 0 2px; font-size: var(--fs-sm, .9rem); color: var(--lg-texto); }
+.lg-regla { display: block; width: 100%; height: auto; max-width: 440px; overflow: visible; }
+.lg-z.lg-n0 { fill: var(--lg-n0); } .lg-z.lg-n1 { fill: var(--lg-n1); } .lg-z.lg-n2 { fill: var(--lg-n2); } .lg-z.lg-n3 { fill: var(--lg-n3); }
+.lg-z.lg-ok { fill: var(--lg-ok); } .lg-z.lg-ok2 { fill: var(--lg-ok2); } .lg-z.lg-aviso { fill: var(--lg-aviso); } .lg-z.lg-mal { fill: var(--lg-mal); }
+.lg-corte { stroke: var(--lg-tenue); stroke-width: 1; }
+.lg-ref { stroke: var(--lg-texto); stroke-width: 2; stroke-dasharray: 3 2; }
+.lg-marca { fill: var(--lg-texto); stroke: var(--card-bg, #fff); stroke-width: 1; }
+.lg-num { fill: var(--lg-tenue); font: 11px/1 system-ui, sans-serif; }
+.lg-zonas, .lg-marcas { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: var(--fs-xs, .8rem); color: var(--lg-texto); }
+.lg-marcas { display: block; columns: 2 18rem; column-gap: 24px; }
+.lg-marcas li { break-inside: avoid; margin: 1px 0; }
+.lg-zonas li { display: inline-flex; align-items: center; gap: 6px; }
+.lg-cuadrito { display: inline-block; width: 12px; height: 12px; border-radius: 2px; border: 1px solid var(--lg-linea); flex: none; }
+.lg-cuadrito.lg-n0 { background: var(--lg-n0); } .lg-cuadrito.lg-n1 { background: var(--lg-n1); } .lg-cuadrito.lg-n2 { background: var(--lg-n2); } .lg-cuadrito.lg-n3 { background: var(--lg-n3); }
+.lg-cuadrito.lg-ok { background: var(--lg-ok); } .lg-cuadrito.lg-ok2 { background: var(--lg-ok2); } .lg-cuadrito.lg-aviso { background: var(--lg-aviso); } .lg-cuadrito.lg-mal { background: var(--lg-mal); }
+.lg-cuadrito.lg-area-c { background: var(--lg-area); }
+.lg-resumen, .lg-fuente { margin: 4px 0 0; font-size: var(--fs-xs, .8rem); color: var(--lg-tenue); }
+
+.lg-curva-fig { margin: 0; }
+.lg-curva { display: block; width: 100%; max-width: 420px; height: auto; }
+.lg-dens { fill: none; stroke: var(--lg-texto); stroke-width: 1.6; }
+.lg-area { fill: var(--lg-area); stroke: none; }
+.lg-eje { stroke: var(--lg-tenue); stroke-width: 1; }
+.lg-critico { stroke: var(--lg-tenue); stroke-width: 1.4; stroke-dasharray: 4 3; }
+.lg-obs { stroke: var(--lg-obs); stroke-width: 2.2; }
+.lg-obs-f { stroke: var(--lg-obs); stroke-width: 2; fill: none; }
+.lg-obs-t { fill: var(--lg-obs); font-weight: 700; }
+.lg-curva-fig figcaption { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 2px; font-size: var(--fs-xs, .8rem); color: var(--lg-texto); }
+.lg-cl { display: inline-flex; align-items: center; gap: 6px; }
+.lg-raya { display: inline-block; width: 16px; border-top: 2px dashed var(--lg-tenue); }

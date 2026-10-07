@@ -327,6 +327,16 @@ table.imp-tabla thead th { vertical-align: top; position: sticky; top: 0; backgr
 .exp-extras, .exp-codigo { margin-top: var(--sp-3); border-top: 1px solid var(--border); padding-top: var(--sp-2); }
 .exp-extras summary, .exp-codigo summary { cursor: pointer; font-weight: 600; font-size: var(--fs-sm); color: var(--btn-oro-texto); padding: 4px 0; }
 .exp-extras .chips { margin-top: var(--sp-2); gap: 4px 14px; }
+/* «Cómo leer este cuadro» (hito 5.1): medidores y curvas de LABGuide, dibujados al abrir */
+.lg-lectura { margin-top: var(--sp-2); }
+.lg-lectura > summary { cursor: pointer; font-weight: 600; font-size: var(--fs-sm); color: var(--btn-oro-texto); padding: 4px 0; }
+.lg-cuerpo { padding: var(--sp-2) 0 var(--sp-1); }
+.lg-medidores { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); gap: var(--sp-3) var(--sp-5); }
+.lg-sub { margin: var(--sp-3) 0 var(--sp-2); font-weight: 600; font-size: var(--fs-sm); }
+.lg-curvas { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: var(--sp-3) var(--sp-4); }
+.lg-refs { margin-top: var(--sp-3); font-size: var(--fs-xs); }
+.lg-refs summary { cursor: pointer; color: var(--btn-oro-texto); font-weight: 600; }
+.lg-refs ul { margin: var(--sp-1) 0 0; padding-left: 1.2em; color: var(--text-muted); }
 .exp-codigo pre { margin: var(--sp-2) 0; padding: 12px 14px; border-radius: var(--r-md); background: #111; color: #EEE9DF; overflow: auto; font-size: var(--fs-xs); line-height: 1.55; white-space: pre; }
 table.revista.sp-cuadro caption b { font-weight: 800; }
 table.revista.sp-cuadro tbody th { font-weight: 600; padding: 6px 10px; text-align: left; vertical-align: top; }

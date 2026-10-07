@@ -1,5 +1,5 @@
 {
- "generado": "2026-10-07T02:56:32.810Z",
+ "generado": "2026-10-07T03:42:40.787Z",
  "webr": "0.6.0",
  "r": "R 4.6.0",
  "navegador": "Chrome/154.0.0.0",
@@ -13,7 +13,7 @@
    "peor": "coeficientes.z[2]",
    "fallas": [],
    "error": "",
-   "ms": 20342,
+   "ms": 14523,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -31,7 +31,7 @@
    "peor": "coeficientes.z[2]",
    "fallas": [],
    "error": "",
-   "ms": 2448,
+   "ms": 2328,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -49,7 +49,7 @@
    "peor": "coeficientes.z[0]",
    "fallas": [],
    "error": "",
-   "ms": 603,
+   "ms": 546,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -67,7 +67,7 @@
    "peor": "coeficientes.z[4]",
    "fallas": [],
    "error": "",
-   "ms": 14809,
+   "ms": 7729,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -85,7 +85,7 @@
    "peor": "coeficientes.z[2]",
    "fallas": [],
    "error": "",
-   "ms": 516,
+   "ms": 248,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -103,7 +103,7 @@
    "peor": "medias[0].filas[0].ee",
    "fallas": [],
    "error": "",
-   "ms": 685,
+   "ms": 318,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -121,7 +121,7 @@
    "peor": "medias[0].filas[0].ee",
    "fallas": [],
    "error": "",
-   "ms": 2389,
+   "ms": 1041,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -139,7 +139,7 @@
    "peor": "obs.razon",
    "fallas": [],
    "error": "",
-   "ms": 2337,
+   "ms": 1045,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -157,7 +157,7 @@
    "peor": "coeficientes.z[1]",
    "fallas": [],
    "error": "",
-   "ms": 1034,
+   "ms": 498,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -175,7 +175,7 @@
    "peor": "wald.chi2[0]",
    "fallas": [],
    "error": "",
-   "ms": 939,
+   "ms": 368,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -193,7 +193,7 @@
    "peor": "coeficientes.z[3]",
    "fallas": [],
    "error": "",
-   "ms": 3386,
+   "ms": 1576,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -211,7 +211,7 @@
    "peor": "estructuras[6].logLik",
    "fallas": [],
    "error": "",
-   "ms": 2402,
+   "ms": 980,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -228,7 +228,7 @@
    "peor": "estructuras[4].logLik",
    "fallas": [],
    "error": "",
-   "ms": 1300,
+   "ms": 565,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -245,7 +245,7 @@
    "peor": "estructuras[6].logLik",
    "fallas": [],
    "error": "",
-   "ms": 1334,
+   "ms": 573,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -262,7 +262,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 1297,
+   "ms": 583,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -279,7 +279,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 3143,
+   "ms": 1319,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -296,7 +296,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 1283,
+   "ms": 545,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -313,7 +313,7 @@
    "peor": "medias[0].pares[60].p",
    "fallas": [],
    "error": "",
-   "ms": 9586,
+   "ms": 3997,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -331,7 +331,7 @@
    "peor": "anova.sc[0]",
    "fallas": [],
    "error": "",
-   "ms": 4360,
+   "ms": 1175,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -349,7 +349,7 @@
    "peor": "anova.gl2[0]",
    "fallas": [],
    "error": "",
-   "ms": 6510,
+   "ms": 1435,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -367,7 +367,7 @@
    "peor": "anova.cm[2]",
    "fallas": [],
    "error": "",
-   "ms": 3011,
+   "ms": 686,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -385,7 +385,7 @@
    "peor": "medias[1].pares[3].p",
    "fallas": [],
    "error": "",
-   "ms": 10117,
+   "ms": 2467,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -403,7 +403,7 @@
    "peor": "medias[1].filas[0].ic[0]",
    "fallas": [],
    "error": "",
-   "ms": 1975,
+   "ms": 522,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -421,7 +421,7 @@
    "peor": "anova.p[1]",
    "fallas": [],
    "error": "",
-   "ms": 11774,
+   "ms": 2745,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -439,7 +439,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 1101,
+   "ms": 361,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -457,7 +457,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 3881,
+   "ms": 3403,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -475,7 +475,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 515,
+   "ms": 536,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -493,7 +493,7 @@
    "peor": "anova.cm[2]",
    "fallas": [],
    "error": "",
-   "ms": 974,
+   "ms": 673,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -511,7 +511,7 @@
    "peor": "anova.cm[2]",
    "fallas": [],
    "error": "",
-   "ms": 1260,
+   "ms": 673,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -529,7 +529,7 @@
    "peor": "anova.p[2]",
    "fallas": [],
    "error": "",
-   "ms": 1348,
+   "ms": 394,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -547,7 +547,7 @@
    "peor": "medias[0].pares[0].p",
    "fallas": [],
    "error": "",
-   "ms": 813,
+   "ms": 253,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -565,7 +565,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 9484,
+   "ms": 1434,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -583,7 +583,7 @@
    "peor": "varianzas.varianza[1]",
    "fallas": [],
    "error": "",
-   "ms": 2435,
+   "ms": 545,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -601,7 +601,7 @@
    "peor": "varianzas.de[1]",
    "fallas": [],
    "error": "",
-   "ms": 2936,
+   "ms": 546,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -619,7 +619,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 2324,
+   "ms": 554,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -637,7 +637,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 1605,
+   "ms": 452,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -654,7 +654,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 817,
+   "ms": 213,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -671,7 +671,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 1942,
+   "ms": 359,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -688,7 +688,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 2241,
+   "ms": 523,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",

@@ -4,7 +4,10 @@
    Un reporte es { titulo, conclusiones: [texto], cuadros: [cuadro] }; el cuadro y sus formatos se describen en
    js/nucleo/formatos.js.
 
-     SP.cuadros.html(cuadro, { numero, visibles })   → HTML de la tabla con su título y notas
+     SP.cuadros.html(cuadro, { numero, visibles, contexto, lectura })
+                                                     → HTML de la tabla con su título, sus notas y, si tiene estadísticos
+                                                       con guía, «Cómo leer este cuadro» (js/interfaz/lectura.js; lectura:
+                                                       false lo quita; contexto = { alfa, n, gl } del resultado)
      SP.cuadros.tsv(cuadro, visibles)                → texto separado por tabuladores (para pegar en una hoja)
      SP.cuadros.csv(cuadro, visibles)                → CSV (RFC 4180) con los valores sin redondear, para otro programa
      SP.cuadros.bajarCSV(cuadro, visibles)           → lo baja como archivo .csv (UTF-8 con BOM, para que Excel lea los acentos)
@@ -42,7 +45,8 @@
     const numero = op.numero ? T('Cuadro {n}.', { n: op.numero }) + ' ' : '';
     return `<div class="tabla-wrap"><table class="revista sp-cuadro"><caption><b>${esc(numero)}</b>${esc(c.titulo)}</caption>` +
       `<thead><tr>${cab}</tr></thead><tbody>${cuerpo}</tbody></table></div>` +
-      (c.notas && c.notas.length ? `<div class="pie-cuadro">${c.notas.map(n => `<p>${esc(n)}</p>`).join('')}</div>` : '');
+      (c.notas && c.notas.length ? `<div class="pie-cuadro">${c.notas.map(n => `<p>${esc(n)}</p>`).join('')}</div>` : '') +
+      (SP.lectura && op.lectura !== false ? SP.lectura.html(c, op) : '');
   }
 
   function tsv(c, visibles) {

@@ -206,6 +206,10 @@ SP.definir('guias', function (SP) {
       [/^de$/, /^desviacion estandar( del error)?$/, /^de condicional$/]],
     ['varianza', 'descriptivo', 's²', T('Varianza'), T('Promedio de las desviaciones al cuadrado: la desviación estándar al cuadrado.'),
       [/^varianza$/, /^σ²$/]],
+    ['asimetria', 'descriptivo', 'G₁', T('Asimetría'), T('Mide hacia dónde se alarga la distribución: 0 es simétrica; positiva, cola larga a la derecha (valores grandes poco frecuentes); negativa, a la izquierda.'),
+      [/^asimetria \(/, /^asimetria$/]],
+    ['curtosis', 'descriptivo', 'G₂', T('Curtosis'), T('Exceso de curtosis: 0 en la normal; positiva, colas más pesadas y pico más agudo (más valores extremos); negativa, colas más ligeras.'),
+      [/^curtosis \(/, /^curtosis$/]],
     ['rango-medio', 'descriptivo', 'R̄', T('Rango medio'), T('Promedio de las posiciones (rangos) de los datos de un grupo al ordenar todos juntos; lo comparan las pruebas no paramétricas.'),
       [/^rango medio$/, /^suma de rangos$/]],
     /* ---- precisión ---- */
@@ -278,6 +282,132 @@ SP.definir('guias', function (SP) {
 
   const FICHAS = F.map(([id, grupo, simbolo, nombre, que, titulos]) => ({ id, grupo, simbolo, nombre, que, titulos }));
   const POR_ID = new Map(FICHAS.map(f => [f.id, f]));
+
+  /* ---------------- escalas (hito 5.1) ----------------
+     Los estadísticos que tienen una guía de lectura publicada traen su escala: el intervalo del medidor, sus zonas (de
+     menor a mayor: cada una llega hasta su límite y la última hasta el máximo) y la fuente. Las guías son convenciones,
+     no leyes: cada zona se nombra con las palabras de su fuente, y la nota dice cuándo conviene leerla con cuidado.
+       eje   'lineal'; 'log' (el valor p); 'abs' (cuenta el valor absoluto: el signo solo da la dirección); 'logabs' (una
+             razón: 1/2 se lee como 2)
+       tono  'n0' a 'n3', magnitud sin juicio (más oscuro, más grande); 'ok', 'ok2' (bien, más claro), 'aviso', 'mal', calidad
+     Algunas dependen del contexto: el α del análisis, el n, el tamaño de la tabla o el título de la columna. */
+  const FUENTES = {
+    asa2016: ['Wasserstein y Lazar (2016)', 'Wasserstein, R. L. y Lazar, N. A. (2016). The ASA statement on p-values: context, process, and purpose. The American Statistician, 70(2), 129–133.'],
+    cohen1988: ['Cohen (1988)', 'Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2.ª ed.). Lawrence Erlbaum.'],
+    tomczak2014: ['Tomczak y Tomczak (2014)', 'Tomczak, M. y Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 1(21), 19–25.'],
+    landis1977: ['Landis y Koch (1977)', 'Landis, J. R. y Koch, G. G. (1977). The measurement of observer agreement for categorical data. Biometrics, 33(1), 159–174.'],
+    chen2010: ['Chen, Cohen y Chen (2010)', 'Chen, H., Cohen, P. y Chen, S. (2010). How big is a big odds ratio? Interpreting the magnitudes of odds ratios in epidemiological studies. Communications in Statistics—Simulation and Computation, 39(4), 860–864.'],
+    pimentel2009: ['Pimentel-Gomes (2009)', 'Pimentel-Gomes, F. (2009). Curso de estatística experimental (15.ª ed.). FEALQ.'],
+    gomez1984: ['Gomez y Gomez (1984)', 'Gomez, K. A. y Gomez, A. A. (1984). Statistical procedures for agricultural research (2.ª ed.). Wiley.'],
+    james2013: ['James et al. (2013)', 'James, G., Witten, D., Hastie, T. y Tibshirani, R. (2013). An introduction to statistical learning. Springer.'],
+    montgomery2012: ['Montgomery, Peck y Vining (2012)', 'Montgomery, D. C., Peck, E. A. y Vining, G. G. (2012). Introduction to linear regression analysis (5.ª ed.). Wiley.'],
+    belsley1980: ['Belsley, Kuh y Welsch (1980)', 'Belsley, D. A., Kuh, E. y Welsch, R. E. (1980). Regression diagnostics: identifying influential data and sources of collinearity. Wiley.'],
+    durbin1950: ['Durbin y Watson (1950)', 'Durbin, J. y Watson, G. S. (1950). Testing for serial correlation in least squares regression. I. Biometrika, 37(3/4), 409–428.'],
+    bollen1990: ['Bollen y Jackman (1990)', 'Bollen, K. A. y Jackman, R. W. (1990). Regression diagnostics: an expository treatment of outliers and influential cases. En J. Fox y J. S. Long (Eds.), Modern methods of data analysis (pp. 257–291). Sage.'],
+    cook1982: ['Cook y Weisberg (1982)', 'Cook, R. D. y Weisberg, S. (1982). Residuals and influence in regression. Chapman and Hall.'],
+    bulmer1979: ['Bulmer (1979)', 'Bulmer, M. G. (1979). Principles of statistics. Dover.'],
+    johnson1955: ['Johnson, Robinson y Comstock (1955)', 'Johnson, H. W., Robinson, H. F. y Comstock, R. E. (1955). Estimates of genetic and environmental variability in soybeans. Agronomy Journal, 47(7), 314–318.'],
+    burnham2002: ['Burnham y Anderson (2002)', 'Burnham, K. P. y Anderson, D. R. (2002). Model selection and multimodel inference: a practical information-theoretic approach (2.ª ed.). Springer.'],
+  };
+  /* una zona llega hasta su límite (sin incluirlo, salvo en las escalas inclusivas; «estricta» lo excluye siempre) */
+  const z = (hasta, etiqueta, tono, estricta) => ({ hasta, etiqueta, tono, estricta: !!estricta });
+  const alfaDe = c => (c && c.alfa > 0 && c.alfa < 1 ? +c.alfa : 0.05);
+  /* las magnitudes de Cohen: menor que pequeño, pequeño, mediano y grande */
+  const cohen = (a, b, c, max, fuente, extra) => Object.assign({ min: 0, max, eje: 'abs', fuente: fuente || 'cohen1988',
+    zonas: [z(a, T('menor que pequeño'), 'n0'), z(b, T('pequeño'), 'n1'), z(c, T('mediano'), 'n2'), z(max, T('grande'), 'n3')] }, extra || {});
+  const ESCALAS = {
+    p: c => {
+      const a = alfaDe(c), cortes = [[0.001, T('muy fuerte')], [0.01, T('fuerte')]].filter(([x]) => x < a);
+      return { min: 1e-4, max: 1, eje: 'log', fuente: 'asa2016', titulo: T('Evidencia contra la hipótesis nula'),
+        zonas: cortes.map(([x, e], i) => z(x, e, 'n' + (3 - i))).concat([z(a, T('suficiente (p < α)'), 'n1'), z(1, T('insuficiente (p ≥ α)'), 'n0')]),
+        referencias: [{ valor: a, etiqueta: 'α = ' + a }],
+        nota: T('El p dice cuánta evidencia hay contra la hipótesis nula, no qué tan grande es el efecto.') };
+    },
+    'd-cohen': () => cohen(0.2, 0.5, 0.8, 1.6),
+    'g-hedges': () => cohen(0.2, 0.5, 0.8, 1.6),
+    'h-cohen': () => cohen(0.2, 0.5, 0.8, 1.6),
+    'f-cohen': () => cohen(0.1, 0.25, 0.4, 0.8),
+    'eta2-h': () => cohen(0.01, 0.06, 0.14, 0.4, 'tomczak2014'),
+    'w-kendall': () => cohen(0.1, 0.3, 0.5, 1, 'tomczak2014'),
+    r: () => cohen(0.1, 0.3, 0.5, 1),
+    rho: () => cohen(0.1, 0.3, 0.5, 1),
+    phi: () => cohen(0.1, 0.3, 0.5, 1),
+    /* la V de Cramér se compara con los límites de w (Cohen) divididos entre la raíz de min(filas, columnas) − 1 */
+    'v-cramer': c => {
+      if (!(c && c.gl > 0)) return null;
+      const k = c.gl, s = Math.sqrt(k), r = x => +(x / s).toFixed(3);
+      return cohen(r(0.1), r(0.3), r(0.5), 1, 'cohen1988', { nota: T('Límites de w divididos entre la raíz de min(filas, columnas) − 1 = {k}.', { k }) });
+    },
+    'razon-momios': () => ({ min: 1, max: 12, eje: 'logabs', fuente: 'chen2010',
+      zonas: [z(1.68, T('menor que pequeño'), 'n0'), z(3.47, T('pequeño'), 'n1'), z(6.71, T('mediano'), 'n2'), z(12, T('grande'), 'n3')],
+      nota: T('Una razón menor que 1 se lee por su inversa (0.5 como 2).') }),
+    kappa: () => ({ min: -0.2, max: 1, eje: 'lineal', fuente: 'landis1977', inclusivo: true,
+      zonas: [z(0, T('peor que el azar'), 'n0', true), z(0.2, T('leve'), 'n0'), z(0.4, T('aceptable'), 'n1'), z(0.6, T('moderada'), 'n1'), z(0.8, T('considerable'), 'n2'), z(1, T('casi perfecta'), 'n3')] }),
+    /* la R² con las magnitudes de f² de Cohen (0.02, 0.15 y 0.35) */
+    r2: () => ({ min: 0, max: 1, eje: 'lineal', fuente: 'cohen1988', titulo: T('Tamaño del efecto del modelo'),
+      zonas: [z(0.02, T('menor que pequeño'), 'n0'), z(0.13, T('pequeño'), 'n1'), z(0.26, T('mediano'), 'n2'), z(1, T('grande'), 'n3')],
+      nota: T('En experimentos diseñados la R² suele ser alta; compárala con la de ensayos parecidos.') }),
+    'r2-ajustada': c => ESCALAS.r2(c),
+    /* la guía es la del CV del error de un experimento: en los descriptivos (el CV de los datos de cada grupo) no aplica */
+    cv: c => (c && c.descriptivo ? null : { min: 0, max: 50, eje: 'lineal', fuente: 'pimentel2009', titulo: T('Precisión del experimento'),
+      zonas: [z(10, T('bajo (alta precisión)'), 'ok'), z(20, T('medio'), 'ok2'), z(30, T('alto'), 'aviso'), z(50, T('muy alto (baja precisión)'), 'mal')],
+      nota: T('Guía general para ensayos de campo: cada cultivo y variable tiene la suya (los conteos y las plagas suelen dar CV más altos).') }),
+    /* eficiencia relativa en %: más de 100 % quiere decir que el diseño (o la covariable) ganó precisión */
+    eficiencia: c => (c && c.titulo && !/%/.test(c.titulo) ? null : { min: 0, max: 300, eje: 'lineal', fuente: 'gomez1984',
+      zonas: [z(100, T('no ganó precisión'), 'aviso'), z(300, T('ganó precisión'), 'ok')] }),
+    vif: () => ({ min: 1, max: 20, eje: 'lineal', fuente: 'james2013',
+      zonas: [z(5, T('sin colinealidad que preocupe'), 'ok'), z(10, T('colinealidad moderada'), 'aviso'), z(20, T('colinealidad grave'), 'mal')] }),
+    condicion: () => ({ min: 1, max: 60, eje: 'lineal', fuente: 'belsley1980',
+      zonas: [z(10, T('débil'), 'ok'), z(30, T('moderada'), 'aviso'), z(60, T('fuerte'), 'mal')] }),
+    'durbin-watson': () => ({ min: 0, max: 4, eje: 'lineal', fuente: 'durbin1950',
+      zonas: [z(1, T('autocorrelación positiva fuerte'), 'mal'), z(1.5, T('posible autocorrelación positiva'), 'aviso'), z(2.5, T('sin autocorrelación aparente'), 'ok'),
+        z(3, T('posible autocorrelación negativa'), 'aviso'), z(4, T('autocorrelación negativa fuerte'), 'mal')],
+      nota: T('Regla práctica: la decisión la da el p de la prueba.') }),
+    'residuo-std': () => ({ min: 0, max: 5, eje: 'abs', fuente: 'montgomery2012',
+      zonas: [z(2, T('común'), 'ok'), z(3, T('poco común: revisar'), 'aviso'), z(5, T('posible atípico'), 'mal')] }),
+    cook: c => {
+      const n = c && c.n > 4 ? c.n : null, a = n ? +(4 / n).toFixed(3) : 0.5;
+      return { min: 0, max: 1.5, eje: 'lineal', fuente: n ? 'bollen1990' : 'cook1982',
+        zonas: [z(a, T('sin influencia que preocupe'), 'ok'), z(1, T('revisar'), 'aviso'), z(1.5, T('influyente'), 'mal')],
+        nota: n ? T('Revisar desde 4/n = {a} (Bollen y Jackman, 1990); influyente desde 1 (Cook y Weisberg, 1982).', { a }) : T('Influyente desde 1 (Cook y Weisberg, 1982).') };
+    },
+    asimetria: () => ({ min: 0, max: 3, eje: 'abs', fuente: 'bulmer1979',
+      zonas: [z(0.5, T('aproximadamente simétrica'), 'n0'), z(1, T('asimetría moderada'), 'n1'), z(3, T('asimetría marcada'), 'n3')],
+      nota: T('El signo dice hacia dónde: positivo, cola larga a la derecha; negativo, a la izquierda.') }),
+    heredabilidad: () => ({ min: 0, max: 1, eje: 'lineal', fuente: 'johnson1955',
+      zonas: [z(0.3, T('baja'), 'n0'), z(0.6, T('media'), 'n1'), z(1, T('alta'), 'n3')] }),
+    potencia: () => ({ min: 0, max: 1, eje: 'lineal', fuente: 'cohen1988',
+      zonas: [z(0.8, T('insuficiente'), 'aviso'), z(1, T('adecuada (0.80 o más)'), 'ok')] }),
+    'delta-aic': () => ({ min: 0, max: 15, eje: 'lineal', fuente: 'burnham2002',
+      zonas: [z(2, T('apoyo sustancial'), 'n3'), z(7, T('bastante menos apoyo'), 'n2'), z(10, T('muy poco apoyo'), 'n1'), z(15, T('prácticamente sin apoyo'), 'n0')] }),
+  };
+  ESCALAS['p-ajustado'] = ESCALAS.p;
+
+  /** La escala de un estadístico (por el id de su ficha) en un contexto { alfa, n, gl, titulo }, o null. */
+  function escala(id, contexto) {
+    const f = ESCALAS[id];
+    if (!f) return null;
+    const e = f(contexto || {});
+    if (!e) return null;
+    const fu = FUENTES[e.fuente] || [e.fuente, e.fuente];
+    return Object.assign({ id, inclusivo: false, referencias: [], abierto: !(e.max === 1 || (id === 'durbin-watson')) }, e, { fuenteCorta: fu[0], fuenteCompleta: fu[1] });
+  }
+  /** El valor como lo lee su escala (absoluto, o la razón mayor que 1). */
+  const leido = (e, v) => (e.eje === 'abs' ? Math.abs(v) : e.eje === 'logabs' ? (v > 0 ? Math.max(v, 1 / v) : NaN) : v);
+  /** La zona en que cae un valor: { indice, etiqueta, tono, escala }, o null si no hay escala o el valor no es un número. */
+  function zona(id, valor, contexto) {
+    const e = escala(id, contexto);
+    if (!e || typeof valor !== 'number' || !Number.isFinite(valor)) return null;
+    const v = leido(e, valor);
+    if (!Number.isFinite(v)) return null;
+    let i = e.zonas.findIndex(q => (e.inclusivo && !q.estricta ? v <= q.hasta : v < q.hasta));
+    if (i < 0) i = e.zonas.length - 1;
+    return { indice: i, etiqueta: e.zonas[i].etiqueta, tono: e.zonas[i].tono, escala: e };
+  }
+  /* la distribución de referencia de cada estadístico de prueba (para su curva) */
+  const DIST = { F: 'F', levene: 'F', 'brown-forsythe': 'F', reset: 'F', 'falta-ajuste': 'F', 'tukey-aditividad': 'F',
+    t: 't', z: 'z', rachas: 'z',
+    chi2: 'chi2', lrt: 'chi2', mcnemar: 'chi2', cmh: 'chi2', 'breslow-day': 'chi2', kruskal: 'chi2', friedman: 'chi2', fligner: 'chi2', bartlett: 'chi2', 'breusch-pagan': 'chi2' };
   const norm = s => String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
 
   /** La ficha del estadístico de una columna (clave interna y título) o de una fila (solo título), o null. */
@@ -301,5 +431,9 @@ SP.definir('guias', function (SP) {
     ficha: id => POR_ID.get(id) || null,
     buscar,
     normalizar: norm,
+    escala,
+    zona,
+    distribucion: id => DIST[id] || null,
+    fuentes: () => Object.keys(FUENTES).map(k => ({ id: k, corta: FUENTES[k][0], completa: FUENTES[k][1] })),
   };
 });

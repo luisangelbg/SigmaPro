@@ -89,6 +89,7 @@
     ['hecho', '4.5', T('Interfaz en inglés')],
     ['hecho', '5.0', T('Fundamentos de los 78 análisis, Suite LABG, pantalla de apertura, ilustraciones del catálogo y temas de las gráficas')],
     ['hecho', '5.11', T('La app abre rápido: primero la página y la barra de bloques, después el resto; el reporte de validación, al abrir su bloque')],
+    ['hecho', '5.1', T('Cómo leer cada cuadro: medidores con las guías publicadas (p, tamaños del efecto, R², CV, VIF…) y la curva de referencia de cada prueba')],
     ['', '1.0', T('Publicación: revisión del nombre, repositorio y DOI (versión 1.0.0)')],
   ];
   function hitos() {

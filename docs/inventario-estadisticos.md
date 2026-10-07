@@ -1,6 +1,6 @@
 # Inventario de estadísticos de SigmaPro
 
-> Generado por `node tools/inventario/inventario.mjs` con la versión 0.5.4. No se edita a mano.
+> Generado por `node tools/inventario/inventario.mjs` con la versión 0.5.5. No se edita a mano.
 
 Qué muestra cada análisis: sus cuadros con las columnas (clave interna, título y formato), las medidas que aparecen
 nombradas en las filas y los semáforos de supuestos. Cada columna numérica se relaciona con su ficha del registro de
@@ -18,7 +18,7 @@ y el registro debe reconocer los mismos estadísticos.
 | Columnas numéricas con nombre de un dato | 178 |
 | Columnas de estadísticos | 1124 |
 | Columnas de estadísticos con ficha en el registro | 885 (79 %) |
-| Fichas del registro | 119 (117 en uso) |
+| Fichas del registro | 121 (117 en uso) |
 | Columnas distintas sin ficha | 129 |
 | Diferencias entre español e inglés | 0 |
 
@@ -157,6 +157,8 @@ y el registro debe reconocer los mismos estadísticos.
 | `extremo` | Mínimo y máximo (mín, máx) | descriptivos |
 | `de` | Desviación estándar (DE) | descriptivos, prueba-t, mixto-bloques, mixto-localidades, mixto-latice, modelo-mixto, mixto-divididas, glmm-bloques, glmm, muestreo-estratificado, potencia-anova, potencia-medias |
 | `varianza` | Varianza (s²) | supuestos, mixto-bloques, mixto-localidades, mixto-latice, modelo-mixto, mixto-divididas, glmm-bloques, glmm, componentes-varianza, heredabilidad, repetibilidad |
+| `asimetria` | Asimetría (G₁) | — |
+| `curtosis` | Curtosis (G₂) | — |
 | `rango-medio` | Rango medio (R̄) | friedman, kruskal-wallis |
 
 ### Precisión

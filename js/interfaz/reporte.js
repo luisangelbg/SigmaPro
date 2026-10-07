@@ -210,7 +210,7 @@
           `<div class="msg msg-error"><strong>${esc(T('Este análisis no se pudo calcular con los datos actuales: {m}', { m: res.error.message }))}</strong>${res.error.arreglo ? `<span class="msg-fix">${esc(res.error.arreglo)}</span>` : ''}</div></article>`);
         return;
       }
-      const cuadros = res.rep.cuadros.map(q => { nc++; return SP.cuadros.html(q, { numero: nc, visibles: it.visibles }) + `<div class="btn-row exp-acciones"><button type="button" class="btn btn-secondary btn-sm" data-rep="copiar-cuadro" data-id="${it.id}" data-cuadro="${esc(q.id)}">${esc(T('Copiar cuadro {n}', { n: nc }))}</button></div>`; }).join('');
+      const cuadros = res.rep.cuadros.map(q => { nc++; return SP.cuadros.html(q, { numero: nc, visibles: it.visibles, contexto: Object.assign(SP.lectura ? SP.lectura.contexto(res.r, res.opciones) : {}, it.bloque === 3 ? { descriptivo: true } : {}) }) + `<div class="btn-row exp-acciones"><button type="button" class="btn btn-secondary btn-sm" data-rep="copiar-cuadro" data-id="${it.id}" data-cuadro="${esc(q.id)}">${esc(T('Copiar cuadro {n}', { n: nc }))}</button></div>`; }).join('');
       let figs = '';
       if (res.figurasHTML) {
         const t = document.createElement('template');

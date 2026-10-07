@@ -1449,7 +1449,7 @@
       (rec.length ? `<div class="callout exp-conclusion"><p><b>${esc(T('Qué hacer'))}</b></p><ul class="ana-rec">${rec.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '') +
       (r.excluidas ? `<p class="small muted">${esc(T('{k} filas con algún valor faltante en el modelo no entran.', { k: r.excluidas }))}</p>` : '') +
       (SP.temasGraficas ? SP.temasGraficas.selector() : '') + graficasSupuestos(r) +
-      SP.cuadros.html(rep.cuadros[0], { numero: 1 }) + copiarHTML(0) +
+      SP.cuadros.html(rep.cuadros[0], { numero: 1, contexto: SP.lectura && SP.lectura.contexto(r) }) + copiarHTML(0) +
       (rep.cuadros[1] ? `<details class="exp-extras"><summary>${esc(T('Varianza de los residuos por tratamiento'))}</summary>${SP.cuadros.html(rep.cuadros[1], { numero: 2 })}</details>` : '') +
       codigoHTML(codigo) +
       (SP.app.suite ? SP.app.suite.franjaMetodo('supuestos') : '');
@@ -2098,7 +2098,7 @@
       graficasHTML(graficaMetodo(r)) +
       (r.diseno && !r.tipo && r.factores && r.factores.length ? `<div class="btn-row exp-acciones"><button type="button" class="btn btn-primary btn-sm" data-accion="comparar">${esc(T('Comparar las medias de este diseño'))}</button></div>` : '') +
       botonesModelo(r) +
-      rep.cuadros.map((q, i) => SP.cuadros.html(q, { numero: i + 1 }) + copiarHTML(i)).join('') +
+      rep.cuadros.map((q, i) => SP.cuadros.html(q, { numero: i + 1, contexto: SP.lectura && SP.lectura.contexto(r) }) + copiarHTML(i)).join('') +
       codigoHTML(codigo) +
       (SP.app.suite ? SP.app.suite.franjaMetodo(estado.metodo) : '');
   }

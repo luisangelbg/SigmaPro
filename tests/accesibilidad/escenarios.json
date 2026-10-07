@@ -6,6 +6,9 @@
  "ana-boton": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.usar('dbca', { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, {})"
  },
+ "lectura-dbca": {
+  "prep": "(async () => { window.__esperando = true; document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[0].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.usar('dbca', { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, {}); await new Promise(r => setTimeout(r, 800)); document.querySelectorAll('#anaResultado details.lg-lectura').forEach(d => d.open = true); await new Promise(r => setTimeout(r, 400)); document.querySelectorAll('#anaResultado details.lg-refs').forEach(d => d.open = true); window.__esperando = false; })()"
+ },
  "analisis-0": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },

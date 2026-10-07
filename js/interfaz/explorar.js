@@ -168,7 +168,7 @@
       `<a class="exp-a-opciones small" href="#expOpciones">${esc(T('Cambiar las opciones ↓'))}</a>${botonFicha()}${botonReporte()}</div>` +
       `<div class="callout exp-conclusion">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` +
       (varios ? `<div class="seg exp-vistas" role="group" aria-label="${esc(T('Cuadro que se muestra'))}">${rep.cuadros.map(x => `<button type="button" data-vista="${esc(x.id)}" aria-pressed="${x === cuadro}">${esc({ conteos: T('Frecuencias'), 'pct-fila': T('% por fila'), 'pct-columna': T('% por columna'), 'pct-total': T('% del total') }[x.id] || x.titulo)}</button>`).join('')}</div>` : '') +
-      SP.cuadros.html(cuadro, { numero: 1, visibles: extras }) +
+      SP.cuadros.html(cuadro, { numero: 1, visibles: extras, contexto: { descriptivo: true } }) +
       `<div class="btn-row exp-acciones"><button type="button" class="btn btn-secondary btn-sm" data-accion="copiar">${esc(T('Copiar cuadro'))}</button>` +
       `<button type="button" class="btn btn-ghost btn-sm" data-accion="csv">${esc(T('Bajar en CSV'))}</button>` +
       `<span class="small muted">${esc(T('Se pega como tabla en una hoja de cálculo o en un procesador de textos.'))}</span></div>` +
