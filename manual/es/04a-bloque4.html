@@ -192,44 +192,46 @@
 
   <!-- 4.5 -->
   <h2 id="s4-5"><span class="num">4.5</span>Cómo se lee un resultado</h2>
-  <p>Los resultados del bloque Análisis tienen las partes de los de Explorar (sección 3.2) y algunas más. La figura 4.7 muestra la parte de arriba del análisis del maíz en bloques completos al azar.</p>
+  <p>Los resultados del bloque Análisis tienen las partes de los de Explorar (sección 3.2) y algunas más. La figura 4.7 muestra la parte de arriba del análisis del maíz en bloques completos al azar, y la 4.8, sus dos primeros cuadros.</p>
   <figure class="media">
-    <div class="marco"><img src="../img/b4-resultado.png" alt="El resultado del análisis de bloques completos al azar del maíz: el título con el tiempo de cálculo y Agregar al reporte; la conclusión: híbrido y dosis con diferencias, la interacción sin evidencia, media general 5.938, CV 3.6 % y R² 0.969; la gráfica de interacción híbrido × dosis con una línea por dosis; y el botón Comparar las medias de este diseño"></div>
-    <figcaption><b>Figura 4.7.</b> La parte de arriba de un resultado: título, conclusión, gráfica y el siguiente paso.</figcaption>
+    <div class="marco"><img src="../img/b4-resultado.png" alt="El resultado del análisis de bloques completos al azar del maíz: el título con el tiempo de cálculo y Agregar al reporte; los botones del nivel de detalle Básico, Estándar y Experto, con Estándar marcado; la conclusión: híbrido y dosis con diferencias, la interacción sin evidencia, media general 5.938, CV 3.6 % y R² 0.969; la gráfica de interacción híbrido × dosis con una línea por dosis; y el botón Comparar las medias de este diseño"></div>
+    <figcaption><b>Figura 4.7.</b> La parte de arriba de un resultado: título, nivel de detalle, conclusión, gráfica y el siguiente paso.</figcaption>
+  </figure>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-resultado-cuadros.png" alt="Los cuadros del mismo resultado: el análisis de varianza con fuente de variación, gl, SC, CM, F y p, su nota, Cómo leer este cuadro plegado y los botones Copiar cuadro y Bajar en CSV; y el resumen del ensayo con media general, observaciones, CV, R² y eficiencia relativa"></div>
+    <figcaption><b>Figura 4.8.</b> Los dos primeros cuadros del mismo análisis: el ANOVA, con <span class="ui">Cómo leer este cuadro</span> plegado debajo, y el resumen del ensayo. Siguen las medias marginales de cada factor y de sus combinaciones.</figcaption>
   </figure>
   <table class="compacta">
     <thead><tr><th style="width:1.75in">Parte</th><th>Qué es</th></tr></thead>
     <tbody>
       <tr><td><b>Título</b></td><td>El análisis, con el tiempo de cálculo, <span class="ui">ⓘ ¿Qué es este análisis?</span>, que abre su ficha en Fundamentos (capítulo 9), y <span class="ui">Agregar al reporte</span>.</td></tr>
+      <tr><td><b>Nivel de detalle</b></td><td>Bajo el título, <span class="ui">Básico</span>, <span class="ui">Estándar</span> y <span class="ui">Experto</span>: cuánto del resultado se ve (más abajo, «Tres niveles de detalle»).</td></tr>
       <tr><td><b>Conclusión</b></td><td>Una frase por efecto o por resultado clave, con su estadístico y su valor <i>p</i>: «hibrido: hay diferencias (F = 60.635, p &lt; 0.001)». Al final, los indicadores de ajuste (media general, CV, R²).</td></tr>
       <tr><td><b>Semáforo de los supuestos</b></td><td>En las pruebas que dependen de supuestos (pruebas t, regresión, ANCOVA, modelos generalizados…), un renglón por supuesto en verde, ámbar o rojo, con la prueba que lo decide (sección 4.7). En los diseños, el análisis de varianza no trae semáforo: sus supuestos se revisan con <span class="ui">Revisar los supuestos del modelo</span> (sección 4.7); en el reporte, los de completamente al azar y bloques completos al azar se revisan solos.</td></tr>
       <tr><td><b>Gráficas</b></td><td>Las que corresponden al análisis: la interacción de dos factores, las medias con su error estándar, la recta de regresión con sus bandas, el diagnóstico de los residuos, las curvas de supervivencia… Arriba, el selector <span class="ui">Tema de las gráficas</span> cambia el estilo de todas a la vez (los seis temas están en el cuadro 6.1). Cada gráfica tiene su leyenda y el botón ✎ del editor de figuras (capítulo 6).</td></tr>
       <tr><td><b>Siguiente paso</b></td><td>Botones que llevan al análisis que suele seguir: <span class="ui">Comparar las medias de este diseño</span> en los diseños, <span class="ui">Analizar el modelo elegido</span> tras una selección de variables, el CSV para otras apps en el multivariado.</td></tr>
       <tr><td><b>Cuadros</b></td><td>Numerados, cada uno con <span class="ui">Copiar cuadro</span> y <span class="ui">Bajar en CSV</span> (con los números completos, sin el redondeo de la pantalla): el análisis de varianza, el resumen del ensayo, las medias, las comparaciones… Un cuadro más ancho que la pantalla se desplaza a los lados; con el teclado, Tab lo enfoca y las flechas lo recorren.</td></tr>
-      <tr><td><b>Cómo leer este cuadro</b></td><td>Plegado bajo cada cuadro que trae un estadístico con guía de lectura: un medidor por estadístico y la curva de referencia de cada prueba (figuras 4.9 y 4.10, más abajo).</td></tr>
+      <tr><td><b>Cómo leer este cuadro</b></td><td>Plegado bajo cada cuadro que trae un estadístico con guía de lectura: un medidor por estadístico con su tarjeta de interpretación y la curva de referencia de cada prueba (figuras 4.9 y 4.10, más abajo).</td></tr>
       <tr><td><b>Código R equivalente</b></td><td>Plegado al final, con <span class="ui">Copiar el código</span>.</td></tr>
       <tr><td><b>Continúa en la suite LABG</b></td><td>Al pie de algunos análisis, una franja con la app de la suite que continúa el trabajo: AgriDesign tras un diseño experimental, CorrelationPro y PCAPro tras una correlación o una regresión, PCAPro y ClusteringPro tras el multivariado o el multiambiente. Cada tarjeta dice por qué conviene y se puede ocultar (capítulo 10).</td></tr>
     </tbody>
   </table>
-  <figure class="media">
-    <div class="marco"><img src="../img/b4-resultado-cuadros.png" alt="Los cuadros del mismo resultado: el análisis de varianza con fuente de variación, gl, SC, CM, F y p; el resumen del ensayo con media general, observaciones, CV, R² y eficiencia relativa; las medias de híbrido y de dosis con su error estándar"></div>
-    <figcaption><b>Figura 4.8.</b> Los dos primeros cuadros del mismo análisis: el ANOVA y el resumen del ensayo. Siguen las medias marginales de cada factor y de sus combinaciones.</figcaption>
-  </figure>
   <h3>Cómo leer este cuadro</h3>
   <p>Bajo cada cuadro que trae un estadístico con guía de lectura publicada va un desplegable cerrado, <span class="ui">Cómo leer este cuadro</span>. Se dibuja al abrirlo, así que no hace más lento el resultado. Trae dos cosas:</p>
   <ul>
     <li><b>Un medidor por estadístico.</b> Una regla dividida en las zonas de su guía, con un triángulo en el valor de cada renglón del cuadro (con más de doce valores, puntos y la cuenta por zona). Abajo van el valor con su zona y la guía que la define, con una nota cuando la guía tiene matices. Las zonas de magnitud (el <i>p</i>, los tamaños del efecto, la R²) van en dorados, de claro a oscuro; las de calidad (el CV, la colinealidad, los residuos), en verde, ámbar y rojo, como el semáforo de los supuestos. El cuadro 4.1 reúne las guías.</li>
-    <li><b>La curva de referencia de cada prueba.</b> Para cada F, t, z o χ² del cuadro (hasta ocho), la densidad con los grados de libertad de esa prueba: la raya punteada es el valor crítico al α del análisis, la raya de color es el valor observado y el área sombreada es el <i>p</i>. Si el valor queda más allá de la gráfica, una flecha lo anuncia («60.6 →»). En los diseños con varios errores (parcelas divididas, bloques divididos), cada F se dibuja con los grados de libertad del error que le corresponde. Si el cuadro da un <i>p</i> ajustado o exacto, una nota lo dice: la curva muestra el de la distribución de referencia.</li>
+    <li><b>La tarjeta de interpretación de cada medidor.</b> Unas frases que traducen el valor con los números del caso: qué parte de la variación explica la R², a cuánto equivale la desviación estándar del error según el CV y la media general, cuántas veces las repeticiones da la eficiencia relativa, cuántas desviaciones estándar separan dos medias, qué tan seguido saldría un resultado así si no hubiera efecto (el <i>p</i>)… Con varios valores dice cuáles caen en cada zona: los términos con <i>p</i> &lt; α, los residuos que pasan de ±2 y de ±3, las observaciones que pasan de 4/<i>n</i> en la distancia de Cook. Plegado, <span class="ui">Qué es</span> da la definición del estadístico.</li>
+    <li><b>La curva de referencia de cada prueba.</b> Para cada F, t, z o χ² del cuadro (hasta ocho), la densidad con los grados de libertad de esa prueba: la raya punteada es el valor crítico al α del análisis, la raya de color es el valor observado y el área sombreada es el <i>p</i>. Si el valor queda más allá de la gráfica, una flecha lo anuncia («60.6 →»). En los diseños con varios errores (parcelas divididas, bloques divididos), cada F se dibuja con los grados de libertad del error que le corresponde. Si el cuadro da un <i>p</i> ajustado o exacto, una nota lo dice: la curva muestra el de la distribución de referencia. Bajo cada curva, una frase dice si el valor pasa el crítico («Antes del valor crítico 2.39: <i>p</i> = 0.220 ≥ α = 0.05»).</li>
   </ul>
   <figure class="media">
-    <div class="marco"><img src="../img/b4-lectura-resumen.png" alt="Cómo leer este cuadro bajo el resumen del ensayo: el coeficiente de variación, 3.57 %, en la zona bajo, alta precisión, de una regla de 0 a 50 en verde, verde claro, ámbar y rojo; la R², 0.969, en la zona grande; y la eficiencia relativa frente a completamente al azar, 160 %, en la zona ganó precisión; cada medidor con su guía"></div>
-    <figcaption><b>Figura 4.9.</b> <span class="ui">Cómo leer este cuadro</span> abierto bajo el resumen del ensayo del maíz: el CV, la R² y la eficiencia relativa, cada uno en su regla y con su guía.</figcaption>
+    <div class="marco"><img src="../img/b4-lectura-resumen.png" alt="Cómo leer este cuadro bajo el resumen del ensayo: el coeficiente de variación, 3.57 %, en la zona bajo, alta precisión, de una regla de 0 a 50 en verde, verde claro, ámbar y rojo, con su tarjeta: la desviación estándar del error, 0.212, es el 3.57 % de la media general, 5.94, y el enlace para ajustar la guía; la R², 0.969, en la zona grande, con su tarjeta: el modelo explica el 96.9 % de la variación; y la eficiencia relativa frente a completamente al azar, 160 %, en la zona ganó precisión, con su tarjeta: con un diseño completamente al azar habría hecho falta 1.60 veces el número de repeticiones"></div>
+    <figcaption><b>Figura 4.9.</b> <span class="ui">Cómo leer este cuadro</span> abierto bajo el resumen del ensayo del maíz: el CV, la R² y la eficiencia relativa, cada uno con su regla, su tarjeta y su guía. Según la tarjeta del CV, la desviación estándar del error, 0.212, es el 3.57 % de la media general, 5.94.</figcaption>
   </figure>
   <figure class="media">
-    <div class="marco"><img src="../img/b4-lectura.png" alt="Cómo leer este cuadro, abierto bajo el análisis de varianza del maíz: el medidor del valor p, una regla en escala logarítmica de 0.0001 a 1 con zonas muy fuerte, fuerte, suficiente e insuficiente y la raya del α en 0.05, con la lista bloque, híbrido y dosis menores que 0.001, muy fuerte, e híbrido por dosis 0.220, insuficiente; y cuatro curvas F, una por término, con el valor crítico punteado: bloque, híbrido y dosis con flechas a 10.4, 60.6 y 292, fuera de la gráfica, e híbrido por dosis con F = 1.47 y el área del p, 0.220, sombreada"></div>
-    <figcaption><b>Figura 4.10.</b> El mismo desplegable bajo el ANOVA: el medidor del <i>p</i> de los cuatro términos y la curva F de cada uno. Solo la interacción (F = 1.47) cae antes del valor crítico, 2.39.</figcaption>
+    <div class="marco"><img src="../img/b4-lectura.png" alt="Cómo leer este cuadro, abierto bajo el análisis de varianza del maíz: el medidor del valor p, una regla en escala logarítmica de 0.0001 a 1 con zonas muy fuerte, fuerte, suficiente e insuficiente y la raya del α en 0.05, con la lista bloque, híbrido y dosis menores que 0.001, muy fuerte, e híbrido por dosis 0.220, insuficiente; y cuatro curvas F, una por término, con el valor crítico punteado: bloque, híbrido y dosis con flechas a 10.4, 60.6 y 292, fuera de la gráfica, e híbrido por dosis con F = 1.47 y el área del p, 0.220, sombreada; la tarjeta del p dice que 3 de 4 términos tienen p menor que α y cada curva dice si el valor pasa el crítico"></div>
+    <figcaption><b>Figura 4.10.</b> El mismo desplegable bajo el ANOVA: el medidor del <i>p</i> de los cuatro términos con su tarjeta (3 de 4 con <i>p</i> &lt; α) y la curva F de cada uno con su frase. Solo la interacción (F = 1.47) cae antes del valor crítico, 2.39.</figcaption>
   </figure>
-  <p>Al pie, <span class="ui">Fuentes de las guías</span> da las referencias completas (están también en el apéndice D). Las guías son convenciones que orientan la lectura, no reglas: el cultivo, la variable y el ensayo pesan más. Un CV de 25 % puede ser bueno en un conteo de plagas y malo en el rendimiento de grano. Algunos medidores dependen del contexto: el del CV no aparece en los descriptivos de Explorar (ahí el CV es el de los datos, no el del error de un ensayo), el de la <i>V</i> de Cramér ajusta sus límites al tamaño de la tabla y el de la distancia de Cook usa 4/<i>n</i> con el número de observaciones del análisis.</p>
+  <p>Al pie, <span class="ui">Fuentes de las guías</span> da las referencias completas (están también en el apéndice D). Las guías son convenciones que orientan la lectura, no reglas: el cultivo, la variable y el ensayo pesan más. Un CV de 25 % puede ser bueno en un conteo de plagas y malo en el rendimiento de grano; por eso la guía del CV se puede cambiar (más abajo). Algunos medidores dependen del contexto: el del CV no aparece en los descriptivos de Explorar (ahí el CV es el de los datos, no el del error de un ensayo), el de la <i>V</i> de Cramér ajusta sus límites al tamaño de la tabla y el de la distancia de Cook usa 4/<i>n</i> con el número de observaciones del análisis.</p>
   <table class="compacta">
     <caption><b>Cuadro 4.1.</b> Las guías de los medidores. Cada límite es el inicio de la zona siguiente.</caption>
     <thead><tr><th style="width:1.6in">Estadístico</th><th>Zonas</th><th style="width:1.55in">Guía</th></tr></thead>
@@ -245,7 +247,7 @@
       <tr><td><i>W</i> de Kendall</td><td>pequeño desde&nbsp;0.1; mediano desde&nbsp;0.3; grande desde&nbsp;0.5</td><td>Tomczak y Tomczak (2014)</td></tr>
       <tr><td>Razón de momios</td><td>pequeño desde&nbsp;1.68; mediano desde&nbsp;3.47; grande desde&nbsp;6.71. Una razón menor que 1 se lee por su inversa.</td><td>Chen, Cohen y Chen (2010)</td></tr>
       <tr><td>κ de Cohen</td><td>peor que el azar &lt;&nbsp;0; leve hasta&nbsp;0.20; aceptable hasta&nbsp;0.40; moderada hasta&nbsp;0.60; considerable hasta&nbsp;0.80; casi perfecta</td><td>Landis y Koch (1977)</td></tr>
-      <tr><td>Coeficiente de variación del ensayo</td><td>bajo &lt;&nbsp;10 %; medio &lt;&nbsp;20 %; alto &lt;&nbsp;30 %; muy alto desde&nbsp;30 %</td><td>Pimentel-Gomes (2009)</td></tr>
+      <tr><td>Coeficiente de variación del ensayo (guía general)</td><td>bajo &lt;&nbsp;10 %; medio &lt;&nbsp;20 %; alto &lt;&nbsp;30 %; muy alto desde&nbsp;30 %</td><td>Pimentel-Gomes (2009)</td></tr>
       <tr><td>Eficiencia relativa, %</td><td>ganó precisión desde&nbsp;100 %</td><td>Gomez y Gomez (1984)</td></tr>
       <tr><td>Heredabilidad</td><td>baja &lt;&nbsp;0.3; media &lt;&nbsp;0.6; alta desde&nbsp;0.6</td><td>Johnson, Robinson y Comstock (1955)</td></tr>
       <tr><td>Factor de inflación de la varianza</td><td>sin colinealidad que preocupe &lt;&nbsp;5; moderada &lt;&nbsp;10; grave desde&nbsp;10</td><td>James et al. (2013)</td></tr>
@@ -257,6 +259,49 @@
       <tr><td>Diferencia de AIC</td><td>apoyo sustancial &lt;&nbsp;2; bastante menos apoyo &lt;&nbsp;7; muy poco apoyo &lt;&nbsp;10; prácticamente sin apoyo desde&nbsp;10</td><td>Burnham y Anderson (2002)</td></tr>
     </tbody>
   </table>
+  <h3>La guía del CV para tu cultivo y variable</h3>
+  <p>Bajo el medidor del CV, <span class="ui">Ajustar la guía del CV a tu cultivo y variable</span> cambia la guía con que se lee el CV en todos los cuadros abiertos, en Análisis y en el reporte; la elección se recuerda en el navegador. Hay tres opciones en <span class="ui">Guía</span>:</p>
+  <ul>
+    <li><span class="ui">Ensayos de campo en general</span>: la de Pimentel-Gomes (2009), la que trae la app (cuadro 4.1).</li>
+    <li><b>Maíz</b>: siete variables con los límites de Fritsche-Neto et al. (2012), sacados de los CV de los ensayos publicados en Brasil de 2005 a 2010 (cuadro 4.2). Dos renglones del cuadro original (acame y días a floración) no coinciden con la media y la desviación estándar que el mismo artículo publica y quedaron fuera.</li>
+    <li><span class="ui">Límites propios</span>: el cultivo, la variable y los tres límites (<span class="ui">Bajo hasta</span>, <span class="ui">Medio hasta</span>, <span class="ui">Alto hasta</span>), escritos a mano o calculados con <span class="ui">Calcularlos con los CV de ensayos parecidos (Garcia, 1989)</span>: bajo hasta la media de esos CV menos una desviación estándar, medio hasta la media más una, alto hasta la media más dos y muy alto después (figura 4.11). Se aplican con <span class="ui">Aplicar mis límites</span>.</li>
+  </ul>
+  <table class="compacta">
+    <caption><b>Cuadro 4.2.</b> Límites del CV para maíz (Fritsche-Neto et al., 2012), en %. Cada límite se incluye en su zona; lo que pasa del último es muy alto.</caption>
+    <thead><tr><th>Variable</th><th style="width:1.1in">Bajo hasta</th><th style="width:1.1in">Medio hasta</th><th style="width:1.1in">Alto hasta</th></tr></thead>
+    <tbody>
+      <tr><td>Rendimiento de grano</td><td>8.24</td><td>15.49</td><td>19.11</td></tr>
+      <tr><td>Altura de planta</td><td>3.55</td><td>8.25</td><td>10.60</td></tr>
+      <tr><td>Altura de mazorca</td><td>4.58</td><td>10.76</td><td>13.85</td></tr>
+      <tr><td>Diámetro de mazorca</td><td>3.82</td><td>13.78</td><td>18.75</td></tr>
+      <tr><td>Mazorcas por planta</td><td>6.13</td><td>19.26</td><td>25.81</td></tr>
+      <tr><td>Peso de mazorcas comerciales</td><td>10.46</td><td>17.37</td><td>20.82</td></tr>
+      <tr><td>Peso de 100 granos</td><td>4.81</td><td>20.04</td><td>27.66</td></tr>
+    </tbody>
+  </table>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-cv-guia.png" alt="El formulario Ajustar la guía del CV a tu cultivo y variable, abierto bajo el medidor del CV del maíz: la guía Límites propios, el cultivo Maíz de temporal, la variable Rendimiento de grano, los límites 8.63, 13.62 y 16.12 calculados con ocho CV escritos en el recuadro, y el mensaje: con 8 CV, media 11.13 %, DE 2.50 %"></div>
+    <figcaption><b>Figura 4.11.</b> El formulario bajo el medidor del CV: límites propios calculados por el método de Garcia con ocho CV escritos como ejemplo: media 11.13 % y desviación estándar 2.50 %; bajo hasta 8.63 %, medio hasta 13.62 % y alto hasta 16.12 %. Con <span class="ui">Aplicar mis límites</span>, el medidor y su tarjeta se leen con ellos.</figcaption>
+  </figure>
+
+  <h3>Tres niveles de detalle</h3>
+  <p>Bajo el título de cada resultado, y en la cabecera del reporte, tres botones eligen cuánto se ve. El nivel vale para toda la app (Análisis, Explorar y el reporte) y se recuerda en el navegador. No cambia ningún número ni lo que se exporta.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.1in">Nivel</th><th>Qué se ve</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Básico</span></td><td>La conclusión, las gráficas, el semáforo y, abierta bajo el nombre de cada cuadro («Lectura · Cuadro 1. …»), su lectura: medidores, tarjetas y curvas (figura 4.12). Los cuadros con sus notas y botones, el código R y los detalles técnicos se ocultan; un cuadro sin guía de lectura no aparece. En Explorar el cuadro es el resumen mismo y se ve siempre.</td></tr>
+      <tr><td><span class="ui">Estándar</span></td><td>Todo el resultado, como se describe en esta sección. Es el nivel con que abre la app.</td></tr>
+      <tr><td><span class="ui">Experto</span></td><td>Lo de Estándar más las <span class="ui">Notas técnicas</span>: método, entradas, opciones, datos, filas usadas, programa y tiempo de cálculo, con el modelo y sus hipótesis tomados de la ficha de Fundamentos (capítulo 9). Las notas y el código R aparecen abiertos (figura 4.13).</td></tr>
+    </tbody>
+  </table>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-detalle-basico.png" alt="El análisis del maíz en el nivel Básico: el título con los botones Básico, Estándar y Experto, Básico marcado; la conclusión; el aviso de que en Básico los cuadros no se muestran; el botón Comparar las medias de este diseño; y abierta, Lectura · Cuadro 1. Análisis de varianza: Bloques completos al azar, que empieza con el medidor del valor p"></div>
+    <figcaption><b>Figura 4.12.</b> El nivel Básico: en lugar del cuadro del ANOVA, su lectura abierta (sigue como en la figura 4.10). En la captura se quitó la gráfica de interacción, que en la app va entre la conclusión y la lectura.</figcaption>
+  </figure>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-detalle-experto.png" alt="Las notas técnicas del nivel Experto: método Bloques completos al azar (dbca), entradas, opciones, datos con 48 filas, filas usadas 48, programa SigmaPro validado contra R y tiempo de cálculo; el modelo y igual a mu más tau i más beta j más épsilon ij con el significado de cada término; y las hipótesis H0, todos los tau iguales a 0, y H1, algún tau distinto de 0"></div>
+    <figcaption><b>Figura 4.13.</b> El nivel Experto agrega las notas técnicas, con el modelo del diseño en bloques y sus hipótesis de la ficha de Fundamentos.</figcaption>
+  </figure>
   <div class="caja nota">
     <div class="caja-t"><span class="ico">i</span>El párrafo para la tesis está en el reporte</div>
     <p>En el bloque Análisis el resultado se explora: se cambian opciones, se prueban modelos. Al agregarlo al reporte (capítulo 5), SigmaPro le suma lo que pide un documento: el párrafo de métodos y resultados con la cita de cada prueba, los detalles técnicos y la numeración de cuadros y figuras de todo el reporte.</p>
@@ -267,10 +312,10 @@
   <p>Casi todos los análisis de SigmaPro están programados en el propio núcleo de la app, en JavaScript, y validados contra R. Unos cuantos, los que piden la maquinaria de ajuste de los modelos mixtos, corren en un <b>R completo que funciona dentro del navegador</b> (webR, R compilado a WebAssembly): los modelos lineales mixtos y sus diseños (sección 4.15), las medidas repetidas y los modelos lineales generalizados mixtos (sección 4.17). Los datos tampoco salen del equipo: R corre en la misma pestaña.</p>
   <figure class="media">
     <div class="marco"><img src="../img/b4-motor.png" alt="El aviso Este análisis usa el motor R dentro de tu navegador: la primera vez se descargan R y sus paquetes, unos 25 MB, con internet; después quedan en la caché del navegador; tus datos no salen del equipo; botón Cargar el motor R y calcular"></div>
-    <figcaption><b>Figura 4.11.</b> La primera vez que se usa un análisis del motor R, la app pide permiso antes de descargarlo.</figcaption>
+    <figcaption><b>Figura 4.14.</b> La primera vez que se usa un análisis del motor R, la app pide permiso antes de descargarlo.</figcaption>
   </figure>
   <ol class="pasos">
-    <li>La primera vez, en lugar del resultado aparece el aviso de la figura 4.11. <span class="ui">Cargar el motor R y calcular</span> descarga R y sus paquetes (unos 25 MB) y calcula.</li>
+    <li>La primera vez, en lugar del resultado aparece el aviso de la figura 4.14. <span class="ui">Cargar el motor R y calcular</span> descarga R y sus paquetes (unos 25 MB) y calcula.</li>
     <li>Mientras tanto, arriba del resultado se lee cada paso («Descargando el motor R (la primera vez tarda más)…», «Instalando lme4 en el motor R (solo la primera vez)…», «Calculando en el motor R…») y un botón <span class="ui">Cancelar</span>. La primera carga tarda de unos segundos a un par de minutos, según la conexión; un cálculo, unos segundos.</li>
     <li>Después, el motor queda en la caché del navegador: ya no hace falta internet ni vuelve a preguntar.</li>
   </ol>

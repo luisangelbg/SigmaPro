@@ -1,5 +1,5 @@
 /* vista: 760x1700 */
-/* 4.5: la guía del CV bajo el resumen del ensayo del maíz: límites propios calculados por el método de Garcia */
+/* 4.5: el formulario de la guía del CV bajo el resumen del ensayo del maíz: límites propios calculados por el método de Garcia */
 (async () => {
   try { localStorage.removeItem('sigmapro.cv.guia'); } catch (e) { /* sin almacenamiento */ }
   await ejemplo('Maíz: híbridos');
@@ -14,6 +14,6 @@
   f.querySelector('details.lg-cv-garcia').open = true;
   f.querySelector('[data-cvguia="lista"]').value = '9.8, 12.4, 7.6, 15.1, 11.0, 13.7, 8.9, 10.5';
   f.querySelector('[data-cvguia-accion="calcular"]').click(); await W(300);
-  irA(item, 110); await W(300); limpio();
-  return caja([item], 8);
+  irA(g, 110); await W(300); limpio();
+  return caja([g], 8);
 })()

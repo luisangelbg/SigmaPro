@@ -10,5 +10,5 @@
   r.querySelectorAll('.graf-tema, .ana-graficas').forEach(e => { e.style.display = 'none'; });
   const lec = r.querySelector('details.lg-lectura');
   irA(r, 110); await W(300); limpio();
-  return caja([r.querySelector('.exp-cabeza'), r.querySelector('.sp-detalle'), r.querySelector('.exp-conclusion'), r.querySelector('.sp-basico-aviso'), lec.querySelector('summary'), lec.querySelector('.lg-item')], 8);
+  return caja([r.querySelector('.exp-cabeza'), r.querySelector('.sp-detalle'), r.querySelector('.exp-conclusion'), r.querySelector('.sp-basico-aviso'), lec.querySelector('summary'), lec.querySelector('.lg-item .lg-tit')], 8);
 })()
