@@ -50,3 +50,17 @@ SPT.describir('Potencia · métodos', () => {
     SPT.lanza(() => SP.ejecutar('repeticiones', null, {}, op('repeticiones', { cv: 60, diferencia: 1 })), 'más de 1000');
   });
 });
+
+SPT.describir('Potencia · medias escritas y unilaterales', () => {
+  SPT.caso('ANOVA: al despejar la varianza cuentan las medias escritas, no el campo «Tratamientos» que el formulario oculta', () => {
+    const f = SP.metodos['potencia-anova'], op = SP.opcionesCon(f, { calcular: 'varEntre', medias: '4.2, 4.8, 5.1, 5.6', grupos: 6, n: 5, de: 1 });
+    SPT.igual(SP.ejecutar('potencia-anova', null, {}, op).resultado.grupos, 4);
+    SPT.afirmar(f.codigoR({}, op).includes('groups = 4'), 'el código R también usa 4 grupos');
+  });
+  SPT.caso('Unilateral: la diferencia y la correlación se escriben positivas (antes daban 0 % de potencia o n = 2 sin aviso)', () => {
+    const op = (id, x) => SP.opcionesCon(SP.metodos[id], x);
+    SPT.lanza(() => SP.ejecutar('potencia-medias', null, {}, op('potencia-medias', { calcular: 'n', diferencia: -1, alternativa: 'unilateral' })), 'número positivo');
+    SPT.lanza(() => SP.ejecutar('potencia-correlacion', null, {}, op('potencia-correlacion', { calcular: 'n', r: -0.3, alternativa: 'unilateral' })), 'número positivo');
+    SPT.igual(Math.ceil(SP.ejecutar('potencia-medias', null, {}, op('potencia-medias', { calcular: 'n', diferencia: -1 })).resultado.n), 17, 'bilateral: el signo no importa');
+  });
+});

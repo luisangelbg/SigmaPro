@@ -145,3 +145,11 @@ SPT.describir('GLM · reporte, código R y párrafo', () => {
     SPT.afirmar(/Nelder y Wedderburn, 1972/.test(p.metodos) && /Lenth, 2016/.test(p.metodos), p.metodos);
   });
 });
+
+SPT.describir('Modelos lineales generalizados · familia automática', () => {
+  SPT.caso('Con un enlace que la binomial negativa no tiene, la automática avisa antes de ajustar', () => {
+    const t = SP.tabla.crear({ t: ['a', 'a', 'a', 'b', 'b', 'b'], y: [1, 3, 0, 7, 2, 9] }, { t: { tipo: 'factor' } });
+    SPT.lanza(() => SP.ejecutar('glm-conteos', t, { respuesta: 'y', tratamientos: ['t'] }, SP.opcionesCon(SP.metodos['glm-conteos'], { familia: 'auto', enlace: 'potencia', lambda: 0.5 })), 'familia automática');
+    SPT.igualJSON(SP.generalizados.ALTERNATIVA, { poisson: 'binomial-negativa', binomial: 'cuasibinomial' });
+  });
+});

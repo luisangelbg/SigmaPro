@@ -773,7 +773,8 @@
     }
     const fams = mixtoG ? SP.glmmGen.FAMILIAS : m === 'glm' ? ['binomial', 'cuasibinomial', 'poisson', 'cuasipoisson', 'binomial-negativa', 'gamma', 'inversa-gaussiana'] : SP.generalizados.FAMILIAS_DE[m];
     if (!fams.includes(s.familia)) s.familia = fams[0];
-    const base = s.familia === 'auto' ? SP.generalizados.BASE_DE[m] : s.familia, enlaces = mixtoG ? SP.glmmGen.ENLACES[base] : G.FAMILIAS[base].enlaces;
+    const base = s.familia === 'auto' ? SP.generalizados.BASE_DE[m] : s.familia, alt = s.familia === 'auto' ? SP.generalizados.ALTERNATIVA[base] : null;
+    const enlaces = mixtoG ? SP.glmmGen.ENLACES[base] : G.FAMILIAS[base].enlaces.filter(x => !alt || G.FAMILIAS[alt].enlaces.includes(x));
     if (!enlaces.includes(s.enlace)) s.enlace = m === 'glm-gamma' ? 'log' : G.ENLACE_OMISION[base];
     const binomial = base === 'binomial' || base === 'cuasibinomial';
     if (binomial) h += campo('glm', 'ensayos', T('Ensayos de cada fila (semillas sembradas, plantas evaluadas)'), [['', T('— la respuesta es 0/1 —')]].concat(med.filter(n => n !== s.respuesta).map(n => [n, n])), s.ensayos);
@@ -1050,16 +1051,16 @@
   }
   /** Series de tiempo: la variable y, si hace falta ordenarla, la columna del tiempo. */
   function formSeries(c, m) {
-    const s = estado.ts, num = c.numericas;
+    const s = estado.ts, num = c.numericas, tiempos = num.concat(c.fechas || []);
     if (!s._iniciado) {
-      s.tiempo = num.find(n => /^(mes|a[ñn]o|anio|fecha|semana|d[ií]a|trimestre|tiempo|periodo|t)$|mes|a[ñn]o|anio|fecha|semana|trimestre|periodo/i.test(n)) || '';
+      s.tiempo = tiempos.find(n => /^(mes|a[ñn]o|anio|fecha|semana|d[ií]a|trimestre|tiempo|periodo|t)$|mes|a[ñn]o|anio|fecha|semana|trimestre|periodo/i.test(n)) || '';
       s.respuesta = c.pap.respuestas.filter(n => n !== s.tiempo).slice(-1)[0] || num.filter(n => n !== s.tiempo).slice(-1)[0] || '';
       s._iniciado = true;
     }
     if (!num.includes(s.respuesta)) s.respuesta = num.filter(n => n !== s.tiempo).slice(-1)[0] || '';
-    if (s.tiempo && (!num.includes(s.tiempo) || s.tiempo === s.respuesta)) s.tiempo = '';
+    if (s.tiempo && (!tiempos.includes(s.tiempo) || s.tiempo === s.respuesta)) s.tiempo = '';
     let h = campo('ts', 'respuesta', T('Variable medida en el tiempo'), lista(num.filter(n => n !== s.tiempo)), s.respuesta);
-    h += campo('ts', 'tiempo', T('Columna del tiempo (para ordenar la serie)'), [['', T('— las filas ya están en orden —')]].concat(lista(num.filter(n => n !== s.respuesta))), s.tiempo,
+    h += campo('ts', 'tiempo', T('Columna del tiempo (para ordenar la serie)'), [['', T('— las filas ya están en orden —')]].concat(lista(tiempos.filter(n => n !== s.respuesta))), s.tiempo,
       T('Mes, año, semana o fecha: un valor por fila y a intervalos iguales.'));
     if (m === 'autocorrelacion') {
       h += numero('ts', 'rezagos', T('Rezagos de la ACF y la PACF (0 = como R: 10·log10(n))'), s.rezagos, '', ' min="0" step="1"');
@@ -1447,10 +1448,11 @@
       semaforoHTML(rep.semaforo, r.global, ({ verde: T('Los supuestos se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[r.global]), T('Semáforo de los supuestos')) +
       (rec.length ? `<div class="callout exp-conclusion"><p><b>${esc(T('Qué hacer'))}</b></p><ul class="ana-rec">${rec.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '') +
       (r.excluidas ? `<p class="small muted">${esc(T('{k} filas con algún valor faltante en el modelo no entran.', { k: r.excluidas }))}</p>` : '') +
-      graficasSupuestos(r) +
+      (SP.temasGraficas ? SP.temasGraficas.selector() : '') + graficasSupuestos(r) +
       SP.cuadros.html(rep.cuadros[0], { numero: 1 }) + copiarHTML(0) +
       (rep.cuadros[1] ? `<details class="exp-extras"><summary>${esc(T('Varianza de los residuos por tratamiento'))}</summary>${SP.cuadros.html(rep.cuadros[1], { numero: 2 })}</details>` : '') +
-      codigoHTML(codigo);
+      codigoHTML(codigo) +
+      (SP.app.suite ? SP.app.suite.franjaMetodo('supuestos') : '');
   }
 
   /** Gráficas de la regresión: la recta o curva con sus bandas (o observados contra ajustados) y el diagnóstico. */
@@ -2345,7 +2347,7 @@
     calcular();
   }
   /** Las gráficas de un resultado (para el reporte y el bloque Figuras); op.barras: 'ee' | 'ic'. */
-  const graficasDe = (id, r, op) => (id === 'supuestos' ? graficasSupuestos(r) : graficasHTML(graficaMetodo(r, op)));
+  const graficasDe = (id, r, op) => (id === 'supuestos' ? (SP.temasGraficas ? SP.temasGraficas.selector() : '') + graficasSupuestos(r) : graficasHTML(graficaMetodo(r, op)));
   Object.assign(estado, { aplicar, usar, ponerModo, graficasDe });
 
   function iniciar() {
@@ -2354,7 +2356,7 @@
     $('#anaModos').addEventListener('click', e => { const b = e.target.closest('[data-modo]'); if (b) ponerModo(b.dataset.modo); });
     /* sin datos: los cálculos que no los necesitan (potencia y tamaño de muestra) */
     const sd = $('#anaSinDatos');
-    if (sd) sd.addEventListener('click', () => { estado.sinDatos = true; estado.metodo = 'potencia-medias'; ponerModo('catalogo'); });
+    if (sd) sd.addEventListener('click', () => { estado.sinDatos = true; estado.metodo = 'potencia-medias'; SP.app.ir(4); ponerModo('catalogo'); });
     form.addEventListener('submit', e => e.preventDefault());
     form.addEventListener('change', e => {
       const el = e.target;

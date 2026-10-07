@@ -1,6 +1,6 @@
 {
  "generado": "node tests/regresion.mjs --actualizar",
- "version": "0.5.0",
+ "version": "0.5.2",
  "casos": {
   "ancova/metodo-ancova-anorexia": {
    "numeros": 333,
@@ -60,7 +60,7 @@
   "comparaciones-medias/metodo-bonferroni-pollos": {
    "numeros": 146,
    "resultado": "b8aa5f01ba80a19986d9f68c",
-   "reporte": "9b4f3ae1259750391e7710d6"
+   "reporte": "08415e5ae1923ac9efd18c36"
   },
   "contrastes/metodo-contrastes-plantas": {
    "numeros": 26,
@@ -70,12 +70,12 @@
   "comparaciones-medias/metodo-dms-dosis-en-hibrido": {
    "numeros": 188,
    "resultado": "55cc26e172d0e291ec7a42dc",
-   "reporte": "d4f39479a237fd3bf981a00d"
+   "reporte": "66afc47d28d104a8b17196e0"
   },
   "comparaciones-medias/metodo-dms-protegida-no-significativa": {
    "numeros": 69,
    "resultado": "33b4b7a0e928a77ebcfcebf8",
-   "reporte": "397cd47c42bf8af57c11a895"
+   "reporte": "ff9d1dd4151254c57ce360cc"
   },
   "comparaciones-medias/metodo-dunnett-bloques": {
    "numeros": 42,
@@ -95,12 +95,12 @@
   "comparaciones-medias/metodo-tukey-avena-n-en-v": {
    "numeros": 186,
    "resultado": "f0ad2387d602ee9b901a3ee3",
-   "reporte": "f389533816d8b4ce187631fb"
+   "reporte": "bd9c179b46d0d34fbe6b2087"
   },
   "comparaciones-medias/metodo-tukey-maiz": {
    "numeros": 41,
    "resultado": "76c081a608bf34dffdbb51ea",
-   "reporte": "de59453466dfa69652848f08"
+   "reporte": "10bcbb70272e3ed1280f8f68"
   },
   "mantel-haenszel/metodo-cmh-berkeley": {
    "numeros": 58,
@@ -110,7 +110,7 @@
   "kappa/metodo-kappa-cohen": {
    "numeros": 26,
    "resultado": "5a616dc68ad28bb8cf3a46b7",
-   "reporte": "98b65ef199d36e4fba3ad8fd"
+   "reporte": "d1642ada93b9583b96e6b394"
   },
   "mcnemar/metodo-mcnemar": {
    "numeros": 17,
@@ -685,12 +685,12 @@
   "gge/avena-gge-ideal-par": {
    "numeros": 437,
    "resultado": "d69ae1dc18144610a7cbbafe",
-   "reporte": "be6abf0e096d024c0a1ffc74"
+   "reporte": "61fc8b676c31265367682f0b"
   },
   "gge/avena-gge": {
    "numeros": 409,
    "resultado": "34c0e31e63f2b302eccba93b",
-   "reporte": "ac57cb328328d5535c92bdc2"
+   "reporte": "355b46b0378d9059ae5c4e52"
   },
   "estabilidad/avena-parcelas-perdidas-estabilidad": {
    "numeros": 821,
@@ -715,17 +715,17 @@
   "gge/maiz-gge-genotipo-escalado": {
    "numeros": 231,
    "resultado": "470e822be09bbf2c5e117229",
-   "reporte": "e287109068502c2177b3bdc0"
+   "reporte": "289b885f857943962eb96e32"
   },
   "gge/maiz-gge-menor-ambiente": {
    "numeros": 233,
    "resultado": "ad60e6cddbeded735a85027a",
-   "reporte": "b643c1e3e41019a62b4ca0c0"
+   "reporte": "9c78d83c95ac138772a2f1f1"
   },
   "gge/maiz-gge-par-escalado-menor": {
    "numeros": 239,
    "resultado": "36647525d35cc3ed58736e02",
-   "reporte": "4904717b8a0bfe1f9c703d37"
+   "reporte": "7ce414fa914b5240c0e7d2ab"
   },
   "ammi/maiz-medias-ammi": {
    "numeros": 231,
@@ -758,43 +758,43 @@
    "reporte": "d0ff80c2770a56e313977f59"
   },
   "discriminante/cuatro-regiones": {
-   "numeros": 634,
-   "resultado": "dd0dd4aa176a99b0097ab6aa",
+   "numeros": 636,
+   "resultado": "ca77688c0f85017ed8fa370d",
    "reporte": "f93f9139d480263ce88289f2"
   },
   "manova/cuatro-respuestas": {
-   "numeros": 100,
-   "resultado": "13f3c4daf795539f5758f068",
+   "numeros": 126,
+   "resultado": "88596ba82d53619a630bfece",
    "reporte": "4ec385b8f6f11aa421827dd8"
   },
   "discriminante/dos-origenes": {
-   "numeros": 263,
-   "resultado": "b389cd4ca675c0b21ed27e0d",
+   "numeros": 265,
+   "resultado": "f85aae7a63015a778f6bbd9e",
    "reporte": "3ea4af1f731287ed033b7230"
   },
   "manova/factorial-desbalanceado": {
-   "numeros": 130,
-   "resultado": "abd1d06d0f29394cecaf7541",
+   "numeros": 153,
+   "resultado": "f639be3559f1fc2d6eb1e8d3",
    "reporte": "36cdb1b15399080c8369ab8d"
   },
   "discriminante/grupo-chico-box": {
-   "numeros": 589,
-   "resultado": "70c713b51e51710f55ea0766",
+   "numeros": 591,
+   "resultado": "1b7bd7876ed742d3cc92e7bd",
    "reporte": "49e40efadcfeaf5a12740d4e"
   },
   "discriminante/iris-fisher": {
-   "numeros": 1868,
-   "resultado": "c7b53ce4a50f0887f8d92c50",
+   "numeros": 1870,
+   "resultado": "e2cc6184e57d6d0dae94e4f7",
    "reporte": "3e0e3c6f6b2a224dccc2d7c5"
   },
   "manova/iris-manova": {
-   "numeros": 94,
-   "resultado": "982dedce4b62adc8d411d40a",
+   "numeros": 246,
+   "resultado": "38ba7020414feed70838dd83",
    "reporte": "1d6daa27fa589331f2c1929b"
   },
   "manova/maiz-bloques": {
-   "numeros": 113,
-   "resultado": "5f8d705dc4d7d993ac87b179",
+   "numeros": 127,
+   "resultado": "2b6b2072bcf663ac31d25726",
    "reporte": "6a912def69e05d37ab8293d0"
   },
   "friedman/metodo-friedman-campo": {
@@ -810,7 +810,7 @@
   "friedman/metodo-friedman-redondeo": {
    "numeros": 106,
    "resultado": "84e74cf24485be218434b3b5",
-   "reporte": "3d67dd09964fdd68275f38ba"
+   "reporte": "d1d97e54c07ddc6d49b281ba"
   },
   "kruskal-wallis/metodo-kruskal-insectos": {
    "numeros": 207,
@@ -850,7 +850,7 @@
   "dosis-respuesta/germinacion-pesos-perfil": {
    "numeros": 404,
    "resultado": "4a936bb3419c3f8068afbb82",
-   "reporte": "9312b9162b5ca79afb14adda"
+   "reporte": "d2584ed959ef70461fd278aa"
   },
   "dosis-respuesta/herbicidas-ll4": {
    "numeros": 876,
@@ -1180,7 +1180,7 @@
   "superficie-respuesta/factorial-interacciones": {
    "numeros": 260,
    "resultado": "96f17876c63bbd7dfbb3f0cf",
-   "reporte": "c06488a2e7ef6b78c65efa4f"
+   "reporte": "94fddc08ea031ec9ef27843d"
   },
   "diseno-superficie/factorial-tres-centros": {
    "numeros": 62,
@@ -1200,12 +1200,12 @@
   "superficie-respuesta/germinacion-bbd-cresta-minima": {
    "numeros": 324,
    "resultado": "a95ee355944d4e8ad438b08c",
-   "reporte": "666fe4d1154344a8f4d47e90"
+   "reporte": "a9f9e3e86b75b22d5d3a5484"
   },
   "superficie-respuesta/germinacion-bbd-silla": {
    "numeros": 324,
    "resultado": "d91eb4b48c8915427e68713a",
-   "reporte": "8064b40529def20401f9c0ab"
+   "reporte": "22e3e77605a7db5fe74a9fa6"
   },
   "mezclas/hilo-cuadratico": {
    "numeros": 153,
@@ -1230,7 +1230,7 @@
   "diseno-superficie/latice-tres-dos": {
    "numeros": 59,
    "resultado": "35970914008f4a4f5a17e421",
-   "reporte": "9697eafa4bf1fdc6e313f8a3"
+   "reporte": "8fa3c062e7f88d435e87dfba"
   },
   "superficie-respuesta/maiz-ccd-bloques": {
    "numeros": 249,

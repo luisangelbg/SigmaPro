@@ -272,7 +272,8 @@
     <p>Las figuras aparecen aquí cuando el reporte tiene análisis con gráficas (diseños, comparaciones, regresión, correlación, contingencia…).</p>
     <div class="btn-row"><button type="button" class="btn btn-primary" data-ir="5">Ir a Resultados</button></div>
   </div>
-  <div id="figTrabajo" hidden>
+  <!-- qc-section: el Estudio de figuras toma de aquí los ajustes del bloque (barras, tema y ancho), sin los botones de paso entre bloques -->
+  <div id="figTrabajo" class="qc-section" hidden>
     <div class="dat-barra" id="figBarra">
       <div class="seg exp-modo" id="figBarras" role="group" aria-label="Barras de error en las gráficas de medias">
         <button type="button" data-barras="ee" aria-pressed="true">± 1 EE</button>

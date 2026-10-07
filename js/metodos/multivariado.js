@@ -71,7 +71,7 @@ SP.definir('metodos-multivariado', function (SP) {
       return { factor: tr, niveles: c.niveles, medias: c.niveles.map((_, l) => resp.map((__, j) => { let s = 0, m = 0; c.cod.forEach((v, i) => { if (v === l) { s += C.Y[i][j]; m++; } }); return s / m; })) };
     }) : [];
     return { tipo: 'multivariado', metodo: 'manova', respuestas: resp, tratamientos: trat, bloque: e.bloque || '', prueba: op.prueba, alfa: +op.alfa,
-      terminos: A.terminos, E: A.E, glE: A.glE, n: A.n, excluidas: C.excluidas, univariados, medias, boxM: box };
+      terminos: A.terminos, E: A.E, glE: A.glE, n: A.n, excluidas: C.excluidas, filas: C.filas, univariados, medias, boxM: box };
   }
   function reporteManova(r) {
     const pr = r.prueba, nombre = PRUEBAS[pr], c = [];
@@ -89,7 +89,7 @@ SP.definir('metodos-multivariado', function (SP) {
     { id: 'univariados', titulo: T('ANOVA de cada respuesta (F y p)'), columnas: [col('y', T('Respuesta'), 'texto')].concat(r.terminos.flatMap((t, j) => [col('F' + j, 'F · ' + t.termino, 'forma2'), col('p' + j, 'p · ' + t.termino, 'pvalor')])),
       filas: r.respuestas.map((y, k) => Object.assign({ y }, ...r.terminos.map((t, j) => ({ ['F' + j]: r.univariados[k].F[j], ['p' + j]: r.univariados[k].p[j] })))),
       notas: [T('Cada respuesta por separado (summary.aov); con varias respuestas, la MANOVA controla el error del conjunto.')] }];
-    if (r.boxM) cuadros.push(cuadroBox(r.boxM, r.boxM.celdas, T('las combinaciones de tratamientos')));
+    if (r.boxM && Number.isFinite(r.boxM.p)) cuadros.push(cuadroBox(r.boxM, r.boxM.celdas, T('las combinaciones de tratamientos')));
     for (const m of r.medias) cuadros.push({ id: 'medias-' + m.factor, titulo: T('Medias por «{f}»', { f: m.factor }), columnas: [col('n', m.factor, 'texto')].concat(r.respuestas.map((y, j) => col('m' + j, y, 'sig'))),
       filas: m.niveles.map((nv, l) => Object.assign({ n: nv }, ...m.medias[l].map((v, j) => ({ ['m' + j]: v })))) });
     return { titulo: T('MANOVA de {k} respuestas', { k: r.respuestas.length }), conclusiones: c.map(may), cuadros, semaforo: [
@@ -110,7 +110,10 @@ SP.definir('metodos-multivariado', function (SP) {
   /* ---------------- prueba M de Box (supuesto de la MANOVA y del discriminante) ---------------- */
   /** El color, el cuadro y la frase de la M de Box. */
   function semaforoBox(B, uso) {
-    if (!B || !Number.isFinite(B.p)) return { nombre: T('Covarianzas iguales (M de Box)'), color: 'gris', texto: T('Hay muy pocas unidades por grupo para la prueba M de Box.') };
+    if (!B || !Number.isFinite(B.p)) return { nombre: T('Covarianzas iguales (M de Box)'), color: 'gris', texto: B && B.variables
+      ? (B.validos === 1 ? T('La prueba M de Box necesita al menos dos grupos con más unidades que variables ({p}); solo uno las tiene, así que no se calcula.', { p: B.variables })
+        : T('La prueba M de Box necesita al menos dos grupos con más unidades que variables ({p}); ninguno las tiene, así que no se calcula.', { p: B.variables }))
+      : T('Hay muy pocas unidades por grupo para la prueba M de Box.') };
     const t = T('M de Box: χ²({g}) = {x}, p {p}.', { g: B.gl, x: f2(B.chi2), p: fp(B.p) });
     if (B.p >= 0.05) return { nombre: T('Covarianzas iguales (M de Box)'), color: 'verde', texto: t + ' ' + T('Sin evidencia de que las covarianzas difieran entre grupos.') };
     if (B.p >= 0.001) return { nombre: T('Covarianzas iguales (M de Box)'), color: 'ambar', texto: t + ' ' + T('La prueba es muy sensible (también a la falta de normalidad): con p entre 0.001 y 0.05 suele aceptarse.') };
@@ -156,7 +159,7 @@ SP.definir('metodos-multivariado', function (SP) {
     { id: 'clasificacion', titulo: T('Clasificación con validación cruzada (filas: grupo real)'), columnas: [col('g', r.grupo, 'texto')].concat(r.niveles.map((nv, h) => col('k' + h, nv, 'entero')), [col('a', T('% correcto'), 'pct')]),
       filas: r.niveles.map((nv, a) => Object.assign({ g: nv, a: 100 * r.clasificacion_cv[a][a] / r.clasificacion_cv[a].reduce((s, v) => s + v, 0) }, ...r.niveles.map((_, b) => ({ ['k' + b]: r.clasificacion_cv[a][b] })))),
       notas: [T('Cada unidad se clasifica con la función ajustada sin ella (lda con CV = TRUE). Previas: las proporciones de los grupos.')] }];
-    if (r.boxM) cuadros.push(cuadroBox(r.boxM, r.niveles, T('los grupos')));
+    if (r.boxM && Number.isFinite(r.boxM.p)) cuadros.push(cuadroBox(r.boxM, r.niveles, T('los grupos')));
     return { titulo: T('Análisis discriminante lineal por «{g}»', { g: r.grupo }), conclusiones: c, cuadros, semaforo: [
       { nombre: T('Tamaño de los grupos'), color: Math.min(...r.clasificacion.map(f => f.reduce((s, v) => s + v, 0))) > r.variables.length ? 'verde' : 'ambar',
         texto: T('El grupo más chico tiene {n} unidades para {k} variables (conviene que cada grupo tenga más unidades que variables).', { n: Math.min(...r.clasificacion.map(f => f.reduce((s, v) => s + v, 0))), k: r.variables.length }) }, semaforoBox(r.boxM, 'discriminante')] };

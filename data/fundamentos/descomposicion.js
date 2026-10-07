@@ -47,7 +47,7 @@ SP_FICHA({
       ],
       "minimo": "Al menos dos ciclos completos (24 observaciones mensuales); para un efecto estacional estable conviene tener 4 ciclos o más.",
       "balance": "No admite faltantes ni tiempos repetidos: SigmaPro avisa y no corre. La posición 1 del ciclo es la de la primera observación, así que conviene que la serie empiece al inicio de un ciclo (en enero).",
-      "notaFormato": "Formato largo: una fila por tiempo, con la columna del tiempo y la de la variable; SigmaPro ordena la serie por la columna del tiempo. Si tus datos están como tabla de años por meses (el formato ancho de abajo), apílalos con «Ancha ⇄ larga» en Datos: quedan ordenados por mes y luego por año, así que crea con «Variable calculada» una columna de tiempo continua, por ejemplo (anio - 2017) * 12 + mes, y elígela como columna del tiempo.",
+      "notaFormato": "Formato largo: una fila por tiempo, con la columna del tiempo y la de la variable; SigmaPro ordena la serie por la columna del tiempo. Si tus datos están como tabla de años por meses (el formato ancho de abajo), apílalos con «Ancha ⇄ larga» en Datos: quedan ordenados por mes y luego por año, así que crea con «Variable calculada» una columna de tiempo continua, por ejemplo (as.numeric(anio) - 2017) * 12 + mes (as.numeric vuelve número el año, que está como factor), y elígela como columna del tiempo.",
       "errores": [
         "Empezar la serie en un mes que no es el primero del ciclo y leer la posición 1 como enero: la posición 1 es siempre la de la primera observación.",
         "Poner una frecuencia que no corresponde a los datos (12 con datos semanales).",
@@ -115,7 +115,7 @@ SP_FICHA({
       ],
       "minimo": "At least two full cycles (24 monthly observations); for a stable seasonal effect, 4 cycles or more are advisable.",
       "balance": "Missing values and repeated times are not allowed: SigmaPro warns and does not run. Position 1 of the cycle is that of the first observation, so the series should start at the beginning of a cycle (in January).",
-      "notaFormato": "Long format: one row per time, with the time column and the variable column; SigmaPro orders the series by the time column. If your data are a table of years by months (the wide format below), stack them with “Wide ⇄ long” in Data: they come out ordered by month and then by year, so create a continuous time column with “Computed variable”, for example (anio - 2017) * 12 + mes, and choose it as the time column.",
+      "notaFormato": "Long format: one row per time, with the time column and the variable column; SigmaPro orders the series by the time column. If your data are a table of years by months (the wide format below), stack them with “Wide ⇄ long” in Data: they come out ordered by month and then by year, so create a continuous time column with “Computed variable”, for example (as.numeric(anio) - 2017) * 12 + mes (as.numeric turns the year, stored as a factor, into a number), and choose it as the time column.",
       "errores": [
         "Starting the series in a month that is not the first of the cycle and reading position 1 as January: position 1 is always that of the first observation.",
         "Setting a frequency that does not match the data (12 with weekly data).",

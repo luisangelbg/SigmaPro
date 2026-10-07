@@ -313,7 +313,7 @@ SP.definir('mixtos', function (SP) {
         filas: md.filas.map(f => ({ por: f.por, nivel: f.nivel, media: f.media, ee: f.ee, gl: f.gl, ic: f.ic, letras: f.letras })),
         notas: [T('Medias marginales estimadas (emmeans) con grados de libertad de {g}.', { g: r.gl })]
           .concat(conLetras ? [T('Medias con la misma letra no difieren según {a} (α = {al}).', { a: NOMBRE_AJUSTE[md.ajuste], al: r.alfa })] : [])
-          .concat(md.enInteraccion ? [T('«{f}» interactúa con otro factor: estas medias promedian sobre sus niveles; para comparar dentro de cada nivel usa «dentro de».', { f: md.factor })] : [])
+          .concat(md.enInteraccion ? [T('«{f}» interactúa con otro factor: estas medias promedian sobre sus niveles; para comparar dentro de cada nivel usa «Dentro de cada nivel de».', { f: md.factor })] : [])
           .concat(md.sinPares ? [T('Con más de {k} niveles solo se dan las medias.', { k: MAX_PARES })] : []) });
       if (md.pares.length && md.pares.length <= 45) {
         cuadros.push({ id: 'pares-' + md.factor, titulo: T('Comparaciones por pares de «{f}» ({a})', { f: md.factor, a: NOMBRE_AJUSTE[md.ajuste] }),

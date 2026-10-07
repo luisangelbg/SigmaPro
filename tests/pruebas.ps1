@@ -4,8 +4,11 @@
 #   powershell -ExecutionPolicy Bypass -File tests\pruebas.ps1 -SoloNode  sin navegador
 #   powershell -ExecutionPolicy Bypass -File tests\pruebas.ps1 -Completo  todo, con exportaciones, privacidad,
 #                                                                         rendimiento y accesibilidad
+#   powershell -ExecutionPolicy Bypass -File tests\pruebas.ps1 -Red       ademas las dos que salen a internet: los
+#                                                                         metodos del motor R (descarga webR) y los
+#                                                                         enlaces de la suite LABG
 # Busca node en el PATH o en la ruta de Adobe; R en el PATH o en C:\Program Files\R.
-param([switch]$R, [switch]$SoloNode, [switch]$Completo)
+param([switch]$R, [switch]$SoloNode, [switch]$Completo, [switch]$Red)
 $ErrorActionPreference = 'Stop'
 $tests = $PSScriptRoot
 
@@ -35,17 +38,31 @@ if ($R) {
   if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
+$codigo = 0
+# -Red: los metodos del motor R en un navegador (descarga webR); van antes de correr.mjs, que los integra al reporte
+if ($Red -and -not $SoloNode) {
+  & $node (Join-Path $tests 'motor-r.mjs')
+  if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
+}
 & $node (Join-Path $tests 'correr.mjs')
-$codigo = $LASTEXITCODE
+if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
 # el codigo R que muestra la app debe correr en R y dar los mismos numeros (se omite si no hay R)
 & $node (Join-Path $tests 'codigo-r.mjs')
 if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
 # la interfaz en ingles: catalogo completo y los mismos numeros en los dos idiomas
 & $node (Join-Path $tests 'idioma.mjs')
 if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
-if (-not $SoloNode) {
-  & $node (Join-Path $tests 'navegador.mjs')
+# la huella de cada resultado y de su reporte, y las fichas de Fundamentos de los 78 analisis
+foreach ($p in @('regresion.mjs', 'fundamentos.mjs')) {
+  & $node (Join-Path $tests $p)
   if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
+}
+if (-not $SoloNode) {
+  # la app por file:// y la secuencia de apertura, en un navegador sin ventana
+  foreach ($p in @('navegador.mjs', 'intro.mjs')) {
+    & $node (Join-Path $tests $p)
+    if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
+  }
 }
 # -Completo: ademas las exportaciones, la privacidad y el uso sin conexion, el rendimiento con 100 000 filas y la
 # accesibilidad (unos 15 minutos); cada una deja su resultado en el bloque 8, en "Otras comprobaciones"
@@ -54,5 +71,10 @@ if ($Completo -and -not $SoloNode) {
     & $node (Join-Path $tests $p)
     if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
   }
+}
+# -Red: los enlaces y logos de la suite LABG (revisa las paginas de las otras apps, algo que la app nunca hace)
+if ($Red) {
+  & $node (Join-Path $tests 'suite-enlaces.mjs')
+  if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
 }
 exit $codigo

@@ -88,3 +88,15 @@ SPT.describir('Comparaciones de medias · Dunnett, errores y reportes', () => {
     for (const x of comps) SPT.cerca(x.p_ajustado / R[x.nivel], 1, 1e-6, 'p de ' + x.nivel);
   });
 });
+
+SPT.describir('Comparaciones de medias · la conclusión', () => {
+  const concl = y => { const t = SP.tabla.crear({ t: ['A', 'A', 'A', 'B', 'B', 'B', 'C', 'C', 'C'], y }, { t: { tipo: 'factor' } });
+    const f = SP.metodos['comparaciones-medias'], r = SP.ejecutar('comparaciones-medias', t, { diseno: 'dca', respuesta: 'y', tratamientos: ['t'], comparar: ['t'] }, SP.opcionesCon(f, { metodo: 'tukey' })).resultado;
+    return f.reporte(r).conclusiones[0]; };
+  SPT.caso('Las letras van en orden (a, b, c), no en el de aparición de los tratamientos', () => {
+    SPT.igual(concl([1, 1.1, 0.9, 5, 5.1, 4.9, 9, 9.1, 8.9]), '3 grupos de medias según Tukey (α = 0.05): a: C; b: B; c: A.');
+  });
+  SPT.caso('Un solo grupo va en singular', () => {
+    SPT.igual(concl([1, 2, 3, 2, 1, 3, 3, 2, 1]), 'Un solo grupo de medias según Tukey (α = 0.05): a: A, B, C.');
+  });
+});

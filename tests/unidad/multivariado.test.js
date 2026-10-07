@@ -70,3 +70,19 @@ SPT.describir('Multivariado · métodos', () => {
     SPT.lanza(() => SP.ejecutar('discriminante', col, { variables: ['u', 'v'], grupo: 'g' }, op('discriminante')), 'colineales');
   });
 });
+
+SPT.describir('Multivariado · M de Box sin grupos suficientes y filas usadas', () => {
+  SPT.caso('Sin dos grupos con más unidades que variables, la M de Box no se calcula: ni gl negativos ni cuadro, y el semáforo dice por qué', () => {
+    const Y = [[1, 2, 3], [2, 2, 1], [4, 5, 2], [3, 1, 6], [5, 4, 6], [8, 4, 9], [2, 6, 1], [7, 3, 5], [3, 8, 4]], g = [0, 0, 0, 1, 1, 1, 2, 2, 2];
+    const B = SP.multivariado.boxM(Y, g, 3);
+    SPT.afirmar(Number.isNaN(B.p) && Number.isNaN(B.gl) && Number.isNaN(B.chi2), 'sin estadístico');
+    SPT.igual(B.validos, 0); SPT.igual(B.variables, 3);
+    const t = SP.tabla.crear({ g: ['x', 'x', 'x', 'y', 'y', 'y', 'z', 'z', 'z'], a: Y.map(f => f[0]), b: Y.map(f => f[1]), c: Y.map(f => f[2]) }, { g: { tipo: 'factor' } });
+    const f = SP.metodos.manova, r = SP.ejecutar('manova', t, { respuestas: ['a', 'b', 'c'], tratamientos: ['g'] }, SP.opcionesCon(f, {})).resultado, rep = f.reporte(r);
+    SPT.afirmar(!rep.cuadros.some(q => q.id === 'box'), 'sin cuadro de la M de Box');
+    const s = rep.semaforo.find(x => /Box/.test(x.nombre));
+    SPT.igual(s.color, 'gris'); SPT.afirmar(/ninguno las tiene/.test(s.texto), s.texto);
+    /* el CSV para PCAPro y ClusteringPro sale de las filas que usó la MANOVA */
+    SPT.igual(r.filas.length, 9);
+  });
+});

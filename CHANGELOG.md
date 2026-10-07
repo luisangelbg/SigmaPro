@@ -2,6 +2,48 @@
 
 ## Sin publicar
 
+### 0.5.3 · Segundo lote de arreglos hallados en el manual (6 oct 2026)
+
+- **Errores corregidos**:
+  - **MANOVA**: «Enviar datos» a PCAPro o ClusteringPro no bajaba nada (el resultado no guardaba las filas usadas).
+  - **M de Box** (MANOVA y discriminante): sin al menos dos grupos con más unidades que variables, mostraba un cuadro
+    sin sentido (log |S| = −∞, «χ²(−10) = —»). Ahora no se calcula, no hay cuadro, y el semáforo gris dice por qué.
+  - **Explorar sin datos**: «Calcular un tamaño de muestra o una potencia» no llevaba al bloque Análisis.
+  - **Potencia del ANOVA**: al despejar la varianza detectable con las medias escritas, usaba el número de
+    tratamientos del campo oculto en lugar del número de medias.
+  - **Potencia con hipótesis unilateral**: con una diferencia o una correlación negativas daba 0 % de potencia o
+    n = 2 sin aviso. Ahora pide escribirlas positivas.
+  - **GLM de conteos con la familia automática**: el enlace de potencia fallaba al pasar a la binomial negativa. El
+    formulario ya solo ofrece los enlaces de las dos familias, y un pedido directo da un mensaje claro.
+  - **Superficies**: con un mínimo o máximo fuera de la región, la cresta proponía un punto más lejos que los datos
+    aunque la conclusión decía «dentro de la región». Ahora busca solo hasta el radio de los datos.
+- **Mejoras**:
+  - **Series de tiempo**: las columnas de fecha también sirven para ordenar la serie, como ya decía la ayuda.
+  - **Revisar los supuestos del modelo**: lleva el selector «Tema de las gráficas», en Análisis y en el reporte.
+  - **Estudio de figuras** en el bloque Figuras: el inspector toma las barras, el tema y el ancho del bloque, sin los
+    botones de paso entre bloques.
+  - **Catálogo**: el ícono ⓘ ya no tapa el final de los nombres largos.
+- **Textos**:
+  - Comparaciones de medias: las letras de la conclusión van en orden (a, b, c…) y «Un solo grupo de medias» va en
+    singular.
+  - Friedman dice «Conover», como su selector (Conover-Iman es la de Kruskal-Wallis).
+  - Kappa: los cortes de Landis y Koch (0.20, 0.40, 0.60, 0.80) entran en su categoría inferior. La guía dice
+    «considerable», como el reporte. La nota explica el orden real de las categorías.
+  - «Simetría de Bowker» con mayúscula en su cuadro.
+  - Mixtos: la nota nombra el campo «Dentro de cada nivel de».
+  - Mezclas: un diseño sin error propio aconseja repetir mezclas (no «puntos centrales») y «queda 1 grado de libertad»
+    va en singular.
+  - No lineal: una nota explica que la DE50 es el parámetro e, con su IC por perfil en el otro cuadro. La comparación
+    por AIC explica un R² negativo.
+  - GGE: los sectores del biplot son «megaambientes posibles», que se confirman con varios años.
+  - La ficha de la descomposición escribe `as.numeric(anio)`, porque el año del ejemplo es un factor.
+- **Pruebas**:
+  - `tests/pruebas.ps1` corre también la regresión, las fichas y la secuencia de apertura. La opción `-Red` agrega el
+    motor R y los enlaces de la suite.
+  - 6 pruebas unitarias nuevas.
+  - La huella de regresión se actualizó: cambian 17 reportes por los textos de arriba. Los resultados de la MANOVA y
+    del discriminante ganan los campos `filas`, `validos` y `variables`, con las mismas cifras.
+
 ### 0.5.2 · Arreglos encontrados al actualizar el manual (6 oct 2026)
 
 - **Explorar**: cada resumen (descriptivos, frecuencias, proporciones y bondad de ajuste) tiene en su cabecera el botón

@@ -455,9 +455,11 @@ SP.definir('comparaciones', function (SP) {
     for (const g of r.grupos) {
       const pre = Object.keys(g.dentro).length ? etDentro(g.dentro) : '';
       const orden = g.medias.map((m, i) => i).sort((x, y) => g.medias[y].media - g.medias[x].media);
-      const letras = [...new Set(g.medias.flatMap(m => m.letras.split('')))];
-      conclusiones.push(T('{pre}{k} grupos de medias según {m} (α = {a}): {l}.', { pre: pre ? pre + ': ' : '', k: letras.length, m: nm, a,
-        l: letras.map(L => `${L}: ${orden.filter(i => g.medias[i].letras.includes(L)).map(i => g.medias[i].nombre).join(', ')}`).join('; ') }));
+      /* las letras en orden (a, b, c…; las mayúsculas, si las hay, después) */
+      const letras = [...new Set(g.medias.flatMap(m => m.letras.split('')))].sort((x, y) => { const mx = x !== x.toLowerCase(), my = y !== y.toLowerCase(); return mx !== my ? (mx ? 1 : -1) : x.localeCompare(y); });
+      const pc = { pre: pre ? pre + ': ' : '', k: letras.length, m: nm, a,
+        l: letras.map(L => `${L}: ${orden.filter(i => g.medias[i].letras.includes(L)).map(i => g.medias[i].nombre).join(', ')}`).join('; ') };
+      conclusiones.push(letras.length === 1 ? T('{pre}Un solo grupo de medias según {m} (α = {a}): {l}.', pc) : T('{pre}{k} grupos de medias según {m} (α = {a}): {l}.', pc));
       cuadros.push({ id: 'medias-' + cuadros.length, titulo: T('Medias de {q}{d} con su grupo ({m})', { q: que, d: pre ? ' (' + pre + ')' : '', m: nm }),
         columnas: [col('nombre', que, 'texto'), col('media', T('Media'), 'forma')].concat(g.medias.some(m => Number.isFinite(m.ee)) ? [col('ee', T('EE'), 'forma')] : []).concat([col('letras', T('Grupo'), 'texto')]),
         filas: orden.map(i => g.medias[i]),

@@ -158,7 +158,8 @@ SP.definir('metodos-nolineal', function (SP) {
         col('s', 'σ', 'sig'), col('r2', 'R²', 'forma'), col('nota', T('Nota'), 'texto')],
       filas: r.seleccion.slice().sort((x, y) => (x.delta ?? Infinity) - (y.delta ?? Infinity)).map(z => (z.error ? { m: may(NOMBRE[z.modelo]), nota: z.error }
         : { m: may(NOMBRE[z.modelo]), k: z.parametros, aic: z.AIC, d: z.delta, w: z.peso, s: z.sigma, r2: z.r2, nota: !z.convergio ? T('no converge') : z.modelo === r.modelo ? T('elegido') : '' })),
-      notas: [T('Cada modelo, ajustado a los mismos datos{g}. ΔAIC: diferencia con el mejor; el peso de Akaike es la probabilidad relativa de que cada modelo sea el mejor de la lista.', { g: G > 1 ? T(' con una curva por grupo') : '' })] });
+      notas: [T('Cada modelo, ajustado a los mismos datos{g}. ΔAIC: diferencia con el mejor; el peso de Akaike es la probabilidad relativa de que cada modelo sea el mejor de la lista.', { g: G > 1 ? T(' con una curva por grupo') : '' })]
+        .concat(r.seleccion.some(z => !z.error && z.r2 < 0) ? [T('Un R² negativo quiere decir que ese modelo ajusta peor que una recta horizontal en la media de los datos: no tiene la forma de la respuesta.')] : []) });
     const P = r.parametros, falta = P.ic_inf.some(v => !Number.isFinite(v)) || P.ic_sup.some(v => !Number.isFinite(v));
     cuadros.push({ id: 'parametros', titulo: T('Parámetros del modelo {m}', { m: NOMBRE[r.modelo] }),
       columnas: [col('par', T('Parámetro'), 'texto')].concat(G > 1 ? [col('grupo', r.grupo, 'texto')] : [], [col('est', T('Estimado'), 'sig'), col('ee', T('EE'), 'sig'),
@@ -170,6 +171,7 @@ SP.definir('metodos-nolineal', function (SP) {
         .concat(r.intervalo === 'wald' && N().SIN_PERFIL.has(r.modelo) ? [T('El quiebre de lineal-meseta no deja perfilar: sus intervalos son de Wald.')] : []) });
     if (r.derivados.length) {
       const notas = [T('EE por el método delta; IC de Wald.')];
+      if (perfil && (r.modelo === 'll4' || r.modelo === 'll3')) notas.push(T('La DE50 es el parámetro e: su IC por verosimilitud perfilada está en el cuadro de parámetros; aquí va el de Wald, como drc::ED.'));
       if (r.modelo.startsWith('ll')) notas.push(T('DEp: dosis con p % del efecto entre los límites superior e inferior.'));
       if (r.modelo.startsWith('bc')) notas.push(T('Hormesis: la dosis de máxima respuesta es donde la curva deja de subir; la DE50 es la dosis, después de ese máximo, en que la respuesta baja a la mitad entre d y c (como en drc).'));
       if (r.precios) notas.push(T('Dosis económica: la pendiente de la curva iguala la razón de precios {r} (insumo {i} entre producto {p}).', { r: sig(r.precios.razon), i: sig(r.precios.insumo), p: sig(r.precios.producto) }));

@@ -190,10 +190,12 @@ SP.definir('multivariado', function (SP) {
     const sdf = dfs.reduce((a, b) => a + b, 0), pooled = Array.from({ length: p }, (_, a) => Array.from({ length: p }, (__, b) => covs.reduce((s, S, h) => s + dfs[h] * S[a][b], 0) / sdf));
     const validos = dfs.map(d => d >= p), lds = covs.map((S, h) => (validos[h] ? logdet(S) : -Infinity)), ldp = logdet(pooled);
     const dv = dfs.filter((_, h) => validos[h]), gv = dv.length, sdv = dv.reduce((a, b) => a + b, 0);
+    /* con menos de dos grupos válidos no hay qué comparar: sin estadístico (antes salían gl negativos y log|S| = −∞) */
+    if (gv < 2) return { chi2: NaN, gl: NaN, p: NaN, menos2logM: NaN, c: NaN, logdet: lds, logdet_combinada: ldp, excluidos: validos.filter(v => !v).length, validos: gv, variables: p };
     const menos2logM = gv ? sdv * ldp - lds.reduce((s, l, h) => s + (validos[h] ? l * dfs[h] : 0), 0) : NaN;
     const c = ((2 * p * p + 3 * p - 1) / (6 * (p + 1) * (gv - 1))) * (dv.reduce((s, d) => s + 1 / d, 0) - 1 / sdv);
     const chi2 = menos2logM * (1 - c), gl = (p * (p - 1) / 2 + p) * (gv - 1);
-    return { chi2, gl, p: D().pchisq(chi2, gl, false), menos2logM, c, logdet: lds, logdet_combinada: ldp, excluidos: validos.filter(v => !v).length };
+    return { chi2, gl, p: D().pchisq(chi2, gl, false), menos2logM, c, logdet: lds, logdet_combinada: ldp, excluidos: validos.filter(v => !v).length, validos: gv, variables: p };
   }
 
   SP.multivariado = { propios, manova, pruebas, lda, boxM };

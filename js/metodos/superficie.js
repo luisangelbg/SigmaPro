@@ -92,7 +92,7 @@ SP.definir('metodos-superficie', function (SP) {
         d: F.map((f, j) => f + ' ' + (paso[j] >= 0 ? '+' : '−') + sig(Math.abs(paso[j]))).join(', ') }));
     } else if (!E || E.naturaleza === 'silla' || !dentro || (E.naturaleza === 'maximo') !== (r.objetivo === 'maximo')) {
       let k = 0;
-      C.prediccion.forEach((v, i) => { if ((r.objetivo === 'minimo' ? -1 : 1) * (v - C.prediccion[k]) > 0) k = i; });
+      C.prediccion.forEach((v, i) => { if (C.distancia[i] <= r.radio + 1e-9 && (r.objetivo === 'minimo' ? -1 : 1) * (v - C.prediccion[k]) > 0) k = i; });
       conclusiones.push(T('Sobre la cresta, la {o} respuesta estimada dentro de la región es {v} con {x} (a {d} del centro).', { o: r.objetivo === 'minimo' ? T('menor') : T('mayor'), v: sig(C.prediccion[k]), x: lista(F, C.natural[k]), d: C.distancia[k] }));
     }
     cuadros.push({ id: 'anova', titulo: T('Análisis de varianza del modelo de {o}', { o: ORDEN[r.orden] }),
@@ -210,8 +210,10 @@ SP.definir('metodos-superficie', function (SP) {
     else if (r.clase === 'factorial') conclusiones.push(T('Factorial 2^{k} con {c} centros: {n} corridas; sirve para el primer orden y para probar la curvatura.', { k, c: centros, n }));
     else conclusiones.push(T('{t} de {k} componentes: {n} mezclas{c}.', { t: TIPOS_DISENO[r.clase], k, n, c: centros ? T(', {c} en el centroide', { c: centros }) : '' }));
     const p2 = esMezcla(r.clase) ? k * (k + 1) / 2 : (k + 1) * (k + 2) / 2;
-    if (r.clase !== 'factorial') conclusiones.push(n > p2 ? T('El modelo {m} tiene {p} coeficientes: quedan {g} grados de libertad para el error.', { m: esMezcla(r.clase) ? T('cuadrático de Scheffé') : T('de segundo orden'), p: p2, g: n - p2 })
-      : T('El modelo {m} tiene {p} coeficientes y el diseño, {n} corridas: agrega puntos centrales para estimar el error.', { m: esMezcla(r.clase) ? T('cuadrático de Scheffé') : T('de segundo orden'), p: p2, n }));
+    const mod = esMezcla(r.clase) ? T('cuadrático de Scheffé') : T('de segundo orden');
+    if (r.clase !== 'factorial') conclusiones.push(n > p2 ? (n - p2 === 1 ? T('El modelo {m} tiene {p} coeficientes: queda 1 grado de libertad para el error.', { m: mod, p: p2 }) : T('El modelo {m} tiene {p} coeficientes: quedan {g} grados de libertad para el error.', { m: mod, p: p2, g: n - p2 }))
+      : esMezcla(r.clase) ? T('El modelo {m} tiene {p} coeficientes y el diseño, {n} mezclas: repite algunas mezclas (por ejemplo el centroide) para estimar el error.', { m: mod, p: p2, n })
+        : T('El modelo {m} tiene {p} coeficientes y el diseño, {n} corridas: agrega puntos centrales para estimar el error.', { m: mod, p: p2, n }));
     if (r.natural && !esMezcla(r.clase) && r.natural.some(f => f.some(v => v < 0))) conclusiones.push(T('Aviso: en unidades originales hay niveles negativos (los axiales salen del rango ±1); revisa que tengan sentido o usa α de caras centradas.'));
     const azar = r.orden.some((v, i) => v !== i), cols = [col('c', T('Corrida'), 'entero'), col('s', T('Estándar'), 'entero')].concat(nb > 1 ? [col('b', T('Bloque'), 'entero')] : [],
       r.nombres.map((nm, j) => col('z' + j, esMezcla(r.clase) ? nm : T('{f} (codificado)', { f: nm }), 'auto4')), r.natural && !esMezcla(r.clase) ? r.nombres.map((nm, j) => col('x' + j, nm, 'auto4')) : [],

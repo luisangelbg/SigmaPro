@@ -237,7 +237,7 @@ SP.definir('metodos-multiambiente', function (SP) {
       const Q = r.gge, megas = new Map();
       Q.ganador.forEach((w, j) => { if (!megas.has(w)) megas.set(w, []); megas.get(w).push(An[j]); });
       conclusiones.push(T('Los dos primeros ejes del biplot explican el {p} % de G + G × A (EJE1 {a} %, EJE2 {b} %).', { p: f2(Q.pct[0] + Q.pct[1]), a: f2(Q.pct[0]), b: f2(Q.pct[1]) }));
-      conclusiones.push(megas.size > 1 ? T('Quién ganó dónde: {k} megaambientes; {l}.', { k: megas.size, l: [...megas].map(([w, e]) => T('{g} gana en {e}', { g: w, e: lista(e) })).join('; ') })
+      conclusiones.push(megas.size > 1 ? T('Quién ganó dónde: {k} sectores del biplot (megaambientes posibles, que se confirman con varios años o ciclos); {l}.', { k: megas.size, l: [...megas].map(([w, e]) => T('{g} gana en {e}', { g: w, e: lista(e) })).join('; ') })
         : T('Quién ganó dónde: {g} gana en todos los ambientes.', { g: [...megas.keys()][0] }));
       const orden = Gn.map((_, i) => i).sort((x, y) => Q.proyeccion[y] - Q.proyeccion[x]);
       conclusiones.push(T('Media contra estabilidad: el mejor desempeño promedio es de {g}; entre los tres mejores, el más estable (menor distancia al eje del ambiente promedio) es {e}.',

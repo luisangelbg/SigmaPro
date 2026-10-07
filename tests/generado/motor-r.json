@@ -1,5 +1,5 @@
 {
- "generado": "2026-10-06T18:25:37.013Z",
+ "generado": "2026-10-06T20:53:36.842Z",
  "webr": "0.6.0",
  "r": "R 4.6.0",
  "navegador": "Chrome/154.0.0.0",
@@ -13,7 +13,7 @@
    "peor": "coeficientes.z[2]",
    "fallas": [],
    "error": "",
-   "ms": 61621,
+   "ms": 57714,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -31,7 +31,7 @@
    "peor": "coeficientes.z[2]",
    "fallas": [],
    "error": "",
-   "ms": 3037,
+   "ms": 2403,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -49,7 +49,7 @@
    "peor": "coeficientes.z[0]",
    "fallas": [],
    "error": "",
-   "ms": 770,
+   "ms": 740,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -67,7 +67,7 @@
    "peor": "coeficientes.z[4]",
    "fallas": [],
    "error": "",
-   "ms": 11226,
+   "ms": 9518,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -85,7 +85,7 @@
    "peor": "coeficientes.z[2]",
    "fallas": [],
    "error": "",
-   "ms": 399,
+   "ms": 257,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -103,7 +103,7 @@
    "peor": "medias[0].filas[0].ee",
    "fallas": [],
    "error": "",
-   "ms": 464,
+   "ms": 274,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -121,7 +121,7 @@
    "peor": "medias[0].filas[0].ee",
    "fallas": [],
    "error": "",
-   "ms": 1661,
+   "ms": 1310,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -139,7 +139,7 @@
    "peor": "obs.razon",
    "fallas": [],
    "error": "",
-   "ms": 1208,
+   "ms": 1301,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -157,7 +157,7 @@
    "peor": "coeficientes.z[1]",
    "fallas": [],
    "error": "",
-   "ms": 581,
+   "ms": 728,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -175,7 +175,7 @@
    "peor": "wald.chi2[0]",
    "fallas": [],
    "error": "",
-   "ms": 399,
+   "ms": 466,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -193,7 +193,7 @@
    "peor": "coeficientes.z[3]",
    "fallas": [],
    "error": "",
-   "ms": 2252,
+   "ms": 2091,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -211,7 +211,7 @@
    "peor": "estructuras[6].logLik",
    "fallas": [],
    "error": "",
-   "ms": 1756,
+   "ms": 1014,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -228,7 +228,7 @@
    "peor": "estructuras[4].logLik",
    "fallas": [],
    "error": "",
-   "ms": 946,
+   "ms": 414,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -245,7 +245,7 @@
    "peor": "estructuras[6].logLik",
    "fallas": [],
    "error": "",
-   "ms": 782,
+   "ms": 770,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -262,7 +262,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 791,
+   "ms": 712,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -279,7 +279,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 2153,
+   "ms": 1787,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -296,7 +296,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 801,
+   "ms": 767,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -305,7 +305,7 @@
    }
   },
   "mixto-latice/alfa-latice-repeticiones-aleatorias": {
-   "huella": "8b8586908fb46a5962af52787a81f3ca18d9b2c9f6e19e7045a3ac7aa9757709",
+   "huella": "f3f81078c70ee13cad617cf79a21f9b3c8440e84a746279bef233e9ba4bccea4",
    "aprobado": true,
    "valores": 2098,
    "difMax": 3.552713678800501e-15,
@@ -313,7 +313,7 @@
    "peor": "medias[0].pares[60].p",
    "fallas": [],
    "error": "",
-   "ms": 6257,
+   "ms": 5560,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -323,7 +323,7 @@
    }
   },
   "mixto-latice/alfa-latice": {
-   "huella": "4d778c183695551fe9d8a57b3a201023aae043aee065dfe90989a2131c7292fa",
+   "huella": "d0f470343b14482b54067da8be2262b0e8b68eaaeff5627af2ca24200459dc0e",
    "aprobado": true,
    "valores": 2090,
    "difMax": 7.105427357601002e-15,
@@ -331,7 +331,7 @@
    "peor": "anova.sc[0]",
    "fallas": [],
    "error": "",
-   "ms": 1625,
+   "ms": 1572,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -341,7 +341,7 @@
    }
   },
   "mixto-localidades/avena-14-ambientes": {
-   "huella": "65380f2c192185d0ccf7f5091a4a5a644be47b6592b87fdb6467741a51f6aa5f",
+   "huella": "8abc0435a57156b09c32e64ceac4f9397c03a105d86ec1022e6dc8acb1178d8e",
    "aprobado": true,
    "valores": 1431,
    "difMax": 1.3073986337985843e-12,
@@ -349,7 +349,7 @@
    "peor": "anova.gl2[0]",
    "fallas": [],
    "error": "",
-   "ms": 2265,
+   "ms": 1821,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -359,7 +359,7 @@
    }
   },
   "mixto-divididas/avena-divididas": {
-   "huella": "365f7cb3481215e9ffcdb1eafedd2365e18f497e4f737ca79e62bdf421de4efb",
+   "huella": "006d0b41f10d2c61acceafd5e046fabb4ae2a70e86cc1341684957661cd0f69b",
    "aprobado": true,
    "valores": 352,
    "difMax": 5.684341886080802e-14,
@@ -367,7 +367,7 @@
    "peor": "anova.cm[2]",
    "fallas": [],
    "error": "",
-   "ms": 1051,
+   "ms": 861,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -377,7 +377,7 @@
    }
   },
   "mixto-bloques/maiz-parcelas-perdidas": {
-   "huella": "65685c05c288be41a7551fc6fa8cd339f41ae9c4d43cd746ceda8ece9540aeec",
+   "huella": "fc57826f3d40c34dccb77fb77c009e28250db51694b517c74d776aba21533737",
    "aprobado": true,
    "valores": 240,
    "difMax": 2.220446049250313e-16,
@@ -385,7 +385,7 @@
    "peor": "medias[1].pares[3].p",
    "fallas": [],
    "error": "",
-   "ms": 3602,
+   "ms": 2975,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -395,7 +395,7 @@
    }
   },
   "mixto-bloques/npk-bloques-aleatorios": {
-   "huella": "039149d59c2ca818b761d9efd9f644c106395ca252e268de30de44a5a82e084d",
+   "huella": "7e220967ed5363efb901ea7c8c26985fef1aa832d61bc1d005cf45eac5598a59",
    "aprobado": true,
    "valores": 213,
    "difMax": 7.105427357601002e-15,
@@ -403,7 +403,7 @@
    "peor": "medias[1].filas[0].ic[0]",
    "fallas": [],
    "error": "",
-   "ms": 920,
+   "ms": 620,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -413,7 +413,7 @@
    }
   },
   "mixto-localidades/papa-localidades-fijas": {
-   "huella": "624621f2ee34718c6e34004a9ac62c73cd58f5932199fe66a29d83845f50f97d",
+   "huella": "9168f5d1225f47e920b4f0871c06546d88e1574362ba7449b6ea44540b858ccf",
    "aprobado": true,
    "valores": 3585,
    "difMax": 2.572718358351267e-7,
@@ -421,7 +421,7 @@
    "peor": "anova.p[1]",
    "fallas": [],
    "error": "",
-   "ms": 4123,
+   "ms": 3669,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -431,7 +431,7 @@
    }
   },
   "mixto-divididas/parcelas-sin-bloques": {
-   "huella": "5da334cfe3f685357572966a25fe8af3eadf5ed4fdbbb941dcb7390ca814819a",
+   "huella": "a4b42b47b0d832e1cc96e7eea291719c6295c80ade46b5dc1162aa8de79e693b",
    "aprobado": true,
    "valores": 172,
    "difMax": 0,
@@ -439,7 +439,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 536,
+   "ms": 492,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -449,7 +449,7 @@
    }
   },
   "modelo-mixto/avena-kenward-roger": {
-   "huella": "67d9bcf7f158d6e9aa2f5f6727f268fb7c12ec19a3276d718121307a7b7e50ed",
+   "huella": "a5572000df216ed795b907918fa8485adefbab0a0fb74418e870f83cc0c87fec",
    "aprobado": true,
    "valores": 352,
    "difMax": 1.4210854715202004e-14,
@@ -457,7 +457,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 5294,
+   "ms": 4473,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -467,7 +467,7 @@
    }
   },
   "modelo-mixto/avena-maxima-verosimilitud": {
-   "huella": "314c24701ea8910b39dfa120327048a7b7ef775b40afcc9d6e69a585fd6ccc0c",
+   "huella": "bbb10015f1f1fa35cd83aa1ef8aca2c5036e5ea35713f880385febb229cdd928",
    "aprobado": true,
    "valores": 236,
    "difMax": 2.842170943040401e-14,
@@ -475,7 +475,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 918,
+   "ms": 813,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -485,7 +485,7 @@
    }
   },
   "modelo-mixto/avena-nitrogeno-dentro-variedad": {
-   "huella": "33e3f0332d41da3675b569971ac888ba8adde50d2f146c9bcc4321f866eeae3a",
+   "huella": "a9aac6f8ee0e73311beeeea533d3db78d6f06d22eb154360604f68289c1a8be2",
    "aprobado": true,
    "valores": 435,
    "difMax": 5.684341886080802e-14,
@@ -493,7 +493,7 @@
    "peor": "anova.cm[2]",
    "fallas": [],
    "error": "",
-   "ms": 934,
+   "ms": 897,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -503,7 +503,7 @@
    }
   },
   "modelo-mixto/avena-parcelas-divididas": {
-   "huella": "83762c7172e73614e0dcd3b29e9230264f9dd6d69e6f36b96ae01c42b3c82849",
+   "huella": "12560a614fe4b58e9778f82cc4a801307c83314e371a9cd47fc4ba3f68f65dae",
    "aprobado": true,
    "valores": 352,
    "difMax": 5.684341886080802e-14,
@@ -511,7 +511,7 @@
    "peor": "anova.cm[2]",
    "fallas": [],
    "error": "",
-   "ms": 940,
+   "ms": 902,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -521,7 +521,7 @@
    }
   },
   "modelo-mixto/maiz-bloques-aleatorios": {
-   "huella": "dff03ac9d3c1e107fb861662d8fbc1e1498b824c9a750af731d8f6a8ac47ec78",
+   "huella": "716cc8c4bb3873a0b9670a0e676aaf39c4e370a01a679809c6dd2aa03bc05b6a",
    "aprobado": true,
    "valores": 240,
    "difMax": 7.105427357601002e-15,
@@ -529,7 +529,7 @@
    "peor": "anova.p[2]",
    "fallas": [],
    "error": "",
-   "ms": 637,
+   "ms": 555,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -539,7 +539,7 @@
    }
   },
   "modelo-mixto/maquinas-agrupamiento-numerico": {
-   "huella": "4ae72f4674e3bf9e4223653bccff4f168115040435a33561a6947b299bc6b11f",
+   "huella": "25f3971e9bf331061e4816b711fa845e03833c45cfd3b377510f838cafe2cf39",
    "aprobado": true,
    "valores": 121,
    "difMax": 1.4210854715202004e-14,
@@ -547,7 +547,7 @@
    "peor": "medias[0].pares[0].p",
    "fallas": [],
    "error": "",
-   "ms": 383,
+   "ms": 339,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -557,7 +557,7 @@
    }
   },
   "modelo-mixto/maquinas-bonferroni-kenward-roger": {
-   "huella": "f07a48fa3d1cfe68f717014639c4f2b80a2de461c03509344cbad0b89ac8d258",
+   "huella": "c59b1d311e65b9741af62c57d120661f7b38fd966ee40c54e00ec904b966a4b9",
    "aprobado": true,
    "valores": 223,
    "difMax": 6.394884621840902e-14,
@@ -565,7 +565,7 @@
    "peor": "coeficientes.p[0]",
    "fallas": [],
    "error": "",
-   "ms": 1865,
+   "ms": 1851,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -575,7 +575,7 @@
    }
   },
   "modelo-mixto/maquinas-desbalanceado-tipo1": {
-   "huella": "b6f6a632a26a4b7a0eef028b9e63cfe804294f7a35d4084dc1eb851dd93a291f",
+   "huella": "86b615e39b46f1f643e367910322a873a11ff71531b4cf56ea84176ea500b0eb",
    "aprobado": true,
    "valores": 223,
    "difMax": 3.552713678800501e-15,
@@ -583,7 +583,7 @@
    "peor": "varianzas.varianza[1]",
    "fallas": [],
    "error": "",
-   "ms": 733,
+   "ms": 695,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -593,7 +593,7 @@
    }
   },
   "modelo-mixto/maquinas-desbalanceado-tipo3": {
-   "huella": "02fa224085fbee8a2ef9329fe1326d47a0f7284c3d83067598232cc2394f91aa",
+   "huella": "c43158cbd24e55185803fdbca681200fbdcacfee3b1cf3a940e38b12d1486d88",
    "aprobado": true,
    "valores": 223,
    "difMax": 3.552713678800501e-15,
@@ -601,7 +601,7 @@
    "peor": "varianzas.de[1]",
    "fallas": [],
    "error": "",
-   "ms": 751,
+   "ms": 778,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -611,7 +611,7 @@
    }
   },
   "modelo-mixto/maquinas-operario": {
-   "huella": "67ba06d2b15a828196178d39233d18bb1ef53b22702509f1ec9d4de27ca58b2c",
+   "huella": "08dcd475905824a77177f21fc6e583975bda63abd5ee8c1a074db241bcc60ef8",
    "aprobado": true,
    "valores": 223,
    "difMax": 1.7763568394002505e-15,
@@ -619,7 +619,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 707,
+   "ms": 832,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -629,7 +629,7 @@
    }
   },
   "modelo-mixto/penicilina-cruzados": {
-   "huella": "d179a54b4502dabe79c43e0c2f1c2baa4533505e6ba181a9d3e2a48f9cf9ad6b",
+   "huella": "8a8dc8983cf38502a4dc32e78ad7e8073016a5ad2a933f3a5ca2f94f2277c550",
    "aprobado": true,
    "valores": 197,
    "difMax": 1.1102230246251565e-16,
@@ -637,7 +637,7 @@
    "peor": "varianzas.varianza[0]",
    "fallas": [],
    "error": "",
-   "ms": 651,
+   "ms": 575,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -646,7 +646,7 @@
    }
   },
   "modelo-mixto/sueno-faltantes": {
-   "huella": "cceed8a0050b6d1d09d1021d84597b056747c29fd6dc58c8cc4887e41872c846",
+   "huella": "4cc8eb836006cf366da4eae519d59f204c7f389a097b40d9e0f0d38c36197cb4",
    "aprobado": true,
    "valores": 138,
    "difMax": 0,
@@ -654,7 +654,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 235,
+   "ms": 244,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -663,7 +663,7 @@
    }
   },
   "modelo-mixto/sueno-pendientes": {
-   "huella": "836147bf8e6c54b23034c8173a57eb29dd02d340d49271f9b3cbc65d96633371",
+   "huella": "27c15e6dbabdbee56378ef5cb9225d6d99cd2a2057377c0c641d6b76c6581251",
    "aprobado": true,
    "valores": 238,
    "difMax": 0,
@@ -671,7 +671,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 469,
+   "ms": 493,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
@@ -680,7 +680,7 @@
    }
   },
   "modelo-mixto/sueno-sin-correlacion": {
-   "huella": "1b4b42ac9df6277d8bb8ecf84acb5a1b3ef4c0af9d14eb86833ecf8c7725ce03",
+   "huella": "e234a02e32d344c9fe032ee69815a74601fb6cb0a8124882e16e7a134c34714d",
    "aprobado": true,
    "valores": 240,
    "difMax": 0,
@@ -688,7 +688,7 @@
    "peor": null,
    "fallas": [],
    "error": "",
-   "ms": 611,
+   "ms": 729,
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",

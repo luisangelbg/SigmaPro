@@ -135,7 +135,7 @@ SP.definir('guias', function (SP) {
       [/^λ \(/, /^λ simetrica$/]],
     ['incertidumbre', 'efecto', 'U', T('Coeficiente de incertidumbre'), T('Proporción de la entropía de un factor que se explica con el otro (0 a 1).'),
       [/^incertidumbre/]],
-    ['kappa', 'efecto', 'κ', T('κ de Cohen'), T('Acuerdo entre dos calificaciones más allá del azar: 0 como el azar, 1 acuerdo perfecto. Guía de Landis y Koch: 0.41–0.60 moderado, 0.61–0.80 sustancial.'),
+    ['kappa', 'efecto', 'κ', T('κ de Cohen'), T('Acuerdo entre dos calificaciones más allá del azar: 0 como el azar, 1 acuerdo perfecto. Guía de Landis y Koch: 0.41–0.60 moderada, 0.61–0.80 considerable.'),
       [/^κ/, /kappa/]],
     ['razon-momios', 'efecto', 'OR', T('Razón de momios'), T('Cuántas veces más (o menos) probable es el evento frente a no ocurrir en un grupo que en otro; 1 es sin efecto.'),
       [/^razon de momios$/, /^or$/]],

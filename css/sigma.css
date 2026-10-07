@@ -642,6 +642,7 @@ button.cons-chip:focus-visible { outline: 2px solid var(--primary); outline-offs
 
 /* enlace a la ficha de Fundamentos en cada tarjeta del catálogo */
 .cat-tarjeta { position: relative; }
+.cat-tarjeta .cat-cab { padding-right: 24px; }   /* el nombre no pasa por debajo del ⓘ (.cat-fund) */
 .cat-fund { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; text-decoration: none;
   color: var(--text-muted); background: var(--card-bg); border: 1px solid var(--border); font-size: 14px; line-height: 1; }
 .cat-fund:hover { color: var(--btn-oro-texto); border-color: var(--btn-oro-texto); }

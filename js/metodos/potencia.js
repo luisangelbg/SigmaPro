@@ -63,7 +63,8 @@ res`;
   function mediasDe(op) { const m = String(op.medias || '').split(/[;,\s]+/).filter(Boolean).map(Number); return m.length >= 2 && m.every(Number.isFinite) ? m : null; }
   /* al despejar la varianza detectable las medias no entran (solo dirían cuántos grupos hay) */
   const mediasAnova = op => (op.calcular === 'varEntre' ? null : mediasDe(op));
-  const gruposAnova = (op, m) => (m ? m.length : +op.grupos || (mediasDe(op) || []).length);
+  /* si se escribieron las medias, cuentan ellas (también al despejar la varianza, cuando el formulario oculta «Tratamientos») */
+  const gruposAnova = (op, m) => (m || mediasDe(op) || []).length || +op.grupos;
   function calcularAnova(tabla, e, op) {
     const m = mediasAnova(op);
     let varEntre = +op.varEntre;
@@ -148,7 +149,9 @@ res`;
     resumen: T('Cuántas unidades hacen falta para detectar una diferencia entre dos medias, o qué potencia tiene un ensayo.'),
     entradas: NADA, opciones: Object.assign({ calcular: { tipo: 'texto', omision: 'n' }, n: { tipo: 'numero', omision: 10 }, diferencia: { tipo: 'numero', omision: 1 }, de: { tipo: 'numero', omision: 1 },
       tipo: { tipo: 'texto', omision: 'dos' }, alternativa: { tipo: 'texto', omision: 'bilateral' } }, base),
-    validar: (t, e, op) => { validarComun(op, ['potencia', 'n', 'diferencia']); num(op.de, T('desviación estándar'), x => x > 0); if (op.calcular !== 'diferencia') num(op.diferencia, T('diferencia'), x => x !== 0); exigir(['dos', 'una', 'pareada'].includes(op.tipo), T('Tipo de prueba no válido.')); },
+    validar: (t, e, op) => { validarComun(op, ['potencia', 'n', 'diferencia']); num(op.de, T('desviación estándar'), x => x > 0); if (op.calcular !== 'diferencia') num(op.diferencia, T('diferencia'), x => x !== 0);
+      if (op.alternativa === 'unilateral' && op.calcular !== 'diferencia') exigir(+op.diferencia > 0, T('Con una hipótesis unilateral, escribe la diferencia como un número positivo: el tamaño del cambio en la dirección que esperas.'));
+      exigir(['dos', 'una', 'pareada'].includes(op.tipo), T('Tipo de prueba no válido.')); },
     calcular: calcularT, reporte: reporteT, codigoR: codigoT });
   SP.metodo({ id: 'potencia-anova', familia: 'potencia', motor: 'js', sinDatos: true, orden: 20, nombre: T('Potencia y repeticiones: ANOVA de varios tratamientos'),
     resumen: T('Repeticiones por tratamiento para que el ANOVA detecte las diferencias esperadas entre medias.'),
@@ -165,7 +168,8 @@ res`;
   SP.metodo({ id: 'potencia-correlacion', familia: 'potencia', motor: 'js', sinDatos: true, orden: 40, nombre: T('Potencia y tamaño de muestra: correlación'),
     resumen: T('Cuántos pares de observaciones hacen falta para detectar una correlación.'),
     entradas: NADA, opciones: Object.assign({ calcular: { tipo: 'texto', omision: 'n' }, n: { tipo: 'numero', omision: 30 }, r: { tipo: 'numero', omision: 0.3 }, alternativa: { tipo: 'texto', omision: 'bilateral' } }, base),
-    validar: (t, e, op) => { validarComun(op, ['potencia', 'n', 'r']); if (op.calcular !== 'n') num(op.n, 'n', x => x > 4, T('Hacen falta más de 4 pares.')); if (op.calcular !== 'r') num(op.r, 'r', x => x > -1 && x < 1 && x !== 0, T('La correlación va entre −1 y 1 (sin el 0).')); },
+    validar: (t, e, op) => { validarComun(op, ['potencia', 'n', 'r']); if (op.calcular !== 'n') num(op.n, 'n', x => x > 4, T('Hacen falta más de 4 pares.')); if (op.calcular !== 'r') num(op.r, 'r', x => x > -1 && x < 1 && x !== 0, T('La correlación va entre −1 y 1 (sin el 0).'));
+      if (op.alternativa === 'unilateral' && op.calcular !== 'r') exigir(+op.r > 0, T('Con una hipótesis unilateral, escribe la correlación como un número positivo: su tamaño en la dirección que esperas.')); },
     calcular: calcularR, reporte: reporteR, codigoR });
   SP.metodo({ id: 'repeticiones', familia: 'potencia', motor: 'js', sinDatos: true, orden: 50, nombre: T('Número de repeticiones de un experimento'),
     resumen: T('Con el CV esperado y la diferencia que interesa (en % de la media), cuántas repeticiones poner.'),

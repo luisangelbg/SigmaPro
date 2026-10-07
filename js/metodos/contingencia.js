@@ -607,7 +607,7 @@ SP.definir('contingencia', function (SP) {
     if (k === 2) conclusiones.push(T('Solo cuentan los casos que cambiaron: {b} de «{l1}» a «{l2}» y {c} de «{l2}» a «{l1}».', { b: r.discordantes[0], c: r.discordantes[1], l1: r.niveles[0], l2: r.niveles[1] }));
     cuadros.push(tablaObservada(r, T('«{a}» (filas) contra «{d}» (columnas)', { a: r.antes, d: r.despues }), r.niveles, r.niveles, r.observados));
     cuadros.push({ id: 'prueba', titulo: T('Prueba de {n}', { n: nombre }), columnas: [col('prueba', T('Prueba'), 'texto'), col('est', T('Estadístico'), 'forma'), col('gl', 'gl', 'entero'), col('p', 'p', 'pvalor')],
-      filas: [{ prueba: nombre + (r.correccion ? T(' (con corrección por continuidad)') : ''), est: r.X2, gl: r.gl, p: r.p }].concat(k === 2 ? [{ prueba: T('Binomial exacta'), est: NaN, gl: NaN, p: r.p_exacta }] : []),
+      filas: [{ prueba: may(nombre) + (r.correccion ? T(' (con corrección por continuidad)') : ''), est: r.X2, gl: r.gl, p: r.p }].concat(k === 2 ? [{ prueba: T('Binomial exacta'), est: NaN, gl: NaN, p: r.p_exacta }] : []),
       notas: [T('Datos pareados: cada caso se clasificó dos veces (antes y después, o dos métodos).')].concat(r.avisos) });
     cuadros.push({ id: 'proporciones', titulo: T('Proporción de cada categoría'), columnas: [col('c', T('Categoría'), 'texto'), col('a', r.antes, 'prop'), col('d', r.despues, 'prop')],
       filas: r.niveles.map((l, i) => ({ c: l, a: r.prop_antes[i], d: r.prop_despues[i] })), notas: [] });
@@ -650,14 +650,15 @@ SP.definir('contingencia', function (SP) {
 
   function reporteKappa(r) {
     const a = r.alfa, conclusiones = [], cuadros = [], k = r.simple, w = r.ponderada;
-    const grado = v => (v < 0 ? T('peor que el azar') : v < 0.2 ? T('leve') : v < 0.4 ? T('aceptable') : v < 0.6 ? T('moderada') : v < 0.8 ? T('considerable') : T('casi perfecta'));
+    /* los cortes de Landis y Koch (1977): 0–0.20, 0.21–0.40, 0.41–0.60, 0.61–0.80 y 0.81–1 */
+    const grado = v => (v < 0 ? T('peor que el azar') : v <= 0.2 ? T('leve') : v <= 0.4 ? T('aceptable') : v <= 0.6 ? T('moderada') : v <= 0.8 ? T('considerable') : T('casi perfecta'));
     conclusiones.push(T('Los dos evaluadores coinciden en el {a} % de los casos; por azar coincidirían en el {e} %.', { a: (100 * r.acuerdo).toFixed(1), e: (100 * r.esperado).toFixed(1) }));
     conclusiones.push(T('Kappa = {k} (IC {n} %: {i} a {s}): concordancia {g} según Landis y Koch (1977){p}.', { k: f3(k.estimado), n: Math.round(100 * r.nivel), i: f3(k.ic[0]), s: f3(k.ic[1]), g: grado(k.estimado), p: k.p < a ? T(', mayor que la del azar (p {p})', { p: fp(k.p) }) : T(', que no supera la del azar (p {p})', { p: fp(k.p) }) }));
     if (r.niveles.length > 2) conclusiones.push(T('Kappa ponderada ({w}) = {k}: cuenta que un desacuerdo entre categorías vecinas pesa menos que uno entre extremas.', { w: w.pesos === 'lineal' ? T('pesos lineales') : T('pesos cuadráticos'), k: f3(w.estimado) }));
     cuadros.push(tablaObservada(r, T('«{a}» (filas) contra «{b}» (columnas)', { a: r.evaluador1, b: r.evaluador2 }), r.niveles, r.niveles, r.observados));
     cuadros.push({ id: 'kappa', titulo: T('Concordancia'), columnas: [col('m', T('Medida'), 'texto'), col('v', T('Valor'), 'forma'), col('ee', T('EE'), 'forma'), col('ic', T('IC {c} %', { c: Math.round(100 * r.nivel) }), 'intervaloSig'), col('z', 'z', 'forma2'), col('p', 'p', 'pvalor')],
       filas: [{ m: T('Kappa de Cohen'), v: k.estimado, ee: k.ee, ic: k.ic, z: k.z, p: k.p }].concat(r.niveles.length > 2 ? [{ m: T('Kappa ponderada ({w})', { w: w.pesos === 'lineal' ? T('lineal') : T('cuadrática') }), v: w.estimado, ee: w.ee, ic: w.ic, z: w.z, p: w.p }] : []),
-      notas: [T('EE de Fleiss, Cohen y Everitt (1969); la prueba z usa el EE bajo concordancia por azar. Las categorías se ordenan como en la primera columna, lo que importa para la ponderada.')].concat(r.avisos) });
+      notas: [T('EE de Fleiss, Cohen y Everitt (1969); la prueba z usa el EE bajo concordancia por azar. Las categorías siguen el orden de los niveles del primer evaluador, con las que solo usó el segundo en su lugar; si todas son números, de menor a mayor. El orden importa para la ponderada.')].concat(r.avisos) });
     return { titulo: T('Concordancia entre evaluadores (kappa)'), conclusiones: conclusiones.map(may), cuadros };
   }
   function codigoKappa(e, op) {

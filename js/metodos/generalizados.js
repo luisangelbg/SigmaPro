@@ -112,7 +112,9 @@ SP.definir('generalizados', function (SP) {
     const P = preparar(tabla, e, op), mm = P.mm, avisos = [];
     let familia = op.familia, auto = null;
     if (familia === 'auto') {
-      const base = op.base || 'poisson', enl = op.enlace || G().ENLACE_OMISION[base];
+      const base = op.base || 'poisson', enl = op.enlace || G().ENLACE_OMISION[base], alt = ALTERNATIVA[base];
+      exigir(!alt || G().FAMILIAS[alt].enlaces.includes(enl), T('Con la familia automática, el enlace {e} no sirve: si hay sobredispersión, el análisis pasa a la {f}, que no lo tiene.', { e: NOMBRE_ENL[enl] || enl, f: NOMBRE_FAM[alt] }),
+        T('Elige otro enlace, o una familia fija (Poisson o cuasi-Poisson).'));
       revisarRespuesta(P, base, e);
       const r0 = ajustarFam(P, base, enl), binaria = base === 'binomial' && !e.ensayos;
       familia = !binaria && r0.st.pSobredispersion < 0.05 && r0.st.sobredispersion > 1.1 ? (base === 'poisson' ? 'binomial-negativa' : 'cuasibinomial') : base;
@@ -445,6 +447,8 @@ SP.definir('generalizados', function (SP) {
   /* ======================= métodos ======================= */
   const FAMILIAS_DE = { 'glm-conteos': ['auto', 'poisson', 'cuasipoisson', 'binomial-negativa'], 'glm-proporciones': ['auto', 'binomial', 'cuasibinomial'], 'glm-gamma': ['gamma', 'inversa-gaussiana'] };
   const BASE_DE = { 'glm-conteos': 'poisson', 'glm-proporciones': 'binomial', 'glm-gamma': 'gamma' };
+  /* la familia automática pasa de la base a esta si hay sobredispersión */
+  const ALTERNATIVA = { poisson: 'binomial-negativa', binomial: 'cuasibinomial' };
   /** El lado derecho de un diseño: bloque + covariables + tratamientos cruzados. */
   const derechaDe = e => [e.bloque, ...lista(e.covariables)].filter(Boolean).map(q).concat(lista(e.tratamientos).length ? [lista(e.tratamientos).map(q).join(' * ')] : []).join(' + ');
   function opcionesDiseno(id, tabla, e, op) {
@@ -485,7 +489,7 @@ SP.definir('generalizados', function (SP) {
     nivel: { tipo: 'numero', omision: 0.95 }, alfa: { tipo: 'numero', omision: 0.05 }, intervalo: { tipo: 'texto', omision: 'wald' }, lambda: { tipo: 'numero', omision: 0.5 } };
   const ENTR = { respuesta: { tipo: 'numerica' }, tratamientos: { tipo: 'factor+', maximo: 3 }, bloque: { tipo: 'factor', opcional: true }, covariables: { tipo: 'numerica+', opcional: true, maximo: 2 } };
 
-  SP.generalizados = { analizar, preparar, derechaDe, opcionesDiseno, codigoR, reporte, NOMBRE_FAM, NOMBRE_ENL, nombreEnl, FAMILIAS_DE, BASE_DE, escalaDe };
+  SP.generalizados = { analizar, preparar, derechaDe, opcionesDiseno, codigoR, reporte, NOMBRE_FAM, NOMBRE_ENL, nombreEnl, FAMILIAS_DE, BASE_DE, ALTERNATIVA, escalaDe };
 
   SP.metodo({
     id: 'glm-conteos', familia: 'generalizados', motor: 'js', orden: 10, nombre: T('Conteos (Poisson y binomial negativa)'),
