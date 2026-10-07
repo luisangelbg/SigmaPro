@@ -194,8 +194,8 @@
   <h2 id="s4-5"><span class="num">4.5</span>Cómo se lee un resultado</h2>
   <p>Los resultados del bloque Análisis tienen las partes de los de Explorar (sección 3.2) y algunas más. La figura 4.7 muestra la parte de arriba del análisis del maíz en bloques completos al azar, y la 4.8, sus dos primeros cuadros.</p>
   <figure class="media">
-    <div class="marco"><img src="../img/b4-resultado.png" alt="El resultado del análisis de bloques completos al azar del maíz: el título con el tiempo de cálculo y Agregar al reporte; los botones del nivel de detalle Básico, Estándar y Experto, con Estándar marcado; la conclusión: híbrido y dosis con diferencias, la interacción sin evidencia, media general 5.938, CV 3.6 % y R² 0.969; la gráfica de interacción híbrido × dosis con una línea por dosis; y el botón Comparar las medias de este diseño"></div>
-    <figcaption><b>Figura 4.7.</b> La parte de arriba de un resultado: título, nivel de detalle, conclusión, gráfica y el siguiente paso.</figcaption>
+    <div class="marco"><img src="../img/b4-resultado.png" alt="El resultado del análisis de bloques completos al azar del maíz: el título con el tiempo de cálculo y Agregar al reporte; los botones del nivel de detalle Básico, Estándar y Experto, con Estándar marcado; el recuadro En pocas palabras: el rendimiento cambia con el híbrido, más alto en H-66, 6.36, y más bajo en H-40, 5.53, y con la dosis, más alto en 120, 6.74, y más bajo en 0, 4.47, el efecto del híbrido no depende de la dosis y el error experimental es el 3.6 % de la media general, un CV bajo; la conclusión: híbrido y dosis con diferencias, la interacción sin evidencia, media general 5.938, CV 3.6 % y R² 0.969; la gráfica de interacción híbrido × dosis con una línea por dosis; y el botón Comparar las medias de este diseño"></div>
+    <figcaption><b>Figura 4.7.</b> La parte de arriba de un resultado: título, nivel de detalle, <span class="ui">En pocas palabras</span>, conclusión, gráfica y el siguiente paso.</figcaption>
   </figure>
   <figure class="media">
     <div class="marco"><img src="../img/b4-resultado-cuadros.png" alt="Los cuadros del mismo resultado: el análisis de varianza con fuente de variación, gl, SC, CM, F y p, su nota, Cómo leer este cuadro plegado y los botones Copiar cuadro y Bajar en CSV; y el resumen del ensayo con media general, observaciones, CV, R² y eficiencia relativa"></div>
@@ -206,12 +206,14 @@
     <tbody>
       <tr><td><b>Título</b></td><td>El análisis, con el tiempo de cálculo, <span class="ui">ⓘ ¿Qué es este análisis?</span>, que abre su ficha en Fundamentos (capítulo 9), y <span class="ui">Agregar al reporte</span>.</td></tr>
       <tr><td><b>Nivel de detalle</b></td><td>Bajo el título, <span class="ui">Básico</span>, <span class="ui">Estándar</span> y <span class="ui">Experto</span>: cuánto del resultado se ve (más abajo, «Tres niveles de detalle»).</td></tr>
+      <tr><td><b>En pocas palabras</b></td><td>Un recuadro con el resultado sin símbolos estadísticos, en hasta cuatro frases (más abajo, «En pocas palabras»).</td></tr>
       <tr><td><b>Conclusión</b></td><td>Una frase por efecto o por resultado clave, con su estadístico y su valor <i>p</i>: «hibrido: hay diferencias (F = 60.635, p &lt; 0.001)». Al final, los indicadores de ajuste (media general, CV, R²).</td></tr>
       <tr><td><b>Semáforo de los supuestos</b></td><td>En las pruebas que dependen de supuestos (pruebas t, regresión, ANCOVA, modelos generalizados…), un renglón por supuesto en verde, ámbar o rojo, con su ícono y la prueba que lo decide (sección 4.7); si alguno falla, <span class="ui">Probar la alternativa</span> ofrece el análisis que lo atiende. En los diseños, el análisis de varianza no trae semáforo: sus supuestos se revisan con <span class="ui">Revisar los supuestos del modelo</span> (sección 4.7); en el reporte, los de completamente al azar y bloques completos al azar se revisan solos.</td></tr>
       <tr><td><b>Gráficas</b></td><td>Las que corresponden al análisis: la interacción de dos factores, las medias con su error estándar, la recta de regresión con sus bandas, el diagnóstico de los residuos, las curvas de supervivencia… Arriba, el selector <span class="ui">Tema de las gráficas</span> cambia el estilo de todas a la vez (los seis temas están en el cuadro 6.1). Cada gráfica tiene su leyenda y el botón ✎ del editor de figuras (capítulo 6).</td></tr>
       <tr><td><b>Siguiente paso</b></td><td>Botones que llevan al análisis que suele seguir: <span class="ui">Comparar las medias de este diseño</span> en los diseños, <span class="ui">Analizar el modelo elegido</span> tras una selección de variables, el CSV para otras apps en el multivariado.</td></tr>
       <tr><td><b>Cuadros</b></td><td>Numerados, cada uno con <span class="ui">Copiar cuadro</span> y <span class="ui">Bajar en CSV</span> (con los números completos, sin el redondeo de la pantalla): el análisis de varianza, el resumen del ensayo, las medias, las comparaciones… Un cuadro más ancho que la pantalla se desplaza a los lados; con el teclado, Tab lo enfoca y las flechas lo recorren.</td></tr>
       <tr><td><b>Cómo leer este cuadro</b></td><td>Plegado bajo cada cuadro que trae un estadístico con guía de lectura: un medidor por estadístico con su tarjeta de interpretación y la curva de referencia de cada prueba (figuras 4.9 y 4.10, más abajo).</td></tr>
+      <tr><td><span class="ui">Cómo reportarlo (APA)</span></td><td>Plegado después de los cuadros: los párrafos de métodos y de resultados con el estilo APA 7, en español y en inglés, listos para copiar (más abajo).</td></tr>
       <tr><td><b>Código R equivalente</b></td><td>Plegado al final, con <span class="ui">Copiar el código</span>.</td></tr>
       <tr><td><b>Continúa en la suite LABG</b></td><td>Al pie de algunos análisis, una franja con la app de la suite que continúa el trabajo: AgriDesign tras un diseño experimental, CorrelationPro y PCAPro tras una correlación o una regresión, PCAPro y ClusteringPro tras el multivariado o el multiambiente. Cada tarjeta dice por qué conviene y se puede ocultar (capítulo 10).</td></tr>
     </tbody>
@@ -289,22 +291,50 @@
   <table class="compacta">
     <thead><tr><th style="width:1.1in">Nivel</th><th>Qué se ve</th></tr></thead>
     <tbody>
-      <tr><td><span class="ui">Básico</span></td><td>La conclusión, las gráficas, el semáforo y, abierta bajo el nombre de cada cuadro («Lectura · Cuadro 1. …»), su lectura: medidores, tarjetas y curvas (figura 4.12). Los cuadros con sus notas y botones, el código R y los detalles técnicos se ocultan; un cuadro sin guía de lectura no aparece. En Explorar el cuadro es el resumen mismo y se ve siempre.</td></tr>
+      <tr><td><span class="ui">Básico</span></td><td><span class="ui">En pocas palabras</span> en lugar de la conclusión con la estadística (si el análisis no trae el recuadro, la conclusión), las gráficas, el semáforo, <span class="ui">Cómo reportarlo (APA)</span> y, abierta bajo el nombre de cada cuadro («Lectura · Cuadro 1. …»), su lectura: medidores, tarjetas y curvas (figura 4.12). Los cuadros con sus notas y botones, el código R y los detalles técnicos se ocultan; un cuadro sin guía de lectura no aparece. En Explorar el cuadro es el resumen mismo y se ve siempre.</td></tr>
       <tr><td><span class="ui">Estándar</span></td><td>Todo el resultado, como se describe en esta sección. Es el nivel con que abre la app.</td></tr>
-      <tr><td><span class="ui">Experto</span></td><td>Lo de Estándar más las <span class="ui">Notas técnicas</span>: método, entradas, opciones, datos, filas usadas, programa y tiempo de cálculo, con el modelo y sus hipótesis tomados de la ficha de Fundamentos (capítulo 9). Las notas y el código R aparecen abiertos (figura 4.13).</td></tr>
+      <tr><td><span class="ui">Experto</span></td><td>Lo de Estándar más las <span class="ui">Notas técnicas</span>: método, entradas, opciones, datos, filas usadas, programa y tiempo de cálculo, con el modelo y sus hipótesis tomados de la ficha de Fundamentos (capítulo 9). Las notas, <span class="ui">Cómo reportarlo (APA)</span> y el código R aparecen abiertos (figura 4.13).</td></tr>
     </tbody>
   </table>
   <figure class="media">
-    <div class="marco"><img src="../img/b4-detalle-basico.png" alt="El análisis del maíz en el nivel Básico: el título con los botones Básico, Estándar y Experto, Básico marcado; la conclusión; el aviso de que en Básico los cuadros no se muestran; el botón Comparar las medias de este diseño; y abierta, Lectura · Cuadro 1. Análisis de varianza: Bloques completos al azar, que empieza con el medidor del valor p"></div>
+    <div class="marco"><img src="../img/b4-detalle-basico.png" alt="El análisis del maíz en el nivel Básico: el título con los botones Básico, Estándar y Experto, Básico marcado; el recuadro En pocas palabras, sin la conclusión con la estadística; el aviso de que en Básico los cuadros no se muestran; el botón Comparar las medias de este diseño; y abierta, Lectura · Cuadro 1. Análisis de varianza: Bloques completos al azar, que empieza con el medidor del valor p"></div>
     <figcaption><b>Figura 4.12.</b> El nivel Básico: en lugar del cuadro del ANOVA, su lectura abierta (sigue como en la figura 4.10). En la captura se quitó la gráfica de interacción, que en la app va entre la conclusión y la lectura.</figcaption>
   </figure>
   <figure class="media">
     <div class="marco"><img src="../img/b4-detalle-experto.png" alt="Las notas técnicas del nivel Experto: método Bloques completos al azar (dbca), entradas, opciones, datos con 48 filas, filas usadas 48, programa SigmaPro validado contra R y tiempo de cálculo; el modelo y igual a mu más tau i más beta j más épsilon ij con el significado de cada término; y las hipótesis H0, todos los tau iguales a 0, y H1, algún tau distinto de 0"></div>
     <figcaption><b>Figura 4.13.</b> El nivel Experto agrega las notas técnicas, con el modelo del diseño en bloques y sus hipótesis de la ficha de Fundamentos.</figcaption>
   </figure>
+
+  <h3>En pocas palabras</h3>
+  <p>Sobre la conclusión, un recuadro dice el resultado sin símbolos estadísticos, en hasta cuatro frases, para quien no lee un cuadro de análisis de varianza (figura 4.7). No calcula nada nuevo: lee lo que ya dio el análisis.</p>
+  <ul>
+    <li><b>En los diseños experimentales</b> se arma con el cuadro del ANOVA y las medias de cada factor: qué factor cambia la respuesta, con su nivel más alto y el más bajo y sus medias; si hay interacción; y la precisión del ensayo, con el CV y su guía. Un factor sin efecto al α del análisis se dice así: «Con estos datos no se ve que…»; con dos niveles, cuál es mayor. Si hay interacción, el recuadro aconseja comparar las medias de un factor dentro de cada nivel del otro.</li>
+    <li><b>En los demás análisis</b> son las frases de la conclusión sin los paréntesis ni las partes con estadística (F, t, p, grados de libertad, intervalos). Se descartan las frases que sin la estadística no dirían nada y las técnicas, como la de las letras en común.</li>
+  </ul>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">✎</span>La prueba t de los venenos (sección 4.8)</div>
+    <p><b>Conclusión:</b> La media de «A» (0.314) difiere de la de «B» (0.677): diferencia −0.362 (IC 95 %: −0.572 a −0.153); t = −3.729, gl = 13.21, p = 0.002. Tamaño del efecto grande: g de Hedges = −1.470 (IC 95 %: −2.342 a −0.572).</p>
+    <p><b>En pocas palabras:</b> La media de «A» (0.314) difiere de la de «B» (0.677). Tamaño del efecto grande.</p>
+  </div>
+  <p>En el nivel Básico se ve el recuadro y se oculta la conclusión técnica; en Estándar y Experto se ven los dos. El recuadro va en Análisis y en el reporte; en Explorar no hace falta, porque ahí la conclusión ya va en palabras.</p>
+
+  <h3>Cómo reportarlo (APA)</h3>
+  <p>Después de los cuadros, el desplegable <span class="ui">Cómo reportarlo (APA)</span> trae el párrafo de <b>Métodos</b> y el de <b>Resultados</b> del análisis, los mismos del reporte (sección 5.4), con las convenciones del estilo APA 7 (figura 4.14):</p>
+  <ul>
+    <li>los símbolos estadísticos en cursiva (<i>F</i>, <i>t</i>, <i>p</i>, <i>r</i>, <i>n</i>, <i>M</i>…); las letras griegas, no;</li>
+    <li>el <i>p</i> y los estadísticos que no pueden pasar de 1 (<i>r</i>, <i>R</i>², η², <i>V</i> de Cramér, κ, <i>W</i> de Kendall) sin el cero inicial: <i>F</i>(2, 33) = 60.63, <i>p</i> &lt; .001; <i>R</i>² = .969;</li>
+    <li>comas entre los estadísticos de un mismo paréntesis, los intervalos de confianza entre corchetes (en la prueba t de los venenos, IC 95 % [−0.5722, −0.1528]) y la media como <i>M</i>;</li>
+    <li>en inglés, el porcentaje pegado a la cifra (3.6%); en español, separado (3.6 %).</li>
+  </ul>
+  <figure class="media">
+    <div class="marco"><img src="../img/b4-reportar.png" alt="Cómo reportarlo (APA) abierto bajo el análisis del maíz, en la pestaña English: Methods, con el análisis de varianza para un diseño de bloques completos al azar con arreglo factorial hibrido por dosis 3 × 4, la cita de Gomez and Gomez (1984) y las sumas de cuadrados tipo III; Results, con F en cursiva y sus grados de libertad, p sin cero inicial, como p menor que .001 y p igual a .220, la media general 5.938, el coeficiente de variación 3.6% y R² igual a .969; un botón Copiar bajo cada párrafo y la nota sobre el estilo APA 7"></div>
+    <figcaption><b>Figura 4.14.</b> <span class="ui">Cómo reportarlo (APA)</span> del maíz en la pestaña <span class="ui">English</span>: el mismo análisis, escrito en inglés con las convenciones de APA 7, sin cambiar el idioma de la app.</figcaption>
+  </figure>
+  <p>Las pestañas <span class="ui">Español</span> y <span class="ui">English</span> cambian el idioma del texto, no el de la app: el párrafo se arma con las mismas cifras y con los nombres de los métodos, de los diseños y de las citas en ese idioma (la primera vez que se pide el inglés, la app lo carga en un instante). <span class="ui">Copiar</span>, bajo cada párrafo, lo copia con sus cursivas, que un procesador de textos conserva al pegarlo. Como en el reporte, es un punto de partida: conviene revisar la redacción, cambiar los nombres de las columnas por nombres completos y agregar la interpretación agronómica.</p>
+  <p>El desplegable está en Análisis, en la revisión de los supuestos (sección 4.7), en Explorar y en cada análisis del reporte. Se arma al abrirlo, así que no hace más lento el resultado; en el nivel Experto aparece abierto.</p>
   <div class="caja nota">
-    <div class="caja-t"><span class="ico">i</span>El párrafo para la tesis está en el reporte</div>
-    <p>En el bloque Análisis el resultado se explora: se cambian opciones, se prueban modelos. Al agregarlo al reporte (capítulo 5), SigmaPro le suma lo que pide un documento: el párrafo de métodos y resultados con la cita de cada prueba, los detalles técnicos y la numeración de cuadros y figuras de todo el reporte.</p>
+    <div class="caja-t"><span class="ico">i</span>El reporte junta todo</div>
+    <p>En el bloque Análisis el resultado se explora: se cambian opciones, se prueban modelos. Al agregarlo al reporte (capítulo 5), SigmaPro le suma lo que pide un documento: los párrafos de todos los análisis en un solo texto, con la cita de cada prueba y la de SigmaPro, los detalles técnicos y la numeración de cuadros y figuras de todo el reporte.</p>
   </div>
 
   <!-- 4.6 -->
@@ -312,10 +342,10 @@
   <p>Casi todos los análisis de SigmaPro están programados en el propio núcleo de la app, en JavaScript, y validados contra R. Unos cuantos, los que piden la maquinaria de ajuste de los modelos mixtos, corren en un <b>R completo que funciona dentro del navegador</b> (webR, R compilado a WebAssembly): los modelos lineales mixtos y sus diseños (sección 4.15), las medidas repetidas y los modelos lineales generalizados mixtos (sección 4.17). Los datos tampoco salen del equipo: R corre en la misma pestaña.</p>
   <figure class="media">
     <div class="marco"><img src="../img/b4-motor.png" alt="El aviso Este análisis usa el motor R dentro de tu navegador: la primera vez se descargan R y sus paquetes, unos 25 MB, con internet; después quedan en la caché del navegador; tus datos no salen del equipo; botón Cargar el motor R y calcular"></div>
-    <figcaption><b>Figura 4.14.</b> La primera vez que se usa un análisis del motor R, la app pide permiso antes de descargarlo.</figcaption>
+    <figcaption><b>Figura 4.15.</b> La primera vez que se usa un análisis del motor R, la app pide permiso antes de descargarlo.</figcaption>
   </figure>
   <ol class="pasos">
-    <li>La primera vez, en lugar del resultado aparece el aviso de la figura 4.14. <span class="ui">Cargar el motor R y calcular</span> descarga R y sus paquetes (unos 25 MB) y calcula.</li>
+    <li>La primera vez, en lugar del resultado aparece el aviso de la figura 4.15. <span class="ui">Cargar el motor R y calcular</span> descarga R y sus paquetes (unos 25 MB) y calcula.</li>
     <li>Mientras tanto, arriba del resultado se lee cada paso («Descargando el motor R (la primera vez tarda más)…», «Instalando lme4 en el motor R (solo la primera vez)…», «Calculando en el motor R…») y un botón <span class="ui">Cancelar</span>. La primera carga tarda de unos segundos a un par de minutos, según la conexión; un cálculo, unos segundos.</li>
     <li>Después, el motor queda en la caché del navegador: ya no hace falta internet ni vuelve a preguntar.</li>
   </ol>
