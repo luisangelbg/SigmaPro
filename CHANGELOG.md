@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### 0.5.10 · Hito 5.7, parte 1: tres caminos, historial y estados vacíos (8 oct 2026)
+
+- **Inicio con tres caminos** («¿Por dónde empiezas?»): *Tengo mis datos* (importar un archivo o pegar una tabla),
+  *Quiero probar con un ejemplo* (el menú de los ejemplos) y *Quiero saber qué análisis usar* (Fundamentos y el
+  glosario). Al cargar datos desde ahí se pasa a Datos. Los botones del héroe se quitaron (el enlace a la maqueta del
+  flujo ya no está en la app); «Ver la validación» pasó a la tarjeta *Exactitud verificada*.
+- **Historial de análisis** (`js/interfaz/historial.js`): cada análisis calculado en Análisis o en Explorar (evento
+  `sp:resultado`) queda con su método, sus variables, sus opciones, el origen de los datos y la hora; un mismo método
+  con los mismos datos ocupa un renglón. Se guarda solo en el navegador (`sigmapro.historial`, a lo más 30), sin
+  ningún valor de los datos.
+  - *Lo último que analizaste*, en Inicio (los cinco más recientes, con «Borrar el historial»), y el botón
+    *Historial* de Análisis vuelven a abrir un análisis. Si la tabla actual no tiene sus columnas y los datos eran de
+    un ejemplo, lo cargan otra vez (la tabla de antes queda en «Volver a la tabla anterior»); si eran de un archivo,
+    un aviso dice qué columnas faltan.
+- **Estados vacíos con la acción a la mano**: sin datos, Explorar y Análisis ofrecen importar, pegar o un ejemplo sin
+  salir del bloque (`data-datos="importar|pegar|ejemplo"`, que sirve en cualquier bloque); Análisis también ofrece el
+  tamaño de muestra y la potencia, que no piden datos. Exportar, con el reporte vacío, lleva a Análisis o a Explorar.
+- Pruebas: `tests/unidad/historial.test.js`; `tests/orientacion.mjs`, etapa nueva (los caminos, el historial con su
+  ejemplo, los estados vacíos y la vista de teléfono); escenario de accesibilidad inicio-historial. 30 textos nuevos
+  en inglés. `tests/glosario.mjs` cierra ahora todos los procesos del navegador al terminar.
+
 ### 0.5.9 · Hito 5.5: glosario con «Ver en acción» (8 oct 2026)
 
 - **Glosario** (`js/nucleo/glosario.js`, `js/interfaz/glosario.js`): 146 términos, que son los 121 estadísticos del

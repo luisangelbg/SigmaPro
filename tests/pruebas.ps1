@@ -58,8 +58,9 @@ foreach ($p in @('regresion.mjs', 'fundamentos.mjs')) {
   if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
 }
 if (-not $SoloNode) {
-  # la app por file://, el glosario con «ver en acción» y la secuencia de apertura, en un navegador sin ventana
-  foreach ($p in @('navegador.mjs', 'glosario.mjs', 'intro.mjs')) {
+  # la app por file://, el glosario con «ver en acción», lo que orienta (Inicio, historial, estados vacíos) y la
+  # secuencia de apertura, en un navegador sin ventana
+  foreach ($p in @('navegador.mjs', 'glosario.mjs', 'orientacion.mjs', 'intro.mjs')) {
     & $node (Join-Path $tests $p)
     if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
   }

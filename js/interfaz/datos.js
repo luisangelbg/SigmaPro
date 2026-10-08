@@ -184,6 +184,19 @@
     $('#datPegar').addEventListener('click', () => SP.datosDialogos.pegar());
     $('#datInicioPegar').addEventListener('click', () => SP.datosDialogos.pegar());
     $('#datEjemplos').addEventListener('click', e => menuEjemplos(e.currentTarget));
+    /* desde cualquier bloque (Inicio, los estados vacíos): data-datos="importar|pegar|ejemplo"; con data-datos-ir, al llegar
+       los datos se va a ese bloque (si se cancela, el siguiente cambio de bloque lo olvida) */
+    let irAlCargar = null;
+    document.addEventListener('click', e => {
+      const b = e.target.closest && e.target.closest('[data-datos]');
+      if (!b) return;
+      irAlCargar = b.dataset.datosIr || null;
+      if (b.dataset.datos === 'importar') $('#datArchivo').click();
+      else if (b.dataset.datos === 'pegar') SP.datosDialogos.pegar();
+      else if (b.dataset.datos === 'ejemplo') menuEjemplos(b);
+    });
+    document.addEventListener('sp:datos', ev => { if (irAlCargar && ev.detail && ev.detail.hoja) { const k = irAlCargar; irAlCargar = null; SP.app.ir(k); } });
+    document.addEventListener('sp:bloque', () => { irAlCargar = null; });
     $('#datInicioEjemplo').addEventListener('click', e => menuEjemplos(e.currentTarget));
     $('#datNueva').addEventListener('click', () => SP.datosDialogos.nueva());
     $('#datCalcular').addEventListener('click', () => SP.datosDialogos.calcular());
@@ -210,6 +223,6 @@
     pintar();
   }
 
-  SP.datosUI = { cargar, cambio, estado: () => estado, seleccionada: () => seleccionada, refrescar: remedir => { rejilla.refrescar(remedir); cambio(); } };
+  SP.datosUI = { cargar, menuEjemplos, cambio, estado: () => estado, seleccionada: () => seleccionada, refrescar: remedir => { rejilla.refrescar(remedir); cambio(); } };
   SP.alArrancar(iniciar);
 })();

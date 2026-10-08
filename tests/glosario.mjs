@@ -162,9 +162,13 @@ try {
   fallas.push('la prueba no terminó: ' + e.message);
 } finally {
   try { ws && ws.close(); } catch { /* nada */ }
+  /* en Windows, el árbol completo: los procesos hijos del navegador retienen el perfil */
   nav.kill();
-  await dormir(400);
-  try { rmSync(perfil, { recursive: true, force: true }); } catch { /* lo borra el sistema */ }
+  if (process.platform === 'win32') {
+    const clave = perfil.split(/[\\/]/).pop();
+    try { execFileSync('powershell', ['-NoProfile', '-Command', "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*" + clave + "*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"], { stdio: 'ignore' }); } catch { /* ya terminaron */ }
+  }
+  for (let k = 0; k < 15 && existsSync(perfil); k++) { await dormir(400); try { rmSync(perfil, { recursive: true, force: true }); } catch { /* el navegador aún lo usa */ } }
 }
 
 console.log('SigmaPro · el glosario y «Ver en acción»');

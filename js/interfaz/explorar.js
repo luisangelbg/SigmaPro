@@ -219,6 +219,7 @@
       const ficha = SP.metodos[id];
       const { resultado, ms } = SP.ejecutar(id, c.t, entradas, opciones);
       pintarResultado(ficha.reporte(resultado, ctx), ficha.codigoR(entradas, opciones, ctx), ms, { metodo: id, r: resultado, e: entradas, op: opciones, ctx, tabla: c.t });
+      document.dispatchEvent(new CustomEvent('sp:resultado', { detail: { bloque: 3, metodo: id, e: entradas, op: opciones } }));
     } catch (e) {
       if (!(e instanceof SP.ErrorSP) && !(e && e.arreglo !== undefined)) console.error(e);
       pintarError(e);

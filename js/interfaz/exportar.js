@@ -212,7 +212,9 @@
     imprimirMarco: marco => marco.contentWindow.print() };
   function pintar() {
     const r = R(), n = r.items.length;
-    $('#expoResumen').textContent = n ? T('El reporte tiene {k} análisis{t}.', { k: n, t: r.titulo ? T(': «{t}»', { t: r.titulo }) : '' }) : T('El reporte está vacío: agrega análisis desde Explorar o Análisis para exportarlo.');
+    $('#expoResumen').innerHTML = n ? esc(T('El reporte tiene {k} análisis{t}.', { k: n, t: r.titulo ? T(': «{t}»', { t: r.titulo }) : '' }))
+      : esc(T('El reporte está vacío: agrega análisis desde Explorar o Análisis para exportarlo.')) + ' ' +
+        `<button type="button" class="btn btn-secondary btn-sm" data-ir="4">${esc(T('Ir a Análisis'))}</button> <button type="button" class="btn btn-ghost btn-sm" data-ir="3">${esc(T('Ir a Explorar'))}</button>`;
     document.querySelectorAll('#panel-7 [data-expo]:not([data-expo="abrir"]):not([data-expo="proyecto"])').forEach(b => { b.disabled = !n; });
     const pr = $('[data-expo="proyecto"]'); if (pr) pr.disabled = !(SP.app.datos && SP.app.datos.hoja);
     const hoja = $('#expoHoja'); if (hoja) hoja.value = r.opciones.hoja;

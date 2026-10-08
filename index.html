@@ -95,11 +95,6 @@
       <div class="eyebrow">Investigación agronómica y biológica</div>
       <h1 id="t1">Del experimento a la conclusión, <em>con cifras que se pueden comprobar</em></h1>
       <p class="lead">Diseños experimentales, comparaciones de medias, regresión y modelos mixtos, con un asistente que entiende tu ensayo, reportes listos para publicar y el código R de cada análisis.</p>
-      <div class="btn-row">
-        <button type="button" class="btn btn-primary btn-lg" data-ir="2">Empezar con tus datos</button>
-        <button type="button" class="btn btn-secondary btn-lg" data-ir="8">Ver la validación</button>
-        <a class="btn btn-ghost btn-lg" href="propuesta/maqueta.html">Ver la maqueta del flujo</a>
-      </div>
       <p class="privacidad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Tus datos nunca salen de este navegador.</p>
     </div>
     <div class="hero-art" aria-hidden="true">
@@ -118,8 +113,38 @@
     </div>
   </div>
 
+  <section class="caminos" aria-labelledby="tCaminos">
+    <h2 class="caminos-t" id="tCaminos">¿Por dónde empiezas?</h2>
+    <div class="caminos-grid">
+      <div class="card camino">
+        <span class="camino-num" aria-hidden="true">1</span>
+        <h3>Tengo mis datos</h3>
+        <p>Importa tu archivo o pega la tabla. SigmaPro reconoce el diseño de tu ensayo y te dice qué análisis puedes hacer.</p>
+        <div class="btn-row"><button type="button" class="btn btn-primary" data-datos="importar" data-datos-ir="2">Importar un archivo</button><button type="button" class="btn btn-secondary" data-datos="pegar" data-datos-ir="2">Pegar una tabla</button></div>
+      </div>
+      <div class="card camino">
+        <span class="camino-num" aria-hidden="true">2</span>
+        <h3>Quiero probar con un ejemplo</h3>
+        <p>Ensayos agronómicos reales y de libro, con su diseño: bloques, parcelas divididas, cuadro latino, conteos, varios ambientes, supervivencia…</p>
+        <div class="btn-row"><button type="button" class="btn btn-primary" data-datos="ejemplo" data-datos-ir="2" aria-haspopup="menu">Elegir un ejemplo</button></div>
+      </div>
+      <div class="card camino">
+        <span class="camino-num" aria-hidden="true">3</span>
+        <h3>Quiero saber qué análisis usar</h3>
+        <p>Cada análisis tiene su ficha: qué pregunta responde, qué datos pide y cómo se lee. El glosario explica cada término y lo muestra en un ejemplo.</p>
+        <div class="btn-row"><button type="button" class="btn btn-primary" data-ir="9">Ver los análisis</button><button type="button" class="btn btn-secondary" data-glosario="">Abrir el glosario</button></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="card ini-historial" id="iniHistorial" hidden>
+    <div class="ini-hist-cab"><h3>Lo último que analizaste</h3><button type="button" class="btn btn-ghost btn-sm" id="iniHistorialBorrar">Borrar el historial</button></div>
+    <p class="small muted">Se guarda solo en este navegador, sin los datos. Si eran de un ejemplo, se vuelven a cargar.</p>
+    <ul class="ini-hist" id="iniHistorialLista"></ul>
+  </div>
+
   <div class="valores" data-lnav-skip>
-    <div class="card"><div class="num">1 × 10⁻⁶</div><h3>Exactitud verificada</h3><p>Cada método se compara contra R con datos de la literatura; nada se libera sin su prueba. El reporte está en el bloque 8.</p></div>
+    <div class="card"><div class="num">1 × 10⁻⁶</div><h3>Exactitud verificada</h3><p>Cada método se compara contra R con datos de la literatura; nada se libera sin su prueba. <a href="#b8" data-ir="8">Ver la validación</a>.</p></div>
     <div class="card"><div class="num">R</div><h3>Reproducible</h3><p>Cada resultado trae el código R equivalente, para la revisión por pares o para tu tesis.</p></div>
     <div class="card"><div class="num">0 bytes</div><h3>Privado</h3><p>Todo se calcula en tu navegador. Ningún dato se envía a ningún servidor.</p></div>
   </div>
@@ -214,8 +239,8 @@
 
   <div class="dat-inicio" id="expVacio">
     <h3>Aún no hay datos</h3>
-    <p>Carga o pega tu tabla en el bloque Datos, o prueba con uno de los ejemplos agronómicos.</p>
-    <button type="button" class="btn btn-primary" data-ir="2">Ir a Datos</button>
+    <p>Importa o pega tu tabla, o prueba con uno de los ejemplos agronómicos; el resumen aparece aquí en cuanto haya datos.</p>
+    <div class="btn-row"><button type="button" class="btn btn-primary" data-datos="importar">Importar un archivo</button><button type="button" class="btn btn-secondary" data-datos="pegar">Pegar una tabla</button><button type="button" class="btn btn-secondary" data-datos="ejemplo" aria-haspopup="menu">Probar con un ejemplo</button><button type="button" class="btn btn-ghost" data-ir="2">Ir a Datos</button></div>
     <p class="small muted" style="margin-top:12px">¿Planeas un ensayo? El tamaño de muestra, la potencia y las repeticiones no necesitan datos.</p>
     <button type="button" class="btn btn-secondary" id="anaSinDatos">Calcular un tamaño de muestra o una potencia</button>
   </div>
@@ -241,8 +266,10 @@
 
   <div class="dat-inicio" id="anaVacio">
     <h3>Aún no hay datos</h3>
-    <p>Carga o pega tu tabla en el bloque Datos, o prueba con uno de los ejemplos agronómicos.</p>
-    <button type="button" class="btn btn-primary" data-ir="2">Ir a Datos</button>
+    <p>Importa o pega tu tabla, o prueba con uno de los ejemplos agronómicos; el asistente te propondrá el análisis en cuanto haya datos.</p>
+    <div class="btn-row"><button type="button" class="btn btn-primary" data-datos="importar">Importar un archivo</button><button type="button" class="btn btn-secondary" data-datos="pegar">Pegar una tabla</button><button type="button" class="btn btn-secondary" data-datos="ejemplo" aria-haspopup="menu">Probar con un ejemplo</button><button type="button" class="btn btn-ghost" data-ir="2">Ir a Datos</button></div>
+    <p class="small muted" style="margin-top:12px">¿Planeas un ensayo? El tamaño de muestra, la potencia y las repeticiones no necesitan datos.</p>
+    <button type="button" class="btn btn-secondary" data-sin-datos>Calcular un tamaño de muestra o una potencia</button>
   </div>
 
   <div id="anaTrabajo" hidden>
@@ -251,6 +278,7 @@
       <button type="button" data-modo="catalogo" aria-pressed="false">Catálogo</button>
       <button type="button" data-modo="constructor" aria-pressed="false">Constructor de modelo</button>
     </div>
+    <button type="button" class="btn btn-ghost btn-sm ana-historial" data-historial aria-haspopup="menu">Historial</button>
     <div id="anaAsistente" class="asis"></div>
     <div id="anaConstructor" class="cons" hidden></div>
     <div id="anaCatalogoVista" hidden>
@@ -565,6 +593,7 @@
 <script src="js/labg-suggest.js"></script>
 <script src="js/interfaz/fundamentos.js"></script>
 <script src="js/interfaz/glosario.js"></script>
+<script src="js/interfaz/historial.js"></script>
 <script src="js/interfaz/suite.js"></script>
 <script src="js/labg-figedit.js" data-key="sigmapro:figedit" data-panes="figure.sp-grafica" data-title="figcaption"></script>
 <script src="js/labg-figure-studio.js"></script>

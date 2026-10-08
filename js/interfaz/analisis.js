@@ -2229,6 +2229,8 @@
       $('#anaResultado').dataset.codigo = codigo;
       estado.ultimo = rep;
       estado.ultimoResultado = resultado;
+      /* el historial y quien quiera saber qué se calculó (hito 5.7) */
+      document.dispatchEvent(new CustomEvent('sp:resultado', { detail: { bloque: 4, metodo: id, e, op } }));
     };
     const fallar = err => {
       if (turno !== estado.turno) return;
@@ -2416,8 +2418,7 @@
     const form = $('#anaOpciones');
     $('#anaModos').addEventListener('click', e => { const b = e.target.closest('[data-modo]'); if (b) ponerModo(b.dataset.modo); });
     /* sin datos: los cálculos que no los necesitan (potencia y tamaño de muestra) */
-    const sd = $('#anaSinDatos');
-    if (sd) sd.addEventListener('click', () => { estado.sinDatos = true; estado.metodo = 'potencia-medias'; SP.app.ir(4); ponerModo('catalogo'); });
+    document.querySelectorAll('#anaSinDatos, [data-sin-datos]').forEach(sd => sd.addEventListener('click', () => { estado.sinDatos = true; estado.metodo = 'potencia-medias'; SP.app.ir(4); ponerModo('catalogo'); }));
     form.addEventListener('submit', e => e.preventDefault());
     form.addEventListener('change', e => {
       const el = e.target;
