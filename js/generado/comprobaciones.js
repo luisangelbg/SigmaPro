@@ -73,14 +73,14 @@ window.SP_COMPROBACIONES = {
  "sin-conexion": {
   "titulo": "Privacidad y uso sin conexión",
   "ok": true,
-  "resumen": "Con datos, 7 análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, 434 peticiones GET sin datos, todas a la propia app; con doble clic, fuera del equipo solo se pide el código del motor R para el modelo mixto (43 descargas de webR y sus paquetes); servida por http con su repositorio propio, ni eso: el motor sale del mismo origen, todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo y el modelo mixto en el motor R guardado, exporta y verifica las huellas del proyecto.",
+  "resumen": "Con datos, 7 análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, 448 peticiones GET sin datos, todas a la propia app; con doble clic, fuera del equipo solo se pide el código del motor R para el modelo mixto (43 descargas de webR y sus paquetes); servida por http con su repositorio propio, ni eso: el motor sale del mismo origen, todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo y el modelo mixto en el motor R guardado, exporta y verifica las huellas del proyecto.",
   "renglones": [
-   "Doble clic: 209 peticiones; fuera del equipo, solo 43 descargas del motor R (webR y paquetes).",
-   "Servida por http: 434 peticiones GET a 261 archivos de la app, sin parámetros ni cuerpo.",
-   "Servicio sin conexión activo con 260 archivos guardados.",
+   "Doble clic: 208 peticiones; fuera del equipo, solo 43 descargas del motor R (webR y paquetes).",
+   "Servida por http: 448 peticiones GET a 263 archivos de la app, sin parámetros ni cuerpo.",
+   "Servicio sin conexión activo con 262 archivos guardados.",
    "Sin red: 7 análisis, reporte, 6 exportaciones y huellas del proyecto verificadas."
   ],
-  "fecha": "2026-10-08T16:56:55.229Z",
+  "fecha": "2026-10-08T17:50:31.727Z",
   "motor": "node v24.19.0"
  },
  "exportar": {
@@ -90,47 +90,46 @@ window.SP_COMPROBACIONES = {
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-10-08T16:55:47.765Z",
+  "fecha": "2026-10-08T17:49:05.977Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {
   "titulo": "El código R equivalente",
   "ok": true,
   "resumen": "99 escenarios de 65 métodos: el código R que muestra la app corre en R y da 1,626 números iguales a los de la app (tolerancia 1e-6)",
-  "fecha": "2026-10-08T16:53:22.770Z",
+  "fecha": "2026-10-08T17:46:58.423Z",
   "motor": "node v24.19.0"
  },
  "accesibilidad": {
   "titulo": "Accesibilidad (AA)",
   "ok": false,
-  "resumen": "230 revisiones de 116 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 207,818 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 1279 paradas en los 10 bloques (1280 px en claro y 360 px en oscuro).",
+  "resumen": "233 revisiones de 117 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 213,104 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 1276 paradas en los 10 bloques (1280 px en claro y 360 px en oscuro).",
   "renglones": [
-   "mixto-resultado a 1280 px: la medición no terminó",
-   "glmm-formula a 1280 px: la medición no terminó"
+   "glmm-gamma a 360 px: la medición no terminó"
   ],
-  "fecha": "2026-10-08T17:24:58.277Z",
+  "fecha": "2026-10-08T18:10:48.790Z",
   "motor": "node v24.19.0"
  },
  "idioma": {
   "titulo": "La interfaz en inglés",
   "ok": true,
-  "resumen": "6594 textos traducidos; 810 casos con los mismos números en los dos idiomas (71,773 valores); 272 resultados armados en inglés sin textos pendientes",
-  "fecha": "2026-10-08T16:54:39.073Z",
+  "resumen": "6776 textos traducidos; 810 casos con los mismos números en los dos idiomas (71,773 valores); 272 resultados armados en inglés sin textos pendientes",
+  "fecha": "2026-10-08T17:47:54.312Z",
   "motor": "node v24.19.0"
  },
  "regresion": {
   "titulo": "Regresión de resultados y reportes",
   "ok": true,
   "resumen": "272 casos, 70697 números; resultado cambiado en 0, reporte en 0",
-  "fecha": "2026-10-08T16:54:42.057Z",
+  "fecha": "2026-10-08T17:47:57.106Z",
   "motor": "node v24.19.0"
  },
  "intro": {
   "titulo": "Secuencia de apertura",
   "ok": true,
-  "resumen": "secuencia completa hasta «Start»: 5645 ms, 331 cuadros (59 por segundo; mediana 16.7 ms, p95 17 ms, 2 de más de 34 ms); 0 tareas largas del hilo principal en ese lapso; peso: js/intro.js + css/intro.css = 39.2 KB (sin imágenes ni fuentes)",
+  "resumen": "secuencia completa hasta «Start»: 5637 ms, 333 cuadros (59 por segundo; mediana 16.7 ms, p95 16.8 ms, 1 de más de 34 ms); 0 tareas largas del hilo principal en ese lapso; peso: js/intro.js + css/intro.css = 39.2 KB (sin imágenes ni fuentes)",
   "renglones": [],
-  "fecha": "2026-10-08T16:55:32.269Z",
+  "fecha": "2026-10-08T17:48:49.767Z",
   "motor": "node v24.19.0"
  },
  "fundamentos": {
@@ -138,7 +137,7 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "78 de 78 fichas sin problemas (78 análisis); 63 ejemplos corridos en node; 1472 fórmulas convertidas a MathML",
   "renglones": [],
-  "fecha": "2026-10-08T16:56:57.959Z",
+  "fecha": "2026-10-08T17:50:34.243Z",
   "motor": "node v24.19.0"
  },
  "suite": {
@@ -146,7 +145,7 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "CorrelationPro: PENDIENTE (sin repositorio público; logo marcador); 14 de 14 enlaces responden 200",
   "renglones": [],
-  "fecha": "2026-10-08T16:56:59.444Z",
+  "fecha": "2026-10-08T17:50:35.393Z",
   "motor": "node v24.19.0"
  },
  "glosario": {
@@ -154,15 +153,15 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "js/generado/glosario.js al día; 257 lugares señalados en español; 133 lugares en inglés",
   "renglones": [],
-  "fecha": "2026-10-08T16:55:11.722Z",
+  "fecha": "2026-10-08T17:48:28.883Z",
   "motor": "node v24.19.0"
  },
  "orientacion": {
-  "titulo": "Inicio, historial y estados vacíos",
+  "titulo": "Inicio, historial, estados vacíos y árbol de decisiones",
   "ok": true,
-  "resumen": "Inicio: tres caminos; el ejemplo lleva a Datos; historial: anota, vuelve a abrir con su ejemplo y se lista en Análisis; estados vacíos: Explorar carga el ejemplo ahí mismo; Exportar lleva a Análisis",
+  "resumen": "Inicio: tres caminos; el ejemplo lleva a Datos; historial: anota, vuelve a abrir con su ejemplo y se lista en Análisis; estados vacíos: Explorar carga el ejemplo ahí mismo; Exportar lleva a Análisis; árbol: del Inicio a los bloques con sus líneas, el ejemplo calculado y la recomendación del asistente señalada",
   "renglones": [],
-  "fecha": "2026-10-08T16:55:15.219Z",
+  "fecha": "2026-10-08T17:48:32.874Z",
   "motor": "node v24.19.0"
  }
 };

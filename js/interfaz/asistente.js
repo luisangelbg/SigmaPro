@@ -34,7 +34,8 @@
     }
     const nombre = rec.bloque === 3 ? T('Bloque Explorar') : (SP.metodos[rec.metodo] ? SP.metodos[rec.metodo].nombre : rec.metodo);
     const botones = `<div class="btn-row asis-acciones"><button type="button" class="btn btn-primary" data-asis="usar">${esc(rec.bloque === 3 ? T('Ir a Explorar') : T('Usar y calcular'))}</button>` +
-      (CONSTRUIBLES.includes(rec.metodo) ? `<button type="button" class="btn btn-secondary" data-asis="constructor">${esc(T('Ajustar en el constructor'))}</button>` : '') + '</div>';
+      (CONSTRUIBLES.includes(rec.metodo) ? `<button type="button" class="btn btn-secondary" data-asis="constructor">${esc(T('Ajustar en el constructor'))}</button>` : '') +
+      (SP.arbol && SP.arbol.caminos(rec.metodo).length ? `<button type="button" class="btn btn-ghost" data-arbol-metodo="${esc(rec.metodo)}">${esc(T('Ver en el árbol de decisiones'))}</button>` : '') + '</div>';
     const despues = rec.despues && rec.despues.length ? `<div class="asis-despues"><p class="asis-sub">${esc(T('Después'))}</p><ul>${rec.despues.map((d, k) =>
       `<li><button type="button" class="btn btn-ghost btn-sm" data-asis="despues" data-k="${k}">${esc(d.texto)}</button></li>`).join('')}</ul></div>` : '';
     return `<div class="card asis-reco"><span class="pill">${esc(T('Recomendación'))}</span><h3>${esc(rec.titulo)}</h3>` +

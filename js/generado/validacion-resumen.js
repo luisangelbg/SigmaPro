@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION_RESUMEN = {
- "version": "0.5.10",
- "generado": "2026-10-08T14:24:03.447Z",
+ "version": "0.5.11",
+ "generado": "2026-10-08T17:46:04.424Z",
  "referencias": [
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],

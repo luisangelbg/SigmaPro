@@ -94,7 +94,7 @@
     ['hecho', '5.3', T('Semáforo con íconos y un botón que corre la alternativa: la transformación, la prueba por rangos, Welch o la binomial negativa')],
     ['hecho', '5.4', T('En pocas palabras: la conclusión sin símbolos; y «Cómo reportarlo» en APA 7, en español y en inglés, listo para copiar')],
     ['hecho', '5.5', T('Glosario de 146 términos (Ctrl+G) con «Ver en acción»: abre un ejemplo y señala dónde aparece cada uno')],
-    ['actual', '5.7', T('Orientación: tres caminos en Inicio, historial de análisis y estados vacíos con la acción a la mano; siguen el árbol del asistente, los recorridos, las ayudas, el modo presentación y los mensajes de error')],
+    ['actual', '5.7', T('Orientación: tres caminos en Inicio, historial de análisis, estados vacíos con la acción a la mano y el árbol de decisiones; siguen los recorridos, las ayudas, el modo presentación y los mensajes de error')],
     ['', '1.0', T('Publicación: revisión del nombre, repositorio y DOI (versión 1.0.0)')],
   ];
   function hitos() {

@@ -2,6 +2,26 @@
 
 ## Sin publicar
 
+### 0.5.11 · Hito 5.7, parte 2: árbol de decisiones (8 oct 2026)
+
+- **Árbol de decisiones** (`js/nucleo/arbol.js`, `js/interfaz/arbol.js`): de la pregunta de la investigación al
+  análisis, sin datos. Once caminos de primer nivel (describir, comparar tratamientos, relacionar variables, asociar
+  categorías, varios ambientes, varianzas genéticas, tiempo hasta un evento, series, varias respuestas, muestreo y
+  planear un ensayo) y preguntas en lenguaje del campo (¿qué mediste?, ¿cómo se organizó el ensayo?, ¿qué forma tiene
+  la relación?) hasta las hojas; los 78 análisis están en alguna.
+  - Se dibuja en columnas: cada respuesta abre la pregunta que sigue, con el foco en ella, y una línea SVG en oro une
+    cada opción elegida con su pregunta (se vuelve a trazar cuando cambia el ancho). En un teléfono, las columnas van
+    una bajo otra.
+  - Cada análisis de una hoja dice cuándo conviene y para qué sirve (de su ficha), con *Ficha*, *Abrir este análisis*
+    y, si su ficha tiene ejemplo, *Probar con el ejemplo*. El tamaño de muestra y la potencia se abren sin datos.
+  - Es la tercera vista de Fundamentos (*Catálogo*, *Mapa de métodos*, *Árbol de decisiones*), sin buscador ni
+    filtros; el camino se recuerda mientras la pestaña esté abierta.
+- El tercer camino de Inicio abre el árbol (*Árbol de decisiones*), y la recomendación del asistente trae *Ver en el
+  árbol de decisiones*, que lo abre en el camino de ese análisis, señalado.
+- Pruebas: `tests/unidad/arbol.test.js` (cada análisis en una hoja, la forma del árbol, los caminos, el dibujo y el
+  foco); `tests/orientacion.mjs` recorre el árbol desde Inicio, prueba el ejemplo, señala la recomendación del
+  asistente y revisa la vista de teléfono; escenario de accesibilidad fun-arbol. 182 textos nuevos en inglés.
+
 ### 0.5.10 · Hito 5.7, parte 1: tres caminos, historial y estados vacíos (8 oct 2026)
 
 - **Inicio con tres caminos** («¿Por dónde empiezas?»): *Tengo mis datos* (importar un archivo o pegar una tabla),

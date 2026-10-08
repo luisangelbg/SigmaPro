@@ -791,3 +791,38 @@ tr.sp-gl-marca > th, tr.sp-gl-marca > td { background-color: var(--btn-oro-suave
 #expVacio .btn-row, #anaVacio .btn-row { justify-content: center; }
 #expoResumen .btn { margin-left: 6px; }
 .caminos-grid > .card { margin: 0; }
+
+/* ================= el árbol de decisiones (hito 5.7, js/interfaz/arbol.js) ================= */
+.fun-arbol-intro { flex: 1 1 320px; margin: 0; color: var(--text-muted); font-size: var(--fs-sm); align-self: center; }
+.arb-barra { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); margin: 0 0 var(--sp-3); }
+.arb-migas { margin: 0; flex: 1 1 auto; font-size: var(--fs-sm); }
+.arb-migas b { margin-right: 4px; }
+.arb-cols { position: relative; display: flex; align-items: flex-start; gap: 44px; overflow-x: auto; padding: 4px 4px var(--sp-4); }
+.arb-lineas { position: absolute; left: 0; top: 0; max-width: none; pointer-events: none; overflow: visible; }
+.arb-linea { fill: none; stroke: var(--btn-oro); stroke-width: 2.5; stroke-linecap: round; }
+.arb-col { position: relative; flex: 1 1 220px; min-width: 200px; max-width: 300px; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--sp-3); box-shadow: var(--shadow-sm); }
+.arb-col.arb-hoja { flex: 1.4 1 280px; min-width: 250px; max-width: 400px; border-color: var(--btn-oro); }
+.arb-q { margin: 0 0 4px; font-size: var(--fs-md); }
+.arb-q:focus { outline: none; }
+.arb-q:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
+.arb-ayuda { margin: 0 0 var(--sp-2); font-size: var(--fs-xs); color: var(--text-muted); }
+.arb-ops, .arb-mets { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.arb-op { display: grid; width: 100%; text-align: left; gap: 2px; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--bg); color: var(--text); font: inherit; cursor: pointer; }
+.arb-op:hover { border-color: var(--btn-oro); }
+.arb-op[aria-pressed="true"] { background: var(--btn-oro-suave); border-color: var(--btn-oro); box-shadow: inset 3px 0 0 var(--btn-oro); }
+.arb-op-t { font-weight: 600; }
+.arb-op-hoja .arb-op-t::after { content: ' →'; color: var(--btn-oro-texto); }
+.arb-op-d { font-size: var(--fs-xs); color: var(--text-muted); }
+.arb-met { padding: var(--sp-2) var(--sp-3); border: 1px solid var(--border); border-radius: var(--r-md); background: var(--bg); }
+.arb-met.arb-marca { border-color: var(--btn-oro); box-shadow: 0 0 0 3px var(--btn-oro-suave); }
+.arb-met p { margin: 0 0 4px; }
+.arb-met-n { font-weight: 700; }
+.arb-met-c { font-size: var(--fs-sm); color: var(--btn-oro-texto); }
+.arb-met-p { font-size: var(--fs-sm); color: var(--text-muted); }
+.arb-met .btn-row { margin-top: 6px; gap: 4px; }
+@media (max-width: 720px) {
+  .arb-cols { flex-direction: column; align-items: stretch; gap: var(--sp-3); overflow-x: visible; }
+  .arb-col, .arb-col.arb-hoja { flex-basis: auto; min-width: 0; max-width: none; }
+  .arb-lineas { display: none; }
+  .arb-col + .arb-col::before { content: '↓'; position: absolute; top: calc(-1 * var(--sp-3) - 2px); left: 50%; transform: translate(-50%, -50%); color: var(--btn-oro-texto); font-weight: 700; }
+}

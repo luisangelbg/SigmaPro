@@ -9,8 +9,11 @@
 //    carga otra vez su ejemplo (la tabla de antes queda para volver) y lo calcula; «Historial» de Análisis lo lista.
 // 3. Estados vacíos: sin datos, Explorar ofrece importar, pegar o un ejemplo, y el ejemplo se carga sin salir de
 //    Explorar, con su resumen; Exportar, con el reporte vacío, ofrece ir a Análisis.
-// 4. A 390 px: los caminos en una columna, sin desborde lateral.
-// 5. Sin errores en la consola.
+// 4. El árbol de decisiones (hito 5.7, parte 2): el tercer camino lo abre; las respuestas llevan a los bloques, con una
+//    línea por paso y el foco en la pregunta nueva; «Probar con el ejemplo» carga el maíz y calcula; la recomendación
+//    del asistente se señala en el árbol.
+// 5. A 390 px: los caminos y las columnas del árbol, una bajo otra, sin desborde lateral.
+// 6. Sin errores en la consola.
 
 import { spawn, execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
@@ -64,8 +67,8 @@ try {
 
   /* 1. los tres caminos */
   ok(await abrir(''), 'la app no terminó de cargar');
-  const caminos = await evaluar(`[...document.querySelectorAll('.caminos .camino')].map(c => ({ t: c.querySelector('h3').textContent, b: [...c.querySelectorAll('button')].map(b => b.dataset.datos || b.dataset.ir || (b.hasAttribute('data-glosario') ? 'glosario' : '?')) }))`);
-  ok(caminos.length === 3 && JSON.stringify(caminos.map(c => c.b)) === JSON.stringify([['importar', 'pegar'], ['ejemplo'], ['9', 'glosario']]), 'los tres caminos no son los esperados: ' + JSON.stringify(caminos));
+  const caminos = await evaluar(`[...document.querySelectorAll('.caminos .camino')].map(c => ({ t: c.querySelector('h3').textContent, b: [...c.querySelectorAll('button')].map(b => b.dataset.datos || b.dataset.ir || (b.hasAttribute('data-glosario') ? 'glosario' : b.hasAttribute('data-arbol-metodo') ? 'arbol' : '?')) }))`);
+  ok(caminos.length === 3 && JSON.stringify(caminos.map(c => c.b)) === JSON.stringify([['importar', 'pegar'], ['ejemplo'], ['arbol', '9', 'glosario']]), 'los tres caminos no son los esperados: ' + JSON.stringify(caminos));
   ok(await evaluar('document.getElementById("iniHistorial").hidden'), 'sin análisis, «Lo último que analizaste» no debe verse');
   await evaluar('document.querySelector(\'.caminos [data-datos="ejemplo"]\').click(), true');
   ok(await hasta('!!document.querySelector(".sp-menu")'), '«Elegir un ejemplo» no abrió el menú de ejemplos');
@@ -105,10 +108,34 @@ try {
   ok(await hasta('!!document.querySelector(\'#expoResumen [data-ir="4"]\')'), 'Exportar con el reporte vacío no ofrece ir a Análisis');
   notas.push('estados vacíos: Explorar carga el ejemplo ahí mismo; Exportar lleva a Análisis');
 
-  /* 4. en un teléfono */
+  /* 4. el árbol de decisiones: desde Inicio, sin datos */
+  ok(await abrir(''), 'la app no volvió a cargar para el árbol');
+  await evaluar('document.querySelector(\'.caminos [data-arbol-metodo]\').click(), true');
+  ok(await hasta('document.getElementById("panel-9").classList.contains("active") && !!document.querySelector("#funRaiz .arb")'), 'el tercer camino no abrió el árbol de decisiones');
+  for (const op of ['comparar', 'continua', 'dbca']) {
+    ok(await evaluar(`(() => { const b = document.querySelector('#funRaiz [data-arb-op="${op}"]'); if (b) b.click(); return !!b; })()`), 'el árbol no tiene la opción ' + op);
+    await dormir(150);
+  }
+  const arbol = await evaluar(`(() => { const p = document.querySelector('#funRaiz .arb-lineas path'); return { cols: document.querySelectorAll('#funRaiz .arb-col').length, mets: [...document.querySelectorAll('#funRaiz .arb-met')].map(x => x.dataset.arbMet), lineas: p ? (p.getAttribute('d').match(/M/g) || []).length : 0, foco: document.activeElement && document.activeElement.classList.contains('arb-q') }; })()`);
+  ok(arbol.cols === 4 && arbol.mets.join() === 'dbca,mixto-bloques' && arbol.lineas === 3 && arbol.foco, 'el camino del árbol no llegó a bloques con sus tres líneas y el foco en la hoja: ' + JSON.stringify(arbol));
+  await evaluar('document.querySelector(\'#funRaiz [data-arb-ejemplo="dbca"]\').click(), true');
+  ok(await hasta('document.getElementById("panel-4").classList.contains("active") && /Maíz/.test(SP.app.datos.origen) && !!document.querySelector(\'#anaResultado table[data-cuadro="anova"]\')', 8000), '«Probar con el ejemplo» no cargó el maíz ni calculó los bloques');
+  /* desde el asistente: su recomendación, señalada en el árbol */
+  await evaluar('SP.app.analisis.ponerModo("asistente"), true');
+  const met = await evaluar('(document.querySelector("#anaAsistente [data-arbol-metodo]") || {}).dataset ? document.querySelector("#anaAsistente [data-arbol-metodo]").dataset.arbolMetodo : null');
+  ok(met, 'la recomendación del asistente no ofrece verla en el árbol');
+  if (met) {
+    await evaluar('document.querySelector("#anaAsistente [data-arbol-metodo]").click(), true');
+    ok(await hasta(`document.getElementById("panel-9").classList.contains("active") && !!document.querySelector('#funRaiz .arb-met.arb-marca[data-arb-met="${met}"]')`), 'el árbol no señala la recomendación del asistente (' + met + ')');
+  }
+  notas.push('árbol: del Inicio a los bloques con sus líneas, el ejemplo calculado y la recomendación del asistente señalada');
+
+  /* 5. en un teléfono */
   ok(await abrir('', 390), 'la app a 390 px no cargó');
   const tel = await evaluar(`(() => { const c = [...document.querySelectorAll('.caminos .camino')].map(x => x.getBoundingClientRect()); return { columna: c.every((r, k) => !k || r.top > c[k - 1].bottom - 1), desborde: document.documentElement.scrollWidth > window.innerWidth + 1 }; })()`);
   ok(tel.columna && !tel.desborde, 'a 390 px los caminos no van en una columna o desbordan: ' + JSON.stringify(tel));
+  const telArbol = await evaluar(`(async () => { SP.arbolUI.camino(['comparar', 'continua']); SP.app.fundamentos.arbolEn(null); await new Promise(r => setTimeout(r, 400)); const c = [...document.querySelectorAll('#funRaiz .arb-col')].map(x => x.getBoundingClientRect()); return { cols: c.length, apiladas: c.every((r, k) => !k || r.top > c[k - 1].bottom - 1), desborde: document.documentElement.scrollWidth > window.innerWidth + 1 }; })()`);
+  ok(telArbol.cols === 3 && telArbol.apiladas && !telArbol.desborde, 'a 390 px el árbol no apila sus columnas o desborda: ' + JSON.stringify(telArbol));
 
   /* 5. la consola */
   for (const c of consola) fallas.push('consola: ' + c);
@@ -126,9 +153,9 @@ try {
   for (let k = 0; k < 15 && existsSync(perfil); k++) { await dormir(400); try { rmSync(perfil, { recursive: true, force: true }); } catch { /* el navegador aún lo usa */ } }
 }
 
-console.log('SigmaPro · Inicio, historial y estados vacíos');
+console.log('SigmaPro · Inicio, historial, estados vacíos y árbol de decisiones');
 for (const n of notas) console.log('  ' + n);
 for (const f of fallas) console.log('  ✗ ' + f);
-guardar('orientacion', { titulo: 'Inicio, historial y estados vacíos', ok: !fallas.length, resumen: notas.join('; '), renglones: fallas });
+guardar('orientacion', { titulo: 'Inicio, historial, estados vacíos y árbol de decisiones', ok: !fallas.length, resumen: notas.join('; '), renglones: fallas });
 console.log(fallas.length ? '\nHAY FALLAS (' + fallas.length + ')' : '\nTODO APROBADO');
 process.exit(fallas.length ? 1 : codigo);

@@ -55,7 +55,7 @@
 
   /* ---------------- estado ---------------- */
   const est = { vista: 'catalogo', id: null, buscar: '', familia: '', respuesta: '', estructura: '', diseno: '' };
-  try { const v = sessionStorage.getItem('sigmapro.fundamentos.vista'); if (v === 'mapa') est.vista = 'mapa'; } catch (e) { /* nada */ }
+  try { const v = sessionStorage.getItem('sigmapro.fundamentos.vista'); if (v === 'mapa' || v === 'arbol') est.vista = v; } catch (e) { /* nada */ }
   const metodos = () => Object.values(SP.metodos);
   const info = id => IDX()[id] || null;
   const textoDe = (id, k) => { const x = info(id); return x && x[lengua()] ? x[lengua()][k] : ''; };
@@ -78,14 +78,16 @@
   /* ---------------- catálogo ---------------- */
   const opciones = (lista, valor, todas) => `<option value="">${esc(todas)}</option>` + lista.map(([k, n]) => `<option value="${esc(k)}"${valor === k ? ' selected' : ''}>${esc(n)}</option>`).join('');
   function herramientas() {
-    return `<div class="fun-barra" role="search">` +
+    const enArbol = est.vista === 'arbol';
+    return `<div class="fun-barra"${enArbol ? '' : ' role="search"'}>` + (enArbol ? `<p class="fun-arbol-intro">${esc(T('Responde de izquierda a derecha: cada respuesta abre la pregunta que sigue, hasta los análisis que convienen. No hacen falta datos.'))}</p>` : '') + (enArbol ? '' :
       `<label class="fun-buscar"><span class="sr-only">${esc(T('Buscar un análisis'))}</span><input type="search" data-fun="buscar" value="${esc(est.buscar)}" placeholder="${esc(T('Buscar: bloques, Tukey, conteos, heredabilidad…'))}" autocomplete="off"></label>` +
       `<label class="fun-filtro"><span>${esc(T('Familia'))}</span><select data-fun="familia">${opciones(SP.familias.map(f => [f.id, f.nombre]), est.familia, T('Todas'))}</select></label>` +
       `<label class="fun-filtro"><span>${esc(T('Tipo de respuesta'))}</span><select data-fun="respuesta">${opciones(RESPUESTA(), est.respuesta, T('Todas'))}</select></label>` +
       `<label class="fun-filtro"><span>${esc(T('Grupos y factores'))}</span><select data-fun="estructura">${opciones(ESTRUCTURA(), est.estructura, T('Todas'))}</select></label>` +
-      `<label class="fun-filtro"><span>${esc(T('Diseño'))}</span><select data-fun="diseno">${opciones(DISENOS(), est.diseno, T('Todos'))}</select></label>` +
+      `<label class="fun-filtro"><span>${esc(T('Diseño'))}</span><select data-fun="diseno">${opciones(DISENOS(), est.diseno, T('Todos'))}</select></label>`) +
       `<div class="seg fun-vista" role="group" aria-label="${esc(T('Vista'))}"><button type="button" data-fun-vista="catalogo" aria-pressed="${est.vista === 'catalogo'}">${esc(T('Catálogo'))}</button>` +
-      `<button type="button" data-fun-vista="mapa" aria-pressed="${est.vista === 'mapa'}">${esc(T('Mapa de métodos'))}</button></div>` +
+      `<button type="button" data-fun-vista="mapa" aria-pressed="${est.vista === 'mapa'}">${esc(T('Mapa de métodos'))}</button>` +
+      (SP.arbolUI ? `<button type="button" data-fun-vista="arbol" aria-pressed="${est.vista === 'arbol'}">${esc(T('Árbol de decisiones'))}</button>` : '') + '</div>' +
       `<button type="button" class="btn btn-secondary btn-sm fun-glosario" data-glosario="" title="${esc(T('Glosario (Ctrl+G)'))}">${esc(T('Glosario'))}</button></div>`;
   }
   function catalogo() {
@@ -224,9 +226,25 @@
       else { const t = $('#fun-titulo'); if (t) t.focus({ preventScroll: true }); }
       return;
     }
-    raiz.innerHTML = herramientas() + `<div id="funLista">${est.vista === 'mapa' ? mapa() : catalogo()}</div>`;
+    raiz.innerHTML = herramientas() + `<div id="funLista">${vistaHTML()}</div>`;
+    if (est.vista === 'arbol' && SP.arbolUI) requestAnimationFrame(() => SP.arbolUI.conectar(raiz));
   }
-  function lista() { const l = $('#funLista'); if (l) l.innerHTML = est.vista === 'mapa' ? mapa() : catalogo(); else pintar(); }
+  const vistaHTML = () => (est.vista === 'mapa' ? mapa() : est.vista === 'arbol' && SP.arbolUI ? SP.arbolUI.html() : catalogo());
+  function lista() { const l = $('#funLista'); if (l) { l.innerHTML = vistaHTML(); if (est.vista === 'arbol' && SP.arbolUI) SP.arbolUI.conectar(l); } else pintar(); }
+  /** El árbol de decisiones (desde cualquier bloque); con un método, el camino que lleva a él y el método señalado. */
+  function arbolEn(metodo) {
+    if (!SP.arbolUI) return;
+    if (metodo) SP.arbolUI.ir(metodo);
+    est.vista = 'arbol'; est.id = null;
+    try { sessionStorage.setItem('sigmapro.fundamentos.vista', 'arbol'); } catch (e) { /* nada */ }
+    if (SP.app.ir) SP.app.ir(9);
+    pintar();
+    requestAnimationFrame(() => {
+      const m = metodo && $('#funRaiz .arb-marca'), q = $('#funRaiz .arb-q');
+      const destino = m || q;
+      if (destino) { destino.scrollIntoView({ block: 'center', inline: 'nearest' }); (m ? m.querySelector('button') : q).focus({ preventScroll: true }); }
+    });
+  }
   function abrir(id) {
     if (!SP.metodos[id]) return;
     est.vista = 'ficha'; est.id = id;
@@ -312,7 +330,7 @@
       if (!t || !raiz.contains(t)) return;
       if (t.dataset.funVista) { est.vista = t.dataset.funVista; try { sessionStorage.setItem('sigmapro.fundamentos.vista', est.vista); } catch (er) { /* nada */ } pintar(); return; }
       if (t.hasAttribute('data-fun-limpiar')) { Object.assign(est, { buscar: '', familia: '', respuesta: '', estructura: '', diseno: '' }); pintar(); return; }
-      if (t.hasAttribute('data-fun-volver')) { est.vista = sessionStorage.getItem('sigmapro.fundamentos.vista') === 'mapa' ? 'mapa' : 'catalogo'; est.id = null; pintar(); return; }
+      if (t.hasAttribute('data-fun-volver')) { const v = sessionStorage.getItem('sigmapro.fundamentos.vista'); est.vista = v === 'mapa' || v === 'arbol' ? v : 'catalogo'; est.id = null; pintar(); return; }
       if (t.dataset.funIr) { e.preventDefault(); const s = document.getElementById('fun-s-' + t.dataset.funIr); if (s) { s.open = true; s.scrollIntoView({ block: 'start' }); const h = s.querySelector('summary'); if (h) h.focus({ preventScroll: true }); } return; }
       if (t.dataset.funEjemplo) { abrirMetodo(t.dataset.funEjemplo, true); return; }
       if (t.dataset.funPlantilla) { plantilla(t.dataset.funPlantilla); return; }
@@ -332,6 +350,6 @@
     document.addEventListener('sp:bloque', e => { if (e.detail.bloque === 9 && !raiz.firstElementChild) pintar(); });
   }
   SP.app = SP.app || {};
-  SP.app.fundamentos = { abrir, cargar, pintar, estado: est, fichas, abrirExplorar, EXPLORAR };
+  SP.app.fundamentos = { abrir, cargar, pintar, estado: est, fichas, abrirExplorar, abrirMetodo, arbolEn, EXPLORAR };
   SP.alArrancar(iniciar);
 })();

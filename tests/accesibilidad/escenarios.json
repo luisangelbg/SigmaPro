@@ -352,6 +352,9 @@
  "fun-ficha-regresion": {
   "prep": "(async () => { window.__esperando = true; SP.app.fundamentos.abrir('regresion-lineal'); for (let k = 0; k < 100 && !document.querySelector('#panel-9 .fun-ficha'); k++) await new Promise(r => setTimeout(r, 100)); document.querySelectorAll('#panel-9 details').forEach(d => d.open = true); await new Promise(r => setTimeout(r, 200)); window.__esperando = false; })()"
  },
+ "fun-arbol": {
+  "prep": "(async () => { window.__esperando = true; SP.arbolUI.camino(['comparar', 'continua', 'dbca']); SP.app.fundamentos.arbolEn(null); await new Promise(r => setTimeout(r, 600)); window.__esperando = false; })()"
+ },
  "suite-10": {
   "prep": "SP.app.ir(10)",
   "ultimo": true
