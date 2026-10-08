@@ -12,11 +12,11 @@
   /* las marcas van junto a lo que señalan, sin taparlo: los botones de arriba a la derecha llevan su número debajo */
   const bajo = n => n && n.getBoundingClientRect().height / 2 + 26, der = n => n && n.getBoundingClientRect().width / 2 + 16;
   const izq = n => n && -(n.getBoundingClientRect().width / 2 + 16);
-  const sub = $('.brand-sub'), suite = $('.suite-link'), lang = $('.lang-seg'), tema = $('#themeBtn'), rep = $('.labg-report'), ayuda = $('#helpBtn');
+  const sub = $('.brand-sub'), suite = $('.suite-link'), lang = $('.lang-seg'), tema = $('#themeBtn'), glo = $('#glosarioBtn'), rep = $('.labg-report'), ayuda = $('#helpBtn');
   const ruta = $('.lnav-crumbs'), seg = $('.lnav-seg'), k = $('.lnav-k');
   marcas([
-    [1, sub, der(sub) + 14, 0], [2, suite, 0, bajo(suite)], [3, lang, 0, bajo(lang)], [4, tema, 0, bajo(tema)], [5, rep, 0, bajo(rep)], [6, ayuda, 0, bajo(ayuda)],
-    [7, lado, 70, 0], [8, plegar], [9, ruta, der(ruta) + 24, 0], [10, seg, izq(seg), 0], [11, k, 0, bajo(k)], [12, toc, izq(toc) - 26, 10],
-    [13, abajo, 60, 0], [14, titulo, titulo.getBoundingClientRect().width / 2 + 34, 0],
+    [1, sub, der(sub) + 14, 0], [2, suite, 0, bajo(suite)], [3, lang, 0, bajo(lang)], [4, tema, 0, bajo(tema)], [5, glo, 0, bajo(glo)], [6, rep, 0, bajo(rep)], [7, ayuda, 0, bajo(ayuda)],
+    [8, lado, 70, 0], [9, plegar], [10, ruta, der(ruta) + 24, 0], [11, seg, izq(seg), 0], [12, k, 0, bajo(k)], [13, toc, izq(toc) - 26, 10],
+    [14, abajo, 60, 0], [15, titulo, titulo.getBoundingClientRect().width / 2 + 34, 0],
   ]);
 })()
