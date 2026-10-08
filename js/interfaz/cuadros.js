@@ -5,6 +5,8 @@
    js/nucleo/formatos.js.
 
      SP.cuadros.html(cuadro, { numero, visibles, contexto, lectura })
+                                                     (la tabla lleva data-cuadro con el id del cuadro y cada encabezado
+                                                       data-clave con la de su columna: el glosario las busca)
                                                      → HTML de la tabla con su título, sus notas y, si tiene estadísticos
                                                        con guía, «Cómo leer este cuadro» (js/interfaz/lectura.js; lectura:
                                                        false lo quita; contexto = { alfa, n, gl } del resultado)
@@ -26,7 +28,7 @@
   function html(c, op) {
     op = op || {};
     const cols = columnasVisibles(c, op.visibles);
-    const cab = cols.map(k => `<th scope="col" class="${esTexto(k.formato) ? 'izq' : ''}">${esc(k.titulo)}</th>`).join('');
+    const cab = cols.map(k => `<th scope="col" class="${esTexto(k.formato) ? 'izq' : ''}" data-clave="${esc(k.clave)}">${esc(k.titulo)}</th>`).join('');
     /* las primeras columnas de texto (los grupos) se escriben una vez mientras no cambian, como en una revista;
        el valor repetido queda para los lectores de pantalla */
     let guia = 0;
@@ -43,7 +45,7 @@
       }).join('') + '</tr>';
     }).join('');
     const numero = op.numero ? T('Cuadro {n}.', { n: op.numero }) + ' ' : '';
-    return `<div class="tabla-wrap"><table class="revista sp-cuadro"><caption><b>${esc(numero)}</b>${esc(c.titulo)}</caption>` +
+    return `<div class="tabla-wrap"><table class="revista sp-cuadro"${c.id ? ` data-cuadro="${esc(c.id)}"` : ''}><caption><b>${esc(numero)}</b>${esc(c.titulo)}</caption>` +
       `<thead><tr>${cab}</tr></thead><tbody>${cuerpo}</tbody></table></div>` +
       (c.notas && c.notas.length ? `<div class="pie-cuadro">${c.notas.map(n => `<p>${esc(n)}</p>`).join('')}</div>` : '') +
       (SP.lectura && op.lectura !== false ? SP.lectura.html(c, op) : '');

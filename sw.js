@@ -15,12 +15,12 @@
      copia guardada (y, con red, se guarda esa copia para la próxima vez sin conexión).
    · Solo maneja peticiones GET (y HEAD del motor) del mismo origen: nunca guarda ni envía datos de quien usa la app. */
 'use strict';
-const VERSION = '0.5.8-2026-10-07';
+const VERSION = '0.5.9-2026-10-08';
 const CACHE = 'sigmapro-' + VERSION;
 const MOTOR = 'sigmapro-motor-r-0.6.0';
-/* lo que la app carga después de abrir y index.html no nombra con src: el estudio y el navegador traen su hoja de estilo, y el
-   reporte de validación completo se carga al abrir el bloque Validación */
-const EXTRAS = ['./', './index.html', './css/labg-figure-studio.css', './css/labg-navigator.css', './manifest.webmanifest', './js/generado/validacion.js'];
+/* lo que la app carga después de abrir y index.html no nombra con src: el estudio y el navegador traen su hoja de estilo, el
+   reporte de validación completo se carga al abrir el bloque Validación y los lugares del glosario, al abrirlo */
+const EXTRAS = ['./', './index.html', './css/labg-figure-studio.css', './css/labg-navigator.css', './manifest.webmanifest', './js/generado/validacion.js', './js/generado/glosario.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil((async () => {

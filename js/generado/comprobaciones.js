@@ -73,14 +73,14 @@ window.SP_COMPROBACIONES = {
  "sin-conexion": {
   "titulo": "Privacidad y uso sin conexión",
   "ok": true,
-  "resumen": "Con datos, 7 análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, 437 peticiones GET sin datos, todas a la propia app; con doble clic, fuera del equipo solo se pide el código del motor R para el modelo mixto (43 descargas de webR y sus paquetes); servida por http con su repositorio propio, ni eso: el motor sale del mismo origen, todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo y el modelo mixto en el motor R guardado, exporta y verifica las huellas del proyecto.",
+  "resumen": "Con datos, 7 análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, 438 peticiones GET sin datos, todas a la propia app; con doble clic, fuera del equipo solo se pide el código del motor R para el modelo mixto (43 descargas de webR y sus paquetes); servida por http con su repositorio propio, ni eso: el motor sale del mismo origen, todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo y el modelo mixto en el motor R guardado, exporta y verifica las huellas del proyecto.",
   "renglones": [
-   "Doble clic: 206 peticiones; fuera del equipo, solo 43 descargas del motor R (webR y paquetes).",
-   "Servida por http: 437 peticiones GET a 257 archivos de la app, sin parámetros ni cuerpo.",
-   "Servicio sin conexión activo con 256 archivos guardados.",
+   "Doble clic: 205 peticiones; fuera del equipo, solo 43 descargas del motor R (webR y paquetes).",
+   "Servida por http: 438 peticiones GET a 260 archivos de la app, sin parámetros ni cuerpo.",
+   "Servicio sin conexión activo con 259 archivos guardados.",
    "Sin red: 7 análisis, reporte, 6 exportaciones y huellas del proyecto verificadas."
   ],
-  "fecha": "2026-10-07T22:03:16.207Z",
+  "fecha": "2026-10-08T06:40:31.624Z",
   "motor": "node v24.19.0"
  },
  "exportar": {
@@ -90,44 +90,50 @@ window.SP_COMPROBACIONES = {
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-10-07T22:02:15.875Z",
+  "fecha": "2026-10-08T06:44:31.117Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {
   "titulo": "El código R equivalente",
   "ok": true,
   "resumen": "99 escenarios de 65 métodos: el código R que muestra la app corre en R y da 1,626 números iguales a los de la app (tolerancia 1e-6)",
-  "fecha": "2026-10-07T22:00:54.113Z",
+  "fecha": "2026-10-08T06:35:15.159Z",
   "motor": "node v24.19.0"
  },
  "accesibilidad": {
   "titulo": "Accesibilidad (AA)",
-  "ok": true,
-  "resumen": "226 revisiones de 113 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 208,652 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 1270 paradas en los 10 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
-  "renglones": [],
-  "fecha": "2026-10-07T22:15:52.318Z",
+  "ok": false,
+  "resumen": "227 revisiones de 115 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 204,382 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 1284 paradas en los 10 bloques (1280 px en claro y 360 px en oscuro).",
+  "renglones": [
+   "mixto-resultado a 360 px: la medición no terminó",
+   "glmm-bloques a 360 px: la medición no terminó",
+   "glmm-formula a 1280 px: la medición no terminó",
+   "mue-estratificado a 1280 px: Alt+→ no cambia de bloque",
+   "mue-estratificado a 1280 px: «?» no abre los atajos"
+  ],
+  "fecha": "2026-10-08T07:20:23.599Z",
   "motor": "node v24.19.0"
  },
  "idioma": {
   "titulo": "La interfaz en inglés",
   "ok": true,
-  "resumen": "6494 textos traducidos; 810 casos con los mismos números en los dos idiomas (71,773 valores); 272 resultados armados en inglés sin textos pendientes",
-  "fecha": "2026-10-07T22:01:33.545Z",
+  "resumen": "6564 textos traducidos; 810 casos con los mismos números en los dos idiomas (71,773 valores); 272 resultados armados en inglés sin textos pendientes",
+  "fecha": "2026-10-08T06:36:18.883Z",
   "motor": "node v24.19.0"
  },
  "regresion": {
   "titulo": "Regresión de resultados y reportes",
   "ok": true,
   "resumen": "272 casos, 70697 números; resultado cambiado en 0, reporte en 0",
-  "fecha": "2026-10-07T22:01:36.982Z",
+  "fecha": "2026-10-08T06:36:23.974Z",
   "motor": "node v24.19.0"
  },
  "intro": {
   "titulo": "Secuencia de apertura",
   "ok": true,
-  "resumen": "secuencia completa hasta «Start»: 5641 ms, 331 cuadros (59 por segundo; mediana 16.7 ms, p95 16.8 ms, 2 de más de 34 ms); 0 tareas largas del hilo principal en ese lapso; peso: js/intro.js + css/intro.css = 39.2 KB (sin imágenes ni fuentes)",
+  "resumen": "secuencia completa hasta «Start»: 5642 ms, 309 cuadros (55 por segundo; mediana 16.7 ms, p95 17 ms, 4 de más de 34 ms); 2 tareas largas del hilo principal en ese lapso (la mayor, 82 ms); peso: js/intro.js + css/intro.css = 39.2 KB (sin imágenes ni fuentes)",
   "renglones": [],
-  "fecha": "2026-10-07T22:02:00.089Z",
+  "fecha": "2026-10-08T06:37:29.906Z",
   "motor": "node v24.19.0"
  },
  "fundamentos": {
@@ -135,7 +141,7 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "78 de 78 fichas sin problemas (78 análisis); 63 ejemplos corridos en node; 1472 fórmulas convertidas a MathML",
   "renglones": [],
-  "fecha": "2026-10-07T22:03:18.951Z",
+  "fecha": "2026-10-08T06:40:35.129Z",
   "motor": "node v24.19.0"
  },
  "suite": {
@@ -143,7 +149,15 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "CorrelationPro: PENDIENTE (sin repositorio público; logo marcador); 14 de 14 enlaces responden 200",
   "renglones": [],
-  "fecha": "2026-10-07T22:03:19.988Z",
+  "fecha": "2026-10-08T06:40:36.302Z",
+  "motor": "node v24.19.0"
+ },
+ "glosario": {
+  "titulo": "Glosario y «Ver en acción»",
+  "ok": true,
+  "resumen": "js/generado/glosario.js al día; 257 lugares señalados en español; 133 lugares en inglés",
+  "renglones": [],
+  "fecha": "2026-10-08T06:37:09.782Z",
   "motor": "node v24.19.0"
  }
 };

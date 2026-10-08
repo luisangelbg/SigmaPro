@@ -2,6 +2,29 @@
 
 ## Sin publicar
 
+### 0.5.9 · Hito 5.5: glosario con «Ver en acción» (8 oct 2026)
+
+- **Glosario** (`js/nucleo/glosario.js`, `js/interfaz/glosario.js`): 146 términos, que son los 121 estadísticos del
+  registro (con su símbolo y qué es) y 25 conceptos del diseño y del análisis (bloque, interacción, estrato de error,
+  sumas de cuadrados tipo I a III, BLUE, REML, censura, sobredispersión, megaambiente…).
+  - Se abre con Ctrl+G (⌘G), con el botón del libro del encabezado, con «Glosario» en Fundamentos y con «En el
+    glosario» bajo cada medidor de «Cómo leer este cuadro»; Ctrl+G otra vez o Esc lo cierran.
+  - Buscador sin acentos ni mayúsculas, también por símbolo, siglas y nombres en inglés («R²», «odds ratio», «media
+    marginal»), con un filtro por grupo; sin coincidencias, ofrece buscar en Fundamentos.
+  - La ficha de cada término dice qué es, en qué análisis aparece (enlaces a sus fichas de Fundamentos) y sus
+    términos relacionados. En un teléfono, la lista y la ficha se turnan.
+- **Ver en acción**: carga los datos de ejemplo de la ficha de Fundamentos del análisis (con `SP.app.cargarHoja`: la
+  tabla de antes queda en «Volver a la tabla anterior», en Datos), lo corre en Análisis o en Explorar y señala el
+  cuadro, la columna o el renglón donde aparece el término. En el nivel Básico pasa a Estándar para mostrar el cuadro.
+  Algunos términos dan hasta cuatro análisis distintos.
+  - Los lugares los calcula `tools/glosario/glosario.mjs` corriendo los ejemplos con el registro de estadísticos
+    (`js/generado/glosario.js`, que la app carga al abrir el glosario): 115 de los 121 estadísticos y 22 conceptos.
+  - Los cuadros llevan ahora `data-cuadro` (id del cuadro) y cada encabezado `data-clave` (la columna).
+- Pruebas: `tests/unidad/glosario.test.js` (términos, buscador, lugares, la ventana); `tests/glosario.mjs`, etapa
+  nueva: el archivo generado al día, Ctrl+G y «Ver en acción» con el teclado, los 257 lugares señalados en la app
+  (133 en inglés), Básico, la tabla anterior y la vista de teléfono; escenarios de accesibilidad glosario y
+  glosario-accion. 70 textos nuevos en inglés.
+
 ### 0.5.8 · Hito 5.4: «En pocas palabras» y «Cómo reportarlo» (7 oct 2026)
 
 - **En pocas palabras** (Análisis y reporte; en Explorar la conclusión ya va en palabras): un recuadro sobre la

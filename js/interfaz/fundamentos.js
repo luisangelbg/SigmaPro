@@ -85,7 +85,8 @@
       `<label class="fun-filtro"><span>${esc(T('Grupos y factores'))}</span><select data-fun="estructura">${opciones(ESTRUCTURA(), est.estructura, T('Todas'))}</select></label>` +
       `<label class="fun-filtro"><span>${esc(T('Diseño'))}</span><select data-fun="diseno">${opciones(DISENOS(), est.diseno, T('Todos'))}</select></label>` +
       `<div class="seg fun-vista" role="group" aria-label="${esc(T('Vista'))}"><button type="button" data-fun-vista="catalogo" aria-pressed="${est.vista === 'catalogo'}">${esc(T('Catálogo'))}</button>` +
-      `<button type="button" data-fun-vista="mapa" aria-pressed="${est.vista === 'mapa'}">${esc(T('Mapa de métodos'))}</button></div></div>`;
+      `<button type="button" data-fun-vista="mapa" aria-pressed="${est.vista === 'mapa'}">${esc(T('Mapa de métodos'))}</button></div>` +
+      `<button type="button" class="btn btn-secondary btn-sm fun-glosario" data-glosario="" title="${esc(T('Glosario (Ctrl+G)'))}">${esc(T('Glosario'))}</button></div>`;
   }
   function catalogo() {
     const todos = metodos(), vis = todos.filter(pasa);
@@ -331,6 +332,6 @@
     document.addEventListener('sp:bloque', e => { if (e.detail.bloque === 9 && !raiz.firstElementChild) pintar(); });
   }
   SP.app = SP.app || {};
-  SP.app.fundamentos = { abrir, cargar, pintar, estado: est, fichas };
+  SP.app.fundamentos = { abrir, cargar, pintar, estado: est, fichas, abrirExplorar, EXPLORAR };
   SP.alArrancar(iniciar);
 })();

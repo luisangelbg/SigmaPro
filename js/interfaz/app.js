@@ -93,6 +93,7 @@
     ['hecho', '5.2', T('Tarjetas de interpretación con los números del caso, la guía del CV por cultivo y variable, y los niveles Básico, Estándar y Experto')],
     ['hecho', '5.3', T('Semáforo con íconos y un botón que corre la alternativa: la transformación, la prueba por rangos, Welch o la binomial negativa')],
     ['hecho', '5.4', T('En pocas palabras: la conclusión sin símbolos; y «Cómo reportarlo» en APA 7, en español y en inglés, listo para copiar')],
+    ['hecho', '5.5', T('Glosario de 146 términos (Ctrl+G) con «Ver en acción»: abre un ejemplo y señala dónde aparece cada uno')],
     ['', '1.0', T('Publicación: revisión del nombre, repositorio y DOI (versión 1.0.0)')],
   ];
   function hitos() {
@@ -114,6 +115,7 @@
     if (L()) {
       L().theme.init('sigmapro.theme');
       L().shortcuts([
+        { keys: ['Ctrl', 'G'], es: 'Glosario: buscar un término y verlo en acción', en: 'Glossary: look up a term and see it in action' },
         { keys: ['R'], es: 'Constructor de modelo: la variable enfocada va a «Respuesta»', en: 'Model builder: focused variable to «Response»' },
         { keys: ['E'], es: 'Constructor de modelo: … a «Evento (0/1)» (modelo de Cox)', en: 'Model builder: … to «Event (0/1)» (Cox model)' },
         { keys: ['M'], es: 'Constructor de modelo: … a «Más respuestas» (MANOVA)', en: 'Model builder: … to «More responses» (MANOVA)' },

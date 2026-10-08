@@ -138,7 +138,7 @@
       const f = SP.guias.formatoDe(it.ficha), esP = it.ficha === 'p' || it.ficha === 'p-ajustado';
       const textos = SP.guias.interpretar(it.ficha, it.marcas, ctx);
       if (it.ficha === 'cv' && e.guia && e.guia.id === 'general') textos.push(T('Si conoces la guía de tu cultivo y variable, ajústala abajo.'));
-      const tarjeta = { textos, que: g.que ? { titulo: T('Qué es: {n}', { n: g.nombre }), texto: g.que } : null, extra: it.ficha === 'cv' ? formGuiaCV(guia) : '' };
+      const tarjeta = { textos, que: g.que ? { titulo: T('Qué es: {n}', { n: g.nombre }), texto: g.que } : null, extra: (it.ficha === 'cv' ? formGuiaCV(guia) : '') + (SP.glosario ? `<p class="lg-glosario"><button type="button" class="btn btn-ghost btn-sm" data-glosario="${esc(it.ficha)}">${esc(T('En el glosario'))}</button></p>` : '') };
       return `<div class="lg-item" data-ficha="${esc(it.ficha)}">` + window.LABGuide.medidor(Object.assign({}, e, { titulo, marcas: it.marcas, fuente: e.fuenteCorta, nota: e.nota, formato: f,
         formatoEje: esP ? (v => String(v)) : f, tarjeta })) + '</div>';
     }).join('');
