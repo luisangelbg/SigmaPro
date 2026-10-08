@@ -58,14 +58,14 @@
         <div class="seg lang-seg" role="group" aria-label="Idioma / Language">
           <button type="button" data-lang="es" title="Español" lang="es">ES</button><button type="button" data-lang="en" title="English" lang="en">EN</button>
         </div>
-        <button type="button" class="icon-btn theme-btn" id="themeBtn" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar entre tema claro y oscuro">
+        <button type="button" class="icon-btn theme-btn" id="themeBtn" aria-label="Cambiar entre tema claro y oscuro" data-ayuda="Cambiar entre tema claro y oscuro">
           <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
           <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
         </button>
-        <button type="button" class="icon-btn" id="glosarioBtn" data-glosario="" aria-label="Glosario (Ctrl+G)" title="Glosario (Ctrl+G)">
+        <button type="button" class="icon-btn" id="glosarioBtn" data-glosario="" aria-label="Glosario (Ctrl+G)" data-ayuda="Glosario (Ctrl+G)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C9.6 4.9 6.6 4.5 3 5v13.5c3.6-.5 6.6-.1 9 1.5 2.4-1.6 5.4-2 9-1.5V5c-3.6-.5-6.6-.1-9 1.5z"/><path d="M12 6.5V20"/></svg>
         </button>
-        <button type="button" class="icon-btn" id="helpBtn" aria-label="Atajos de teclado" title="Atajos de teclado (?)">
+        <button type="button" class="icon-btn" id="helpBtn" aria-label="Atajos de teclado" data-ayuda="Atajos de teclado (?)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg>
         </button>
       </div>
@@ -114,7 +114,7 @@
   </div>
 
   <section class="caminos" aria-labelledby="tCaminos">
-    <h2 class="caminos-t" id="tCaminos">¿Por dónde empiezas?</h2>
+    <div class="caminos-cab"><h2 class="caminos-t" id="tCaminos">¿Por dónde empiezas?</h2><button type="button" class="btn btn-ghost btn-sm sp-recorrido" data-recorrido="1" data-ayuda="Las partes de la app, una por una">¿Primera vez? Recorrido por SigmaPro</button></div>
     <div class="caminos-grid">
       <div class="card camino">
         <span class="camino-num" aria-hidden="true">1</span>
@@ -176,7 +176,7 @@
 
 <!-- ======================= 2 · DATOS ======================= -->
 <section class="step-panel" id="panel-2" aria-labelledby="t2">
-  <div class="panel-title"><div><h2 id="t2">Datos</h2><p>Importa o pega la tabla del ensayo, revisa el tipo de cada variable y prepara las que vas a analizar. Los cambios nunca tocan tu archivo original.</p></div></div>
+  <div class="panel-title"><div><h2 id="t2">Datos</h2><p>Importa o pega la tabla del ensayo, revisa el tipo de cada variable y prepara las que vas a analizar. Los cambios nunca tocan tu archivo original.</p></div><button type="button" class="btn btn-ghost btn-sm sp-recorrido" data-recorrido="2" data-ayuda="Un recorrido guiado por las partes de este bloque">Recorrido</button></div>
   <div class="rec-caja" data-recuperar hidden></div>
 
   <div class="dat-barra" role="toolbar" aria-label="Herramientas de datos">
@@ -235,7 +235,7 @@
 
 <!-- ======================= 3 · EXPLORAR ======================= -->
 <section class="step-panel" id="panel-3" aria-labelledby="t3">
-  <div class="panel-title"><div><h2 id="t3">Explorar</h2><p>Describe los datos antes de analizarlos: centro, dispersión, forma, frecuencias y proporciones, cada uno con su intervalo de confianza y el código R que da lo mismo.</p></div></div>
+  <div class="panel-title"><div><h2 id="t3">Explorar</h2><p>Describe los datos antes de analizarlos: centro, dispersión, forma, frecuencias y proporciones, cada uno con su intervalo de confianza y el código R que da lo mismo.</p></div><button type="button" class="btn btn-ghost btn-sm sp-recorrido" data-recorrido="3" data-ayuda="Un recorrido guiado por las partes de este bloque">Recorrido</button></div>
 
   <div class="dat-inicio" id="expVacio">
     <h3>Aún no hay datos</h3>
@@ -262,7 +262,7 @@
 
 <!-- ======================= 4 · ANÁLISIS ======================= -->
 <section class="step-panel" id="panel-4" aria-labelledby="t4">
-  <div class="panel-title"><div><h2 id="t4">Análisis</h2><p>Responde las preguntas del asistente, elige directo en el catálogo o arma el modelo en el constructor. Cada análisis trae su conclusión en palabras, sus cuadros, el semáforo de los supuestos y el código R que da lo mismo.</p></div></div>
+  <div class="panel-title"><div><h2 id="t4">Análisis</h2><p>Responde las preguntas del asistente, elige directo en el catálogo o arma el modelo en el constructor. Cada análisis trae su conclusión en palabras, sus cuadros, el semáforo de los supuestos y el código R que da lo mismo.</p></div><button type="button" class="btn btn-ghost btn-sm sp-recorrido" data-recorrido="4" data-ayuda="Un recorrido guiado por las partes de este bloque">Recorrido</button></div>
 
   <div class="dat-inicio" id="anaVacio">
     <h3>Aún no hay datos</h3>
@@ -293,7 +293,7 @@
 
 <!-- ======================= 5 · RESULTADOS ======================= -->
 <section class="step-panel" id="panel-5" aria-labelledby="t5">
-  <div class="panel-title"><div><h2 id="t5">Resultados</h2><p>El Reporte LABG: cada análisis que agregues, con su conclusión en palabras, sus cuadros de revista, los supuestos con semáforo, el párrafo para tu tesis o artículo, los detalles técnicos y el código R.</p></div></div>
+  <div class="panel-title"><div><h2 id="t5">Resultados</h2><p>El Reporte LABG: cada análisis que agregues, con su conclusión en palabras, sus cuadros de revista, los supuestos con semáforo, el párrafo para tu tesis o artículo, los detalles técnicos y el código R.</p></div><button type="button" class="btn btn-ghost btn-sm sp-recorrido" data-recorrido="5" data-ayuda="Un recorrido guiado por las partes de este bloque">Recorrido</button></div>
 
   <div class="dat-inicio" id="repVacio">
     <h3>El reporte está vacío</h3>
@@ -326,7 +326,7 @@
 
 <!-- ======================= 6 · FIGURAS ======================= -->
 <section class="step-panel" id="panel-6" aria-labelledby="t6">
-  <div class="panel-title"><div><h2 id="t6">Figuras</h2><p>Las figuras del reporte, numeradas y con su leyenda, listas para publicar: SVG, PDF vectorial, y PNG o TIFF a 600 ppp. Se editan con el editor ✎ y, para el tamaño exacto de cada revista, con el Estudio de figuras.</p></div></div>
+  <div class="panel-title"><div><h2 id="t6">Figuras</h2><p>Las figuras del reporte, numeradas y con su leyenda, listas para publicar: SVG, PDF vectorial, y PNG o TIFF a 600 ppp. Se editan con el editor ✎ y, para el tamaño exacto de cada revista, con el Estudio de figuras.</p></div><button type="button" class="btn btn-ghost btn-sm sp-recorrido" data-recorrido="6" data-ayuda="Un recorrido guiado por las partes de este bloque">Recorrido</button></div>
   <div class="dat-inicio" id="figVacio">
     <h3>Aún no hay figuras</h3>
     <p>Las figuras aparecen aquí cuando el reporte tiene análisis con gráficas (diseños, comparaciones, regresión, correlación, contingencia…).</p>
@@ -351,7 +351,7 @@
 
 <!-- ======================= 7 · EXPORTAR ======================= -->
 <section class="step-panel" id="panel-7" aria-labelledby="t7">
-  <div class="panel-title"><div><h2 id="t7">Exportar</h2><p>El reporte en .docx, PDF o HTML; los cuadros en hoja de cálculo o LaTeX; todas las figuras; y el proyecto completo en un archivo .labg para reabrirlo o repetirlo en R. Todo se arma en tu navegador.</p></div></div>
+  <div class="panel-title"><div><h2 id="t7">Exportar</h2><p>El reporte en .docx, PDF o HTML; los cuadros en hoja de cálculo o LaTeX; todas las figuras; y el proyecto completo en un archivo .labg para reabrirlo o repetirlo en R. Todo se arma en tu navegador.</p></div><button type="button" class="btn btn-ghost btn-sm sp-recorrido" data-recorrido="7" data-ayuda="Un recorrido guiado por las partes de este bloque">Recorrido</button></div>
   <p class="msg msg-info" id="expoResumen" aria-live="polite"></p>
   <div class="expo-grid">
     <div class="card expo-tarjeta">
@@ -407,6 +407,7 @@
     <div><h2 id="t8">Validación</h2>
       <p>Cada resultado del programa se compara contra R con datos publicados o clásicos. Un caso aprueba si |SigmaPro − R| ≤ 10⁻⁶ · máx(1, |R|) en cada número.</p></div>
     <span class="pill gris" id="valFecha"></span>
+    <button type="button" class="btn btn-ghost btn-sm sp-recorrido" data-recorrido="8" data-ayuda="Un recorrido guiado por las partes de este bloque">Recorrido</button>
   </div>
   <p class="small muted" id="valCargando" role="status" hidden>Cargando el reporte de validación…</p>
   <div id="valVacio" class="soon-box" hidden>
@@ -458,13 +459,13 @@
 
 <!-- ======================= 9 · FUNDAMENTOS ======================= -->
 <section class="step-panel" id="panel-9" aria-labelledby="t9">
-  <div class="panel-title"><div><h2 id="t9">Fundamentos</h2><p>Qué hace cada análisis, su modelo y sus supuestos, qué datos necesita y cómo leer sus resultados, con datos de ejemplo y plantillas para preparar los tuyos.</p></div></div>
+  <div class="panel-title"><div><h2 id="t9">Fundamentos</h2><p>Qué hace cada análisis, su modelo y sus supuestos, qué datos necesita y cómo leer sus resultados, con datos de ejemplo y plantillas para preparar los tuyos.</p></div><button type="button" class="btn btn-ghost btn-sm sp-recorrido" data-recorrido="9" data-ayuda="Un recorrido guiado por las partes de este bloque">Recorrido</button></div>
   <div id="funRaiz"></div>
 </section>
 
 <!-- ======================= 10 · SUITE LABG ======================= -->
 <section class="step-panel" id="panel-10" aria-labelledby="t10">
-  <div class="panel-title"><div><h2 id="t10">Suite LABG</h2><p>Las apps hermanas de SigmaPro: para planear el diseño, explorar muchas variables, reducir dimensiones o formar grupos. Todas abren en el navegador y tus datos no salen del equipo.</p></div></div>
+  <div class="panel-title"><div><h2 id="t10">Suite LABG</h2><p>Las apps hermanas de SigmaPro: para planear el diseño, explorar muchas variables, reducir dimensiones o formar grupos. Todas abren en el navegador y tus datos no salen del equipo.</p></div><button type="button" class="btn btn-ghost btn-sm sp-recorrido" data-recorrido="10" data-ayuda="Un recorrido guiado por las partes de este bloque">Recorrido</button></div>
   <div id="suiteBloque"></div>
 </section>
 
@@ -596,6 +597,8 @@
 <script src="js/interfaz/arbol.js"></script>
 <script src="js/interfaz/glosario.js"></script>
 <script src="js/interfaz/historial.js"></script>
+<script src="js/interfaz/ayudas.js"></script>
+<script src="js/interfaz/recorridos.js"></script>
 <script src="js/interfaz/suite.js"></script>
 <script src="js/labg-figedit.js" data-key="sigmapro:figedit" data-panes="figure.sp-grafica" data-title="figcaption"></script>
 <script src="js/labg-figure-studio.js"></script>

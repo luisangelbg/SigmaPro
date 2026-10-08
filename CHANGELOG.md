@@ -2,6 +2,28 @@
 
 ## Sin publicar
 
+### 0.5.12 · Hito 5.7, parte 3: recorridos por bloque y ayudas emergentes (8 oct 2026)
+
+- **Recorridos** (`js/interfaz/recorridos.js`): el botón *Recorrido*, en el título de cada bloque, lleva paso a paso
+  por sus partes: cada una se resalta (el resto de la página se oscurece) con dos líneas que dicen para qué sirve, y
+  *Anterior*, *Siguiente* y *Terminar*. En Inicio, *¿Primera vez? Recorrido por SigmaPro* recorre la app (los
+  caminos, la barra de bloques, la búsqueda, el glosario, los atajos y el idioma).
+  - Los pasos cuya parte no se ve se saltan, y el recorrido espera a lo que llega un momento después (el reporte de
+    Validación). En Datos, Explorar y Análisis, sin datos, ofrece cargar el ejemplo del maíz (la tabla de antes queda
+    en «Volver a la tabla anterior»); en Análisis calcula además los bloques al azar.
+  - La ventana no es modal: Esc la cierra, ← y → cambian de paso, el foco va a cada paso y vuelve al botón al terminar.
+- **Ayudas emergentes** (`js/interfaz/ayudas.js`): un recuadro breve al pasar el puntero (tras un instante) o al llegar
+  con el teclado; se cierra con Esc sin mover el foco y el puntero puede pasar a él sin que se cierre (WCAG 1.4.13).
+  - Los encabezados de los cuadros cuyo estadístico está en el registro dicen qué es (la *F*, el *p*, el CV…), con
+    «Ctrl+G: glosario».
+  - Los campos de α, de las sumas de cuadrados y del ajuste de los valores *p* de Análisis traen la definición del
+    glosario (`data-ayuda-termino`).
+  - Los botones del tema, del glosario y de los atajos usan la ayuda (`data-ayuda`) en lugar de `title`, que el
+    teclado no muestra; `tests/idioma.mjs` revisa también esos textos.
+- Pruebas: `tests/unidad/ayudas.test.js`; `tests/orientacion.mjs` prueba la ayuda con el teclado y Esc, la de un
+  encabezado, el recorrido de Análisis con el ejemplo (cada paso resaltado, el foco) y que los diez bloques tengan el
+  suyo; escenarios de accesibilidad recorrido-analisis y ayuda-anova. 98 textos nuevos en inglés.
+
 ### 0.5.11 · Hito 5.7, parte 2: árbol de decisiones (8 oct 2026)
 
 - **Árbol de decisiones** (`js/nucleo/arbol.js`, `js/interfaz/arbol.js`): de la pregunta de la investigación al

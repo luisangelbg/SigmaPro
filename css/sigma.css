@@ -826,3 +826,20 @@ tr.sp-gl-marca > th, tr.sp-gl-marca > td { background-color: var(--btn-oro-suave
   .arb-lineas { display: none; }
   .arb-col + .arb-col::before { content: '↓'; position: absolute; top: calc(-1 * var(--sp-3) - 2px); left: 50%; transform: translate(-50%, -50%); color: var(--btn-oro-texto); font-weight: 700; }
 }
+
+/* ================= ayudas emergentes y recorridos (hito 5.7) ================= */
+.sp-ayuda { position: absolute; z-index: calc(var(--z-dialog) + 5); max-width: 320px; padding: 8px 10px; border-radius: var(--r-sm); background: var(--btn-negro); color: #F3EEE3; font-size: var(--fs-sm); line-height: 1.45; box-shadow: var(--shadow); pointer-events: auto; }
+.sp-ayuda-g { display: block; margin-top: 4px; font-size: var(--fs-xs); color: var(--btn-negro-texto); }
+.caminos-cab { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--sp-2) var(--sp-3); margin: 0 0 var(--sp-3); }
+.caminos-cab .caminos-t { margin: 0; }
+.panel-title .sp-recorrido { align-self: flex-end; }
+.sp-tour-luz { position: fixed; z-index: calc(var(--z-dialog) + 1); border-radius: var(--r-md); box-shadow: 0 0 0 9999px rgba(10, 14, 24, .45); outline: 3px solid var(--btn-oro); outline-offset: 0; pointer-events: none; transition: all var(--dur) var(--ease); }
+.sp-tour { position: fixed; z-index: calc(var(--z-dialog) + 2); width: min(360px, calc(100vw - 24px)); padding: var(--sp-3) var(--sp-4); border: 1px solid var(--btn-oro); border-radius: var(--r-lg); background: var(--card-bg); color: var(--text); box-shadow: var(--shadow-lg); }
+.sp-tour-paso { margin: 0 0 4px; font-size: var(--fs-xs); color: var(--btn-oro-texto); font-weight: 700; letter-spacing: .03em; }
+.sp-tour-t { margin: 0 0 6px; font-size: var(--fs-lg); }
+.sp-tour-t:focus { outline: none; }
+.sp-tour-t:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 4px; }
+.sp-tour-x { margin: 0 0 var(--sp-3); line-height: var(--lh-base); }
+.sp-tour-botones { align-items: center; gap: 6px; }
+.sp-tour-hueco { flex: 1 1 auto; }
+@media (prefers-reduced-motion: reduce) { .sp-tour-luz { transition: none; } }

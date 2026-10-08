@@ -203,8 +203,10 @@
 
   /* ---------------- formularios ---------------- */
   const opcion = (v, t, sel) => `<option value="${esc(v)}"${String(v) === String(sel) ? ' selected' : ''}>${esc(t)}</option>`;
+  /* los campos que nombran un término del glosario llevan su definición como ayuda emergente (hito 5.7) */
+  const TERMINO = { alfa: 'alfa', tipoSC: 'sc-tipos', ajuste: 'p-ajustado' };
   const campo = (grupo, nombre, etiqueta, opciones, sel, ayuda) =>
-    `<label class="field"><span>${esc(etiqueta)}</span><select data-grupo="${grupo}" data-campo="${nombre}">${opciones.map(([v, t]) => opcion(v, t, sel)).join('')}</select>` +
+    `<label class="field"><span>${esc(etiqueta)}</span><select data-grupo="${grupo}" data-campo="${nombre}"${TERMINO[nombre] ? ` data-ayuda-termino="${TERMINO[nombre]}"` : ''}>${opciones.map(([v, t]) => opcion(v, t, sel)).join('')}</select>` +
     (ayuda ? `<span class="field-help">${esc(ayuda)}</span>` : '') + '</label>';
   const lista = nombres => nombres.map(n => [n, n]);
   const ALFAS = [[0.05, '0.05'], [0.01, '0.01'], [0.1, '0.10']];

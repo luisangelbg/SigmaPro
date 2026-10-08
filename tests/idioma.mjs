@@ -54,7 +54,7 @@ if (sinTraducir.length > 30) problemas.push('… y ' + (sinTraducir.length - 30)
   const ent = s => s.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&middot;/g, '·').replace(/&mdash;/g, '—').replace(/&ndash;/g, '–').replace(/&rarr;/g, '→').replace(/&times;/g, '×');
   const limpio = s => ent(s).replace(/\s+/g, ' ').trim();
   const fijos = new Set();
-  for (const m of h.matchAll(/\s(?:title|aria-label|placeholder|alt)="([^"]*)"/g)) { const v = limpio(m[1]); if (/[a-záéíóúñ]{3}/i.test(v)) fijos.add(v); }
+  for (const m of h.matchAll(/\s(?:title|aria-label|placeholder|alt|data-ayuda)="([^"]*)"/g)) { const v = limpio(m[1]); if (/[a-záéíóúñ]{3}/i.test(v)) fijos.add(v); }
   for (const parte of h.replace(/<head>[\s\S]*?<\/head>/, ' ').split(/<[^>]+>/)) { const v = limpio(parte); if (/[a-záéíóúñ]{3}/i.test(v)) fijos.add(v); }
   const neutros = new Set(['SigmaPro', 'LABG Suite', 'Sigma', 'Pro', 'Español', 'English', 'Idioma / Language']);
   const faltan = [...fijos].filter(k => !tiene(k) && !neutros.has(k));

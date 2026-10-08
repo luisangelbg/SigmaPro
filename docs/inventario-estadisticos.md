@@ -1,6 +1,6 @@
 # Inventario de estadísticos de SigmaPro
 
-> Generado por `node tools/inventario/inventario.mjs` con la versión 0.5.11. No se edita a mano.
+> Generado por `node tools/inventario/inventario.mjs` con la versión 0.5.12. No se edita a mano.
 
 Qué muestra cada análisis: sus cuadros con las columnas (clave interna, título y formato), las medidas que aparecen
 nombradas en las filas y los semáforos de supuestos. Cada columna numérica se relaciona con su ficha del registro de
