@@ -27,7 +27,7 @@
     <ul class="cap-contenido">
       <li><b>9.1</b>Tres maneras de llegar a una ficha</li>
       <li><b>9.2</b>El catálogo y sus filtros</li>
-      <li><b>9.3</b>El mapa de métodos</li>
+      <li><b>9.3</b>El mapa de métodos y el árbol de decisiones</li>
       <li><b>9.4</b>Una ficha, apartado por apartado</li>
       <li><b>9.5</b>Datos necesarios y las plantillas</li>
       <li><b>9.6</b>Fórmulas, idioma y sin conexión</li>
@@ -69,7 +69,7 @@
   </figure>
 
   <!-- 9.3 -->
-  <h2 id="s9-3"><span class="num">9.3</span>El mapa de métodos</h2>
+  <h2 id="s9-3"><span class="num">9.3</span>El mapa de métodos y el árbol de decisiones</h2>
   <p class="lead"><span class="ui">Mapa de métodos</span> muestra los mismos análisis en un cuadro: el tipo de respuesta en los renglones y la estructura de los grupos y factores en las columnas. Sirve para encontrar el análisis a partir de la pregunta: «mido conteos en bloques», «comparo dos grupos con una respuesta sí / no».</p>
   <figure class="mapa">
     <div class="marco"><img src="../img/b9-mapa.png" alt="El mapa de métodos: renglones Medida continua, Conteos, Sí / no, Proporciones, Categorías, Tiempo hasta un evento, Serie de tiempo, Varias respuestas y Sin datos; columnas Una muestra, Dos grupos, Tres o más grupos, Factores cruzados, Bloques y Parcelas divididas; en cada cruce, los nombres de los análisis como botones."></div>
@@ -77,12 +77,21 @@
   </figure>
   <p>Cada nombre es un enlace a su ficha: se abre con un clic o con el teclado (Tab y Entrar). Los filtros del catálogo también se aplican al mapa, y el mapa recuerda la vista elegida mientras la pestaña siga abierta. En pantallas angostas, el cuadro se desplaza a los lados dentro de su marco.</p>
 
+  <h3>El árbol de decisiones</h3>
+  <p><span class="ui">Árbol de decisiones</span> lleva de la pregunta de la investigación al análisis con unas cuantas preguntas en lenguaje del campo, sin datos (figura 9.3). La primera columna pregunta qué se quiere hacer con los datos: describirlos, comparar tratamientos, relacionar variables numéricas, asociar categorías, comparar genotipos en varios ambientes, estimar varianzas genéticas, analizar el tiempo hasta un evento, una serie de tiempo o varias respuestas a la vez, estimar con una muestra o planear un ensayo. Cada respuesta abre a la derecha la pregunta que sigue (¿qué mediste?, ¿cómo se organizó el ensayo?, ¿qué forma tiene la relación?), y una línea dorada une cada respuesta con su pregunta.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/b9-arbol.png" alt="El árbol de decisiones: la explicación, el selector de vista con Árbol de decisiones marcado y el botón Glosario; Tu camino: Comparar tratamientos o grupos, Una medida continua, En bloques completos, y Empezar de nuevo; cuatro columnas unidas por líneas doradas, con sus primeras respuestas: ¿Qué quieres hacer con tus datos?, ¿Qué mediste? y ¿Cómo se organizó el ensayo?, con la respuesta elegida en oro; y Los análisis para «En bloques completos»: Bloques completos al azar y Bloques al azar con bloques aleatorios, del motor R, cada uno con cuándo usarlo, para qué sirve y los botones Ficha, Abrir este análisis y Probar con el ejemplo"></div>
+    <figcaption><b>Figura 9.3.</b> El árbol de decisiones en el camino de un ensayo en bloques completos; las columnas de las preguntas siguen hacia abajo. La hoja trae los dos análisis que convienen.</figcaption>
+  </figure>
+  <p>La última columna trae los análisis que convienen, cada uno con cuándo usarlo y para qué sirve, y tres botones: <span class="ui">Ficha</span>, <span class="ui">Abrir este análisis</span> y, si su ficha tiene ejemplo, <span class="ui">Probar con el ejemplo</span>, que carga los datos de ejemplo y lo calcula. Los 78 análisis están en alguna hoja; los de tamaño de muestra y potencia se abren sin datos. <span class="ui">Empezar de nuevo</span> vuelve a la primera pregunta, y el camino se recuerda mientras la pestaña siga abierta. En el árbol no hay buscador ni filtros; en una pantalla angosta, las columnas van una bajo otra.</p>
+  <p>Al árbol también se llega desde el tercer camino de Inicio (sección 1.1) y desde la recomendación del asistente: <span class="ui">Ver en el árbol de decisiones</span> lo abre en el camino de ese análisis, con el análisis señalado (sección 4.2).</p>
+
   <!-- 9.4 -->
   <h2 id="s9-4"><span class="num">9.4</span>Una ficha, apartado por apartado</h2>
   <p class="lead">Todas las fichas tienen los mismos nueve apartados, en el mismo orden, y un índice a la izquierda para saltar entre ellos. Cada apartado se pliega o se despliega con un clic en su título.</p>
   <figure class="media">
     <div class="marco"><img src="../img/b9-ficha.png" alt="La ficha de bloques completos al azar: la familia, el nombre y los otros nombres del análisis; los botones Abrir este análisis y Cargar los datos de ejemplo; el índice En esta ficha con los nueve apartados; Para qué sirve y Preguntas típicas."></div>
-    <figcaption><b>Figura 9.3.</b> La ficha de bloques completos al azar: la cabecera, el índice y los dos primeros apartados.</figcaption>
+    <figcaption><b>Figura 9.4.</b> La ficha de bloques completos al azar: la cabecera, el índice y los dos primeros apartados.</figcaption>
   </figure>
   <table class="compacta">
     <caption><b>Cuadro 9.1.</b> Los nueve apartados de una ficha.</caption>
@@ -99,16 +108,16 @@
       <tr><td class="c">9</td><td>Continúa en la suite LABG</td><td>Las apps de la suite que siguen el trabajo de ese análisis, con el motivo (capítulo 10). Si ninguna aplica, lo dice.</td></tr>
     </tbody>
   </table>
-  <p>El fundamento teórico termina con el modelo, cada uno de sus términos y las hipótesis que se prueban, con el estadístico que las decide (figura 9.4).</p>
+  <p>El fundamento teórico termina con el modelo, cada uno de sus términos y las hipótesis que se prueban, con el estadístico que las decide (figura 9.5).</p>
   <figure class="chica">
     <div class="marco"><img src="../img/b9-modelo.png" alt="El modelo de bloques completos al azar, y sub ij igual a mu más tau sub i más beta sub j más épsilon sub ij, con épsilon normal de media cero y varianza sigma cuadrada; la explicación de cada término; H0: todos los tau iguales a cero; H1: algún tau distinto de cero; y la nota de que se prueba con F igual al CM de tratamientos entre el CM del error."></div>
-    <figcaption><b>Figura 9.4.</b> El modelo, sus términos y las hipótesis en la ficha de bloques completos al azar.</figcaption>
+    <figcaption><b>Figura 9.5.</b> El modelo, sus términos y las hipótesis en la ficha de bloques completos al azar.</figcaption>
   </figure>
   <div class="caja ejemplo"><div class="caja-t"><span class="ico">✎</span>Ejemplo</div><p>Los ejemplos de redacción de cada ficha usan las cifras que da la app con su conjunto de ejemplo; cuando la ficha no tiene uno, las cifras se presentan como ilustrativas. Antes de copiarlos, cambia las cifras por las de tu resultado.</p></div>
 
   <!-- 9.5 -->
   <h2 id="s9-5"><span class="num">9.5</span>Datos necesarios y las plantillas</h2>
-  <p class="lead">El apartado 5 va en un recuadro dorado porque responde la pregunta que más detiene un análisis: ¿cómo deben estar mis datos? Trae seis partes (figura 9.5).</p>
+  <p class="lead">El apartado 5 va en un recuadro dorado porque responde la pregunta que más detiene un análisis: ¿cómo deben estar mis datos? Trae seis partes (figura 9.6).</p>
   <ul>
     <li><b>Columnas que necesita:</b> cada columna con su tipo (numérica continua, factor con k niveles, conteo, 0/1, fecha) y su papel en el análisis (respuesta, tratamientos, bloque…). Los nombres son los del conjunto de ejemplo.</li>
     <li><b>Tamaño mínimo:</b> lo que el método necesita para correr y lo que conviene para que la prueba tenga sentido.</li>
@@ -119,7 +128,7 @@
   </ul>
   <figure class="chica">
     <div class="marco"><img src="../img/b9-datos.png" alt="El recuadro Datos necesarios de la ficha de bloques completos al azar: el cuadro de columnas con su tipo y su papel; el tamaño mínimo; faltantes y desbalance; el formato largo; un ejemplo de siete filas del maíz; los errores frecuentes y los botones Cargar estos datos de ejemplo, Plantilla CSV y Plantilla XLSX."></div>
-    <figcaption><b>Figura 9.5.</b> «Datos necesarios» en la ficha de bloques completos al azar.</figcaption>
+    <figcaption><b>Figura 9.6.</b> «Datos necesarios» en la ficha de bloques completos al azar.</figcaption>
   </figure>
   <p><span class="ui">Plantilla CSV</span> y <span class="ui">Plantilla XLSX</span> descargan la tabla de ejemplo de la ficha (<code>plantilla-&lt;análisis&gt;.csv</code> o <code>.xlsx</code>) para llenarla con los datos propios y después importarla en el bloque Datos. <span class="ui">Cargar estos datos de ejemplo</span> carga el conjunto completo y abre el análisis con sus columnas ya elegidas. Las fichas de planeación (potencia, número de repeticiones, tamaño de muestra y diseño de superficies) no usan datos: su cuadro de columnas lista, en su lugar, los valores que pide el formulario.</p>
 
