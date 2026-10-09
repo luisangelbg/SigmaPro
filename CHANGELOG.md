@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### 0.5.18 · Hito 5.9, parte 2: enlaces, íconos y axe-core (9 oct 2026)
+
+- **`tests/enlaces.mjs`** (etapa nueva; con `-Red` en `tests/pruebas.ps1`):
+  - los 132 archivos que nombra `index.html` (también los guiones de la carga en dos tiempos) existen;
+  - cada ancla, cada `data-ir`, cada término del glosario, cada ficha y cada análisis del árbol que nombran la
+    página y el código de la interfaz existen;
+  - lo mismo **en la página viva**: con el ejemplo del maíz, un reporte, los bloques al azar con su lectura abierta, una
+    ficha y el árbol, se recorren los diez bloques y se revisan los enlaces que la interfaz arma al vuelo (82 fichas,
+    términos del glosario, bloques y anclas);
+  - los íconos del manifiesto existen y miden lo que declaran (192 y 512 px), y el SVG y el de la pestaña se leen;
+  - con red, las 9 direcciones externas que la app muestra o usa responden (las licencias, R, el motor R, el
+    repositorio para reportar un problema y el portal de la suite).
+- **axe-core** en la auditoría de accesibilidad (`tests/accesibilidad/auditar.mjs`, tercer paso): las reglas de WCAG
+  2.0 y 2.1, niveles A y AA, en los 113 escenarios que no usan el motor R, cada uno en un perfil limpio, a 1280 px.
+  axe-core 4.13 se usa solo en las pruebas (`SIGMAPRO_AXE` con la ruta de `axe.min.js`, o `node_modules/axe-core`);
+  la app sigue sin bibliotecas. `SIGMAPRO_AUDITOR=no` omite el auditor de la suite para correr solo el foco y axe.
+- Lo que encontró axe: el **código R equivalente**, que se desplaza a los lados, no se podía recorrer con el teclado;
+  ahora es una región enfocable con su nombre (Análisis, Explorar y el reporte). La región que se desplaza en la hoja
+  de datos sigue el patrón «grid» de ARIA (el contenedor recibe el foco y las flechas la desplazan) y esa regla no
+  cuenta ahí.
+
 ### 0.5.17 · Hito 5.9, parte 1: escalas en sus bordes y coherencia entre textos y números (9 oct 2026)
 
 - **`tests/calidad.mjs`**, etapa nueva de la batería (también en `tests/pruebas.ps1`):

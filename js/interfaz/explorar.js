@@ -184,7 +184,7 @@
       (extrasDisp.length ? `<details class="exp-extras"><summary>${esc(T('Más estadísticos en el cuadro'))}</summary><div class="chips">` +
         extrasDisp.map(x => `<label class="imp-check"><input type="checkbox" data-extra="${esc(x.clave)}"${extras.includes(x.clave) ? ' checked' : ''}> ${esc(x.titulo)}</label>`).join('') + '</div></details>' : '') +
       (pedido && SP.reportar ? SP.reportar.html(pedido) : '') + tecnicoExplorar(ms) +
-      `<details class="exp-codigo"><summary>${esc(T('Código R equivalente'))}</summary><pre><code>${esc(codigo)}</code></pre>` +
+      `<details class="exp-codigo"><summary>${esc(T('Código R equivalente'))}</summary><pre tabindex="0" role="region" aria-label="${esc(T('Código R equivalente'))}"><code>${esc(codigo)}</code></pre>` +
       `<button type="button" class="btn btn-ghost btn-sm" data-accion="copiar-r">${esc(T('Copiar el código'))}</button></details>`;
     r.dataset.codigo = codigo;
     if (SP.detalle) SP.detalle.aplicar(r);

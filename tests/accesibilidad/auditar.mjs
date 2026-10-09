@@ -12,6 +12,8 @@
 // 2. El foco con el teclado de verdad: recorre los 10 bloques con Tab (eventos de teclado del navegador, no simulados
 //    en la página) y revisa que cada elemento enfocado muestre su anillo. El auditor enfoca por programa después de
 //    clics, y ahí el navegador no aplica :focus-visible, así que este recorrido es el que cuenta para el foco.
+// 3. axe-core (hito 5.9), solo en las pruebas: las reglas de WCAG 2.0 y 2.1, niveles A y AA, en cada escenario que no
+//    usa el motor R, a 1280 px y en claro (axe.min.js en SIGMAPRO_AXE o en node_modules/axe-core).
 
 import { execFile, spawn, execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -25,7 +27,8 @@ const AQUI = dirname(fileURLToPath(import.meta.url));
 const RAIZ = join(AQUI, '..', '..');
 /* SIGMAPRO_AA_IDIOMA=en: la misma auditoría con la interfaz en inglés (los textos cambian de largo) */
 const URL_APP = pathToFileURL(join(RAIZ, 'index.html')).href + (process.env.SIGMAPRO_AA_IDIOMA === 'en' ? '?lang=en' : '') + '#b1';
-const AUDITOR = [process.env.SIGMAPRO_AUDITOR, join(RAIZ, '..', 'LABG-Design', 'labg-audit.ps1')].filter(Boolean).find(p => existsSync(p));
+/* SIGMAPRO_AUDITOR=no omite el auditor de la suite (para correr solo el foco y axe-core) */
+const AUDITOR = process.env.SIGMAPRO_AUDITOR === 'no' ? null : [process.env.SIGMAPRO_AUDITOR, join(RAIZ, '..', 'LABG-Design', 'labg-audit.ps1')].filter(Boolean).find(p => existsSync(p));
 const filtro = process.argv[2] || '';
 const ESC = JSON.parse(readFileSync(join(AQUI, 'escenarios.json'), 'utf8'));
 const MEDICION = readFileSync(join(AQUI, 'medicion.js'), 'utf8');
@@ -192,11 +195,84 @@ else for (const [ancho, tema] of [[1280, 'light'], [360, 'dark']]) {
   for (const s of r.errores) fallas.push('consola (' + ancho + ' px): ' + s);
 }
 
+/* ---------------- 3. axe-core (WCAG 2.1 A y AA) ---------------- */
+/* axe-core solo en las pruebas (no va en la app): SIGMAPRO_AXE con la ruta de axe.min.js, o node_modules/axe-core junto a
+   SigmaPro. Cada escenario (salvo los del motor R, que descargan R en cada perfil) en un perfil limpio, a 1280 px y en
+   claro, con las reglas de WCAG 2.0 y 2.1, niveles A y AA. */
+const AXE = [process.env.SIGMAPRO_AXE, join(RAIZ, 'node_modules', 'axe-core', 'axe.min.js'), join(RAIZ, '..', 'node_modules', 'axe-core', 'axe.min.js')].filter(Boolean).find(p => existsSync(p));
+let axeRevisados = 0, axeVersion = '';
+async function axeEn(lista, puerto) {
+  const perfil = mkdtempSync(join(tmpdir(), 'sigmapro-axe-'));
+  const nav = spawn(exe, [...BANDERAS, '--remote-debugging-port=' + puerto, '--user-data-dir=' + perfil, 'about:blank'], { stdio: 'ignore' });
+  let ws, id = 0;
+  const pend = new Map(), out = [];
+  const enviar = (m, p = {}) => new Promise(res => { const i = ++id; pend.set(i, res); ws.send(JSON.stringify({ id: i, method: m, params: p })); });
+  const evaluar = async (e, espera) => { const r = await enviar('Runtime.evaluate', { expression: e, returnByValue: true, awaitPromise: !!espera }); if (r.exceptionDetails) throw new Error(r.exceptionDetails.exception?.description || r.exceptionDetails.text); return r.result.value; };
+  const fuente = readFileSync(AXE, 'utf8');
+  try {
+    let d;
+    for (let k = 0; k < 75 && !d; k++) { await dormir(200); try { d = await paginaPropia(puerto); } catch { /* arranca */ } }
+    ws = new WebSocket(d.webSocketDebuggerUrl);
+    await new Promise(r => { ws.onopen = r; });
+    ws.onmessage = ev => { const m = JSON.parse(ev.data); if (m.id && pend.has(m.id)) { pend.get(m.id)(m.result); pend.delete(m.id); } };
+    await enviar('Runtime.enable'); await enviar('Page.enable');
+    await enviar('Emulation.setDeviceMetricsOverride', { width: 1280, height: 900, deviceScaleFactor: 1, mobile: false });
+    for (const [nombre, e] of lista) {
+      try {
+        /* un perfil limpio por escenario: sin trabajo guardado ni preferencias del anterior */
+        await enviar('Page.navigate', { url: URL_APP.replace('#b1', '') + (URL_APP.includes('?') ? '&' : '?') + 'axe=' + nombre + '#b1' });
+        for (let k = 0; k < 100; k++) { await dormir(150); try { if (await evaluar('!!(' + GUARDA + ')')) break; } catch { /* cargando */ } }
+        await evaluar('try { localStorage.clear(); } catch (e) {} null');
+        await enviar('Page.reload', { ignoreCache: false });
+        for (let k = 0; k < 100; k++) { await dormir(150); try { if (await evaluar('!!(' + GUARDA + ')')) break; } catch { /* cargando */ } }
+        await evaluar("(window.__errores = [], SP.app.analisis.modo = 'catalogo', null)");
+        await evaluar('(() => { try { const r = (' + e.prep + '); if (r && typeof r.catch === "function") r.catch(() => { window.__esperando = false; }); } catch (x) { window.__esperando = false; } return null; })()');
+        for (let k = 0; k < 120; k++) { await dormir(150); if (!(await evaluar('!!window.__esperando'))) break; }
+        await dormir(500);
+        if (!(await evaluar('!!window.axe'))) await evaluar(fuente + '\n;null');
+        axeVersion = await evaluar('axe.version');
+        /* la región que se desplaza en la hoja de datos (.rej-scroll) no se enfoca ella misma: sigue el patrón «grid» de
+           ARIA, en que el contenedor (.rej, tabindex 0) recibe el foco y las flechas mueven la celda activa y desplazan la
+           región; axe no ve ese manejo, así que esa regla no cuenta ahí */
+        const v = await evaluar(`axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] }, resultTypes: ['violations'] })
+          .then(r => r.violations.map(x => Object.assign(x, { nodes: x.nodes.filter(nd => !(x.id === 'scrollable-region-focusable' && nd.target.join(' ') === '.rej-scroll')) }))
+            .filter(x => x.nodes.length).map(x => ({ id: x.id, impacto: x.impact, n: x.nodes.length, donde: x.nodes.slice(0, 2).map(nd => nd.target.join(' ')).join(' ; ') })))`, true);
+        axeRevisados++;
+        out.push({ nombre, v });
+      } catch (x) { out.push({ nombre, error: x.message }); }
+    }
+  } finally {
+    try { ws && ws.close(); } catch { /* nada */ }
+    nav.kill();
+    if (process.platform === 'win32') {
+      const clave = perfil.split(/[\\/]/).pop();
+      try { execFileSync('powershell', ['-NoProfile', '-Command', "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*" + clave + "*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"], { stdio: 'ignore' }); } catch { /* ya terminaron */ }
+    }
+    for (let k = 0; k < 15 && existsSync(perfil); k++) { await dormir(400); try { rmSync(perfil, { recursive: true, force: true }); } catch { /* aún en uso */ } }
+  }
+  return out;
+}
+if (!exe) avisos.push('Sin Edge ni Chrome: no se corrió axe-core.');
+else if (!AXE) avisos.push('Sin axe-core (SIGMAPRO_AXE con la ruta de axe.min.js, o node_modules/axe-core): no se corrió.');
+else {
+  const lista = Object.entries(ESC).filter(([k, e]) => k.includes(filtro) && !e.espera);
+  const partes = [[], [], []];
+  lista.forEach((x, i) => partes[i % 3].push(x));
+  const res = (await Promise.all(partes.map((p, i) => (p.length ? axeEn(p, 9681 + i) : [])))).flat();
+  let nV = 0;
+  for (const r of res) {
+    if (r.error) { fallas.push('axe ' + r.nombre + ': no terminó (' + r.error.slice(0, 80) + ')'); continue; }
+    for (const x of r.v) { nV++; fallas.push('axe ' + r.nombre + ': ' + x.id + ' (' + x.impacto + ', ' + x.n + '): ' + x.donde); }
+  }
+  console.log('axe-core ' + axeVersion + ' (WCAG 2.1 A y AA): ' + axeRevisados + ' escenarios a 1280 px' + (nV ? ', ' + nV + ' reglas incumplidas' : ', sin incumplimientos'));
+}
+
 const paradas = recorridos.reduce((s, r) => s + r.paradas, 0), nEsc = new Set(Object.keys(ESC).filter(k => k.includes(filtro))).size;
 for (const a of avisos) console.log('Aviso: ' + a);
 if (!filtro) guardar('accesibilidad', { titulo: 'Accesibilidad (AA)', ok: !fallas.length,
   resumen: (corridas ? corridas + ' revisiones de ' + nEsc + ' escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: ' + textos.toLocaleString('es-MX') + ' textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. ' : '') +
-    'El foco con Tab de verdad: ' + paradas + ' paradas en los 10 bloques (1280 px en claro y 360 px en oscuro)' + (fallas.length ? '.' : ', todas con su anillo visible.'),
+    'El foco con Tab de verdad: ' + paradas + ' paradas en los 10 bloques (1280 px en claro y 360 px en oscuro)' + (fallas.length ? '.' : ', todas con su anillo visible.') +
+    (axeRevisados ? ' axe-core ' + axeVersion + ' (WCAG 2.1 A y AA) en ' + axeRevisados + ' escenarios' + (fallas.some(f => /^axe /.test(f)) ? '.' : ', sin incumplimientos.') : ''),
   renglones: fallas.slice(0, 30).concat(avisos) });
 console.log(fallas.length ? '\n' + fallas.length + ' FALLAS:\n  ' + fallas.slice(0, 40).join('\n  ') : '\nTODO APROBADO');
 process.exit(fallas.length ? 1 : 0);

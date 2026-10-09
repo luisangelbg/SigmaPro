@@ -4,9 +4,11 @@
 #   powershell -ExecutionPolicy Bypass -File tests\pruebas.ps1 -SoloNode  sin navegador
 #   powershell -ExecutionPolicy Bypass -File tests\pruebas.ps1 -Completo  todo, con exportaciones, privacidad,
 #                                                                         rendimiento y accesibilidad
-#   powershell -ExecutionPolicy Bypass -File tests\pruebas.ps1 -Red       ademas las dos que salen a internet: los
+#   powershell -ExecutionPolicy Bypass -File tests\pruebas.ps1 -Red       ademas las que salen a internet: los
 #                                                                         metodos del motor R (descarga webR) y los
-#                                                                         enlaces de la suite LABG
+#                                                                         enlaces de la app y de la suite LABG
+# axe-core (en la auditoria de accesibilidad de -Completo) se busca en SIGMAPRO_AXE (la ruta de axe.min.js) o en
+# node_modules\axe-core junto a SigmaPro; la app no lo usa.
 # Busca node en el PATH o en la ruta de Adobe; R en el PATH o en C:\Program Files\R.
 param([switch]$R, [switch]$SoloNode, [switch]$Completo, [switch]$Red)
 $ErrorActionPreference = 'Stop'
@@ -74,9 +76,12 @@ if ($Completo -and -not $SoloNode) {
     if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
   }
 }
-# -Red: los enlaces y logos de la suite LABG (revisa las paginas de las otras apps, algo que la app nunca hace)
+# -Red: los enlaces y los iconos de la app y los de la suite LABG (revisan direcciones de internet, algo que la app
+# nunca hace)
 if ($Red) {
-  & $node (Join-Path $tests 'suite-enlaces.mjs')
-  if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
+  foreach ($p in @('enlaces.mjs', 'suite-enlaces.mjs')) {
+    & $node (Join-Path $tests $p)
+    if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
+  }
 }
 exit $codigo

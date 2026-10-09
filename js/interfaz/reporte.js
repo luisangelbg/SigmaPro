@@ -217,7 +217,7 @@
         `<span class="small muted">${esc(T('Es un punto de partida: revisa la redacción y agrega tu interpretación.'))}</span></div>` +
         (SP.reportar ? SP.reportar.html({ metodo: it.metodo, r: res.r, e: it.e || {}, op: res.opciones, ctx: it.bloque === 3 ? res.ctx : null, tabla: res.tabla }) : '') + '</section>' +
         `<details class="exp-extras rep-tecnico"><summary>${esc(T('Detalles técnicos'))}</summary><dl class="dat-kv rep-detalles">${res.detalles.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></details>` +
-        `<details class="exp-codigo"><summary>${esc(T('Código R equivalente'))}</summary><pre><code>${esc(res.codigo)}</code></pre>` +
+        `<details class="exp-codigo"><summary>${esc(T('Código R equivalente'))}</summary><pre tabindex="0" role="region" aria-label="${esc(T('Código R equivalente'))}"><code>${esc(res.codigo)}</code></pre>` +
         `<button type="button" class="btn btn-ghost btn-sm" data-rep="copiar-r" data-id="${it.id}">${esc(T('Copiar el código'))}</button></details></article>`);
     });
     const d = SP.app.datos;

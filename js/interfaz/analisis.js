@@ -1402,7 +1402,7 @@
       `<p class="semaforo-global">${SP.ui.luz(global)}<b>${esc(titulo)}</b></p>` +
       `<ul>${lista.map(s => `<li class="s-${s.color}">${SP.ui.luz(s.color)}<span class="nombre">${esc(s.nombre)}</span><span class="estado">${esc(T(ETIQUETA[s.color]))}</span><span class="texto">${esc(s.texto)}</span></li>`).join('')}</ul></div>`;
   }
-  const codigoHTML = codigo => `<details class="exp-codigo"><summary>${esc(T('Código R equivalente'))}</summary><pre><code>${esc(codigo)}</code></pre>` +
+  const codigoHTML = codigo => `<details class="exp-codigo"><summary>${esc(T('Código R equivalente'))}</summary><pre tabindex="0" role="region" aria-label="${esc(T('Código R equivalente'))}"><code>${esc(codigo)}</code></pre>` +
     `<button type="button" class="btn btn-ghost btn-sm" data-accion="copiar-r">${esc(T('Copiar el código'))}</button></details>`;
   /* el análisis que está en pantalla, tal como se pidió (método, entradas y opciones) */
   const pedidoActual = () => Object.assign({ metodo: estado.metodo, bloque: 4 }, pedido());
