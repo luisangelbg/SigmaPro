@@ -16,7 +16,8 @@
 //    textos, el índice (campo TOC con un enlace a cada marcador) y un panel de lectura por análisis (hito 5.8); la
 //    página HTML, con su índice enlazado, los mismos paneles y las fórmulas del apéndice metodológico en MathML (en el
 //    .docx, ecuaciones de Word); el Markdown, leído con commonmark: sus cuadros con el texto exacto, sus imágenes en el
-//    ZIP y su índice enlazado; los PDF de las figuras miden lo que deben y traen su
+//    ZIP y su índice enlazado; la hoja de trabajo para clase (.docx y HTML): una respuesta por pregunta, el cuadro del
+//    ANOVA con sus huecos y, en la clave, el mismo cuadro con el texto exacto de la app; los PDF de las figuras miden lo que deben y traen su
 //    texto; los PNG dicen 600 ppp; la huella SHA-256 de cada archivo del proyecto coincide con su manifiesto y su
 //    código R corre de principio a fin con los mismos datos.
 //    El TIFF se compara píxel por píxel con el PNG usando el lector de imágenes del sistema.
@@ -65,7 +66,7 @@ const PAGINA = `(async () => {
   SP.app.figuras.pintar();
   const C = SP.app.exportar.construir;
   const salida = {};
-  for (const [k, arg] of [['docx'], ['html'], ['markdown'], ['xlsx'], ['latex'], ['figuras', true], ['proyecto']]) {
+  for (const [k, arg] of [['docx'], ['html'], ['markdown'], ['hojaDocx'], ['hojaHtml'], ['xlsx'], ['latex'], ['figuras', true], ['proyecto']]) {
     const r = await C[k](arg);
     salida[k] = { nombre: r.nombre, b64: typeof r.datos === 'string' ? b64(new TextEncoder().encode(r.datos)) : b64(r.datos) };
   }
@@ -98,7 +99,7 @@ try {
   const t0 = Date.now();
   const { salida, esperado } = JSON.parse(await evaluar(PAGINA));
   const tPagina = Date.now() - t0;
-  const archivo = { docx: 'reporte.docx', html: 'reporte.html', markdown: 'reporte-md.zip', xlsx: 'cuadros.xlsx', latex: 'cuadros.tex', figuras: 'figuras.zip', proyecto: 'proyecto.labg' };
+  const archivo = { docx: 'reporte.docx', html: 'reporte.html', markdown: 'reporte-md.zip', hojaDocx: 'hoja.docx', hojaHtml: 'hoja.html', xlsx: 'cuadros.xlsx', latex: 'cuadros.tex', figuras: 'figuras.zip', proyecto: 'proyecto.labg' };
   for (const [k, v] of Object.entries(salida)) writeFileSync(join(dir, archivo[k]), Buffer.from(v.b64, 'base64'));
   writeFileSync(join(dir, 'maiz.csv'), esperado.csv);
   writeFileSync(join(dir, 'esperado.json'), JSON.stringify(esperado));
@@ -261,6 +262,17 @@ if (length(xml_find_all(h, "//div[@class='lectura']/*[local-name()='svg']")) != 
 enl <- sub("^#", "", xml_attr(xml_find_all(h, "//nav[@class='indice']//a"), "href")); ids <- xml_attr(xml_find_all(h, "//*[@id]"), "id")
 if (length(enl) < esp$analisis + 3 || !all(enl %in% ids) || length(xml_find_all(h, "//dl[@class='ficha']")) != 1) falla("html: índice o ficha de la portada") else cuenta("html")
 if (length(xml_find_all(h, "//p[@class='formula']/*[local-name()='math']")) != esp$metodos) falla("html: fórmulas del apéndice") else cuenta("html")
+# ---- 4c. la hoja de trabajo para clase ----
+unzip("hoja.docx", exdir = "hoja")
+hd <- read_xml("hoja/word/document.xml"); hns <- xml_ns(hd)
+estilo <- function(s) length(xml_find_all(hd, sprintf("//w:p[w:pPr/w:pStyle/@w:val='%s']", s), hns))
+celdasDe <- function(t) xml_text(xml_find_all(t, ".//w:tc", hns))
+htb <- xml_find_all(hd, "//w:tbl", hns)
+huecos <- sum(sapply(htb, function(t) sum(celdasDe(t) == "________")))
+clave <- any(sapply(htb, function(t) identical(celdasDe(t), unlist(esp$cuadros[[1]]$celdas))))
+if (estilo("Pregunta") < esp$analisis || estilo("Pregunta") != estilo("Respuesta") || huecos < 1 || !clave) falla("hoja: preguntas ", estilo("Pregunta"), ", respuestas ", estilo("Respuesta"), ", huecos ", huecos, ", clave ", clave) else cuenta("hoja")
+hh <- read_html("hoja.html")
+if (length(xml_find_all(hh, "//div[@class='pregunta']")) != estilo("Pregunta") || length(xml_find_all(hh, "//p[@class='respuesta']")) != estilo("Respuesta")) falla("hoja: la página") else cuenta("hoja")
 # ---- 4b. el Markdown, leído con commonmark ----
 unzip("reporte-md.zip", exdir = "md")
 hm <- read_html(markdown_html(paste(readLines("md/reporte.md", encoding = "UTF-8", warn = FALSE), collapse = "\\n"), extensions = TRUE))
@@ -351,6 +363,7 @@ $res | ConvertTo-Json -Compress`;
   console.log('  hoja de cálculo (readxl): ' + (c.xlsx_numeros || 0) + ' números idénticos a la app y ' + (c.xlsx_textos || 0) + ' textos; ' + (c.contra_R || 0) + ' valores del ANOVA y de las medias iguales a R (car, emmeans)');
   console.log('  .docx (xml2): ' + (c.docx_partes || 0) + ' partes XML válidas, ' + (c.docx_cuadros || 0) + ' cuadros con su texto exacto, ' + (c.docx_imagenes || 0) + ' imágenes a 300 ppp, ' + (c.docx_lecturas ? 'paneles de lectura, ' : '') + (c.docx_indice ? 'índice, ' : '') + (c.docx_ecuaciones ? 'ecuaciones del apéndice, ' : '') + (c.docx_frases || 0) + ' frases clave');
   console.log('  Markdown (commonmark): ' + (c.md_cuadros || 0) + ' cuadros con su texto exacto, imágenes en el ZIP e índice enlazado' + (c.md >= 2 ? '' : ' (incompleto)'));
+  console.log('  hoja de trabajo (xml2): una respuesta por pregunta, el ANOVA con huecos y, en la clave, idéntico al de la app' + (c.hoja >= 2 ? '' : ' (incompleto)'));
   console.log('  figuras: ' + (c.svg || 0) + ' SVG en mm, ' + (c.pdf || 0) + ' PDF del tamaño pedido con texto en Helvetica (pdftools), ' + (c.png || 0) + ' PNG a 600 ppp (png)');
   console.log('  TIFF (System.Drawing): ' + tiffInfo);
   console.log('  proyecto .labg (openssl): ' + (c.labg_huellas || 0) + ' huellas SHA-256 iguales, datos idénticos a los originales, código R corrido completo (' + (c.labg_codigo_R_lineas || 0) + ' líneas de salida)');

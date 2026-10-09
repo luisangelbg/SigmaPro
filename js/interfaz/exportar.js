@@ -5,6 +5,7 @@
               con el diálogo de impresión del navegador). Desde el hito 5.8: portada con su ficha, índice, resumen en pocas
               palabras y, en cada análisis, el panel «Lectura de los indicadores» (SP.lectura.panel); el apéndice
               metodológico con la ficha de Fundamentos de cada método, y Markdown (un ZIP con reporte.md y sus figuras)
+     Hoja de trabajo para clase  .docx y PDF (imprimir): los análisis como ejercicios, con su clave (SP.hojaTrabajo)
      Cuadros  hoja de cálculo .xlsx (un cuadro por hoja, con todas las cifras, y un índice) y LaTeX (booktabs)
      Figuras  un ZIP con SVG, PDF vectorial y PNG a 600 ppp (y TIFF si se pide), con su índice
      Proyecto .labg: datos, análisis, ajustes de las figuras y el código R, con la huella SHA-256 de cada archivo
@@ -70,6 +71,23 @@
     }
     return out;
   }
+  /** La hoja de trabajo: los elementos con sus indicadores clave, los datos (con el filtro) y las fichas de los métodos. */
+  async function bloquesHoja() {
+    await R().listo();
+    const r = R(), d = SP.app.datos, guia = SP.lectura && SP.lectura.guiaCV ? SP.lectura.guiaCV() : null;
+    const els = r.elementos().map(x => {
+      let ind = [];
+      try { ind = SP.lectura ? SP.lectura.resumen(x.rep.cuadros, x.visibles, SP.lectura.contexto(x.r, x.op)) : []; } catch (e) { ind = []; }
+      ind.forEach(f => { if (f.ficha === 'cv' && guia) f.contexto = Object.assign({}, f.contexto, { guiaCV: guia }); });
+      return Object.assign({}, x, { indicadores: ind });
+    });
+    let datos = null;
+    if (d && d.hoja) {
+      const h = d.hoja, idx = d.filtro ? d.filtro.filas : Array.from({ length: h.n }, (_, i) => i);
+      datos = { nombres: h.cols.map(c => c.nombre), filas: idx.map(i => h.cols.map((c, j) => h.texto(i, j))), origen: d.origen };
+    }
+    return SP.hojaTrabajo.bloques(els, { titulo: r.titulo || T('Reporte de análisis estadístico'), datos, conDatos: r.opciones.htDatos !== false, conClave: r.opciones.htClave !== false, metodos: await metodos(els) });
+  }
   /** Las opciones del documento con el apéndice metodológico. */
   async function opcionesCon(its) { return Object.assign(opcionesDoc(), { metodos: await metodos(its) }); }
   const hayReporte = () => { if (R().items.length) return true; if (L()) L().toast(T('El reporte está vacío: agrega análisis desde Explorar o Análisis.'), { type: 'warning' }); return false; };
@@ -91,6 +109,16 @@
     },
     async html() {
       return { datos: await paginaHtml(), nombre: base() + '-' + hoy() + '.html', tipo: 'text/html;charset=utf-8', mensaje: T('Listo: la página trae las figuras vectoriales y se abre en cualquier navegador.') };
+    },
+    async hojaDocx() {
+      const bloques = await bloquesHoja(), o = opcionesDoc();
+      const datos = SP.docx.construir({ titulo: o.titulo + ' · ' + T('Hoja de trabajo para clase'), autor: o.autor, hoja: o.hoja, bloques });
+      const nombre = base() + '-hoja-de-trabajo-' + hoy() + '.docx';
+      return { datos, nombre, tipo: SP.docx.MIME, mensaje: T('Listo: {n} ({k} KB).', { n: nombre, k: Math.max(1, Math.round(datos.length / 1024)) }) };
+    },
+    async hojaHtml() {
+      const o = opcionesDoc();
+      return { datos: SP.informe.html(await bloquesHoja(), Object.assign({}, o, { titulo: o.titulo + ' · ' + T('Hoja de trabajo para clase') })), nombre: base() + '-hoja-de-trabajo-' + hoy() + '.html', tipo: 'text/html;charset=utf-8', mensaje: '' };
     },
     async markdown() {
       const its = await items(true), o = await opcionesCon(its), bloques = SP.informe.bloques(its, o);
@@ -157,10 +185,12 @@
   }
   const html = b => (hayReporte() ? exportar(b, T('Armando la página…'), 'html') : null);
   const markdown = b => (hayReporte() ? exportar(b, T('Armando el Markdown…'), 'markdown') : null);
-  async function imprimir(boton) {
+  const hojaDocx = b => (hayReporte() ? exportar(b, T('Armando la hoja de trabajo…'), 'hojaDocx') : null);
+  const hojaImprimir = b => imprimir(b, true);
+  async function imprimir(boton, hoja) {
     if (!hayReporte()) return;
     await trabajo(boton, T('Preparando la impresión…'), async () => {
-      const h = await paginaHtml();
+      const h = hoja ? (await construir.hojaHtml()).datos : await paginaHtml();
       let marco = $('#expoMarco');
       if (marco) marco.remove();
       marco = document.createElement('iframe');
@@ -267,6 +297,8 @@
     const res = $('#expoClaro'); if (res) res.checked = r.opciones.resumen !== false;
     const lec = $('#expoLectura'); if (lec) lec.checked = r.opciones.lectura !== false;
     const met = $('#expoMetodos'); if (met) met.checked = r.opciones.metodos !== false;
+    const htd = $('#expoHtDatos'); if (htd) htd.checked = r.opciones.htDatos !== false;
+    const htc = $('#expoHtClave'); if (htc) htc.checked = r.opciones.htClave !== false;
   }
   function iniciar() {
     const panel = $('#panel-7');
@@ -276,7 +308,7 @@
       if (!b) return;
       const acc = b.dataset.expo;
       if (acc === 'abrir') { $('#expoArchivo').click(); return; }
-      ({ docx, html, markdown, imprimir, xlsx, latex, figuras: figurasZip, proyecto: guardarProyecto }[acc] || (() => {}))(b);
+      ({ docx, html, markdown, imprimir, 'hoja-docx': hojaDocx, 'hoja-imprimir': hojaImprimir, xlsx, latex, figuras: figurasZip, proyecto: guardarProyecto }[acc] || (() => {}))(b);
     });
     panel.addEventListener('change', e => {
       const el = e.target, o = R().opciones;
@@ -286,6 +318,8 @@
       else if (el.id === 'expoClaro') o.resumen = el.checked;
       else if (el.id === 'expoLectura') o.lectura = el.checked;
       else if (el.id === 'expoMetodos') o.metodos = el.checked;
+      else if (el.id === 'expoHtDatos') o.htDatos = el.checked;
+      else if (el.id === 'expoHtClave') o.htClave = el.checked;
       else return;
       try { localStorage.setItem('sigmapro.reporte.opciones', JSON.stringify(o)); } catch (x) { /* nada */ }
     });

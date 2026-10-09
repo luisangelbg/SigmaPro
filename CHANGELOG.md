@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### 0.5.16 · Hito 5.8, parte 3: hoja de trabajo para clase (9 oct 2026)
+
+- **Hoja de trabajo para clase** (`js/nucleo/hoja-trabajo.js`, tarjeta nueva en Exportar con *Hoja .docx* y *Hoja PDF
+  (imprimir)*): los análisis del reporte como ejercicios, con renglones para Nombre, Grupo y Fecha y, si se pide, los
+  datos (hasta 60 filas, con el filtro de Datos).
+  - Cada ejercicio trae su planteamiento (el párrafo de métodos) y preguntas numeradas con renglones para contestar:
+    completar el cuadro del análisis de varianza (los CM y las F en blanco; las SC, los gl y los valores p, a la
+    vista), decidir con los valores p y el α del análisis qué efectos son significativos, interpretar hasta dos
+    indicadores de un solo valor (el CV, la R², un tamaño del efecto…), decir de qué supuestos depende (de su ficha
+    de Fundamentos) y escribir la conclusión en palabras. Sin cuadro para completar, el cuadro principal va a la vista.
+  - La **clave de respuestas** (casilla *Clave de respuestas al final*) trae el cuadro completo, con el mismo número,
+    y la respuesta de cada pregunta con los números del caso: la conclusión del análisis, la tarjeta de interpretación
+    de cada indicador, los supuestos de la ficha y *En pocas palabras*.
+  - En el .docx, los renglones son párrafos con una línea abajo y la clave repite los números de los cuadros sin
+    campo SEQ; un documento sin índice ya no pide actualizar los campos al abrirse.
+- El recorrido de Exportar nombra el Markdown y la hoja de trabajo.
+- Con esta parte el hito 5.8 (reporte rediseñado, Markdown y hoja de trabajo) queda completo.
+- Pruebas: `tests/unidad/exportar.test.js` (huecos, preguntas y respuestas, la clave, las casillas, la página y el
+  .docx); `tests/exportar.mjs` lee la hoja con R (una respuesta por pregunta, los huecos y el cuadro de la clave
+  idéntico al de la app). 22 textos nuevos en inglés.
+
 ### 0.5.15 · Hito 5.8, parte 2: apéndice metodológico y Markdown (9 oct 2026)
 
 - **Apéndice metodológico** (anexo A del documento, casilla *Apéndice metodológico*): para cada método del reporte,

@@ -65,7 +65,7 @@
     ] },
     7: { titulo: T('Recorrido por Exportar'), pasos: [
       ['#expoResumen', T('Qué se exporta'), T('El reporte con sus análisis, tal como está en Resultados.')],
-      ['.expo-grid', T('Los formatos'), T('El reporte en .docx, PDF o HTML; los cuadros en hoja de cálculo o LaTeX; las figuras; y el proyecto .labg para reabrirlo o repetirlo en R.')],
+      ['.expo-grid', T('Los formatos'), T('El reporte en .docx, PDF, HTML o Markdown; la hoja de trabajo para clase; los cuadros en hoja de cálculo o LaTeX; las figuras; y el proyecto .labg para reabrirlo o repetirlo en R.')],
       ['#expoAutoActivo', T('El guardado automático'), T('El trabajo se guarda solo en este navegador; aquí se apaga o se borra.')],
     ] },
     8: { titulo: T('Recorrido por Validación'), pasos: [

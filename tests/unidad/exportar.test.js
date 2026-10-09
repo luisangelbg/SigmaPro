@@ -299,6 +299,36 @@ SPT.describir('Exportaciones · reporte, documentos, hojas, imágenes y proyecto
     SPT.igual(SP.informe.markdown([{ tipo: 'parrafo', texto: '1. uno *dos* [x] a_b _c p < 0.05 <b>' }]), '1\\. uno \\*dos\\* \\[x\\] a_b \\_c p < 0.05 \\<b>\n');
   });
 
+  SPT.caso('Hoja de trabajo para clase (hito 5.8): cuadro con huecos, preguntas con renglones y la clave con los números del caso', () => {
+    const c = ensayo(), t = tab(c);
+    const e = { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, op = SP.opcionesCon(SP.metodos.dbca, {});
+    const r = SP.ejecutar('dbca', t, e, op).resultado, rep = SP.metodos.dbca.reporte(r);
+    const items = [{ titulo: rep.titulo, id: 'dbca', e, op, r, rep, visibles: null,
+      indicadores: [{ ficha: 'p', titulo: 'p · A', valor: 0.01 }, { ficha: 'cv', titulo: 'Coeficiente de variación, %', valor: 12.3, contexto: {} }, { ficha: 'cv', titulo: 'CV · g1', valor: 30, multiple: true }] }];
+    const metodos = [{ id: 'dbca', ficha: { supuestos: [{ nombre: 'Normalidad' }, { nombre: 'Varianzas iguales' }] } }];
+    const bs = SP.hojaTrabajo.bloques(items, { titulo: 'Ensayo', datos: { nombres: ['a', 'b'], filas: [['1', 'x'], ['2', 'y']], origen: 'ej' }, metodos });
+    const h = SP.hojaTrabajo.huecos(rep.cuadros[0], null);
+        SPT.igual(h.huecos, 9, 'bloque, híbrido, dosis y su interacción: un CM por fila (también el del error) y una F por efecto');
+    SPT.afirmar(h.filas.flat().includes('________') && !h.filas[h.filas.length - 1].includes('________'), 'el total queda sin huecos');
+    const qs = bs.filter(b => b.tipo === 'pregunta'), rs = bs.filter(b => b.tipo === 'respuesta');
+    SPT.igualJSON(qs.map(q => q.numero), rs.map(q => q.numero), 'una respuesta por pregunta');
+    SPT.igual(qs.length, 5, 'completar, decidir con p, el CV, los supuestos y la conclusión: ' + qs.map(q => q.texto.slice(0, 20)).join(' | '));
+    SPT.afirmar(qs[0].renglones === 0 && qs.slice(1).every(q => q.renglones === 3), 'renglones para contestar');
+    SPT.afirmar(!qs.some(q => /g1/.test(q.texto)), 'sin el indicador de una columna con un valor por grupo');
+    SPT.afirmar(rs.some(x => /12\.3/.test(x.texto)) && rs.some(x => x.texto === 'Normalidad; Varianzas iguales.'), 'la clave con los números del caso');
+    const cuadros = bs.filter(b => b.tipo === 'cuadro');
+    SPT.igualJSON(cuadros.map(b => b.leyenda.numero), [1, 2, 2], 'los datos, el cuadro para completar y el mismo número en la clave');
+    SPT.afirmar(cuadros[2].leyenda.fijo && !cuadros[2].filas.flat().includes('________'), 'la clave, completa y sin campo SEQ');
+    SPT.afirmar(!SP.hojaTrabajo.bloques(items, { conClave: false, conDatos: false }).some(b => b.tipo === 'respuesta' || (b.tipo === 'cuadro' && b.leyenda.numero === 1 && /ej/.test(b.leyenda.texto))), 'las casillas quitan la clave y los datos');
+    const html = SP.informe.html(bs, {});
+    SPT.igual((html.match(/<div class="renglon"><\/div>/g) || []).length, 12);
+    SPT.afirmar(/<p class="campos"><b>/.test(html) && /<p class="respuesta"><b>1\.<\/b>/.test(html), 'campos y respuestas en la página');
+    const z = SP.zip.leer(SP.docx.construir({ titulo: 'E', bloques: bs })), d = z.texto('word/document.xml');
+    SPT.afirmar(bienFormado(d) && !/updateFields/.test(z.texto('word/settings.xml')), 'XML bien formado; sin índice no pide actualizar campos');
+    SPT.igual((d.match(/w:val="Renglon"/g) || []).length, 12);
+    SPT.igual((d.match(/SEQ Cuadro/g) || []).length, 2, 'la clave repite el número sin campo');
+  });
+
   SPT.caso('Proyecto .labg: guardar y abrir devuelve la misma hoja, filtro y reporte; la huella detecta un cambio', async () => {
     const c = ensayo();
     const hoja = SP.hoja.crear({ nombres: Object.keys(c), columnas: c, tipos: { bloque: { tipo: 'factor' }, hibrido: { tipo: 'factor' } } });

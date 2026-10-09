@@ -269,7 +269,7 @@
           const clave = it.ficha + '|' + titulo + '|' + m.valor;
           if (vistos.has(clave)) continue;
           vistos.add(clave);
-          filas.push({ ficha: it.ficha, titulo, valor: m.valor, contexto: it.contexto });
+          filas.push({ ficha: it.ficha, titulo, valor: m.valor, contexto: it.contexto, multiple: it.marcas.length > 1 });
           if (filas.length >= MAX_PANEL) return filas;
         }
       }

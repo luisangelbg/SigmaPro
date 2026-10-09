@@ -1213,6 +1213,9 @@ SP.definir('informe', function (SP) {
     div.lectura svg { display: block; width: 100%; max-width: 16cm; height: auto; }
     p.formula { text-align: center; margin: .2cm 0 .25cm; } ul.terminos, ul.lista { margin: 0 0 .3cm; padding-left: .8cm; } ul.terminos li, ul.lista li { margin: .05cm 0; }
     p.hipotesis { text-align: left; padding-left: .5cm; } math { font-size: 1.05em; }
+    p.campos { margin: .6cm 0 .5cm; } p.campos span.campo { display: inline-block; min-width: 3.4cm; border-bottom: 1px solid #555; margin: 0 .5cm 0 .15cm; }
+    div.pregunta { margin: .45cm 0 .2cm; break-inside: avoid; } div.pregunta p { text-align: left; margin: 0 0 .1cm; padding-left: .6cm; text-indent: -.6cm; }
+    div.renglon { height: .85cm; border-bottom: 1px solid #8A8578; margin-left: .6cm; } p.respuesta { text-align: left; padding-left: .6cm; text-indent: -.6cm; }
     h2 { font-size: 15pt; margin: 1cm 0 .3cm; } h3 { font-size: 12.5pt; margin: .7cm 0 .2cm; } h4 { font-size: 11.5pt; font-style: italic; margin: .5cm 0 .15cm; }
     p { text-align: justify; margin: 0 0 .25cm; } p.conclusion { border-left: 3px solid #9C7128; padding: .1cm .3cm; background: #FAF6EC; text-align: left; }
     figure { margin: .4cm 0 .5cm; text-align: center; break-inside: avoid; } figure svg, figure img { max-width: 100%; height: auto; }
@@ -1245,6 +1248,9 @@ SP.definir('informe', function (SP) {
         case 'terminos': return `<ul class="terminos">${b.filas.map(x => `<li>${mathml(x.tex)}: ${escH(x.texto)}</li>`).join('')}</ul>`;
         case 'hipotesis': return `<p class="hipotesis">H<sub>0</sub>: ${mathml(b.h0)}&ensp;·&ensp;H<sub>1</sub>: ${mathml(b.h1)}${b.texto ? '. ' + escH(b.texto) : ''}</p>`;
         case 'lista': return `<ul class="lista">${b.items.map(x => `<li>${escH(x)}</li>`).join('')}</ul>`;
+        case 'campos': return `<p class="campos">${b.campos.map(c => `<b>${escH(c)}:</b><span class="campo"></span>`).join('')}</p>`;
+        case 'pregunta': return `<div class="pregunta"><p><b>${b.numero}.</b> ${escH(b.texto)}</p>${'<div class="renglon"></div>'.repeat(b.renglones || 0)}</div>`;
+        case 'respuesta': return `<p class="respuesta"><b>${b.numero}.</b> ${escH(b.texto)}</p>`;
         case 'ficha': return `<dl class="ficha">${b.filas.map(([k, v]) => `<dt>${escH(k)}</dt><dd>${escH(v)}</dd>`).join('')}</dl>`;
         case 'indice': return `<nav class="indice" aria-labelledby="indice-t"><h2 id="indice-t">${escH(b.titulo)}</h2><ul>` +
           b.entradas.map(x => `<li class="n${x.nivel}"><a href="#${escH(x.ancla)}">${escH(x.texto)}</a></li>`).join('') + '</ul></nav>';
