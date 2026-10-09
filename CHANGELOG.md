@@ -2,6 +2,30 @@
 
 ## Sin publicar
 
+### 0.5.13 · Hito 5.7, parte 4: errores en palabras y modo presentación (9 oct 2026)
+
+- **Errores en palabras** (`js/interfaz/errores.js`): lo que no se pudo calcular se muestra en un solo recuadro, igual
+  en Análisis, Explorar y el reporte: qué pasó y, aparte, *Qué hacer:*.
+  - Un error de los datos que no trae cómo resolverlo recibe una sugerencia según lo que dice: una columna que debe ser
+    numérica, una que ya no existe, una en dos papeles, pocos datos, un solo nivel, faltantes.
+  - Los errores conocidos del motor R (lme4, nlme: un factor o un efecto aleatorio con un solo nivel, un efecto
+    aleatorio sin repeticiones, una respuesta constante, un modelo que no converge o es demasiado complejo, sin datos
+    válidos, una columna que R no encuentra) se dicen en palabras; el texto de R queda en *Detalle técnico*, plegado y
+    con *Copiar el detalle*.
+  - Un error del programa dice que no es un problema de los datos, sugiere qué probar y deja el detalle para
+    *Reportar un problema*.
+- **Modo presentación** (`js/interfaz/presentacion.js`): *Presentar*, junto a cada resultado de Análisis y de
+  Explorar y en el reporte, muestra como diapositivas a pantalla completa y con letra grande el título, *En pocas
+  palabras*, la conclusión, cada gráfica y cada cuadro con sus notas, como se ven en el nivel de detalle elegido.
+  - ← → (o Re Pág / Av Pág y la barra espaciadora) cambian de diapositiva, Inicio y Fin van a la primera y a la
+    última, y Esc sale; el foco se queda en la presentación y vuelve al botón al salir.
+  - Las diapositivas son copias sin botones, con sus ids renombrados (también las referencias `url(#…)` de las
+    gráficas): no cambian el resultado ni repiten ids en la página.
+- Pruebas: `tests/unidad/errores.test.js`; `tests/orientacion.mjs` presenta el resultado de bloques y el reporte
+  con el teclado y revisa el recuadro de pocos datos; escenarios de accesibilidad presentacion-analisis y
+  error-analisis. 45 textos nuevos en inglés.
+- Con esta parte el hito 5.7 (orientación) queda completo.
+
 ### 0.5.12 · Hito 5.7, parte 3: recorridos por bloque y ayudas emergentes (8 oct 2026)
 
 - **Recorridos** (`js/interfaz/recorridos.js`): el botón *Recorrido*, en el título de cada bloque, lleva paso a paso

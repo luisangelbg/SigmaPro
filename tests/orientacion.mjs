@@ -17,8 +17,12 @@
 // 6. Recorridos (parte 3): el de Análisis sin datos ofrece el ejemplo del maíz y resalta cada parte, con el foco en la
 //    ventana; al terminar el foco vuelve al botón; con datos, cada uno de los diez bloques tiene su recorrido y Esc lo
 //    cierra.
-// 7. A 390 px: los caminos y las columnas del árbol, una bajo otra, sin desborde lateral.
-// 8. Sin errores en la consola.
+// 7. Modo presentación (parte 4): «Presentar» del resultado de bloques abre las diapositivas con su título y el foco en
+//    «siguiente»; →, Inicio y Fin las recorren; la copia no repite ids ni lleva botones; Esc sale y el foco vuelve; el
+//    reporte se presenta con la sección de su análisis.
+// 8. Errores en palabras (parte 4): con una sola observación, la prueba t dice qué pasó y qué hacer.
+// 9. A 390 px: los caminos y las columnas del árbol, una bajo otra, sin desborde lateral.
+// 10. Sin errores en la consola.
 
 import { spawn, execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
@@ -53,6 +57,8 @@ async function abrir(consulta, ancho) {
 /* hasta que la condición (texto de JS) sea verdadera, o se acabe el tiempo */
 async function hasta(cond, ms) { for (let k = 0; k < (ms || 6000) / 60; k++) { if (await evaluar(cond)) return true; await dormir(60); } return false; }
 /* elige del menú abierto (.sp-menu) el renglón cuyo texto empieza así */
+/* una tecla del teclado (el protocolo sí la entrega a la página) */
+async function tecla(key, vk) { await enviar('Input.dispatchKeyEvent', { type: 'keyDown', key, code: key, windowsVirtualKeyCode: vk }); await enviar('Input.dispatchKeyEvent', { type: 'keyUp', key, code: key, windowsVirtualKeyCode: vk }); await dormir(60); }
 const elegirDelMenu = texto => evaluar(`(() => { const b = [...document.querySelectorAll('.sp-menu .sp-menu-item')].find(x => x.textContent.trim().startsWith(${JSON.stringify(texto)})); if (b) b.click(); return !!b; })()`);
 
 let codigo = 1;
@@ -187,14 +193,52 @@ try {
   ok(Object.values(todos).every(n => n >= 1), 'algún bloque no tiene recorrido o Esc no lo cerró: ' + JSON.stringify(todos));
   notas.push('recorridos: Análisis con el ejemplo (' + recorrido.vistos.length + ' pasos); pasos por bloque ' + JSON.stringify(todos));
 
-  /* 7. en un teléfono */
+  /* 7. modo presentación (parte 4): el resultado de Análisis y el reporte, con el teclado; Esc devuelve el foco */
+  ok(await abrir(''), 'la app no volvió a cargar para la presentación');
+  await evaluar(`(() => { const e = SP_EJEMPLOS.find(x => x.id === 'maiz'), l = SP.csv.leerColumnas(e.csv, { delimitador: ',', decimal: '.' }); SP.datosUI.cargar(SP.hoja.crear({ nombres: l.nombres, columnas: l.columnas, tipos: e.tipos }), 'Ejemplo: ' + e.nombre); SP.app.ir(4); SP.app.analisis.usar('dbca', { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, {}); return true; })()`);
+  ok(await hasta(`!!document.querySelector('#anaResultado table[data-cuadro="anova"]') && !!document.querySelector('#anaResultado [data-presentar]')`), 'el resultado de bloques no trae «Presentar»');
+  await evaluar(`document.querySelector('#anaResultado [data-presentar]').focus(), document.querySelector('#anaResultado [data-presentar]').click(), true`);
+  const cuenta = () => evaluar('(document.querySelector(".sp-pres .sp-pres-cuenta") || {}).textContent || ""');
+  const pres = await evaluar(`(() => { const c = document.querySelector('.sp-pres'); return c && { cuenta: c.querySelector('.sp-pres-cuenta').textContent, seccion: c.querySelector('.sp-pres-seccion').textContent, titulo: (c.querySelector('.sp-pres-titulo') || {}).textContent, foco: document.activeElement.dataset.pres, modal: c.getAttribute('aria-modal'), clase: document.documentElement.classList.contains('sp-presentando') }; })()`);
+  const n = pres ? +((/de (\d+)/.exec(pres.cuenta) || [])[1] || 0) : 0;
+  ok(pres && n >= 5 && /^1 de/.test(pres.cuenta) && /Bloques completos al azar/.test(pres.seccion) && /Bloques completos al azar/.test(pres.titulo || '') && pres.foco === 'sig' && pres.modal === 'true' && pres.clase,
+    '«Presentar» no abrió las diapositivas del resultado con su título y el foco en «siguiente»: ' + JSON.stringify(pres));
+  await tecla('ArrowRight', 39);
+  ok(/^2 de/.test(await cuenta()), '→ no pasó a la segunda diapositiva');
+  await tecla('End', 35);
+  ok((await cuenta()).startsWith(n + ' de'), 'Fin no fue a la última diapositiva');
+  ok(await evaluar('!!document.querySelector(".sp-pres-escena .tabla-wrap table") && !document.querySelector(".sp-pres-escena button")'), 'la última diapositiva no es un cuadro, o la copia conserva botones');
+  ok(await evaluar('(() => { const v = [...document.querySelectorAll("[id]")].map(x => x.id); return v.length === new Set(v).size; })()'), 'la presentación repite ids de la página');
+  await tecla('Home', 36);
+  await tecla('ArrowRight', 39); await tecla('ArrowRight', 39); await tecla('ArrowRight', 39);
+  ok(await evaluar('!!document.querySelector(".sp-pres-escena figure.sp-grafica svg")'), 'la cuarta diapositiva no es la gráfica');
+  await tecla('Escape', 27);
+  ok(await hasta('!document.querySelector(".sp-pres") && !document.documentElement.classList.contains("sp-presentando") && document.activeElement.matches("#anaResultado [data-presentar]")', 2000), 'Esc no cerró la presentación o el foco no volvió a «Presentar»');
+  /* el reporte completo */
+  await evaluar('document.querySelector("#anaResultado .exp-reporte").click(), SP.app.ir(5), true');
+  ok(await hasta('!!document.querySelector("#repItems .rep-item")'), 'el análisis no llegó al reporte');
+  await evaluar(`document.querySelector('#panel-5 [data-presentar="#repItems"]').click(), true`);
+  const rep = await evaluar('(() => { const c = document.querySelector(".sp-pres"); return c && { cuenta: c.querySelector(".sp-pres-cuenta").textContent, seccion: c.querySelector(".sp-pres-seccion").textContent }; })()');
+  ok(rep && /^1 de \d+/.test(rep.cuenta) && /Bloques completos al azar/.test(rep.seccion), 'el reporte no se presenta con la sección de su análisis: ' + JSON.stringify(rep));
+  await tecla('Escape', 27);
+  ok(await hasta('!document.querySelector(".sp-pres")', 2000), 'Esc no cerró la presentación del reporte');
+  notas.push('presentación: ' + n + ' diapositivas del resultado de bloques, → Inicio Fin y Esc con el foco de vuelta; el reporte, con su sección');
+
+  /* 8. errores en palabras (parte 4): qué pasó y qué hacer, en Análisis */
+  await evaluar(`(() => { const l = SP.csv.leerColumnas('y,g\\n5,a\\n,b\\n', { delimitador: ',', decimal: '.' }); SP.datosUI.cargar(SP.hoja.crear({ nombres: l.nombres, columnas: l.columnas }), 'una sola observación'); SP.app.ir(4); SP.app.analisis.usar('prueba-t', { modo: 'una', variable: 'y' }, {}); return true; })()`);
+  ok(await hasta('!!document.querySelector("#anaResultado .sp-error")'), 'con una sola observación no apareció el recuadro de error');
+  const err = await evaluar('(() => { const x = document.querySelector("#anaResultado .sp-error"); return { tipo: x.dataset.errorTipo, t: x.querySelector(".sp-error-t").textContent, m: x.querySelector(".sp-error-m").textContent, a: (x.querySelector(".sp-error-a") || {}).textContent || "", d: !!x.querySelector("details") }; })()');
+  ok(err.tipo === 'datos' && /No se puede calcular así/.test(err.t) && /al menos dos observaciones/.test(err.m) && /^Qué hacer: Revisa los faltantes y el filtro/.test(err.a) && !err.d, 'el error de pocos datos no dice qué pasó y qué hacer: ' + JSON.stringify(err));
+  notas.push('errores: «' + err.m + '» con «' + err.a.slice(0, 40) + '…»');
+
+  /* 9. en un teléfono */
   ok(await abrir('', 390), 'la app a 390 px no cargó');
   const tel = await evaluar(`(() => { const c = [...document.querySelectorAll('.caminos .camino')].map(x => x.getBoundingClientRect()); return { columna: c.every((r, k) => !k || r.top > c[k - 1].bottom - 1), desborde: document.documentElement.scrollWidth > window.innerWidth + 1 }; })()`);
   ok(tel.columna && !tel.desborde, 'a 390 px los caminos no van en una columna o desbordan: ' + JSON.stringify(tel));
   const telArbol = await evaluar(`(async () => { SP.arbolUI.camino(['comparar', 'continua']); SP.app.fundamentos.arbolEn(null); await new Promise(r => setTimeout(r, 400)); const c = [...document.querySelectorAll('#funRaiz .arb-col')].map(x => x.getBoundingClientRect()); return { cols: c.length, apiladas: c.every((r, k) => !k || r.top > c[k - 1].bottom - 1), desborde: document.documentElement.scrollWidth > window.innerWidth + 1 }; })()`);
   ok(telArbol.cols === 3 && telArbol.apiladas && !telArbol.desborde, 'a 390 px el árbol no apila sus columnas o desborda: ' + JSON.stringify(telArbol));
 
-  /* 8. la consola */
+  /* 10. la consola */
   for (const c of consola) fallas.push('consola: ' + c);
   codigo = fallas.length ? 1 : 0;
 } catch (e) {
@@ -210,9 +254,9 @@ try {
   for (let k = 0; k < 15 && existsSync(perfil); k++) { await dormir(400); try { rmSync(perfil, { recursive: true, force: true }); } catch { /* el navegador aún lo usa */ } }
 }
 
-console.log('SigmaPro · Inicio, historial, estados vacíos, árbol de decisiones, ayudas y recorridos');
+console.log('SigmaPro · Inicio, historial, estados vacíos, árbol de decisiones, ayudas, recorridos, presentación y errores');
 for (const n of notas) console.log('  ' + n);
 for (const f of fallas) console.log('  ✗ ' + f);
-guardar('orientacion', { titulo: 'Inicio, historial, estados vacíos, árbol, ayudas y recorridos', ok: !fallas.length, resumen: notas.join('; '), renglones: fallas });
+guardar('orientacion', { titulo: 'Inicio, historial, estados vacíos, árbol, ayudas, recorridos, presentación y errores', ok: !fallas.length, resumen: notas.join('; '), renglones: fallas });
 console.log(fallas.length ? '\nHAY FALLAS (' + fallas.length + ')' : '\nTODO APROBADO');
 process.exit(fallas.length ? 1 : codigo);

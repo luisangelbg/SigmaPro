@@ -37,6 +37,14 @@
  "glosario-accion": {
   "prep": "(async () => { window.__esperando = true; await SP.glosarioUI.ver('interaccion', 0); await new Promise(r => setTimeout(r, 600)); window.__esperando = false; })()"
  },
+ "presentacion-analisis": {
+  "prep": "(async () => { window.__esperando = true; document.querySelector('#datEjemplos').click(); document.querySelectorAll('.sp-menu-item')[0].click(); await new Promise(r => setTimeout(r, 300)); SP.app.ir(4); SP.app.analisis.usar('dbca', { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, {}); await new Promise(r => setTimeout(r, 700)); document.querySelector('#anaResultado [data-presentar]').click(); await new Promise(r => setTimeout(r, 300)); document.querySelector('.sp-pres [data-pres=\"sig\"]').click(); await new Promise(r => setTimeout(r, 300)); window.__esperando = false; })()",
+  "dialogo": true
+ },
+ "error-analisis": {
+  "prep": "(async () => { window.__esperando = true; const l = SP.csv.leerColumnas('y,g\\n5,a\\n,b\\n', { delimitador: ',', decimal: '.' }); SP.datosUI.cargar(SP.hoja.crear({ nombres: l.nombres, columnas: l.columnas }), 'una sola observación'); SP.app.ir(4); SP.app.analisis.usar('prueba-t', { modo: 'una', variable: 'y' }, {}); await new Promise(r => setTimeout(r, 500)); window.__esperando = false; })()",
+  "error": true
+ },
  "analisis-0": {
   "prep": "document.querySelector('#datEjemplos').click(), document.querySelectorAll('.sp-menu-item')[0].click(), SP.app.ir(4), SP.app.analisis.calcular(), document.querySelectorAll('#anaResultado details').forEach(d => d.open = true)"
  },

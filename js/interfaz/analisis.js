@@ -1501,7 +1501,7 @@
   function pintarSupuestos(r, rep, codigo, ms) {
     const rec = rep.recomendaciones;
     $('#anaResultado').innerHTML =
-      `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('modelo {m} · n = {n} · calculado en {ms} ms', { m: r.formula, n: r.n, ms: Math.max(1, Math.round(ms)) }))}</span>${botonFicha()}${botonReporte()}</div>` +
+      `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('modelo {m} · n = {n} · calculado en {ms} ms', { m: r.formula, n: r.n, ms: Math.max(1, Math.round(ms)) }))}</span>${botonFicha()}${SP.presentacion ? `<button type="button" class="btn btn-ghost btn-sm" data-presentar="#anaResultado" data-ayuda="El resultado en diapositivas, a pantalla completa">${esc(T('Presentar'))}</button>` : ''}${botonReporte()}</div>` +
       detalleHTML() + avisoBasicoHTML() +
       semaforoHTML(rep.semaforo, r.global, ({ verde: T('Los supuestos se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[r.global]), T('Semáforo de los supuestos')) +
       (rec.length ? `<div class="callout exp-conclusion"><p><b>${esc(T('Qué hacer'))}</b></p><ul class="ana-rec">${rec.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '') +
@@ -2153,7 +2153,7 @@
     const global = sem && sem.length ? sem.map(s => s.color).reduce((a, b) => (PEOR[b] > PEOR[a] ? b : a), 'verde') : null;
     const claro = claroHTML(r, rep);
     $('#anaResultado').innerHTML =
-      `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span>${botonFicha()}${botonReporte()}</div>` +
+      `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span>${botonFicha()}${SP.presentacion ? `<button type="button" class="btn btn-ghost btn-sm" data-presentar="#anaResultado" data-ayuda="El resultado en diapositivas, a pantalla completa">${esc(T('Presentar'))}</button>` : ''}${botonReporte()}</div>` +
       detalleHTML() + claro +
       `<div class="callout exp-conclusion${claro ? ' conclusion-tecnica' : ''}">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` + avisoBasicoHTML() +
       (global ? semaforoHTML(sem, global, ({ verde: T('Los supuestos de la prueba se cumplen'), ambar: T('Hay supuestos que revisar'), rojo: T('Hay supuestos que no se cumplen'), gris: T('Sin datos suficientes') }[global]), T('Semáforo de los supuestos')) + alternativasHTML(r, rep) : '') +
@@ -2238,7 +2238,7 @@
       if (turno !== estado.turno) return;
       if (!(err instanceof SP.ErrorSP) && err.arreglo === undefined) console.error(err);
       $('#anaResultado').classList.remove('calculando');
-      $('#anaResultado').innerHTML = `<div class="msg msg-error"><strong>${esc(err.message)}</strong>${err.arreglo ? `<span class="msg-fix">${esc(err.arreglo)}</span>` : ''}</div>`;
+      $('#anaResultado').innerHTML = SP.errores ? SP.errores.html(err) : `<div class="msg msg-error"><strong>${esc(err.message)}</strong>${err.arreglo ? `<span class="msg-fix">${esc(err.arreglo)}</span>` : ''}</div>`;
     };
     if (ficha.motor === 'r') { correrR(id, c, e, opciones, turno, mostrar, fallar); return; }
     const correr = () => {

@@ -173,7 +173,7 @@
     const extrasDisp = cuadro.columnasExtra || [];
     r.innerHTML =
       `<div class="exp-cabeza"><h3>${esc(rep.titulo)}</h3><span class="small muted">${esc(T('calculado en {ms} ms', { ms: Math.max(1, Math.round(ms)) }))}</span>` +
-      `<a class="exp-a-opciones small" href="#expOpciones">${esc(T('Cambiar las opciones ↓'))}</a>${botonFicha()}${botonReporte()}</div>` +
+      `<a class="exp-a-opciones small" href="#expOpciones">${esc(T('Cambiar las opciones ↓'))}</a>${botonFicha()}${SP.presentacion ? `<button type="button" class="btn btn-ghost btn-sm" data-presentar="#expResultado" data-ayuda="El resultado en diapositivas, a pantalla completa">${esc(T('Presentar'))}</button>` : ''}${botonReporte()}</div>` +
       (SP.detalle ? SP.detalle.selector() : '') +
       `<div class="callout exp-conclusion">${rep.conclusiones.map(t => `<p>${esc(t)}</p>`).join('')}</div>` +
       (varios ? `<div class="seg exp-vistas" role="group" aria-label="${esc(T('Cuadro que se muestra'))}">${rep.cuadros.map(x => `<button type="button" data-vista="${esc(x.id)}" aria-pressed="${x === cuadro}">${esc({ conteos: T('Frecuencias'), 'pct-fila': T('% por fila'), 'pct-columna': T('% por columna'), 'pct-total': T('% del total') }[x.id] || x.titulo)}</button>`).join('')}</div>` : '') +
@@ -191,7 +191,7 @@
   }
   function pintarError(e) {
     ultimo = null;
-    $('#expResultado').innerHTML = `<div class="msg msg-error"><strong>${esc(e.message)}</strong>${e.arreglo ? `<span class="msg-fix">${esc(e.arreglo)}</span>` : ''}</div>`;
+    $('#expResultado').innerHTML = SP.errores ? SP.errores.html(e) : `<div class="msg msg-error"><strong>${esc(e.message)}</strong>${e.arreglo ? `<span class="msg-fix">${esc(e.arreglo)}</span>` : ''}</div>`;
   }
 
   function calcular() {

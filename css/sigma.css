@@ -843,3 +843,25 @@ tr.sp-gl-marca > th, tr.sp-gl-marca > td { background-color: var(--btn-oro-suave
 .sp-tour-botones { align-items: center; gap: 6px; }
 .sp-tour-hueco { flex: 1 1 auto; }
 @media (prefers-reduced-motion: reduce) { .sp-tour-luz { transition: none; } }
+
+/* ================= errores en palabras y modo presentación (hito 5.7) ================= */
+.sp-error p { margin: 0 0 6px; }
+.sp-error .sp-error-a { margin-top: 8px; }
+.sp-error-d { margin-top: 8px; font-size: var(--fs-sm); }
+.sp-error-d pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--fs-xs); margin: 6px 0; padding: 8px; border-radius: var(--r-sm); background: var(--bg-soft); color: var(--text); }
+.sp-pres { position: fixed; inset: 0; z-index: calc(var(--z-dialog) + 10); display: flex; flex-direction: column; background: var(--bg); color: var(--text); }
+.sp-pres-barra { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-4); border-bottom: 1px solid var(--border); background: var(--card-bg); }
+.sp-pres-seccion { flex: 1 1 auto; font-weight: 700; color: var(--btn-oro-texto); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sp-pres-cuenta { font-size: var(--fs-sm); color: var(--text-muted); margin-right: var(--sp-2); white-space: nowrap; }
+.sp-pres-escena { flex: 1 1 auto; overflow: auto; display: flex; align-items: center; justify-content: center; padding: var(--sp-6) var(--sp-8); }
+.sp-pres-parte { width: min(1200px, 100%); font-size: clamp(1.1rem, 1.6vw, 1.6rem); }
+.sp-pres-parte .sp-claro, .sp-pres-parte .exp-conclusion { font-size: inherit; }
+.sp-pres-parte .sp-claro li, .sp-pres-parte .exp-conclusion p { line-height: 1.5; }
+.sp-pres-parte table { font-size: inherit; width: 100%; }
+.sp-pres-parte figure { margin: 0 auto; }
+.sp-pres-parte figcaption { font-size: .8em; }
+.sp-pres-parte figure svg { width: 100%; height: auto; max-height: 72vh; }
+.sp-pres-parte .pie-cuadro { font-size: .7em; }
+.sp-pres-titulo { margin: 0; font-size: clamp(2rem, 4vw, 3.4rem); text-align: center; }
+html.sp-presentando { overflow: hidden; }
+@media (max-width: 720px) { .sp-pres-escena { padding: var(--sp-3); } }
