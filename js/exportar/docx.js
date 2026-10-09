@@ -15,6 +15,8 @@
      { tipo: 'ficha', filas: [[clave, valor]] }                         la ficha de la portada (hito 5.8)
      { tipo: 'indice', titulo, entradas: [{ nivel, texto, ancla }] }   un campo TOC con sus renglones ya escritos
      { tipo: 'lectura', titulo, imagen (PNG), anchoCm, altoCm, descripcion, fuentes }   los medidores, sin leyenda
+     { tipo: 'formula', tex } · { tipo: 'terminos', filas: [{ tex, texto }] } · { tipo: 'hipotesis', h0, h1, texto }
+     { tipo: 'lista', items: [texto] }                                 el apéndice metodológico: ecuaciones de Word (OMML)
    Un encabezado con «ancla» lleva un marcador (_TocSP…) al que apuntan el índice y su número de página (PAGEREF); Word
    actualiza los números al abrir el documento (updateFields).
    Las leyendas llevan un campo SEQ (se renumeran al actualizar los campos), el número de página va en el pie (no en la
@@ -29,7 +31,7 @@ SP.definir('docx', function (SP) {
   const EMU_POR_CM = 360000, TWIPS_POR_CM = 1440 / 2.54;
   const HOJAS = { carta: { w: 12240, h: 15840 }, a4: { w: 11906, h: 16838 } };
   const MARGEN = 1418;   /* 2.5 cm */
-  const NS = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"';
+  const NS = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"';
 
   function esc(s) {
     let limpio = '';
@@ -50,6 +52,8 @@ SP.definir('docx', function (SP) {
     const pPr = (o.estilo ? `<w:pStyle w:val="${o.estilo}"/>` : '') + (o.juntoSiguiente ? '<w:keepNext/>' : '') + (o.alinear ? `<w:jc w:val="${o.alinear}"/>` : '');
     return '<w:p>' + (pPr ? '<w:pPr>' + pPr + '</w:pPr>' : '') + contenido + '</w:p>';
   }
+  /* una fórmula como ecuación de Word; si su TeX sale del subconjunto, como texto */
+  const ecuacion = (tex, bloque) => { try { return SP.formulas.omml(tex, { bloque }); } catch (e) { return trozo(tex, { cursiva: true }); } };
   /* el marcador de un encabezado con ancla («sec-3» → «_TocSP3») */
   const marca = a => '_TocSP' + String(a).replace(/\D/g, '');
   /* un campo complejo con su resultado ya escrito */
@@ -139,6 +143,8 @@ SP.definir('docx', function (SP) {
     + '<w:style w:type="paragraph" w:customStyle="1" w:styleId="Conclusion"><w:name w:val="Conclusión"/><w:basedOn w:val="Normal"/><w:pPr><w:pBdr><w:left w:val="single" w:sz="18" w:space="8" w:color="9C7128"/></w:pBdr><w:shd w:val="clear" w:color="auto" w:fill="FAF6EC"/><w:ind w:left="170"/><w:jc w:val="left"/></w:pPr></w:style>'
     + '<w:style w:type="paragraph" w:customStyle="1" w:styleId="Semaforo"><w:name w:val="Semáforo"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="60"/><w:ind w:left="284"/><w:jc w:val="left"/></w:pPr><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr></w:style>'
     + '<w:style w:type="paragraph" w:styleId="Bibliography"><w:name w:val="Bibliography"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="100"/><w:ind w:left="567" w:hanging="567"/><w:jc w:val="left"/></w:pPr></w:style>'
+    + '<w:style w:type="paragraph" w:customStyle="1" w:styleId="Formula"><w:name w:val="Fórmula"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:before="80" w:after="120"/><w:jc w:val="center"/></w:pPr></w:style>'
+    + '<w:style w:type="paragraph" w:customStyle="1" w:styleId="Lista"><w:name w:val="Lista"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="60"/><w:ind w:left="567" w:hanging="227"/><w:jc w:val="left"/></w:pPr></w:style>'
     + '<w:style w:type="paragraph" w:customStyle="1" w:styleId="PortadaFicha"><w:name w:val="Ficha de la portada"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="60"/><w:jc w:val="center"/></w:pPr><w:rPr><w:sz w:val="21"/><w:szCs w:val="21"/></w:rPr></w:style>'
     + '<w:style w:type="paragraph" w:styleId="TOCHeading"><w:name w:val="TOC Heading"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="240" w:after="240"/><w:jc w:val="left"/></w:pPr><w:rPr><w:b/><w:sz w:val="32"/><w:szCs w:val="32"/></w:rPr></w:style>'
     + '<w:style w:type="paragraph" w:styleId="TOC1"><w:name w:val="toc 1"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:pPr><w:tabs><w:tab w:val="right" w:leader="dot" w:pos="9350"/></w:tabs><w:spacing w:before="120" w:after="40"/><w:jc w:val="left"/></w:pPr><w:rPr><w:b/></w:rPr></w:style>'
@@ -174,7 +180,11 @@ SP.definir('docx', function (SP) {
           const fin = i === ent.length - 1 ? '<w:r><w:fldChar w:fldCharType="end"/></w:r>' : '';
           cuerpo.push(parrafo(ini + enlace + fin, { estilo: 'TOC' + Math.min(2, Math.max(1, x.nivel || 1)) }));
         });
-      } else if (b.tipo === 'lectura') {
+      } else if (b.tipo === 'formula') cuerpo.push(parrafo(ecuacion(b.tex, true), { estilo: 'Formula' }));
+      else if (b.tipo === 'terminos') b.filas.forEach(x => cuerpo.push(parrafo(trozo('• ') + ecuacion(x.tex) + trozo(': ' + x.texto), { estilo: 'Lista' })));
+      else if (b.tipo === 'hipotesis') cuerpo.push(parrafo(trozo('H₀: ') + ecuacion(b.h0) + trozo('  ·  H₁: ') + ecuacion(b.h1) + (b.texto ? trozo('. ' + b.texto) : ''), { estilo: 'Lista' }));
+      else if (b.tipo === 'lista') (b.items || []).forEach(x => cuerpo.push(parrafo(trozo('• ' + x), { estilo: 'Lista' })));
+      else if (b.tipo === 'lectura') {
         if (!b.imagen) continue;
         idDibujo++; idLectura++;
         const rid = 'rIdLec' + idLectura, archivo = 'media/lectura' + idLectura + '.png';

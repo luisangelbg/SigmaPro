@@ -11,11 +11,15 @@
      SP.informe.software(items?)            → { texto, citas } (con items: menciona el motor R si alguno lo usó)
      SP.informe.referencia(clave)            → texto de la referencia (estilo autor-año)
      SP.informe.bloques(items, opciones)     → bloques del documento (los que entiende SP.docx y SP.informe.html)
+     SP.informe.html(bloques, opciones)      → página HTML completa, con su hoja de estilo e imprimible
+     SP.informe.markdown(bloques)            → el mismo documento en Markdown (las figuras, como archivos aparte)
    Hito 5.8: la portada lleva una ficha (datos, contenido y programa); sigue el índice, con un ancla por encabezado de
    primer y segundo nivel; el «Resumen de los resultados» junta «En pocas palabras» de cada análisis (SP.claro), y cada
    análisis puede traer su panel «Lectura de los indicadores» (it.lectura: el SVG de los medidores y, para el .docx, su
-   imagen PNG), que se arma en la interfaz (js/interfaz/lectura.js) porque necesita LABGuide.
-     SP.informe.html(bloques, opciones)      → página HTML completa, con su hoja de estilo e imprimible */
+   imagen PNG), que se arma en la interfaz (js/interfaz/lectura.js) porque necesita LABGuide. El apéndice metodológico
+   (opciones.metodos: la ficha de Fundamentos de cada método del reporte) da para qué sirve cada uno, su modelo con sus
+   términos, las hipótesis y los supuestos; las fórmulas van en MathML (HTML), en Office Math (.docx) y en TeX
+   (Markdown). Los anexos se nombran A, B, C… en el orden en que van. */
 SP.definir('informe', function (SP) {
   'use strict';
   const T = SP.T;
@@ -1067,16 +1071,37 @@ SP.definir('informe', function (SP) {
   }
 
   /* ---------------- el documento ---------------- */
+  /* un método en el apéndice metodológico, con su ficha de Fundamentos */
+  function apendice(m, out) {
+    const f = m.ficha;
+    out.push({ tipo: 'encabezado', nivel: 3, texto: m.nombre });
+    if (f.paraQue) out.push({ tipo: 'parrafo', trozos: [{ texto: T('Para qué sirve: '), negrita: true }, { texto: f.paraQue }] });
+    if (f.modelo && f.modelo.tex) {
+      out.push({ tipo: 'parrafo', trozos: [{ texto: T('Modelo'), negrita: true }] });
+      out.push({ tipo: 'formula', tex: f.modelo.tex });
+      if ((f.modelo.terminos || []).length) out.push({ tipo: 'terminos', filas: f.modelo.terminos.map(([tex, texto]) => ({ tex, texto })) });
+    }
+    if ((f.hipotesis || []).length) {
+      out.push({ tipo: 'parrafo', trozos: [{ texto: T('Hipótesis'), negrita: true }] });
+      f.hipotesis.forEach(h => out.push({ tipo: 'hipotesis', h0: h.h0, h1: h.h1, texto: h.texto || '' }));
+    }
+    if ((f.supuestos || []).length) out.push({ tipo: 'parrafo', trozos: [{ texto: T('Supuestos: '), negrita: true }, { texto: fin(f.supuestos.map(s => s.nombre).join('; ')) }] });
+    if ((f.referencias || []).length) {
+      out.push({ tipo: 'parrafo', trozos: [{ texto: T('Para profundizar'), negrita: true }] });
+      out.push({ tipo: 'lista', items: f.referencias.slice() });
+    }
+  }
   /* las frases que hablan de la app (en Explorar, «… se prueba en el bloque Análisis») no van en el resumen del documento */
   const DE_LA_APP = /bloque Análisis|Analysis block/;
   /**
    * items: [{ titulo, id, e, op, r, rep, codigo, figuras: [{ titulo, descripcion, png?, anchoCm?, altoCm?, svg? }],
    *           supuestos?: { rep, r }, detalles: [[clave, valor]],
    *           lectura?: { svg, descripcion, fuentes, imagen?, anchoCm?, altoCm? } }]
-   * opciones: { titulo, autor, fecha (Date), datos (nombre del conjunto), n, conCodigo, conDetalles, conResumen, conLectura }
+   * opciones: { titulo, autor, fecha (Date), datos (nombre del conjunto), n, conCodigo, conDetalles, conResumen, conLectura,
+   *             conMetodos, metodos: [{ id, nombre, ficha: { paraQue, modelo: { tex, terminos }, hipotesis, supuestos, referencias } }] }
    */
   function bloques(items, opciones) {
-    const o = Object.assign({ titulo: T('Reporte de análisis estadístico'), autor: '', conCodigo: true, conDetalles: true, conResumen: true, conLectura: true }, opciones || {});
+    const o = Object.assign({ titulo: T('Reporte de análisis estadístico'), autor: '', conCodigo: true, conDetalles: true, conResumen: true, conLectura: true, conMetodos: true }, opciones || {});
     const out = [], citas = new Set();
     const fecha = (o.fecha || new Date()).toLocaleDateString(SP.LOCAL, { day: 'numeric', month: 'long', year: 'numeric' });
     out.push({ tipo: 'titulo', texto: o.titulo });
@@ -1141,17 +1166,24 @@ SP.definir('informe', function (SP) {
     /* 3. referencias */
     out.push({ tipo: 'encabezado', nivel: 1, texto: T('Referencias') });
     [...citas].map(k => ({ k, t: referencia(k) })).filter(x => x.t).sort((a, b) => a.t.localeCompare(b.t, 'es')).forEach(x => out.push({ tipo: 'referencia', texto: x.t }));
-    /* anexos */
+    /* anexos: A, B, C… en el orden en que van */
+    let letra = 0;
+    const anexo = titulo => { if (!letra) out.push({ tipo: 'salto' }); out.push({ tipo: 'encabezado', nivel: 1, texto: T('Anexo {l}. {t}', { l: 'ABCDEFG'[letra++], t: titulo }) }); };
+    const metodos = (o.metodos || []).filter(m => m && m.ficha);
+    if (o.conMetodos && metodos.length) {
+      anexo(T('Apéndice metodológico'));
+      out.push({ tipo: 'parrafo', texto: T('Lo esencial de cada método del reporte, de su ficha en Fundamentos de SigmaPro: para qué sirve, su modelo, las hipótesis que prueba y los supuestos de los que depende.') });
+      metodos.forEach(m => apendice(m, out));
+    }
     if (o.conDetalles) {
-      out.push({ tipo: 'salto' });
-      out.push({ tipo: 'encabezado', nivel: 1, texto: T('Anexo A. Detalles técnicos') });
+      anexo(T('Detalles técnicos'));
       items.forEach((it, i) => {
         out.push({ tipo: 'encabezado', nivel: 3, texto: (i + 1) + '. ' + it.titulo });
         (it.detalles || []).forEach(([k, v]) => out.push({ tipo: 'parrafo', trozos: [{ texto: k + ': ', negrita: true }, { texto: v }] }));
       });
     }
     if (o.conCodigo) {
-      out.push({ tipo: 'encabezado', nivel: 1, texto: T('Anexo B. Código R equivalente') });
+      anexo(T('Código R equivalente'));
       out.push({ tipo: 'parrafo', texto: T('Cada análisis se puede repetir en R con este código (los datos, en un archivo «datos.csv» con las mismas columnas).') });
       items.forEach((it, i) => { out.push({ tipo: 'encabezado', nivel: 3, texto: (i + 1) + '. ' + it.titulo }); out.push({ tipo: 'codigo', texto: it.codigo || '' }); });
     }
@@ -1179,6 +1211,8 @@ SP.definir('informe', function (SP) {
     p.resumen { text-align: left; }
     div.lectura { margin: .3cm 0 .4cm; break-inside: avoid; } p.lectura-t { font-weight: bold; font-size: 10.5pt; margin: 0 0 .1cm; }
     div.lectura svg { display: block; width: 100%; max-width: 16cm; height: auto; }
+    p.formula { text-align: center; margin: .2cm 0 .25cm; } ul.terminos, ul.lista { margin: 0 0 .3cm; padding-left: .8cm; } ul.terminos li, ul.lista li { margin: .05cm 0; }
+    p.hipotesis { text-align: left; padding-left: .5cm; } math { font-size: 1.05em; }
     h2 { font-size: 15pt; margin: 1cm 0 .3cm; } h3 { font-size: 12.5pt; margin: .7cm 0 .2cm; } h4 { font-size: 11.5pt; font-style: italic; margin: .5cm 0 .15cm; }
     p { text-align: justify; margin: 0 0 .25cm; } p.conclusion { border-left: 3px solid #9C7128; padding: .1cm .3cm; background: #FAF6EC; text-align: left; }
     figure { margin: .4cm 0 .5cm; text-align: center; break-inside: avoid; } figure svg, figure img { max-width: 100%; height: auto; }
@@ -1196,6 +1230,8 @@ SP.definir('informe', function (SP) {
     @page { size: letter; margin: 2cm; }
     @media print { main { padding: 0; max-width: none; } h2, h3, h4 { break-after: avoid; } }`;
   const ETIQUETA_SEM = { verde: 'Bien', ambar: 'Revisar', rojo: 'Problema', gris: 'No aplica' };
+  /* una fórmula en MathML; si su TeX sale del subconjunto, en texto */
+  const mathml = (tex, bloque) => { try { return SP.formulas.mathml(tex, { bloque }); } catch (e) { return escH(tex); } };
   function html(bs, opciones) {
     const o = opciones || {};
     const partes = bs.map(b => {
@@ -1205,6 +1241,10 @@ SP.definir('informe', function (SP) {
         case 'portada': return `<p class="portada">${escH(b.texto)}</p>`;
         case 'salto': return '<div class="salto"></div>';
         case 'encabezado': return `<h${b.nivel + 1}${b.ancla ? ` id="${escH(b.ancla)}"` : ''}>${escH(b.texto)}</h${b.nivel + 1}>`;
+        case 'formula': return `<p class="formula">${mathml(b.tex, true)}</p>`;
+        case 'terminos': return `<ul class="terminos">${b.filas.map(x => `<li>${mathml(x.tex)}: ${escH(x.texto)}</li>`).join('')}</ul>`;
+        case 'hipotesis': return `<p class="hipotesis">H<sub>0</sub>: ${mathml(b.h0)}&ensp;·&ensp;H<sub>1</sub>: ${mathml(b.h1)}${b.texto ? '. ' + escH(b.texto) : ''}</p>`;
+        case 'lista': return `<ul class="lista">${b.items.map(x => `<li>${escH(x)}</li>`).join('')}</ul>`;
         case 'ficha': return `<dl class="ficha">${b.filas.map(([k, v]) => `<dt>${escH(k)}</dt><dd>${escH(v)}</dd>`).join('')}</dl>`;
         case 'indice': return `<nav class="indice" aria-labelledby="indice-t"><h2 id="indice-t">${escH(b.titulo)}</h2><ul>` +
           b.entradas.map(x => `<li class="n${x.nivel}"><a href="#${escH(x.ancla)}">${escH(x.texto)}</a></li>`).join('') + '</ul></nav>';
@@ -1232,5 +1272,54 @@ SP.definir('informe', function (SP) {
       + `<title>${escH(o.titulo || T('Reporte de análisis estadístico'))}</title><style>${ESTILO.replace(/size: letter/, 'size: ' + (o.hoja === 'a4' ? 'A4' : 'letter'))}</style></head><body><main>${partes.join('\n')}</main></body></html>`;
   }
 
-  SP.informe = { parrafo, software, referencia, citasEnTexto: t => { const s = new Set(); citasEnTexto(t, s); return [...s]; }, bloques, html, frasesAnova, REFERENCIAS: Object.keys(REF) };
+  /* ---------------- Markdown ---------------- */
+  /* el texto, con los caracteres que Markdown interpreta escapados */
+  /* lo que Markdown interpretaría: barra invertida, acento grave, asterisco, corchetes, el guion bajo en la orilla de una
+     palabra y «<» antes de una letra (una etiqueta); «p < 0.001» y «rend_kg» quedan tal cual */
+  const escM = s => String(s == null ? '' : s).replace(/([\\`*[\]])/g, '\\$1').replace(/(?<![\p{L}\p{N}])_|_(?![\p{L}\p{N}])/gu, '\\_').replace(/<(?=[A-Za-z/!?])/g, '\\<');
+  /* al principio de un renglón, lo que abriría una lista, un encabezado o una cita («1. », «- », «# », «> ») */
+  const inicioM = s => s.replace(/^(\d+)\.(?=\s)/gm, '$1\\.').replace(/^([#+>-])(?=\s)/gm, '\\$1');
+  const celdaM = s => escM(s).replace(/\|/g, '\\|').replace(/\n/g, ' ');
+  const texM = t => String(t || '').replace(/\s+/g, ' ').trim();
+  /**
+   * El documento en Markdown (CommonMark con tablas): las figuras y los paneles de lectura son archivos aparte
+   * («figuras/…», b.archivo), las fórmulas van en TeX entre $ y los encabezados llevan un ancla para el índice.
+   */
+  function markdown(bs) {
+    const out = [];
+    for (const b of bs) {
+      switch (b.tipo) {
+        case 'titulo': out.push('# ' + escM(b.texto)); break;
+        case 'subtitulo': out.push('*' + escM(b.texto) + '*'); break;
+        case 'portada': out.push(inicioM(escM(b.texto))); break;
+        case 'ficha': out.push(b.filas.map(([k, v]) => '- **' + escM(k) + ':** ' + escM(v)).join('\n')); break;
+        case 'salto': out.push('---'); break;
+        case 'indice': out.push('## ' + escM(b.titulo) + '\n\n' + b.entradas.map(x => (x.nivel > 1 ? '    ' : '') + '- [' + escM(x.texto) + '](#' + x.ancla + ')').join('\n')); break;
+        case 'encabezado': out.push((b.ancla ? '<a id="' + b.ancla + '"></a>\n\n' : '') + '#'.repeat(Math.min(6, (b.nivel || 1) + 1)) + ' ' + escM(b.texto)); break;
+        case 'parrafo': out.push(inicioM(b.trozos ? b.trozos.map(t => (t.negrita ? '**' + escM(t.texto).trim() + '**' + (/\s$/.test(t.texto) ? ' ' : '') : t.cursiva ? '*' + escM(t.texto) + '*' : escM(t.texto))).join('') : escM(b.texto))); break;
+        case 'conclusion': out.push('> ' + inicioM(escM(b.texto))); break;
+        case 'referencia': out.push(inicioM(escM(b.texto))); break;
+        case 'codigo': out.push('```r\n' + String(b.texto || '').replace(/```/g, '`\u200b``') + '\n```'); break;
+        case 'semaforo': out.push(b.filas.map(s => '- **' + escM(s.nombre) + '** — ' + escM(T(ETIQUETA_SEM[s.color] || '')) + ': ' + escM(s.texto)).join('\n')); break;
+        case 'cuadro': {
+          const fila = f => '| ' + f.map(celdaM).join(' | ') + ' |';
+          out.push('**' + escM(b.leyenda.etiqueta) + ' ' + b.leyenda.numero + '.** ' + escM(b.leyenda.texto) + '\n\n' + fila(b.cabecera) + '\n| ' +
+            b.cabecera.map((h, j) => (b.numericas[j] ? '---:' : ':---')).join(' | ') + ' |\n' + b.filas.map(fila).join('\n') +
+            ((b.notas || []).length ? '\n\n' + b.notas.map(n => '*' + escM(n) + '*').join('\n\n') : ''));
+          break;
+        }
+        case 'figura': out.push('![' + escM(b.alt || b.leyenda.texto) + '](' + (b.archivo || '') + ')\n\n**' + escM(b.leyenda.etiqueta) + ' ' + b.leyenda.numero + '.** ' + escM(b.leyenda.texto)); break;
+        case 'lectura': out.push('**' + escM(b.titulo) + '**\n\n' + (b.archivo ? '![' + escM(b.descripcion) + '](' + b.archivo + ')\n\n' : '') +
+          (b.textos || []).map(t => '- ' + escM(t)).join('\n') + (b.fuentes && b.fuentes.length ? '\n\n*' + escM(T('Guías: {g}.', { g: b.fuentes.join('; ') })) + '*' : '')); break;
+        case 'formula': out.push('$$\n' + texM(b.tex) + '\n$$'); break;
+        case 'terminos': out.push(b.filas.map(x => '- $' + texM(x.tex) + '$: ' + escM(x.texto)).join('\n')); break;
+        case 'hipotesis': out.push('H₀: $' + texM(b.h0) + '$ · H₁: $' + texM(b.h1) + '$' + (b.texto ? '. ' + escM(b.texto) : '')); break;
+        case 'lista': out.push(b.items.map(x => '- ' + inicioM(escM(x))).join('\n')); break;
+        default: break;
+      }
+    }
+    return out.join('\n\n') + '\n';
+  }
+
+  SP.informe = { parrafo, software, referencia, markdown, citasEnTexto: t => { const s = new Set(); citasEnTexto(t, s); return [...s]; }, bloques, html, frasesAnova, REFERENCIAS: Object.keys(REF) };
 });

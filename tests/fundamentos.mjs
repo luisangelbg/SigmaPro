@@ -9,7 +9,8 @@
 //    suite, sale de data/suite-rules.js), con los mismos números de elementos en los dos idiomas.
 // 3. Contra la app: familia, ids de métodos relacionados, de verificación y de alternativa, guías de SP.guias, el
 //    conjunto de ejemplo y sus columnas; el ejemplo CORRE con el método (los del motor R se prueban en el navegador);
-//    cada fórmula se convierte a MathML (SP.formulas).
+//    cada fórmula se convierte a MathML y a Office Math (OMML, la del .docx del apéndice metodológico: XML con sus
+//    etiquetas balanceadas) (SP.formulas).
 // 4. Plantillas: la tabla de ejemplo da un CSV con el mismo número de columnas en cada renglón.
 // 5. El índice data/fundamentos/indice.js corresponde a las fichas (node tools/fundamentos/indice.mjs lo regenera).
 // 6. Sin instituciones, sin HTML ni Markdown en los textos.
@@ -37,7 +38,17 @@ const RESP = ['continua', 'conteo', 'binaria', 'proporcion', 'categorica', 'tiem
 const ESTR = ['una-muestra', 'dos-grupos', 'k-grupos', 'factorial', 'bloques', 'parcelas', 'continua', 'aleatorios', 'ambientes', 'ninguna'];
 const DIS = ['dca', 'dbca', 'latino', 'parcelas', 'latice', 'bib', 'medidas-repetidas', 'multiambiente', 'muestreo', 'superficie', 'ninguno'];
 const palabras = a => a.join(' ').split(/\s+/).filter(Boolean).length;
-const tex = (s, donde, p) => { try { SP.formulas.mathml(s); } catch (e) { p.push(donde + ': ' + e.message); } };
+/* XML con las etiquetas balanceadas y sin «<» ni «&» sueltos */
+function balanceado(xml) {
+  const pila = [], re = /<(\/?)([A-Za-z_][\w:.-]*)((?:\s+[\w:.-]+="[^"]*")*)\s*(\/?)>/g;
+  let m;
+  while ((m = re.exec(xml))) { if (m[4] === '/') continue; if (m[1]) { if (pila.pop() !== m[2]) return false; } else pila.push(m[2]); }
+  return !pila.length && !/<[^>]*<|&(?!(amp|lt|gt|quot|apos|#\d+);)/.test(xml);
+}
+const tex = (s, donde, p) => {
+  try { SP.formulas.mathml(s); } catch (e) { p.push(donde + ': ' + e.message); return; }
+  try { const o = SP.formulas.omml(s, { bloque: true }); if (!/^<m:oMathPara><m:oMath>/.test(o) || !balanceado(o)) p.push(donde + ': OMML mal formado'); } catch (e) { p.push(donde + ' (OMML): ' + e.message); }
+};
 
 const fallas = [];
 let total = 0, malas = 0, corridas = 0, formulas = 0;
@@ -119,7 +130,7 @@ if (!solo.length) {
   try { execFileSync(process.execPath, [join(RAIZ, 'tools', 'fundamentos', 'indice.mjs'), '--revisar'], { stdio: 'pipe' }); }
   catch (e) { fallas.push('data/fundamentos/indice.js no corresponde a las fichas: node tools/fundamentos/indice.mjs'); }
 }
-const resumen = (total - malas) + ' de ' + total + ' fichas sin problemas (' + Object.keys(SP.metodos).length + ' análisis); ' + corridas + ' ejemplos corridos en node; ' + formulas + ' fórmulas convertidas a MathML';
+const resumen = (total - malas) + ' de ' + total + ' fichas sin problemas (' + Object.keys(SP.metodos).length + ' análisis); ' + corridas + ' ejemplos corridos en node; ' + formulas + ' fórmulas convertidas a MathML y a Office Math';
 console.log('\nSigmaPro · Fundamentos\n  ' + resumen);
 for (const f of fallas.slice(0, 40)) console.log('  ✗ ' + f);
 console.log(fallas.length ? '\nHAY FALLAS (' + fallas.length + ')' : '\nTODO APROBADO');

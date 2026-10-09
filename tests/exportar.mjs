@@ -2,11 +2,11 @@
 // Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
 //
 // Uso:  node tests/exportar.mjs   (necesita Edge o Chrome y Rscript con readxl, xml2, pdftools, png, openssl,
-//                                  jsonlite, car y emmeans; en Windows revisa el TIFF con System.Drawing)
+//                                  jsonlite, car, emmeans y commonmark; en Windows revisa el TIFF con System.Drawing)
 //
 // 1. Abre index.html por file:// en un navegador sin ventana, carga el ejemplo del maíz y arma un reporte con cinco
 //    análisis (bloques al azar, Tukey, polinomios, regresión polinomial y descriptivos).
-// 2. La página arma cada exportación (.docx, HTML, .xlsx, LaTeX, ZIP de figuras con TIFF y proyecto .labg) y las
+// 2. La página arma cada exportación (.docx, HTML, Markdown, .xlsx, LaTeX, ZIP de figuras con TIFF y proyecto .labg) y las
 //    entrega con lo que deberían contener.
 // 3. El proyecto se reabre en una página nueva y da los mismos cuadros, y el Estudio de figuras recibe el PDF vectorial.
 //    El guardado automático: al volver a abrir SigmaPro, Inicio ofrece recuperar el trabajo y da los mismos cuadros;
@@ -14,7 +14,9 @@
 // 4. R las lee con sus propios lectores: cada número de la hoja de cálculo idéntico al de la app y, para el ANOVA y
 //    las medias, igual al que calcula R desde los datos; cada parte del .docx es XML válido con sus cuadros, figuras y
 //    textos, el índice (campo TOC con un enlace a cada marcador) y un panel de lectura por análisis (hito 5.8); la
-//    página HTML, con su índice enlazado y los mismos paneles; los PDF de las figuras miden lo que deben y traen su
+//    página HTML, con su índice enlazado, los mismos paneles y las fórmulas del apéndice metodológico en MathML (en el
+//    .docx, ecuaciones de Word); el Markdown, leído con commonmark: sus cuadros con el texto exacto, sus imágenes en el
+//    ZIP y su índice enlazado; los PDF de las figuras miden lo que deben y traen su
 //    texto; los PNG dicen 600 ppp; la huella SHA-256 de cada archivo del proyecto coincide con su manifiesto y su
 //    código R corre de principio a fin con los mismos datos.
 //    El TIFF se compara píxel por píxel con el PNG usando el lector de imágenes del sistema.
@@ -63,7 +65,7 @@ const PAGINA = `(async () => {
   SP.app.figuras.pintar();
   const C = SP.app.exportar.construir;
   const salida = {};
-  for (const [k, arg] of [['docx'], ['html'], ['xlsx'], ['latex'], ['figuras', true], ['proyecto']]) {
+  for (const [k, arg] of [['docx'], ['html'], ['markdown'], ['xlsx'], ['latex'], ['figuras', true], ['proyecto']]) {
     const r = await C[k](arg);
     salida[k] = { nombre: r.nombre, b64: typeof r.datos === 'string' ? b64(new TextEncoder().encode(r.datos)) : b64(r.datos) };
   }
@@ -72,8 +74,8 @@ const PAGINA = `(async () => {
   const cuadros = [];
   R.elementos().forEach(x => x.rep.cuadros.forEach(q => { n++; const v = SP.formatos.valores(q, x.visibles), c = SP.formatos.celdas(q, x.visibles); cuadros.push({ numero: n, id: q.id, metodo: x.id, titulo: q.titulo, cabecera: v.cabecera, filas: v.filas, celdas: c.cabecera.concat(c.filas.flat()) }); }));
   const figuras = SP.app.figuras.lista().map(f => ({ numero: f.numero, titulo: f.titulo, ancho: f.svg.viewBox.baseVal.width, alto: f.svg.viewBox.baseVal.height }));
-  const lecturas = R.elementos().filter(x => SP.lectura.panel(x)).length;
-  return JSON.stringify({ salida, esperado: { cuadros, figuras, lecturas, anchoCm: R.opciones.anchoCm, csv: ej.csv, analisis: R.items.length } });
+  const lecturas = R.elementos().filter(x => SP.lectura.panel(x)).length, metodos = new Set(R.elementos().map(x => x.id)).size;
+  return JSON.stringify({ salida, esperado: { cuadros, figuras, lecturas, metodos, anchoCm: R.opciones.anchoCm, csv: ej.csv, analisis: R.items.length } });
 })()`;
 
 let codigo = 1;
@@ -96,7 +98,7 @@ try {
   const t0 = Date.now();
   const { salida, esperado } = JSON.parse(await evaluar(PAGINA));
   const tPagina = Date.now() - t0;
-  const archivo = { docx: 'reporte.docx', html: 'reporte.html', xlsx: 'cuadros.xlsx', latex: 'cuadros.tex', figuras: 'figuras.zip', proyecto: 'proyecto.labg' };
+  const archivo = { docx: 'reporte.docx', html: 'reporte.html', markdown: 'reporte-md.zip', xlsx: 'cuadros.xlsx', latex: 'cuadros.tex', figuras: 'figuras.zip', proyecto: 'proyecto.labg' };
   for (const [k, v] of Object.entries(salida)) writeFileSync(join(dir, archivo[k]), Buffer.from(v.b64, 'base64'));
   writeFileSync(join(dir, 'maiz.csv'), esperado.csv);
   writeFileSync(join(dir, 'esperado.json'), JSON.stringify(esperado));
@@ -175,7 +177,7 @@ try {
 
   /* R: los lectores independientes */
   const guion = `
-suppressPackageStartupMessages({ library(readxl); library(xml2); library(pdftools); library(png); library(openssl); library(jsonlite); library(car); library(emmeans) })
+suppressPackageStartupMessages({ library(readxl); library(xml2); library(pdftools); library(png); library(openssl); library(jsonlite); library(car); library(emmeans); library(commonmark) })
 emm_options(msg.interaction = FALSE)
 setwd(${JSON.stringify(dir.replace(/\\/g, '/'))})
 esp <- fromJSON("esperado.json", simplifyVector = FALSE)
@@ -250,6 +252,7 @@ for (f in list.files("docx/word/media", full.names = TRUE)) {
 texto <- paste(xml_text(xml_find_all(doc, "//w:t", ns)), collapse = " ")
 for (frase in c("Contenido", "Resumen de los resultados", "Lectura de los indicadores", "Métodos", "Resultados", "Referencias", "F(2, 33) = 60.63", "Gomez y Gomez, 1984", "Tukey, 1949a", "R Core Team"))
   if (!grepl(frase, texto, fixed = TRUE)) falla("docx: falta «", frase, "»") else cuenta("docx_frases")
+if (length(xml_find_all(doc, "//m:oMathPara", c(ns, m = "http://schemas.openxmlformats.org/officeDocument/2006/math"))) != esp$metodos) falla("docx: ecuaciones del apéndice") else cuenta("docx_ecuaciones")
 # ---- 4. la página HTML ----
 h <- read_html("reporte.html")
 if (length(xml_find_all(h, "//table[@class='revista']")) != length(esp$cuadros)) falla("html: cuadros")
@@ -257,6 +260,20 @@ if (length(xml_find_all(h, "//figure/*[local-name()='svg']")) != length(esp$figu
 if (length(xml_find_all(h, "//div[@class='lectura']/*[local-name()='svg']")) != esp$lecturas) falla("html: paneles de lectura") else cuenta("html")
 enl <- sub("^#", "", xml_attr(xml_find_all(h, "//nav[@class='indice']//a"), "href")); ids <- xml_attr(xml_find_all(h, "//*[@id]"), "id")
 if (length(enl) < esp$analisis + 3 || !all(enl %in% ids) || length(xml_find_all(h, "//dl[@class='ficha']")) != 1) falla("html: índice o ficha de la portada") else cuenta("html")
+if (length(xml_find_all(h, "//p[@class='formula']/*[local-name()='math']")) != esp$metodos) falla("html: fórmulas del apéndice") else cuenta("html")
+# ---- 4b. el Markdown, leído con commonmark ----
+unzip("reporte-md.zip", exdir = "md")
+hm <- read_html(markdown_html(paste(readLines("md/reporte.md", encoding = "UTF-8", warn = FALSE), collapse = "\\n"), extensions = TRUE))
+tm <- xml_find_all(hm, "//table")
+if (length(tm) != length(esp$cuadros)) falla("md: ", length(tm), " cuadros para ", length(esp$cuadros))
+for (k in seq_along(tm)) {
+  celdas <- xml_text(xml_find_all(tm[[k]], ".//th|.//td"))
+  if (!identical(celdas, unlist(esp$cuadros[[k]]$celdas))) falla("md: el texto del cuadro ", k, " no coincide") else cuenta("md_cuadros")
+}
+src <- xml_attr(xml_find_all(hm, "//img"), "src")
+if (length(src) != length(esp$figuras) + esp$lecturas || !all(file.exists(file.path("md", src)))) falla("md: imágenes") else cuenta("md")
+enl <- sub("^#", "", xml_attr(xml_find_all(hm, "//a[starts-with(@href, '#')]"), "href")); ids <- xml_attr(xml_find_all(hm, "//a[@id]"), "id")
+if (length(enl) < esp$analisis + 3 || !all(enl %in% ids) || length(xml_find_all(hm, "//ol")) > 0) falla("md: índice") else cuenta("md")
 # ---- 5. las figuras: SVG, PDF vectorial, PNG a 600 ppp ----
 unzip("figuras.zip", exdir = "fig")
 for (q in esp$figuras) {
@@ -332,7 +349,8 @@ $res | ConvertTo-Json -Compress`;
   console.log('\nSigmaPro · exportaciones validadas con lectores independientes (armadas en ' + (tPagina / 1000).toFixed(1) + ' s)');
   console.log('  archivos: ' + Object.entries(tam).map(([k, v]) => k + ' ' + Math.round(v / 1024) + ' KB').join(' · '));
   console.log('  hoja de cálculo (readxl): ' + (c.xlsx_numeros || 0) + ' números idénticos a la app y ' + (c.xlsx_textos || 0) + ' textos; ' + (c.contra_R || 0) + ' valores del ANOVA y de las medias iguales a R (car, emmeans)');
-  console.log('  .docx (xml2): ' + (c.docx_partes || 0) + ' partes XML válidas, ' + (c.docx_cuadros || 0) + ' cuadros con su texto exacto, ' + (c.docx_imagenes || 0) + ' imágenes a 300 ppp, ' + (c.docx_lecturas ? 'paneles de lectura, ' : '') + (c.docx_indice ? 'índice, ' : '') + (c.docx_frases || 0) + ' frases clave');
+  console.log('  .docx (xml2): ' + (c.docx_partes || 0) + ' partes XML válidas, ' + (c.docx_cuadros || 0) + ' cuadros con su texto exacto, ' + (c.docx_imagenes || 0) + ' imágenes a 300 ppp, ' + (c.docx_lecturas ? 'paneles de lectura, ' : '') + (c.docx_indice ? 'índice, ' : '') + (c.docx_ecuaciones ? 'ecuaciones del apéndice, ' : '') + (c.docx_frases || 0) + ' frases clave');
+  console.log('  Markdown (commonmark): ' + (c.md_cuadros || 0) + ' cuadros con su texto exacto, imágenes en el ZIP e índice enlazado' + (c.md >= 2 ? '' : ' (incompleto)'));
   console.log('  figuras: ' + (c.svg || 0) + ' SVG en mm, ' + (c.pdf || 0) + ' PDF del tamaño pedido con texto en Helvetica (pdftools), ' + (c.png || 0) + ' PNG a 600 ppp (png)');
   console.log('  TIFF (System.Drawing): ' + tiffInfo);
   console.log('  proyecto .labg (openssl): ' + (c.labg_huellas || 0) + ' huellas SHA-256 iguales, datos idénticos a los originales, código R corrido completo (' + (c.labg_codigo_R_lineas || 0) + ' líneas de salida)');
@@ -342,7 +360,7 @@ $res | ConvertTo-Json -Compress`;
   const todas = fallasNode.concat(fallasR, fallasTiff, consola);
   guardar('exportar', { titulo: 'Las exportaciones, leídas con lectores independientes', ok: !todas.length,
     resumen: `Hoja de cálculo: ${c.xlsx_numeros || 0} números idénticos a la app y ${c.contra_R || 0} valores del ANOVA y las medias iguales a R; .docx válido con ${c.docx_cuadros || 0} cuadros exactos y ${c.docx_imagenes || 0} figuras a 300 ppp; ${c.pdf || 0} PDF vectoriales y ${c.png || 0} PNG a 600 ppp; TIFF iguales al PNG; proyecto .labg con ${c.labg_huellas || 0} huellas SHA-256 iguales, su código R corrido completo y reabierto con los mismos cuadros; el guardado automático recupera el trabajo con los mismos cuadros`,
-    renglones: ['Lectores: readxl, xml2, pdftools, png, openssl (R) y el lector de imágenes del sistema'] });
+    renglones: ['Lectores: readxl, xml2, pdftools, png, openssl, commonmark (R) y el lector de imágenes del sistema'] });
   if (todas.length) { console.log('\nFALLAS:'); todas.forEach(f => console.log('  ✗ ' + f)); }
   else console.log('\nTODO APROBADO');
   codigo = todas.length ? 1 : 0;

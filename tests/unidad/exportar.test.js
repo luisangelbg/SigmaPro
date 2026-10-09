@@ -251,6 +251,54 @@ SPT.describir('Exportaciones · reporte, documentos, hojas, imágenes y proyecto
     for (const u of usados) SPT.afirmar(est.includes('w:styleId="' + u + '"'), 'estilo definido: ' + u);
   });
 
+  SPT.caso('Office Math: subíndices, fracciones, raíces, sumas con límites, acentos y texto, como ecuaciones de Word', () => {
+    const o = SP.formulas.omml('\\bar{y} = \\frac{1}{n} \\sum_{i=1}^{n} y_i + \\sqrt{s^2} + \\text{si } \\mathcal{N}', { bloque: true });
+    SPT.afirmar(/^<m:oMathPara><m:oMath>/.test(o) && /<\/m:oMath><\/m:oMathPara>$/.test(o), 'párrafo de ecuación');
+    for (const t of ['<m:acc><m:accPr><m:chr m:val="\u0304"/>', '<m:f><m:num>', '<m:den>', '<m:limLow>', '<m:limUpp>', '<m:sSub><m:e>', '<m:rad><m:radPr><m:degHide m:val="1"/>', '<m:sSup>', '<m:rPr><m:nor/></m:rPr><m:t xml:space="preserve">si </m:t>', '𝒩'])
+      SPT.afirmar(o.includes(t), 'falta ' + t);
+    SPT.afirmar(bienFormado(o), 'XML bien formado');
+    SPT.afirmar(/^<m:oMath>/.test(SP.formulas.omml('x_i')), 'en línea');
+    SPT.afirmar(/<m:sty m:val="p"\/><\/m:rPr><m:t xml:space="preserve">log/.test(SP.formulas.omml('\\log(\\mu)')), 'las funciones, rectas');
+  });
+
+  SPT.caso('Apéndice metodológico y Markdown (hito 5.8): la ficha de cada método, anexos con su letra y el documento en Markdown', () => {
+    const c = ensayo(), t = tab(c);
+    const op = SP.opcionesCon(SP.metodos.dbca, {}), e = { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' };
+    const r = SP.ejecutar('dbca', t, e, op).resultado, rep = SP.metodos.dbca.reporte(r);
+    const items = [{ titulo: rep.titulo, id: 'dbca', e, op, r, rep, codigo: 'aov(rend ~ bloque + hibrido * dosis)', figuras: [{ titulo: 'Medias', descripcion: 'd', nombre: 'figura-01.png', imagen: new Uint8Array([1]) }], detalles: [['Método', 'dbca']],
+      lectura: { svg: '<svg/>', textos: ['Valor p · hibrido: < 0.001 — muy fuerte'], fuentes: ['Cohen (1988)'], descripcion: 'x' } }];
+    const ficha = { paraQue: 'Compara tratamientos con bloques.', modelo: { tex: 'y_{ij} = \\mu + \\tau_i + \\beta_j + \\varepsilon_{ij}', terminos: [['\\mu', 'la media general']] },
+      hipotesis: [{ h0: '\\tau_i = 0', h1: '\\tau_i \\ne 0', texto: 'Igualdad de medias.' }], supuestos: [{ nombre: 'Normalidad' }, { nombre: 'Varianzas iguales' }], referencias: ['Gomez, K. A., & Gomez, A. A. (1984). Statistical procedures.'] };
+    const bs = SP.informe.bloques(items, { titulo: 'Ensayo', metodos: [{ id: 'dbca', nombre: 'Bloques completos al azar', ficha }] });
+    const anexos = bs.filter(b => b.tipo === 'encabezado' && b.nivel === 1 && /^Anexo/.test(b.texto)).map(b => b.texto);
+    SPT.igualJSON(anexos.map(a => a.slice(0, 8)), ['Anexo A.', 'Anexo B.', 'Anexo C.'], anexos.join(' | '));
+    SPT.afirmar(/Apéndice metodológico|Methods appendix/.test(anexos[0]), anexos[0]);
+    SPT.igualJSON(['formula', 'terminos', 'hipotesis', 'lista'].map(k => bs.filter(b => b.tipo === k).length), [1, 1, 1, 1]);
+    const sinCodigo = SP.informe.bloques(items, { conDetalles: false, metodos: [{ id: 'dbca', nombre: 'B', ficha }] }).filter(b => b.tipo === 'encabezado' && b.nivel === 1 && /^Anexo/.test(b.texto));
+    SPT.igualJSON(sinCodigo.map(b => b.texto.slice(0, 8)), ['Anexo A.', 'Anexo B.'], 'sin huecos en las letras');
+    SPT.afirmar(!SP.informe.bloques(items, { conMetodos: false, metodos: [{ id: 'dbca', nombre: 'B', ficha }] }).some(b => b.tipo === 'formula'), 'la casilla lo quita');
+    /* HTML con MathML y .docx con Office Math */
+    const html = SP.informe.html(bs, {});
+    SPT.afirmar(/<p class="formula"><math [^>]*display="block"/.test(html) && /<ul class="terminos"><li><math/.test(html) && /H<sub>0<\/sub>: <math/.test(html), 'MathML en la página');
+    const d = SP.zip.leer(SP.docx.construir({ titulo: 'E', bloques: bs.filter(b => b.tipo !== 'figura' && b.tipo !== 'lectura') })).texto('word/document.xml');
+    SPT.afirmar(bienFormado(d) && /xmlns:m="http:\/\/schemas.openxmlformats.org\/officeDocument\/2006\/math"/.test(d), 'XML con el espacio de nombres de Office Math');
+    SPT.igual((d.match(/<m:oMathPara>/g) || []).length, 1);
+    SPT.igual((d.match(/<m:oMath>/g) || []).length, 4, 'el modelo, un término y las dos hipótesis');
+    /* Markdown */
+    for (const b of bs) if (b.tipo === 'figura') b.archivo = 'figuras/' + b.nombre;
+    const md = SP.informe.markdown(bs);
+    SPT.afirmar(/^# Ensayo\n/.test(md), 'título');
+    const filas = md.split('\n');
+    SPT.afirmar(filas.some(l => /^\| :--- \|( ---: \|)+$/.test(l)), 'la fila de alineación del cuadro');
+    SPT.afirmar(md.includes('![Medias. d](figuras/figura-01.png)') && md.includes('**' + SP.T('Figura') + ' 1.**'), 'la figura con su leyenda');
+    SPT.afirmar(md.includes('$$\ny_{ij} = \\mu + \\tau_i + \\beta_j + \\varepsilon_{ij}\n$$') && md.includes('- $\\mu$: la media general'), 'el modelo en TeX');
+    SPT.afirmar(md.includes('```r\naov(rend ~ bloque + hibrido * dosis)\n```'), 'el código R sin escapar');
+    SPT.afirmar(md.includes('- Valor p · hibrido: < 0.001 — muy fuerte'), 'la lectura en texto, «<» sin escapar');
+    const anclas = [...md.matchAll(/<a id="(sec-\d+)"><\/a>/g)].map(m => m[1]), enlaces = [...md.matchAll(/\]\(#(sec-\d+)\)/g)].map(m => m[1]);
+    SPT.igualJSON(enlaces, anclas, 'un enlace del índice por ancla');
+    SPT.igual(SP.informe.markdown([{ tipo: 'parrafo', texto: '1. uno *dos* [x] a_b _c p < 0.05 <b>' }]), '1\\. uno \\*dos\\* \\[x\\] a_b \\_c p < 0.05 \\<b>\n');
+  });
+
   SPT.caso('Proyecto .labg: guardar y abrir devuelve la misma hoja, filtro y reporte; la huella detecta un cambio', async () => {
     const c = ensayo();
     const hoja = SP.hoja.crear({ nombres: Object.keys(c), columnas: c, tipos: { bloque: { tipo: 'factor' }, hibrido: { tipo: 'factor' } } });

@@ -2,6 +2,24 @@
 
 ## Sin publicar
 
+### 0.5.15 · Hito 5.8, parte 2: apéndice metodológico y Markdown (9 oct 2026)
+
+- **Apéndice metodológico** (anexo A del documento, casilla *Apéndice metodológico*): para cada método del reporte,
+  de su ficha en Fundamentos, para qué sirve, su modelo con el significado de cada término, las hipótesis que prueba,
+  sus supuestos y las lecturas para profundizar, en el idioma de la app.
+  - Las fórmulas van en MathML en la página HTML y en el PDF, como **ecuaciones de Word** en el .docx (Office Math:
+    `SP.formulas.omml`, con subíndices, fracciones, raíces, sumas con sus límites y acentos, editables en el
+    procesador de textos) y en TeX en el Markdown. `tests/fundamentos.mjs` convierte las 1 472 fórmulas de las
+    fichas también a Office Math.
+  - Los anexos toman su letra en el orden en que van (A, B, C…), sin huecos cuando se quita alguno.
+- **Markdown** (botón *Markdown (.zip)*): el mismo documento en `reporte.md` (CommonMark con tablas: cada cuadro
+  como tabla con sus columnas alineadas y sus notas; el índice enlazado a anclas; el código R en bloques; las
+  fórmulas entre $), con las figuras y los paneles de lectura como PNG a 300 ppp en `figuras/`.
+- `LABGuide.panel` devuelve también el texto de cada renglón (`textos`), que el Markdown pone como lista.
+- Pruebas: `tests/unidad/exportar.test.js` (Office Math, apéndice, letras de los anexos, Markdown y sus escapes);
+  `tests/exportar.mjs` lee el Markdown con commonmark (los cuadros con su texto exacto, las imágenes del ZIP, el
+  índice) y cuenta las ecuaciones del .docx y las fórmulas MathML de la página. 10 textos nuevos en inglés.
+
 ### 0.5.14 · Hito 5.8, parte 1: el documento del reporte rediseñado (9 oct 2026)
 
 - **Portada** con una ficha: los datos (con su número de filas), el contenido (análisis, cuadros y figuras) y el

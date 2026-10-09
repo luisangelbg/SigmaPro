@@ -3,7 +3,8 @@
 
      Reporte  .docx (figuras PNG a 300 ppp con su tamaño), HTML (figuras vectoriales en la página) y PDF (la misma página,
               con el diálogo de impresión del navegador). Desde el hito 5.8: portada con su ficha, índice, resumen en pocas
-              palabras y, en cada análisis, el panel «Lectura de los indicadores» (SP.lectura.panel)
+              palabras y, en cada análisis, el panel «Lectura de los indicadores» (SP.lectura.panel); el apéndice
+              metodológico con la ficha de Fundamentos de cada método, y Markdown (un ZIP con reporte.md y sus figuras)
      Cuadros  hoja de cálculo .xlsx (un cuadro por hoja, con todas las cifras, y un índice) y LaTeX (booktabs)
      Figuras  un ZIP con SVG, PDF vectorial y PNG a 600 ppp (y TIFF si se pide), con su índice
      Proyecto .labg: datos, análisis, ajustes de las figuras y el código R, con la huella SHA-256 de cada archivo
@@ -23,7 +24,7 @@
   function opcionesDoc() {
     const d = SP.app.datos, r = R();
     return { titulo: r.titulo || T('Reporte de análisis estadístico'), autor: r.autor, datos: d && d.origen, n: d && d.hoja ? (d.filtro ? d.filtro.filas.length : d.hoja.n) : null,
-      conCodigo: r.opciones.codigo, conDetalles: r.opciones.detalles, conResumen: r.opciones.resumen !== false, conLectura: r.opciones.lectura !== false, hoja: r.opciones.hoja };
+      conCodigo: r.opciones.codigo, conDetalles: r.opciones.detalles, conResumen: r.opciones.resumen !== false, conLectura: r.opciones.lectura !== false, conMetodos: r.opciones.metodos !== false, hoja: r.opciones.hoja };
   }
   /** Los elementos del documento con sus figuras: como SVG (HTML) o como PNG con su tamaño (docx). */
   async function items(conPng) {
@@ -50,13 +51,27 @@
     try { p = SP.lectura.panel(x); } catch (e) { console.error(e); }
     if (!p) return null;
     const anchoCm = Math.min(16, SP.docx.anchoUtilCm(R().opciones.hoja)), altoCm = anchoCm * p.alto / p.ancho;
-    const out = { svg: p.svg, descripcion: p.descripcion, fuentes: p.fuentes, anchoCm, altoCm };
+    const out = { svg: p.svg, descripcion: p.descripcion, textos: p.textos, fuentes: p.fuentes, anchoCm, altoCm };
     if (conPng) {
       const svg = new DOMParser().parseFromString(p.svg, 'image/svg+xml').documentElement;
       out.imagen = await F().png(svg, anchoCm, 300);
     }
     return out;
   }
+  /** Las fichas de Fundamentos de los métodos del reporte, para el apéndice metodológico (en el idioma de la app). */
+  async function metodos(elems) {
+    if (R().opciones.metodos === false || !SP.app.fundamentos || !SP.app.fundamentos.cargar) return [];
+    const out = [];
+    for (const id of [...new Set(elems.map(x => x.id))]) {
+      let f = null;
+      try { f = await SP.app.fundamentos.cargar(id); } catch (e) { f = null; }
+      const ficha = f && (f[SP.IDIOMA] || f.es);
+      if (ficha) out.push({ id, nombre: SP.metodos[id] ? SP.metodos[id].nombre : id, ficha });
+    }
+    return out;
+  }
+  /** Las opciones del documento con el apéndice metodológico. */
+  async function opcionesCon(its) { return Object.assign(opcionesDoc(), { metodos: await metodos(its) }); }
   const hayReporte = () => { if (R().items.length) return true; if (L()) L().toast(T('El reporte está vacío: agrega análisis desde Explorar o Análisis.'), { type: 'warning' }); return false; };
   async function trabajo(boton, mensaje, fn) {
     if (boton && boton.tagName) boton.disabled = true;
@@ -69,13 +84,26 @@
   /* cada exportación se arma aparte de su descarga (las pruebas piden los bytes) → { datos, nombre, tipo, mensaje } */
   const construir = {
     async docx() {
-      const o = opcionesDoc(), bloques = SP.informe.bloques(await items(true), o);
+      const its = await items(true), o = await opcionesCon(its), bloques = SP.informe.bloques(its, o);
       const datos = SP.docx.construir({ titulo: o.titulo, autor: o.autor, hoja: o.hoja, bloques });
       const nombre = base() + '-' + hoy() + '.docx';
       return { datos, nombre, tipo: SP.docx.MIME, mensaje: T('Listo: {n} ({k} KB).', { n: nombre, k: Math.max(1, Math.round(datos.length / 1024)) }) };
     },
     async html() {
       return { datos: await paginaHtml(), nombre: base() + '-' + hoy() + '.html', tipo: 'text/html;charset=utf-8', mensaje: T('Listo: la página trae las figuras vectoriales y se abre en cualquier navegador.') };
+    },
+    async markdown() {
+      const its = await items(true), o = await opcionesCon(its), bloques = SP.informe.bloques(its, o);
+      /* cada figura y cada panel de lectura, como archivo en «figuras/» */
+      const archivos = [];
+      let nl = 0;
+      for (const b of bloques) {
+        if (b.tipo === 'figura' && b.imagen) { b.archivo = 'figuras/' + b.nombre; archivos.push({ nombre: b.archivo, datos: b.imagen }); }
+        else if (b.tipo === 'lectura' && b.imagen) { b.archivo = 'figuras/lectura-' + (++nl) + '.png'; archivos.push({ nombre: b.archivo, datos: b.imagen }); }
+      }
+      archivos.unshift({ nombre: 'reporte.md', datos: SP.informe.markdown(bloques) });
+      const nombre = base() + '-markdown-' + hoy() + '.zip';
+      return { datos: await SP.zip.construirComprimido(archivos), nombre, tipo: 'application/zip', mensaje: T('Listo: {n}, con reporte.md y {k} imágenes en «figuras».', { n: nombre, k: archivos.length - 1 }) };
     },
     async xlsx() {
       const lista = cuadros();
@@ -124,10 +152,11 @@
   const docx = b => (hayReporte() ? exportar(b, T('Armando el documento .docx…'), 'docx') : null);
   async function paginaHtml() {
     await R().listo();
-    const o = opcionesDoc();
-    return SP.informe.html(SP.informe.bloques(await items(false), o), o);
+    const its = await items(false), o = await opcionesCon(its);
+    return SP.informe.html(SP.informe.bloques(its, o), o);
   }
   const html = b => (hayReporte() ? exportar(b, T('Armando la página…'), 'html') : null);
+  const markdown = b => (hayReporte() ? exportar(b, T('Armando el Markdown…'), 'markdown') : null);
   async function imprimir(boton) {
     if (!hayReporte()) return;
     await trabajo(boton, T('Preparando la impresión…'), async () => {
@@ -237,6 +266,7 @@
     const det = $('#expoDetalles'); if (det) det.checked = !!r.opciones.detalles;
     const res = $('#expoClaro'); if (res) res.checked = r.opciones.resumen !== false;
     const lec = $('#expoLectura'); if (lec) lec.checked = r.opciones.lectura !== false;
+    const met = $('#expoMetodos'); if (met) met.checked = r.opciones.metodos !== false;
   }
   function iniciar() {
     const panel = $('#panel-7');
@@ -246,7 +276,7 @@
       if (!b) return;
       const acc = b.dataset.expo;
       if (acc === 'abrir') { $('#expoArchivo').click(); return; }
-      ({ docx, html, imprimir, xlsx, latex, figuras: figurasZip, proyecto: guardarProyecto }[acc] || (() => {}))(b);
+      ({ docx, html, markdown, imprimir, xlsx, latex, figuras: figurasZip, proyecto: guardarProyecto }[acc] || (() => {}))(b);
     });
     panel.addEventListener('change', e => {
       const el = e.target, o = R().opciones;
@@ -255,6 +285,7 @@
       else if (el.id === 'expoDetalles') o.detalles = el.checked;
       else if (el.id === 'expoClaro') o.resumen = el.checked;
       else if (el.id === 'expoLectura') o.lectura = el.checked;
+      else if (el.id === 'expoMetodos') o.metodos = el.checked;
       else return;
       try { localStorage.setItem('sigmapro.reporte.opciones', JSON.stringify(o)); } catch (x) { /* nada */ }
     });

@@ -7,6 +7,7 @@
 
      SP.formulas.mathml(tex, { bloque })   → '<math …>…</math>'; lanza un Error si el TeX usa algo fuera del subconjunto
      SP.formulas.texto(tex)                → la fórmula en texto plano (para el reporte y los lectores sin MathML)
+     SP.formulas.omml(tex, { bloque })     → la fórmula como ecuación de Word (Office Math, OMML) para el .docx (hito 5.8)
 
    El subconjunto: letras y números, ^{} _{}, \frac{}{}, \sqrt{}, \sum \prod con límites, \bar \hat \tilde \overline,
    griegas, \cdot \times \pm \sim \le \ge \ne \approx \to \in \mid \infty \partial \ldots \cdots, \log \exp \ln \max
@@ -163,11 +164,56 @@ SP.definir('formulas', function (SP) {
   }
   const envolver = s => (s.length > 1 ? '(' + s + ')' : s);
 
+  /* ---------------- Office Math (OMML), para el .docx ---------------- */
+  /* los acentos de OMML son caracteres combinantes */
+  const COMBINANTES = { '¯': '\u0304', '^': '\u0302', '~': '\u0303', '→': '\u20D7', '˙': '\u0307' };
+  const corrida = (v, op) => {
+    const sty = op.negrita ? (op.recto ? 'b' : 'bi') : op.recto ? 'p' : '';
+    const rPr = op.nor ? '<m:rPr><m:nor/></m:rPr>' : sty ? `<m:rPr><m:sty m:val="${sty}"/></m:rPr>` : '';
+    return `<m:r>${rPr}<m:t xml:space="preserve">${esc(v)}</m:t></m:r>`;
+  };
+  function om(n, est) {
+    const neg = !!(est && est.negrita);
+    switch (n.t) {
+      case 'row': return n.l.map(x => om(x, est)).join('');
+      case 'mn': return corrida(n.v, { recto: true, negrita: neg });
+      case 'mi': return corrida(n.v, { recto: !!(n.normal || n.v.length > 1), negrita: neg }) + (n.funcion ? corrida(' ', { recto: true }) : '');
+      case 'mo': return corrida(n.v, { recto: true, negrita: neg });
+      case 'mtext': return n.rm ? corrida(n.v, { recto: true, negrita: neg }) : corrida(n.v, { nor: true });
+      case 'espacio': return /^-/.test(n.v) ? '' : corrida(parseFloat(n.v) >= 1 ? '\u2003' : '\u2009', { recto: true });
+      case 'frac': return `<m:f><m:num>${om(n.a, est)}</m:num><m:den>${om(n.b, est)}</m:den></m:f>`;
+      case 'sqrt': return `<m:rad><m:radPr><m:degHide m:val="1"/></m:radPr><m:deg/><m:e>${om(n.a, est)}</m:e></m:rad>`;
+      case 'acento': return n.ancho ? `<m:bar><m:barPr><m:pos m:val="top"/></m:barPr><m:e>${om(n.a, est)}</m:e></m:bar>`
+        : `<m:acc><m:accPr><m:chr m:val="${COMBINANTES[n.v] || n.v}"/></m:accPr><m:e>${om(n.a, est)}</m:e></m:acc>`;
+      case 'estilo': return om(n.a, { negrita: true });
+      case 'script': {
+        const b = om(n.base, est);
+        /* los límites de ∑ y ∏ van debajo y encima */
+        if (n.base.t === 'mo' && n.base.grande) {
+          let x = b;
+          if (n.sub) x = `<m:limLow><m:e>${x}</m:e><m:lim>${om(n.sub, est)}</m:lim></m:limLow>`;
+          if (n.sup) x = `<m:limUpp><m:e>${x}</m:e><m:lim>${om(n.sup, est)}</m:lim></m:limUpp>`;
+          return x;
+        }
+        if (n.sub && n.sup) return `<m:sSubSup><m:e>${b}</m:e><m:sub>${om(n.sub, est)}</m:sub><m:sup>${om(n.sup, est)}</m:sup></m:sSubSup>`;
+        if (n.sub) return `<m:sSub><m:e>${b}</m:e><m:sub>${om(n.sub, est)}</m:sub></m:sSub>`;
+        return `<m:sSup><m:e>${b}</m:e><m:sup>${om(n.sup, est)}</m:sup></m:sSup>`;
+      }
+    }
+    throw new Error('Fórmula: nodo ' + n.t);
+  }
+  /** El TeX como ecuación de Word: <m:oMath> (en línea) o, con { bloque: true }, <m:oMathPara> en su propio párrafo. El
+      prefijo m: es el espacio de nombres de Office Math, que el documento declara. */
+  function omml(tex, op) {
+    const m = '<m:oMath>' + parser(String(tex || '')).map(x => om(x)).join('') + '</m:oMath>';
+    return op && op.bloque ? '<m:oMathPara>' + m + '</m:oMathPara>' : m;
+  }
+
   /** El TeX en MathML; con { bloque: true }, centrado en su propio renglón. */
   function mathml(tex, op) {
     const l = parser(String(tex || ''));
     const plano = l.map(texto).join('').replace(/\s+/g, ' ').trim();
     return '<math xmlns="http://www.w3.org/1998/Math/MathML"' + (op && op.bloque ? ' display="block"' : '') + ' aria-label="' + esc(plano).replace(/"/g, '&quot;') + '"><mrow>' + l.map(ml).join('') + '</mrow></math>';
   }
-  SP.formulas = { mathml, texto: tex => parser(String(tex || '')).map(texto).join('').replace(/\s+/g, ' ').trim() };
+  SP.formulas = { mathml, omml, texto: tex => parser(String(tex || '')).map(texto).join('').replace(/\s+/g, ' ').trim() };
 });

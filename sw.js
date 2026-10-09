@@ -15,7 +15,7 @@
      copia guardada (y, con red, se guarda esa copia para la próxima vez sin conexión).
    · Solo maneja peticiones GET (y HEAD del motor) del mismo origen: nunca guarda ni envía datos de quien usa la app. */
 'use strict';
-const VERSION = '0.5.14-2026-10-09';
+const VERSION = '0.5.15-2026-10-09';
 const CACHE = 'sigmapro-' + VERSION;
 const MOTOR = 'sigmapro-motor-r-0.6.0';
 /* lo que la app carga después de abrir y index.html no nombra con src: el estudio y el navegador traen su hoja de estilo, el

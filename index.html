@@ -357,15 +357,16 @@
   <div class="expo-grid">
     <div class="card expo-tarjeta">
       <h3>Reporte completo</h3>
-      <p class="small muted">Portada con su ficha, índice, resumen en pocas palabras, métodos (con la cita de cada prueba), resultados con la lectura de sus indicadores, cuadros y figuras numerados, supuestos, referencias y anexos.</p>
+      <p class="small muted">Portada con su ficha, índice, resumen en pocas palabras, métodos (con la cita de cada prueba), resultados con la lectura de sus indicadores, cuadros y figuras numerados, supuestos, referencias y anexos (el apéndice metodológico, los detalles técnicos y el código R). También en Markdown, con sus figuras.</p>
       <div class="exp-fila">
         <label class="field"><span>Tamaño de hoja</span><select class="select" id="expoHoja"><option value="carta">Carta</option><option value="a4">A4</option></select></label>
       </div>
-      <div class="exp-casillas"><label class="imp-check"><input type="checkbox" id="expoClaro" checked> Resumen en pocas palabras</label><label class="imp-check"><input type="checkbox" id="expoLectura" checked> Lectura de los indicadores con medidores</label><label class="imp-check"><input type="checkbox" id="expoCodigo" checked> Código R en un anexo</label><label class="imp-check"><input type="checkbox" id="expoDetalles" checked> Detalles técnicos en un anexo</label></div>
+      <div class="exp-casillas"><label class="imp-check"><input type="checkbox" id="expoClaro" checked> Resumen en pocas palabras</label><label class="imp-check"><input type="checkbox" id="expoLectura" checked> Lectura de los indicadores con medidores</label><label class="imp-check"><input type="checkbox" id="expoMetodos" checked> Apéndice metodológico</label><label class="imp-check"><input type="checkbox" id="expoCodigo" checked> Código R en un anexo</label><label class="imp-check"><input type="checkbox" id="expoDetalles" checked> Detalles técnicos en un anexo</label></div>
       <div class="btn-row">
         <button type="button" class="btn btn-primary btn-sm" data-expo="docx">Documento .docx</button>
         <button type="button" class="btn btn-secondary btn-sm" data-expo="imprimir">PDF (imprimir)</button>
         <button type="button" class="btn btn-secondary btn-sm" data-expo="html">Página HTML</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-expo="markdown">Markdown (.zip)</button>
       </div>
     </div>
     <div class="card expo-tarjeta">

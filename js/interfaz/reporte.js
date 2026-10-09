@@ -21,7 +21,7 @@
 
   const est = SP.app.reporte = {
     titulo: '', autor: leer('autor', ''), items: [], siguiente: 1, version: 0, pendiente: true,
-    opciones: Object.assign({ barras: 'ee', hoja: 'carta', codigo: true, detalles: true, resumen: true, lectura: true, anchoCm: 16 }, leer('opciones', {})),
+    opciones: Object.assign({ barras: 'ee', hoja: 'carta', codigo: true, detalles: true, resumen: true, lectura: true, metodos: true, anchoCm: 16 }, leer('opciones', {})),
   };
   const cache = new Map();
   const SUPUESTOS_SOLOS = ['dca', 'dbca'];

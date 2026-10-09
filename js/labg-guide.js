@@ -30,7 +30,7 @@
                       'izquierda' | 'dos', p, alfa, titulo, formato, lectura })                   → HTML
    En la tarjeta, «extra» es HTML de la app (ya escapado) que va al final, como un formulario para ajustar la guía.
      LABGuide.densidad(dist, x, gl1, gl2)                                                          → número
-     LABGuide.panel([{ titulo, valor, escala, formato, formatoEje }], { titulo })  → { svg, ancho, alto, descripcion, n }
+     LABGuide.panel([{ titulo, valor, escala, formato, formatoEje }], { titulo })  → { svg, ancho, alto, descripcion, textos, n }
    eje: 'lineal', 'log', 'abs' (el valor absoluto) o 'logabs' (una razón: 1/2 se lee como 2). tono: 'n0' a 'n3'
    (magnitud) u 'ok', 'ok2' (bien, más claro), 'aviso', 'mal' (calidad). Los textos propios siguen el idioma de <html lang>. */
 (function (raiz) {
@@ -294,7 +294,7 @@
     return {
       svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${P.ancho} ${alto}" width="${P.ancho}" height="${alto}" role="img" aria-label="${esc(descripcion)}">` +
         `<rect x="0" y="0" width="${P.ancho}" height="${alto}" fill="#ffffff"/>${svg}</svg>`,
-      ancho: P.ancho, alto, descripcion, n: lista.length,
+      ancho: P.ancho, alto, descripcion, textos: desc, n: lista.length,
     };
   }
 
