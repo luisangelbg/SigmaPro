@@ -49,7 +49,7 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b4-discriminante.png" alt="Los frutos de chile en las dos primeras funciones discriminantes, LD1 con 66.8 % y LD2 con 28.9 %: las cuatro variedades, Ancho, Guajillo, Jalapeño y Serrano, forman cuatro nubes separadas en las cuatro esquinas"></div>
-      <figcaption><b>Figura 4.50.</b> Los 60 frutos en las dos primeras funciones discriminantes: cuatro nubes sin traslape.</figcaption>
+      <figcaption><b>Figura 4.52.</b> Los 60 frutos en las dos primeras funciones discriminantes: cuatro nubes sin traslape.</figcaption>
     </figure>
     <div>
       <p>Con los chiles hay tres funciones; la primera explica el 66.8 % de la separación y la segunda el 28.9 %. Con validación cruzada, los 60 frutos quedan en su variedad (100 %). Aquí cada fruto sí es una unidad: lo que se quiere es clasificar frutos.</p>
@@ -64,7 +64,7 @@
   <p>Los cálculos de potencia preguntan <span class="ui">¿Qué quieres calcular?</span>: el tamaño de muestra, la potencia de un tamaño dado o el efecto que se puede detectar (la diferencia entre medias, la variación entre las medias del ANOVA o la correlación; en dos proporciones, solo el tamaño o la potencia). Usan las mismas fórmulas que R (<code>power.t.test</code>, <code>power.anova.test</code>, <code>power.prop.test</code> y <code>pwr.r.test</code> del paquete pwr) y dibujan la potencia según el tamaño de muestra. La <span class="ui">Hipótesis alternativa</span> puede ser bilateral o unilateral; con la unilateral, la app prueba la dirección positiva, así que la diferencia o la correlación se escriben como números positivos (con un número negativo, la potencia sale en 0 % y el tamaño de muestra no tiene sentido).</p>
   <figure class="media">
     <div class="marco"><img src="../img/b4-potencia.png" alt="El cálculo del tamaño de muestra de una prueba t sin datos: el formulario con El tamaño de muestra, dos grupos independientes, la diferencia de 0.5, la desviación estándar de 0.4, la hipótesis bilateral, la potencia de 0.8 y el nivel de significancia de 0.05; la cabecera del resultado con ¿Qué es este análisis? y Agregar al reporte; la conclusión, 12 unidades por grupo (n exacta 11.09); el selector Tema de las gráficas; la curva de la potencia según el tamaño de muestra, con las líneas discontinuas en 0.8 y en 11.09; y debajo, el comienzo del cuadro de parámetros"></div>
-    <figcaption><b>Figura 4.51.</b> Para detectar una diferencia de 0.5 con una desviación estándar de 0.4, hacen falta 12 unidades por grupo.</figcaption>
+    <figcaption><b>Figura 4.53.</b> Para detectar una diferencia de 0.5 con una desviación estándar de 0.4, hacen falta 12 unidades por grupo.</figcaption>
   </figure>
   <table class="compacta salida">
     <caption><b>Cuadro 4.19.</b> Los seis cálculos sin datos, con un ejemplo de cada uno.</caption>
@@ -87,7 +87,7 @@
   <p>Con el aguacate de tres huertas (1580 árboles), la estimación simple da una media de 51.89 kg por árbol (EE = 1.975) y la estratificada 54.32 (IC 95 %: 52.00 a 56.65), con un error estándar bastante menor (1.142) y 32.29 grados de libertad efectivos (Satterthwaite). La diferencia tiene explicación: la muestra tomó 16 árboles de la Planicie, que tiene el 57 % de los árboles y los más productivos, y 20 de las otras dos huertas, que tienen el 43 %; la estimación simple los pesa igual y se va hacia abajo, la estratificada pesa cada huerta por su tamaño. Por eso este ejemplo sirve para comparar los dos métodos, pero la estimación correcta para estos datos es la estratificada.</p>
   <figure class="estrecha">
     <div class="marco"><img src="../img/b4-estratificado.png" alt="El resultado del muestreo estratificado del aguacate: la conclusión con la media estratificada de 54.32 kg por árbol (IC 95 %: 52.00 a 56.65; EE = 1.142, 32.29 gl efectivos), el total estimado de 85832 kg en los 1580 árboles (IC: 82157 a 89507) y la asignación de Neyman para una muestra de 60, 17 en Ladera, 29 en Planicie y 16 en Vega, que al redondear hacia arriba suman 62; el selector Tema de las gráficas; y la gráfica Media de cada estrato, con Ladera en 46.17 (IC 41.53 a 50.81), Planicie en 62.01 (59.00 a 65.03) y Vega en 40.88 (32.61 a 49.15), y la línea discontinua de la media estratificada"></div>
-    <figcaption><b>Figura 4.52.</b> El aguacate por huerta: la media estratificada pesa cada huerta por su tamaño, y la asignación de Neyman avisa cuando el redondeo pasa del total pedido.</figcaption>
+    <figcaption><b>Figura 4.54.</b> El aguacate por huerta: la media estratificada pesa cada huerta por su tamaño, y la asignación de Neyman avisa cuando el redondeo pasa del total pedido.</figcaption>
   </figure>
   <p>Para una muestra nueva de 60, Neyman toma 17 en la Ladera, 29 en la Planicie y 16 en la Vega: más en los estratos grandes y en los variables. Cada estrato se redondea hacia arriba, así que la suma puede pasar del total; cuando pasa, la conclusión lo dice («Al redondear hacia arriba suman 62»). El cuadro <span class="ui">Cómo repartir una muestra de 60</span> trae los valores sin redondear de las dos asignaciones (proporcional: 15.95, 34.18 y 9.87; Neyman: 16.14, 28.22 y 15.63) para ajustarlos a mano. Si todos los estratos se midieron completos (cada <i>N</i><sub>h</sub> igual a lo muestreado), es un censo: no hay error de muestreo, el EE es 0, el intervalo se reduce al valor estimado y la conclusión lo explica.</p>
 
@@ -99,7 +99,7 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b4-km.png" alt="Las curvas de Kaplan-Meier de la proporción de semillas de frijol sin germinar contra los días, para testigo, remojo y escarificada: la escarificada baja primero y llega a cero el día 19; el remojo termina en 0.125 y el testigo baja despacio y termina en 0.30 a los 21 días"></div>
-      <figcaption><b>Figura 4.53.</b> La proporción de semillas sin germinar en el tiempo: la escarificación acelera la germinación.</figcaption>
+      <figcaption><b>Figura 4.55.</b> La proporción de semillas sin germinar en el tiempo: la escarificación acelera la germinación.</figcaption>
     </figure>
     <div>
       <p>Con 120 semillas de frijol en tres tratamientos, revisadas cada día hasta el día 21, la mediana de los días a germinar es 17 en el testigo, 5.5 con remojo y 4 con escarificación, y las curvas difieren (log-rank χ²(2) = 37.89, <i>p</i> &lt; 0.001). 17 semillas (14.2 %) no germinaron: están censuradas, y el semáforo lo informa (se pone en ámbar si pasan de la mitad).</p>
@@ -126,7 +126,7 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b4-arima.png" alt="La lluvia mensual de ocho años como línea continua y el pronóstico de los doce meses siguientes como línea discontinua dorada con su banda de 95 %, que repite el pico de lluvias de verano"></div>
-      <figcaption><b>Figura 4.54.</b> La lluvia mensual y su pronóstico a doce meses con el ARIMA(1, 0, 0)(0, 1, 1)<sub>12</sub>.</figcaption>
+      <figcaption><b>Figura 4.56.</b> La lluvia mensual y su pronóstico a doce meses con el ARIMA(1, 0, 0)(0, 1, 1)<sub>12</sub>.</figcaption>
     </figure>
     <div>
       <p>Con la lluvia, el ARIMA(1, 0, 0)(0, 1, 1)<sub>12</sub> deja residuos sin autocorrelación (Ljung-Box <i>Q</i>(22) = 15.46, <i>p</i> = 0.842): el semáforo en verde. Es también el que elige la búsqueda por AIC con <i>d</i> = 0 y <i>D</i> = 1 (AIC = 739.14, el menor de los 36). El pronóstico repite el pico del verano, cerca de 157 mm.</p>

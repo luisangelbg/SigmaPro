@@ -39,6 +39,9 @@ try {
     await n.evaluar('new Promise(ok => { try { localStorage.clear(); } catch (e) {} const r = indexedDB.deleteDatabase("sigmapro"); r.onsuccess = r.onerror = r.onblocked = () => ok(true); })');
     await n.ir('about:blank');
     await n.ir(URL_APP + '#b1', LISTO);
+    /* sin barra de desplazamiento: al capturar más allá de la vista desaparece y el ancho de la página cambia después
+       de medir el recorte (Explorar se ensanchaba 15 px y la orilla derecha quedaba fuera) */
+    await n.evaluar('(() => { const s = document.createElement("style"); s.textContent = "html { scrollbar-width: none; }"; document.head.appendChild(s); return true; })()');
     await n.evaluar('new Promise(r => setTimeout(r, 900))');
     const consola0 = n.consola.length;
     await n.evaluar('window.__recorte = null; window.__marcas = null; ' + AYUDAS + '\n(' + texto.trim().replace(/;\s*$/, '') + ')', 240);

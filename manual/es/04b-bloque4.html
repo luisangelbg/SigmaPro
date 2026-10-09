@@ -33,7 +33,7 @@
   <p>La revisión ajusta el modelo <code>respuesta ~ bloque + A * B * C</code> con lo elegido; la cabecera del resultado lo escribe, con el número de residuos (<i>n</i>), y una línea avisa cuántas filas con algún faltante no entran.</p>
   <figure class="media">
     <div class="marco"><img src="../img/b4-sup-verde.png" alt="La revisión de los supuestos del maíz: la cabecera con el modelo rend ~ bloque + hibrido * dosis, n = 48, y los botones ¿Qué es este análisis? y Agregar al reporte; el semáforo en verde con normalidad (Shapiro-Wilk p = 0.366), varianzas iguales (Brown-Forsythe p = 0.538), aditividad (Tukey p = 0.671), independencia (Durbin-Watson = 1.981, p = 0.331) y valores atípicos en BIEN; qué hacer; y las tres gráficas: Q-Q normal de los residuos con su banda, residuos contra valores ajustados y residuos en el orden de las filas"></div>
-    <figcaption><b>Figura 4.16.</b> Los supuestos del ensayo del maíz se cumplen: los cinco renglones del semáforo en verde.</figcaption>
+    <figcaption><b>Figura 4.18.</b> Los supuestos del ensayo del maíz se cumplen: los cinco renglones del semáforo en verde.</figcaption>
   </figure>
   <div class="caja nota">
     <div class="caja-t"><span class="ico">i</span>Qué modelos revisa</div>
@@ -70,7 +70,7 @@
       <tr><td>Hay un atípico</td><td>Revisar esa fila: primero que no sea un error de captura; si el valor es real, analizar con y sin ella y reportarlo.</td></tr>
     </tbody>
   </table>
-  <p>Con los venenos de Box y Cox, por ejemplo, la normalidad y las varianzas fallan y hay un residuo atípico (figura 4.17): la app estima la transformación de Box-Cox con ese mismo modelo (λ = −0.816, intervalo de −1.294 a −0.341), sugiere el recíproco y recuerda que la columna original no cambia; para la fila 24, propone revisar primero que no sea un error de captura. Si se revisa solo el veneno, sin el tratamiento, el modelo queda de un factor y las varianzas salen en ámbar (Brown-Forsythe, <i>p</i> = 0.021): entonces el recuadro agrega Games-Howell y Kruskal-Wallis.</p>
+  <p>Con los venenos de Box y Cox, por ejemplo, la normalidad y las varianzas fallan y hay un residuo atípico (figura 4.19): la app estima la transformación de Box-Cox con ese mismo modelo (λ = −0.816, intervalo de −1.294 a −0.341), sugiere el recíproco y recuerda que la columna original no cambia; para la fila 24, propone revisar primero que no sea un error de captura. Si se revisa solo el veneno, sin el tratamiento, el modelo queda de un factor y las varianzas salen en ámbar (Brown-Forsythe, <i>p</i> = 0.021): entonces el recuadro agrega Games-Howell y Kruskal-Wallis.</p>
   <h3>Probar la alternativa</h3>
   <p>Cuando algún renglón del semáforo falla, debajo (en esta revisión, debajo de <b>Qué hacer</b>) aparece el recuadro <span class="ui">Probar la alternativa</span>, con un botón por remedio. Cada botón corre el análisis que atiende el supuesto, con las mismas variables; los números del resultado anterior no cambian, y se vuelve a él eligiéndolo en el catálogo. Los botones dependen del análisis:</p>
   <table class="compacta">
@@ -91,7 +91,7 @@
   <p>La columna transformada se crea una sola vez: si ya existe con la misma transformación, se usa esa. Un aviso dice su nombre, y la original no cambia (sección 2.9). Con los venenos, <span class="ui">Transformar con el recíproco y volver a revisar</span> crea <code>inv_tiempo</code> y la revisión con ella sale con todos los renglones en verde, salvo la aditividad, que no aplica sin bloques. Los atípicos, la aditividad y la independencia no tienen botón: piden revisar los datos o el diseño.</p>
   <figure class="media">
     <div class="marco"><img src="../img/b4-sup-rojo.png" alt="Los supuestos de los venenos: Hay supuestos que no se cumplen; normalidad PROBLEMA (Shapiro-Wilk p = 0.002); varianzas PROBLEMA (Brown-Forsythe p menor que 0.001, la mayor 678.6 veces la menor); aditividad NO APLICA; independencia BIEN; valores atípicos REVISAR (fila 24, p de Bonferroni = 0.021); y Qué hacer: transformar con Box-Cox, λ = −0.816, el recíproco, y revisar la fila 24; debajo, Probar la alternativa con el botón Transformar con el recíproco y volver a revisar"></div>
-    <figcaption><b>Figura 4.17.</b> El caso contrario: los tiempos de supervivencia de los venenos no cumplen los supuestos; la app propone el recíproco y lo ofrece en <span class="ui">Probar la alternativa</span>.</figcaption>
+    <figcaption><b>Figura 4.19.</b> El caso contrario: los tiempos de supervivencia de los venenos no cumplen los supuestos; la app propone el recíproco y lo ofrece en <span class="ui">Probar la alternativa</span>.</figcaption>
   </figure>
   <h3>Las gráficas y el cuadro</h3>
   <ul>
@@ -103,7 +103,7 @@
   <p>El cuadro 1 trae todas las pruebas, con su estadístico, su valor, sus grados de libertad, su <i>p</i> y qué revisa; la principal de cada supuesto va marcada como «(principal)», y la nota recuerda los cortes del semáforo. En <span class="ui">Varianza de los residuos por tratamiento</span> (plegado) está la varianza de cada combinación, para ver cuál es la que se aparta.</p>
   <figure class="media">
     <div class="marco"><img src="../img/b4-sup-cuadro.png" alt="El cuadro de las pruebas de los supuestos de los venenos: Shapiro-Wilk, Lilliefors, Anderson-Darling, Brown-Forsythe, Levene, Bartlett, Fligner-Killeen, Durbin-Watson, rachas y el residuo estudentizado con Bonferroni (fila 24), cada una con estadístico, valor, gl, p y qué revisa"></div>
-    <figcaption><b>Figura 4.18.</b> El cuadro de las pruebas, con la principal de cada supuesto marcada.</figcaption>
+    <figcaption><b>Figura 4.20.</b> El cuadro de las pruebas, con la principal de cada supuesto marcada.</figcaption>
   </figure>
   <div class="caja teoria">
     <div class="caja-t"><span class="ico">Σ</span>Por qué Brown-Forsythe y no Bartlett</div>
@@ -124,7 +124,7 @@
   <p>Las demás opciones: la <span class="ui">Diferencia bajo H₀</span> (en dos grupos y en pareadas; normalmente 0), la <span class="ui">Hipótesis alternativa</span> (<span class="ui">Bilateral (≠)</span>, <span class="ui">Menor (&lt;)</span> o <span class="ui">Mayor (&gt;)</span>), el <span class="ui">Nivel de confianza</span> del intervalo (95, 99 o 90 %), el <span class="ui">Nivel de significancia</span> y, con dos grupos, la casilla <span class="ui">Suponer varianzas iguales (t de Student)</span>. Sin marcar, se usa la <b>t de Welch</b>, que no supone varianzas iguales y es la recomendada: con varianzas iguales da casi lo mismo que la de Student, y con varianzas distintas sigue siendo válida.</p>
   <figure>
     <div class="marco"><img src="../img/b4-t.png" alt="La prueba t de Welch con los venenos, tratamientos A y B: el formulario con tipo de comparación, variable de respuesta tiempo, columna de los grupos, grupos A y B, diferencia bajo H0, hipótesis bilateral, confianza 95 % y la casilla de varianzas iguales sin marcar; el resultado: la media de A (0.314) difiere de la de B (0.677), diferencia −0.362, t = −3.729, gl = 13.21, p = 0.002; tamaño del efecto grande, g de Hedges −1.470; el semáforo de normalidad y varianzas; el selector del tema de las gráficas y la gráfica de cajas de los dos grupos con sus puntos y su media"></div>
-    <figcaption><b>Figura 4.19.</b> La t de Welch: el tratamiento B prolonga la supervivencia frente a A. La gráfica muestra cada valor, la caja de cuartiles y la media (rombo).</figcaption>
+    <figcaption><b>Figura 4.21.</b> La t de Welch: el tratamiento B prolonga la supervivencia frente a A. La gráfica muestra cada valor, la caja de cuartiles y la media (rombo).</figcaption>
   </figure>
   <p>El resultado trae:</p>
   <ul>
@@ -157,7 +157,7 @@
   <h3>Kruskal-Wallis</h3>
   <figure class="media">
     <div class="marco"><img src="../img/b4-kruskal.png" alt="Kruskal-Wallis con los venenos: al menos un tratamiento difiere (H = 25.584, gl = 2, p menor que 0.001); η² de H = 0.524; comparaciones de Dunn con Holm: 2 de 3 pares difieren; la gráfica de tiempo por veneno con las letras a, a y b; y el cuadro de tratamientos ordenados por rango medio con mediana, cuartiles y grupo"></div>
-    <figcaption><b>Figura 4.20.</b> Kruskal-Wallis con los tres venenos: el veneno III acorta la supervivencia frente a I y II (letras distintas).</figcaption>
+    <figcaption><b>Figura 4.22.</b> Kruskal-Wallis con los tres venenos: el veneno III acorta la supervivencia frente a I y II (letras distintas).</figcaption>
   </figure>
   <p>Se eligen la <span class="ui">Variable de respuesta</span>, los <span class="ui">Tratamientos</span>, el método de <span class="ui">Comparaciones por pares</span> (Dunn, Conover-Iman o Nemenyi) y el <span class="ui">Ajuste de los valores p</span> por las comparaciones múltiples: <span class="ui">Holm</span> (de entrada), <span class="ui">Bonferroni</span>, <span class="ui">Benjamini-Hochberg (FDR)</span> o <span class="ui">Sin ajuste</span>; con Conover-Iman, también <span class="ui">Tukey (un paso)</span>. Nemenyi no pide ajuste: su <i>p</i> ya sale del rango estudentizado. El resultado da <i>H</i> con sus grados de libertad y su <i>p</i> (corregido por empates), el tamaño del efecto η² de <i>H</i>, y las comparaciones: el cuadro <span class="ui">Tratamientos ordenados por rango medio</span>, con la mediana, los cuartiles y sus <b>letras</b> (tratamientos con una letra en común no difieren), que también aparecen sobre la gráfica, y el de cada par, con la diferencia de rangos medios, el estadístico, el <i>p</i> sin ajustar y el ajustado.</p>
   <h3>Friedman</h3>

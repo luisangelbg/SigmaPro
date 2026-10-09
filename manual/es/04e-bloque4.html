@@ -40,7 +40,7 @@
   <div class="dos mas-angosta flota">
     <figure>
       <div class="marco"><img src="../img/b4-mixto-form.png" alt="El formulario del modelo lineal mixto: la variable de respuesta rend, los términos hibrido * dosis + (1 | bloque) con su ayuda y la lista de lo que la app entendió: hibrido, dosis, la interacción hibrido × dosis y (1 | bloque), un intercepto aleatorio por bloque"></div>
-      <figcaption><b>Figura 4.36.</b> La fórmula del modelo mixto y lo que la app entendió de ella, término por término.</figcaption>
+      <figcaption><b>Figura 4.38.</b> La fórmula del modelo mixto y lo que la app entendió de ella, término por término.</figcaption>
     </figure>
     <div>
       <p>El campo <span class="ui">Términos del modelo (lo que va después de «~»)</span> recibe la parte derecha de la fórmula. Los efectos fijos se escriben como en el modelo lineal general (sección 4.10); cada efecto aleatorio va entre paréntesis con su agrupamiento:</p>
@@ -62,7 +62,7 @@
   <p>Las <b>parcelas divididas</b> piden el <span class="ui">Factor en las parcelas grandes</span>, el <span class="ui">Factor en las subparcelas</span>, si hace falta el <span class="ui">Factor en sub-subparcelas (opcional)</span>, y los <span class="ui">Bloques (aleatorios)</span>; llevan los bloques y las parcelas grandes (y, con un tercer factor, las subparcelas) como efectos aleatorios. Si las parcelas grandes se sortearon sin bloques, se deja <span class="ui">— sin bloques —</span> y se elige la <span class="ui">Repetición (identifica cada parcela grande)</span>. Con la avena de Yates (1935), las pruebas son las del análisis por estratos de la sección 4.10, pero el modelo mixto sigue siendo exacto con parcelas perdidas, cuando el análisis por estratos ya no lo es. Para ver el nitrógeno por separado en cada variedad se elige la variedad en <span class="ui">Dentro de cada nivel de</span>: el cuadro de medias da las letras del nitrógeno en cada variedad y la gráfica traza una línea por variedad.</p>
   <figure class="media">
     <div class="marco"><img src="../img/b4-mixto-divididas.png" alt="Parcelas divididas como modelo mixto con la avena: variedad sin efecto (F(2, 10.0) = 1.49, p = 0.272), nitrógeno con efecto (F(3, 45.0) = 37.69) y la interacción sin efecto; la variación aleatoria repartida entre bloque:variedad (21.3 %), bloque (43.1 %) y residual (35.6 %); el semáforo con los cuatro renglones en verde"></div>
-    <figcaption><b>Figura 4.37.</b> La avena en parcelas divididas como modelo mixto: las variedades se prueban con 10 grados de libertad (los de las parcelas grandes) y el nitrógeno con 45.</figcaption>
+    <figcaption><b>Figura 4.39.</b> La avena en parcelas divididas como modelo mixto: las variedades se prueban con 10 grados de libertad (los de las parcelas grandes) y el nitrógeno con 45.</figcaption>
   </figure>
   <table class="compacta salida" style="width:74%">
     <caption><b>Cuadro 4.9.</b> Componentes de varianza (REML) de la avena en parcelas divididas.</caption>
@@ -96,7 +96,7 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b4-repetidas.png" alt="El perfil de la altura del maíz en las cinco fechas, de 15 a 75 días, con una línea por dosis de nitrógeno: N0 abajo desde los 30 días y las otras tres juntas"></div>
-      <figcaption><b>Figura 4.38.</b> La altura del maíz en cinco fechas: las dosis se separan con el tiempo.</figcaption>
+      <figcaption><b>Figura 4.40.</b> La altura del maíz en cinco fechas: las dosis se separan con el tiempo.</figcaption>
     </figure>
     <div>
       <p>El tratamiento solo no tiene efecto (<i>F</i>(3, 57) = 1.39, <i>p</i> = 0.256), pero la interacción con el tiempo sí (<i>F</i>(12, 57) = 4.29, <i>p</i> &lt; 0.001): a los 15 días las cuatro dosis miden lo mismo y desde los 30 días el testigo sin nitrógeno se queda atrás. Por eso la app propone comparar los tratamientos <span class="ui">Dentro de cada nivel de</span> la fecha, y su cuadro de medias da las letras de cada fecha por separado. Otro cuadro da la matriz estimada de covarianzas y correlaciones entre fechas.</p>
@@ -122,7 +122,7 @@
   </div>
   <figure class="media">
     <div class="marco"><img src="../img/b4-heredabilidad.png" alt="Las dos gráficas de la heredabilidad del alfa-látice: los BLUP de los 24 genotipos de mayor a menor, con su intervalo y los dos seleccionados huecos, y los BLUP contra los BLUE, con G01 y G05 señalados"></div>
-    <figcaption><b>Figura 4.39.</b> Los BLUP de los 24 genotipos del alfa-látice, de mayor a menor (huecos, los dos seleccionados), y su relación con las medias ajustadas (BLUE).</figcaption>
+    <figcaption><b>Figura 4.41.</b> Los BLUP de los 24 genotipos del alfa-látice, de mayor a menor (huecos, los dos seleccionados), y su relación con las medias ajustadas (BLUE).</figcaption>
   </figure>
   <p>La conclusión empieza por la varianza genética (σ²<sub>g</sub> = 0.1429, χ² = 23.62, <i>p</i> &lt; 0.001). La heredabilidad en medias es 0.840 ± 0.063: el 84 % de la variación entre las medias de los genotipos es genética. Como el ensayo tiene bloques incompletos, el cuadro de heredabilidad da también las de <b>Cullis</b> (0.809) y de <b>Piepho y Möhring</b> (0.803), las más fieles con datos desbalanceados o bloques incompletos (Schmidt y col., 2019), y la heredabilidad por parcela (0.636). Los parámetros genéticos incluyen los coeficientes de variación genético (8.44 %) y del error (6.38 %); su razón, 1.323, mayor que 1, indica condiciones favorables para la selección.</p>
   <p>La <b>ganancia esperada</b> al seleccionar 2 de los 24 genotipos (el 10 % de 24, redondeado; la nota del cuadro da el 8.3 % real y la intensidad de selección, <i>i</i> = 1.840) se calcula de tres maneras: con la media de los BLUP seleccionados (0.4881, el 10.90 % de la media), con la ecuación del criador <i>i</i>·H²·σ<sub>F</sub> (0.6374) y con el diferencial de selección de los BLUE por H² (0.4981). El último cuadro ordena los genotipos con su BLUP, su EE, su <b>confiabilidad</b> y su media ajustada (BLUE), y marca los seleccionados (G01 y G05). Los BLUP se encogen hacia la media general en proporción a lo poco que se sabe de cada genotipo; por eso, en la gráfica, la nube de los BLUP contra los BLUE es más plana que la diagonal.</p>
@@ -165,7 +165,7 @@
   <div class="dos mas-angosta flota">
     <figure>
       <div class="marco"><img src="../img/b4-glm-conteos.png" alt="La tasa de trips por brote de cada tratamiento del aguacate con su intervalo de confianza y sus letras: testigo, azadiractina y jabón potásico a, spinosad b y beauveria ab"></div>
-      <figcaption><b>Figura 4.40.</b> Los trips por brote del aguacate con la binomial negativa: tasas, intervalos y letras de Tukey.</figcaption>
+      <figcaption><b>Figura 4.42.</b> Los trips por brote del aguacate con la binomial negativa: tasas, intervalos y letras de Tukey.</figcaption>
     </figure>
     <div>
       <p>Con los trips del aguacate, la Poisson tenía sobredispersión (χ²/gl&nbsp;=&nbsp;2.23, <i>p</i>&nbsp;=&nbsp;0.002) y la app pasó a la binomial negativa (θ&nbsp;=&nbsp;8.390). El bloque no tiene efecto (<i>p</i>&nbsp;=&nbsp;0.468) y el tratamiento sí (χ²&nbsp;=&nbsp;21.34, 4&nbsp;gl, <i>p</i>&nbsp;&lt;&nbsp;0.001): el spinosad deja 1.483 trips por brote, contra 7.761 del testigo.</p>
@@ -191,7 +191,7 @@
   </table>
   <figure class="media">
     <div class="marco"><img src="../img/b4-glm-firth.png" alt="El resultado de la regresión logística con la corrección de Firth en el frijol: el título Modelo lineal generalizado: binomial, enlace logit (Firth); la conclusión, que dice que el ajuste ordinario tenía separación (40 probabilidades en 0 o 1) y que la verosimilitud penalizada da estimados finitos, el lote sin efecto (χ² = 1.97, 2 gl, p = 0.373), el tratamiento con efecto (χ² = 15.15, 2 gl, p &lt; 0.001), el peso de la semilla sin efecto (χ² = 1.00, 1 gl, p = 0.317) y la probabilidad más alta con Escarificada (0.9876) y la más baja con el Testigo (0.7057); debajo, el semáforo en verde con las observaciones atípicas y el ajuste de Firth"></div>
-    <figcaption><b>Figura 4.41.</b> La germinación del frijol con la corrección de Firth: la conclusión avisa de la separación del ajuste ordinario y prueba cada término con la verosimilitud penalizada.</figcaption>
+    <figcaption><b>Figura 4.43.</b> La germinación del frijol con la corrección de Firth: la conclusión avisa de la separación del ajuste ordinario y prueba cada término con la verosimilitud penalizada.</figcaption>
   </figure>
 
   <h3>Con fórmula y con efectos aleatorios</h3>
@@ -200,7 +200,7 @@
   <div class="dos mas-angosta flota">
     <figure>
       <div class="marco"><img src="../img/b4-glmm-form.png" alt="Parte del formulario del modelo mixto generalizado en bloques aleatorios con los trips del aguacate: Familia Poisson; Enlace logaritmo; Aproximación de la verosimilitud en Laplace (1 nodo), con la ayuda que dice que con un solo efecto aleatorio la cuadratura es más exacta; la casilla Probar cada efecto aleatorio (razón de verosimilitudes) marcada; Efecto por observación (sobredispersión) en Automático: si la prueba de Pearson lo pide, con su ayuda; y Pruebas de los efectos fijos en χ² de Wald tipo II"></div>
-      <figcaption><b>Figura 4.42.</b> Las opciones del modelo mixto generalizado: la aproximación de la verosimilitud, la prueba de los efectos aleatorios y el efecto por observación.</figcaption>
+      <figcaption><b>Figura 4.44.</b> Las opciones del modelo mixto generalizado: la aproximación de la verosimilitud, la prueba de los efectos aleatorios y el efecto por observación.</figcaption>
     </figure>
     <div>
       <ul>

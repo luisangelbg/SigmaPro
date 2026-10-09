@@ -47,7 +47,7 @@
   </div>
   <figure class="media">
     <div class="marco"><img src="../img/b4-ancova.png" alt="El análisis de covarianza del sorgo: el título con el botón ⓘ ¿Qué es este análisis?; la conclusión con la pendiente de 0.027 por planta, el efecto de la variedad ajustada (F = 30.195) y la eficiencia relativa de 601.0 %; el semáforo con los dos supuestos en verde; el selector Tema de las gráficas; la gráfica del rendimiento contra las plantas con una recta por variedad y la de las medias ajustadas con sus letras"></div>
-    <figcaption><b>Figura 4.28.</b> La covarianza del sorgo: cada planta más suma 0.027 al rendimiento; ajustadas por las plantas, las variedades difieren (F = 30.195, <i>p</i> &lt; 0.001).</figcaption>
+    <figcaption><b>Figura 4.30.</b> La covarianza del sorgo: cada planta más suma 0.027 al rendimiento; ajustadas por las plantas, las variedades difieren (F = 30.195, <i>p</i> &lt; 0.001).</figcaption>
   </figure>
   <p>Las <b>medias ajustadas</b> son las que valdría cada tratamiento si todas sus parcelas tuvieran el mismo número de plantas (la media general de la covariable). Son las que se publican, y pueden cambiar el orden de las medias sin ajustar:</p>
   <table class="compacta salida" style="width:96%">
@@ -70,7 +70,7 @@
   <p>Se elige la <span class="ui">Variable de respuesta (y)</span> y los <span class="ui">Predictores (hasta 15)</span>; con uno es la regresión simple y con más, la múltiple. Los predictores entran al modelo en el orden en que aparecen en la lista, que es el de las columnas de la tabla, no el orden en que se marcaron. El campo <span class="ui">Predecir en (opcional)</span> recibe un renglón por punto, con los valores de los predictores en ese mismo orden y separados por espacios; la ayuda bajo el campo los nombra en su orden. Completan el formulario el <span class="ui">Nivel de confianza</span> y el <span class="ui">Nivel de significancia</span>. Con el ejemplo del café, el rendimiento de 40 fincas se explica por su altitud, la materia orgánica del suelo y el porcentaje de sombra.</p>
   <figure class="media">
     <div class="marco"><img src="../img/b4-regresion.png" alt="La regresión múltiple del café: el título con el botón ⓘ ¿Qué es este análisis?, la conclusión (F = 46.801 con 3 y 36 gl; R² = 0.796) y el semáforo de seis renglones, con la normalidad, la varianza constante, la independencia y la colinealidad en verde, y la forma del modelo y las observaciones influyentes en ámbar"></div>
-    <figcaption><b>Figura 4.29.</b> La regresión del café explica el 79.6 % de la variación del rendimiento; el semáforo pide revisar la forma del modelo y dos observaciones.</figcaption>
+    <figcaption><b>Figura 4.31.</b> La regresión del café explica el 79.6 % de la variación del rendimiento; el semáforo pide revisar la forma del modelo y dos observaciones.</figcaption>
   </figure>
   <p>La conclusión dice si el modelo es significativo en conjunto, qué predictores tienen efecto propio (ajustado por los demás) y cuánto explica (R² y R² ajustada). En la regresión simple dice, en cambio, cuánto sube o baja la respuesta por cada unidad del predictor, con su intervalo. El <b>semáforo</b> de la regresión tiene seis renglones (si alguno falla, <span class="ui">Probar la alternativa</span> ofrece el remedio que le corresponde: sección 4.7):</p>
   <ul>
@@ -83,7 +83,7 @@
   </ul>
   <figure>
     <div class="marco"><img src="../img/b4-reg-graficas.png" alt="Las cuatro gráficas de diagnóstico de la regresión del café: observados contra ajustados con la diagonal, residuos estandarizados contra ajustados con las bandas de ±2, el Q-Q normal de los residuos y los residuos estudentizados contra la palanca; las dos fincas señaladas, en dorado"></div>
-    <figcaption><b>Figura 4.30.</b> Las cuatro gráficas de diagnóstico. Las dos fincas señaladas salen en dorado: la 17, por su residuo estudentizado de 2.55, y la 6, con un residuo casi nulo (0.10) pero una palanca de 0.16; a las dos las señala el COVRATIO y a ninguna la distancia de Cook.</figcaption>
+    <figcaption><b>Figura 4.32.</b> Las cuatro gráficas de diagnóstico. Las dos fincas señaladas salen en dorado: la 17, por su residuo estudentizado de 2.55, y la 6, con un residuo casi nulo (0.10) pero una palanca de 0.16; a las dos las señala el COVRATIO y a ninguna la distancia de Cook.</figcaption>
   </figure>
   <p>Con un solo predictor, la primera gráfica no es la de observados contra ajustados sino la <b>recta ajustada</b> sobre los datos, con la banda de confianza de la media (sombreada) y la de predicción (de borde discontinuo); las otras tres son las mismas.</p>
   <p>Los cuadros son siete: los <b>coeficientes</b>, con su intervalo, el coeficiente estandarizado (β) y el VIF; el <b>análisis de varianza</b> de la regresión; la <b>bondad de ajuste</b> (R², R² ajustada, error estándar de la estimación, CV, AIC, BIC y el número de observaciones); el <b>aporte de cada predictor</b>, con la suma de cuadrados secuencial (tipo I, en el orden del modelo) y la parcial (tipo II); las <b>pruebas de los supuestos</b>; las <b>observaciones influyentes</b>, con el criterio que las señaló (solo si hay alguna); y los <b>índices de condición</b> con las proporciones de varianza de Belsley, Kuh y Welsch (1980), con dos o más predictores. Con valores en <span class="ui">Predecir en (opcional)</span> se agrega el cuadro de <b>predicciones</b>, con el intervalo de confianza de la media y el intervalo de predicción de una observación nueva.</p>
@@ -122,7 +122,7 @@
   </table>
   <figure class="chica">
     <div class="marco"><img src="../img/b4-pasos.png" alt="La selección paso a paso del café con los siete predictores: el título con el botón ⓘ ¿Qué es este análisis?, la conclusión (se queda con 6 de 7, R² ajustada 0.853, AIC 52.735), el selector Tema de las gráficas, la gráfica del AIC en los pasos 0 y 1, el botón Analizar el modelo elegido y el cuadro de los pasos, donde en el paso 1 sale la temperatura"></div>
-    <figcaption><b>Figura 4.31.</b> Con los siete predictores del café, la selección por AIC quita la temperatura en un paso y se detiene.</figcaption>
+    <figcaption><b>Figura 4.33.</b> Con los siete predictores del café, la selección por AIC quita la temperatura en un paso y se detiene.</figcaption>
   </figure>
   <p>En el café sale primero la temperatura: está casi determinada por la altitud (<i>r</i> = −0.967, sección 4.13) y, con la altitud en el modelo, no aporta nada. El cuadro de pasos dice qué cambió en cada uno, con los grados de libertad y la suma de cuadrados del error, el AIC, la R² ajustada y los predictores que quedan (con el criterio del valor <i>p</i>, también la <i>F</i> y el <i>p</i> de cada cambio); el segundo cuadro da los coeficientes del modelo final. El botón <span class="ui">Analizar el modelo elegido</span> abre la regresión lineal con esos predictores, para revisar su diagnóstico.</p>
   <p>El camino importa. Con los mismos datos, hacia adelante por AIC entra primero la materia orgánica y después la temperatura, no la altitud, y la selección termina con cinco predictores (materia_organica, temperatura, edad, ph y lluvia; R² ajustada 0.843); por valor <i>p</i>, en la mixta, termina con cuatro (R² ajustada 0.831). Por eso conviene compararla con los mejores subconjuntos, que revisan todas las combinaciones.</p>
@@ -153,7 +153,7 @@
   <p>La columna <b>Elegido por</b> marca el tamaño que gana con cada criterio: la mayor R² ajustada, la menor <i>C<sub>p</sub></i> y el menor BIC. El BIC castiga más los predictores y se queda con cinco; la <i>C<sub>p</sub></i> y la R² ajustada, con seis (los mismos que eligió la selección paso a paso). Cuando no coinciden, el modelo del BIC es el más sencillo.</p>
   <figure>
     <div class="marco"><img src="../img/b4-subconjuntos.png" alt="Las dos gráficas de los mejores subconjuntos del café y los botones que siguen. A la izquierda, el BIC del mejor modelo con cada número de predictores, de 1 a 7: baja de −17.76 a −58.21 en cinco predictores, el punto resaltado, y vuelve a subir a −57.51 y −54.36. A la derecha, la Cp de Mallows contra el número de coeficientes, de 2 a 8, con la recta Cp = p: el primer punto queda muy arriba (102.94) y el de 7 coeficientes, resaltado, queda debajo de la recta (6.44); el modelo completo cae sobre ella (8.00). Debajo, los botones Analizar el modelo de BIC (5 predictores) y Analizar el modelo de Cp (6 predictores)"></div>
-    <figcaption><b>Figura 4.32.</b> Los mejores subconjuntos del café: el BIC llega a su mínimo con cinco predictores; en la gráfica de la <i>C<sub>p</sub></i>, el modelo de seis queda debajo de la recta <i>C<sub>p</sub></i> = <i>p</i>. Los botones llevan cada modelo a la regresión lineal.</figcaption>
+    <figcaption><b>Figura 4.34.</b> Los mejores subconjuntos del café: el BIC llega a su mínimo con cinco predictores; en la gráfica de la <i>C<sub>p</sub></i>, el modelo de seis queda debajo de la recta <i>C<sub>p</sub></i> = <i>p</i>. Los botones llevan cada modelo a la regresión lineal.</figcaption>
   </figure>
   <div class="caja teoria">
     <div class="caja-t"><span class="ico">Σ</span>Cómo se lee la <i>C<sub>p</sub></i></div>
@@ -180,7 +180,7 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b4-matriz.png" alt="El mapa de calor de las correlaciones de cinco variables del café, dorado para las positivas y gris para las negativas, con el valor y las estrellas en cada celda y la barra de color de −1 a 1"></div>
-      <figcaption><b>Figura 4.33.</b> El mapa de calor de las correlaciones del café: dorado, positivas; gris, negativas; las estrellas, del <i>p</i> ajustado por Holm.</figcaption>
+      <figcaption><b>Figura 4.35.</b> El mapa de calor de las correlaciones del café: dorado, positivas; gris, negativas; las estrellas, del <i>p</i> ajustado por Holm.</figcaption>
     </figure>
     <div>
       <p>La conclusión dice cuántos pares tienen correlación significativa (en el café, 4 de 10) y cuál es la más fuerte.</p>
@@ -214,7 +214,7 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b4-contingencia.png" alt="El mosaico del tratamiento de la semilla contra la germinación: el ancho de cada barra es el total del tratamiento y la altura de cada parte, la proporción que germinó; el tono, el residuo ajustado (dorado, más casos de los esperados; gris, menos)"></div>
-      <figcaption><b>Figura 4.34.</b> El mosaico de la semilla tratada: el dorado marca las celdas con más casos de los esperados bajo independencia.</figcaption>
+      <figcaption><b>Figura 4.36.</b> El mosaico de la semilla tratada: el dorado marca las celdas con más casos de los esperados bajo independencia.</figcaption>
     </figure>
     <div>
       <p>La semilla tratada germina más (χ²&nbsp;=&nbsp;31.326, <i>p</i>&nbsp;&lt;&nbsp;0.001). La conclusión dice si hay asociación, qué tan fuerte es (la <b>V de Cramér</b>: 0.201, débil) y cuál celda se aparta más de la independencia, por su <b>residuo ajustado</b> (más allá de ±1.96, la celda se aparta con α = 0.05; aquí, fungicida con germinó, 5.678). En las tablas de 2 × 2 agrega la <b>razón de momios</b> (2.589, IC 95 %: 1.854 a 3.615: las semillas tratadas tienen 2.6 veces los momios de germinar) y el <b>riesgo relativo</b> de la primera columna (1.266, IC 95 %: 1.165 a 1.376).</p>
@@ -249,7 +249,7 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b4-mantel.png" alt="La razón de momios de cada lote (L1 a L4) y la común, con sus intervalos, en escala logarítmica y con la línea de 1 discontinua"></div>
-      <figcaption><b>Figura 4.35.</b> La razón de momios de cada lote y la común (2.621), con sus intervalos, en escala logarítmica.</figcaption>
+      <figcaption><b>Figura 4.37.</b> La razón de momios de cada lote y la común (2.621), con sus intervalos, en escala logarítmica.</figcaption>
     </figure>
     <div>
       <p>Controlando por el lote, el tratamiento y la germinación siguen asociados (CMH χ²&nbsp;=&nbsp;31.600, <i>p</i>&nbsp;&lt;&nbsp;0.001), con una razón de momios común de 2.621 (IC 95 %: 1.871 a 3.671). El lote 4 tiene la razón más alta (6.093), pero Breslow-Day no encuentra diferencias entre lotes (<i>p</i>&nbsp;=&nbsp;0.186), así que la razón común los resume bien.</p>
