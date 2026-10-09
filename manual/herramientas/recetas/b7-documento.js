@@ -1,5 +1,5 @@
 /* vista: 1000x1300 */
-/* 7.2: el principio del reporte exportado como página HTML */
+/* 7.2: el principio del reporte exportado como página HTML: la portada con su ficha y el índice */
 (async () => {
   await ejemplo('Maíz: híbridos');
   const R = SP.app.reporte, dis = { diseno: 'dbca', respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' };
@@ -11,7 +11,8 @@
   const h = await SP.app.exportar.construir.html();
   document.open(); document.write(h.datos); document.close();
   document.documentElement.style.overflow = 'hidden'; await W(1500);
-  /* la portada y los métodos, sin el margen de arriba */
-  window.__recorte = '0,150,1000,830';
+  /* de la portada al final del índice, sin el margen de arriba */
+  const ind = document.querySelector('nav.indice').getBoundingClientRect();
+  window.__recorte = '0,150,1000,' + Math.round(ind.bottom + 20 - 150);
   return window.__recorte;
 })()
