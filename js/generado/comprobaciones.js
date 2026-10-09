@@ -80,7 +80,7 @@ window.SP_COMPROBACIONES = {
    "Servicio sin conexión activo con 267 archivos guardados.",
    "Sin red: 7 análisis, reporte, 6 exportaciones y huellas del proyecto verificadas."
   ],
-  "fecha": "2026-10-09T09:33:44.033Z",
+  "fecha": "2026-10-09T12:23:02.137Z",
   "motor": "node v24.19.0"
  },
  "exportar": {
@@ -90,44 +90,47 @@ window.SP_COMPROBACIONES = {
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl, commonmark (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-10-09T09:32:47.261Z",
+  "fecha": "2026-10-09T12:21:49.529Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {
   "titulo": "El código R equivalente",
   "ok": true,
   "resumen": "99 escenarios de 65 métodos: el código R que muestra la app corre en R y da 1,626 números iguales a los de la app (tolerancia 1e-6)",
-  "fecha": "2026-10-09T09:31:11.318Z",
+  "fecha": "2026-10-09T12:20:05.574Z",
   "motor": "node v24.19.0"
  },
  "accesibilidad": {
   "titulo": "Accesibilidad (AA)",
-  "ok": true,
-  "resumen": "242 revisiones de 121 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 219,422 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 1314 paradas en los 10 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible.",
-  "renglones": [],
-  "fecha": "2026-10-09T09:47:14.649Z",
+  "ok": false,
+  "resumen": "240 revisiones de 121 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 217,260 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 1322 paradas en los 10 bloques (1280 px en claro y 360 px en oscuro).",
+  "renglones": [
+   "glmm-bloques a 1280 px: la medición no terminó",
+   "glmm-gamma a 1280 px: la medición no terminó"
+  ],
+  "fecha": "2026-10-09T12:46:28.489Z",
   "motor": "node v24.19.0"
  },
  "idioma": {
   "titulo": "La interfaz en inglés",
   "ok": true,
-  "resumen": "6960 textos traducidos; 810 casos con los mismos números en los dos idiomas (71,773 valores); 272 resultados armados en inglés sin textos pendientes",
-  "fecha": "2026-10-09T09:31:45.422Z",
+  "resumen": "6963 textos traducidos; 810 casos con los mismos números en los dos idiomas (71,773 valores); 272 resultados armados en inglés sin textos pendientes",
+  "fecha": "2026-10-09T12:20:39.702Z",
   "motor": "node v24.19.0"
  },
  "regresion": {
   "titulo": "Regresión de resultados y reportes",
   "ok": true,
   "resumen": "272 casos, 70697 números; resultado cambiado en 0, reporte en 0",
-  "fecha": "2026-10-09T09:31:48.378Z",
+  "fecha": "2026-10-09T12:20:42.696Z",
   "motor": "node v24.19.0"
  },
  "intro": {
   "titulo": "Secuencia de apertura",
   "ok": true,
-  "resumen": "secuencia completa hasta «Start»: 5638 ms, 332 cuadros (59 por segundo; mediana 16.7 ms, p95 16.8 ms, 1 de más de 34 ms); 0 tareas largas del hilo principal en ese lapso; peso: js/intro.js + css/intro.css = 39.2 KB (sin imágenes ni fuentes)",
+  "resumen": "secuencia completa hasta «Start»: 5644 ms, 332 cuadros (59 por segundo; mediana 16.7 ms, p95 17 ms, 1 de más de 34 ms); 0 tareas largas del hilo principal en ese lapso; peso: js/intro.js + css/intro.css = 39.2 KB (sin imágenes ni fuentes)",
   "renglones": [],
-  "fecha": "2026-10-09T09:32:33.526Z",
+  "fecha": "2026-10-09T12:21:33.942Z",
   "motor": "node v24.19.0"
  },
  "fundamentos": {
@@ -135,7 +138,7 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "78 de 78 fichas sin problemas (78 análisis); 63 ejemplos corridos en node; 1472 fórmulas convertidas a MathML y a Office Math",
   "renglones": [],
-  "fecha": "2026-10-09T09:33:46.420Z",
+  "fecha": "2026-10-09T12:23:04.907Z",
   "motor": "node v24.19.0"
  },
  "suite": {
@@ -143,7 +146,7 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "CorrelationPro: PENDIENTE (sin repositorio público; logo marcador); 14 de 14 enlaces responden 200",
   "renglones": [],
-  "fecha": "2026-10-09T09:33:47.451Z",
+  "fecha": "2026-10-09T12:23:06.607Z",
   "motor": "node v24.19.0"
  },
  "glosario": {
@@ -151,7 +154,7 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "js/generado/glosario.js al día; 257 lugares señalados en español; 133 lugares en inglés",
   "renglones": [],
-  "fecha": "2026-10-09T09:32:07.665Z",
+  "fecha": "2026-10-09T12:21:07.132Z",
   "motor": "node v24.19.0"
  },
  "orientacion": {
@@ -159,7 +162,15 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "Inicio: tres caminos; el ejemplo lleva a Datos; historial: anota, vuelve a abrir con su ejemplo y se lista en Análisis; estados vacíos: Explorar carga el ejemplo ahí mismo; Exportar lleva a Análisis; árbol: del Inicio a los bloques con sus líneas, el ejemplo calculado y la recomendación del asistente señalada; ayudas: con el teclado, Esc sin mover el foco y el estadístico de un encabezado; recorridos: Análisis con el ejemplo (7 pasos); pasos por bloque {\"1\":7,\"2\":6,\"3\":3,\"4\":7,\"5\":1,\"6\":1,\"7\":3,\"8\":4,\"9\":3,\"10\":1}; presentación: 10 diapositivas del resultado de bloques, → Inicio Fin y Esc con el foco de vuelta; el reporte, con su sección; errores: «Hacen falta al menos dos observaciones.» con «Qué hacer: Revisa los faltantes y el fil…»",
   "renglones": [],
-  "fecha": "2026-10-09T09:32:17.172Z",
+  "fecha": "2026-10-09T12:21:17.168Z",
+  "motor": "node v24.19.0"
+ },
+ "calidad": {
+  "titulo": "Escalas en sus bordes y coherencia entre textos y números",
+  "ok": true,
+  "resumen": "39 escalas (con sus contextos), 108 bordes probados antes, en y después del límite, 147 tarjetas, una por zona; 272 casos del núcleo JS: 7,354 números en sus textos, 56 de ellos calculados por el texto (con su dirección); 2,765 tarjetas con los valores reales de los cuadros; control: de 2,698 números alterados, la comparación habría aceptado el 6.1 % de los alterados un 7 % y el 3.9 % de los alterados un 37 %",
+  "renglones": [],
+  "fecha": "2026-10-09T12:20:46.129Z",
   "motor": "node v24.19.0"
  }
 };

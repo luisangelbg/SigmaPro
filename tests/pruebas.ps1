@@ -52,8 +52,9 @@ if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
 # la interfaz en ingles: catalogo completo y los mismos numeros en los dos idiomas
 & $node (Join-Path $tests 'idioma.mjs')
 if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
-# la huella de cada resultado y de su reporte, y las fichas de Fundamentos de los 78 analisis
-foreach ($p in @('regresion.mjs', 'fundamentos.mjs')) {
+# la huella de cada resultado y de su reporte, las fichas de Fundamentos de los 78 analisis y la calidad de lo que se
+# lee (las escalas en sus bordes y la coherencia entre textos y numeros)
+foreach ($p in @('regresion.mjs', 'fundamentos.mjs', 'calidad.mjs')) {
   & $node (Join-Path $tests $p)
   if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
 }

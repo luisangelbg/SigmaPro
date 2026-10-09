@@ -2,6 +2,25 @@
 
 ## Sin publicar
 
+### 0.5.17 · Hito 5.9, parte 1: escalas en sus bordes y coherencia entre textos y números (9 oct 2026)
+
+- **`tests/calidad.mjs`**, etapa nueva de la batería (también en `tests/pruebas.ps1`):
+  - **Cada escala, en sus bordes**: las 39 escalas del registro con sus contextos (el α del análisis; la guía del CV de
+    cada cultivo y variable), 108 bordes probados un poco antes, en el límite (según la escala lo incluya o no) y un
+    poco después, también con el valor negativo o la razón inversa en las que leen el valor absoluto o la razón mayor
+    que 1. En cada zona, la tarjeta de interpretación cita el valor como el medidor y nombra su zona.
+  - **Coherencia texto-número en todos los análisis**: los 7 354 números de las conclusiones, de «En pocas palabras»
+    y de los párrafos de métodos y resultados de los 272 casos del núcleo JS están en el resultado o en sus cuadros, al
+    redondeo con que se escriben, o salen de ellos con una cuenta que el texto dice: cuántas categorías o pares, la
+    suma de los porcentajes de los ejes, la asignación redondeada hacia arriba, un porcentaje como veces o un cambio en
+    porcentaje, cuya palabra («mayor», «por encima» / «menor», «por debajo») dice la dirección correcta.
+  - Un **control** altera los números de los textos un 7 % y un 37 % y mide cuántos aceptaría la comparación (hoy
+    6.1 % y 3.9 %; falla si pasa del 10 %).
+  - Las **2 765 tarjetas** de los valores reales de los cuadros citan su valor y nombran su zona.
+- Las tarjetas de la **D de Cook** y del **residuo estandarizado** decían solo el valor y la zona: ahora explican qué
+  miden (cuánto cambiarían las predicciones sin esa observación; el 95 % de los residuos entre −2 y 2) y, en Cook,
+  qué hacer al revisarla. 3 textos nuevos en inglés.
+
 ### 0.5.16 · Hito 5.8, parte 3: hoja de trabajo para clase (9 oct 2026)
 
 - **Hoja de trabajo para clase** (`js/nucleo/hoja-trabajo.js`, tarjeta nueva en Exportar con *Hoja .docx* y *Hoja PDF

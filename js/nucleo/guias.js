@@ -581,8 +581,9 @@ SP.definir('guias', function (SP) {
           : T('{q}DW = {v}, cerca de 2: sin señal de que los residuos consecutivos se parezcan.', { q, v });
       return t + ' ' + T('La decisión la da el p de la prueba.');
     },
-    'residuo-std': (m, c, zz) => T('{q}Residuo = {v}: {z}.', { q: pref(m), v: formato(m.valor), z: zz.etiqueta }),
-    cook: (m, c, zz) => T('{q}D = {v}: {z}.', { q: pref(m), v: formato(m.valor), z: zz.etiqueta }),
+    'residuo-std': (m, c, zz) => T('{q}Residuo = {v}: {z} (con errores normales, el 95 % de los residuos estandarizados queda entre −2 y 2).', { q: pref(m), v: formato(m.valor), z: zz.etiqueta }),
+    cook: (m, c, zz) => T('{q}D = {v}: {z}. Mide cuánto cambiarían todas las predicciones al quitar esa observación.', { q: pref(m), v: formato(m.valor), z: zz.etiqueta }) +
+      (zz.indice > 0 ? ' ' + T('Conviene revisar si es un error de captura o un caso especial, y comparar el modelo con ella y sin ella.') : ''),
     asimetria: (m, c, zz) => (Math.abs(m.valor) >= 0.5
       ? T('{q}G₁ = {v}: {z}, con la cola larga a la {l}.', { q: pref(m), v: formato(m.valor), z: zz.etiqueta, l: m.valor > 0 ? T('derecha') : T('izquierda') })
       : T('{q}G₁ = {v}: {z}.', { q: pref(m), v: formato(m.valor), z: zz.etiqueta })),
