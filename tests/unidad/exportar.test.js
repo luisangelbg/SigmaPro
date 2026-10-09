@@ -217,6 +217,40 @@ SPT.describir('Exportaciones · reporte, documentos, hojas, imágenes y proyecto
     SPT.afirmar(bienFormado(docx.texto('word/document.xml')), 'el reporte en .docx es XML bien formado');
   });
 
+  SPT.caso('Documento rediseñado (hito 5.8): ficha de la portada, índice con un ancla por encabezado, resumen y lectura', () => {
+    const c = ensayo(), t = tab(c);
+    const items = [['dbca', { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, {}], ['correlacion', { x: 'dosis', y: 'rend' }, {}]].map(([id, e, op0]) => {
+      const op = SP.opcionesCon(SP.metodos[id], op0), r = SP.ejecutar(id, t, e, op).resultado, rep = SP.metodos[id].reporte(r);
+      return { titulo: rep.titulo, id, e, op, r, rep, codigo: '', figuras: [], detalles: [] };
+    });
+    const png = SP.zip.deBase64('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==');
+    items[0].lectura = { svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 40"></svg>', imagen: png, anchoCm: 16, altoCm: 1, descripcion: 'p: 0.01', fuentes: ['Cohen (1988)'] };
+    const bs = SP.informe.bloques(items, { titulo: 'Ensayo', datos: 'maíz', n: 36 });
+    const ficha = bs.find(b => b.tipo === 'ficha');
+    SPT.afirmar(ficha && ficha.filas.length === 3 && /36/.test(ficha.filas[0][1]) && new RegExp('2 ').test(ficha.filas[1][1]), JSON.stringify(ficha));
+    const ind = bs.find(b => b.tipo === 'indice'), heads = bs.filter(b => b.tipo === 'encabezado' && b.nivel <= 2);
+    SPT.igualJSON(ind.entradas.map(x => x.ancla), heads.map(h => h.ancla), 'una entrada por encabezado, con su ancla');
+    SPT.igual(bs.indexOf(ind), bs.findIndex(b => b.tipo === 'salto') + 1, 'el índice va tras la portada');
+    SPT.afirmar(heads[0].texto === SP.T('Resumen de los resultados') && bs.some(b => b.estilo === 'Resumen' && /^1\. /.test(b.trozos[0].texto)), 'el resumen');
+    SPT.igual(bs.filter(b => b.tipo === 'lectura').length, 1);
+    const sin = SP.informe.bloques(items, { conResumen: false, conLectura: false });
+    SPT.afirmar(!sin.some(b => b.tipo === 'lectura' || b.estilo === 'Resumen'), 'las casillas los quitan');
+    const html = SP.informe.html(bs, { titulo: 'Ensayo' });
+    SPT.afirmar(/<nav class="indice"/.test(html) && /<dl class="ficha">/.test(html) && /<div class="lectura">/.test(html), 'la página');
+    for (const a of ind.entradas.map(x => x.ancla)) SPT.afirmar(html.includes('href="#' + a + '"') && html.includes('id="' + a + '"'), 'enlace ' + a);
+    const z = SP.zip.leer(SP.docx.construir({ titulo: 'Ensayo', bloques: bs }));
+    const d = z.texto('word/document.xml');
+    SPT.afirmar(bienFormado(d) && bienFormado(z.texto('word/styles.xml')) && bienFormado(z.texto('word/settings.xml')), 'XML bien formado');
+    const marcas = [...d.matchAll(/w:bookmarkStart w:id="\d+" w:name="([^"]+)"/g)].map(m => m[1]), anclas = [...d.matchAll(/w:hyperlink w:anchor="([^"]+)"/g)].map(m => m[1]);
+    SPT.igualJSON(anclas, marcas, 'un enlace del índice por marcador');
+    SPT.afirmar(/ TOC \\o &quot;1-2&quot;/.test(d) && (d.match(/PAGEREF/g) || []).length === anclas.length, 'campo TOC y el número de página de cada entrada');
+    SPT.afirmar(/<w:updateFields w:val="true"\/>/.test(z.texto('word/settings.xml')), 'Word actualiza el índice al abrir');
+    SPT.igualJSON(Array.from(z.datos('word/media/lectura1.png')), Array.from(png));
+    SPT.afirmar(/w:val="Lectura"/.test(d) && /descr="p: 0.01"/.test(d), 'el panel con su descripción');
+    const est = z.texto('word/styles.xml'), usados = [...new Set([...d.matchAll(/<w:pStyle w:val="([^"]+)"/g)].map(m => m[1]))];
+    for (const u of usados) SPT.afirmar(est.includes('w:styleId="' + u + '"'), 'estilo definido: ' + u);
+  });
+
   SPT.caso('Proyecto .labg: guardar y abrir devuelve la misma hoja, filtro y reporte; la huella detecta un cambio', async () => {
     const c = ensayo();
     const hoja = SP.hoja.crear({ nombres: Object.keys(c), columnas: c, tipos: { bloque: { tipo: 'factor' }, hibrido: { tipo: 'factor' } } });

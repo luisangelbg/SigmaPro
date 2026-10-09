@@ -49,6 +49,21 @@ SPT.describir('Lectura de los cuadros · qué se lee en cada cuadro', () => {
     const c = { titulo: 'Medias', columnas: [col('nivel', 'Nivel', 'texto'), col('media', 'Media', 'forma')], filas: [{ nivel: 'a', media: 2 }] };
     SPT.igual(SP.lectura.html(c, {}), '');
   }, { navegador: true });
+  SPT.caso('Panel del reporte (hito 5.8): un renglón por valor clave, sin el intercepto ni las comparaciones por pares', () => {
+    const anova = { titulo: 'ANOVA', columnas: [col('fuente', 'Fuente', 'texto'), col('gl', 'gl', 'entero'), col('F', 'F', 'forma2'), col('p', 'p', 'pvalor')],
+      filas: [{ fuente: '(Intercepto)', gl: 1, F: 900, p: 1e-20 }, { fuente: 'A', gl: 2, F: 5.1, p: 0.025 }, { fuente: 'B', gl: 3, F: 1.2, p: 0.34 }, { fuente: 'Error', gl: 12 }] };
+    const pares = { titulo: 'Pares', columnas: [col('par', 'Par', 'texto'), col('p', 'p', 'pvalor')], filas: 'abcdefgh'.split('').map((x, i) => ({ par: x, p: 0.01 * (i + 1) })) };
+    const resumen = { titulo: 'Resumen', columnas: [col('medida', 'Medida', 'texto'), col('valor', 'Valor', 'escala')], filas: [{ medida: 'Coeficiente de variación, %', valor: 12.5 }, { medida: 'R²', valor: 0.81 }] };
+    const filas = SP.lectura.resumen([anova, pares, resumen], null, { alfa: 0.05 });
+    SPT.igualJSON(filas.map(f => [f.ficha, f.valor]), [['p', 0.025], ['p', 0.34], ['cv', 12.5], ['r2', 0.81]]);
+    SPT.igual(filas[0].titulo, SP.guias.ficha('p').nombre + ' · A');
+    const p = SP.lectura.panel({ rep: { cuadros: [anova, pares, resumen] }, r: { alfa: 0.05 }, op: {} });
+    SPT.igual(p.n, 4);
+    SPT.afirmar(/^<svg xmlns="http:\/\/www.w3.org\/2000\/svg" viewBox="0 0 640 \d+"/.test(p.svg) && !/class=|var\(--/.test(p.svg), 'SVG propio, sin clases ni variables de la hoja de estilo');
+    SPT.igual((p.svg.match(/<path d="M/g) || []).length, 4, 'una marca por renglón');
+    SPT.afirmar(/0\.025/.test(p.descripcion) && /12\.5/.test(p.descripcion) && p.fuentes.length >= 2, p.descripcion);
+    SPT.afirmar(new DOMParser().parseFromString(p.svg, 'image/svg+xml').documentElement.tagName === 'svg', 'XML válido');
+  }, { navegador: true });
 });
 
 SPT.describir('Lectura de los cuadros · tarjetas y guía del CV (hito 5.2)', () => {

@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### 0.5.14 · Hito 5.8, parte 1: el documento del reporte rediseñado (9 oct 2026)
+
+- **Portada** con una ficha: los datos (con su número de filas), el contenido (análisis, cuadros y figuras) y el
+  programa; el subtítulo lleva una línea dorada debajo.
+- **Índice** después de la portada, con los encabezados de primer y segundo nivel (cada análisis): en la página HTML y
+  en el PDF, enlaces; en el .docx, un índice de Word (campo TOC) con un marcador por encabezado, que Word numera al
+  abrir el documento.
+- **Resumen de los resultados**: «En pocas palabras» de cada análisis, al principio del documento (sin las frases que
+  hablan de la app, como la de Explorar sobre el bloque Análisis).
+- **Lectura de los indicadores**: en cada análisis, antes de sus cuadros, un panel con un medidor por estadístico clave
+  (el p de cada efecto, el CV, la R², los tamaños del efecto…), hasta ocho, con su valor, su zona y las fuentes de las
+  guías. Las columnas con muchos valores (las comparaciones por pares) y el intercepto se quedan en el cuadro.
+  - LABGuide 1.2.0: `LABGuide.panel(filas)` dibuja las reglas en un solo SVG con los colores del tema claro, sin
+    depender de la hoja de estilo; en el .docx va como PNG a 300 ppp.
+  - `SP.lectura.resumen` elige los valores y `SP.lectura.panel` arma el panel con la guía del CV elegida.
+- Exportar: casillas *Resumen en pocas palabras* y *Lectura de los indicadores con medidores* (activas; se recuerdan
+  como las de los anexos).
+- Pruebas: `tests/unidad/exportar.test.js` (ficha, índice con sus anclas, resumen, lectura, campo TOC, marcadores y
+  estilos del .docx) y `tests/unidad/lectura.test.js` (el panel); `tests/exportar.mjs` revisa con R (xml2) el índice
+  y los paneles del .docx y de la página HTML. 8 textos nuevos en inglés.
+
 ### 0.5.13 · Hito 5.7, parte 4: errores en palabras y modo presentación (9 oct 2026)
 
 - **Errores en palabras** (`js/interfaz/errores.js`): lo que no se pudo calcular se muestra en un solo recuadro, igual

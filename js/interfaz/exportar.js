@@ -2,7 +2,8 @@
    Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
 
      Reporte  .docx (figuras PNG a 300 ppp con su tamaño), HTML (figuras vectoriales en la página) y PDF (la misma página,
-              con el diálogo de impresión del navegador)
+              con el diálogo de impresión del navegador). Desde el hito 5.8: portada con su ficha, índice, resumen en pocas
+              palabras y, en cada análisis, el panel «Lectura de los indicadores» (SP.lectura.panel)
      Cuadros  hoja de cálculo .xlsx (un cuadro por hoja, con todas las cifras, y un índice) y LaTeX (booktabs)
      Figuras  un ZIP con SVG, PDF vectorial y PNG a 600 ppp (y TIFF si se pide), con su índice
      Proyecto .labg: datos, análisis, ajustes de las figuras y el código R, con la huella SHA-256 de cada archivo
@@ -22,7 +23,7 @@
   function opcionesDoc() {
     const d = SP.app.datos, r = R();
     return { titulo: r.titulo || T('Reporte de análisis estadístico'), autor: r.autor, datos: d && d.origen, n: d && d.hoja ? (d.filtro ? d.filtro.filas.length : d.hoja.n) : null,
-      conCodigo: r.opciones.codigo, conDetalles: r.opciones.detalles, hoja: r.opciones.hoja };
+      conCodigo: r.opciones.codigo, conDetalles: r.opciones.detalles, conResumen: r.opciones.resumen !== false, conLectura: r.opciones.lectura !== false, hoja: r.opciones.hoja };
   }
   /** Los elementos del documento con sus figuras: como SVG (HTML) o como PNG con su tamaño (docx). */
   async function items(conPng) {
@@ -38,7 +39,21 @@
         else g.svg = new XMLSerializer().serializeToString(F().preparar(f.svg));
         figuras.push(g);
       }
-      out.push(Object.assign({}, x, { figuras }));
+      out.push(Object.assign({}, x, { figuras, lectura: await lectura(x, conPng) }));
+    }
+    return out;
+  }
+  /** El panel «Lectura de los indicadores» de un elemento: el SVG (HTML) y, para el .docx, su PNG a 300 ppp. */
+  async function lectura(x, conPng) {
+    if (R().opciones.lectura === false || !SP.lectura || !SP.lectura.panel) return null;
+    let p = null;
+    try { p = SP.lectura.panel(x); } catch (e) { console.error(e); }
+    if (!p) return null;
+    const anchoCm = Math.min(16, SP.docx.anchoUtilCm(R().opciones.hoja)), altoCm = anchoCm * p.alto / p.ancho;
+    const out = { svg: p.svg, descripcion: p.descripcion, fuentes: p.fuentes, anchoCm, altoCm };
+    if (conPng) {
+      const svg = new DOMParser().parseFromString(p.svg, 'image/svg+xml').documentElement;
+      out.imagen = await F().png(svg, anchoCm, 300);
     }
     return out;
   }
@@ -220,6 +235,8 @@
     const hoja = $('#expoHoja'); if (hoja) hoja.value = r.opciones.hoja;
     const cod = $('#expoCodigo'); if (cod) cod.checked = !!r.opciones.codigo;
     const det = $('#expoDetalles'); if (det) det.checked = !!r.opciones.detalles;
+    const res = $('#expoClaro'); if (res) res.checked = r.opciones.resumen !== false;
+    const lec = $('#expoLectura'); if (lec) lec.checked = r.opciones.lectura !== false;
   }
   function iniciar() {
     const panel = $('#panel-7');
@@ -236,6 +253,8 @@
       if (el.id === 'expoHoja') o.hoja = el.value;
       else if (el.id === 'expoCodigo') o.codigo = el.checked;
       else if (el.id === 'expoDetalles') o.detalles = el.checked;
+      else if (el.id === 'expoClaro') o.resumen = el.checked;
+      else if (el.id === 'expoLectura') o.lectura = el.checked;
       else return;
       try { localStorage.setItem('sigmapro.reporte.opciones', JSON.stringify(o)); } catch (x) { /* nada */ }
     });

@@ -1,4 +1,4 @@
-/* LABG Suite — LABGuide 1.1.0: medidores y curvas de referencia para leer estadísticos
+/* LABG Suite — LABGuide 1.2.0: medidores y curvas de referencia para leer estadísticos
    Copyright (C) 2026  Luis Ángel Barrera-Guzmán
    This program is free software: you can redistribute it and/or modify it under
    the terms of the GNU General Public License as published by the Free Software
@@ -16,6 +16,8 @@
                  sombreada, para ver dónde cae el estadístico de una prueba.
      3. Tarjeta  (1.1.0) bajo un medidor, los párrafos que lo interpretan con los números del caso y, plegado, qué es
                  el estadístico; bajo una curva, una frase de lectura.
+     4. Panel    (1.2.0) varias reglas en un solo SVG con sus colores fijos (el tema claro), para un documento
+                 exportado: el nombre, la regla con la marca y el valor con su zona en cada renglón.
    No sabe de ningún análisis en particular: la app le pasa la escala (límites, zonas y fuente) y los valores. Los
    colores salen de las variables de css/labg-guide.css, que siguen el tema claro u oscuro de la app.
 
@@ -28,12 +30,13 @@
                       'izquierda' | 'dos', p, alfa, titulo, formato, lectura })                   → HTML
    En la tarjeta, «extra» es HTML de la app (ya escapado) que va al final, como un formulario para ajustar la guía.
      LABGuide.densidad(dist, x, gl1, gl2)                                                          → número
+     LABGuide.panel([{ titulo, valor, escala, formato, formatoEje }], { titulo })  → { svg, ancho, alto, descripcion, n }
    eje: 'lineal', 'log', 'abs' (el valor absoluto) o 'logabs' (una razón: 1/2 se lee como 2). tono: 'n0' a 'n3'
    (magnitud) u 'ok', 'ok2' (bien, más claro), 'aviso', 'mal' (calidad). Los textos propios siguen el idioma de <html lang>. */
 (function (raiz) {
   'use strict';
   if (raiz.LABGuide && raiz.LABGuide.version) return;
-  const VERSION = '1.1.0';
+  const VERSION = '1.2.0';
   const en = () => typeof document !== 'undefined' && (document.documentElement.lang || 'es').slice(0, 2) === 'en';
   const tx = (es, ing) => (en() ? ing : es);
   const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -226,5 +229,74 @@
     return `<figure class="lg-curva-fig">${o.titulo ? `<p class="lg-tit">${esc(o.titulo)}</p>` : ''}${svg}${pie}${o.lectura ? `<p class="lg-curva-lee">${esc(o.lectura)}</p>` : ''}</figure>`;
   }
 
-  raiz.LABGuide = { version: VERSION, medidor, curva, densidad, posicion };
+  /* ---------------- panel para documentos (1.2.0) ---------------- */
+  /* Colores fijos del tema claro: el panel va en un documento (HTML, PDF, .docx), sin la hoja de estilo de la app. */
+  const TONOS = { n0: '#f1e9d2', n1: '#e2cd8f', n2: '#c9a227', n3: '#8c6d1a', ok: '#2f7d4f', ok2: '#9ccfaa', aviso: '#c98a12', mal: '#b3261e' };
+  const P = { ancho: 640, fila: 38, etq: 206, x0: 214, x1: 452, val: 466, texto: '#1d1d1b', tenue: '#5c5a54', linea: '#d8d2c4', letra: 'Helvetica, Arial, sans-serif' };
+  const corta = (s, n) => { s = String(s == null ? '' : s); return s.length > n ? s.slice(0, n - 1) + '…' : s; };
+  /* un texto en dos renglones de hasta n caracteres, por palabras (lo que no cabe en el segundo se corta con «…») */
+  function partir(s, n) {
+    const palabras = String(s == null ? '' : s).split(/\s+/).filter(Boolean), out = [''];
+    for (const w of palabras) {
+      const i = out.length - 1, prueba = out[i] ? out[i] + ' ' + w : w;
+      if (prueba.length <= n || !out[i]) out[i] = prueba;
+      else if (out.length < 2) out.push(w);
+      else { out[i] = prueba; }
+    }
+    return out.map(x => corta(x, n));
+  }
+  /**
+   * Varias reglas, una por renglón, en un solo SVG con sus colores: el nombre del estadístico a la izquierda, la regla
+   * con sus zonas y la marca al centro, y el valor con su zona a la derecha. Para el reporte exportado.
+   *   filas: [{ titulo, valor, escala: { min, max, eje, zonas, inclusivo, abierto, etiquetaMin, etiquetaMax },
+   *            formato, formatoEje }]
+   * → { svg, ancho, alto, descripcion }
+   */
+  function panel(filas, o) {
+    o = o || {};
+    const lista = (filas || []).filter(f => f && f.escala && Number.isFinite(f.valor) && (f.escala.zonas || []).length);
+    const alto = lista.length * P.fila + 4;
+    const x = t => P.x0 + t * (P.x1 - P.x0);
+    const txt = (cx, cy, s, a) => `<text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" font-family="${P.letra}" font-size="${a.tam || 11}" fill="${a.color || P.texto}"${a.fin ? ' text-anchor="' + a.fin + '"' : ''}${a.negrita ? ' font-weight="bold"' : ''}>${esc(s)}</text>`;
+    const desc = [];
+    let svg = '';
+    lista.forEach((f, k) => {
+      const e = f.escala, y0 = k * P.fila + 2, by = y0 + 11, bh = 10;
+      const fmt = f.formato || (v => num(v)), fmtEje = f.formatoEje || fmt;
+      const zona = e.zonas[zonaDe(e, f.valor)];
+      if (k) svg += `<line x1="0" x2="${P.ancho}" y1="${y0 - 2}" y2="${y0 - 2}" stroke="${P.linea}" stroke-width="0.6"/>`;
+      /* el nombre en uno o dos renglones; con uno, debajo va qué mide la escala («Evidencia contra la hipótesis nula») */
+      const renglones = partir(f.titulo, 33);
+      svg += txt(0, by + 3, renglones[0], { negrita: true });
+      if (renglones[1]) svg += txt(0, by + 16, renglones[1], { negrita: true });
+      else if (e.titulo) svg += txt(0, by + 16, corta(e.titulo, 40), { tam: 9.5, color: P.tenue });
+      let ini = 0, ultimo = P.x0 + 14;
+      e.zonas.forEach((q, i) => {
+        const fin = i === e.zonas.length - 1 ? 1 : posicion(e, q.hasta);
+        if (fin > ini) svg += `<rect x="${x(ini).toFixed(1)}" y="${by}" width="${(x(fin) - x(ini)).toFixed(1)}" height="${bh}" fill="${TONOS[q.tono] || TONOS.n0}"/>`;
+        if (i < e.zonas.length - 1 && fin > 0 && fin < 1) {
+          svg += `<line x1="${x(fin).toFixed(1)}" x2="${x(fin).toFixed(1)}" y1="${by - 2}" y2="${by + bh + 2}" stroke="${P.tenue}" stroke-width="0.8"/>`;
+          const rot = String(fmtEje(q.hasta)), anch = 4.6 * rot.length + 4;
+          if (x(fin) - anch / 2 > ultimo + 3 && x(fin) + anch / 2 < P.x1 - 14) { svg += txt(x(fin), by + bh + 11, rot, { tam: 8.5, color: P.tenue, fin: 'middle' }); ultimo = x(fin) + anch / 2; }
+        }
+        ini = Math.max(ini, fin);
+      });
+      svg += `<rect x="${P.x0}" y="${by}" width="${P.x1 - P.x0}" height="${bh}" fill="none" stroke="${P.linea}" stroke-width="0.6"/>`;
+      svg += txt(P.x0, by + bh + 11, e.etiquetaMin || fmtEje(e.min), { tam: 8.5, color: P.tenue });
+      svg += txt(P.x1, by + bh + 11, e.etiquetaMax || fmtEje(e.max) + (e.abierto ? '+' : ''), { tam: 8.5, color: P.tenue, fin: 'end' });
+      const t = posicion(e, f.valor);
+      if (Number.isFinite(t)) svg += `<path d="M${(x(t) - 5).toFixed(1)} ${by - 8}L${(x(t) + 5).toFixed(1)} ${by - 8}L${x(t).toFixed(1)} ${by + 1}Z" fill="${P.texto}" stroke="#ffffff" stroke-width="0.8"/>`;
+      svg += txt(P.val, by + 3, corta(fmt(f.valor), 30), { negrita: true });
+      svg += txt(P.val, by + 16, corta(zona.etiqueta, 32), { tam: 9.5, color: P.tenue });
+      desc.push(f.titulo + ': ' + fmt(f.valor) + ' — ' + zona.etiqueta);
+    });
+    const descripcion = (o.titulo ? o.titulo + '. ' : '') + desc.join('; ') + '.';
+    return {
+      svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${P.ancho} ${alto}" width="${P.ancho}" height="${alto}" role="img" aria-label="${esc(descripcion)}">` +
+        `<rect x="0" y="0" width="${P.ancho}" height="${alto}" fill="#ffffff"/>${svg}</svg>`,
+      ancho: P.ancho, alto, descripcion, n: lista.length,
+    };
+  }
+
+  raiz.LABGuide = { version: VERSION, medidor, curva, densidad, posicion, panel };
 })(typeof window !== 'undefined' ? window : globalThis);

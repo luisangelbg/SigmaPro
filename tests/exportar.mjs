@@ -13,8 +13,10 @@
 //    desactivarlo borra lo guardado.
 // 4. R las lee con sus propios lectores: cada número de la hoja de cálculo idéntico al de la app y, para el ANOVA y
 //    las medias, igual al que calcula R desde los datos; cada parte del .docx es XML válido con sus cuadros, figuras y
-//    textos; los PDF de las figuras miden lo que deben y traen su texto; los PNG dicen 600 ppp; la huella SHA-256 de
-//    cada archivo del proyecto coincide con su manifiesto y su código R corre de principio a fin con los mismos datos.
+//    textos, el índice (campo TOC con un enlace a cada marcador) y un panel de lectura por análisis (hito 5.8); la
+//    página HTML, con su índice enlazado y los mismos paneles; los PDF de las figuras miden lo que deben y traen su
+//    texto; los PNG dicen 600 ppp; la huella SHA-256 de cada archivo del proyecto coincide con su manifiesto y su
+//    código R corre de principio a fin con los mismos datos.
 //    El TIFF se compara píxel por píxel con el PNG usando el lector de imágenes del sistema.
 
 import { spawn, execFileSync } from 'node:child_process';
@@ -70,7 +72,8 @@ const PAGINA = `(async () => {
   const cuadros = [];
   R.elementos().forEach(x => x.rep.cuadros.forEach(q => { n++; const v = SP.formatos.valores(q, x.visibles), c = SP.formatos.celdas(q, x.visibles); cuadros.push({ numero: n, id: q.id, metodo: x.id, titulo: q.titulo, cabecera: v.cabecera, filas: v.filas, celdas: c.cabecera.concat(c.filas.flat()) }); }));
   const figuras = SP.app.figuras.lista().map(f => ({ numero: f.numero, titulo: f.titulo, ancho: f.svg.viewBox.baseVal.width, alto: f.svg.viewBox.baseVal.height }));
-  return JSON.stringify({ salida, esperado: { cuadros, figuras, anchoCm: R.opciones.anchoCm, csv: ej.csv, analisis: R.items.length } });
+  const lecturas = R.elementos().filter(x => SP.lectura.panel(x)).length;
+  return JSON.stringify({ salida, esperado: { cuadros, figuras, lecturas, anchoCm: R.opciones.anchoCm, csv: ej.csv, analisis: R.items.length } });
 })()`;
 
 let codigo = 1;
@@ -230,22 +233,30 @@ for (k in seq_along(tbls)) {
   celdas <- xml_text(xml_find_all(tbls[[k]], ".//w:tc", ns))
   if (!identical(celdas, unlist(esp$cuadros[[k]]$celdas))) falla("docx: el texto del cuadro ", k, " no coincide") else cuenta("docx_cuadros")
 }
-dibujos <- xml_find_all(doc, "//w:drawing", ns)
+dibujos <- xml_find_all(doc, "//w:p[w:pPr/w:pStyle/@w:val='Figura']//w:drawing", ns)
 if (length(dibujos) != length(esp$figuras)) falla("docx: ", length(dibujos), " figuras para ", length(esp$figuras))
+lecturas <- xml_find_all(doc, "//w:p[w:pPr/w:pStyle/@w:val='Lectura']//w:drawing", ns)
+if (length(lecturas) != esp$lecturas || esp$lecturas < 1) falla("docx: ", length(lecturas), " paneles de lectura para ", esp$lecturas) else cuenta("docx_lecturas")
+marcas <- xml_attr(xml_find_all(doc, "//w:bookmarkStart", ns), "name"); anclas <- xml_attr(xml_find_all(doc, "//w:hyperlink", ns), "anchor")
+if (length(anclas) < esp$analisis + 3 || !all(anclas %in% marcas) || !any(grepl("^\\\\s*TOC ", xml_text(xml_find_all(doc, "//w:instrText", ns))))) falla("docx: el índice") else cuenta("docx_indice")
 seq <- xml_text(xml_find_all(doc, "//w:instrText", ns))
 if (sum(grepl("SEQ Cuadro", seq)) != length(esp$cuadros) || sum(grepl("SEQ Figura", seq)) != length(esp$figuras)) falla("docx: campos SEQ")
 for (f in list.files("docx/word/media", full.names = TRUE)) {
   im <- readPNG(f, info = TRUE); inf <- attr(im, "info"); dpi <- inf$dpi
   if (is.null(dpi) || any(abs(dpi - 300) > 0.1)) falla("docx: ", basename(f), " sin 300 ppp")
-  if (abs(dim(im)[2] - round(min(esp$anchoCm, 21.59 - 5) / 2.54 * 300)) > 1) falla("docx: ", basename(f), " mide ", dim(im)[2], " px") else cuenta("docx_imagenes")
+  ancho <- if (grepl("^lectura", basename(f))) min(16, 21.59 - 5) else min(esp$anchoCm, 21.59 - 5)
+  if (abs(dim(im)[2] - round(ancho / 2.54 * 300)) > 1) falla("docx: ", basename(f), " mide ", dim(im)[2], " px") else cuenta("docx_imagenes")
 }
 texto <- paste(xml_text(xml_find_all(doc, "//w:t", ns)), collapse = " ")
-for (frase in c("Métodos", "Resultados", "Referencias", "F(2, 33) = 60.63", "Gomez y Gomez, 1984", "Tukey, 1949a", "R Core Team"))
+for (frase in c("Contenido", "Resumen de los resultados", "Lectura de los indicadores", "Métodos", "Resultados", "Referencias", "F(2, 33) = 60.63", "Gomez y Gomez, 1984", "Tukey, 1949a", "R Core Team"))
   if (!grepl(frase, texto, fixed = TRUE)) falla("docx: falta «", frase, "»") else cuenta("docx_frases")
 # ---- 4. la página HTML ----
 h <- read_html("reporte.html")
 if (length(xml_find_all(h, "//table[@class='revista']")) != length(esp$cuadros)) falla("html: cuadros")
 if (length(xml_find_all(h, "//figure/*[local-name()='svg']")) != length(esp$figuras)) falla("html: figuras vectoriales") else cuenta("html")
+if (length(xml_find_all(h, "//div[@class='lectura']/*[local-name()='svg']")) != esp$lecturas) falla("html: paneles de lectura") else cuenta("html")
+enl <- sub("^#", "", xml_attr(xml_find_all(h, "//nav[@class='indice']//a"), "href")); ids <- xml_attr(xml_find_all(h, "//*[@id]"), "id")
+if (length(enl) < esp$analisis + 3 || !all(enl %in% ids) || length(xml_find_all(h, "//dl[@class='ficha']")) != 1) falla("html: índice o ficha de la portada") else cuenta("html")
 # ---- 5. las figuras: SVG, PDF vectorial, PNG a 600 ppp ----
 unzip("figuras.zip", exdir = "fig")
 for (q in esp$figuras) {
@@ -321,7 +332,7 @@ $res | ConvertTo-Json -Compress`;
   console.log('\nSigmaPro · exportaciones validadas con lectores independientes (armadas en ' + (tPagina / 1000).toFixed(1) + ' s)');
   console.log('  archivos: ' + Object.entries(tam).map(([k, v]) => k + ' ' + Math.round(v / 1024) + ' KB').join(' · '));
   console.log('  hoja de cálculo (readxl): ' + (c.xlsx_numeros || 0) + ' números idénticos a la app y ' + (c.xlsx_textos || 0) + ' textos; ' + (c.contra_R || 0) + ' valores del ANOVA y de las medias iguales a R (car, emmeans)');
-  console.log('  .docx (xml2): ' + (c.docx_partes || 0) + ' partes XML válidas, ' + (c.docx_cuadros || 0) + ' cuadros con su texto exacto, ' + (c.docx_imagenes || 0) + ' figuras a 300 ppp, ' + (c.docx_frases || 0) + ' frases clave');
+  console.log('  .docx (xml2): ' + (c.docx_partes || 0) + ' partes XML válidas, ' + (c.docx_cuadros || 0) + ' cuadros con su texto exacto, ' + (c.docx_imagenes || 0) + ' imágenes a 300 ppp, ' + (c.docx_lecturas ? 'paneles de lectura, ' : '') + (c.docx_indice ? 'índice, ' : '') + (c.docx_frases || 0) + ' frases clave');
   console.log('  figuras: ' + (c.svg || 0) + ' SVG en mm, ' + (c.pdf || 0) + ' PDF del tamaño pedido con texto en Helvetica (pdftools), ' + (c.png || 0) + ' PNG a 600 ppp (png)');
   console.log('  TIFF (System.Drawing): ' + tiffInfo);
   console.log('  proyecto .labg (openssl): ' + (c.labg_huellas || 0) + ' huellas SHA-256 iguales, datos idénticos a los originales, código R corrido completo (' + (c.labg_codigo_R_lineas || 0) + ' líneas de salida)');

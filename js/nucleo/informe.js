@@ -11,6 +11,10 @@
      SP.informe.software(items?)            → { texto, citas } (con items: menciona el motor R si alguno lo usó)
      SP.informe.referencia(clave)            → texto de la referencia (estilo autor-año)
      SP.informe.bloques(items, opciones)     → bloques del documento (los que entiende SP.docx y SP.informe.html)
+   Hito 5.8: la portada lleva una ficha (datos, contenido y programa); sigue el índice, con un ancla por encabezado de
+   primer y segundo nivel; el «Resumen de los resultados» junta «En pocas palabras» de cada análisis (SP.claro), y cada
+   análisis puede traer su panel «Lectura de los indicadores» (it.lectura: el SVG de los medidores y, para el .docx, su
+   imagen PNG), que se arma en la interfaz (js/interfaz/lectura.js) porque necesita LABGuide.
      SP.informe.html(bloques, opciones)      → página HTML completa, con su hoja de estilo e imprimible */
 SP.definir('informe', function (SP) {
   'use strict';
@@ -1063,22 +1067,39 @@ SP.definir('informe', function (SP) {
   }
 
   /* ---------------- el documento ---------------- */
+  /* las frases que hablan de la app (en Explorar, «… se prueba en el bloque Análisis») no van en el resumen del documento */
+  const DE_LA_APP = /bloque Análisis|Analysis block/;
   /**
    * items: [{ titulo, id, e, op, r, rep, codigo, figuras: [{ titulo, descripcion, png?, anchoCm?, altoCm?, svg? }],
-   *           supuestos?: { rep, r }, detalles: [[clave, valor]] }]
-   * opciones: { titulo, autor, fecha (Date), datos (nombre del conjunto), n, conCodigo, conDetalles }
+   *           supuestos?: { rep, r }, detalles: [[clave, valor]],
+   *           lectura?: { svg, descripcion, fuentes, imagen?, anchoCm?, altoCm? } }]
+   * opciones: { titulo, autor, fecha (Date), datos (nombre del conjunto), n, conCodigo, conDetalles, conResumen, conLectura }
    */
   function bloques(items, opciones) {
-    const o = Object.assign({ titulo: T('Reporte de análisis estadístico'), autor: '', conCodigo: true, conDetalles: true }, opciones || {});
+    const o = Object.assign({ titulo: T('Reporte de análisis estadístico'), autor: '', conCodigo: true, conDetalles: true, conResumen: true, conLectura: true }, opciones || {});
     const out = [], citas = new Set();
     const fecha = (o.fecha || new Date()).toLocaleDateString(SP.LOCAL, { day: 'numeric', month: 'long', year: 'numeric' });
     out.push({ tipo: 'titulo', texto: o.titulo });
     out.push({ tipo: 'subtitulo', texto: T('Reporte LABG de SigmaPro') });
     if (o.autor) out.push({ tipo: 'portada', texto: o.autor });
     out.push({ tipo: 'portada', texto: fecha });
-    if (o.datos) out.push({ tipo: 'portada', texto: T('Datos: {d}{n}', { d: o.datos, n: o.n ? T(' ({n} filas)', { n: o.n }) : '' }) });
-    out.push({ tipo: 'portada', texto: T('Generado con SigmaPro {v}; cada cálculo se valida contra R.', { v: SP.VERSION }) });
+    /* la ficha de la portada: de qué datos sale, qué contiene y con qué se hizo */
+    const nCuadros = items.reduce((s, it) => s + ((it.rep && it.rep.cuadros) || []).length, 0), nFiguras = items.reduce((s, it) => s + (it.figuras || []).length, 0);
+    const ficha = [];
+    if (o.datos) ficha.push([T('Datos'), o.datos + (o.n ? T(' ({n} filas)', { n: o.n }) : '')]);
+    ficha.push([T('Contenido'), T('{k} análisis · {c} cuadros · {f} figuras{d}{e}', { k: items.length, c: nCuadros, f: nFiguras, d: '', e: '' })]);
+    ficha.push([T('Programa'), T('SigmaPro {v}; cada cálculo se valida contra R.', { v: SP.VERSION })]);
+    out.push({ tipo: 'ficha', filas: ficha });
     out.push({ tipo: 'salto' });
+    const lugarIndice = out.length;
+    /* el resumen: «En pocas palabras» de cada análisis */
+    if (o.conResumen) {
+      const res = items.map((it, i) => { let f = []; try { f = SP.claro ? SP.claro.frases(it.id, it.r, it.rep) : []; } catch (e) { f = []; } return { i, f: f.filter(x => !DE_LA_APP.test(x)) }; }).filter(x => x.f.length);
+      if (res.length) {
+        out.push({ tipo: 'encabezado', nivel: 1, texto: T('Resumen de los resultados') });
+        res.forEach(x => out.push({ tipo: 'parrafo', estilo: 'Resumen', trozos: [{ texto: (x.i + 1) + '. ' + items[x.i].titulo + '. ', negrita: true }, { texto: x.f.join(' ') }] }));
+      }
+    }
     const pars = items.map(it => parrafo(it.id, it.r, it.rep, it.e, it.op));
     pars.forEach(p => p.citas.forEach(c => citas.add(c)));
     /* 1. métodos */
@@ -1093,6 +1114,7 @@ SP.definir('informe', function (SP) {
       out.push({ tipo: 'encabezado', nivel: 2, texto: (i + 1) + '. ' + it.titulo });
       if (it.rep && it.rep.conclusiones && it.rep.conclusiones.length) out.push({ tipo: 'conclusion', texto: it.rep.conclusiones.join(' ') });
       if (pars[i].resultados) out.push({ tipo: 'parrafo', texto: pars[i].resultados });
+      if (o.conLectura && it.lectura && it.lectura.svg) out.push(Object.assign({ tipo: 'lectura', titulo: T('Lectura de los indicadores') }, it.lectura));
       for (const c of (it.rep && it.rep.cuadros) || []) {
         nc++;
         const k = SP.formatos.celdas(c, it.visibles);
@@ -1133,6 +1155,11 @@ SP.definir('informe', function (SP) {
       out.push({ tipo: 'parrafo', texto: T('Cada análisis se puede repetir en R con este código (los datos, en un archivo «datos.csv» con las mismas columnas).') });
       items.forEach((it, i) => { out.push({ tipo: 'encabezado', nivel: 3, texto: (i + 1) + '. ' + it.titulo }); out.push({ tipo: 'codigo', texto: it.codigo || '' }); });
     }
+    /* el índice: los encabezados de primer y segundo nivel, cada uno con su ancla */
+    let na = 0;
+    const entradas = [];
+    out.forEach(b => { if (b.tipo === 'encabezado' && b.nivel <= 2) { b.ancla = 'sec-' + (++na); entradas.push({ nivel: b.nivel, texto: b.texto, ancla: b.ancla }); } });
+    out.splice(lugarIndice, 0, { tipo: 'indice', titulo: T('Contenido'), entradas }, { tipo: 'salto' });
     return out;
   }
 
@@ -1142,8 +1169,16 @@ SP.definir('informe', function (SP) {
     :root { color-scheme: light; }
     body { font: 11.5pt/1.5 "Times New Roman", Times, serif; color: #17150F; background: #fff; margin: 0; }
     main { max-width: 17cm; margin: 0 auto; padding: 1.5cm 1.2cm 2cm; }
-    h1.titulo { font-size: 22pt; text-align: center; margin: 3cm 0 .4cm; } p.subtitulo { text-align: center; font-size: 14pt; margin: 0 0 1cm; }
+    h1.titulo { font-size: 24pt; line-height: 1.2; text-align: center; margin: 3.5cm 0 .5cm; }
+    p.subtitulo { text-align: center; font-size: 13pt; letter-spacing: .04em; margin: 0 auto 1.2cm; padding-bottom: .5cm; max-width: 12cm; border-bottom: 2px solid #9C7128; }
     p.portada { text-align: center; margin: .15cm 0; }
+    dl.ficha { display: grid; grid-template-columns: 3.2cm 1fr; gap: .12cm .4cm; max-width: 13cm; margin: 3cm auto 0; padding-top: .4cm; border-top: 1px solid #C9C1AE; font-size: 10.5pt; }
+    dl.ficha dt { font-weight: bold; text-align: right; } dl.ficha dd { margin: 0; }
+    nav.indice h2 { margin-top: 0; } nav.indice ul { list-style: none; padding: 0; margin: 0; } nav.indice li { margin: .08cm 0; }
+    nav.indice li.n1 { font-weight: bold; margin-top: .25cm; } nav.indice li.n2 { padding-left: .8cm; } nav.indice a { color: inherit; text-decoration: none; }
+    p.resumen { text-align: left; }
+    div.lectura { margin: .3cm 0 .4cm; break-inside: avoid; } p.lectura-t { font-weight: bold; font-size: 10.5pt; margin: 0 0 .1cm; }
+    div.lectura svg { display: block; width: 100%; max-width: 16cm; height: auto; }
     h2 { font-size: 15pt; margin: 1cm 0 .3cm; } h3 { font-size: 12.5pt; margin: .7cm 0 .2cm; } h4 { font-size: 11.5pt; font-style: italic; margin: .5cm 0 .15cm; }
     p { text-align: justify; margin: 0 0 .25cm; } p.conclusion { border-left: 3px solid #9C7128; padding: .1cm .3cm; background: #FAF6EC; text-align: left; }
     figure { margin: .4cm 0 .5cm; text-align: center; break-inside: avoid; } figure svg, figure img { max-width: 100%; height: auto; }
@@ -1157,6 +1192,7 @@ SP.definir('informe', function (SP) {
     .s-verde { background: #2E7D32; } .s-ambar { background: #E0A100; } .s-rojo { background: #C62828; } .s-gris { background: #fff; }
     p.referencia { padding-left: 1cm; text-indent: -1cm; text-align: left; }
     .salto { break-after: page; height: 0; }
+    @media screen { .salto { border-top: 1px dashed #C9C1AE; margin: 1cm 0; } }
     @page { size: letter; margin: 2cm; }
     @media print { main { padding: 0; max-width: none; } h2, h3, h4 { break-after: avoid; } }`;
   const ETIQUETA_SEM = { verde: 'Bien', ambar: 'Revisar', rojo: 'Problema', gris: 'No aplica' };
@@ -1168,9 +1204,14 @@ SP.definir('informe', function (SP) {
         case 'subtitulo': return `<p class="subtitulo">${escH(b.texto)}</p>`;
         case 'portada': return `<p class="portada">${escH(b.texto)}</p>`;
         case 'salto': return '<div class="salto"></div>';
-        case 'encabezado': return `<h${b.nivel + 1}>${escH(b.texto)}</h${b.nivel + 1}>`;
+        case 'encabezado': return `<h${b.nivel + 1}${b.ancla ? ` id="${escH(b.ancla)}"` : ''}>${escH(b.texto)}</h${b.nivel + 1}>`;
+        case 'ficha': return `<dl class="ficha">${b.filas.map(([k, v]) => `<dt>${escH(k)}</dt><dd>${escH(v)}</dd>`).join('')}</dl>`;
+        case 'indice': return `<nav class="indice" aria-labelledby="indice-t"><h2 id="indice-t">${escH(b.titulo)}</h2><ul>` +
+          b.entradas.map(x => `<li class="n${x.nivel}"><a href="#${escH(x.ancla)}">${escH(x.texto)}</a></li>`).join('') + '</ul></nav>';
+        case 'lectura': return `<div class="lectura"><p class="lectura-t">${escH(b.titulo)}</p>${b.svg}` +
+          (b.fuentes && b.fuentes.length ? `<p class="nota">${escH(T('Guías: {g}.', { g: b.fuentes.join('; ') }))}</p>` : '') + '</div>';
         case 'conclusion': return `<p class="conclusion">${escH(b.texto)}</p>`;
-        case 'parrafo': return `<p>${b.trozos ? b.trozos.map(t => (t.negrita ? `<b>${escH(t.texto)}</b>` : t.cursiva ? `<i>${escH(t.texto)}</i>` : escH(t.texto))).join('') : escH(b.texto)}</p>`;
+        case 'parrafo': return `<p${b.estilo === 'Resumen' ? ' class="resumen"' : ''}>${b.trozos ? b.trozos.map(t => (t.negrita ? `<b>${escH(t.texto)}</b>` : t.cursiva ? `<i>${escH(t.texto)}</i>` : escH(t.texto))).join('') : escH(b.texto)}</p>`;
         case 'referencia': return `<p class="referencia">${escH(b.texto)}</p>`;
         case 'codigo': return `<pre>${escH(b.texto)}</pre>`;
         case 'semaforo': return `<ul class="semaforo">${b.filas.map(s => `<li><span class="luz s-${s.color}" aria-hidden="true"></span><b>${escH(s.nombre)}</b> — ${escH(T(ETIQUETA_SEM[s.color] || ''))}: ${escH(s.texto)}</li>`).join('')}</ul>`;

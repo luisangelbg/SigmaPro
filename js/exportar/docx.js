@@ -12,6 +12,11 @@
      { tipo: 'semaforo', filas: [{ color, nombre, texto }] }            los supuestos: «Bien», «Revisar», «Problema»
      { tipo: 'referencia', texto }                                     sangría francesa
      { tipo: 'salto' }
+     { tipo: 'ficha', filas: [[clave, valor]] }                         la ficha de la portada (hito 5.8)
+     { tipo: 'indice', titulo, entradas: [{ nivel, texto, ancla }] }   un campo TOC con sus renglones ya escritos
+     { tipo: 'lectura', titulo, imagen (PNG), anchoCm, altoCm, descripcion, fuentes }   los medidores, sin leyenda
+   Un encabezado con «ancla» lleva un marcador (_TocSP…) al que apuntan el índice y su número de página (PAGEREF); Word
+   actualiza los números al abrir el documento (updateFields).
    Las leyendas llevan un campo SEQ (se renumeran al actualizar los campos), el número de página va en el pie (no en la
    portada), las figuras van en línea con su tamaño físico y los cuadros tienen la fila de encabezado repetida y las tres
    líneas de revista (arriba, bajo el encabezado y abajo).
@@ -45,6 +50,11 @@ SP.definir('docx', function (SP) {
     const pPr = (o.estilo ? `<w:pStyle w:val="${o.estilo}"/>` : '') + (o.juntoSiguiente ? '<w:keepNext/>' : '') + (o.alinear ? `<w:jc w:val="${o.alinear}"/>` : '');
     return '<w:p>' + (pPr ? '<w:pPr>' + pPr + '</w:pPr>' : '') + contenido + '</w:p>';
   }
+  /* el marcador de un encabezado con ancla («sec-3» → «_TocSP3») */
+  const marca = a => '_TocSP' + String(a).replace(/\D/g, '');
+  /* un campo complejo con su resultado ya escrito */
+  const campo = (instr, resultado) => `<w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> ${esc(instr)} </w:instrText></w:r>`
+    + `<w:r><w:fldChar w:fldCharType="separate"/></w:r>${resultado}<w:r><w:fldChar w:fldCharType="end"/></w:r>`;
   /* «Cuadro 1. Título»: el número es un campo SEQ con su resultado actual; un campo complejo conserva las negritas */
   function leyenda(l, seq, o) {
     const b = '<w:rPr><w:b/></w:rPr>';
@@ -116,7 +126,7 @@ SP.definir('docx', function (SP) {
     + '<w:pPrDefault><w:pPr><w:spacing w:after="140" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults>'
     + '<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/><w:pPr><w:jc w:val="both"/></w:pPr></w:style>'
     + '<w:style w:type="paragraph" w:styleId="Title"><w:name w:val="Title"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:spacing w:before="2400" w:after="360"/><w:jc w:val="center"/></w:pPr><w:rPr><w:b/><w:sz w:val="44"/><w:szCs w:val="44"/></w:rPr></w:style>'
-    + '<w:style w:type="paragraph" w:styleId="Subtitle"><w:name w:val="Subtitle"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:spacing w:after="480"/><w:jc w:val="center"/></w:pPr><w:rPr><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:style>'
+    + '<w:style w:type="paragraph" w:styleId="Subtitle"><w:name w:val="Subtitle"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:pBdr><w:bottom w:val="single" w:sz="12" w:space="8" w:color="9C7128"/></w:pBdr><w:spacing w:after="600"/><w:ind w:left="1418" w:right="1418"/><w:jc w:val="center"/></w:pPr><w:rPr><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:style>'
     + '<w:style w:type="paragraph" w:customStyle="1" w:styleId="Portada"><w:name w:val="Portada"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="120"/><w:jc w:val="center"/></w:pPr><w:rPr><w:sz w:val="24"/><w:szCs w:val="24"/></w:rPr></w:style>'
     + '<w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:keepLines/><w:spacing w:before="480" w:after="160"/><w:jc w:val="left"/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:b/><w:sz w:val="32"/><w:szCs w:val="32"/></w:rPr></w:style>'
     + '<w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:keepLines/><w:spacing w:before="360" w:after="120"/><w:jc w:val="left"/><w:outlineLvl w:val="1"/></w:pPr><w:rPr><w:b/><w:sz w:val="26"/><w:szCs w:val="26"/></w:rPr></w:style>'
@@ -129,6 +139,13 @@ SP.definir('docx', function (SP) {
     + '<w:style w:type="paragraph" w:customStyle="1" w:styleId="Conclusion"><w:name w:val="Conclusión"/><w:basedOn w:val="Normal"/><w:pPr><w:pBdr><w:left w:val="single" w:sz="18" w:space="8" w:color="9C7128"/></w:pBdr><w:shd w:val="clear" w:color="auto" w:fill="FAF6EC"/><w:ind w:left="170"/><w:jc w:val="left"/></w:pPr></w:style>'
     + '<w:style w:type="paragraph" w:customStyle="1" w:styleId="Semaforo"><w:name w:val="Semáforo"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="60"/><w:ind w:left="284"/><w:jc w:val="left"/></w:pPr><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr></w:style>'
     + '<w:style w:type="paragraph" w:styleId="Bibliography"><w:name w:val="Bibliography"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="100"/><w:ind w:left="567" w:hanging="567"/><w:jc w:val="left"/></w:pPr></w:style>'
+    + '<w:style w:type="paragraph" w:customStyle="1" w:styleId="PortadaFicha"><w:name w:val="Ficha de la portada"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="60"/><w:jc w:val="center"/></w:pPr><w:rPr><w:sz w:val="21"/><w:szCs w:val="21"/></w:rPr></w:style>'
+    + '<w:style w:type="paragraph" w:styleId="TOCHeading"><w:name w:val="TOC Heading"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="240" w:after="240"/><w:jc w:val="left"/></w:pPr><w:rPr><w:b/><w:sz w:val="32"/><w:szCs w:val="32"/></w:rPr></w:style>'
+    + '<w:style w:type="paragraph" w:styleId="TOC1"><w:name w:val="toc 1"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:pPr><w:tabs><w:tab w:val="right" w:leader="dot" w:pos="9350"/></w:tabs><w:spacing w:before="120" w:after="40"/><w:jc w:val="left"/></w:pPr><w:rPr><w:b/></w:rPr></w:style>'
+    + '<w:style w:type="paragraph" w:styleId="TOC2"><w:name w:val="toc 2"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:pPr><w:tabs><w:tab w:val="right" w:leader="dot" w:pos="9350"/></w:tabs><w:spacing w:after="40"/><w:ind w:left="440"/><w:jc w:val="left"/></w:pPr></w:style>'
+    + '<w:style w:type="paragraph" w:customStyle="1" w:styleId="Resumen"><w:name w:val="Resumen"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="120"/><w:jc w:val="left"/></w:pPr></w:style>'
+    + '<w:style w:type="paragraph" w:customStyle="1" w:styleId="LecturaTitulo"><w:name w:val="Título de la lectura"/><w:basedOn w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="160" w:after="40"/><w:jc w:val="left"/></w:pPr><w:rPr><w:b/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr></w:style>'
+    + '<w:style w:type="paragraph" w:customStyle="1" w:styleId="Lectura"><w:name w:val="Lectura"/><w:basedOn w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="0" w:after="40" w:line="240" w:lineRule="auto"/><w:jc w:val="left"/></w:pPr></w:style>'
     + '<w:style w:type="paragraph" w:styleId="Footer"><w:name w:val="footer"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="0"/><w:jc w:val="center"/></w:pPr><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr></w:style>'
     + '<w:style w:type="table" w:customStyle="1" w:styleId="Revista"><w:name w:val="Cuadro de revista"/><w:tblPr><w:tblBorders><w:top w:val="single" w:sz="8" w:space="0" w:color="000000"/><w:bottom w:val="single" w:sz="8" w:space="0" w:color="000000"/></w:tblBorders><w:tblCellMar><w:left w:w="80" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr></w:style>'
     + '</w:styles>';
@@ -138,12 +155,35 @@ SP.definir('docx', function (SP) {
     const tam = HOJAS[hoja];
     const twipsUtiles = tam.w - 2 * MARGEN;
     const cuerpo = [], rels = [], medios = [];
-    let idDibujo = 0;
+    let idDibujo = 0, idMarca = 0, idLectura = 0;
     for (const b of doc.bloques) {
       if (b.tipo === 'titulo') cuerpo.push(parrafo(trozo(b.texto), { estilo: 'Title' }));
       else if (b.tipo === 'subtitulo') cuerpo.push(parrafo(trozo(b.texto), { estilo: 'Subtitle' }));
       else if (b.tipo === 'portada') cuerpo.push(parrafo(trozo(b.texto), { estilo: 'Portada' }));
-      else if (b.tipo === 'encabezado') cuerpo.push(parrafo(trozo(b.texto), { estilo: 'Heading' + Math.min(3, Math.max(1, b.nivel || 1)) }));
+      else if (b.tipo === 'encabezado') {
+        const est = 'Heading' + Math.min(3, Math.max(1, b.nivel || 1));
+        if (b.ancla) { idMarca++; cuerpo.push(parrafo(`<w:bookmarkStart w:id="${idMarca}" w:name="${marca(b.ancla)}"/>` + trozo(b.texto) + `<w:bookmarkEnd w:id="${idMarca}"/>`, { estilo: est })); }
+        else cuerpo.push(parrafo(trozo(b.texto), { estilo: est }));
+      } else if (b.tipo === 'ficha') b.filas.forEach(([k, v]) => cuerpo.push(parrafo(trozo(k + ': ', { negrita: true }) + trozo(v), { estilo: 'PortadaFicha' })));
+      else if (b.tipo === 'indice') {
+        cuerpo.push(parrafo(trozo(b.titulo), { estilo: 'TOCHeading' }));
+        const ent = b.entradas || [];
+        ent.forEach((x, i) => {
+          const ini = i === 0 ? '<w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> TOC \\o &quot;1-2&quot; \\h \\z \\u </w:instrText></w:r><w:r><w:fldChar w:fldCharType="separate"/></w:r>' : '';
+          const enlace = `<w:hyperlink w:anchor="${marca(x.ancla)}" w:history="1">${trozo(x.texto)}<w:r><w:tab/></w:r>${campo('PAGEREF ' + marca(x.ancla) + ' \\h', '')}</w:hyperlink>`;
+          const fin = i === ent.length - 1 ? '<w:r><w:fldChar w:fldCharType="end"/></w:r>' : '';
+          cuerpo.push(parrafo(ini + enlace + fin, { estilo: 'TOC' + Math.min(2, Math.max(1, x.nivel || 1)) }));
+        });
+      } else if (b.tipo === 'lectura') {
+        if (!b.imagen) continue;
+        idDibujo++; idLectura++;
+        const rid = 'rIdLec' + idLectura, archivo = 'media/lectura' + idLectura + '.png';
+        rels.push(`<Relationship Id="${rid}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="${archivo}"/>`);
+        medios.push({ nombre: 'word/' + archivo, datos: b.imagen });
+        cuerpo.push(parrafo(trozo(b.titulo), { estilo: 'LecturaTitulo' }));
+        cuerpo.push(parrafo(dibujo({ anchoCm: b.anchoCm, altoCm: b.altoCm, nombre: 'lectura' + idLectura + '.png', alt: b.descripcion }, rid, idDibujo), { estilo: 'Lectura' }));
+        if (b.fuentes && b.fuentes.length) cuerpo.push(parrafo(trozo(SP.T('Guías: {g}.', { g: b.fuentes.join('; ') })), { estilo: 'NotaCuadro' }));
+      }
       else if (b.tipo === 'parrafo') cuerpo.push(parrafo((b.trozos || [{ texto: b.texto }]).map(r => trozo(r.texto, r)).join(''), { estilo: b.estilo }));
       else if (b.tipo === 'referencia') cuerpo.push(parrafo(trozo(b.texto), { estilo: 'Bibliography' }));
       else if (b.tipo === 'conclusion') cuerpo.push(parrafo(trozo(b.texto), { estilo: 'Conclusion' }));
@@ -178,7 +218,7 @@ SP.definir('docx', function (SP) {
       { nombre: 'docProps/app.xml', datos: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"><Application>SigmaPro ${esc(SP.VERSION)}</Application></Properties>` },
       { nombre: 'word/document.xml', datos: documento },
       { nombre: 'word/styles.xml', datos: ESTILOS },
-      { nombre: 'word/settings.xml', datos: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<w:settings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:defaultTabStop w:val="709"/><w:characterSpacingControl w:val="doNotCompress"/><w:compat><w:compatSetting w:name="compatibilityMode" w:uri="http://schemas.microsoft.com/office/word" w:val="15"/></w:compat></w:settings>' },
+      { nombre: 'word/settings.xml', datos: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<w:settings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:updateFields w:val="true"/><w:defaultTabStop w:val="709"/><w:characterSpacingControl w:val="doNotCompress"/><w:compat><w:compatSetting w:name="compatibilityMode" w:uri="http://schemas.microsoft.com/office/word" w:val="15"/></w:compat></w:settings>' },
       { nombre: 'word/footer1.xml', datos: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<w:ftr ${NS}><w:p><w:pPr><w:pStyle w:val="Footer"/></w:pPr><w:fldSimple w:instr=" PAGE "><w:r><w:t>1</w:t></w:r></w:fldSimple></w:p></w:ftr>` },
       { nombre: 'word/_rels/document.xml.rels', datos: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdEstilos" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rIdAjustes" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings" Target="settings.xml"/><Relationship Id="rIdPie1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/>' + rels.join('') + '</Relationships>' },
     ].concat(medios);

@@ -250,5 +250,48 @@
     if (d && d.matches && d.matches('details.lg-lectura') && d.open && !d.dataset.lgPintado) { d.dataset.lgPintado = '1'; pintar(d); }
   }, true);
 
-  SP.lectura = { html, items, contexto, pintar, guiaCV: leerGuiaCV, ponerGuiaCV: g => ponerGuiaCV(g, null) };
+  /* ---------------- el panel del reporte exportado (hito 5.8) ---------------- */
+  const MAX_PANEL = 8, MAX_MARCAS_PANEL = 6, INTERCEPTO = /^\(?(intercepto|intercept|constante)\)?$/i;
+  /** Los estadísticos clave de un resultado, en el orden de sus cuadros: un renglón por valor (el p de cada efecto, el
+      CV, la R²…), hasta ocho. Las columnas con muchos valores (las comparaciones por pares) se leen mejor en el cuadro. */
+  function resumen(cuadros, visibles, ctx) {
+    const filas = [], vistos = new Set();
+    for (const c of cuadros || []) {
+      for (const it of items(c, visibles, ctx).escalas) {
+        if (it.marcas.length > MAX_MARCAS_PANEL) continue;
+        const g = SP.guias.ficha(it.ficha);
+        if (!g) continue;
+        const col = norm(it.columna), propio = col === norm(g.nombre) || col === norm(g.simbolo);
+        for (const m of it.marcas) {
+          const etq = String(m.etiqueta || '').trim();
+          if (INTERCEPTO.test(etq)) continue;
+          const titulo = it.fila ? it.columna.trim() : g.nombre + (propio ? '' : ' · ' + it.columna) + (etq ? ' · ' + etq : '');
+          const clave = it.ficha + '|' + titulo + '|' + m.valor;
+          if (vistos.has(clave)) continue;
+          vistos.add(clave);
+          filas.push({ ficha: it.ficha, titulo, valor: m.valor, contexto: it.contexto });
+          if (filas.length >= MAX_PANEL) return filas;
+        }
+      }
+    }
+    return filas;
+  }
+  /** El panel «Lectura de los indicadores» de un elemento del reporte → { svg, descripcion, fuentes, n } o null. */
+  function panel(el) {
+    if (!window.LABGuide || !window.LABGuide.panel || !el || !el.rep) return null;
+    const guia = leerGuiaCV(), fuentes = [];
+    const filas = resumen(el.rep.cuadros, el.visibles, contexto(el.r, el.op)).map(f => {
+      const ctx = f.ficha === 'cv' ? Object.assign({}, f.contexto, { guiaCV: guia }) : f.contexto;
+      const e = SP.guias.escala(f.ficha, ctx);
+      if (!e) return null;
+      if (e.fuenteCorta && !fuentes.includes(e.fuenteCorta)) fuentes.push(e.fuenteCorta);
+      const fmt = SP.guias.formatoDe(f.ficha), esP = f.ficha === 'p' || f.ficha === 'p-ajustado';
+      return { titulo: f.titulo, valor: f.valor, escala: e, formato: fmt, formatoEje: esP ? (v => String(v)) : fmt };
+    }).filter(Boolean);
+    if (!filas.length) return null;
+    const p = window.LABGuide.panel(filas, { titulo: T('Lectura de los indicadores') });
+    return Object.assign(p, { fuentes });
+  }
+
+  SP.lectura = { html, items, contexto, pintar, resumen, panel, guiaCV: leerGuiaCV, ponerGuiaCV: g => ponerGuiaCV(g, null) };
 })();
