@@ -21,22 +21,23 @@
     <div class="cap-etiqueta">Bloque 7 · Exportar</div>
     <h1>Exportar y guardar el trabajo</h1>
     <div class="cap-regla"></div>
-    <p class="cap-resumen">El reporte sale de SigmaPro como documento para editar o imprimir, sus cuadros como hoja de cálculo o LaTeX y sus figuras en un solo archivo comprimido. El proyecto .labg guarda todo el trabajo para reabrirlo, compartirlo o repetirlo en R, y el guardado automático lo cuida mientras se trabaja. Todo se arma en el navegador: nada sale del equipo.</p>
+    <p class="cap-resumen">El reporte sale de SigmaPro como documento para editar o imprimir, también en Markdown y como hoja de trabajo para clase, sus cuadros como hoja de cálculo o LaTeX y sus figuras en un solo archivo comprimido. El proyecto .labg guarda todo el trabajo para reabrirlo, compartirlo o repetirlo en R, y el guardado automático lo cuida mientras se trabaja. Todo se arma en el navegador: nada sale del equipo.</p>
     <ul class="cap-contenido">
       <li><b>7.1</b>El bloque Exportar</li>
       <li><b>7.2</b>El reporte completo</li>
-      <li><b>7.3</b>Los cuadros</li>
-      <li><b>7.4</b>Las figuras</li>
-      <li><b>7.5</b>El proyecto .labg</li>
-      <li><b>7.6</b>El guardado automático</li>
+      <li><b>7.3</b>La hoja de trabajo para clase</li>
+      <li><b>7.4</b>Los cuadros</li>
+      <li><b>7.5</b>Las figuras</li>
+      <li><b>7.6</b>El proyecto .labg</li>
+      <li><b>7.7</b>El guardado automático</li>
     </ul>
   </div>
 
   <!-- 7.1 -->
   <h2 id="s7-1"><span class="num">7.1</span>El bloque Exportar</h2>
-  <p class="lead">Un aviso dice cuántos análisis tiene el reporte; debajo hay cinco tarjetas. Cada botón arma su archivo en el navegador y lo descarga; si hay análisis del motor R calculando, los espera.</p>
+  <p class="lead">Un aviso dice cuántos análisis tiene el reporte; debajo hay seis tarjetas. Cada botón arma su archivo en el navegador y lo descarga; si hay análisis del motor R calculando, los espera.</p>
   <figure class="chica">
-    <div class="marco"><img src="../img/b7-bloque.png" alt="El bloque Exportar con el reporte del maíz: el aviso El reporte tiene 3 análisis y cinco tarjetas: Reporte completo, con el tamaño de hoja, las casillas Resumen en pocas palabras, Lectura de los indicadores con medidores, Apéndice metodológico, Código R en un anexo y Detalles técnicos en un anexo y los botones Documento .docx, PDF (imprimir), Página HTML y Markdown (.zip); Cuadros, con Hoja de cálculo .xlsx y LaTeX .tex; Figuras, con la casilla También en TIFF y Todas las figuras (.zip); Proyecto .labg, con Guardar proyecto y Abrir un proyecto; y Guardado automático, con su casilla, la hora del último guardado y Borrar lo guardado"></div>
+    <div class="marco"><img src="../img/b7-bloque.png" alt="El bloque Exportar con el reporte del maíz: el aviso El reporte tiene 3 análisis y seis tarjetas: Reporte completo, con el tamaño de hoja, las casillas Resumen en pocas palabras, Lectura de los indicadores con medidores, Apéndice metodológico, Código R en un anexo y Detalles técnicos en un anexo y los botones Documento .docx, PDF (imprimir), Página HTML y Markdown (.zip); Hoja de trabajo para clase, con las casillas Incluir los datos y Clave de respuestas al final y los botones Hoja .docx y Hoja PDF (imprimir); Cuadros, con Hoja de cálculo .xlsx y LaTeX .tex; Figuras, con la casilla También en TIFF y Todas las figuras (.zip); Proyecto .labg, con Guardar proyecto y Abrir un proyecto; y Guardado automático, con su casilla, la hora del último guardado y Borrar lo guardado"></div>
     <figcaption><b>Figura 7.1.</b> El bloque Exportar con el reporte del maíz.</figcaption>
   </figure>
 
@@ -72,18 +73,35 @@
   <p>El documento sale en el idioma de la interfaz: con el selector en EN (sección I.5), la portada, los títulos, las conclusiones, los cuadros y los párrafos salen en inglés, con las mismas cifras; los comentarios del código R quedan en español.</p>
 
   <!-- 7.3 -->
-  <h2 id="s7-3"><span class="num">7.3</span>Los cuadros</h2>
+  <h2 id="s7-3"><span class="num">7.3</span>La hoja de trabajo para clase</h2>
+  <p class="lead">Para enseñar con los análisis del reporte: <span class="ui">Hoja .docx</span> y <span class="ui">Hoja PDF (imprimir)</span> arman una hoja de ejercicios con los mismos datos y, al final, la clave de respuestas para quien enseña.</p>
+  <p>La hoja empieza con renglones para el nombre, el grupo y la fecha, unas instrucciones y, con <span class="ui">Incluir los datos</span>, la tabla de datos (hasta 60 filas, con el filtro de Datos si hay uno). Cada análisis del reporte es un <b>ejercicio</b> con su planteamiento, el párrafo de métodos del reporte (sección 5.4), y preguntas numeradas con renglones para contestar (figura 7.5):</p>
+  <ul>
+    <li><b>Completa el cuadro</b>: en un análisis de varianza, los cuadrados medios y las F quedan en blanco; las sumas de cuadrados, los grados de libertad y los valores <i>p</i> están a la vista. En los análisis sin ese cuadro, su cuadro principal va completo, para contestar con él.</li>
+    <li><b>Decidir</b>, con los valores <i>p</i> y el α del análisis, qué efectos son significativos.</li>
+    <li><b>Interpretar</b> hasta dos indicadores del resultado, los de un solo valor: el CV, la R², un tamaño del efecto.</li>
+    <li>Decir de qué <b>supuestos</b> depende el método, según su ficha de Fundamentos (capítulo 9).</li>
+    <li>Escribir la <b>conclusión</b> en dos o tres frases, sin símbolos estadísticos.</li>
+  </ul>
+  <figure class="chica">
+    <div class="marco"><img src="../img/b7-hoja.png" alt="El ejercicio 1 de la hoja de trabajo del maíz: el planteamiento del análisis de varianza en bloques completos al azar; la pregunta 1, completar el cuadro calculando los cuadrados medios y las F; el cuadro 2, el análisis de varianza para completar, con las columnas CM y F en blanco y las SC, los gl y los valores p a la vista; la pregunta 2, qué efectos son significativos con los valores p y alfa igual a 0.05; y la pregunta 3, qué dice el coeficiente de variación de 3.57; cada una con tres renglones para contestar"></div>
+    <figcaption><b>Figura 7.5.</b> El primer ejercicio de la hoja de trabajo del maíz, en la página para imprimir: el cuadro del ANOVA para completar y las primeras preguntas.</figcaption>
+  </figure>
+  <p>Con <span class="ui">Clave de respuestas al final</span>, una hoja aparte trae el cuadro completo, con el mismo número, y la respuesta de cada pregunta con los números del caso: la conclusión del análisis, la interpretación de cada indicador con su guía, los supuestos de la ficha y el recuadro <span class="ui">En pocas palabras</span>. Para repartir la hoja sin la clave, se quita esa casilla; el .docx se puede editar para cambiar o agregar preguntas.</p>
+
+  <!-- 7.4 -->
+  <h2 id="s7-4"><span class="num">7.4</span>Los cuadros</h2>
   <ul>
     <li><span class="ui">Hoja de cálculo .xlsx</span>: cada cuadro del reporte en su propia hoja, con <b>todas sus cifras</b>, sin el redondeo de la pantalla, y una primera hoja con el índice. Sirve para hacer otros cálculos o rearmar un cuadro con otro formato sin volver a teclear un número. Para bajar un solo cuadro en CSV, sin armar la hoja de cálculo, está el botón <span class="ui">Bajar en CSV</span> del resultado en Análisis o Explorar (sección 4.5).</li>
     <li><span class="ui">LaTeX .tex</span>: los cuadros como tablas de LaTeX con las tres reglas de revista del paquete <code>booktabs</code>, uno por entorno <code>table</code>, con su título y sus notas, listos para pegar en una tesis o un artículo escrito en LaTeX.</li>
   </ul>
 
-  <!-- 7.4 -->
-  <h2 id="s7-4"><span class="num">7.4</span>Las figuras</h2>
+  <!-- 7.5 -->
+  <h2 id="s7-5"><span class="num">7.5</span>Las figuras</h2>
   <p><span class="ui">Todas las figuras (.zip)</span> descarga un archivo comprimido con cada figura del reporte en SVG, PDF vectorial y PNG a 600 ppp, del ancho elegido en el bloque Figuras y con los cambios del editor ✎, más un índice con el número y la leyenda de cada una. Con <span class="ui">También en TIFF a 600 ppp</span>, agrega el TIFF. Las figuras salen con el tema de las gráficas que esté puesto. Una figura sola se descarga desde su tarjeta en el bloque Figuras (sección 6.3).</p>
 
-  <!-- 7.5 -->
-  <h2 id="s7-5"><span class="num">7.5</span>El proyecto .labg</h2>
+  <!-- 7.6 -->
+  <h2 id="s7-6"><span class="num">7.6</span>El proyecto .labg</h2>
   <p class="lead">El proyecto guarda <b>todo el trabajo</b> en un solo archivo: los datos, el reporte y los ajustes de las figuras. Sirve para seguir otro día, llevarlo a otra computadora, mandarlo a un asesor o a un revisor, o repetir todos los análisis en R.</p>
   <p><span class="ui">Guardar proyecto</span> descarga un archivo con terminación .labg, que es un ZIP con estos archivos:</p>
   <table class="compacta">
@@ -104,15 +122,15 @@
   <div class="dos flota">
     <figure>
       <div class="marco"><img src="../img/b7-abrir.png" alt="El diálogo Abrir el proyecto «Ensayo de maíz: híbridos y dosis de nitrógeno»: las huellas SHA-256 de los 6 archivos coinciden con el manifiesto; la fecha y la versión con que se guardó, 48 filas, 4 columnas y 3 análisis; el aviso de que abrirlo reemplaza los datos y el reporte actuales; y los botones Cancelar y Abrir"></div>
-      <figcaption><b>Figura 7.5.</b> Al abrir un proyecto con otro trabajo en la app: las huellas coinciden y la app pide confirmar.</figcaption>
+      <figcaption><b>Figura 7.6.</b> Al abrir un proyecto con otro trabajo en la app: las huellas coinciden y la app pide confirmar.</figcaption>
     </figure>
     <div>
       <p>Si algún archivo cambió después de guardarse (alguien editó el CSV o el reporte a mano), su huella no coincide: el diálogo lo dice con el nombre de cada archivo cambiado y el botón cambia a <span class="ui">Abrir de todos modos</span>. Un archivo que no es un proyecto de SigmaPro, o que viene de otra app de la suite o de una versión más nueva de SigmaPro, no se abre, y un aviso dice por qué. Al abrirlo, la app pasa a Resultados con el reporte ya recalculado.</p>
     </div>
   </div>
 
-  <!-- 7.6 -->
-  <h2 id="s7-6"><span class="num">7.6</span>El guardado automático</h2>
+  <!-- 7.7 -->
+  <h2 id="s7-7"><span class="num">7.7</span>El guardado automático</h2>
   <p class="lead">Mientras se trabaja, los datos (con sus tipos, sus columnas calculadas y su filtro), los análisis del reporte y los ajustes de las figuras se guardan en el almacenamiento del propio navegador, dos segundos después del último cambio y al cambiar de pestaña o cerrarla. Nada sale del equipo. Cómo se recupera un trabajo al volver a abrir SigmaPro está en la sección 1.4.</p>
   <p>La tarjeta <span class="ui">Guardado automático</span> del bloque Exportar dice cuándo se guardó por última vez y qué («Guardado a las 12:28 p.m.: …, 48 filas y 4 columnas, 3 análisis en el reporte»). Tiene dos controles:</p>
   <ul>

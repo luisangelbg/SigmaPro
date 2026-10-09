@@ -35,7 +35,7 @@
 
   <!-- A -->
   <h2 id="ap-a"><span class="num">A</span>Los archivos que la app lee y escribe</h2>
-  <p class="lead">SigmaPro corre en el navegador y no envía nada a ningún servidor: los archivos entran desde la computadora y salen a la carpeta de descargas. El trabajo en curso se guarda solo en el almacenamiento del propio navegador (sección 7.6).</p>
+  <p class="lead">SigmaPro corre en el navegador y no envía nada a ningún servidor: los archivos entran desde la computadora y salen a la carpeta de descargas. El trabajo en curso se guarda solo en el almacenamiento del propio navegador (sección 7.7).</p>
   <h3>A.1 · Lo que la app lee</h3>
   <table class="compacta ficheros">
     <thead><tr><th style="width:1.35in">Formato</th><th style="width:1.35in">Extensión</th><th>Qué toma</th></tr></thead>
@@ -43,7 +43,7 @@
       <tr><td><b>Texto delimitado</b></td><td><code>.csv</code>, <code>.tsv</code>, <code>.txt</code></td><td>Separado por comas, punto y coma o tabuladores, con punto o coma decimal y los códigos de faltante que se indiquen (sección 2.3).</td></tr>
       <tr><td><b>Libro de hoja de cálculo</b></td><td><code>.xlsx</code>, <code>.xlsm</code>, <code>.ods</code></td><td>Una hoja a la vez. Los libros del formato viejo (<code>.xls</code>) no se abren: se guardan antes como <code>.xlsx</code> o <code>.csv</code>.</td></tr>
       <tr><td><b>Tabla pegada</b></td><td>—</td><td>Lo copiado de una hoja de cálculo o de un documento (sección 2.4).</td></tr>
-      <tr><td><b>Proyecto</b></td><td><code>.labg</code></td><td>Los datos, el reporte y los ajustes de las figuras, con la verificación de sus huellas (sección 7.5).</td></tr>
+      <tr><td><b>Proyecto</b></td><td><code>.labg</code></td><td>Los datos, el reporte y los ajustes de las figuras, con la verificación de sus huellas (sección 7.6).</td></tr>
     </tbody>
   </table>
   <h3>A.2 · Lo que la app escribe</h3>
@@ -55,9 +55,11 @@
       <tr><td><span class="chip k4">4</span></td><td><code>.csv</code></td><td>Desde la MANOVA y el discriminante, las variables con su grupo, para abrirlas en PCAPro o en ClusteringPro (sección 4.21).</td></tr>
       <tr><td><span class="chip k6">6</span></td><td><code>.svg</code> · <code>.pdf</code> · <code>.png</code> · <code>.tif</code></td><td>Una figura, al ancho elegido; los PNG y TIFF a 600 ppp (sección 6.3).</td></tr>
       <tr><td><span class="chip k7">7</span></td><td><code>.docx</code> · <code>.html</code> · PDF</td><td>El reporte completo; el PDF se guarda desde el cuadro de impresión del navegador (sección 7.2).</td></tr>
-      <tr><td><span class="chip k7">7</span></td><td><code>.xlsx</code> · <code>.tex</code></td><td>Los cuadros del reporte con todas sus cifras, o en LaTeX con booktabs (sección 7.3).</td></tr>
-      <tr><td><span class="chip k7">7</span></td><td><code>.zip</code></td><td>Todas las figuras en SVG, PDF y PNG (y TIFF, si se pide), con un índice (sección 7.4).</td></tr>
-      <tr><td><span class="chip k7">7</span></td><td><code>.labg</code></td><td>El proyecto: datos, reporte, ajustes de las figuras y el código R que repite todo (sección 7.5).</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><code>.zip</code> (Markdown)</td><td>El reporte en <code>reporte.md</code>, con sus figuras y paneles de lectura en PNG (sección 7.2).</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><code>.docx</code> · PDF</td><td>La hoja de trabajo para clase, con su clave de respuestas si se pide (sección 7.3).</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><code>.xlsx</code> · <code>.tex</code></td><td>Los cuadros del reporte con todas sus cifras, o en LaTeX con booktabs (sección 7.4).</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><code>.zip</code></td><td>Todas las figuras en SVG, PDF y PNG (y TIFF, si se pide), con un índice (sección 7.5).</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><code>.labg</code></td><td>El proyecto: datos, reporte, ajustes de las figuras y el código R que repite todo (sección 7.6).</td></tr>
     </tbody>
   </table>
 
@@ -75,8 +77,8 @@
       <tr><td>Un modelo mixto dice «Ajuste singular»</td><td>Algún componente de varianza quedó en cero: los datos no dan para estimarlo. Quita ese efecto aleatorio o simplifica el modelo (secciones 4.15 y 4.17).</td></tr>
       <tr><td>«Este análisis todavía no tiene su validación contra R aprobada»</td><td>El método no pasó su validación y la app no lo calcula (sección 8.5). No debería verse en una versión publicada.</td></tr>
       <tr><td>Un análisis del reporte dice que no se pudo calcular</td><td>Se borró o se renombró una columna que usaba, o el filtro dejó muy pocas filas. Regrésala o ajusta el filtro, y el análisis vuelve (sección 5.6).</td></tr>
-      <tr><td>Al abrir un proyecto, «Algunos archivos cambiaron después de guardarse»</td><td>Alguien editó el .labg por fuera. Ábrelo de todos modos solo si sabes qué se cambió (sección 7.5).</td></tr>
-      <tr><td>La tarjeta del guardado automático dice que el navegador no deja guardar</td><td>Es una ventana privada o el almacenamiento está bloqueado o lleno: guarda el proyecto .labg para no perder el trabajo (sección 7.6).</td></tr>
+      <tr><td>Al abrir un proyecto, «Algunos archivos cambiaron después de guardarse»</td><td>Alguien editó el .labg por fuera. Ábrelo de todos modos solo si sabes qué se cambió (sección 7.6).</td></tr>
+      <tr><td>La tarjeta del guardado automático dice que el navegador no deja guardar</td><td>Es una ventana privada o el almacenamiento está bloqueado o lleno: guarda el proyecto .labg para no perder el trabajo (sección 7.7).</td></tr>
       <tr><td>«El Estudio de figuras todavía está cargando»</td><td>Espera un momento y vuelve a pulsar <span class="ui">Abrir en el estudio</span>.</td></tr>
     </tbody>
   </table>
