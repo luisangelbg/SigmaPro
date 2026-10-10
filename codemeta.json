@@ -4,7 +4,7 @@
   "name": "SigmaPro",
   "alternateName": "SigmaPro · estadística para la investigación agronómica y biológica",
   "description": "A self-contained, browser-based application for the statistical analysis of agronomic and biological research: experimental designs with mean comparisons, assumption checking, t and nonparametric tests, ANCOVA, regression, correlation and contingency tables, linear mixed models, repeated measures, variance components and heritability, generalized linear (mixed) models, nonlinear regression, response surfaces, mixtures and desirability, multi-environment trials (stability, AMMI, GGE), sample size and power, sampling, survival, time series and multivariate analysis (78 analyses). Each report explains the conclusion in words, with publication tables and figures, a methods paragraph and the equivalent R code; each analysis has a theory sheet with its model, hypotheses, assumptions, the data it needs with templates, interpretation and references. Bilingual interface (Spanish and English); every method checked against R. The data never leave the computer.",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "dateModified": "2026-10-09",
   "license": "https://spdx.org/licenses/GPL-3.0-or-later",
   "programmingLanguage": [

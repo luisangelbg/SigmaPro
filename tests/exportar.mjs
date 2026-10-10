@@ -27,13 +27,13 @@ import { existsSync, mkdtempSync, rmSync, writeFileSync, readFileSync, readdirSy
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { BANDERAS, paginaPropia } from './lib/navegador.mjs';
+import { BANDERAS, paginaPropia, puertoLibre } from './lib/navegador.mjs';
 import { guardar } from './lib/comprobaciones.mjs';
 import { rscript } from './lib/rscript.mjs';
 
 const TESTS = dirname(fileURLToPath(import.meta.url));
 const RAIZ = join(TESTS, '..');
-const PUERTO = 9480 + Math.floor(Math.random() * 60);
+const PUERTO = await puertoLibre();   // lo da el sistema: ver tests/lib/navegador.mjs
 const exe = [process.env.SIGMAPRO_NAVEGADOR, 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
   'C:/Program Files/Google/Chrome/Application/chrome.exe', '/usr/bin/google-chrome', '/usr/bin/chromium'].filter(Boolean).find(p => existsSync(p));
 const RS = rscript();

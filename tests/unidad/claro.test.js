@@ -45,6 +45,32 @@ SPT.describir('En pocas palabras · la conclusión sin la estadística', () => {
     SPT.igual(L('«rendimiento» (la mayor): 81.17 estimada, d = 0.583.'), null);
     SPT.igual(L('… y 2 proporciones más en el cuadro.'), null);
   });
+  SPT.caso('Un paréntesis con estadística puede traer dentro el de los grados de libertad (modelos mixtos)', () => {
+    SPT.igual(L('Variedad: sin evidencia de efecto (F(2, 10.0) = 1.49, p = 0.272).'), 'Variedad: sin evidencia de efecto.');
+    SPT.igual(L('Nitrogeno: tiene efecto (F(3, 45.0) = 37.69, p < 0.001).'), 'Nitrogeno: tiene efecto.');
+    SPT.igual(L('Variedad × nitrogeno: sin evidencia de efecto (F(6, 45.0) = 0.30, p = 0.932).'), 'Variedad × nitrogeno: sin evidencia de efecto.');
+    SPT.igual(L('El tratamiento no tiene efecto (F(3, 57) = 1.39, p = 0.256), pero la interacción con el tiempo sí (F(12, 57) = 4.29, p < 0.001).'),
+      'El tratamiento no tiene efecto, pero la interacción con el tiempo sí.');
+    /* un paréntesis sin estadística, con otro dentro, se queda */
+    SPT.igual(L('La mayor es la de «A» (la del testigo (sin riego)).'), 'La mayor es la de «A» (la del testigo (sin riego)).');
+  });
+  SPT.caso('Con «Dentro de cada nivel de», cada frase dice su nivel y ninguna se pierde', () => {
+    /* un factorial 2 × 3 en bloques con los mismos grupos de la dosis en los dos híbridos */
+    const y = [], b = [], h = [], d = [];
+    const efD = { 0: 0, 60: 1.5, 120: 3 }, efH = { A: 0, B: 0.4 };
+    let s = 7;
+    const azar = () => (s = (s * 16807) % 2147483647) / 2147483647 - 0.5;
+    for (const bl of ['1', '2', '3', '4']) for (const hi of ['A', 'B']) for (const dd of [0, 60, 120]) { b.push(bl); h.push(hi); d.push(String(dd)); y.push(4 + efD[dd] + efH[hi] + 0.2 * azar()); }
+    const tabla = SP.tabla.crear({ y, b, h, d }, { b: { tipo: 'factor' }, h: { tipo: 'factor' }, d: { tipo: 'factor', niveles: ['0', '60', '120'] } });
+    const f = SP.metodos['comparaciones-medias'], op = SP.opcionesCon(f, { metodo: 'tukey' });
+    const r = SP.ejecutar('comparaciones-medias', tabla, { diseno: 'dbca', respuesta: 'y', tratamientos: ['h', 'd'], bloque: 'b', comparar: ['d'], dentro: ['h'] }, op).resultado, rep = f.reporte(r);
+    SPT.igual(rep.conclusiones.length, 2, 'una conclusión por híbrido');
+    SPT.afirmar(rep.conclusiones[0].replace(/^[^:]+: /, '') === rep.conclusiones[1].replace(/^[^:]+: /, ''), 'los mismos grupos en los dos: ' + rep.conclusiones.join(' | '));
+    const fr = SP.claro.frases('comparaciones-medias', r, rep);
+    SPT.igual(fr.length, 2, 'una frase por nivel: ' + fr.join(' | '));
+    SPT.afirmar(fr[0].indexOf('«h» A: 3 grupos de medias') === 0 && fr[1].indexOf('«h» B: 3 grupos de medias') === 0, fr.join(' | '));
+    SPT.afirmar(fr.every(x => !/\s[=<>]\s/.test(x)), 'sin símbolos: ' + fr.join(' | '));
+  });
   SPT.caso('Sin el α del análisis; el valor de una medida que cierra la frase se queda', () => {
     SPT.igual(L('Comparaciones de Dunn (Holm): 2 de 3 pares difieren con α = 0.05.'), 'Comparaciones de Dunn (Holm): 2 de 3 pares difieren.');
     SPT.igual(L('La mejor combinación (N = 197.5, riego = 24.27) da una deseabilidad global D = 0.714.'), 'La mejor combinación da una deseabilidad global de 0.714.');

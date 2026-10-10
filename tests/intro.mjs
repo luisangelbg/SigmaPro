@@ -20,7 +20,7 @@ import { existsSync, mkdtempSync, rmSync, writeFileSync, mkdirSync, statSync } f
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { BANDERAS, paginaPropia } from './lib/navegador.mjs';
+import { BANDERAS, paginaPropia, puertoLibre } from './lib/navegador.mjs';
 import { guardar } from './lib/comprobaciones.mjs';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -32,7 +32,7 @@ const URL_BASE = pathToFileURL(join(RAIZ, 'index.html')).href;
 const dormir = ms => new Promise(r => setTimeout(r, ms));
 const U = 6.5 / 4.5;            // la escala de tiempo de la intro completa (DURACION en js/intro.js)
 
-const PUERTO = 9871 + Math.floor(Math.random() * 12);   // lejos de los puertos de las apps de la suite
+const PUERTO = await puertoLibre();   // lo da el sistema: ver tests/lib/navegador.mjs
 const perfil = mkdtempSync(join(tmpdir(), 'sigmapro-intro-'));
 const nav = spawn(exe, [...BANDERAS, '--remote-debugging-port=' + PUERTO, '--user-data-dir=' + perfil, 'about:blank'], { stdio: 'ignore' });
 let ws, id = 0, cargas = 0;

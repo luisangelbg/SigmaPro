@@ -20,7 +20,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'no
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { BANDERAS, paginaPropia } from '../lib/navegador.mjs';
+import { BANDERAS, paginaPropia, puertoLibre, puertosLibres } from '../lib/navegador.mjs';
 import { guardar } from '../lib/comprobaciones.mjs';
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
@@ -111,7 +111,7 @@ if (AUDITOR && process.platform === 'win32') {
   };
   console.log('Auditor de la suite: ' + tareas.length + ' corridas (' + (tareas.length / 2) + ' escenarios × 1280 y 360 px)');
   /* en paralelo: 3 por omisión; con el equipo cargado, menos (SIGMAPRO_AA_HILOS=1) */
-  await Promise.all([9471, 9472, 9473].slice(0, Math.max(1, Math.min(3, +process.env.SIGMAPRO_AA_HILOS || 3))).map(trabajador));
+  await Promise.all((await puertosLibres(Math.max(1, Math.min(3, +process.env.SIGMAPRO_AA_HILOS || 3)))).map(trabajador));
   rmSync(tmp, { recursive: true, force: true });
 } else avisos.push('Sin el auditor de la suite (LABG-Design/labg-audit.ps1 o SIGMAPRO_AUDITOR, en Windows): solo se revisa el foco con el teclado.');
 
@@ -126,7 +126,7 @@ const MIRA = `(() => { const e = document.activeElement; if (!e || e === documen
   return { uid: e.__auditUid, fv: e.matches(':focus-visible'), anillo: ve(c) || padre, visible: r.width > 0 && r.height > 0,
     que: e.tagName.toLowerCase() + (e.id ? '#' + e.id : '') + ' «' + (e.getAttribute('aria-label') || e.textContent || e.value || '').trim().slice(0, 24) + '»' }; })()`;
 async function foco(ancho, tema) {
-  const puerto = 9640 + Math.floor(Math.random() * 40), perfil = mkdtempSync(join(tmpdir(), 'sigmapro-foco-'));
+  const puerto = await puertoLibre(), perfil = mkdtempSync(join(tmpdir(), 'sigmapro-foco-'));
   const nav = spawn(exe, [...BANDERAS, '--remote-debugging-port=' + puerto, '--user-data-dir=' + perfil, 'about:blank'], { stdio: 'ignore' });
   let ws, id = 0;
   const pend = new Map(), errores = [];
@@ -258,7 +258,8 @@ else {
   const lista = Object.entries(ESC).filter(([k, e]) => k.includes(filtro) && !e.espera);
   const partes = [[], [], []];
   lista.forEach((x, i) => partes[i % 3].push(x));
-  const res = (await Promise.all(partes.map((p, i) => (p.length ? axeEn(p, 9681 + i) : [])))).flat();
+  const puertosAxe = await puertosLibres(partes.length);
+  const res = (await Promise.all(partes.map((p, i) => (p.length ? axeEn(p, puertosAxe[i]) : [])))).flat();
   let nV = 0;
   for (const r of res) {
     if (r.error) { fallas.push('axe ' + r.nombre + ': no terminó (' + r.error.slice(0, 80) + ')'); continue; }

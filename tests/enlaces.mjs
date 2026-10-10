@@ -23,7 +23,7 @@ import { spawn, execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { BANDERAS, paginaPropia } from './lib/navegador.mjs';
+import { BANDERAS, paginaPropia, puertoLibre } from './lib/navegador.mjs';
 import vm from 'node:vm';
 import { guardar } from './lib/comprobaciones.mjs';
 
@@ -72,7 +72,7 @@ const exe = [process.env.SIGMAPRO_NAVEGADOR, 'C:/Program Files (x86)/Microsoft/E
   'C:/Program Files/Google/Chrome/Application/chrome.exe', '/usr/bin/google-chrome', '/usr/bin/chromium'].filter(Boolean).find(p => existsSync(p));
 const dormir = ms => new Promise(r => setTimeout(r, ms));
 if (exe) {
-  const puerto = 9550 + Math.floor(Math.random() * 40), perfil = mkdtempSync(join(tmpdir(), 'sigmapro-enlaces-'));
+  const puerto = await puertoLibre(), perfil = mkdtempSync(join(tmpdir(), 'sigmapro-enlaces-'));
   const nav = spawn(exe, [...BANDERAS, '--remote-debugging-port=' + puerto, '--user-data-dir=' + perfil, 'about:blank'], { stdio: 'ignore' });
   let ws, id = 0;
   const pend = new Map();

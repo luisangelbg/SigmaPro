@@ -12,12 +12,12 @@ import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { BANDERAS, paginaPropia } from './lib/navegador.mjs';
+import { BANDERAS, paginaPropia, puertoLibre } from './lib/navegador.mjs';
 
 const TESTS = dirname(fileURLToPath(import.meta.url));
 const RAIZ = join(TESTS, '..');
 const modoApp = process.argv.includes('--app');
-const PUERTO = 9420 + Math.floor(Math.random() * 60);
+const PUERTO = await puertoLibre();   // lo da el sistema: ver tests/lib/navegador.mjs
 
 const candidatos = [
   process.env.SIGMAPRO_NAVEGADOR,

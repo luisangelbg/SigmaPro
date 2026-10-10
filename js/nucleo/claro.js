@@ -76,14 +76,18 @@ SP.definir('claro', function (SP) {
   const sinAsignaciones = s => s.replace(FINAL, (m, l, v) => l + (SP.T.catalogo ? ' of ' : ' de ') + v).replace(ASIGNACION, '')
     /* lo que quedó entre paréntesis tras un verbo: «es (92 %)» → «es 92 %» */
     .replace(/\b(es|son|fue|is|are|was) \(([^()]+)\)/g, '$1 $2');
+  /* un paréntesis con estadística: «(F = 60.6, p < 0.001)», «(IC 95 %: 0.39 a 0.59)», «(3 y 36 gl)», «(n exacta: 4.915)».
+     Puede traer otro dentro, el de los grados de libertad: «(F(2, 10.0) = 1.49, p = 0.272)», como en los modelos mixtos.
+     Sin eso, el de fuera se quedaba, se le quitaban los símbolos y la frase terminaba en «()» o se perdía entera. */
+  const DENTRO = '(?:[^()]|\\([^()]*\\))*';
+  const PARENTESIS = new RegExp('\\s*\\(' + DENTRO + '(?:\\s[=<>≤≥]\\s|\\bgl\\b|\\bdf\\b|\\bIC\\b|\\bCI\\b|:\\s[−-]?\\d)' + DENTRO + '\\)', 'g');
   function limpiar(frase) {
     let s = String(frase || ''), antes;
     /* la continuación de una lista que no se muestra: «… y 2 proporciones más en el cuadro» */
     if (/^\s*…/.test(s)) return null;
     /* el nivel de significancia del análisis no dice nada del resultado: «2 de 3 pares difieren con α = 0.05» */
     s = s.replace(/,?\s(?:con|with|at)\sα\s=\s[\d.]+/g, '');
-    /* los paréntesis con estadística: «(F = 60.6, p < 0.001)», «(IC 95 %: 0.39 a 0.59)», «(3 y 36 gl)», «(n exacta: 4.915)» */
-    do { antes = s; s = s.replace(/\s*\([^()]*(?:\s[=<>≤≥]\s|\bgl\b|\bdf\b|\bIC\b|\bCI\b|:\s[−-]?\d)[^()]*\)/g, ''); } while (s !== antes);
+    do { antes = s; s = s.replace(PARENTESIS, ''); } while (s !== antes);
     if (ESTADISTICA.test(s)) {
       const iE = s.search(ESTADISTICA), iC = s.indexOf(': ');
       const sinSimbolos = pulir(sinAsignaciones(s));
@@ -112,7 +116,18 @@ SP.definir('claro', function (SP) {
   function frases(id, r, rep) {
     if (!rep) return [];
     const d = r && frasesDiseno(r, rep);
-    const lista = d || [].concat(...(rep.conclusiones || []).map(oraciones)).map(limpiar).filter(Boolean);
+    /* con «Dentro de cada nivel de», cada conclusión empieza por su nivel («hibrido = H-40: 3 grupos…»). No es
+       estadística: se aparta, se limpia lo demás y vuelve sin el signo (««hibrido» H-40: 3 grupos…»). Sin esto la
+       frase perdía el nivel y dos niveles con los mismos grupos quedaban en una sola frase */
+    const niveles = (r && Array.isArray(r.grupos) ? r.grupos : []).map(g => (g && g.dentro ? Object.entries(g.dentro) : [])).filter(e => e.length)
+      .map(e => ({ de: e.map(([f, l]) => f + ' = ' + l).join(', ') + ': ', a: e.map(([f, l]) => q(f) + ' ' + l).join(', ') + ': ' }));
+    const conNivel = frase => {
+      const n = niveles.find(x => frase.slice(0, x.de.length).toLowerCase() === x.de.toLowerCase());
+      if (!n) return limpiar(frase);
+      const resto = limpiar(frase.slice(n.de.length));
+      return resto ? n.a + resto : null;
+    };
+    const lista = d || [].concat(...(rep.conclusiones || []).map(oraciones)).map(niveles.length ? conNivel : limpiar).filter(Boolean);
     const vistas = new Set();
     return lista.filter(x => (vistas.has(x) ? false : vistas.add(x))).slice(0, 4);
   }

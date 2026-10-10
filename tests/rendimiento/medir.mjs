@@ -17,7 +17,7 @@ import { existsSync, mkdtempSync, rmSync, readFileSync, writeFileSync } from 'no
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { BANDERAS, paginaPropia } from '../lib/navegador.mjs';
+import { BANDERAS, paginaPropia, puertoLibre } from '../lib/navegador.mjs';
 import { guardar } from '../lib/comprobaciones.mjs';
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
@@ -25,7 +25,7 @@ const RAIZ = join(AQUI, '..', '..');
 const exe = [process.env.SIGMAPRO_NAVEGADOR, 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe',
   'C:/Program Files/Google/Chrome/Application/chrome.exe', '/usr/bin/google-chrome', '/usr/bin/chromium'].filter(Boolean).find(p => existsSync(p));
 if (!exe) { console.error('No encontré Edge ni Chrome (variable SIGMAPRO_NAVEGADOR).'); process.exit(2); }
-const PUERTO = 9540 + Math.floor(Math.random() * 50);
+const PUERTO = await puertoLibre();   // lo da el sistema: ver tests/lib/navegador.mjs
 const perfil = mkdtempSync(join(tmpdir(), 'sigmapro-rend-'));
 const nav = spawn(exe, [...BANDERAS, '--remote-debugging-port=' + PUERTO, '--user-data-dir=' + perfil, 'about:blank'], { stdio: 'ignore' });
 const dormir = ms => new Promise(r => setTimeout(r, ms));

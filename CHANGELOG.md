@@ -2,6 +2,26 @@
 
 ## Sin publicar
 
+### 0.6.1 · Arreglos hallados al retomar las capturas del manual (9 oct 2026)
+
+Dos defectos de «En pocas palabras», vistos en las figuras del manual:
+
+- **Modelos mixtos y medidas repetidas** (y cualquier conclusión que escriba los grados de libertad dentro del
+  paréntesis de la estadística, «(F(2, 10.0) = 1.49, p = 0.272)»): el paréntesis de fuera no se quitaba, así que la frase
+  de un efecto principal se perdía («Variedad: sin evidencia de efecto» no aparecía) y la de una interacción terminaba
+  en «()». Ahora el paréntesis con estadística se quita entero aunque traiga otro dentro; uno sin estadística se queda.
+- **«Dentro de cada nivel de»** (comparaciones de medias, Dunnett, polinomios y medias ajustadas): cada frase perdía
+  su nivel («Hibrido = H-40: …» quedaba en «3 grupos de medias…») y dos niveles con los mismos grupos se juntaban en
+  una sola frase. Ahora cada frase dice su nivel sin el signo: ««hibrido» H-40: 3 grupos de medias según Tukey: …».
+- De los 272 casos del núcleo JS cambian dos, los de comparaciones dentro de cada nivel; ninguno queda con símbolos ni
+  con paréntesis vacíos. Pruebas: dos casos nuevos en `tests/unidad/claro.test.js`.
+- No cambia ningún cálculo: los 849 casos contra R dan lo mismo.
+- **Pruebas y herramientas del manual**: el navegador sin ventana de cada prueba pide su puerto de depuración al
+  sistema (`puertoLibre` en `tests/lib/navegador.mjs`; las capturas del manual, con el puerto 0 y el archivo que el
+  navegador deja en su perfil). Con puertos elegidos al azar entre 9300 y 9900, si las pruebas de otra app de la suite
+  corrían a la vez y tenían el mismo, la herramienta terminaba manejando el navegador ajeno: dos capturas del manual
+  salieron con la pantalla de otra app. `captura.mjs` comprueba además que la página siga siendo la app antes de la foto.
+
 ### 0.6.0 · Hito 5.9, parte 3: Lighthouse 90 o más. Cierre de la Fase 5 (9 oct 2026)
 
 Con esta versión la Fase 5 (`propuesta/FASE5.md`) queda completa: cada número se puede leer (medidores, tarjetas, «En

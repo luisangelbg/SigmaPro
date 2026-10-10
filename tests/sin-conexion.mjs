@@ -24,7 +24,7 @@ import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, extname, normalize } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { BANDERAS, paginaPropia } from './lib/navegador.mjs';
+import { BANDERAS, paginaPropia, puertoLibre } from './lib/navegador.mjs';
 import { guardar } from './lib/comprobaciones.mjs';
 
 const RAIZ = normalize(join(dirname(fileURLToPath(import.meta.url)), '..'));
@@ -51,7 +51,7 @@ await new Promise(ok => servidor.listen(0, '127.0.0.1', ok));
 const ORIGEN = 'http://127.0.0.1:' + servidor.address().port;
 const PROPIO = existsSync(join(RAIZ, 'motor-r', 'listo.json'));
 
-const PUERTO = 9560 + Math.floor(Math.random() * 40);
+const PUERTO = await puertoLibre();   // lo da el sistema: ver tests/lib/navegador.mjs
 const perfil = mkdtempSync(join(tmpdir(), 'sigmapro-red-'));
 const nav = spawn(exe, [...BANDERAS, '--remote-debugging-port=' + PUERTO, '--user-data-dir=' + perfil, 'about:blank'], { stdio: 'ignore' });
 const dormir = ms => new Promise(r => setTimeout(r, ms));

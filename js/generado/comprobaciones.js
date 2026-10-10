@@ -80,7 +80,7 @@ window.SP_COMPROBACIONES = {
    "Servicio sin conexión activo con 267 archivos guardados.",
    "Sin red: 7 análisis, reporte, 6 exportaciones y huellas del proyecto verificadas."
   ],
-  "fecha": "2026-10-10T00:56:55.542Z",
+  "fecha": "2026-10-10T02:16:01.519Z",
   "motor": "node v24.19.0"
  },
  "exportar": {
@@ -90,44 +90,44 @@ window.SP_COMPROBACIONES = {
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl, commonmark (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-10-10T00:56:04.244Z",
+  "fecha": "2026-10-10T02:14:54.627Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {
   "titulo": "El código R equivalente",
   "ok": true,
   "resumen": "99 escenarios de 65 métodos: el código R que muestra la app corre en R y da 1,626 números iguales a los de la app (tolerancia 1e-6)",
-  "fecha": "2026-10-10T00:54:09.624Z",
+  "fecha": "2026-10-10T02:12:36.663Z",
   "motor": "node v24.19.0"
  },
  "accesibilidad": {
   "titulo": "Accesibilidad (AA)",
   "ok": true,
-  "resumen": "242 revisiones de 121 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 195,602 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 1314 paradas en los 10 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible. axe-core 4.13.0 (WCAG 2.1 A y AA) en 113 escenarios, sin incumplimientos.",
+  "resumen": "242 revisiones de 121 escenarios (cada bloque, análisis de todas las familias, diálogos y el reporte) a 1280 y 360 px: 195,610 textos con contraste AA en claro y en oscuro, nombres y etiquetas, sin desborde lateral, Alt+→ / Alt+← y atajos. El foco con Tab de verdad: 1317 paradas en los 10 bloques (1280 px en claro y 360 px en oscuro), todas con su anillo visible. axe-core 4.13.0 (WCAG 2.1 A y AA) en 113 escenarios, sin incumplimientos.",
   "renglones": [],
-  "fecha": "2026-10-10T01:09:44.635Z",
+  "fecha": "2026-10-10T02:29:46.231Z",
   "motor": "node v24.19.0"
  },
  "idioma": {
   "titulo": "La interfaz en inglés",
   "ok": true,
   "resumen": "6965 textos traducidos; 810 casos con los mismos números en los dos idiomas (71,773 valores); 272 resultados armados en inglés sin textos pendientes",
-  "fecha": "2026-10-10T00:54:49.967Z",
+  "fecha": "2026-10-10T02:13:29.717Z",
   "motor": "node v24.19.0"
  },
  "regresion": {
   "titulo": "Regresión de resultados y reportes",
   "ok": true,
   "resumen": "272 casos, 70697 números; resultado cambiado en 0, reporte en 0",
-  "fecha": "2026-10-10T00:54:53.485Z",
+  "fecha": "2026-10-10T02:13:32.848Z",
   "motor": "node v24.19.0"
  },
  "intro": {
   "titulo": "Secuencia de apertura",
   "ok": true,
-  "resumen": "secuencia completa hasta «Start»: 5634 ms, 331 cuadros (59 por segundo; mediana 16.7 ms, p95 16.8 ms, 1 de más de 34 ms); 0 tareas largas del hilo principal en ese lapso; peso: js/intro.js + css/intro.css = 39.2 KB (sin imágenes ni fuentes)",
+  "resumen": "secuencia completa hasta «Start»: 5645 ms, 330 cuadros (58 por segundo; mediana 16.7 ms, p95 16.8 ms, 2 de más de 34 ms); 0 tareas largas del hilo principal en ese lapso; peso: js/intro.js + css/intro.css = 39.2 KB (sin imágenes ni fuentes)",
   "renglones": [],
-  "fecha": "2026-10-10T00:55:48.235Z",
+  "fecha": "2026-10-10T02:14:33.860Z",
   "motor": "node v24.19.0"
  },
  "fundamentos": {
@@ -135,7 +135,7 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "78 de 78 fichas sin problemas (78 análisis); 63 ejemplos corridos en node; 1472 fórmulas convertidas a MathML y a Office Math",
   "renglones": [],
-  "fecha": "2026-10-10T00:56:58.162Z",
+  "fecha": "2026-10-10T02:16:04.102Z",
   "motor": "node v24.19.0"
  },
  "suite": {
@@ -143,7 +143,7 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "CorrelationPro: PENDIENTE (sin repositorio público; logo marcador); 14 de 14 enlaces responden 200",
   "renglones": [],
-  "fecha": "2026-10-10T00:57:11.764Z",
+  "fecha": "2026-10-10T02:16:18.004Z",
   "motor": "node v24.19.0"
  },
  "glosario": {
@@ -151,7 +151,7 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "js/generado/glosario.js al día; 257 lugares señalados en español; 133 lugares en inglés",
   "renglones": [],
-  "fecha": "2026-10-10T00:55:19.909Z",
+  "fecha": "2026-10-10T02:14:04.021Z",
   "motor": "node v24.19.0"
  },
  "orientacion": {
@@ -159,15 +159,15 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "Inicio: tres caminos; el ejemplo lleva a Datos; historial: anota, vuelve a abrir con su ejemplo y se lista en Análisis; estados vacíos: Explorar carga el ejemplo ahí mismo; Exportar lleva a Análisis; árbol: del Inicio a los bloques con sus líneas, el ejemplo calculado y la recomendación del asistente señalada; ayudas: con el teclado, Esc sin mover el foco y el estadístico de un encabezado; recorridos: Análisis con el ejemplo (7 pasos); pasos por bloque {\"1\":7,\"2\":6,\"3\":3,\"4\":7,\"5\":1,\"6\":1,\"7\":3,\"8\":4,\"9\":3,\"10\":1}; presentación: 10 diapositivas del resultado de bloques, → Inicio Fin y Esc con el foco de vuelta; el reporte, con su sección; errores: «Hacen falta al menos dos observaciones.» con «Qué hacer: Revisa los faltantes y el fil…»; Validación por enlace directo: esqueleto desde el principio, 120 de 849 casos y «Mostrar más», el detalle al abrirlo; desplazamiento acumulado en la carga 0.002",
   "renglones": [],
-  "fecha": "2026-10-10T00:55:31.506Z",
+  "fecha": "2026-10-10T02:14:16.573Z",
   "motor": "node v24.19.0"
  },
  "calidad": {
   "titulo": "Escalas en sus bordes y coherencia entre textos y números",
   "ok": true,
-  "resumen": "39 escalas (con sus contextos), 108 bordes probados antes, en y después del límite, 147 tarjetas, una por zona; 272 casos del núcleo JS: 7,354 números en sus textos, 56 de ellos calculados por el texto (con su dirección); 2,765 tarjetas con los valores reales de los cuadros; control: de 2,698 números alterados, la comparación habría aceptado el 6.1 % de los alterados un 7 % y el 3.9 % de los alterados un 37 %",
+  "resumen": "39 escalas (con sus contextos), 108 bordes probados antes, en y después del límite, 147 tarjetas, una por zona; 272 casos del núcleo JS: 7,363 números en sus textos, 56 de ellos calculados por el texto (con su dirección); 2,765 tarjetas con los valores reales de los cuadros; control: de 2,698 números alterados, la comparación habría aceptado el 6.1 % de los alterados un 7 % y el 3.9 % de los alterados un 37 %",
   "renglones": [],
-  "fecha": "2026-10-10T00:54:57.502Z",
+  "fecha": "2026-10-10T02:13:37.031Z",
   "motor": "node v24.19.0"
  },
  "enlaces": {
@@ -175,15 +175,15 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "132 archivos que nombra index.html, todos presentes; 3 anclas de la página, 12 data-ir, 0 términos del glosario y 1 fichas nombradas en la página y en la interfaz; en la página viva: 4 términos del glosario, 82 fichas, 1 análisis del árbol, 9 bloques y 3 anclas enlazados, todos existen; 5 íconos (manifiesto y pestaña) que existen y miden lo que declaran; 9 de 9 direcciones externas responden",
   "renglones": [],
-  "fecha": "2026-10-10T00:57:10.855Z",
+  "fecha": "2026-10-10T02:16:16.972Z",
   "motor": "node v24.19.0"
  },
  "lighthouse": {
   "titulo": "Lighthouse (teléfono y escritorio)",
   "ok": true,
-  "resumen": "inicio teléfono: 99/100/100/100; fundamentos teléfono: 99/100/100/100; suite teléfono: 99/100/100/100; validacion teléfono: 99/100/100/100; inicio escritorio: 100/100/100/100; fundamentos escritorio: 100/100/100/100; suite escritorio: 100/100/100/100; validacion escritorio: 100/100/100/100 (rendimiento/accesibilidad/buenas prácticas/SEO)",
+  "resumen": "inicio teléfono: 99/100/100/100; fundamentos teléfono: 97/100/100/100; suite teléfono: 98/100/100/100; validacion teléfono: 96/100/100/100; inicio escritorio: 100/100/100/100; fundamentos escritorio: 100/100/100/100; suite escritorio: 100/100/100/100; validacion escritorio: 100/100/100/100 (rendimiento/accesibilidad/buenas prácticas/SEO)",
   "renglones": [],
-  "fecha": "2026-10-10T01:15:38.248Z",
+  "fecha": "2026-10-10T02:36:12.551Z",
   "motor": "node v24.19.0"
  }
 };

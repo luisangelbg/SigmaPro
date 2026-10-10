@@ -17,7 +17,7 @@ import { existsSync, mkdtempSync, rmSync, readFileSync, readdirSync, writeFileSy
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { BANDERAS, paginaPropia } from './lib/navegador.mjs';
+import { BANDERAS, paginaPropia, puertoLibre } from './lib/navegador.mjs';
 import { huellero } from './lib/huella-motor-r.mjs';
 
 const TESTS = dirname(fileURLToPath(import.meta.url));
@@ -40,7 +40,7 @@ for (const d of readdirSync(dirCasos, { withFileTypes: true }).filter(x => x.isD
   }
 }
 
-const PUERTO = 9600 + Math.floor(Math.random() * 60);
+const PUERTO = await puertoLibre();   // lo da el sistema: ver tests/lib/navegador.mjs
 const perfil = mkdtempSync(join(tmpdir(), 'sigmapro-motor-'));
 const nav = spawn(exe, [...BANDERAS, '--remote-debugging-port=' + PUERTO, '--user-data-dir=' + perfil, 'about:blank'], { stdio: 'ignore' });
 const dormir = ms => new Promise(r => setTimeout(r, ms));
