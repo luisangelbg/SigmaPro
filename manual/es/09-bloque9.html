@@ -62,7 +62,7 @@
       <tr><td><span class="ui">Glosario</span></td><td>Abre el glosario (también con Ctrl G): los estadísticos y conceptos que usan las fichas, cada uno con su definición y «Ver en acción» (sección I.6).</td></tr>
     </tbody>
   </table>
-  <p>Los filtros se combinan y el conteo de arriba dice cuántos análisis quedan; si ninguno cumple, <span class="ui">Quitar los filtros</span> los regresa a <span class="ui">Todas</span>. Al pie de algunas familias aparece la franja <span class="ui">Herramientas relacionadas</span> con las apps de la suite LABG que continúan ese trabajo (capítulo 10).</p>
+  <p>Los filtros se combinan y el conteo de arriba dice cuántos análisis quedan; si ninguno cumple, <span class="ui">Quitar los filtros</span> los regresa a <span class="ui">Todas</span>. Al pie de algunas familias aparece la franja <span class="ui">Herramientas relacionadas</span> con las apps de la suite LABG que continúan ese trabajo (capítulo 10). Fundamentos se ve completo también con el modo <span class="ui">Enfocado</span> de la barra (introducción I.6): el catálogo, el mapa, el árbol y cada ficha traen su propia guía.</p>
   <figure class="media">
     <div class="marco"><img src="../img/b9-catalogo.png" alt="El catálogo de Fundamentos: el buscador, los filtros Familia, Tipo de respuesta, Grupos y factores y Diseño, el selector Catálogo o Mapa de métodos, el conteo de 78 análisis y las primeras tarjetas de las familias Descriptivos e intervalos y Supuestos del modelo."></div>
     <figcaption><b>Figura 9.1.</b> El catálogo de Fundamentos: el buscador, los cuatro filtros y las primeras familias.</figcaption>
@@ -88,7 +88,7 @@
 
   <!-- 9.4 -->
   <h2 id="s9-4"><span class="num">9.4</span>Una ficha, apartado por apartado</h2>
-  <p class="lead">Todas las fichas tienen los mismos nueve apartados, en el mismo orden, y un índice a la izquierda para saltar entre ellos. Cada apartado se pliega o se despliega con un clic en su título.</p>
+  <p class="lead">Todas las fichas tienen los mismos nueve apartados, en el mismo orden, y un índice a la izquierda para saltar entre ellos, que señala el que se está leyendo. Cada apartado se pliega o se despliega con un clic en su título.</p>
   <figure class="media">
     <div class="marco"><img src="../img/b9-ficha.png" alt="La ficha de bloques completos al azar: la familia, el nombre y los otros nombres del análisis; los botones Abrir este análisis y Cargar los datos de ejemplo; el índice En esta ficha con los nueve apartados; Para qué sirve y Preguntas típicas."></div>
     <figcaption><b>Figura 9.4.</b> La ficha de bloques completos al azar: la cabecera, el índice y los dos primeros apartados.</figcaption>
@@ -109,7 +109,7 @@
     </tbody>
   </table>
   <p>El fundamento teórico termina con el modelo, cada uno de sus términos y las hipótesis que se prueban, con el estadístico que las decide (figura 9.5).</p>
-  <figure class="chica">
+  <figure class="media">
     <div class="marco"><img src="../img/b9-modelo.png" alt="El modelo de bloques completos al azar, y sub ij igual a mu más tau sub i más beta sub j más épsilon sub ij, con épsilon normal de media cero y varianza sigma cuadrada; la explicación de cada término; H0: todos los tau iguales a cero; H1: algún tau distinto de cero; y la nota de que se prueba con F igual al CM de tratamientos entre el CM del error."></div>
     <figcaption><b>Figura 9.5.</b> El modelo, sus términos y las hipótesis en la ficha de bloques completos al azar.</figcaption>
   </figure>
@@ -118,6 +118,10 @@
   <!-- 9.5 -->
   <h2 id="s9-5"><span class="num">9.5</span>Datos necesarios y las plantillas</h2>
   <p class="lead">El apartado 5 va en un recuadro dorado porque responde la pregunta que más detiene un análisis: ¿cómo deben estar mis datos? Trae seis partes (figura 9.6).</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/b9-datos.png" alt="El recuadro Datos necesarios de la ficha de bloques completos al azar: el cuadro de columnas con su tipo y su papel; el tamaño mínimo; faltantes y desbalance; el formato largo; un ejemplo de siete filas del maíz; los errores frecuentes y los botones Cargar estos datos de ejemplo, Plantilla CSV y Plantilla XLSX."></div>
+    <figcaption><b>Figura 9.6.</b> «Datos necesarios» en la ficha de bloques completos al azar.</figcaption>
+  </figure>
   <ul>
     <li><b>Columnas que necesita:</b> cada columna con su tipo (numérica continua, factor con k niveles, conteo, 0/1, fecha) y su papel en el análisis (respuesta, tratamientos, bloque…). Los nombres son los del conjunto de ejemplo.</li>
     <li><b>Tamaño mínimo:</b> lo que el método necesita para correr y lo que conviene para que la prueba tenga sentido.</li>
@@ -126,10 +130,6 @@
     <li><b>Ejemplo:</b> las primeras filas reales del conjunto de ejemplo, hasta 8.</li>
     <li><b>Errores frecuentes al preparar los datos:</b> los que hacen que el análisis corra pero responda otra pregunta (promedios en lugar de parcelas, dosis numéricas como si fueran continuas, frutos de una parcela como repeticiones).</li>
   </ul>
-  <figure class="chica">
-    <div class="marco"><img src="../img/b9-datos.png" alt="El recuadro Datos necesarios de la ficha de bloques completos al azar: el cuadro de columnas con su tipo y su papel; el tamaño mínimo; faltantes y desbalance; el formato largo; un ejemplo de siete filas del maíz; los errores frecuentes y los botones Cargar estos datos de ejemplo, Plantilla CSV y Plantilla XLSX."></div>
-    <figcaption><b>Figura 9.6.</b> «Datos necesarios» en la ficha de bloques completos al azar.</figcaption>
-  </figure>
   <p><span class="ui">Plantilla CSV</span> y <span class="ui">Plantilla XLSX</span> descargan la tabla de ejemplo de la ficha (<code>plantilla-&lt;análisis&gt;.csv</code> o <code>.xlsx</code>) para llenarla con los datos propios y después importarla en el bloque Datos. <span class="ui">Cargar estos datos de ejemplo</span> carga el conjunto completo y abre el análisis con sus columnas ya elegidas. Las fichas de planeación (potencia, número de repeticiones, tamaño de muestra y diseño de superficies) no usan datos: su cuadro de columnas lista, en su lugar, los valores que pide el formulario.</p>
 
   <!-- 9.6 -->

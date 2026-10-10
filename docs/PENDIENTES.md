@@ -1,21 +1,20 @@
 # Pendientes de SigmaPro
 
-Estado tras la Fase 4 (Hitos 4.0 a 4.4, versión 0.4.0, y la interfaz en inglés del Hito 4.5, 4 de octubre de 2026; plan en [`propuesta/FASE4.md`](../propuesta/FASE4.md)), la ampliación de la Fase 3 (Hito 3.9) y los arreglos hallados al escribir el manual (0.3.3). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
+Estado tras la Fase 5 (versión 0.6.2, 9 de octubre de 2026: las cinco fases están completas; plan en [`propuesta/FASE5.md`](../propuesta/FASE5.md)), la Fase 4 (Hitos 4.0 a 4.4, versión 0.4.0, y la interfaz en inglés del Hito 4.5, 4 de octubre de 2026; plan en [`propuesta/FASE4.md`](../propuesta/FASE4.md)), la ampliación de la Fase 3 (Hito 3.9) y los arreglos hallados al escribir el manual (0.3.3). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
 que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA.md`](../propuesta/PROPUESTA.md) §12).
 
 ## Antes de publicar
 
 - **Nombre.** «SigmaPro» se parece al de un programa comercial de gráficas científicas: buscarlo en el IMPI antes de
   publicar con DOI (riesgo 6 de la propuesta).
-- **Versión 1.0.0.** Hoy la app dice 0.4.0 (los cálculos de la Fase 4); al publicar, subir a 1.0.0 en `js/nucleo/sp.js`
+- **Versión 1.0.0.** Hoy la app dice 0.6.2 (las cinco fases completas); al publicar, subir a 1.0.0 en `js/nucleo/sp.js`
   (`SP.VERSION`), `sw.js` y el CHANGELOG.
 - **Motor R sin conexión al publicar**: armar `motor-r/` con `node tools/motor-r/armar.mjs --fuentes` y publicarlo
   junto a la app (no va en el repositorio: unos 250 MB con las fuentes).
 - **Manual de usuario**: escrito en español, un capítulo por bloque (`manual/`, PDF
   `manual/SigmaPro_Manual_de_usuario_ES.pdf`). Describe la versión 1.0: al subir la versión, rehacer las capturas y el
-  PDF (pasos en [`manual/LEEME.md`](../manual/LEEME.md)) para que las pantallas digan 1.0.0. El manual describe la versión 0.3.3:
-  le faltan las novedades de la Fase 4 (no lineal, multiambiente, superficies, mezclas, deseabilidad, generalizados y el
-  asistente que reconoce las parcelas).
+  PDF (pasos en [`manual/LEEME.md`](../manual/LEEME.md)) para que las pantallas digan 1.0.0. Las capturas y el PDF son de la 0.6.2 (9 de
+  octubre de 2026) y cubren las cinco fases; el número de versión solo se ve en las figuras 4.13, 5.3, 7.2 y 7.6.
 - **Inglés**: la interfaz es bilingüe desde el Hito 4.5; quedan en español los comentarios del código R equivalente
   (unos 260 fragmentos dentro del código de los métodos) y el manual de usuario.
 - **Publicación**: repositorio en GitHub, GitHub Pages (ahí funciona el servicio sin conexión), su ficha en el
@@ -48,7 +47,7 @@ que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA
   módulos comunes usan las letras del sistema; con doble clic ninguna petición sale del equipo (salvo el motor R).
 - **Auditoría de accesibilidad**: usa el auditor de la suite (`LABG-Design/labg-audit.ps1`, fuera de este repositorio);
   sin él solo corre la revisión del foco con el teclado.
-- **Idioma**: la interfaz está solo en español.
+- ~~**Idioma**: la interfaz está solo en español~~: resuelto en el Hito 4.5 (4 oct 2026), interfaz en español y en inglés.
 
 ## Fase 2 · motor R en el navegador (webR)
 

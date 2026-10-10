@@ -47,6 +47,9 @@ try {
     await n.evaluar('window.__recorte = null; window.__marcas = null; ' + AYUDAS + '\n(' + texto.trim().replace(/;\s*$/, '') + ')', 240);
     await n.evaluar('new Promise(r => setTimeout(r, 500))');
     const rec = await n.evaluar('(() => { const v = window.__recorte; if (!v) return null; const [x, y, w, h] = String(v).split(",").map(Number); return { x: x + scrollX, y: y + scrollY, ancho: w, alto: h, fuera: y < 0 || y + h > innerHeight + 1 }; })()');
+    /* la página sigue siendo la app: si algo la cambió entre la receta y la foto, la captura no sirve */
+    const sigue = await n.evaluar('(window.SP && SP.app) ? location.href : ""');
+    if (!String(sigue || '').startsWith(URL_APP)) throw new Error('La página dejó de ser la app antes de la captura de ' + r + ' (' + (sigue || 'otra página') + ').');
     const png = await n.png(rec, rec && rec.fuera);
     writeFileSync(join(MANUAL, 'img', r + '.png'), png);
     const errores = n.consola.slice(consola0).filter(c => !/motor R|webR/i.test(c));

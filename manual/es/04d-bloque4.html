@@ -77,6 +77,8 @@
     <li><b>Normalidad de los residuos</b>: Shapiro-Wilk.</li>
     <li><b>Varianza constante</b>: Breusch-Pagan estudentizada (Koenker).</li>
     <li><b>Forma del modelo</b>: la prueba RESET (con ŷ² y ŷ³), y la falta de ajuste cuando hay valores repetidos de los predictores. En el café, RESET da <i>F</i> = 3.576 y <i>p</i> = 0.039: quizá falta una curva o una interacción.</li>
+  </ul>
+  <ul>
     <li><b>Independencia</b>: Durbin-Watson, con <i>p</i> exacto si hay menos de 100 datos. Mide la autocorrelación <i>en el orden de las filas</i>, así que solo importa si ese es el orden en que se midió o la posición en el campo; por eso este renglón nunca pasa de ámbar.</li>
     <li><b>Observaciones influyentes</b>: los criterios de R (palanca, DFFITS, DFBETAS, COVRATIO y distancia de Cook). Se pone en rojo si alguna tiene una distancia de Cook grande y en ámbar si solo la señalan los otros criterios. En el café, dos fincas, la 17 y la 6, salen señaladas por el COVRATIO y ninguna por la distancia de Cook.</li>
     <li><b>Colinealidad</b>, con dos o más predictores: el VIF de cada predictor y el número de condición; el renglón se pone en ámbar con un VIF mayor que 5 y en rojo con uno mayor que 10 (VIF máximo 1.10 y número de condición 15.1 en el café: sin problema).</li>

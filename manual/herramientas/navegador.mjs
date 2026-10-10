@@ -5,7 +5,7 @@
 // Usa Edge o Chrome con las mismas banderas que las pruebas (tests/lib/navegador.mjs) y un perfil temporal que se
 // borra al cerrar.
 import { spawn, execFileSync } from 'node:child_process';
-import { existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { BANDERAS, paginaPropia } from '../../tests/lib/navegador.mjs';
@@ -16,11 +16,20 @@ const EXE = [process.env.SIGMAPRO_NAVEGADOR, 'C:/Program Files (x86)/Microsoft/E
 
 export async function abrir({ ancho = 1400, alto = 900, escala = 2 } = {}) {
   if (!EXE) throw new Error('Hace falta Edge o Chrome.');
-  const puerto = 9300 + Math.floor(Math.random() * 400);
+  /* El puerto de depuración lo asigna el sistema (puerto 0) y se lee del archivo que el navegador deja en su perfil.
+     Con un puerto elegido al azar, si otro navegador sin ventana ya lo tenía (el de las pruebas de otra app), este no
+     podía abrirlo y la herramienta terminaba manejando el navegador ajeno: la captura salía con la pantalla de otra
+     app. */
   const perfil = mkdtempSync(join(tmpdir(), 'sigmapro-manual-'));
-  const nav = spawn(EXE, [...BANDERAS, '--remote-debugging-port=' + puerto, '--user-data-dir=' + perfil, '--force-color-profile=srgb', 'about:blank'], { stdio: 'ignore' });
-  let destino;
-  for (let k = 0; k < 75 && !destino; k++) { await dormir(200); try { destino = await paginaPropia(puerto); } catch { /* arranca */ } }
+  const nav = spawn(EXE, [...BANDERAS, '--remote-debugging-port=0', '--user-data-dir=' + perfil, '--force-color-profile=srgb', 'about:blank'], { stdio: 'ignore' });
+  let destino, puerto = 0;
+  for (let k = 0; k < 75 && !destino; k++) {
+    await dormir(200);
+    try {
+      if (!puerto) puerto = +readFileSync(join(perfil, 'DevToolsActivePort'), 'utf8').split('\n')[0] || 0;
+      if (puerto) destino = await paginaPropia(puerto);
+    } catch { /* arranca */ }
+  }
   if (!destino) { nav.kill(); throw new Error('El navegador no abrió su puerto de depuración.'); }
   const ws = new WebSocket(destino.webSocketDebuggerUrl);
   await new Promise((ok, mal) => { ws.onopen = ok; ws.onerror = mal; });
