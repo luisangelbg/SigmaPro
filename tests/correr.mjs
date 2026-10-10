@@ -166,7 +166,8 @@ if (opt.escribir && !opt.solo) {
      lo usa el bloque Validación, que lo carga al abrirse. */
   const objetivos = {};
   for (const c of V.casos) { if (!c.objetivo) continue; const k = c.objetivo.tipo + ':' + c.objetivo.nombre, o = objetivos[k] || (objetivos[k] = [0, 0]); o[0]++; if (c.aprobado) o[1]++; }
-  const VR = { version: V.version, generado: V.generado, referencias: V.referencias, resumen: V.resumen, objetivos };
+  /* conTolerancia: los casos aprobados con una tolerancia propia (la nota del límite en el resumen de Validación) */
+  const VR = { version: V.version, generado: V.generado, referencias: V.referencias, resumen: V.resumen, conTolerancia: V.casos.filter(c => c.aprobado && c.difEscaladaMax > 1e-6).length, objetivos };
   escribirSiCambia(join(RAIZ, 'js', 'generado', 'validacion-resumen.js'), cab + 'window.SP_VALIDACION_RESUMEN = ' + JSON.stringify(VR, null, 1) + ';\n', quitarFecha);
   escribirSiCambia(join(TESTS, 'reporte-validacion.html'), reporteHTML(V), quitarFecha);
   escribirSiCambia(join(TESTS, 'reporte-validacion.csv'), reporteCSV(V), quitarFecha);

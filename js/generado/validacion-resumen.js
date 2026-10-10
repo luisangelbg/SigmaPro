@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION_RESUMEN = {
- "version": "0.5.18",
- "generado": "2026-10-09T13:26:24.556Z",
+ "version": "0.6.0",
+ "generado": "2026-10-10T00:24:36.535Z",
  "referencias": [
   "R version 4.4.2 (2024-10-31 ucrt)"
  ],
@@ -13,6 +13,7 @@ window.SP_VALIDACION_RESUMEN = {
   "difEscaladaMax": 0.000024564204685412263,
   "objetivos": 173
  },
+ "conTolerancia": 4,
  "objetivos": {
   "funcion:num.resumen": [
    4,

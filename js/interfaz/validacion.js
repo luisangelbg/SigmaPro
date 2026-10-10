@@ -5,7 +5,11 @@
    cada vez que corren las pruebas. Es la misma información que el reporte publicado
    en tests/reporte-validacion.html. Debajo, las otras comprobaciones (window.SP_COMPROBACIONES,
    js/generado/comprobaciones.js): el código R equivalente, las exportaciones, el rendimiento,
-   la privacidad, el uso sin conexión y la accesibilidad. */
+   la privacidad, el uso sin conexión y la accesibilidad.
+   Hito 5.9 (rendimiento en el teléfono): el resumen se pinta en cuanto se abre el bloque, con lo que la app carga al
+   arrancar (window.SP_VALIDACION_RESUMEN); la tabla muestra los primeros 120 casos y los demás conforme se baja por
+   ella (o con «Mostrar más casos»); el buscador y los filtros siguen viendo todos. El detalle de cada caso se arma
+   cuando se abre. */
 (function () {
   'use strict';
   const T = SP.T;
@@ -56,41 +60,81 @@
     return h;
   }
 
+  const TANDA = 120;
+  let lista = [], turno = 0, filasHTML = [], mostradas = 0, vigia = null;
   function pintarTabla(V) {
     const tbody = $('#valTabla tbody');
+    if (!tbody || !V) return;
     const q = busqueda.trim().toLowerCase();
     const visibles = V.casos.filter(c =>
       (filtro === 'todos' || (filtro === 'aprobados' ? c.aprobado : !c.aprobado)) &&
       (!q || [c.id, c.titulo, c.fuente, nombreObjetivo(c.objetivo)].join(' ').toLowerCase().includes(q)));
-    let h = '', grupo = null, i = 0;
-    for (const c of visibles) {
+    lista = visibles;
+    const filas = [];
+    let grupo = null;
+    visibles.forEach((c, i) => {
       const g = nombreObjetivo(c.objetivo);
+      let h = '';
       if (g !== grupo) { grupo = g; h += '<tr class="grupo"><td colspan="7">' + esc(g) + '</td></tr>'; }
-      const idDet = 'valDet' + (i++);
       h += '<tr><td class="izq">' + esc(T(c.titulo || '') || nombreCaso(c)) + '<br><span class="muted small">' + esc(nombreCaso(c)) + '</span></td><td class="izq">' + esc(T(c.fuente || '')) + '</td>' +
         '<td>' + esc(c.clase) + '</td><td>' + miles(c.valores || 0) + '</td><td class="nowrap">' + cientifico(c.difEscaladaMax) + '</td>' +
         '<td><span class="veredicto ' + (c.aprobado ? 'ok' : 'falla') + '">' + (c.aprobado ? T('Aprobado') : T('Falla')) + '</span></td>' +
-        '<td><button type="button" class="det" aria-expanded="false" aria-controls="' + idDet + '">' + T('Detalles') + '</button></td></tr>' +
-        '<tr class="detalle" id="' + idDet + '" hidden><td colspan="7">' + detalle(c) + '</td></tr>';
+        '<td><button type="button" class="det" aria-expanded="false" data-caso="' + i + '">' + T('Detalles') + '</button></td></tr>';
+      filas.push(h);
+    });
+    ++turno;
+    filasHTML = filas; mostradas = 0;
+    if (!filas.length) { tbody.innerHTML = '<tr><td colspan="7" class="izq muted">' + T('Ningún caso coincide con el filtro.') + '</td></tr>'; return; }
+    tbody.innerHTML = '';
+    masFilas();
+  }
+  /** La siguiente tanda de casos; al final queda un renglón con «Mostrar más casos» mientras falten. */
+  function masFilas() {
+    const tbody = $('#valTabla tbody');
+    if (!tbody || mostradas >= filasHTML.length) return;
+    const previo = tbody.querySelector('tr.val-mas');
+    const conFoco = !!(previo && previo.contains(document.activeElement));
+    if (previo) previo.remove();
+    const desde = mostradas;
+    mostradas = Math.min(filasHTML.length, mostradas + TANDA);
+    tbody.insertAdjacentHTML('beforeend', filasHTML.slice(desde, mostradas).join('') + (mostradas < filasHTML.length
+      ? '<tr class="val-mas"><td colspan="7" class="izq"><button type="button" class="btn btn-ghost btn-sm" data-val-mas>' + esc(T('Mostrar más casos ({a} de {n})', { a: mostradas, n: filasHTML.length })) + '</button></td></tr>' : ''));
+    /* con el teclado, el foco sigue en el primer caso nuevo */
+    if (conFoco) { const b = tbody.querySelectorAll('button.det')[desde]; if (b) b.focus(); }
+    /* y al acercarse al final de la tabla, la siguiente tanda llega sola */
+    const fin = tbody.querySelector('tr.val-mas');
+    if (vigia) vigia.disconnect();
+    if (fin && typeof IntersectionObserver === 'function') {
+      vigia = new IntersectionObserver(es => { if (es.some(x => x.isIntersecting)) masFilas(); }, { rootMargin: '400px 0px' });
+      vigia.observe(fin);
     }
-    if (!visibles.length) h = '<tr><td colspan="7" class="izq muted">' + T('Ningún caso coincide con el filtro.') + '</td></tr>';
-    tbody.innerHTML = h;
+  }
+  /** El detalle de un caso, armado la primera vez que se abre. */
+  function alternarDetalle(boton) {
+    let fila = boton.hasAttribute('aria-controls') ? document.getElementById(boton.getAttribute('aria-controls')) : null;
+    if (!fila) {
+      const c = lista[+boton.dataset.caso];
+      if (!c) return;
+      const id = 'valDet' + turno + '-' + boton.dataset.caso;
+      boton.closest('tr').insertAdjacentHTML('afterend', '<tr class="detalle" id="' + id + '" hidden><td colspan="7">' + detalle(c) + '</td></tr>');
+      boton.setAttribute('aria-controls', id);
+      fila = document.getElementById(id);
+    }
+    const abrir = boton.getAttribute('aria-expanded') !== 'true';
+    boton.setAttribute('aria-expanded', String(abrir));
+    fila.hidden = !abrir;
   }
 
   /* la mayor diferencia puede pasar de 10⁻⁶ en los casos con una tolerancia propia, documentada en el caso (clase D:
      ARIMA, GLMM): la nota lo dice, para que no parezca una falla */
   function notaLimite(V) {
-    const k = V.casos.filter(c => c.aprobado && c.difEscaladaMax > 1e-6).length;
+    const k = Array.isArray(V.casos) ? V.casos.filter(c => c.aprobado && c.difEscaladaMax > 1e-6).length : (V.conTolerancia || 0);
     return !k ? T('escalada; el límite es 10⁻⁶')
       : k === 1 ? T('escalada; el límite es 10⁻⁶, salvo un caso con su tolerancia documentada')
         : T('escalada; el límite es 10⁻⁶, salvo {k} casos con su tolerancia documentada', { k });
   }
-  function pintar() {
-    const V = window.SP_VALIDACION;
-    const vacio = $('#valVacio'), cont = $('#valContenido');
-    if (!vacio || !cont) return;
-    if (!V || !Array.isArray(V.casos) || !V.casos.length) { vacio.hidden = false; cont.hidden = true; return; }
-    vacio.hidden = true; cont.hidden = false;
+  /** Las tejas del resumen y la fecha, del reporte completo o del resumen que la app carga al arrancar. */
+  function pintarResumen(V) {
     const r = V.resumen;
     const fecha = V.generado ? new Date(V.generado) : null;
     $('#valFecha').textContent = fecha ? T('Generado el {f}', { f: fecha.toLocaleDateString(SP.LOCAL, { year: 'numeric', month: 'long', day: 'numeric' }) }) : '';
@@ -99,9 +143,29 @@
       '<div class="teja"><div class="k">' + T('Valores comparados') + '</div><div class="v">' + miles(r.valores) + '</div></div>' +
       '<div class="teja"><div class="k">' + T('Mayor diferencia') + '</div><div class="v">' + cientifico(r.difEscaladaMax) + '</div><div class="nota">' + notaLimite(V) + '</div></div>' +
       '<div class="teja"><div class="k">' + T('Referencia') + '</div><div class="v" style="font-size:var(--fs-lg)">' + esc((V.referencias || []).map(s => s.replace(/^R version ([\d.]+).*$/, 'R $1')).join(', ')) + '</div><div class="nota">' + esc(r.objetivos === 1 ? T('1 función o método') : T('{n} funciones y métodos', { n: r.objetivos })) + '</div></div>';
+  }
+  function pintar() {
+    const V = window.SP_VALIDACION;
+    const vacio = $('#valVacio'), cont = $('#valContenido');
+    if (!vacio || !cont) return;
+    if (!V || !Array.isArray(V.casos) || !V.casos.length) { vacio.hidden = false; cont.hidden = true; return; }
+    vacio.hidden = true; cont.hidden = false;
+    pintarResumen(V);
     pintarTabla(V);
+    cont.classList.remove('val-cargando');
     pintarOtras();
-    if (window.LABG) window.LABG.markStep(8, r.fallidos ? 'warn' : 'done');
+    if (window.LABG) window.LABG.markStep(8, V.resumen.fallidos ? 'warn' : 'done');
+  }
+  /* lo que se puede mostrar antes de que llegue el reporte completo: el resumen, las otras comprobaciones y la tabla
+     con un aviso de que sus casos vienen en camino */
+  function pintarAntes() {
+    const VR = window.SP_VALIDACION_RESUMEN, cont = $('#valContenido'), tbody = $('#valTabla tbody');
+    if (!VR || !VR.resumen || !cont) return false;
+    cont.hidden = false;
+    pintarResumen(VR);
+    pintarOtras();
+    if (tbody && !tbody.children.length) tbody.innerHTML = '<tr><td colspan="7" class="izq muted">' + esc(T('Cargando los casos…')) + '</td></tr>';
+    return true;
   }
   /* las comprobaciones que no son casos contra R */
   const ORDEN = ['codigo-r', 'exportar', 'rendimiento', 'sin-conexion', 'accesibilidad'];
@@ -125,8 +189,13 @@
     if (!listo) {
       const vacio = $('#valVacio'), estado = $('#valCargando');
       if (estado) estado.hidden = false;
+      /* el bloque se muestra con el resumen (sp:validacion: la página con enlace directo a Validación espera esta señal) y
+         los casos llegan después */
+      let avisado = false;
+      const avisar = () => { if (!avisado) { avisado = true; document.dispatchEvent(new Event('sp:validacion')); } };
+      if (!window.SP_VALIDACION && pintarAntes()) { if (estado) estado.hidden = true; avisar(); }
       listo = (window.SP_VALIDACION ? Promise.resolve() : SP.ui.cargarScript('js/generado/validacion.js'))
-        .then(() => { if (estado) estado.hidden = true; pintar(); document.dispatchEvent(new Event('sp:validacion')); })
+        .then(() => { if (estado) estado.hidden = true; pintar(); avisar(); })
         .catch(() => { if (estado) estado.hidden = true; if (vacio) vacio.hidden = false; listo = null; });
     }
     return listo;
@@ -148,13 +217,9 @@
         pintarTabla(window.SP_VALIDACION);
         return;
       }
+      if (e.target.closest('[data-val-mas]')) { masFilas(); return; }
       const d = e.target.closest('button.det');
-      if (d) {
-        const fila = document.getElementById(d.getAttribute('aria-controls'));
-        const abrir = d.getAttribute('aria-expanded') !== 'true';
-        d.setAttribute('aria-expanded', String(abrir));
-        fila.hidden = !abrir;
-      }
+      if (d) alternarDetalle(d);
     });
     const b = $('#valBuscar');
     if (b) b.addEventListener('input', () => { busqueda = b.value; pintarTabla(window.SP_VALIDACION); });

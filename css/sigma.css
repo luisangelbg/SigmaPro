@@ -99,6 +99,13 @@ h1, h2, h3 { letter-spacing: -0.015em; }
 .teja .v { font-size: var(--fs-2xl); font-weight: 800; overflow-wrap: anywhere; }
 .teja .v small { font-size: var(--fs-sm); color: var(--text-muted); font-weight: 600; }
 .teja .nota { font-size: var(--fs-xs); color: var(--text-muted); }
+/* Validación mientras llega su reporte (hito 5.9): el lugar de la tabla, para que lo que va debajo no se mueva a la vista */
+#valContenido.val-cargando .tabla-wrap { min-height: 85vh; }
+/* la fecha del reporte ocupa su lugar desde el principio (alto de un renglón y el ancho de «Generado el …») */
+#valFecha { min-width: 15.5em; text-align: center; }
+/* las tejas del resumen, con lugar para una nota de hasta tres renglones (el texto real llega después) */
+#valTejas .teja { min-height: 9em; }
+#valFecha:empty::before { content: '\00a0'; }
 
 /* ================= cuadros estilo revista (tres líneas) ================= */
 /* relative: el texto oculto para lectores de pantalla (posición absoluta) no debe salirse y ensanchar la página */

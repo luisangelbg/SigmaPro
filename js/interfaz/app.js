@@ -96,7 +96,7 @@
     ['hecho', '5.5', T('Glosario de 146 términos (Ctrl+G) con «Ver en acción»: abre un ejemplo y señala dónde aparece cada uno')],
     ['hecho', '5.7', T('Orientación: tres caminos en Inicio, historial, estados vacíos, árbol de decisiones, recorridos por bloque, ayudas emergentes, modo presentación y errores en palabras')],
     ['hecho', '5.8', T('Reporte rediseñado (portada, índice y apéndice de métodos), Markdown y hoja de trabajo para clase')],
-    ['actual', '5.9', T('Calidad: pruebas de cada escala, coherencia entre textos y números, accesibilidad y velocidad')],
+    ['hecho', '5.9', T('Calidad: pruebas de cada escala, coherencia entre textos y números, accesibilidad y velocidad')],
     ['', '1.0', T('Publicación: revisión del nombre, repositorio y DOI (versión 1.0.0)')],
   ];
   function hitos() {

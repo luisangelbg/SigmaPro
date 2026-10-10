@@ -1,0 +1,185 @@
+[
+ {
+  "pagina": "inicio",
+  "forma": "mobile",
+  "corridas": 3,
+  "rendimiento": 99,
+  "accesibilidad": 100,
+  "practicas": 100,
+  "seo": 100,
+  "rendimientos": [
+   99,
+   99,
+   99
+  ],
+  "fcp": "1.4 s",
+  "lcp": "1.7 s",
+  "tbt": "34 ms",
+  "cls": "0.000",
+  "si": "2.6 s",
+  "bajo": [
+   "forced-reflow-insight",
+   "network-dependency-tree-insight"
+  ]
+ },
+ {
+  "pagina": "fundamentos",
+  "forma": "mobile",
+  "corridas": 3,
+  "rendimiento": 99,
+  "accesibilidad": 100,
+  "practicas": 100,
+  "seo": 100,
+  "rendimientos": [
+   99,
+   99,
+   99
+  ],
+  "fcp": "1.4 s",
+  "lcp": "1.7 s",
+  "tbt": "53 ms",
+  "cls": "0.001",
+  "si": "2.7 s",
+  "bajo": [
+   "interactive",
+   "network-dependency-tree-insight"
+  ]
+ },
+ {
+  "pagina": "suite",
+  "forma": "mobile",
+  "corridas": 3,
+  "rendimiento": 99,
+  "accesibilidad": 100,
+  "practicas": 100,
+  "seo": 100,
+  "rendimientos": [
+   99,
+   99,
+   99
+  ],
+  "fcp": "1.4 s",
+  "lcp": "1.7 s",
+  "tbt": "18 ms",
+  "cls": "0.000",
+  "si": "2.6 s",
+  "bajo": [
+   "network-dependency-tree-insight"
+  ]
+ },
+ {
+  "pagina": "validacion",
+  "forma": "mobile",
+  "corridas": 3,
+  "rendimiento": 99,
+  "accesibilidad": 100,
+  "practicas": 100,
+  "seo": 100,
+  "rendimientos": [
+   99,
+   99,
+   99
+  ],
+  "fcp": "1.6 s",
+  "lcp": "1.7 s",
+  "tbt": "50 ms",
+  "cls": "0.000",
+  "si": "2.8 s",
+  "bajo": [
+   "interactive",
+   "valid-source-maps",
+   "forced-reflow-insight",
+   "network-dependency-tree-insight"
+  ]
+ },
+ {
+  "pagina": "inicio",
+  "forma": "desktop",
+  "corridas": 3,
+  "rendimiento": 100,
+  "accesibilidad": 100,
+  "practicas": 100,
+  "seo": 100,
+  "rendimientos": [
+   100,
+   100,
+   100
+  ],
+  "fcp": "332 ms",
+  "lcp": "380 ms",
+  "tbt": "0 ms",
+  "cls": "0.000",
+  "si": "668 ms",
+  "bajo": [
+   "network-dependency-tree-insight"
+  ]
+ },
+ {
+  "pagina": "fundamentos",
+  "forma": "desktop",
+  "corridas": 3,
+  "rendimiento": 100,
+  "accesibilidad": 100,
+  "practicas": 100,
+  "seo": 100,
+  "rendimientos": [
+   100,
+   100,
+   100
+  ],
+  "fcp": "331 ms",
+  "lcp": "376 ms",
+  "tbt": "0 ms",
+  "cls": "0.000",
+  "si": "637 ms",
+  "bajo": [
+   "network-dependency-tree-insight"
+  ]
+ },
+ {
+  "pagina": "suite",
+  "forma": "desktop",
+  "corridas": 3,
+  "rendimiento": 100,
+  "accesibilidad": 100,
+  "practicas": 100,
+  "seo": 100,
+  "rendimientos": [
+   100,
+   100,
+   100
+  ],
+  "fcp": "331 ms",
+  "lcp": "376 ms",
+  "tbt": "0 ms",
+  "cls": "0.000",
+  "si": "757 ms",
+  "bajo": [
+   "network-dependency-tree-insight"
+  ]
+ },
+ {
+  "pagina": "validacion",
+  "forma": "desktop",
+  "corridas": 3,
+  "rendimiento": 100,
+  "accesibilidad": 100,
+  "practicas": 100,
+  "seo": 100,
+  "rendimientos": [
+   100,
+   100,
+   100
+  ],
+  "fcp": "333 ms",
+  "lcp": "409 ms",
+  "tbt": "0 ms",
+  "cls": "0.002",
+  "si": "767 ms",
+  "bajo": [
+   "valid-source-maps",
+   "forced-reflow-insight",
+   "network-dependency-tree-insight"
+  ]
+ }
+]

@@ -2,6 +2,47 @@
 
 ## Sin publicar
 
+### 0.6.0 · Hito 5.9, parte 3: Lighthouse 90 o más. Cierre de la Fase 5 (9 oct 2026)
+
+Con esta versión la Fase 5 (`propuesta/FASE5.md`) queda completa: cada número se puede leer (medidores, tarjetas, «En
+pocas palabras», cómo reportarlo), la app orienta (tres caminos, árbol de decisiones, glosario, recorridos, ayudas,
+presentación, errores en palabras), el reporte sale rediseñado (portada, índice, resumen, lectura de los indicadores,
+apéndice metodológico, Markdown y hoja de trabajo para clase) y la calidad se prueba en cada versión.
+
+- **Lighthouse, 90 o más en las cuatro categorías** en teléfono y escritorio, sobre Inicio, Fundamentos, la Suite y
+  Validación (`tests/rendimiento/lighthouse.mjs`; resultado en `tests/rendimiento/lighthouse.json` y en el bloque 8).
+  Rendimiento, mediana de tres corridas:
+
+  | Página | Teléfono | Escritorio |
+  | --- | --- | --- |
+  | Inicio | 99 (LCP 1.7 s) | 100 |
+  | Fundamentos (#b9) | 99 | 100 |
+  | Suite LABG (#b10) | 99 (92 en la corrida completa anterior) | 100 |
+  | Validación (#b8) | 99 (antes 41 a 63; LCP de 10 s a 1.7 s) | 100 (antes 66 a 89) |
+
+  Accesibilidad, buenas prácticas y SEO: 100 en todas.
+  - El medidor sirve la app **con gzip**, como la página publicada (sin compresión, la red simulada del teléfono tardaba
+    tres o cuatro veces más y el puntaje no decía lo que vive quien usa la app), corre cada página tres veces y toma
+    la mediana, con un tope de tiempo por corrida. Lighthouse se usa solo en las pruebas (`SIGMAPRO_LIGHTHOUSE`).
+- **El arranque**: los guiones de la app se piden después de la primera pintura de la página visible (la primera
+  entrada de `largest-contentful-paint`, o dos cuadros y 250 ms). Pedidos unos milisegundos antes, contaban como
+  dependencias de esa pintura y la retrasaban en la red lenta.
+- **Validación**:
+  - con enlace directo se muestra como los demás bloques, sin esperar a su reporte de 700 KB: su esqueleto (las cuatro
+    tejas, la tabla con «Cargando los casos…» y su lugar reservado) está en la página, y al llenarse nada de lo que se
+    ve se mueve (desplazamiento acumulado 0.002);
+  - el resumen se pinta en cuanto arranca la app, con `validacion-resumen.js` (que ahora trae cuántos casos tienen
+    una tolerancia documentada);
+  - la tabla muestra los primeros 120 casos y los demás conforme se baja por ella o con *Mostrar más casos* (el foco
+    sigue en el primero nuevo); el buscador y los filtros ven todos;
+  - el detalle de cada caso se arma al abrirlo. El bloque pasó de unos 20 000 elementos a menos de 2 000.
+- Pruebas: `tests/orientacion.mjs` abre Validación por enlace directo (el esqueleto antes de que cargue la app, 120
+  casos y *Mostrar más*, el detalle, el buscador y el desplazamiento de la carga).
+- `CITATION.cff` y `codemeta.json` en la 0.6.0.
+- **Navegador LABG 1.1.3** (copia del módulo compartido de la suite): el nombre accesible de los botones de búsqueda
+  lleva el atajo tal como se ve en la tecla («Buscar Ctrl K», «Buscar en la app (Ctrl K)»; WCAG 2.5.3). Era el único
+  aviso que le quedaba a Lighthouse en accesibilidad, y no bajaba el puntaje.
+
 ### 0.5.18 · Hito 5.9, parte 2: enlaces, íconos y axe-core (9 oct 2026)
 
 - **`tests/enlaces.mjs`** (etapa nueva; con `-Red` en `tests/pruebas.ps1`):

@@ -76,6 +76,11 @@ if ($Completo -and -not $SoloNode) {
     if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
   }
 }
+# Lighthouse (unos 15 minutos), solo con -Completo y si esta instalado fuera de la app (SIGMAPRO_LIGHTHOUSE)
+if ($Completo -and -not $SoloNode -and $env:SIGMAPRO_LIGHTHOUSE) {
+  & $node (Join-Path $tests 'rendimiento\lighthouse.mjs')
+  if ($LASTEXITCODE -ne 0) { $codigo = $LASTEXITCODE }
+}
 # -Red: los enlaces y los iconos de la app y los de la suite LABG (revisan direcciones de internet, algo que la app
 # nunca hace)
 if ($Red) {

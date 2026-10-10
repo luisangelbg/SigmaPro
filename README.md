@@ -108,6 +108,18 @@ versión, sus funciones y su cita, y las sugerencias **LABGSuggest** solo donde 
 resultado, en la ficha, al pie de una familia y en el bloque Datos), con «Enviar datos» como CSV; reglas en
 `data/suite-rules.js` y datos de las apps en `data/suite.js`.
 
+**Fase 5 completa** (versión 0.6.0). Además de Fundamentos y la suite: **cada número se puede leer**, con «Cómo leer
+este cuadro» (un medidor con las zonas de una guía publicada y la curva de referencia de cada prueba), tarjetas de
+interpretación con los números del caso, la guía del CV por cultivo y variable, tres niveles de detalle (Básico,
+Estándar y Experto), el semáforo de supuestos con un botón que corre la alternativa, «En pocas palabras» y «Cómo
+reportarlo (APA)» en español y en inglés; **la app orienta**, con tres caminos en Inicio, historial, árbol de
+decisiones, glosario de 146 términos (Ctrl+G) con «Ver en acción», recorridos por bloque, ayudas emergentes, modo
+presentación y errores en palabras; **el reporte sale rediseñado** (portada con su ficha, índice, resumen, lectura de
+los indicadores con medidores, apéndice metodológico con ecuaciones del procesador de textos, Markdown y hoja de
+trabajo para clase con su clave); y **la calidad se prueba en cada versión**: las escalas en sus bordes, la coherencia
+entre textos y números en todos los análisis, los enlaces e íconos, axe-core (WCAG 2.1 A y AA) y Lighthouse, con 90
+o más en las cuatro categorías en teléfono y escritorio.
+
 Lo que falta para publicar y las fases 2 y 3 están en [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan completo está en
 [`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
 [`propuesta/maqueta.html`](propuesta/maqueta.html); capturas de la app en [`docs/capturas/`](docs/capturas/).
@@ -122,12 +134,17 @@ node tests/codigo-r.mjs           # el código R que muestra la app corre en R y
 node tests/exportar.mjs           # cada exportación, leída con lectores independientes (R y el sistema)
 node tests/sin-conexion.mjs       # privacidad y uso sin conexión
 node tests/rendimiento/medir.mjs  # rendimiento con 100 000 filas (--motor: también el motor R con 20 000)
-node tests/accesibilidad/auditar.mjs  # accesibilidad AA
+node tests/accesibilidad/auditar.mjs  # accesibilidad AA (con axe-core si está: SIGMAPRO_AXE; no va en la app)
 node tests/motor-r.mjs            # los métodos del motor R, en el navegador (necesita internet)
 node tests/fundamentos.mjs        # las 78 fichas: nueve apartados en ES y EN, ejemplos que corren, fórmulas, índice
 node tests/suite-enlaces.mjs      # datos y logos de la suite, reglas y enlaces vivos (--sin-red: sin revisar los enlaces)
 node tests/intro.mjs              # la secuencia de apertura
 node tests/regresion.mjs          # la huella de los resultados y de los reportes
+node tests/calidad.mjs            # las escalas en sus bordes y la coherencia entre textos y números
+node tests/glosario.mjs           # el glosario y «Ver en acción»
+node tests/orientacion.mjs        # Inicio, historial, árbol, ayudas, recorridos, presentación, errores y Validación
+node tests/enlaces.mjs            # los enlaces e íconos de la app (--sin-red: sin revisar las direcciones externas)
+node tests/rendimiento/lighthouse.mjs  # Lighthouse en teléfono y escritorio (SIGMAPRO_LIGHTHOUSE; no va en la app)
 node tools/motor-r/armar.mjs      # arma motor-r/: webR y sus 70 paquetes, verificados (--fuentes: con su código)
 ```
 

@@ -19,26 +19,33 @@
 <link rel="stylesheet" href="css/labg-navigator.css" data-lnav-css>
 <script>/* el arranque (hito 5.11), en dos tiempos:
    1. La página se muestra cuando la barra común termina de armarse, para que nada se mueva después (la pantalla de
-      apertura no se oculta). El reporte de Validación se dibuja cuando llega (y su índice de secciones aparece
-      entonces): con un enlace directo a ese bloque se espera al reporte (evento sp:validacion).
-   2. Ya mostrada la página, se piden los guiones de la app (evento sp:cargar, que escucha el cargador al final del
-      <body>): así no le quitan red a lo que se ve primero.
+      apertura no se oculta). Validación también (hito 5.9): su esqueleto está en la página, con sus secciones y el lugar
+      de la tabla, y el reporte lo llena cuando llega sin mover lo que se ve.
+   2. Ya mostrada y pintada la página, se piden los guiones de la app (evento sp:cargar, que escucha el cargador al final
+      del <body>): así no le quitan red a lo que se ve primero. Se espera la primera pintura grande de la página visible
+      (una entrada de largest-contentful-paint) o, si el navegador no la avisa, dos cuadros y 250 ms (hito 5.9): pedidos
+      antes, los guiones quedaban como dependencias de esa pintura y Lighthouse la retrasaba en la red simulada.
    Si la barra común falla o tarda más de 3 s, se carga la app y se muestra la página igual. */
 (function () {
   var d = document, raiz = d.documentElement;
   raiz.classList.add('sp-arranque');
-  var m = /^#b(\d+)/.exec(location.hash), conApp = !!(m && m[1] === '8');
   var mostrar = function () { raiz.classList.remove('sp-arranque'); };
   var pedido = false, cargar = function () { if (!pedido) { pedido = true; d.dispatchEvent(new Event('sp:cargar')); } };
   var despues = function () { requestAnimationFrame(function () { requestAnimationFrame(mostrar); }); };
-  d.addEventListener(conApp ? 'sp:validacion' : 'sp:listo', despues);
+  /* después de la primera pintura con la página visible */
+  var trasPintar = function (fn) {
+    var hecho = false, ir = function () { if (!hecho) { hecho = true; setTimeout(fn, 0); } };
+    try { new PerformanceObserver(function (l) { if (l.getEntries().length) ir(); }).observe({ type: 'largest-contentful-paint' }); } catch (e) { /* sin el observador: el tope */ }
+    requestAnimationFrame(function () { requestAnimationFrame(function () { setTimeout(ir, 250); }); });
+  };
+  d.addEventListener('sp:listo', despues);
   d.addEventListener('DOMContentLoaded', function () {
     var nav = window.LABGNavigator;
     try {
-      if (nav && nav.on) nav.on('ready', function () { requestAnimationFrame(function () { if (!conApp) mostrar(); setTimeout(cargar, 0); }); });
+      if (nav && nav.on) nav.on('ready', function () { requestAnimationFrame(function () { mostrar(); trasPintar(cargar); }); });
       else { mostrar(); cargar(); }
     } catch (e) { mostrar(); cargar(); }
-    setTimeout(function () { cargar(); if (!conApp) mostrar(); }, 3000);
+    setTimeout(function () { cargar(); mostrar(); }, 3000);
     setTimeout(mostrar, 8000);
   });
 })();</script>
@@ -420,15 +427,15 @@
     <span class="pill gris" id="valFecha"></span>
     <button type="button" class="btn btn-ghost btn-sm sp-recorrido" data-recorrido="8" data-ayuda="Un recorrido guiado por las partes de este bloque">Recorrido</button>
   </div>
-  <p class="small muted" id="valCargando" role="status" hidden>Cargando el reporte de validación…</p>
+  <p class="sr-only" id="valCargando" role="status" hidden>Cargando el reporte de validación…</p>
   <div id="valVacio" class="soon-box" hidden>
     <h3>Aún no hay reporte de validación</h3>
     <p>Se genera al correr las pruebas: <code>tests/pruebas.ps1</code> (o <code>node tests/correr.mjs</code>).</p>
   </div>
-  <div id="valContenido" hidden>
+  <div id="valContenido" class="val-cargando">
     <div class="card">
       <h3>Resumen</h3>
-      <div class="tejas" id="valTejas"></div>
+      <div class="tejas" id="valTejas"><div class="teja"><div class="k">Casos aprobados</div><div class="v">—</div></div><div class="teja"><div class="k">Valores comparados</div><div class="v">—</div></div><div class="teja"><div class="k">Mayor diferencia</div><div class="v">—</div><div class="nota">escalada; el límite es 10⁻⁶</div></div><div class="teja"><div class="k">Referencia</div><div class="v" style="font-size:var(--fs-lg)">R</div><div class="nota">—</div></div></div>
     </div>
     <div class="card">
       <h3>Casos</h3>
@@ -444,7 +451,7 @@
         <table class="revista" id="valTabla">
           <caption><b>Cuadro V1.</b> Comparación de SigmaPro contra R, caso por caso.</caption>
           <thead><tr><th class="izq">Caso</th><th class="izq">Fuente de los datos</th><th>Clase</th><th>Valores</th><th>Dif. máx.</th><th>Resultado</th><th><span class="sr-only">Detalles</span></th></tr></thead>
-          <tbody></tbody>
+          <tbody><tr><td colspan="7" class="izq muted">Cargando los casos…</td></tr></tbody>
         </table>
       </div>
       <p class="pie-cuadro">Dif. máx.: la mayor diferencia escalada, |SigmaPro − R| / máx(1, |R|), entre todos los números del caso. «0» quiere decir que coinciden en todas las cifras.</p>

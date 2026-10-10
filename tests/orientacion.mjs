@@ -21,8 +21,11 @@
 //    «siguiente»; →, Inicio y Fin las recorren; la copia no repite ids ni lleva botones; Esc sale y el foco vuelve; el
 //    reporte se presenta con la sección de su análisis.
 // 8. Errores en palabras (parte 4): con una sola observación, la prueba t dice qué pasó y qué hacer.
-// 9. A 390 px: los caminos y las columnas del árbol, una bajo otra, sin desborde lateral.
-// 10. Sin errores en la consola.
+// 9. Validación con enlace directo (hito 5.9): el bloque se ve con su esqueleto antes de que cargue la app; con el
+//    reporte, los primeros 120 casos y «Mostrar más casos» (el foco sigue en el primero nuevo), el detalle de un caso se
+//    arma al abrirlo, el buscador ve todos y lo que se ve no se mueve al llenarse.
+// 10. A 390 px: los caminos y las columnas del árbol, una bajo otra, sin desborde lateral.
+// 11. Sin errores en la consola.
 
 import { spawn, execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
@@ -231,14 +234,47 @@ try {
   ok(err.tipo === 'datos' && /No se puede calcular así/.test(err.t) && /al menos dos observaciones/.test(err.m) && /^Qué hacer: Revisa los faltantes y el filtro/.test(err.a) && !err.d, 'el error de pocos datos no dice qué pasó y qué hacer: ' + JSON.stringify(err));
   notas.push('errores: «' + err.m + '» con «' + err.a.slice(0, 40) + '…»');
 
-  /* 9. en un teléfono */
+  /* 9. Validación con enlace directo (hito 5.9): el bloque se ve desde el principio con su esqueleto; al llegar el reporte,
+     el resumen, los primeros 120 casos y «Mostrar más casos»; el detalle de un caso se arma al abrirlo; el buscador ve
+     todos; y nada de lo que se ve se mueve al llenarse (desplazamiento acumulado menor que 0.1) */
+  await enviar('Page.addScriptToEvaluateOnNewDocument', { source: 'window.__cls = 0; try { new PerformanceObserver(l => l.getEntries().forEach(e => { if (!e.hadRecentInput) window.__cls += e.value; })).observe({ type: "layout-shift", buffered: true }); } catch (e) {}' });
+  await enviar('Emulation.setDeviceMetricsOverride', { width: 1366, height: 900, deviceScaleFactor: 1, mobile: false });
+  await enviar('Page.navigate', { url: URL_BASE + '?n=' + (++cargas) + '#b8' });
+  /* antes de que la app termine de cargar, el bloque ya está activo con su esqueleto */
+  let esqueleto = null;
+  for (let k = 0; k < 400 && !esqueleto; k++) { await dormir(25); try { esqueleto = await evaluar(`(() => { const p = document.getElementById('panel-8'); return p && p.classList.contains('active') ? { tejas: document.querySelectorAll('#valTejas .teja').length, visible: !document.getElementById('valContenido').hidden, listo: document.documentElement.hasAttribute('data-sp-listo') } : null; })()`); } catch { /* cargando */ } }
+  ok(esqueleto && esqueleto.tejas === 4 && esqueleto.visible, 'Validación por enlace directo no trae su esqueleto en la página: ' + JSON.stringify(esqueleto));
+  ok(await hasta('document.documentElement.hasAttribute("data-sp-listo") && document.querySelectorAll("#valTabla tbody button.det").length > 0', 15000), 'el reporte de validación no llegó');
+  /* lo que se movió durante la carga, antes de tocar nada (después, la prueba misma mueve la tabla) */
+  await dormir(600);
+  const clsCarga = await evaluar('+window.__cls.toFixed(4)');
+  const val = await evaluar(`(async () => {
+    const W = ms => new Promise(r => setTimeout(r, ms)), t = document.querySelector('#valTabla tbody'), n = () => t.querySelectorAll('button.det').length;
+    const total = SP_VALIDACION.casos.length, a = n(), mas = t.querySelector('[data-val-mas]'), texto = mas ? mas.textContent : '';
+    mas.focus(); mas.click(); await W(150);
+    const b = n(), foco = document.activeElement === t.querySelectorAll('button.det')[a];
+    const d = t.querySelector('button.det'), antes = t.querySelectorAll('tr.detalle').length;
+    d.click(); const fila = document.getElementById(d.getAttribute('aria-controls')), abierto = !!fila && !fila.hidden && fila.textContent.length > 20;
+    d.click(); const cerrado = fila.hidden && d.getAttribute('aria-expanded') === 'false';
+    const busca = document.getElementById('valBuscar');
+    busca.value = 'zzzz'; busca.dispatchEvent(new Event('input')); await W(100); const nada = /Ningún caso/.test(t.textContent);
+    busca.value = ''; busca.dispatchEvent(new Event('input')); await W(100);
+    return { total, a, texto, b, foco, antes, abierto, cerrado, nada, otra: n(), tejas: document.querySelector('#valTejas .v').textContent.trim(), cargando: document.getElementById('valContenido').classList.contains('val-cargando') };
+  })()`);
+  ok(val.a === 120 && new RegExp('120 de ' + val.total).test(val.texto) && val.b === 240 && val.foco, 'la tabla de casos no muestra 120 y después 240 con el foco en el primero nuevo: ' + JSON.stringify(val));
+  ok(val.antes === 0 && val.abierto && val.cerrado, 'el detalle de un caso no se arma al abrirlo, o no se cierra: ' + JSON.stringify(val));
+  ok(val.nada && val.otra === 120 && /^\d+ de \d+$/.test(val.tejas.replace(/\s+/g, ' ')) && !val.cargando, 'el buscador o el resumen de Validación: ' + JSON.stringify(val));
+  ok(clsCarga < 0.1, 'al llenarse Validación se mueve lo que se ve: desplazamiento acumulado ' + clsCarga);
+  notas.push('Validación por enlace directo: esqueleto desde el principio, 120 de ' + val.total + ' casos y «Mostrar más», el detalle al abrirlo; desplazamiento acumulado en la carga ' + clsCarga);
+
+  /* 10. en un teléfono */
   ok(await abrir('', 390), 'la app a 390 px no cargó');
   const tel = await evaluar(`(() => { const c = [...document.querySelectorAll('.caminos .camino')].map(x => x.getBoundingClientRect()); return { columna: c.every((r, k) => !k || r.top > c[k - 1].bottom - 1), desborde: document.documentElement.scrollWidth > window.innerWidth + 1 }; })()`);
   ok(tel.columna && !tel.desborde, 'a 390 px los caminos no van en una columna o desbordan: ' + JSON.stringify(tel));
   const telArbol = await evaluar(`(async () => { SP.arbolUI.camino(['comparar', 'continua']); SP.app.fundamentos.arbolEn(null); await new Promise(r => setTimeout(r, 400)); const c = [...document.querySelectorAll('#funRaiz .arb-col')].map(x => x.getBoundingClientRect()); return { cols: c.length, apiladas: c.every((r, k) => !k || r.top > c[k - 1].bottom - 1), desborde: document.documentElement.scrollWidth > window.innerWidth + 1 }; })()`);
   ok(telArbol.cols === 3 && telArbol.apiladas && !telArbol.desborde, 'a 390 px el árbol no apila sus columnas o desborda: ' + JSON.stringify(telArbol));
 
-  /* 10. la consola */
+  /* 11. la consola */
   for (const c of consola) fallas.push('consola: ' + c);
   codigo = fallas.length ? 1 : 0;
 } catch (e) {
@@ -254,9 +290,9 @@ try {
   for (let k = 0; k < 15 && existsSync(perfil); k++) { await dormir(400); try { rmSync(perfil, { recursive: true, force: true }); } catch { /* el navegador aún lo usa */ } }
 }
 
-console.log('SigmaPro · Inicio, historial, estados vacíos, árbol de decisiones, ayudas, recorridos, presentación y errores');
+console.log('SigmaPro · Inicio, historial, estados vacíos, árbol de decisiones, ayudas, recorridos, presentación, errores y Validación');
 for (const n of notas) console.log('  ' + n);
 for (const f of fallas) console.log('  ✗ ' + f);
-guardar('orientacion', { titulo: 'Inicio, historial, estados vacíos, árbol, ayudas, recorridos, presentación y errores', ok: !fallas.length, resumen: notas.join('; '), renglones: fallas });
+guardar('orientacion', { titulo: 'Inicio, historial, estados vacíos, árbol, ayudas, recorridos, presentación, errores y Validación', ok: !fallas.length, resumen: notas.join('; '), renglones: fallas });
 console.log(fallas.length ? '\nHAY FALLAS (' + fallas.length + ')' : '\nTODO APROBADO');
 process.exit(fallas.length ? 1 : codigo);
