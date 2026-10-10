@@ -24,8 +24,10 @@
 // 9. Validación con enlace directo (hito 5.9): el bloque se ve con su esqueleto antes de que cargue la app; con el
 //    reporte, los primeros 120 casos y «Mostrar más casos» (el foco sigue en el primero nuevo), el detalle de un caso se
 //    arma al abrirlo, el buscador ve todos y lo que se ve no se mueve al llenarse.
-// 10. A 390 px: los caminos y las columnas del árbol, una bajo otra, sin desborde lateral.
-// 11. Sin errores en la consola.
+// 10. La ficha de Fundamentos con el modo enfocado de la barra: sus nueve apartados se ven, y su índice lleva a cada
+//     uno, con el título bajo la barra, y señala el que se lee.
+// 11. A 390 px: los caminos y las columnas del árbol, una bajo otra, sin desborde lateral.
+// 12. Sin errores en la consola.
 
 import { spawn, execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
@@ -267,14 +269,50 @@ try {
   ok(clsCarga < 0.1, 'al llenarse Validación se mueve lo que se ve: desplazamiento acumulado ' + clsCarga);
   notas.push('Validación por enlace directo: esqueleto desde el principio, 120 de ' + val.total + ' casos y «Mostrar más», el detalle al abrirlo; desplazamiento acumulado en la carga ' + clsCarga);
 
-  /* 10. en un teléfono */
+  /* 10. la ficha de Fundamentos con el modo enfocado de la barra (0.6.2). La barra la partía en secciones y, como el
+     bloque 9 no lleva el índice de la barra, las ocultaba todas: quedaba el índice de la ficha con vínculos que no
+     mostraban nada. Ahora la ficha se ve completa en los dos modos; su índice lleva a cada apartado, con el título bajo
+     la barra de arriba, y señala el que se lee (también el último, aunque la página ya no suba más) */
+  ok(await abrir('', 1366), 'la app no cargó para la ficha en el modo enfocado');
+  const fic = await evaluar(`(async () => {
+    const W = ms => new Promise(r => setTimeout(r, ms));
+    LABGNavigator.mode('focus'); await W(250);
+    SP.app.ir(1); await W(300);
+    const a = document.querySelector('#panel-1 a[data-ficha="dbca"]');
+    LABGNavigator.reveal(a); await W(250);
+    a.click();
+    for (let k = 0; k < 60 && !document.querySelector('#funRaiz .fun-sec'); k++) await W(100);
+    await W(500);
+    const secs = () => [...document.querySelectorAll('#funRaiz .fun-sec')];
+    const vistas = () => secs().filter(s => s.getBoundingClientRect().height > 20 && !s.closest('.lnav-out') && !s.closest('[inert]')).length;
+    const enl = [...document.querySelectorAll('#funRaiz .fun-indice a[data-fun-ir]')];
+    const actual = () => enl.findIndex(x => x.hasAttribute('aria-current'));
+    /* el desplazamiento es suave: se espera a que la página deje de moverse */
+    const quieta = async () => { let y = -1; for (let k = 0; k < 40 && y !== scrollY; k++) { y = scrollY; await W(120); } await W(150); };
+    const res = { modo: LABGNavigator.mode(), bloque: location.hash, secs: secs().length, visibles: vistas(), enlaces: enl.length, primero: actual() };
+    enl[4].click(); await quieta();
+    const r = document.getElementById('fun-s-datos').getBoundingClientRect();
+    Object.assign(res, { quinto: actual(), barra: Math.round(document.querySelector('.lnav-bar').getBoundingClientRect().bottom), arriba: Math.round(r.top),
+      foco: document.activeElement === document.querySelector('#fun-s-datos > summary') });
+    enl[8].click(); await quieta();
+    res.ultimo = actual(); res.ultimoVisible = document.getElementById('fun-s-suite').getBoundingClientRect().top < innerHeight;
+    LABGNavigator.mode('doc'); await W(250);
+    res.enDocumento = vistas();
+    return res;
+  })()`);
+  ok(fic.modo === 'focus' && /^#b9/.test(fic.bloque) && fic.secs === 9 && fic.visibles === 9 && fic.enDocumento === 9, 'con el modo enfocado la ficha no muestra sus nueve apartados: ' + JSON.stringify(fic));
+  ok(fic.enlaces === 9 && fic.primero === 0 && fic.quinto === 4 && fic.ultimo === 8 && fic.ultimoVisible, 'el índice de la ficha no señala el apartado que se lee: ' + JSON.stringify(fic));
+  ok(fic.arriba >= fic.barra && fic.arriba < fic.barra + 60 && fic.foco, 'el índice de la ficha no deja el título del apartado bajo la barra, con el foco: ' + JSON.stringify(fic));
+  notas.push('la ficha de Fundamentos en el modo enfocado: sus 9 apartados a la vista y el índice lleva a cada uno');
+
+  /* 11. en un teléfono */
   ok(await abrir('', 390), 'la app a 390 px no cargó');
   const tel = await evaluar(`(() => { const c = [...document.querySelectorAll('.caminos .camino')].map(x => x.getBoundingClientRect()); return { columna: c.every((r, k) => !k || r.top > c[k - 1].bottom - 1), desborde: document.documentElement.scrollWidth > window.innerWidth + 1 }; })()`);
   ok(tel.columna && !tel.desborde, 'a 390 px los caminos no van en una columna o desbordan: ' + JSON.stringify(tel));
   const telArbol = await evaluar(`(async () => { SP.arbolUI.camino(['comparar', 'continua']); SP.app.fundamentos.arbolEn(null); await new Promise(r => setTimeout(r, 400)); const c = [...document.querySelectorAll('#funRaiz .arb-col')].map(x => x.getBoundingClientRect()); return { cols: c.length, apiladas: c.every((r, k) => !k || r.top > c[k - 1].bottom - 1), desborde: document.documentElement.scrollWidth > window.innerWidth + 1 }; })()`);
   ok(telArbol.cols === 3 && telArbol.apiladas && !telArbol.desborde, 'a 390 px el árbol no apila sus columnas o desborda: ' + JSON.stringify(telArbol));
 
-  /* 11. la consola */
+  /* 12. la consola */
   for (const c of consola) fallas.push('consola: ' + c);
   codigo = fallas.length ? 1 : 0;
 } catch (e) {
@@ -290,9 +328,9 @@ try {
   for (let k = 0; k < 15 && existsSync(perfil); k++) { await dormir(400); try { rmSync(perfil, { recursive: true, force: true }); } catch { /* el navegador aún lo usa */ } }
 }
 
-console.log('SigmaPro · Inicio, historial, estados vacíos, árbol de decisiones, ayudas, recorridos, presentación, errores y Validación');
+console.log('SigmaPro · Inicio, historial, estados vacíos, árbol de decisiones, ayudas, recorridos, presentación, errores, Validación y la ficha en modo enfocado');
 for (const n of notas) console.log('  ' + n);
 for (const f of fallas) console.log('  ✗ ' + f);
-guardar('orientacion', { titulo: 'Inicio, historial, estados vacíos, árbol, ayudas, recorridos, presentación, errores y Validación', ok: !fallas.length, resumen: notas.join('; '), renglones: fallas });
+guardar('orientacion', { titulo: 'Inicio, historial, estados vacíos, árbol, ayudas, recorridos, presentación, errores, Validación y la ficha en modo enfocado', ok: !fallas.length, resumen: notas.join('; '), renglones: fallas });
 console.log(fallas.length ? '\nHAY FALLAS (' + fallas.length + ')' : '\nTODO APROBADO');
 process.exit(fallas.length ? 1 : codigo);

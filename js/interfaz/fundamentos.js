@@ -223,11 +223,38 @@
       const F = fichas[est.id];
       raiz.innerHTML = F ? ficha(F) : `<p class="small muted">${esc(T('Cargando la ficha…'))}</p>`;
       if (!F) cargar(est.id).then(() => { if (est.id && est.vista === 'ficha') pintar(); }).catch(e => { raiz.innerHTML = `<div class="msg msg-error">${esc(e.message)}</div>`; });
-      else { const t = $('#fun-titulo'); if (t) t.focus({ preventScroll: true }); }
+      else { const t = $('#fun-titulo'); if (t) t.focus({ preventScroll: true }); seguirIndice(); }
       return;
     }
     raiz.innerHTML = herramientas() + `<div id="funLista">${vistaHTML()}</div>`;
     if (est.vista === 'arbol' && SP.arbolUI) requestAnimationFrame(() => SP.arbolUI.conectar(raiz));
+  }
+  /* el índice de la ficha señala el apartado que se está leyendo; tras un clic en él, el elegido (aunque la página ya no
+     pueda subirlo más) hasta que se vuelva a desplazar */
+  let espia = null, fijo = 0;
+  function marcarIndice(k) {
+    document.querySelectorAll('#funRaiz .fun-indice a[data-fun-ir]').forEach((a, i) => { if (i === k) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); });
+  }
+  function seguirIndice() {
+    if (espia) { window.removeEventListener('scroll', espia); espia = null; }
+    if (!$('#funRaiz .fun-indice')) return;
+    let pedido = false;
+    const leer = () => {
+      pedido = false;
+      const secs = document.querySelectorAll('#funRaiz .fun-sec');
+      if (!secs.length || performance.now() < fijo) return;
+      const raya = Math.min(window.innerHeight * 0.4, 280);
+      let k = 0;
+      secs.forEach((s, i) => { if (s.getBoundingClientRect().top <= raya) k = i; });
+      marcarIndice(k);
+    };
+    espia = () => {
+      /* el desplazamiento (suave) que sigue a un clic en el índice no cambia lo señalado: dura lo que dure */
+      if (performance.now() < fijo) { fijo = performance.now() + 250; return; }
+      if (!pedido) { pedido = true; requestAnimationFrame(leer); }
+    };
+    window.addEventListener('scroll', espia, { passive: true });
+    fijo = 0; leer();
   }
   const vistaHTML = () => (est.vista === 'mapa' ? mapa() : est.vista === 'arbol' && SP.arbolUI ? SP.arbolUI.html() : catalogo());
   function lista() { const l = $('#funLista'); if (l) { l.innerHTML = vistaHTML(); if (est.vista === 'arbol' && SP.arbolUI) SP.arbolUI.conectar(l); } else pintar(); }
@@ -331,7 +358,19 @@
       if (t.dataset.funVista) { est.vista = t.dataset.funVista; try { sessionStorage.setItem('sigmapro.fundamentos.vista', est.vista); } catch (er) { /* nada */ } pintar(); return; }
       if (t.hasAttribute('data-fun-limpiar')) { Object.assign(est, { buscar: '', familia: '', respuesta: '', estructura: '', diseno: '' }); pintar(); return; }
       if (t.hasAttribute('data-fun-volver')) { const v = sessionStorage.getItem('sigmapro.fundamentos.vista'); est.vista = v === 'mapa' || v === 'arbol' ? v : 'catalogo'; est.id = null; pintar(); return; }
-      if (t.dataset.funIr) { e.preventDefault(); const s = document.getElementById('fun-s-' + t.dataset.funIr); if (s) { s.open = true; s.scrollIntoView({ block: 'start' }); const h = s.querySelector('summary'); if (h) h.focus({ preventScroll: true }); } return; }
+      if (t.dataset.funIr) {
+        e.preventDefault();
+        const s = document.getElementById('fun-s-' + t.dataset.funIr);
+        if (s) {
+          s.open = true;
+          /* el apartado elegido queda señalado en el índice mientras llega el desplazamiento */
+          fijo = performance.now() + 900;
+          marcarIndice([...raiz.querySelectorAll('.fun-indice a[data-fun-ir]')].indexOf(t));
+          s.scrollIntoView({ block: 'start' });
+          const h = s.querySelector('summary'); if (h) h.focus({ preventScroll: true });
+        }
+        return;
+      }
       if (t.dataset.funEjemplo) { abrirMetodo(t.dataset.funEjemplo, true); return; }
       if (t.dataset.funPlantilla) { plantilla(t.dataset.funPlantilla); return; }
     });

@@ -10,15 +10,14 @@
   "rendimientos": [
    99,
    99,
-   98
+   99
   ],
   "fcp": "1.4 s",
   "lcp": "1.7 s",
-  "tbt": "39 ms",
+  "tbt": "16 ms",
   "cls": "0.000",
   "si": "2.5 s",
   "bajo": [
-   "interactive",
    "forced-reflow-insight",
    "network-dependency-tree-insight"
   ]
@@ -27,23 +26,22 @@
   "pagina": "fundamentos",
   "forma": "mobile",
   "corridas": 3,
-  "rendimiento": 97,
+  "rendimiento": 99,
   "accesibilidad": 100,
   "practicas": 100,
   "seo": 100,
   "rendimientos": [
-   97,
-   97,
-   97
+   99,
+   99,
+   99
   ],
   "fcp": "1.4 s",
   "lcp": "1.7 s",
-  "tbt": "161 ms",
-  "cls": "0.001",
-  "si": "2.5 s",
+  "tbt": "22 ms",
+  "cls": "0.000",
+  "si": "2.4 s",
   "bajo": [
    "interactive",
-   "forced-reflow-insight",
    "network-dependency-tree-insight"
   ]
  },
@@ -51,23 +49,21 @@
   "pagina": "suite",
   "forma": "mobile",
   "corridas": 3,
-  "rendimiento": 98,
+  "rendimiento": 99,
   "accesibilidad": 100,
   "practicas": 100,
   "seo": 100,
   "rendimientos": [
-   98,
    99,
-   98
+   99,
+   99
   ],
-  "fcp": "1.4 s",
+  "fcp": "1.6 s",
   "lcp": "1.7 s",
-  "tbt": "88 ms",
+  "tbt": "7 ms",
   "cls": "0.000",
-  "si": "2.8 s",
+  "si": "2.6 s",
   "bajo": [
-   "interactive",
-   "forced-reflow-insight",
    "network-dependency-tree-insight"
   ]
  },
@@ -75,22 +71,21 @@
   "pagina": "validacion",
   "forma": "mobile",
   "corridas": 3,
-  "rendimiento": 96,
+  "rendimiento": 99,
   "accesibilidad": 100,
   "practicas": 100,
   "seo": 100,
   "rendimientos": [
-   95,
-   96,
+   99,
+   99,
    99
   ],
   "fcp": "1.4 s",
   "lcp": "1.7 s",
-  "tbt": "197 ms",
+  "tbt": "39 ms",
   "cls": "0.000",
   "si": "2.7 s",
   "bajo": [
-   "max-potential-fid",
    "interactive",
    "valid-source-maps",
    "forced-reflow-insight",
@@ -110,13 +105,12 @@
    100,
    100
   ],
-  "fcp": "334 ms",
-  "lcp": "426 ms",
+  "fcp": "331 ms",
+  "lcp": "381 ms",
   "tbt": "0 ms",
   "cls": "0.000",
-  "si": "708 ms",
+  "si": "677 ms",
   "bajo": [
-   "forced-reflow-insight",
    "network-dependency-tree-insight"
   ]
  },
@@ -133,12 +127,13 @@
    100,
    100
   ],
-  "fcp": "334 ms",
-  "lcp": "388 ms",
+  "fcp": "335 ms",
+  "lcp": "382 ms",
   "tbt": "0 ms",
   "cls": "0.000",
-  "si": "741 ms",
+  "si": "731 ms",
   "bajo": [
+   "forced-reflow-insight",
    "network-dependency-tree-insight"
   ]
  },
@@ -156,11 +151,12 @@
    100
   ],
   "fcp": "331 ms",
-  "lcp": "388 ms",
+  "lcp": "386 ms",
   "tbt": "0 ms",
   "cls": "0.000",
-  "si": "739 ms",
+  "si": "798 ms",
   "bajo": [
+   "forced-reflow-insight",
    "network-dependency-tree-insight"
   ]
  },
@@ -177,11 +173,11 @@
    100,
    100
   ],
-  "fcp": "331 ms",
-  "lcp": "378 ms",
+  "fcp": "332 ms",
+  "lcp": "379 ms",
   "tbt": "0 ms",
   "cls": "0.002",
-  "si": "688 ms",
+  "si": "701 ms",
   "bajo": [
    "valid-source-maps",
    "forced-reflow-insight",

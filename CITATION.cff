@@ -23,7 +23,7 @@ authors:
   - given-names: "Luis Ángel"
     family-names: "Barrera-Guzmán"
     orcid: "https://orcid.org/0000-0001-8057-2583"
-version: "0.6.1"
+version: "0.6.2"
 # DOI, repository-code y url se completan al publicar la versión.
 license: GPL-3.0-or-later
 keywords:

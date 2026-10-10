@@ -2,6 +2,20 @@
 
 ## Sin publicar
 
+### 0.6.2 · La ficha de Fundamentos con el modo enfocado (9 oct 2026)
+
+- **La ficha se ve completa en los dos modos de lectura.** Con el modo *Enfocado* de la barra («una sección a la
+  vez»), al abrir una ficha (por ejemplo desde *Qué puedes analizar*, en Inicio) quedaba a la vista solo su índice: la
+  barra común partía la ficha en secciones y, como el bloque 9 no lleva el índice de la barra (tiene el suyo), las
+  ocultaba todas; los vínculos de *En esta ficha* no mostraban nada. Ahora Fundamentos queda fuera de ese reparto
+  (`data-lnav-skip`, como el catálogo de Análisis): el catálogo, el mapa, el árbol y cada ficha se ven completos, y
+  el índice de la ficha es su guía. Se revisaron los diez bloques en ese modo: era el único sin salida.
+- **El índice de la ficha**: señala el apartado que se está leyendo (y el elegido, aunque la página ya no pueda subirlo
+  más), queda bajo la barra de arriba en lugar de esconder su título detrás de ella, y el salto deja el título del
+  apartado a la vista (antes quedaba medio tapado por la barra).
+- Pruebas: `tests/orientacion.mjs` abre una ficha desde Inicio con el modo enfocado (los nueve apartados a la vista,
+  el índice lleva a cada uno con el foco en su título y señala el que se lee).
+
 ### 0.6.1 · Arreglos hallados al retomar las capturas del manual (9 oct 2026)
 
 Dos defectos de «En pocas palabras», vistos en las figuras del manual:
