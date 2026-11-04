@@ -254,7 +254,7 @@ SP.definir('glmm', function (SP) {
       if (fs.length >= 2) conclusiones.push(T('{e} más alta de {f}: {a} ({v}); más baja: {b} ({w}).', { e: ESCALA[m.escala], f: m.factor, a: fs[0].nivel, v: sig(fs[0].respuesta), b: fs[fs.length - 1].nivel, w: sig(fs[fs.length - 1].respuesta) }));
     }
     cuadros.push({ id: 'wald', titulo: T('Pruebas de los efectos fijos (χ² de Wald, tipo {t})', { t: r.tipoDev === 3 ? 'III' : 'II' }),
-      columnas: [col('fuente', T('Fuente de variación'), 'texto'), col('chi2', 'χ²', 'forma2'), col('gl', 'gl', 'entero'), col('p', 'p', 'pvalor')],
+      columnas: [col('fuente', T('Fuente de variación'), 'texto'), col('chi2', 'χ²', 'forma2'), col('gl', T('gl'), 'entero'), col('p', 'p', 'pvalor')],
       filas: r.wald.termino.map((t, k) => ({ fuente: String(t).split(':').join(' × '), chi2: r.wald.chi2[k], gl: r.wald.gl[k], p: r.wald.p[k] })),
       notas: [r.tipoDev === 3 ? T('Tipo III: cada término ajustado por todos los demás, con contrastes de suma cero.') : T('Tipo II: cada término ajustado por los demás que no lo contienen.'),
         T('Modelo: {f}, familia {fa}, enlace {e}; {a}.', { f: r.formula, fa: F[r.familia], e: E[r.enlace],
@@ -272,7 +272,7 @@ SP.definir('glmm', function (SP) {
       notas: [T('Varianzas en la escala del enlace.')] });
     const pa = r.pruebaAleatorios;
     if (pa && pa.termino.length) cuadros.push({ id: 'prueba-aleatorios', titulo: T('Prueba de los efectos aleatorios (razón de verosimilitudes)'),
-      columnas: [col('t', T('Efecto quitado'), 'texto'), col('gl', 'gl', 'entero'), col('lrt', 'χ²', 'forma2'), col('p', 'p', 'pvalor')],
+      columnas: [col('t', T('Efecto quitado'), 'texto'), col('gl', T('gl'), 'entero'), col('lrt', 'χ²', 'forma2'), col('p', 'p', 'pvalor')],
       filas: pa.termino.map((t, k) => ({ t: t === '(1 | .obs)' ? T('cada observación (sobredispersión)') : t, gl: pa.gl[k], lrt: pa.lrt[k], p: pa.p[k] })),
       notas: [T('Cada fila compara el modelo con el que no tiene ese efecto (con glm si no queda ninguno). Como la varianza no puede ser negativa, este p es conservador: el verdadero suele ser la mitad.')] });
     for (const m of r.medias) {

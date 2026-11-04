@@ -567,7 +567,7 @@ SP.definir('contingencia', function (SP) {
       notas: [T('Entre paréntesis, el residuo ajustado: más allá de ±1.96 la celda se aparta de la independencia (α = 0.05).')] });
     const pr = [{ prueba: T('Ji cuadrada de Pearson') + (c.yates ? T(' (Yates)') : ''), est: c.X2, gl: c.gl, p: c.p }, { prueba: T('Razón de verosimilitudes (G²)'), est: c.G2, gl: c.gl, p: c.p_G2 }];
     if (r.fisher) pr.push({ prueba: T('Fisher exacta') + (r.fisher.tipo === '2x2' ? '' : ` (${nf.length} × ${nc.length})`), est: NaN, gl: NaN, p: r.fisher.p });
-    cuadros.push({ id: 'pruebas', titulo: T('Pruebas de independencia'), columnas: [col('prueba', T('Prueba'), 'texto'), col('est', T('Estadístico'), 'forma'), col('gl', 'gl', 'entero'), col('p', 'p', 'pvalor')],
+    cuadros.push({ id: 'pruebas', titulo: T('Pruebas de independencia'), columnas: [col('prueba', T('Prueba'), 'texto'), col('est', T('Estadístico'), 'forma'), col('gl', T('gl'), 'entero'), col('p', 'p', 'pvalor')],
       filas: pr, notas: r.avisos.concat(r.fisher && r.fisher.demasiado ? [T('La prueba exacta de Fisher requiere revisar demasiadas tablas con estos márgenes; usa la ji cuadrada o junta categorías.')] : [])
         .concat(r.fisher && r.fisher.tipo === '2x2' ? [T('Fisher 2 × 2: razón de momios condicional {o} (IC exacto {n} %: {i} a {s}).', { o: f3(r.fisher.razon_momios), n: Math.round(100 * r.nivel), i: f3(r.fisher.ic[0]), s: f3(r.fisher.ic[1]) })] : []) });
     const ord = m.gamma;
@@ -606,7 +606,7 @@ SP.definir('contingencia', function (SP) {
       : T('No hay evidencia de cambio entre «{a}» y «{d}» ({n}: χ² = {x} con {g} gl, p {p}{ex}).', { a: r.antes, d: r.despues, n: nombre, x: f3(r.X2), g: r.gl, p: fp(r.p), ex: k === 2 ? T('; binomial exacta p {p}', { p: fp(r.p_exacta) }) : '' }));
     if (k === 2) conclusiones.push(T('Solo cuentan los casos que cambiaron: {b} de «{l1}» a «{l2}» y {c} de «{l2}» a «{l1}».', { b: r.discordantes[0], c: r.discordantes[1], l1: r.niveles[0], l2: r.niveles[1] }));
     cuadros.push(tablaObservada(r, T('«{a}» (filas) contra «{d}» (columnas)', { a: r.antes, d: r.despues }), r.niveles, r.niveles, r.observados));
-    cuadros.push({ id: 'prueba', titulo: T('Prueba de {n}', { n: nombre }), columnas: [col('prueba', T('Prueba'), 'texto'), col('est', T('Estadístico'), 'forma'), col('gl', 'gl', 'entero'), col('p', 'p', 'pvalor')],
+    cuadros.push({ id: 'prueba', titulo: T('Prueba de {n}', { n: nombre }), columnas: [col('prueba', T('Prueba'), 'texto'), col('est', T('Estadístico'), 'forma'), col('gl', T('gl'), 'entero'), col('p', 'p', 'pvalor')],
       filas: [{ prueba: may(nombre) + (r.correccion ? T(' (con corrección por continuidad)') : ''), est: r.X2, gl: r.gl, p: r.p }].concat(k === 2 ? [{ prueba: T('Binomial exacta'), est: NaN, gl: NaN, p: r.p_exacta }] : []),
       notas: [T('Datos pareados: cada caso se clasificó dos veces (antes y después, o dos métodos).')].concat(r.avisos) });
     cuadros.push({ id: 'proporciones', titulo: T('Proporción de cada categoría'), columnas: [col('c', T('Categoría'), 'texto'), col('a', r.antes, 'prop'), col('d', r.despues, 'prop')],
@@ -630,7 +630,7 @@ SP.definir('contingencia', function (SP) {
         ? T('Pero la razón de momios cambia entre estratos (Breslow-Day con Tarone p {p}): la razón común no resume bien; describe cada estrato.', { p: fp(r.breslow_day.p_tarone) })
         : T('La razón de momios es parecida en todos los estratos (Breslow-Day con Tarone p {p}).', { p: fp(r.breslow_day.p_tarone) }));
     }
-    cuadros.push({ id: 'cmh', titulo: T('Prueba de Cochran-Mantel-Haenszel'), columnas: [col('prueba', T('Prueba'), 'texto'), col('est', T('Estadístico'), 'forma'), col('gl', 'gl', 'entero'), col('p', 'p', 'pvalor')],
+    cuadros.push({ id: 'cmh', titulo: T('Prueba de Cochran-Mantel-Haenszel'), columnas: [col('prueba', T('Prueba'), 'texto'), col('est', T('Estadístico'), 'forma'), col('gl', T('gl'), 'entero'), col('p', 'p', 'pvalor')],
       filas: [{ prueba: 'Cochran-Mantel-Haenszel' + (r.yates ? T(' (con corrección por continuidad)') : ''), est: r.X2, gl: r.gl, p: r.p }]
         .concat(r.breslow_day ? [{ prueba: T('Homogeneidad de Breslow-Day'), est: r.breslow_day.X2, gl: r.breslow_day.gl, p: r.breslow_day.p }, { prueba: T('Breslow-Day con la corrección de Tarone'), est: r.breslow_day.X2_tarone, gl: r.breslow_day.gl, p: r.breslow_day.p_tarone }] : []),
       notas: [T('Una tabla «{f}» × «{c}» por cada nivel de «{s}» ({k} estratos).', { f: r.fila, c: r.columna, s: r.estrato, k: ns.length })].concat(r.avisos) });

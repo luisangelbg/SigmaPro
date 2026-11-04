@@ -13,6 +13,6 @@ Rplots.pdf
 # repositorio propio del motor R (se arma con node tools/motor-r/armar.mjs; ~100 MB, ~250 MB con fuentes)
 /motor-r/
 
-# capturas del manual (se regeneran con manual/herramientas/captura.mjs) y archivos de trabajo
-manual/img/
+# archivos de trabajo del manual (las capturas, manual/img/, sí se publican: las usa el manual en HTML)
 manual/es/_*
+manual/en/_*

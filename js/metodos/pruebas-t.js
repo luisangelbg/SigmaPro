@@ -233,7 +233,7 @@ SP.definir('pruebas-t', function (SP) {
       titulo: nombreT, conclusiones, semaforo: sem,
       cuadros: [
         { id: 'prueba', titulo: T('{n} ({h})', { n: nombreT, h: hip }),
-          columnas: [col('prueba', T('Prueba'), 'texto'), col('t', 't', 'forma'), col('gl', 'gl', 'num'), col('p', 'p', 'pvalor'), col('ic', T('IC {nv} %', { nv }), 'intervalo')],
+          columnas: [col('prueba', T('Prueba'), 'texto'), col('t', 't', 'forma'), col('gl', T('gl'), 'num'), col('p', 'p', 'pvalor'), col('ic', T('IC {nv} %', { nv }), 'intervalo')],
           filas, notas: r.otra ? [T('La primera es la elegida; la segunda, como referencia.')] : [] },
         { id: 'grupos', titulo: T('Medias y desviaciones'),
           columnas: [col('nombre', T('Grupo'), 'texto'), col('n', 'n', 'entero'), col('media', T('Media'), 'forma'), col('de', T('DE'), 'forma')],

@@ -323,7 +323,7 @@ SP.definir('correlacion', function (SP) {
     conclusiones.push(T('La semiparcial al cuadrado ({v}) es la parte de la variación de «{y}» que «{x}» explica por sí sola, además de {c}.', { v: (r.semiparcial_x.r ** 2).toFixed(3), y: r.y, x: r.x, c: ctrl }));
     const fila = (nombre, z) => ({ medida: nombre, r: z.r, t: z.t, gl: z.gl, p: z.p });
     cuadros.push({ id: 'parcial', titulo: T('Correlaciones de «{x}» y «{y}» ({m})', { x: r.x, y: r.y, m: NOMBRE[r.metodo] }),
-      columnas: [col('medida', T('Correlación'), 'texto'), col('r', T('Valor'), 'forma'), col('t', 't', 'forma2'), col('gl', 'gl', 'entero'), col('p', 'p', 'pvalor')],
+      columnas: [col('medida', T('Correlación'), 'texto'), col('r', T('Valor'), 'forma'), col('t', 't', 'forma2'), col('gl', T('gl'), 'entero'), col('p', 'p', 'pvalor')],
       filas: [fila(T('Simple'), r.simple), fila(T('Parcial (controles quitados de las dos)'), r.parcial), fila(T('Semiparcial: «{y}» con «{x}» sin los controles', { x: r.x, y: r.y }), r.semiparcial_x),
         fila(T('Semiparcial: «{x}» con «{y}» sin los controles', { x: r.x, y: r.y }), r.semiparcial_y)],
       notas: [T('Controles: {c}. Pruebas t con n − 2 − k grados de libertad (k = {k} controles), como el paquete ppcor.', { c: ctrl, k: r.controles.length })].concat(r.metodo === 'spearman' ? [T('Spearman: las mismas fórmulas sobre los rangos de cada variable.')] : [])

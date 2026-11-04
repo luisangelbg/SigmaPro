@@ -932,7 +932,7 @@ SP.definir('supuestos', function (SP) {
     pruebas.push(fila(T('Residuo estudentizado (Bonferroni)'), 't', r.atipicos.rstudent, String(r.atipicos.gl), r.atipicos.bonferroni, T('atípico: fila {f}', { f: r.atipicos.fila })));
     const cuadros = [{
       id: 'supuestos', titulo: T('Pruebas de los supuestos sobre los residuos de {m}', { m: r.formula }),
-      columnas: [col('prueba', T('Prueba'), 'texto'), col('est', T('Estadístico'), 'texto'), col('valor', T('Valor'), 'auto4'), col('gl', 'gl', 'texto'), col('p', 'p', 'pvalor'), col('nota', T('Revisa'), 'texto')],
+      columnas: [col('prueba', T('Prueba'), 'texto'), col('est', T('Estadístico'), 'texto'), col('valor', T('Valor'), 'auto4'), col('gl', T('gl'), 'texto'), col('p', 'p', 'pvalor'), col('nota', T('Revisa'), 'texto')],
       filas: pruebas,
       notas: [T('Semáforo: verde p ≥ {a}; ámbar entre {b} y {a}; rojo p < {b}. Cada renglón lo decide la prueba marcada como principal.', { a: r.alfa, b: r.alfa / 5 }),
         T('Varianzas, normalidad y atípicos se prueban sobre los residuos del modelo; las varianzas se comparan por tratamiento.')],

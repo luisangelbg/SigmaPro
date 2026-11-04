@@ -1,6 +1,35 @@
 # Cambios
 
-## Sin publicar
+## 1.0.0 · Primera versión publicada (3 nov 2026)
+
+SigmaPro se publica: repositorio en GitHub, la app en GitHub Pages, registro en Zenodo con DOI y ficha en el portal de
+la LABG Suite. Es la 0.6.2 (las cinco fases completas) con el manual en inglés y lo que se corrigió al escribirlo.
+
+- **Manual de usuario en inglés** (`manual/en/`, *SigmaPro User's Manual (English).pdf*): las 19 partes traducidas, con
+  los textos de botones, campos y menús tal como los muestra la interfaz inglesa, y sus capturas tomadas con la app en
+  inglés (`manual/img/en/`). Las herramientas del manual trabajan en los dos idiomas: `captura.mjs --idioma en`, el
+  paginador con el encabezado y el «(continued)» de cada idioma, y las recetas que buscan textos en la página.
+- **Portadas en blanco** para las dos ediciones (la de la app, con la σ en su cuadro negro, sobre papel), como las de
+  los demás manuales de la suite; una sola portada que toma el idioma de la página.
+- **La interfaz inglesa, revisada** con lo que encontró la traducción:
+  - la columna de los grados de libertad decía «gl» en 30 cuadros (ANOVA, comparaciones, regresión, mixtos,
+    generalizados…): ahora «df»;
+  - el intercepto («(Intercepto)») en los coeficientes de la regresión, el modelo lineal general y las superficies, y
+    como columna de los índices de condición: ahora «(Intercept)»;
+  - las fuentes de las guías de lectura («Wasserstein y Lazar (2016)», «2.ª ed.»): con la interfaz en inglés, como las
+    referencias del informe («and», «&», «2nd ed.», «In»);
+  - la zona media de la heredabilidad decía «mean»: ahora «moderate»;
+  - «(x − media)/DE» en la ventana Transformar y «600 ppp» en los botones de las figuras: ahora «(x − mean)/SD» y
+    «600 dpi»;
+  - en Validación, los títulos de las comprobaciones de la batería, traducidos; su resumen lo escriben las pruebas en
+    español y una nota lo dice.
+- `tests/idioma.mjs`, quinta revisión: en los 272 reportes armados en inglés, ningún título de cuadro o de columna,
+  nota, conclusión ni rótulo del análisis puede ser un texto en español que el catálogo traduce (fuera de los nombres de
+  los datos).
+- Publicación: `README.md` en inglés y `LEEME.md` en español, `.zenodo.json`, `CITATION.cff` y `codemeta.json` con el
+  repositorio y la fecha, `<meta name="labg-repo">` para «Reportar un problema», y las capturas del manual en el
+  repositorio. El hito 1.0 del estado del desarrollo queda terminado. El repositorio propio del motor R (`motor-r/`)
+  no se publica: en línea, el motor sale del repositorio público de webR.
 
 ### 0.6.2 · La ficha de Fundamentos con el modo enfocado (9 oct 2026)
 

@@ -467,7 +467,7 @@ SP.definir('comparaciones', function (SP) {
           .concat(r.metodo === 'dms-protegida' ? [Number.isFinite(r.pF) && r.pF < a ? T('La F de {t} fue significativa (p {p}): se aplica la DMS.', { t: que, p: fp(r.pF) }) : T('La F de {t} no fue significativa (p {p}): la DMS protegida no separa medias.', { t: que, p: fp(r.pF) })] : []) });
       const usaQ = r.metodo === 'duncan' || r.metodo === 'snk' || r.metodo === 'games-howell';
       cuadros.push({ id: 'pares-' + cuadros.length, titulo: T('Comparaciones por pares{d}: {m}', { d: pre ? ' (' + pre + ')' : '', m: nm }),
-        columnas: [col('par', T('Par'), 'texto'), col('dif', T('Diferencia'), 'forma'), col('ee', T('EE'), 'forma'), col('gl', 'gl', 'num'), col('est', usaQ ? 'q' : 't', 'forma2'), col('p', T('p ajustado'), 'pvalor'), col('decision', T('¿Difieren?'), 'texto')],
+        columnas: [col('par', T('Par'), 'texto'), col('dif', T('Diferencia'), 'forma'), col('ee', T('EE'), 'forma'), col('gl', T('gl'), 'num'), col('est', usaQ ? 'q' : 't', 'forma2'), col('p', T('p ajustado'), 'pvalor'), col('decision', T('¿Difieren?'), 'texto')],
         filas: g.pares.map(x => ({ par: `${g.medias[x.a].nombre} – ${g.medias[x.b].nombre}`, dif: x.dif, ee: x.ee_comun ? x.ee_comun : x.ee, gl: glBonito(x.gl), est: x.q !== undefined ? x.q : x.t, p: x.p_ajustado, decision: x.p_ajustado < a ? T('sí') : T('no') })),
         notas: r.metodo === 'duncan' || r.metodo === 'snk' ? [T('EE común de una media con la media armónica de las repeticiones, como en los cuadros clásicos de rango múltiple.')] : [] });
     }
@@ -506,7 +506,7 @@ SP.definir('comparaciones', function (SP) {
       const notas = [g.todosOrtogonales ? T('Los contrastes son ortogonales: sus sumas de cuadrados se suman sin traslaparse.') : T('Hay contrastes que no son ortogonales entre sí: sus sumas de cuadrados se traslapan.')];
       if (g.contrastes.some(c => !c.sumaCero)) notas.push(T('Algún renglón no suma cero: no es un contraste entre medias sino una combinación lineal.'));
       cuadros.push({ id: 'contrastes-' + cuadros.length, titulo: T('Contrastes de «{f}»{d}', { f: r.factor, d: pre ? ' (' + pre.slice(0, -2) + ')' : '' }),
-        columnas: [col('nombre', T('Contraste'), 'texto'), col('coef', T('Coeficientes'), 'texto'), col('est', T('Estimación'), 'forma'), col('ee', T('EE'), 'forma'), col('gl', 'gl', 'num'), col('t', 't', 'forma2'), col('p', 'p', 'pvalor')]
+        columnas: [col('nombre', T('Contraste'), 'texto'), col('coef', T('Coeficientes'), 'texto'), col('est', T('Estimación'), 'forma'), col('ee', T('EE'), 'forma'), col('gl', T('gl'), 'num'), col('t', 't', 'forma2'), col('p', 'p', 'pvalor')]
           .concat(r.tipoModelo === 'lineal' ? [col('sc', T('SC'), 'auto4')] : []),
         filas: g.contrastes.map(c => ({ nombre: c.nombre, coef: c.coef.map(x => String(x).replace(/^-/, '−')).join(' '), est: c.est, ee: c.ee, gl: glBonito(c.gl), t: c.t, p: c.p, sc: c.sc })),
         notas: notas.concat([T('Coeficientes en el orden de los niveles: {n}.', { n: r.niveles.join(', ') })]) });
@@ -541,7 +541,7 @@ SP.definir('comparaciones', function (SP) {
           : T('{pre}el {t} de la curva cuadrática ({f} = {x}) cae fuera de las dosis probadas: no conviene extrapolar.', { pre, t: g.optimo.tipo === 'maximo' ? T('máximo') : T('mínimo'), f: r.factor, x: f3(g.optimo.x) }));
       }
       cuadros.push({ id: 'polinomios-' + cuadros.length, titulo: T('Polinomios ortogonales de «{f}»{d}', { f: r.factor, d: pre ? ' (' + pre.slice(0, -2) + ')' : '' }),
-        columnas: [col('nombre', T('Componente'), 'texto'), col('est', T('Estimación'), 'forma'), col('ee', T('EE'), 'forma'), col('gl', 'gl', 'num'), col('F', 'F', 'forma2'), col('p', 'p', 'pvalor')].concat(r.tipoModelo === 'lineal' ? [col('sc', T('SC'), 'auto4')] : []),
+        columnas: [col('nombre', T('Componente'), 'texto'), col('est', T('Estimación'), 'forma'), col('ee', T('EE'), 'forma'), col('gl', T('gl'), 'num'), col('F', 'F', 'forma2'), col('p', 'p', 'pvalor')].concat(r.tipoModelo === 'lineal' ? [col('sc', T('SC'), 'auto4')] : []),
         filas: g.polinomios.map(x => Object.assign({}, x, { gl: glBonito(x.gl) })),
         notas: [T('Coeficientes ortogonales sobre los niveles reales ({x}), también si no están igualmente espaciados.', { x: g.x.join(', ') }),
           T('Curva de grado {g} ajustada a las medias: {e} (R² = {r}).', { g: g.grado, e: ecuacion(g.curva.coef), r: f3(g.curva.r2) })] });
@@ -559,7 +559,7 @@ SP.definir('comparaciones', function (SP) {
   function reporteMedias(r) {
     const nv = Math.round(r.nivel * 100), cuadros = r.grupos.map((g, i) => ({ id: 'medias-' + i,
       titulo: T('Medias marginales estimadas de {q}{d}', { q: r.comparar.join(' × '), d: Object.keys(g.dentro).length ? ' (' + etDentro(g.dentro) + ')' : '' }),
-      columnas: [col('nombre', r.comparar.join(' × '), 'texto'), col('media', T('Media'), 'forma'), col('ee', T('EE'), 'forma'), col('gl', 'gl', 'num'), col('ic', T('IC {nv} %', { nv }), 'intervalo')],
+      columnas: [col('nombre', r.comparar.join(' × '), 'texto'), col('media', T('Media'), 'forma'), col('ee', T('EE'), 'forma'), col('gl', T('gl'), 'num'), col('ic', T('IC {nv} %', { nv }), 'intervalo')],
       filas: g.filas.map(f => Object.assign({ _dec: 3 }, f, { gl: glBonito(f.gl) })), notas: [T('Promedios con pesos iguales sobre los demás factores (rejilla de referencia); con datos balanceados son las medias de siempre.')] }));
     return { titulo: T('Medias ajustadas'), conclusiones: [T('Medias de {q} con su intervalo de confianza del {nv} %.', { q: r.comparar.join(' × '), nv })], cuadros };
   }

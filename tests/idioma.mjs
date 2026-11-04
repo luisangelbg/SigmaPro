@@ -7,6 +7,9 @@
 //    cada nombre y descripción de los datos de ejemplo tiene su traducción, con los mismos marcadores {x}.
 // 2. Los cálculos no dependen del idioma: cada caso de tests/casos (los del núcleo JS) se corre con el núcleo en
 //    español y en inglés y todos los números deben ser idénticos.
+// 5. Ningún texto fijo del reporte en inglés se queda en español: un título de cuadro o de columna, una nota o una
+//    conclusión que es, tal cual, un texto en español del catálogo con otra traducción (p. ej. la columna «gl»
+//    escrita sin T(), que en inglés debía decir «df»).
 // 3. Ningún texto queda sin traducir al armar los resultados: con el núcleo en inglés se arma el reporte, el párrafo
 //    del informe y el código R de cada caso, y SP.T anota las claves que no encontró en el catálogo.
 
@@ -100,6 +103,28 @@ function numeros(x, out = [], ruta = '') {
   return out;
 }
 let comparados = 0, valores = 0, armados = 0;
+/* 5. los textos fijos del reporte armado en inglés */
+const sinT = new Set();
+const espanolSuelto = t => typeof t === 'string' && /[a-záéíóúñ]/i.test(t) && tiene(t) && CAT[t] !== t;
+/* los nombres de columnas y niveles de los datos del caso no son textos de la interfaz: quedan como vienen */
+function datosDe(c) {
+  const s = new Set(), d = (c.datos && c.datos.columnas) || {};
+  for (const [k, v] of Object.entries(d)) { s.add(k); if (Array.isArray(v)) for (const x of v) if (typeof x === 'string') s.add(x); }
+  return s;
+}
+function textosFijos(rep) {
+  const out = [];
+  for (const q of rep.cuadros || []) {
+    out.push(['título del cuadro', q.titulo]);
+    for (const k of q.columnas || []) out.push(['columna', k.titulo]);
+    for (const n of q.notas || []) out.push(['nota', n]);
+    /* en las celdas, solo los rótulos que pone el análisis, como el intercepto */
+    for (const f of q.filas || []) for (const v of Object.values(f)) if (v === '(Intercepto)') out.push(['celda', v]);
+  }
+  for (const x of rep.conclusiones || []) out.push(['conclusión', x]);
+  if (rep.titulo) out.push(['título', rep.titulo]);
+  return out;
+}
 const distintos = [];
 for (const c of casos) {
   const correr = ctx => {
@@ -111,6 +136,7 @@ for (const c of casos) {
     const op = SP.opcionesCon(f, c.opciones || {}), o = SP.ejecutar(c.objetivo.nombre, tabla, c.entradas || {}, op);
     /* lo que ve la persona: el reporte, el párrafo del informe y el código R */
     const rep = f.reporte ? f.reporte(o.resultado) : null;
+    if (ctx === EN && rep) { const dat = datosDe(c); for (const [donde, t] of textosFijos(rep)) if (espanolSuelto(t) && !dat.has(t)) sinT.add(c.objetivo.nombre + ' · ' + donde + ': «' + t + '»'); }
     if (SP.informe && rep) SP.informe.parrafo(c.objetivo.nombre, o.resultado, rep, c.entradas || {}, op);
     if (f.codigoR) f.codigoR(c.entradas || {}, op, { resultado: o.resultado });
     if (ctx === EN) armados++;
@@ -157,6 +183,8 @@ function textoDe(ctx, c, cat) {
 }
 for (const m of mezclados.slice(0, 20)) problemas.push('el texto armado al vuelo en el otro idioma no es el mismo que el original: ' + m);
 for (const d of distintos.slice(0, 20)) problemas.push('el idioma cambió un cálculo: ' + d);
+for (const t of [...sinT].slice(0, 30)) problemas.push('texto del reporte en español con la interfaz en inglés: ' + t);
+if (sinT.size > 30) problemas.push('… y ' + (sinT.size - 30) + ' más');
 const faltantes = [...EN.SP.T.faltantes].filter(k => /[a-záéíóúñ]/i.test(k));
 for (const k of faltantes.slice(0, 40)) problemas.push('texto sin traducir al armar resultados: «' + k + '»');
 if (faltantes.length > 40) problemas.push('… y ' + (faltantes.length - 40) + ' más');

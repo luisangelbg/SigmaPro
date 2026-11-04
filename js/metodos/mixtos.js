@@ -301,14 +301,14 @@ SP.definir('mixtos', function (SP) {
     if (r.ranova && r.ranova.termino.length > 1) {
       const rv = r.ranova;
       cuadros.push({ id: 'aleatorios', titulo: T('Prueba de los efectos aleatorios (razón de verosimilitudes)'),
-        columnas: [col('termino', T('Modelo sin…'), 'texto'), col('npar', T('Parámetros'), 'entero'), col('logLik', T('Log-verosimilitud'), 'sig'), col('AIC', 'AIC', 'sig'), col('LRT', 'LRT', 'forma2'), col('gl', 'gl', 'entero'), col('p', 'p', 'pvalor')],
+        columnas: [col('termino', T('Modelo sin…'), 'texto'), col('npar', T('Parámetros'), 'entero'), col('logLik', T('Log-verosimilitud'), 'sig'), col('AIC', 'AIC', 'sig'), col('LRT', 'LRT', 'forma2'), col('gl', T('gl'), 'entero'), col('p', 'p', 'pvalor')],
         filas: rv.termino.map((t, k) => ({ termino: t === '<none>' ? T('(modelo completo)') : t, npar: rv.npar[k], logLik: rv.logLik[k], AIC: rv.AIC[k], LRT: rv.LRT[k], gl: rv.gl[k], p: rv.p[k] })),
         notas: [T('Cada fila quita un efecto aleatorio (o lo reduce a su intercepto) y lo compara con el modelo completo (lmerTest::ranova). Como la varianza no puede ser negativa, este p es conservador: el verdadero suele ser la mitad.')] });
     }
     for (const md of r.medias || []) {
       const conLetras = md.filas.some(f => f.letras);
       cuadros.push({ id: 'medias-' + md.factor, titulo: md.dentro ? T('Medias de «{f}» dentro de cada nivel de «{d}»', { f: md.factor, d: md.dentro }) : T('Medias marginales de «{f}»', { f: md.factor }),
-        columnas: (md.dentro ? [col('por', md.dentro, 'texto')] : []).concat([col('nivel', md.factor, 'texto'), col('media', T('Media'), 'sig'), col('ee', T('EE'), 'sig'), col('gl', 'gl', 'forma2'),
+        columnas: (md.dentro ? [col('por', md.dentro, 'texto')] : []).concat([col('nivel', md.factor, 'texto'), col('media', T('Media'), 'sig'), col('ee', T('EE'), 'sig'), col('gl', T('gl'), 'forma2'),
           col('ic', T('IC {c} %', { c: Math.round(100 * r.nivel) }), 'intervaloSig')]).concat(conLetras ? [col('letras', T('Grupo'), 'texto')] : []),
         filas: md.filas.map(f => ({ por: f.por, nivel: f.nivel, media: f.media, ee: f.ee, gl: f.gl, ic: f.ic, letras: f.letras })),
         notas: [T('Medias marginales estimadas (emmeans) con grados de libertad de {g}.', { g: r.gl })]
@@ -318,13 +318,13 @@ SP.definir('mixtos', function (SP) {
       if (md.pares.length && md.pares.length <= 45) {
         cuadros.push({ id: 'pares-' + md.factor, titulo: T('Comparaciones por pares de «{f}» ({a})', { f: md.factor, a: NOMBRE_AJUSTE[md.ajuste] }),
           columnas: (md.dentro ? [col('por', md.dentro, 'texto')] : []).concat([col('contraste', T('Contraste'), 'texto'), col('dif', T('Diferencia'), 'sig'), col('ee', T('EE'), 'sig'),
-            col('gl', 'gl', 'forma2'), col('t', 't', 'forma2'), col('p', T('p ajustado'), 'pvalor')]),
+            col('gl', T('gl'), 'forma2'), col('t', 't', 'forma2'), col('p', T('p ajustado'), 'pvalor')]),
           filas: md.pares.map(p => ({ por: p.por, contraste: p.contraste, dif: p.dif, ee: p.ee, gl: p.gl, t: p.t, p: p.p })), notas: [] });
       }
     }
     const c = r.coeficientes;
     cuadros.push({ id: 'coeficientes', titulo: T('Coeficientes de los efectos fijos'),
-      columnas: [col('termino', T('Término'), 'texto'), col('b', T('Estimado'), 'sig'), col('ee', T('EE'), 'sig'), col('gl', 'gl', 'forma2'), col('t', 't', 'forma2'), col('p', 'p', 'pvalor')],
+      columnas: [col('termino', T('Término'), 'texto'), col('b', T('Estimado'), 'sig'), col('ee', T('EE'), 'sig'), col('gl', T('gl'), 'forma2'), col('t', 't', 'forma2'), col('p', 'p', 'pvalor')],
       filas: c.nombre.map((nm, j) => ({ termino: nm === '(Intercept)' ? T('(Intercepto)') : nm, b: c.estimado[j], ee: c.ee[j], gl: c.gl[j], t: c.t[j], p: c.p[j] })),
       notas: [T('Con contrastes de tratamiento: cada nivel comparado con el primero (como summary() de lmerTest).')]
         .concat(r.blup && r.blup.grupo.length > 120 ? [T('Las predicciones de los efectos aleatorios (BLUP) no se muestran: son {n} renglones (el cuadro llega hasta 120). El código R las da con ranef().', { n: r.blup.grupo.length })] : []) });

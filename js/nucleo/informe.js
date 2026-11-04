@@ -1327,5 +1327,5 @@ SP.definir('informe', function (SP) {
     return out.join('\n\n') + '\n';
   }
 
-  SP.informe = { parrafo, software, referencia, markdown, citasEnTexto: t => { const s = new Set(); citasEnTexto(t, s); return [...s]; }, bloques, html, frasesAnova, REFERENCIAS: Object.keys(REF) };
+  SP.informe = { parrafo, software, referencia, refIdioma, citaIdioma: c => (ingles() ? String(c).replace(/ y /g, ' and ').replace(/ y col\./g, ' et al.') : c), markdown, citasEnTexto: t => { const s = new Set(); citasEnTexto(t, s); return [...s]; }, bloques, html, frasesAnova, REFERENCIAS: Object.keys(REF) };
 });

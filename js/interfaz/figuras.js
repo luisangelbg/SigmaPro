@@ -151,7 +151,7 @@
           `<p class="small muted fig-origen">${esc(T('Del análisis {k}: {t}', { k: k + 1, t: x.titulo }))}</p>${caja.innerHTML}` +
           `<div class="btn-row fig-acciones" role="group" aria-label="${esc(T('Descargas de la figura {n}', { n }))}">` +
           `<button type="button" class="btn btn-secondary btn-sm" data-fig="estudio" data-n="${n}">${esc(T('Abrir en el estudio'))}</button>` +
-          ['svg', 'pdf', 'png', 'tiff'].map(fmt => `<button type="button" class="btn btn-ghost btn-sm" data-fig="${fmt}" data-n="${n}" aria-label="${esc(T('Descargar la figura {n} en {f}', { n, f: fmt.toUpperCase() }))}">${fmt === 'png' || fmt === 'tiff' ? fmt.toUpperCase() + ' 600 ppp' : fmt.toUpperCase()}</button>`).join('') +
+          ['svg', 'pdf', 'png', 'tiff'].map(fmt => `<button type="button" class="btn btn-ghost btn-sm" data-fig="${fmt}" data-n="${n}" aria-label="${esc(T('Descargar la figura {n} en {f}', { n, f: fmt.toUpperCase() }))}">${fmt === 'png' || fmt === 'tiff' ? esc(T('{f} 600 ppp', { f: fmt.toUpperCase() })) : fmt.toUpperCase()}</button>`).join('') +
           `</div></div>`);
       });
     });

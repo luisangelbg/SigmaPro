@@ -1,0 +1,36 @@
+{
+  "title": "SigmaPro: estadística para la investigación agronómica y biológica",
+  "description": "<p>SigmaPro is a self-contained web application for the statistical analysis of agronomic and biological research, entirely in the browser, with no installation and no server-side computation; the data never leave the computer. It covers experimental designs (completely randomized, randomized complete blocks, Latin square, split plots, split-split plots, strip plots, balanced incomplete blocks and lattices) with mean comparisons, contrasts and orthogonal polynomials; assumption checking; t and nonparametric tests; ANCOVA, regression, correlation and contingency tables; linear mixed models, repeated measures, variance components and heritability; generalized linear and generalized linear mixed models; nonlinear regression; response surfaces, mixtures and desirability; multi-environment trials with stability, AMMI and GGE; sample size and power, sampling, survival, time series and multivariate analysis (78 analyses). A guided assistant and a visual model builder lead to each analysis, whose report explains the conclusion in words, with publication tables and figures, a methods paragraph and the equivalent R code. Each analysis has a theory sheet with its model and hypotheses, its assumptions and how to check them, the data it needs with templates, how to read the output and its references. Bilingual interface (Spanish and English). Every method was checked against R, number by number.</p><p>Each result begins with its conclusion in plain words, checks its assumptions with a traffic light that can run the alternative, and explains how to read each statistic with published reading guides; the report adds a methods appendix, a class worksheet with its answer key and exports to .docx, PDF, HTML, Markdown, spreadsheets and LaTeX. Every method is validated against R: 849 cases and 93,169 values within a relative tolerance of 1e-6, with the comparison scripts and the reference values in the repository. The few analyses that need R’s model-fitting machinery (linear mixed models, repeated measures, generalized linear mixed models) run in webR inside the browser. The archive includes 27 example trials (published data, cited, and simulated data announced as such) and the user’s manual in Spanish and English (HTML and PDF).</p>",
+  "upload_type": "software",
+  "version": "1.0.0",
+  "creators": [
+    {
+      "name": "Barrera-Guzmán, Luis Ángel",
+      "orcid": "0000-0001-8057-2583"
+    }
+  ],
+  "license": "gpl-3.0-or-later",
+  "access_right": "open",
+  "language": "spa",
+  "keywords": [
+    "statistics",
+    "experimental design",
+    "agronomy",
+    "analysis of variance",
+    "mean comparisons",
+    "split-plot designs",
+    "linear mixed models",
+    "generalized linear models",
+    "nonlinear regression",
+    "response surfaces",
+    "multi-environment trials",
+    "heritability",
+    "sample size and power",
+    "survival analysis",
+    "time series",
+    "reproducible research",
+    "validation against R",
+    "web application",
+    "statistics education"
+  ]
+}

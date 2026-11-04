@@ -447,7 +447,7 @@ SP.definir('guias', function (SP) {
       zonas: [z(0.5, T('aproximadamente simétrica'), 'n0'), z(1, T('asimetría moderada'), 'n1'), z(3, T('asimetría marcada'), 'n3')],
       nota: T('El signo dice hacia dónde: positivo, cola larga a la derecha; negativo, a la izquierda.') }),
     heredabilidad: () => ({ min: 0, max: 1, eje: 'lineal', fuente: 'johnson1955',
-      zonas: [z(0.3, T('baja'), 'n0'), z(0.6, T('media'), 'n1'), z(1, T('alta'), 'n3')] }),
+      zonas: [z(0.3, T('baja'), 'n0'), z(0.6, T('media@@nivel'), 'n1'), z(1, T('alta'), 'n3')] }),
     potencia: () => ({ min: 0, max: 1, eje: 'lineal', fuente: 'cohen1988',
       zonas: [z(0.8, T('insuficiente'), 'aviso'), z(1, T('adecuada (0.80 o más)'), 'ok')] }),
     'delta-aic': () => ({ min: 0, max: 15, eje: 'lineal', fuente: 'burnham2002',
@@ -462,7 +462,10 @@ SP.definir('guias', function (SP) {
     const e = f(contexto || {});
     if (!e) return null;
     const fu = e.fuenteTexto || FUENTES[e.fuente] || [e.fuente, e.fuente];
-    return Object.assign({ id, inclusivo: false, referencias: [], abierto: !(e.max === 1 || (id === 'durbin-watson')) }, e, { fuenteCorta: fu[0], fuenteCompleta: fu[1] });
+    /* con la interfaz en inglés, «Gomez and Gomez (1984)» y la referencia con «&», «2nd ed.», «In» (como el informe) */
+    const inf = SP.informe;
+    const corta = inf && inf.citaIdioma ? inf.citaIdioma(fu[0]) : fu[0], completa = inf && inf.refIdioma ? inf.refIdioma(fu[1]) : fu[1];
+    return Object.assign({ id, inclusivo: false, referencias: [], abierto: !(e.max === 1 || (id === 'durbin-watson')) }, e, { fuenteCorta: corta, fuenteCompleta: completa });
   }
   /** El valor como lo lee su escala (absoluto, o la razón mayor que 1). */
   const leido = (e, v) => (e.eje === 'abs' ? Math.abs(v) : e.eje === 'logabs' ? (v > 0 ? Math.max(v, 1 / v) : NaN) : v);

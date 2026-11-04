@@ -103,11 +103,11 @@ SP.definir('modelo-lineal', function (SP) {
     const filas = r.anova.fuente.map((f, k) => ({ fuente: f === 'Residuales' ? T('Error') : etiqueta(f), gl: r.anova.gl[k], sc: r.anova.sc[k], cm: r.anova.cm[k], F: r.anova.F[k], p: r.anova.p[k] }));
     filas.push({ fuente: T('Total'), gl: r.total.gl, sc: r.total.sc, cm: NaN, F: NaN, p: NaN });
     cuadros.push({ id: 'anova', titulo: T('Análisis de varianza: {f}', { f: r.formula }),
-      columnas: [col('fuente', T('Fuente de variación'), 'texto'), col('gl', 'gl', 'entero'), col('sc', T('SC'), 'auto4'), col('cm', T('CM'), 'auto4'), col('F', 'F', 'forma2'), col('p', 'p', 'pvalor')], filas,
+      columnas: [col('fuente', T('Fuente de variación'), 'texto'), col('gl', T('gl'), 'entero'), col('sc', T('SC'), 'auto4'), col('cm', T('CM'), 'auto4'), col('F', 'F', 'forma2'), col('p', 'p', 'pvalor')], filas,
       notas: [T('Sumas de cuadrados tipo {t}.', { t: ['', 'I', 'II', 'III'][r.tipoSC] })].concat(r.comoFactor.length ? [T('Numéricas tomadas como factor: {c}.', { c: r.comoFactor.join(', ') })] : []).concat(r.avisos) });
     const c = r.coeficientes;
     cuadros.push({ id: 'coeficientes', titulo: T('Coeficientes'), columnas: [col('termino', T('Término'), 'texto'), col('b', T('Estimado'), 'sig'), col('ee', T('EE'), 'sig'), col('t', 't', 'forma2'), col('p', 'p', 'pvalor')],
-      filas: c.nombre.map((nm, j) => ({ termino: nm, b: c.estimado[j], ee: c.ee[j], t: c.t[j], p: c.p[j] })),
+      filas: c.nombre.map((nm, j) => ({ termino: nm === '(Intercepto)' ? T(nm) : nm, b: c.estimado[j], ee: c.ee[j], t: c.t[j], p: c.p[j] })),
       notas: [T('Con contrastes de tratamiento: cada nivel comparado con el primero (como summary(lm) de R).')] });
     for (const m of r.medias) {
       cuadros.push({ id: 'medias-' + m.factor, titulo: T('Medias marginales de «{f}»', { f: m.factor }),

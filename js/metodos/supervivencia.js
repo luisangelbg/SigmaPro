@@ -151,11 +151,11 @@ SP.definir('metodos-supervivencia', function (SP) {
       notas: [T('HR = exp(coeficiente): el cociente de los riesgos instantáneos. HR > 1, el evento llega antes; HR < 1, después.'),
         T('Empates de {e}; intervalos de Wald al {k} %. En los factores, cada nivel se compara con el primero.', { e: r.empates === 'efron' ? 'Efron' : 'Breslow', k })]
         .concat(r.estrato ? [T('Estratificado por «{s}» ({m} estratos): cada estrato tiene su propio riesgo base, sin coeficiente; los HR son los mismos en todos.', { s: r.estrato, m: r.estratos })] : []) },
-    { id: 'pruebas', titulo: T('Pruebas globales (todos los coeficientes = 0)'), columnas: [col('t', T('Prueba'), 'texto'), col('x', 'χ²', 'forma2'), col('g', 'gl', 'entero'), col('p', 'p', 'pvalor')],
+    { id: 'pruebas', titulo: T('Pruebas globales (todos los coeficientes = 0)'), columnas: [col('t', T('Prueba'), 'texto'), col('x', 'χ²', 'forma2'), col('g', T('gl'), 'entero'), col('p', 'p', 'pvalor')],
       filas: [{ t: T('Razón de verosimilitudes'), x: r.lr, g: r.gl, p: r.p_lr }, { t: 'Wald', x: r.wald, g: r.gl, p: r.p_wald }, { t: T('Score (log-rank)'), x: r.score, g: r.gl, p: r.p_score }],
       notas: [T('Log-verosimilitud parcial: {a} sin covariables y {b} con ellas. n = {n}, {e} eventos.', { a: f2(r.ll0), b: f2(r.ll), n: r.n, e: r.eventos }),
         T('Concordancia (C de Harrell) = {c}: la proporción de pares en que el de mayor riesgo predicho tuvo antes el evento.', { c: SP.formatos.texto(r.concordancia.C, 'forma') })] },
-    { id: 'proporcionales', titulo: T('Prueba de riesgos proporcionales'), columnas: [col('t', T('Término'), 'texto'), col('x', 'χ²', 'forma2'), col('g', 'gl', 'entero'), col('p', 'p', 'pvalor')],
+    { id: 'proporcionales', titulo: T('Prueba de riesgos proporcionales'), columnas: [col('t', T('Término'), 'texto'), col('x', 'χ²', 'forma2'), col('g', T('gl'), 'entero'), col('p', 'p', 'pvalor')],
       filas: r.zph.terminos.map((t, j) => ({ t: t === 'GLOBAL' ? T('Global') : t, x: r.zph.chi2[j], g: r.zph.gl[j], p: r.zph.p[j] })),
       notas: [T('Prueba score de que el efecto cambie con el tiempo (cox.zph, con la escala de Kaplan-Meier). p < 0.05: el riesgo no es proporcional.')] }];
     const pg = r.zph.p[r.zph.p.length - 1];

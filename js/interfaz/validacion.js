@@ -169,16 +169,25 @@
   }
   /* las comprobaciones que no son casos contra R */
   const ORDEN = ['codigo-r', 'exportar', 'rendimiento', 'sin-conexion', 'accesibilidad'];
+  /* el título de una comprobación en el idioma de la interfaz; su resumen y su detalle los escriben las pruebas en
+     español (con la interfaz en inglés se marcan como texto en español y una nota lo dice) */
+  function tituloOtra(x) {
+    const m = /^Rendimiento con ([\d,. ]+) filas$/.exec(x.titulo || '');
+    return m ? T('Rendimiento con {n} filas', { n: m[1] }) : T(x.titulo || '');
+  }
   function pintarOtras() {
     const C = window.SP_COMPROBACIONES || {}, el = $('#valOtras');
     if (!el) return;
+    const ingles = SP.IDIOMA === 'en', es = ingles ? ' lang="es"' : '';
+    let nota = $('#valOtrasNota');
+    if (ingles && !nota) { nota = document.createElement('p'); nota.id = 'valOtrasNota'; nota.className = 'small muted'; nota.textContent = T('El resumen y el detalle de cada comprobación los escriben las pruebas, en español.'); el.parentNode.insertBefore(nota, el); }
     const claves = ORDEN.filter(k => C[k]).concat(Object.keys(C).filter(k => !ORDEN.includes(k)));
     el.closest('.card').hidden = !claves.length;
     el.innerHTML = claves.map(k => {
       const x = C[k], f = x.fecha ? new Date(x.fecha).toLocaleDateString(SP.LOCAL, { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-      return '<li><p class="val-otra-cabeza"><span class="veredicto ' + (x.ok ? 'ok' : 'falla') + '">' + (x.ok ? T('Aprobado') : T('Con fallas')) + '</span> <b>' + esc(x.titulo) + '</b>' +
-        (f ? ' <span class="small muted">· ' + esc(f) + '</span>' : '') + '</p><p class="small">' + esc(x.resumen) + '</p>' +
-        (x.renglones && x.renglones.length ? '<details class="exp-extras"><summary>' + esc(T('Detalle')) + '</summary><ul class="small">' + x.renglones.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul></details>' : '') + '</li>';
+      return '<li><p class="val-otra-cabeza"><span class="veredicto ' + (x.ok ? 'ok' : 'falla') + '">' + (x.ok ? T('Aprobado') : T('Con fallas')) + '</span> <b>' + esc(tituloOtra(x)) + '</b>' +
+        (f ? ' <span class="small muted">· ' + esc(f) + '</span>' : '') + '</p><p class="small"' + es + '>' + esc(x.resumen) + '</p>' +
+        (x.renglones && x.renglones.length ? '<details class="exp-extras"><summary>' + esc(T('Detalle')) + '</summary><ul class="small"' + es + '>' + x.renglones.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul></details>' : '') + '</li>';
     }).join('');
   }
 

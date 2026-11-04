@@ -83,7 +83,7 @@ SP.definir('metodos-multivariado', function (SP) {
     }
     const filas = [];
     for (const t of r.terminos) if (t.pruebas) for (const k of Object.keys(PRUEBAS)) { const x = t.pruebas[k]; filas.push({ t: k === 'pillai' ? t.termino : '', g: k === 'pillai' ? t.gl : null, prueba: PRUEBAS[k], v: x.estadistico, F: x.F, a: x.gl1, b: x.gl2, p: x.p }); }
-    const cuadros = [{ id: 'manova', titulo: T('MANOVA: las cuatro pruebas'), columnas: [col('t', T('Término'), 'texto'), col('g', 'gl', 'entero'), col('prueba', T('Prueba'), 'texto'), col('v', T('Estadístico'), 'forma'),
+    const cuadros = [{ id: 'manova', titulo: T('MANOVA: las cuatro pruebas'), columnas: [col('t', T('Término'), 'texto'), col('g', T('gl'), 'entero'), col('prueba', T('Prueba'), 'texto'), col('v', T('Estadístico'), 'forma'),
       col('F', T('F aprox.'), 'forma2'), col('a', T('gl num.'), 'num'), col('b', T('gl den.'), 'num'), col('p', 'p', 'pvalor')], filas,
       notas: [T('Sumas de cuadrados secuenciales (tipo I), como summary.manova; error con {g} gl.', { g: r.glE }), T('Pillai es la más robusta si no se cumplen los supuestos; Roy da una cota superior de F (su p es optimista).')] },
     { id: 'univariados', titulo: T('ANOVA de cada respuesta (F y p)'), columnas: [col('y', T('Respuesta'), 'texto')].concat(r.terminos.flatMap((t, j) => [col('F' + j, 'F · ' + t.termino, 'forma2'), col('p' + j, 'p · ' + t.termino, 'pvalor')])),

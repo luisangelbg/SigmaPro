@@ -1,24 +1,22 @@
 # Pendientes de SigmaPro
 
-Estado tras la Fase 5 (versión 0.6.2, 9 de octubre de 2026: las cinco fases están completas; plan en [`propuesta/FASE5.md`](../propuesta/FASE5.md)), la Fase 4 (Hitos 4.0 a 4.4, versión 0.4.0, y la interfaz en inglés del Hito 4.5, 4 de octubre de 2026; plan en [`propuesta/FASE4.md`](../propuesta/FASE4.md)), la ampliación de la Fase 3 (Hito 3.9) y los arreglos hallados al escribir el manual (0.3.3). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
-que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA.md`](../propuesta/PROPUESTA.md) §12).
+Estado tras la publicación de la versión 1.0.0 (3 de noviembre de 2026) y la Fase 5 (las cinco fases están completas; plan en [`propuesta/FASE5.md`](../propuesta/FASE5.md)), la Fase 4 (Hitos 4.0 a 4.4, versión 0.4.0, y la interfaz en inglés del Hito 4.5, 4 de octubre de 2026; plan en [`propuesta/FASE4.md`](../propuesta/FASE4.md)), la ampliación de la Fase 3 (Hito 3.9) y los arreglos hallados al escribir el manual (0.3.3). Antes: la Fase 2 (Hito 2.10, 3 de octubre) y la Fase 1 (Hito 1.12, 2 de octubre). Lo que falta para publicar, los límites conocidos de lo
+que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA.md`](../propue## Publicación (versión 1.0.0, 3 nov 2026)
 
-## Antes de publicar
-
-- **Nombre.** «SigmaPro» se parece al de un programa comercial de gráficas científicas: buscarlo en el IMPI antes de
-  publicar con DOI (riesgo 6 de la propuesta).
-- **Versión 1.0.0.** Hoy la app dice 0.6.2 (las cinco fases completas); al publicar, subir a 1.0.0 en `js/nucleo/sp.js`
-  (`SP.VERSION`), `sw.js` y el CHANGELOG.
-- **Motor R sin conexión al publicar**: armar `motor-r/` con `node tools/motor-r/armar.mjs --fuentes` y publicarlo
-  junto a la app (no va en el repositorio: unos 250 MB con las fuentes).
-- **Manual de usuario**: escrito en español, un capítulo por bloque (`manual/`, PDF
-  `manual/SigmaPro_Manual_de_usuario_ES.pdf`). Describe la versión 1.0: al subir la versión, rehacer las capturas y el
-  PDF (pasos en [`manual/LEEME.md`](../manual/LEEME.md)) para que las pantallas digan 1.0.0. Las capturas y el PDF son de la 0.6.2 (9 de
-  octubre de 2026) y cubren las cinco fases; el número de versión solo se ve en las figuras 4.13, 5.3, 7.2 y 7.6.
-- **Inglés**: la interfaz es bilingüe desde el Hito 4.5; quedan en español los comentarios del código R equivalente
-  (unos 260 fragmentos dentro del código de los métodos) y el manual de usuario.
-- **Publicación**: repositorio en GitHub, GitHub Pages (ahí funciona el servicio sin conexión), su ficha en el
-  catálogo del portal de la suite y registro en Zenodo con DOI.
+- ~~**Versión 1.0.0, repositorio, Pages, Zenodo y portal**~~: hechos (ver el CHANGELOG).
+- ~~**Manual de usuario**~~: en español y en inglés (`manual/SigmaPro_Manual_de_usuario_ES.pdf` y
+  `manual/en/SigmaPro User's Manual (English).pdf`), con las capturas de la 1.0.0 en cada idioma (pasos en
+  [`manual/LEEME.md`](../manual/LEEME.md)). Al subir de versión, rehacer las capturas de los dos idiomas y los dos PDF.
+- **Nombre.** «SigmaPro» se parece al de un programa comercial de gráficas científicas: quedó publicado con ese nombre;
+  si se revisa en el IMPI y hay que cambiarlo, sería en una versión nueva.
+- **Motor R sin conexión en la página publicada**: el repositorio propio del motor (`motor-r/`, unos 100 MB y 250 MB con
+  las fuentes) no se publicó; en línea, el motor sale del repositorio público de webR. Para publicarlo, armarlo con
+  `node tools/motor-r/armar.mjs --fuentes` y servirlo junto a la app.
+- **Inglés**: quedan en español los comentarios del código R equivalente (unos 260 fragmentos dentro del código de los
+  métodos) y el resumen y el detalle de las comprobaciones de la batería en el bloque Validación.
+- **Pruebas externas**: Lighthouse y axe-core se usan solo en las pruebas y se instalan aparte; para la 1.0.0 no
+  estaban instalados (la última corrida con ellos fue la de la 0.6.2, 9 oct 2026, toda en verde).
+istro en Zenodo con DOI.
 - **INDAUTOR**: el ejemplar se arma solo con el código propio (núcleo, métodos, interfaz y exportadores). Los módulos
   comunes de la suite son del mismo autor; los íconos y demás componentes de terceros están en
   [`LICENSES-TERCEROS.md`](../LICENSES-TERCEROS.md).

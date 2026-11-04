@@ -568,7 +568,7 @@ SP.definir('regresion', function (SP) {
     cuadros.push({ id: 'coeficientes', titulo: T('Coeficientes de la regresión'),
       columnas: [col('termino', T('Término'), 'texto'), col('b', T('Estimado'), 'sig'), col('ee', T('EE'), 'sig'), col('t', 't', 'forma2'), col('p', 'p', 'pvalor'),
         col('ic', T('IC {c} %', { c: pct }), 'intervaloSig')].concat(r.modelo !== 'polinomial' ? [col('beta', T('β estandarizado'), 'forma2')] : []).concat(vif ? [col('vif', 'VIF', 'forma2')] : []),
-      filas: c.nombre.map((nm, j) => ({ termino: nm, b: c.estimado[j], ee: c.ee[j], t: c.t[j], p: c.p[j], ic: [c.ic_inf[j], c.ic_sup[j]], beta: c.beta[j], vif: j > 0 && vif ? vif[j - 1] : NaN })),
+      filas: c.nombre.map((nm, j) => ({ termino: nm === '(Intercepto)' ? T(nm) : nm, b: c.estimado[j], ee: c.ee[j], t: c.t[j], p: c.p[j], ic: [c.ic_inf[j], c.ic_sup[j]], beta: c.beta[j], vif: j > 0 && vif ? vif[j - 1] : NaN })),
       notas: (r.modelo !== 'polinomial' ? [T('β estandarizado: cambio en desviaciones estándar de «{y}» por cada desviación estándar del predictor.', { y: r.respuesta })] : []).concat(vif ? [T('VIF: cuánto crece la varianza de cada coeficiente por su correlación con los demás predictores (> 10, colinealidad seria).')] : []).concat(r.avisos) });
     /* cuadro 2: ANOVA de la regresión */
     const fa = r.falta_ajuste, filas = [{ fuente: T('Regresión'), gl: an.regresion.gl, sc: an.regresion.sc, cm: an.regresion.cm, F: an.regresion.F, p: an.regresion.p },
@@ -576,7 +576,7 @@ SP.definir('regresion', function (SP) {
     if (fa) filas.push({ fuente: '\u2003' + T('Falta de ajuste'), gl: fa.falta.gl, sc: fa.falta.sc, cm: fa.falta.cm, F: fa.falta.F, p: fa.falta.p }, { fuente: '\u2003' + T('Error puro'), gl: fa.puro.gl, sc: fa.puro.sc, cm: fa.puro.cm, F: NaN, p: NaN });
     filas.push({ fuente: T('Total'), gl: an.total.gl, sc: an.total.sc, cm: NaN, F: NaN, p: NaN });
     cuadros.push({ id: 'anova', titulo: T('Análisis de varianza de la regresión'),
-      columnas: [col('fuente', T('Fuente de variación'), 'texto'), col('gl', 'gl', 'entero'), col('sc', T('SC'), 'auto4'), col('cm', T('CM'), 'auto4'), col('F', 'F', 'forma2'), col('p', 'p', 'pvalor')],
+      columnas: [col('fuente', T('Fuente de variación'), 'texto'), col('gl', T('gl'), 'entero'), col('sc', T('SC'), 'auto4'), col('cm', T('CM'), 'auto4'), col('F', 'F', 'forma2'), col('p', 'p', 'pvalor')],
       filas, notas: fa ? [T('Error puro: variación entre repeticiones del mismo valor de x ({g} combinaciones distintas); falta de ajuste: lo que el modelo no explica de las medias de esas combinaciones.', { g: fa.grupos })] : [] });
     /* cuadro 3: ajuste */
     const aj = r.ajuste;
@@ -588,7 +588,7 @@ SP.definir('regresion', function (SP) {
     const tm = r.terminos;
     if (tm.fuente.length > 1) {
       cuadros.push({ id: 'terminos', titulo: r.modelo === 'polinomial' ? T('Aporte de cada grado del polinomio') : T('Aporte de cada predictor'),
-        columnas: [col('fuente', r.modelo === 'polinomial' ? T('Término') : T('Predictor'), 'texto'), col('gl', 'gl', 'entero'), col('sc1', T('SC secuencial'), 'auto4'), col('F1', T('F secuencial'), 'forma2'), col('p1', 'p', 'pvalor'),
+        columnas: [col('fuente', r.modelo === 'polinomial' ? T('Término') : T('Predictor'), 'texto'), col('gl', T('gl'), 'entero'), col('sc1', T('SC secuencial'), 'auto4'), col('F1', T('F secuencial'), 'forma2'), col('p1', 'p', 'pvalor'),
           col('sc2', T('SC parcial'), 'auto4'), col('F2', T('F parcial'), 'forma2'), col('p2', 'p', 'pvalor')],
         filas: tm.fuente.map((f, k) => ({ fuente: f, gl: tm.gl[k], sc1: tm.sc1[k], F1: tm.F1[k], p1: tm.p1[k], sc2: tm.sc2[k], F2: tm.F2[k], p2: tm.p2[k] })),
         notas: [T('Secuencial (tipo I): lo que agrega cada término a los anteriores, en el orden del modelo. Parcial (tipo II): lo que agrega con todos los demás ya en el modelo; su F es el cuadrado de la t del coeficiente.')] });
@@ -600,7 +600,7 @@ SP.definir('regresion', function (SP) {
     if (pr.reset) pf.push({ prueba: 'RESET', est: pr.reset.F, gl: `${pr.reset.gl1}, ${pr.reset.gl2}`, p: pr.reset.p, revisa: T('forma del modelo (curvatura omitida)') });
     if (fa) pf.push({ prueba: T('Falta de ajuste'), est: fa.falta.F, gl: `${fa.falta.gl}, ${fa.puro.gl}`, p: fa.falta.p, revisa: T('forma del modelo (con repeticiones)') });
     if (pr.durbin_watson) pf.push({ prueba: 'Durbin-Watson', est: pr.durbin_watson.DW, gl: '', p: pr.durbin_watson.p, revisa: T('independencia en el orden de las filas') });
-    cuadros.push({ id: 'pruebas', titulo: T('Pruebas de los supuestos'), columnas: [col('prueba', T('Prueba'), 'texto'), col('est', T('Estadístico'), 'sig'), col('gl', 'gl', 'texto'), col('p', 'p', 'pvalor'), col('revisa', T('Qué revisa'), 'texto')],
+    cuadros.push({ id: 'pruebas', titulo: T('Pruebas de los supuestos'), columnas: [col('prueba', T('Prueba'), 'texto'), col('est', T('Estadístico'), 'sig'), col('gl', T('gl'), 'texto'), col('p', 'p', 'pvalor'), col('revisa', T('Qué revisa'), 'texto')],
       filas: pf, notas: [T('Breusch-Pagan estudentizada (Koenker); RESET con ŷ² y ŷ³; Durbin-Watson con p exacto si hay menos de 100 datos (autocorrelación positiva).')] });
     /* cuadro 6: observaciones influyentes */
     const inf = r.influencia;
@@ -618,7 +618,7 @@ SP.definir('regresion', function (SP) {
     if (r.colinealidad) {
       const cl = r.colinealidad, nom = c.nombre;
       cuadros.push({ id: 'condicion', titulo: T('Índices de condición y proporciones de varianza'),
-        columnas: [col('dim', T('Dimensión'), 'entero'), col('indice', T('Índice de condición'), 'forma2')].concat(nom.map((nm, j) => col('v' + j, nm, 'forma2'))),
+        columnas: [col('dim', T('Dimensión'), 'entero'), col('indice', T('Índice de condición'), 'forma2')].concat(nom.map((nm, j) => col('v' + j, nm === '(Intercepto)' ? T(nm) : nm, 'forma2'))),
         filas: cl.indices.map((v, d) => Object.assign({ dim: d + 1, indice: v }, Object.fromEntries(nom.map((_, j) => ['v' + j, cl.proporciones[d][j]])))),
         notas: [T('Belsley, Kuh y Welsch (1980): columnas escaladas a longitud 1, con el intercepto. Un índice mayor que 30 con dos o más proporciones mayores que 0.5 señala colinealidad dañina entre esos coeficientes.')] });
     }
@@ -705,7 +705,7 @@ SP.definir('regresion', function (SP) {
     const f = r.final;
     cuadros.push({ id: 'final', titulo: T('Coeficientes del modelo final'),
       columnas: [col('termino', T('Término'), 'texto'), col('b', T('Estimado'), 'sig'), col('ee', T('EE'), 'sig'), col('t', 't', 'forma2'), col('p', 'p', 'pvalor')],
-      filas: f.nombre.map((nm, j) => ({ termino: nm, b: f.estimado[j], ee: f.ee[j], t: f.t[j], p: f.p[j] })), notas: [] });
+      filas: f.nombre.map((nm, j) => ({ termino: nm === '(Intercepto)' ? T(nm) : nm, b: f.estimado[j], ee: f.ee[j], t: f.t[j], p: f.p[j] })), notas: [] });
     return { titulo: T('Selección de variables paso a paso'), conclusiones: conclusiones.map(may), cuadros };
   }
   function reporteSubconjuntos(r) {

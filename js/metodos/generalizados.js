@@ -337,7 +337,7 @@ SP.definir('generalizados', function (SP) {
     const filasD = r.devianza.map(x => ({ fuente: x.termino.split(':').join(' × '), gl: x.gl, dev: x.devianza, est: x.estadistico, p: x.p }));
     filasD.push({ fuente: T('Residual'), gl: r.ajuste.gl, dev: r.ajuste.devianza, est: NaN, p: NaN });
     cuadros.push({ id: 'devianza', titulo: T('Análisis de devianza (tipo {t})', { t: ['', 'I', 'II', 'III'][r.tipoDev] }),
-      columnas: [col('fuente', T('Fuente de variación'), 'texto'), col('gl', 'gl', 'entero'), col('dev', T('Devianza'), 'auto4'), col('est', est, 'forma2'), col('p', 'p', 'pvalor')], filas: filasD,
+      columnas: [col('fuente', T('Fuente de variación'), 'texto'), col('gl', T('gl'), 'entero'), col('dev', T('Devianza'), 'auto4'), col('est', est, 'forma2'), col('p', 'p', 'pvalor')], filas: filasD,
       notas: [r.prueba === 'chi2pl' ? T('χ² = 2 × (cambio de la log-verosimilitud penalizada) al fijar en cero los coeficientes del término, con la penalización del modelo completo (como logistf).')
         : r.prueba === 'chi2' ? T('χ² = cambio de devianza al quitar el término (razón de verosimilitudes).') : T('F = (cambio de devianza / gl) / φ, con φ la dispersión de Pearson ({f}).', { f: sig(r.ajuste.dispersion) }),
         [T('Tipo I: en el orden del modelo.'), T('Tipo II: cada término ajustado por los demás que no lo contienen.'), T('Tipo III: cada término ajustado por todos los demás, con contrastes de suma cero.')][r.tipoDev - 1]]

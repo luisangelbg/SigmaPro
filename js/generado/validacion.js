@@ -1,7 +1,7 @@
 /* Generado por tests/correr.mjs — no editar a mano. */
 window.SP_VALIDACION = {
- "version": "0.6.2",
- "generado": "2026-10-10T02:58:43.308Z",
+ "version": "1.0.0",
+ "generado": "2026-11-04T03:01:21.756Z",
  "motor": "node v24.19.0",
  "criterio": {
   "tol": 0.000001,
@@ -18717,9 +18717,9 @@ window.SP_VALIDACION = {
    "fuente": "Datos sintéticos (generados en este archivo)",
    "clase": "D",
    "valores": 109,
-   "difMax": 0.0000017982628790491617,
-   "difEscaladaMax": 3.352345641083332e-7,
-   "peor": "coeficientes.z[2]",
+   "difMax": 0.000005184242262146199,
+   "difEscaladaMax": 1.0512380361382284e-7,
+   "peor": "wald.chi2[0]",
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -18752,9 +18752,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "car": "3.1.5",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -18802,9 +18802,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "car": "3.1.5",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -18852,9 +18852,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "car": "3.1.5",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -18902,9 +18902,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "car": "3.1.5",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -18917,9 +18917,9 @@ window.SP_VALIDACION = {
    "fuente": "Datos sintéticos (generados en este archivo)",
    "clase": "D",
    "valores": 82,
-   "difMax": 3.613793957413236e-7,
-   "difEscaladaMax": 1.525997606845771e-8,
-   "peor": "medias[0].filas[0].ee",
+   "difMax": 6.158400935873942e-7,
+   "difEscaladaMax": 1.5940827129300378e-8,
+   "peor": "coeficientes.z[1]",
    "aprobado": true,
    "error": "",
    "fallas": [],
@@ -18952,9 +18952,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "car": "3.1.5",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19002,9 +19002,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "car": "3.1.5",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19052,9 +19052,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "car": "3.1.5",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19142,9 +19142,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "car": "3.1.5",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19192,9 +19192,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "car": "3.1.5",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19207,8 +19207,8 @@ window.SP_VALIDACION = {
    "fuente": "Lesnoff et al. (2004), Journal of Applied Ecology 41: 31-41; conjunto cbpp de lme4",
    "clase": "D",
    "valores": 112,
-   "difMax": 0.000011215153918442411,
-   "difEscaladaMax": 4.506086780542324e-7,
+   "difMax": 0.000015071300310864899,
+   "difEscaladaMax": 6.055430678012809e-7,
    "peor": "wald.chi2[0]",
    "aprobado": true,
    "error": "",
@@ -19242,9 +19242,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "car": "3.1.5",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19292,9 +19292,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "car": "3.1.5",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19333,8 +19333,8 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "nlme": "3.1.169",
-    "emmeans": "2.0.3"
+    "nlme": "3.1.171",
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19373,8 +19373,8 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "nlme": "3.1.169",
-    "emmeans": "2.0.3"
+    "nlme": "3.1.171",
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19413,8 +19413,8 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "nlme": "3.1.169",
-    "emmeans": "2.0.3"
+    "nlme": "3.1.171",
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19446,8 +19446,8 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "nlme": "3.1.169",
-    "emmeans": "2.0.3"
+    "nlme": "3.1.171",
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19486,8 +19486,8 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "nlme": "3.1.169",
-    "emmeans": "2.0.3"
+    "nlme": "3.1.171",
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19526,8 +19526,8 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "nlme": "3.1.169",
-    "emmeans": "2.0.3"
+    "nlme": "3.1.171",
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19567,9 +19567,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19609,9 +19609,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19651,9 +19651,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19693,9 +19693,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19735,9 +19735,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19777,9 +19777,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19820,9 +19820,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19862,9 +19862,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19905,9 +19905,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19947,9 +19947,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -19982,9 +19982,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -20024,9 +20024,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -20066,9 +20066,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -20108,9 +20108,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -20144,9 +20144,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -20186,9 +20186,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -20228,9 +20228,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -20270,9 +20270,9 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1",
-    "emmeans": "2.0.3"
+    "emmeans": "2.0.4"
    }
   },
   {
@@ -20312,7 +20312,7 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1"
    }
   },
@@ -20353,7 +20353,7 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1"
    }
   },
@@ -20394,7 +20394,7 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1"
    }
   },
@@ -20435,7 +20435,7 @@ window.SP_VALIDACION = {
    "motor": {
     "webr": "0.6.0",
     "R": "4.6.0",
-    "lme4": "2.0.1",
+    "lme4": "2.0.6",
     "lmerTest": "3.2.1"
    }
   },

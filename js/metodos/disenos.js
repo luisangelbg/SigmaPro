@@ -343,7 +343,7 @@ SP.definir('disenos', function (SP) {
     }
     filas.push({ fuente: T('Total'), gl: r.total.gl, sc: r.total.sc, cm: NaN, F: NaN, p: NaN });
     cuadros.push({ id: 'anova', titulo: T('Análisis de varianza: {d}', { d: nombre }),
-      columnas: [col('fuente', T('Fuente de variación'), 'texto'), col('gl', 'gl', 'entero'), col('sc', T('SC'), 'auto4'), col('cm', T('CM'), 'auto4'), col('F', 'F', 'forma2'), col('p', 'p', 'pvalor')],
+      columnas: [col('fuente', T('Fuente de variación'), 'texto'), col('gl', T('gl'), 'entero'), col('sc', T('SC'), 'auto4'), col('cm', T('CM'), 'auto4'), col('F', 'F', 'forma2'), col('p', 'p', 'pvalor')],
       filas, notas: notas.concat(r.avisos) });
 
     /* cuadro 2: resumen y eficiencia */
@@ -372,7 +372,7 @@ SP.definir('disenos', function (SP) {
     }
     if (r.simples && r.simples.length) {
       cuadros.push({ id: 'simples', titulo: T('Efectos simples (pruebas F dentro de cada nivel)'),
-        columnas: [col('dentro', T('Dentro de'), 'texto'), col('termino', T('Efecto de'), 'texto'), col('gl1', 'gl', 'entero'), col('gl2', T('gl error'), 'entero'), col('F', 'F', 'forma2'), col('p', 'p', 'pvalor')],
+        columnas: [col('dentro', T('Dentro de'), 'texto'), col('termino', T('Efecto de'), 'texto'), col('gl1', T('gl'), 'entero'), col('gl2', T('gl error'), 'entero'), col('F', 'F', 'forma2'), col('p', 'p', 'pvalor')],
         filas: r.simples.map(s => ({ dentro: `${s.factor} = ${s.nivel}`, termino: etiqueta(s.termino), gl1: s.gl1, gl2: s.gl2, F: s.F, p: s.p })),
         notas: [T('Cada prueba usa el error del modelo completo; es la misma que emmeans::joint_tests(modelo, by = …).')] });
     }

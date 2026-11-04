@@ -52,7 +52,7 @@ SP.definir('metodos-series', function (SP) {
     return { titulo: T('Autocorrelación de «{y}»', { y: r.respuesta }), conclusiones: c.map(may), semaforo: [],
       cuadros: [{ id: 'acf', titulo: T('Autocorrelación simple y parcial'), columnas: [col('k', T('Rezago'), 'entero'), col('a', 'ACF', 'forma'), col('p', 'PACF', 'forma')],
         filas: r.acf.slice(1).map((v, k) => ({ k: k + 1, a: v, p: r.pacf[k] })), notas: [T('Banda de ± {b} (± z/√n al {k} %): fuera de ella, la correlación difiere de cero.', { b: f3(r.banda), k: Math.round(100 * r.nivel) })] },
-      { id: 'box', titulo: T('Pruebas de independencia (rezagos 1 a {l})', { l: B.lag }), columnas: [col('t', T('Prueba'), 'texto'), col('q', 'Q', 'forma2'), col('g', 'gl', 'entero'), col('p', 'p', 'pvalor')],
+      { id: 'box', titulo: T('Pruebas de independencia (rezagos 1 a {l})', { l: B.lag }), columnas: [col('t', T('Prueba'), 'texto'), col('q', 'Q', 'forma2'), col('g', T('gl'), 'entero'), col('p', 'p', 'pvalor')],
         filas: [{ t: 'Ljung-Box', q: B.ljung_box, g: B.gl, p: B.p_ljung_box }, { t: 'Box-Pierce', q: B.box_pierce, g: B.gl, p: B.p_box_pierce }],
         notas: [T('Ljung-Box corrige a Box-Pierce en series cortas. p < 0.05: hay autocorrelación.')] }] };
   }

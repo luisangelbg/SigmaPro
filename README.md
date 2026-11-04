@@ -1,167 +1,132 @@
 # SigmaPro
 
-**Estadística para la investigación agronómica y biológica, con cifras que se pueden comprobar.**
+**Statistics for agronomic and biological research, with numbers you can check** · *Español: [LEEME.md](LEEME.md)*
 
-SigmaPro es una aplicación web de análisis estadístico: diseños experimentales, comparaciones de
-medias, regresión y, más adelante, modelos mixtos y ensayos multiambiente. Forma parte de la
+SigmaPro is a statistics application for agronomic and biological research that runs entirely in the browser: from
+the field file to the published table and figure, along a single path. It covers experimental designs and mean
+comparisons, regression and correlation, linear mixed and generalized models, nonlinear models, response surfaces,
+multi-environment trials, sample size and power, sampling, survival, time series and multivariate analysis: **78
+analyses in 18 families**. The interface is in Spanish and English, with light and dark themes. It is part of the
 [LABG Suite](https://luisangelbg.github.io/).
 
-- **Exactitud verificada.** Cada método se compara contra R con datos publicados o clásicos, número por
-  número, con tolerancia de 1 × 10⁻⁶. Nada se libera sin su prueba. El reporte de validación está en la
-  propia app (bloque 8) y en [`tests/reporte-validacion.html`](tests/reporte-validacion.html).
-- **Reproducible.** Cada análisis trae el código R equivalente.
-- **Privado.** Todo se calcula en el navegador; los datos no salen del equipo.
-- **Sin instalación.** Se abre con doble clic en `index.html` y funciona sin conexión; publicada en la web, se
-  guarda en el navegador la primera vez y después abre sin red.
-- **Rápido con tablas grandes.** Probado con 100 000 filas: una ANOVA con Tukey en menos de una décima de segundo.
-- **Explica lo que calcula.** Cada uno de los 78 análisis tiene su ficha de fundamentos (bloque 9): para qué sirve, el
-  modelo y sus hipótesis, los supuestos y cómo revisarlos, los datos que necesita con plantillas, cómo se lee y sus
-  referencias, en español y en inglés.
+- **Verified accuracy.** Every method is compared against R, number by number, with a tolerance of 10⁻⁶ relative to
+  the size of each value: **849 cases and 93,169 values, all within tolerance**. A method is not released until its
+  cases pass. The validation report is inside the app (block 8) and in
+  [`tests/reporte-validacion.html`](tests/reporte-validacion.html).
+- **Reproducible.** Every result comes with the equivalent R code; the `.labg` project keeps the data, the analyses
+  and the SHA-256 hash of each file.
+- **Private.** Everything is computed in the browser; the data never leave the computer.
+- **Explains what it computes.** Each result starts with its conclusion in plain words, checks its assumptions with a
+  traffic light that can run the alternative, and has “How to read this table” with published reading guides. Each of
+  the 78 analyses has a fact sheet (block 9): what it is for, the model and its hypotheses, the assumptions and how to
+  check them, the data it needs with templates, how to read it and its references.
 
-## Estado
+## Statement of need
 
-**Fase 1 completa (hitos 1.0 a 1.12):** cimientos (registro de métodos, cálculos en
-hilos de trabajo, pruebas automáticas en node y en el navegador, generador de referencias con R y reporte
-de validación), núcleo numérico (distribuciones, álgebra, fórmulas y modelo lineal con sumas de cuadrados
-tipo I, II y III) y el bloque de **Datos**: hoja de cálculo para 100 000 filas con deshacer, importación de
-CSV, .xlsx y .ods con lectores propios, tipos de variable explicados, faltantes, filtros, variables
-calculadas, transformaciones con Box-Cox, cambio de forma ancha ⇄ larga, diagnóstico del diseño del ensayo
-y doce conjuntos de ejemplo; y el bloque **Explorar**: descriptivos por hasta tres factores con sus
-intervalos, frecuencias, proporciones con seis intervalos y bondad de ajuste ji cuadrada, cada uno con el
-código R que reproduce sus números; y la **revisión de los supuestos** del modelo (normalidad, varianzas, aditividad,
-independencia y atípicos) con semáforo, recomendaciones y gráficas de diagnóstico; y las **pruebas t** (una muestra,
-Student, Welch y pareada, con la F de varianzas y la d de Cohen y la g de Hedges con su intervalo) y **no
-paramétricas** (Wilcoxon y Mann-Whitney con Hodges-Lehmann, Kruskal-Wallis y Friedman con Dunn, Conover-Iman,
-Nemenyi o Wilcoxon pareada, ajustes de Holm, Bonferroni y BH, y letras de agrupación); y el **ANOVA de los diseños
-experimentales** (completamente al azar, bloques completos —también generalizados y con parcelas perdidas—, cuadro
-latino, factoriales de hasta tres factores, parcelas divididas, subdivididas y en franjas con un error por estrato,
-bloques incompletos balanceados, látice y alfa-látice), con sumas de cuadrados tipo I, II y III, CV, R², eficiencia
-relativa, medias marginales estimadas y efectos simples; y las **comparaciones de medias** (Tukey, DMS, Duncan, SNK,
-Scheffé, Bonferroni, Šidák, Holm, Dunnett exacto y Games-Howell, con letras, también dentro de cada nivel de otro
-factor y en parcelas divididas con Satterthwaite), contrastes, polinomios ortogonales con la dosis óptima y medias
-ajustadas; y la **ANCOVA** (completamente al azar y bloques, con homogeneidad de pendientes, medias ajustadas y eficiencia)
-y la **regresión** simple, múltiple y polinomial con diagnóstico completo (influencia, Breusch-Pagan, RESET,
-Durbin-Watson, VIF, índices de condición), predicciones y selección de variables (paso a paso por AIC o valor p y mejores
-subconjuntos); y la **correlación** (Pearson, Spearman y Kendall exactas o aproximadas, matrices con p ajustados, parcial y
-semiparcial) y las **tablas de contingencia** (ji cuadrada, G², Fisher exacta 2 × 2 y r × c, residuos ajustados, medidas
-nominales y ordinales, razón de momios, McNemar y Bowker, Cochran-Mantel-Haenszel con Breslow-Day y kappa); y el
-**asistente** que pregunta en lenguaje del campo y recomienda el análisis con su porqué, el **constructor visual de
-modelos** (variables arrastradas a sus zonas, o con teclas, y la fórmula que se puede editar con la explicación de cada
-término) y el **modelo lineal general** desde una fórmula (anidados, interacciones con covariables, SC tipo I, II y III,
-medias marginales); y el **Reporte LABG** (conclusión en palabras, cuadros de revista numerados, supuestos con
-semáforo, el párrafo de métodos y resultados para la tesis o el artículo con la cita de cada prueba, detalles técnicos
-y código R), las **figuras de publicación** (SVG, PDF vectorial, PNG y TIFF a 600 ppp) y las **exportaciones**: reporte
-en .docx, PDF y HTML, cuadros en hoja de cálculo y LaTeX, y el **proyecto .labg** con la huella SHA-256 de cada archivo y
-el código R que lo repite todo (y, desde el Hito 3.9, el **guardado automático** en el navegador, con el aviso para
-recuperar el trabajo); y el cierre de la fase: **uso sin conexión**, **100 000 filas** en 43 operaciones
-medidas dentro de su meta, la prueba de **privacidad** (ningún dato sale del navegador) y la **auditoría de
-accesibilidad AA** en claro y oscuro, a 1280 y 360 px, con el foco revisado tecla por tecla. Validado contra R en 624
-casos y 48 458 valores.
+Agronomic and biological experiments are analyzed with the design they were run with: blocks, split plots, lattices,
+repeated measures, several locations. In practice the analysis is often the most familiar one rather than the right
+one, and the step from a statistical package to a thesis table and a methods paragraph is done by hand. SigmaPro reads
+the structure of the trial in the data, asks what it cannot read, proposes the analysis that matches the design, and
+writes the conclusion, the publication tables and figures, the methods and results paragraphs with their citations,
+and the R code that reproduces every number. It does so without installing anything and without sending the data
+anywhere, and every number it gives has been checked against R.
 
-**Fase 2 completa** (versión 0.2.0; plan en [`propuesta/FASE2.md`](propuesta/FASE2.md)): el **motor R dentro del
-navegador** (webR, que se descarga solo cuando se necesita; los datos no salen del equipo; servida por http con su
-repositorio propio funciona también sin internet) y el **modelo lineal mixto** escrito como
-fórmula, con efectos aleatorios como en lme4, grados de libertad de Satterthwaite o Kenward-Roger, componentes de
-varianza, medias marginales con letras, prueba de cada aleatorio y BLUP; y los diseños con efectos aleatorios
-(bloques aleatorios, parcelas divididas, látice y alfa-látice, varias localidades) y las **medidas repetidas en el
-tiempo** con la comparación de estructuras de covarianza (simetría compuesta, AR(1), no estructurada…), validados en
-el navegador contra R. Y, en el propio núcleo (sin internet), los **componentes de varianza por REML**, la
-**heredabilidad** (en medias, de Cullis y de Piepho) con BLUP, BLUE y ganancia por selección, la **repetibilidad** y los
-**modelos lineales generalizados** (conteos con Poisson o binomial negativa, proporciones, gamma), con las medias en la
-escala de la respuesta; y, en el motor R, los **modelos lineales generalizados mixtos** (conteos y proporciones con
-bloques aleatorios y el efecto por observación para la sobredispersión). Y la **regresión no lineal**: curvas de
-crecimiento, dosis-respuesta con DE50 y respuesta con meseta (dosis óptima), con la comparación de curvas entre grupos.
-Y las **superficies de respuesta**: punto óptimo, análisis canónico, cresta y ascenso más pronunciado. Y los **ensayos
-multiambiente**: análisis conjunto, estabilidad (Eberhart-Russell, Wricke, Shukla, Lin-Binns), AMMI y biplot GGE.
+## Open it
 
-**Fase 3 completa** (versión 0.3.3, con los Hitos 3.6 a 3.9 y los arreglos hallados al escribir el manual; plan en [`propuesta/FASE3.md`](propuesta/FASE3.md)): el **tamaño de muestra y la potencia**
-(medias, ANOVA, proporciones, correlación y las repeticiones de un experimento), sin necesidad de datos; y el
-**muestreo**: el tamaño de muestra para estimar una media o una proporción, y la estimación con muestreo aleatorio
-simple y estratificado (con la asignación de Neyman); y la **supervivencia**: curvas de Kaplan-Meier, log-rank y el
-modelo de Cox (también estratificados) con su prueba de riesgos proporcionales; y las **series de tiempo**: autocorrelación, descomposición
-en tendencia y ciclo, la tendencia de Mann-Kendall con la pendiente de Sen y los modelos **ARIMA** con su pronóstico; y el **multivariado**: MANOVA y análisis discriminante
-lineal, con la prueba M de Box (el ACP y los conglomerados se preparan para PCAPro y ClusteringPro). En total, 795 casos y 83 645 valores. El asistente propone también los métodos de la
-Fase 3, y el constructor arma el modelo de Cox y la MANOVA.
+- **Online:** https://luisangelbg.github.io/SigmaPro/ — the first visit stores the app in the browser, and it then
+  opens without a connection.
+- **On your computer:** download the repository and double-click `index.html`. No server, no installation, no build
+  step.
 
-**Fase 4: cálculos completos** (versión 0.4.0; plan en [`propuesta/FASE4.md`](propuesta/FASE4.md)), las mejoras que
-quedaban para versiones futuras: la **regresión no lineal** con hormesis (Brain-Cousens), Michaelis-Menten, pesos,
-intervalos perfilados, elección por AIC y la dosis económica óptima; los **ensayos multiambiente** con la imputación
-EM-AMMI, Huehn, Kang, Annicchiarico, WAAS, el análisis en dos etapas y las vistas del GGE; las **superficies de
-respuesta** con el generador de diseños (central compuesto, Box-Behnken, simplex), la codificación a mano, las
-**mezclas** de Scheffé, la **deseabilidad** de varias respuestas y la superficie en 3D; los **modelos generalizados**
-con intervalos perfilados, la corrección de **Firth** para la separación, la gaussiana inversa y los enlaces de
-potencia, y en los mixtos la gamma, la cuadratura de Gauss-Hermite y la prueba de cada efecto aleatorio; y el
-asistente que **reconoce en los datos las parcelas divididas**, subdivididas y en franjas. En total, 848 casos y
-93 157 valores contra R. Y la **interfaz en inglés** (Hito 4.5): el selector ES | EN de la barra, o `?lang=en`.
+The few analyses that need R’s model-fitting machinery (linear mixed models and their designs, repeated measures and
+generalized linear mixed models) run in an **R engine inside the browser** (webR). It is downloaded the first time one
+of them is used (about 25 MB, then cached); the data still stay on the computer. Served over http together with its
+own repository (`motor-r/`, built with `node tools/motor-r/armar.mjs`), it also works without internet from the first
+visit; that repository is not part of this source repository.
 
-**Fase 5: Fundamentos y suite LABG** (versión 0.5.0; plan en [`propuesta/FASE5.md`](propuesta/FASE5.md)). El bloque 9,
-**Fundamentos**, con una ficha por análisis (78, en español y en inglés; datos en `data/fundamentos/`): para qué sirve,
-preguntas típicas, el fundamento con el modelo y las hipótesis en MathML (convertidor propio, sin bibliotecas), los
-supuestos con su revisión y su alternativa en la app, los **datos necesarios** con la tabla de ejemplo, «Cargar estos
-datos de ejemplo» y plantillas CSV y XLSX, la interpretación con un ejemplo de redacción, límites, métodos
-relacionados y referencias APA; con buscador, filtros por familia, respuesta, estructura y diseño, y un **mapa de
-métodos**. Se llega desde «¿Qué es este análisis?» en cada análisis y desde Inicio. Cada ficha pasó una revisión
-técnica independiente ([`docs/revision-fundamentos.md`](docs/revision-fundamentos.md); inventario en
-[`docs/inventario-analisis.md`](docs/inventario-analisis.md)), que además encontró y corrigió 18 errores de la app.
-Y el bloque 10, **Suite LABG**: las cuatro apps hermanas (PCAPro, ClusteringPro, AgriDesign y CorrelationPro) con su
-versión, sus funciones y su cita, y las sugerencias **LABGSuggest** solo donde continúan el trabajo (al pie de un
-resultado, en la ficha, al pie de una familia y en el bloque Datos), con «Enviar datos» como CSV; reglas en
-`data/suite-rules.js` y datos de las apps en `data/suite.js`.
+## The ten blocks
 
-**Fase 5 completa** (versión 0.6.0). Además de Fundamentos y la suite: **cada número se puede leer**, con «Cómo leer
-este cuadro» (un medidor con las zonas de una guía publicada y la curva de referencia de cada prueba), tarjetas de
-interpretación con los números del caso, la guía del CV por cultivo y variable, tres niveles de detalle (Básico,
-Estándar y Experto), el semáforo de supuestos con un botón que corre la alternativa, «En pocas palabras» y «Cómo
-reportarlo (APA)» en español y en inglés; **la app orienta**, con tres caminos en Inicio, historial, árbol de
-decisiones, glosario de 146 términos (Ctrl+G) con «Ver en acción», recorridos por bloque, ayudas emergentes, modo
-presentación y errores en palabras; **el reporte sale rediseñado** (portada con su ficha, índice, resumen, lectura de
-los indicadores con medidores, apéndice metodológico con ecuaciones del procesador de textos, Markdown y hoja de
-trabajo para clase con su clave); y **la calidad se prueba en cada versión**: las escalas en sus bordes, la coherencia
-entre textos y números en todos los análisis, los enlaces e íconos, axe-core (WCAG 2.1 A y AA) y Lighthouse, con 90
-o más en las cuatro categorías en teléfono y escritorio.
+1. **Home** — three ways to start (your data, an example, which analysis to use), what you analyzed last, the
+   development status and the list of the 78 analyses.
+2. **Data** — CSV, TSV, .xlsx and .ods with its own readers, pasted tables and 27 example trials; a worksheet for
+   100,000 rows with undo; variable types explained; calculated variables, transformations (Box–Cox), filters, wide ⇄
+   long; and what SigmaPro sees in your trial (blocks, plots, crossed or nested factors).
+3. **Explore** — descriptives by up to three factors with their intervals, frequencies, proportions with six
+   intervals, and chi-square goodness of fit.
+4. **Analysis** — an assistant that asks in the language of the field, the catalog, and a visual model builder.
+   Assumptions; t and nonparametric tests; completely randomized, randomized complete blocks, Latin square, split,
+   split-split and strip plots, balanced incomplete blocks and lattices; mean comparisons (Tukey, LSD, Duncan, SNK,
+   Scheffé, Bonferroni, Šidák, exact Dunnett, Games–Howell), contrasts, orthogonal polynomials and adjusted means;
+   ANCOVA; simple, multiple and polynomial regression with full diagnostics, stepwise and best subsets; correlation;
+   contingency tables; linear mixed models, repeated measures, variance components (REML), heritability and BLUP;
+   generalized linear and generalized linear mixed models; nonlinear regression (growth, dose–response, plateau);
+   response surfaces, mixtures and desirability; multi-environment trials (stability, AMMI, GGE); sample size and
+   power; sampling; survival (Kaplan–Meier, Cox); time series (ARIMA); MANOVA and discriminant analysis.
+5. **Results** — the LABG Report: each analysis with its conclusion, tables, figures, assumptions, the paragraph for
+   the thesis or the article (also in APA style) and the R code.
+6. **Figures** — publication figures with six themes, a ✎ editor and the Figure Studio (journal sizes, palettes,
+   SVG, vector PDF, PNG and TIFF at 600 dpi).
+7. **Export** — the full report in .docx, PDF, HTML and Markdown, with a cover, table of contents, reading gauges and
+   a methods appendix; a class worksheet with its answer key; tables in a spreadsheet and LaTeX; the `.labg` project
+   and autosave.
+8. **Validation** — the comparison of every case against R, and the other checks of the test battery.
+9. **Fundamentals** — the 78 fact sheets in Spanish and English, the method map and a decision tree.
+10. **LABG Suite** — the sister apps that continue the work (PCAPro, ClusteringPro, AgriDesign, CorrelationPro), with
+    a “Send data” button where it applies.
 
-Lo que falta para publicar y las fases 2 y 3 están en [`docs/PENDIENTES.md`](docs/PENDIENTES.md). El plan completo está en
-[`propuesta/PROPUESTA.md`](propuesta/PROPUESTA.md) y una maqueta navegable del flujo en
-[`propuesta/maqueta.html`](propuesta/maqueta.html); capturas de la app en [`docs/capturas/`](docs/capturas/).
+## Tests and validation
 
-## Pruebas
+The validation is part of the repository and can be repeated:
 
 ```
-Rscript tests/r/generar-todo.R    # referencias con R
-node tests/correr.mjs             # pruebas y reporte
-node tests/navegador.mjs          # las mismas pruebas en el navegador
-node tests/codigo-r.mjs           # el código R que muestra la app corre en R y da lo mismo
-node tests/exportar.mjs           # cada exportación, leída con lectores independientes (R y el sistema)
-node tests/sin-conexion.mjs       # privacidad y uso sin conexión
-node tests/rendimiento/medir.mjs  # rendimiento con 100 000 filas (--motor: también el motor R con 20 000)
-node tests/accesibilidad/auditar.mjs  # accesibilidad AA (con axe-core si está: SIGMAPRO_AXE; no va en la app)
-node tests/motor-r.mjs            # los métodos del motor R, en el navegador (necesita internet)
-node tests/fundamentos.mjs        # las 78 fichas: nueve apartados en ES y EN, ejemplos que corren, fórmulas, índice
-node tests/suite-enlaces.mjs      # datos y logos de la suite, reglas y enlaces vivos (--sin-red: sin revisar los enlaces)
-node tests/intro.mjs              # la secuencia de apertura
-node tests/regresion.mjs          # la huella de los resultados y de los reportes
-node tests/calidad.mjs            # las escalas en sus bordes y la coherencia entre textos y números
-node tests/glosario.mjs           # el glosario y «Ver en acción»
-node tests/orientacion.mjs        # Inicio, historial, árbol, ayudas, recorridos, presentación, errores y Validación
-node tests/enlaces.mjs            # los enlaces e íconos de la app (--sin-red: sin revisar las direcciones externas)
-node tests/rendimiento/lighthouse.mjs  # Lighthouse en teléfono y escritorio (SIGMAPRO_LIGHTHOUSE; no va en la app)
-node tools/motor-r/armar.mjs      # arma motor-r/: webR y sus 70 paquetes, verificados (--fuentes: con su código)
+Rscript tests/r/generar-todo.R        # the reference values, computed with R 4.4.2 and its packages
+node tests/correr.mjs                 # unit tests and the 849 cases against R → tests/reporte-validacion.html
+node tests/navegador.mjs              # the same tests in the browser
+node tests/codigo-r.mjs               # the R code shown by the app runs in R and gives the same numbers
+node tests/idioma.mjs                 # the English interface: complete catalog, same numbers in both languages
+node tests/exportar.mjs               # every export, read with independent readers
+node tests/sin-conexion.mjs           # privacy (no request leaves the browser) and offline use
+node tests/accesibilidad/auditar.mjs  # WCAG AA accessibility, light and dark, 1280 and 360 px
 ```
 
-**Publicar con el motor R sin conexión.** El repositorio propio del motor (`motor-r/`, unos 100 MB y 250 MB con
-las fuentes) no va en el repositorio de la app: se arma con `node tools/motor-r/armar.mjs --fuentes` y se publica
-junto a la app (por ejemplo, en la rama de GitHub Pages). Sin él, la app funciona igual y el motor R sale del
-repositorio público de webR.
+On Windows, `tests/pruebas.ps1` runs them all; [`docs/VALIDACION.md`](docs/VALIDACION.md) describes the method (in
+Spanish) and chapter 8 of the manual lists the fifteen checks of the battery. Opening `tests/index.html` with a
+double click runs the unit tests in the browser.
 
-O abre `tests/index.html` con doble clic. Detalles en [`docs/VALIDACION.md`](docs/VALIDACION.md).
+## Documentation
 
-## Licencia
+| Document | Language | What it is |
+|---|---|---|
+| [`manual/en/SigmaPro User's Manual (English).pdf`](manual/en/) | English | User’s manual: introduction, one chapter per block and appendices |
+| [`manual/SigmaPro_Manual_de_usuario_ES.pdf`](manual/) | Spanish | The same manual in Spanish |
+| `manual/es/`, `manual/en/` | Spanish, English | The parts of the manual in HTML; `manual/LEEME.md` explains how they are built |
+| Block 9 of the app | Spanish and English | The 78 fact sheets |
+| [`CHANGELOG.md`](CHANGELOG.md) | Spanish | What changed in each version, milestone by milestone |
+| [`docs/VALIDACION.md`](docs/VALIDACION.md) | Spanish | How every method is validated against R |
+| [`propuesta/`](propuesta/) | Spanish | The original proposal and the plan of each phase |
 
-GPL-3.0 o posterior (ver [`LICENSE`](LICENSE)). Componentes de terceros en
-[`LICENSES-TERCEROS.md`](LICENSES-TERCEROS.md).
+## Data and third-party material
 
----
+The statistical engine, the readers of spreadsheet files, the figures, the formulas (its own MathML converter) and the
+exports are the author’s own code. The interface uses the shared modules of the LABG Suite (same author), which draw
+icons from the Lucide project (ISC licence); [`LICENSES-TERCEROS.md`](LICENSES-TERCEROS.md) gives the details. The R
+engine (webR, MIT licence, and R packages under their own licences) is downloaded only when an analysis needs it. The
+example datasets are either published data, cited where they are used, or simulated data built so that each analysis
+has a clear case, and announced as such.
 
-*SigmaPro is a browser-based statistics application for agricultural and biological research. Every method
-is validated number by number against R (tolerance 1e-6) on published datasets; data never leave the browser.
-Interface in Spanish. Licensed under GPL-3.0-or-later.*
+## How to cite
+
+Barrera-Guzmán, L. Á. (2026). SigmaPro: estadística para la investigación agronómica y biológica (Version 1.0.0)
+[Computer software]. LABG Suite. https://github.com/luisangelbg/SigmaPro
+
+The methods paragraph of every report cites SigmaPro and R with their versions. `CITATION.cff` has the same data for
+reference managers.
+
+## Contributing and support
+
+Problems and proposals go to https://github.com/luisangelbg/SigmaPro/issues (the **Report a problem** button of the
+app opens one with the block and the browser already filled in).
+
+## Licence
+
+GNU General Public License, version 3 or later ([`LICENSE`](LICENSE)).

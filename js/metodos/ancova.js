@@ -204,7 +204,7 @@ SP.definir('ancova', function (SP) {
     const filas = r.anova.fuente.map((f, k) => ({ fuente: f === 'Residuales' ? T('Error') : etiqueta(f), gl: r.anova.gl[k], sc: r.anova.sc[k], cm: r.anova.cm[k], F: r.anova.F[k], p: r.anova.p[k] }));
     filas.push({ fuente: T('Total'), gl: r.total.gl, sc: r.total.sc, cm: NaN, F: NaN, p: NaN });
     cuadros.push({ id: 'anova', titulo: T('Análisis de covarianza'),
-      columnas: [col('fuente', T('Fuente de variación'), 'texto'), col('gl', 'gl', 'entero'), col('sc', T('SC'), 'auto4'), col('cm', T('CM'), 'auto4'), col('F', 'F', 'forma2'), col('p', 'p', 'pvalor')],
+      columnas: [col('fuente', T('Fuente de variación'), 'texto'), col('gl', T('gl'), 'entero'), col('sc', T('SC'), 'auto4'), col('cm', T('CM'), 'auto4'), col('F', 'F', 'forma2'), col('p', 'p', 'pvalor')],
       filas, notas: [T('Sumas de cuadrados tipo {t}. {x}', { t: ['', 'I', 'II', 'III'][r.tipoSC], x: ['',
         T('Tipo I: en el orden del modelo; los tratamientos van ajustados por los bloques y la covariable.'),
         T('Tipo II: cada término ajustado por los demás que no lo contienen (los tratamientos por la covariable y la covariable por los tratamientos).'),
@@ -213,7 +213,7 @@ SP.definir('ancova', function (SP) {
       columnas: [col('cov', T('Covariable'), 'texto'), col('b', T('Pendiente'), 'sig'), col('ee', T('EE'), 'sig'), col('t', 't', 'forma2'), col('p', 'p', 'pvalor'), col('ic', T('IC {c} %', { c: Math.round(100 * r.nivel) }), 'intervaloSig')],
       filas: r.pendientes.map(s => ({ cov: s.covariable, b: s.estimado, ee: s.ee, t: s.t, p: s.p, ic: s.ic })), notas: [] });
     cuadros.push({ id: 'supuestos', titulo: T('Supuestos de la covarianza'),
-      columnas: [col('prueba', T('Prueba'), 'texto'), col('F', 'F', 'forma2'), col('gl', 'gl', 'texto'), col('p', 'p', 'pvalor')],
+      columnas: [col('prueba', T('Prueba'), 'texto'), col('F', 'F', 'forma2'), col('gl', T('gl'), 'texto'), col('p', 'p', 'pvalor')],
       filas: r.homogeneidad.map(h => ({ prueba: T('Pendientes iguales: {c} × tratamientos', { c: h.covariable }), F: h.F, gl: `${h.gl1}, ${h.gl2}`, p: h.p }))
         .concat(r.independencia.map(d => ({ prueba: T('Tratamientos sobre {c}', { c: d.covariable }), F: d.F, gl: `${d.gl1}, ${d.gl2}`, p: d.p }))),
       notas: [T('Pendientes iguales: compara el modelo con una pendiente común contra uno con una pendiente por tratamiento. Tratamientos sobre la covariable: ANOVA de la covariable con el mismo diseño; si difiere, puede que los tratamientos la afecten.')] });

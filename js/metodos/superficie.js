@@ -102,12 +102,12 @@ SP.definir('metodos-superficie', function (SP) {
     const K = r.coeficientes;
     cuadros.push({ id: 'coeficientes', titulo: T('Coeficientes en unidades codificadas'),
       columnas: [col('t', T('Término'), 'texto'), col('b', T('Estimado'), 'sig'), col('ee', T('EE'), 'sig'), col('tv', 't', 'forma2'), col('p', 'p', 'pvalor')],
-      filas: K.nombre.map((t, j) => ({ t, b: K.estimado[j], ee: K.ee[j], tv: K.t[j], p: K.p[j] })),
+      filas: K.nombre.map((t, j) => ({ t: t === '(Intercepto)' ? T(t) : t, b: K.estimado[j], ee: K.ee[j], tv: K.t[j], p: K.p[j] })),
       notas: [T('Variables codificadas: z = (x − centro) / paso (cuadro de la codificación).')] });
     const N = r.naturales;
     cuadros.push({ id: 'naturales', titulo: T('Ecuación en unidades originales'),
       columnas: [col('t', T('Término'), 'texto'), col('b', T('Coeficiente'), 'sig'), col('ee', T('EE'), 'sig'), col('tv', 't', 'forma2'), col('p', 'p', 'pvalor')],
-      filas: N.nombre.map((t, j) => ({ t, b: N.estimado[j], ee: N.ee[j], tv: N.t[j], p: N.p[j] })),
+      filas: N.nombre.map((t, j) => ({ t: t === '(Intercepto)' ? T(t) : t, b: N.estimado[j], ee: N.ee[j], tv: N.t[j], p: N.p[j] })),
       notas: [T('El mismo modelo escrito con las variables originales; los t de los términos de menor orden prueban otra hipótesis (la pendiente en x = 0).')] });
     cuadros.push({ id: 'codificacion', titulo: T('Codificación de los factores'),
       columnas: [col('f', T('Factor'), 'texto'), col('c', T('Centro (z = 0)'), 'sig'), col('s', T('Paso (z = 1)'), 'sig')],
@@ -275,7 +275,7 @@ SP.definir('metodos-superficie', function (SP) {
       notas: [T('Modelo contra la media (como las proporciones suman 1, la media está en el modelo); falta de ajuste contra el error puro de las mezclas repetidas.')] });
     cuadros.push({ id: 'coeficientes', titulo: T('Coeficientes de Scheffé'),
       columnas: [col('t', T('Término'), 'texto'), col('b', T('Estimado'), 'sig'), col('ee', T('EE'), 'sig'), col('tv', 't', 'forma2'), col('p', 'p', 'pvalor')],
-      filas: r.coeficientes.nombre.map((t, j) => ({ t, b: r.coeficientes.estimado[j], ee: r.coeficientes.ee[j], tv: r.coeficientes.t[j], p: r.coeficientes.p[j] })),
+      filas: r.coeficientes.nombre.map((t, j) => ({ t: t === '(Intercepto)' ? T(t) : t, b: r.coeficientes.estimado[j], ee: r.coeficientes.ee[j], tv: r.coeficientes.t[j], p: r.coeficientes.p[j] })),
       notas: [T('Sobre las proporciones (cada fila dividida por su suma{t}). Cada componente solo: la respuesta del componente puro; los productos: cuánto se aparta la mezcla de lo que suman sus partes.', { t: Math.abs(tot - 1) > 1e-9 ? T(', {s}', { s: sig(tot) }) : '' })] });
     cuadros.push({ id: 'optimo', titulo: T('La mezcla de {o} respuesta', { o: r.objetivo === 'minimo' ? T('menor') : T('mayor') }),
       columnas: [col('c', T('Componente'), 'texto'), col('p', T('Proporción'), 'forma'), col('x', T('Cantidad'), 'sig')],

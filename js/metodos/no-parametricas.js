@@ -656,7 +656,7 @@ SP.definir('no-parametricas', function (SP) {
           columnas: [col('nombre', T('Tratamiento'), 'texto'), col('n', kw ? 'n' : T('Bloques'), 'entero'), col('mediana', T('Mediana'), 'escala')].concat(kw ? [col('q1', T('Q1'), 'escala'), col('q3', T('Q3'), 'escala'), col('rangoMedio', T('Rango medio'), 'num2')] : [col('sumaRangos', T('Suma de rangos'), 'num'), col('rangoMedio', T('Rango medio'), 'num2')]).concat([col('letras', T('Grupo'), 'texto')]),
           filas: orden.map(j => Object.assign({ _dec: r.dec, letras: r.letras[j] }, pr.grupos[j])), notas: [T('Letras por {m} con ajuste {aj} y α = {a}.', { m: npar(cp.metodo), aj: naj(cp.ajuste), a })] },
         { id: 'prueba', titulo: kw ? T('Prueba de Kruskal-Wallis') : T('Prueba de Friedman'),
-          columnas: [col('prueba', T('Prueba'), 'texto'), col('est', kw ? 'H' : 'χ²', 'forma'), col('gl', 'gl', 'entero'), col('p', 'p', 'pvalor'), col('efecto', kw ? T('η² de H') : T('W de Kendall'), 'forma')],
+          columnas: [col('prueba', T('Prueba'), 'texto'), col('est', kw ? 'H' : 'χ²', 'forma'), col('gl', T('gl'), 'entero'), col('p', 'p', 'pvalor'), col('efecto', kw ? T('η² de H') : T('W de Kendall'), 'forma')],
           filas: [filaPrueba], notas },
         { id: 'pares', titulo: T('Comparaciones por pares: {m} ({aj})', { m: npar(cp.metodo), aj: naj(cp.ajuste) }),
           columnas: [col('par', T('Par'), 'texto'), col('dif', cp.metodo === 'wilcoxon' ? T('Mediana de las diferencias') : kw || cp.metodo === 'nemenyi' ? T('Dif. de rangos medios') : T('Dif. de sumas de rangos'), cp.metodo === 'wilcoxon' ? 'escala' : 'num2'),

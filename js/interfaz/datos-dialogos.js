@@ -223,7 +223,7 @@
     ['arcoseno', 'asin(√p)', 'Proporciones y porcentajes (germinación, incidencia).'],
     ['reciproco', '1/x', 'Tiempos (días a floración) cuando la varianza crece mucho.'],
     ['boxcox', 'Box-Cox', 'Estima la potencia que mejor estabiliza la varianza y normaliza los residuales.'],
-    ['estandarizar', '(x − media)/DE', 'Pasar a unidades de desviación estándar.'],
+    ['estandarizar', T('(x − media)/DE'), 'Pasar a unidades de desviación estándar.'],
   ];
   function transformar(jInicial) {
     const h = hoja();
