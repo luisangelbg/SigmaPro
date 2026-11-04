@@ -14,8 +14,9 @@ que ya está y lo que viene en las fases 2 y 3 (detalle en [`propuesta/PROPUESTA
   `node tools/motor-r/armar.mjs --fuentes` y servirlo junto a la app.
 - **Inglés**: quedan en español los comentarios del código R equivalente (unos 260 fragmentos dentro del código de los
   métodos) y el resumen y el detalle de las comprobaciones de la batería en el bloque Validación.
-- **Pruebas externas**: Lighthouse y axe-core se usan solo en las pruebas y se instalan aparte; para la 1.0.0 no
-  estaban instalados (la última corrida con ellos fue la de la 0.6.2, 9 oct 2026, toda en verde).
+- **Pruebas externas**: Lighthouse y axe-core se usan solo en las pruebas y se instalan aparte (con npm, fuera de la app).
+  La 1.0.0 pasó la batería completa con ellos (3 nov 2026): axe-core sin incumplimientos en 113 escenarios y Lighthouse
+  99 en teléfono y 100 en escritorio en las cuatro páginas, con 100 en accesibilidad, buenas prácticas y SEO.
 istro en Zenodo con DOI.
 - **INDAUTOR**: el ejemplar se arma solo con el código propio (núcleo, métodos, interfaz y exportadores). Los módulos
   comunes de la suite son del mismo autor; los íconos y demás componentes de terceros están en

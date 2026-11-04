@@ -14,9 +14,9 @@
   ],
   "fcp": "1.4 s",
   "lcp": "1.7 s",
-  "tbt": "16 ms",
+  "tbt": "18 ms",
   "cls": "0.000",
-  "si": "2.5 s",
+  "si": "2.6 s",
   "bajo": [
    "forced-reflow-insight",
    "network-dependency-tree-insight"
@@ -37,7 +37,7 @@
   ],
   "fcp": "1.4 s",
   "lcp": "1.7 s",
-  "tbt": "22 ms",
+  "tbt": "27 ms",
   "cls": "0.000",
   "si": "2.4 s",
   "bajo": [
@@ -58,11 +58,11 @@
    99,
    99
   ],
-  "fcp": "1.6 s",
+  "fcp": "1.4 s",
   "lcp": "1.7 s",
-  "tbt": "7 ms",
+  "tbt": "9 ms",
   "cls": "0.000",
-  "si": "2.6 s",
+  "si": "2.5 s",
   "bajo": [
    "network-dependency-tree-insight"
   ]
@@ -82,7 +82,7 @@
   ],
   "fcp": "1.4 s",
   "lcp": "1.7 s",
-  "tbt": "39 ms",
+  "tbt": "61 ms",
   "cls": "0.000",
   "si": "2.7 s",
   "bajo": [
@@ -105,11 +105,11 @@
    100,
    100
   ],
-  "fcp": "331 ms",
+  "fcp": "333 ms",
   "lcp": "381 ms",
   "tbt": "0 ms",
   "cls": "0.000",
-  "si": "677 ms",
+  "si": "664 ms",
   "bajo": [
    "network-dependency-tree-insight"
   ]
@@ -127,13 +127,12 @@
    100,
    100
   ],
-  "fcp": "335 ms",
-  "lcp": "382 ms",
+  "fcp": "333 ms",
+  "lcp": "391 ms",
   "tbt": "0 ms",
   "cls": "0.000",
-  "si": "731 ms",
+  "si": "710 ms",
   "bajo": [
-   "forced-reflow-insight",
    "network-dependency-tree-insight"
   ]
  },
@@ -150,13 +149,12 @@
    100,
    100
   ],
-  "fcp": "331 ms",
-  "lcp": "386 ms",
+  "fcp": "336 ms",
+  "lcp": "388 ms",
   "tbt": "0 ms",
   "cls": "0.000",
-  "si": "798 ms",
+  "si": "760 ms",
   "bajo": [
-   "forced-reflow-insight",
    "network-dependency-tree-insight"
   ]
  },
@@ -173,11 +171,11 @@
    100,
    100
   ],
-  "fcp": "332 ms",
-  "lcp": "379 ms",
+  "fcp": "333 ms",
+  "lcp": "396 ms",
   "tbt": "0 ms",
   "cls": "0.002",
-  "si": "701 ms",
+  "si": "730 ms",
   "bajo": [
    "valid-source-maps",
    "forced-reflow-insight",
