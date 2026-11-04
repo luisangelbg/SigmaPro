@@ -1,5 +1,7 @@
 # SigmaPro
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23935865.svg)](https://doi.org/10.5281/zenodo.23935865)
+
 **Statistics for agronomic and biological research, with numbers you can check** · *Español: [LEEME.md](LEEME.md)*
 
 SigmaPro is a statistics application for agronomic and biological research that runs entirely in the browser: from
@@ -117,7 +119,10 @@ has a clear case, and announced as such.
 ## How to cite
 
 Barrera-Guzmán, L. Á. (2026). SigmaPro: estadística para la investigación agronómica y biológica (Version 1.0.0)
-[Computer software]. LABG Suite. https://github.com/luisangelbg/SigmaPro
+[Computer software]. LABG Suite. Zenodo. https://doi.org/10.5281/zenodo.23935865
+
+The DOI above always resolves to the latest version; each version has its own DOI on the Zenodo page (version 1.0.0:
+10.5281/zenodo.23935866). Cite the version you used. Code: https://github.com/luisangelbg/SigmaPro
 
 The methods paragraph of every report cites SigmaPro and R with their versions. `CITATION.cff` has the same data for
 reference managers.

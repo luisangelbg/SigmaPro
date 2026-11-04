@@ -568,7 +568,7 @@ self.SP_CATALOGO = {
 "Bajo hasta la media − 1 DE; medio hasta la media + 1 DE; alto hasta la media + 2 DE; muy alto, después.": "Low up to the mean − 1 SD; medium up to the mean + 1 SD; high up to the mean + 2 SD; very high beyond.",
 "Banda de ± {b} (± z/√n al {k} %): fuera de ella, la correlación difiere de cero.": "± {b} band (± z/√n at {k}%): outside it, the correlation differs from zero.",
 "Barras de error en las gráficas de medias": "Error bars in the mean plots",
-"Barrera-Guzmán, L. Á. (2026). SigmaPro: estadística para la investigación agronómica y biológica (versión {v}) [Programa de cómputo]. LABG Suite.": "Barrera-Guzmán, L. Á. (2026). SigmaPro: Statistics for agronomic and biological research (Version {v}) [Computer software]. LABG Suite.",
+"Barrera-Guzmán, L. Á. (2026). SigmaPro: estadística para la investigación agronómica y biológica (versión {v}) [Programa de cómputo]. LABG Suite. https://doi.org/10.5281/zenodo.23935865": "Barrera-Guzmán, L. Á. (2026). SigmaPro: Statistics for agronomic and biological research (Version {v}) [Computer software]. LABG Suite. https://doi.org/10.5281/zenodo.23935865",
 "Barriles dentro de lotes (anidados; el barril se numera de nuevo en cada lote)": "Casks within batches (nested; the cask is renumbered in each batch)",
 "Bartlett": "Bartlett",
 "Bartlett necesita al menos dos observaciones en cada grupo.": "Bartlett needs at least two observations in each group.",

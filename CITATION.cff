@@ -24,6 +24,14 @@ authors:
     family-names: "Barrera-Guzmán"
     orcid: "https://orcid.org/0000-0001-8057-2583"
 version: "1.0.0"
+doi: "10.5281/zenodo.23935865"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.23935865"
+    description: "Concept DOI: always the latest version"
+  - type: doi
+    value: "10.5281/zenodo.23935866"
+    description: "Version 1.0.0"
 date-released: "2026-11-03"
 repository-code: "https://github.com/luisangelbg/SigmaPro"
 url: "https://luisangelbg.github.io/SigmaPro/"

@@ -30,6 +30,9 @@ la LABG Suite. Es la 0.6.2 (las cinco fases completas) con el manual en inglés 
   repositorio y la fecha, `<meta name="labg-repo">` para «Reportar un problema», y las capturas del manual en el
   repositorio. El hito 1.0 del estado del desarrollo queda terminado. El repositorio propio del motor R (`motor-r/`)
   no se publica: en línea, el motor sale del repositorio público de webR.
+- **Publicada** el 3 nov 2026: https://github.com/luisangelbg/SigmaPro, https://luisangelbg.github.io/SigmaPro/ y Zenodo
+  (DOI de concepto 10.5281/zenodo.23935865; versión 1.0.0: 10.5281/zenodo.23935866). El DOI va en la cita que escribe el reporte, en
+  `CITATION.cff`, `codemeta.json`, los README y los dos manuales.
 
 ### 0.6.2 · La ficha de Fundamentos con el modo enfocado (9 oct 2026)
 

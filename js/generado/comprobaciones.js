@@ -90,7 +90,7 @@ window.SP_COMPROBACIONES = {
   "renglones": [
    "Lectores: readxl, xml2, pdftools, png, openssl, commonmark (R) y el lector de imágenes del sistema"
   ],
-  "fecha": "2026-11-04T03:04:37.424Z",
+  "fecha": "2026-11-04T03:22:18.576Z",
   "motor": "node v24.19.0"
  },
  "codigo-r": {
@@ -114,14 +114,14 @@ window.SP_COMPROBACIONES = {
   "titulo": "La interfaz en inglés",
   "ok": true,
   "resumen": "6984 textos traducidos; 810 casos con los mismos números en los dos idiomas (71,773 valores); 272 resultados armados en inglés sin textos pendientes",
-  "fecha": "2026-11-04T03:03:14.249Z",
+  "fecha": "2026-11-04T03:21:25.405Z",
   "motor": "node v24.19.0"
  },
  "regresion": {
   "titulo": "Regresión de resultados y reportes",
   "ok": true,
   "resumen": "272 casos, 70697 números; resultado cambiado en 0, reporte en 0",
-  "fecha": "2026-11-04T03:03:18.241Z",
+  "fecha": "2026-11-04T03:21:28.598Z",
   "motor": "node v24.19.0"
  },
  "intro": {
@@ -169,15 +169,15 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "39 escalas (con sus contextos), 108 bordes probados antes, en y después del límite, 147 tarjetas, una por zona; 272 casos del núcleo JS: 7,363 números en sus textos, 56 de ellos calculados por el texto (con su dirección); 2,765 tarjetas con los valores reales de los cuadros; control: de 2,698 números alterados, la comparación habría aceptado el 6.1 % de los alterados un 7 % y el 3.9 % de los alterados un 37 %",
   "renglones": [],
-  "fecha": "2026-11-04T03:03:22.751Z",
+  "fecha": "2026-11-04T03:22:33.712Z",
   "motor": "node v24.19.0"
  },
  "enlaces": {
   "titulo": "Los enlaces y los íconos de la app",
   "ok": true,
-  "resumen": "132 archivos que nombra index.html, todos presentes; 3 anclas de la página, 12 data-ir, 0 términos del glosario y 1 fichas nombradas en la página y en la interfaz; en la página viva: 4 términos del glosario, 82 fichas, 1 análisis del árbol, 9 bloques y 3 anclas enlazados, todos existen; 5 íconos (manifiesto y pestaña) que existen y miden lo que declaran; 9 de 9 direcciones externas responden",
+  "resumen": "132 archivos que nombra index.html, todos presentes; 3 anclas de la página, 12 data-ir, 0 términos del glosario y 1 fichas nombradas en la página y en la interfaz; en la página viva: 4 términos del glosario, 82 fichas, 1 análisis del árbol, 9 bloques y 3 anclas enlazados, todos existen; 5 íconos (manifiesto y pestaña) que existen y miden lo que declaran; 10 de 10 direcciones externas responden",
   "renglones": [],
-  "fecha": "2026-11-04T03:05:54.520Z",
+  "fecha": "2026-11-04T03:22:47.752Z",
   "motor": "node v24.19.0"
  },
  "lighthouse": {

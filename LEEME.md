@@ -1,5 +1,7 @@
 # SigmaPro
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23935865.svg)](https://doi.org/10.5281/zenodo.23935865)
+
 **Estadística para la investigación agronómica y biológica, con cifras que se pueden comprobar** · *English:
 [README.md](README.md)*
 
@@ -85,7 +87,10 @@ Sus partes en HTML están en `manual/es/` y `manual/en/`; `manual/LEEME.md` expl
 ## Cómo citarlo
 
 Barrera-Guzmán, L. Á. (2026). SigmaPro: estadística para la investigación agronómica y biológica (versión 1.0.0)
-[Programa de cómputo]. LABG Suite. https://github.com/luisangelbg/SigmaPro
+[Programa de cómputo]. LABG Suite. Zenodo. https://doi.org/10.5281/zenodo.23935865
+
+El DOI lleva siempre a la versión más reciente; cada versión tiene su propio DOI en la página de Zenodo (versión 1.0.0:
+10.5281/zenodo.23935866). Cita la versión que usaste. Código: https://github.com/luisangelbg/SigmaPro
 
 El párrafo de métodos de cada reporte cita SigmaPro y R con sus versiones. `CITATION.cff` trae los mismos datos para
 los gestores de referencias.

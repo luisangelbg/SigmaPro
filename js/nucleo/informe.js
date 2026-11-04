@@ -27,7 +27,7 @@ SP.definir('informe', function (SP) {
 
   /* ---------------- referencias ---------------- */
   const REF = {
-    sigmapro: () => T('Barrera-Guzmán, L. Á. (2026). SigmaPro: estadística para la investigación agronómica y biológica (versión {v}) [Programa de cómputo]. LABG Suite.', { v: SP.VERSION }),
+    sigmapro: () => T('Barrera-Guzmán, L. Á. (2026). SigmaPro: estadística para la investigación agronómica y biológica (versión {v}) [Programa de cómputo]. LABG Suite. https://doi.org/10.5281/zenodo.23935865', { v: SP.VERSION }),
     rcore: () => 'R Core Team (2024). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Viena, Austria. https://www.R-project.org/',
     gomez1984: () => 'Gomez, K. A. y Gomez, A. A. (1984). Statistical procedures for agricultural research (2.ª ed.). John Wiley & Sons.',
     yates1936b: () => 'Yates, F. (1936). Incomplete randomized blocks. Annals of Eugenics, 7(2), 121–140.',
