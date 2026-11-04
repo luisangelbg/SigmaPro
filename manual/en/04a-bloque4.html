@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 4 (1 of 7)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b4" data-pestana="B4" data-orden="4" style="--acento: var(--b4)">
+  <div class="cap-apertura">
+    <div class="cap-num">4</div>
+    <div class="cap-etiqueta">Block 4 · Analysis</div>
+    <h1>Analysis: from the design to the conclusion</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">The heart of SigmaPro: 74 analyses in 17 families, from the analysis of variance of an experimental design to mixed models, survival and time series (the other 4 summaries are in Explore, chapter 3). You choose them with the assistant, in the catalog or in the model builder, and they all respond the same way: a conclusion in words, tables, charts, assumptions, the R code that gives the same numbers and their fact sheet in Fundamentals.</p>
+    <ul class="cap-contenido">
+      <li><b>4.1</b>Three ways to choose an analysis</li>
+      <li><b>4.2</b>The assistant</li>
+      <li><b>4.3</b>The catalog</li>
+      <li><b>4.4</b>The model builder</li>
+      <li><b>4.5</b>How to read a result</li>
+      <li><b>4.6</b>The R engine inside the browser</li>
+      <li><b>4.7–4.11</b>Assumptions, tests, designs and means</li>
+      <li><b>4.12–4.17</b>Regression, contingency, mixed and generalized models</li>
+      <li><b>4.18–4.24</b>Nonlinear, multi-environment, multivariate, sampling, survival and time series</li>
+    </ul>
+  </div>
+
+  <!-- 4.1 -->
+  <h2 id="s4-1"><span class="num">4.1</span>Three ways to choose an analysis</h2>
+  <p class="lead">At the top of the block, three buttons choose how you get to the analysis. All three lead to the same place (the same method with the same options), and you can switch from one to another at any time.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Way</th><th>Who it is for</th><th style="width:0.6in">Section</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Assistant</span></td><td>For those who know what they want to learn from their trial but not which analysis to use. A few questions in field language (what did you measure?, did you group the units into blocks?, was any factor applied to main plots?) and a recommendation with its reasons. It is the mode the block opens in.</td><td>4.2</td></tr>
+      <tr><td><span class="ui">Catalog</span></td><td>For those who already know which analysis they want: the complete list, grouped by families, with the form of each method.</td><td>4.3</td></tr>
+      <tr><td><span class="ui">Model builder</span></td><td>For those who think in terms of a model: you drag the variables to their roles (response, factors, blocks, random effects, covariates…) and the app writes the formula and chooses the analysis. The formula can also be typed by hand.</td><td>4.4</td></tr>
+    </tbody>
+  </table>
+  <p>Next to the three buttons, <span class="ui">History</span> lists the most recently computed analyses, with their variables and their data; choosing one reopens it (section 1.1). With no data loaded, the block offers to load them right there (<span class="ui">Import a file</span>, <span class="ui">Paste a table</span> or <span class="ui">Try an example</span>) or to go to Data; the calculations that need no data (sample size, power, replicates) open with <span class="ui">Calculate a sample size or power</span>, here or in Explore, which selects <span class="ui">Power and sample size: means (t test)</span> (section 4.22). If a filter is active in Data, the whole block works with the rows that pass it.</p>
+
+  <!-- 4.2 -->
+  <h2 id="s4-2"><span class="num">4.2</span>The assistant</h2>
+  <p>The assistant asks the questions a statistician would ask on seeing a trial for the first time, in order, and only the ones that are needed: each answer decides the next question. On the right, the <b>recommendation</b> is updated with each answer. The answers come already proposed from the data (what the card in section 2.13 recognizes), so often you only need to review them.</p>
+  <figure>
+    <div class="marco"><img src="../img/en/b4-asistente-arriba.png" alt="The assistant with the maize example: on the left, the numbered questions (what do you want to know, what did you measure, what kind of data is it, which factors did you apply) with the proposed answers; on the right, the recommendation card: Factorial in randomized complete blocks, with the why, what will be checked, what to do if the assumptions fail, the Use and compute and Adjust in the model builder buttons, and the analyses for the next steps"></div>
+    <figcaption><b>Figure 4.1.</b> The assistant with the maize trial. With the proposed answers, it recommends a factorial in randomized complete blocks.</figcaption>
+  </figure>
+  <h3>The questions</h3>
+  <p>The first question, <b>What do you want to know?</b>, opens one of ten paths:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.35in">Goal</th><th>What it asks next and what it usually recommends</th></tr></thead>
+    <tbody>
+      <tr><td>Compare treatments or groups</td><td>The response and its kind (continuous, count, percentage, ordinal scale), the factors (up to 3), the blocks (none, in one direction, in two, incomplete), whether there were main plots or strips, whether there is a covariate measured before the treatment, whether the same unit was measured on several dates, whether the blocks are random and how to compare (all pairs, against a control, contrasts, or the curve of a rate). It recommends the corresponding design (sections 4.10 and 4.11), an ANCOVA, a repeated-measures analysis, a mixed model, a generalized model or a nonparametric test.</td></tr>
+      <tr><td>Compare genotypes across several environments</td><td>Response, genotype, environment, replicates and what you are interested in: the combined analysis, stability, AMMI or GGE (section 4.20).</td></tr>
+      <tr><td>Relationship between numeric variables</td><td>Whether there is a response to explain: with one predictor, the shape (straight line, curve, growth, dose-response, plateau); with several, all of them, stepwise, all combinations or a response surface. Without a response: a correlation, partial if other variables are controlled for (sections 4.12, 4.13, 4.18 and 4.19).</td></tr>
+      <tr><td>Association between categories</td><td>Whether they are different cases, the same case classified twice, two raters or an association across several lots, and whether the data come already counted (section 4.14).</td></tr>
+      <tr><td>Time to an event</td><td>The time, the event (1 yes, 0 censored), whether groups are compared and whether there are covariates: Kaplan-Meier or Cox (section 4.23).</td></tr>
+      <tr><td>A variable measured over time</td><td>The series, the time and what you are interested in: trend, cycle or autocorrelation (section 4.24).</td></tr>
+      <tr><td>Several responses at once</td><td>MANOVA or discriminant analysis (section 4.21).</td></tr>
+      <tr><td>Estimate the mean or the total of a sampled population</td><td>The variable and whether there were strata (section 4.22).</td></tr>
+      <tr><td>Plan a trial</td><td>Which variable will be measured, to take its variation from the loaded data: number of replicates or power (section 4.22).</td></tr>
+      <tr><td>Just describe the data</td><td>Takes you to the Explore block (chapter 3).</td></tr>
+    </tbody>
+  </table>
+  <h3>The recommendation</h3>
+  <p>The card on the right gives the recommended analysis and everything you need to decide whether to accept it:</p>
+  <ul>
+    <li>the <b>title</b> and, below it, the name under which it appears in the catalog;</li>
+    <li>a sentence with what is going to be analyzed (<i>2 crossed factors (hibrido × dosis) on “rend”</i>);</li>
+    <li><b>Why</b>: the reasons, in terms of the trial (<i>the variation among blocks is removed from the error</i>; <i>“dosis” is numeric: it is split into linear and quadratic components</i>);</li>
+    <li><b>To be checked</b>: the assumptions the analysis puts to the test, and a box with <b>what to do if they fail</b>;</li>
+    <li>warnings, when something in the data deserves attention;</li>
+    <li>the <span class="ui">Use and compute</span> button, which opens the analysis in the catalog with its variables already set, and, when applicable, <span class="ui">Adjust in the model builder</span>, which takes it to the model builder (section 4.4), and <span class="ui">See it in the decision tree</span>, which shows the path that leads to that analysis among all the others (section 9.3);</li>
+    <li><b>Next steps</b>: the analyses that usually follow (the mean comparison, the rate curve, the check of the assumptions), each as a button that opens it directly.</li>
+  </ul>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-asistente-tiempo.png" alt="The assistant with the days-to-germination example and the goal time to an event: the questions on the time, the event, the groups and the covariates, and the recommendation Cox proportional hazards model with its why, what will be checked and, as a next step, the Kaplan-Meier curves by treatment"></div>
+    <figcaption><b>Figure 4.2.</b> Another path: time to an event. With a covariate (seed weight), the assistant recommends the Cox model and leaves the Kaplan-Meier curves for later.</figcaption>
+  </figure>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The questions that change the analysis the most</div>
+    <p>Two questions deserve special care, because the data almost never answer them (section 2.13): whether <b>any factor was applied to main plots</b> (irrigation, tillage, sowing date: then it is a split plot or a strip plot, and each factor has its own error) and whether <b>the same unit was measured several times</b> (repeated measures). Answering them wrongly does not produce a visible error, but wrong F tests.</p>
+    <p>The exception is plots: if the table has a column that numbers them (<code>parcela</code>, <code>subparcela</code>, <code>franja</code>…), the assistant recognizes in the data split plots (a factor that does not change within each plot of the block), split-split plots and strip plots, proposes them in its question and, in the recommendation, says what it saw. Without blocks, the plot is taken as the replicate of each main plot. What you answer in the question prevails. The “Wheat: irrigation × variety” example comes this way.</p>
+  </div>
+
+  <!-- 4.3 -->
+  <h2 id="s4-3"><span class="num">4.3</span>The catalog</h2>
+  <p class="lead">The catalog shows the block’s 74 analyses, grouped in their 17 families, and tells you which ones can be run with the loaded table.</p>
+  <p>At the top, two cards read the data:</p>
+  <ul>
+    <li><b>With your data</b>: what is in the table (rows, numeric columns, factors with their levels, blocks, plots, dates, counts, proportions and 0/1 columns) and how many analyses can be run with it (with the maize example, “You can run 57 of the 74 analyses in the catalog with this table.”).</li>
+    <li><b>Recommended for your data</b>: the analysis the assistant proposes from what it sees in the table, with its why and, under <b>Next:</b>, the analyses that usually follow, each as a button. The assistant’s questions refine the choice (section 4.2).</li>
+  </ul>
+  <p>Below, each family shows its analyses on <b>cards</b>, with the analysis’s illustration, its name, what it is for and its status: <span class="ui">Ready with your data</span>; <span class="ui">Missing</span>, with what is missing (with the maize example, the MANOVA says “Missing: at least two numeric responses.”); or <span class="ui">No data needed</span>. Those that run in the R engine say so (<span class="ui">R engine</span>, section 4.6). The <span class="ui">ⓘ</span> icon on each card opens the analysis’s fact sheet in Fundamentals (chapter 9). Next to the name of each family you can read how many of its analyses can be run (with the maize example, Experimental designs says “8 of 9 with your data”).</p>
+  <p>Three controls narrow down the list: the text search (<span class="ui">Search: Tukey, blocks, counts, regression…</span>), the <span class="ui">Only the ones I can run with my data</span> checkbox, which is remembered, and the family selector (<span class="ui">All families</span>).</p>
+  <p>Clicking a card opens the analysis: the catalog collapses into a bar with the <b>Selected analysis</b> and the <span class="ui">Open the catalog (74 analyses)</span> button to open it again, and below it appear, on the left, its form (the <b>experiment model</b>: which column is the response, which are the treatments, the block and the options) and, on the right, the result, which is recomputed whenever you change any field. With no data loaded, the catalog only offers the calculations that do not need them: sample size and power (section 4.22).</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-catalogo.png" alt="The analysis catalog open with the maize example: at the top, the Selected analysis bar with the Close the catalog button; the With your data card with rows, numeric columns, factors and blocks and how many analyses can be run; the Recommended for your data card; the search, the Only the ones I can run with my data checkbox and the family selector; and the first families with their cards, each with its illustration, its name, what it is for and its status"></div>
+    <figcaption><b>Figure 4.3.</b> The catalog open with the maize example: at the top, what is in the data and the recommendation; below, the families with their cards. Descriptives, frequencies, proportions and goodness of fit are in Explore (chapter 3).</figcaption>
+  </figure>
+  <p>When you open a method, the app proposes the variables of its form from the data (the response, the factors, the block it recognizes), just as the assistant does. With another table, the proposals are redone; with changes to the same table, the choices already made are respected.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Only what is validated is offered</div>
+    <p>A method appears in the catalog only if all its validation cases against R passed (chapter 8). If for some reason one were not validated, in its place you would read “This analysis does not yet have an approved validation against R.” It is the accuracy rule of section 1.2 applied to the interface.</p>
+  </div>
+  <p>Sections 4.7 to 4.24 go through the families in catalog order. For each method they explain what it is for, what the form asks for, what it delivers and what its R equivalent is.</p>
+
+  <!-- 4.4 -->
+  <h2 id="s4-4"><span class="num">4.4</span>The model builder</h2>
+  <p>The builder starts from a simple idea: an analysis is a model, and a model says what role each variable plays. On the left are the table’s <b>variables</b>; on the right, eight <b>zones</b>, one per role. Below, the resulting <b>formula</b> and the <b>analysis</b> the app chose for it.</p>
+  <figure>
+    <div class="marco"><img src="../img/en/b4-constructor.png" alt="The model builder with the maize example: the variable list on the left; the zones Response with rend, Event (0/1), More responses, Blocks or replicates with bloque, Random effects, Treatment factors with hibrido by dosis, Main plot and Covariates; the response distribution selector; the formula rend ~ bloque + hibrido * dosis with the Edit the formula button; and the chosen analysis, Randomized complete blocks, with the Use and compute button"></div>
+    <figcaption><b>Figure 4.4.</b> The builder with the maize example. The app has already put each variable in its zone: the formula is <code>rend ~ bloque + hibrido * dosis</code> and the analysis, randomized complete blocks.</figcaption>
+  </figure>
+  <h3>Putting each variable in its zone</h3>
+  <p>There are three ways, so that it works with a mouse, with a keyboard and on a phone:</p>
+  <ul>
+    <li><b>drag</b> the variable from the list to the zone;</li>
+    <li>choose it in the <span class="ui">Add…</span> menu of each zone;</li>
+    <li>with the variable focused (with Tab or a click), press the zone’s <b>key</b>: R, E, M, B, A, F, P or C. Delete removes it from its zone.</li>
+  </ul>
+  <p>A variable already in use is dimmed in the list; the ✕ on each chip returns it. The zones that accept only numeric variables (response, event, more responses, covariates) offer only those in their menu.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.65in">Zone</th><th style="width:0.35in" class="c">Key</th><th>What it is for</th></tr></thead>
+    <tbody>
+      <tr><td><b>Response</b></td><td class="c">R</td><td>The variable that was measured (or the time to an event).</td></tr>
+      <tr><td><b>Event (0/1)</b></td><td class="c">E</td><td>With time to an event: 1 if it happened (germinated, died), 0 if not (censored). It builds the Cox model.</td></tr>
+      <tr><td><b>More responses</b></td><td class="c">M</td><td>Other variables measured on the same units, to analyze them together (MANOVA).</td></tr>
+      <tr><td><b>Blocks or replicates</b></td><td class="c">B</td><td>One (complete blocks), or two (rows and columns: Latin square).</td></tr>
+      <tr><td><b>Random effects</b></td><td class="c">A</td><td>Blocks, locations or years seen as a sample of many possible ones: mixed model, in the R engine.</td></tr>
+      <tr><td><b>Treatment factors</b></td><td class="c">F</td><td>The factors that were applied; several are crossed (×).</td></tr>
+      <tr><td><b>Main plot</b></td><td class="c">P</td><td>The factor that was applied to main plots (split plot); it must also be among the factors.</td></tr>
+      <tr><td><b>Covariates</b></td><td class="c">C</td><td>Numeric variables measured before the treatment (ANCOVA) or predictors (regression).</td></tr>
+    </tbody>
+  </table>
+  <p>The <span class="ui">Response distribution</span> selector says what the response is like: <b>Normal</b> (a continuous measurement), <b>Count</b> (Poisson) or <b>Positive and skewed</b> (gamma). The last two lead to generalized linear models (section 4.17).</p>
+  <h3>Which analysis it chooses</h3>
+  <p>The app reads the zones and chooses the corresponding analysis from the catalog, with the same logic a statistician would use:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.9in">If the zones have…</th><th>…the analysis is</th></tr></thead>
+    <tbody>
+      <tr><td>Factors, no blocks</td><td>Completely randomized (factorial if there are several)</td></tr>
+      <tr><td>Factors and one block</td><td>Randomized complete blocks</td></tr>
+      <tr><td>Factors and two blocks (row and column)</td><td>Latin square (up to two factors)</td></tr>
+      <tr><td>Two factors, one on a main plot, and one block</td><td>Split plot (with two blocks, in a Latin square)</td></tr>
+      <tr><td>Three factors, one on a main plot, and one block</td><td>Split-split plot</td></tr>
+      <tr><td>Only covariates</td><td>Linear regression (with blocks, the general linear model)</td></tr>
+      <tr><td>Factors and covariates (up to 2 and 2, with at most one block)</td><td>ANCOVA</td></tr>
+      <tr><td>Some random effect</td><td>Linear mixed model (R engine); with a main plot, also its error <code>(1 | bloque:parcela)</code></td></tr>
+      <tr><td>Count or gamma distribution</td><td>Generalized linear model; with random effects, the generalized linear mixed model (Poisson or gamma, in the R engine)</td></tr>
+      <tr><td>An event</td><td>Cox model (the block as a stratum); without factors or covariates, Kaplan-Meier</td></tr>
+      <tr><td>More responses</td><td>MANOVA (with the block and the factors crossed)</td></tr>
+      <tr><td>Any other combination (more than three factors, covariates with plots…)</td><td>The general linear model, with a warning</td></tr>
+    </tbody>
+  </table>
+  <p>Below the formula, the analysis box names it, explains the decision (“Factorial in randomized complete blocks: hibrido × dosis crossed.”) and offers <span class="ui">Use and compute</span>, which opens it in the catalog with everything already set.</p>
+  <h3>Writing the formula by hand</h3>
+  <p><span class="ui">Edit the formula</span> turns the formula into a text field with R notation. As you type, the app explains each term: which variable it is, whether it is a factor or a covariate, whether it is an interaction or a nested effect.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-constructor-editar.png" alt="The formula being edited: rend ~ bloque + hibrido * dosis, with the reading of each term: bloque, hibrido and dosis are factor effects and hibrido × dosis is the interaction; the dosis checkbox under Numeric columns that are treatments; the explanation of the notation and the Use and compute this formula and Back to the builder’s formula buttons"></div>
+    <figcaption><b>Figure 4.5.</b> The formula typed by hand, with the reading of each term.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">You type</th><th>It means</th></tr></thead>
+    <tbody>
+      <tr><td><code>a + b</code></td><td>The main effects of <i>a</i> and <i>b</i>.</td></tr>
+      <tr><td><code>a * b</code></td><td>Crosses: <i>a</i>, <i>b</i> and their interaction <i>a</i> × <i>b</i>.</td></tr>
+      <tr><td><code>a:b</code></td><td>Only the interaction.</td></tr>
+      <tr><td><code>a / b</code></td><td>Nests <i>b</i> within <i>a</i>.</td></tr>
+      <tr><td><code>(a + b + c)^2</code></td><td>The main effects and all two-way interactions.</td></tr>
+      <tr><td><code>- 1</code></td><td>Removes the intercept.</td></tr>
+      <tr><td><code>(1 | bloque)</code></td><td>A random effect: the formula is fitted with the mixed model in the R engine.</td></tr>
+    </tbody>
+  </table>
+  <p>The <b>Numeric columns that are treatments (factor)</b> checkboxes say which numeric columns are treated as a factor (a rate with four levels) and which as a covariate. <span class="ui">Use and compute this formula</span> analyzes it with the general linear model (without error strata: for a split plot, the dedicated method is the better choice) or, if it has random effects, with the mixed model; with a count or gamma distribution, with the generalized model. <span class="ui">Back to the builder's formula</span> undoes what you typed. With an event or with several responses, the formula comes from the zones and cannot be edited by hand.</p>
+  <h3>When the model cannot be built</h3>
+  <p>If the zones ask for something that no SigmaPro analysis does, the box offers not an analysis but the <b>problem and its fix</b>:</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b4-constructor-error.png" alt="The builder with several responses, one factor, one block and one covariate: the empty formula and the warning SigmaPro’s MANOVA does not allow covariates (MANCOVA), with the fix: Remove the covariates, or analyze each response with its own ANCOVA"></div>
+    <figcaption><b>Figure 4.6.</b> Several responses with a covariate: the app explains that it does not do MANCOVA and proposes the fix.</figcaption>
+  </figure>
+
+  <!-- 4.5 -->
+  <h2 id="s4-5"><span class="num">4.5</span>How to read a result</h2>
+  <p>The results of the Analysis block have the parts of those in Explore (section 3.2) and a few more. Figure 4.7 shows the top part of the maize analysis in randomized complete blocks, and figure 4.8, its first two tables.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-resultado.png" alt="The result of the randomized complete blocks analysis of the maize example: the title with the computing time, What is this analysis?, Present and Add to report; the level-of-detail buttons Basic, Standard and Expert, with Standard selected; the In a nutshell box: yield changes with the hybrid, highest in H-66, 6.36, and lowest in H-40, 5.53, and with the rate, highest at 120, 6.74, and lowest at 0, 4.47, the effect of the hybrid does not depend on the rate and the experimental error is 3.6% of the grand mean, a low CV; the conclusion: hybrid and rate with differences, the interaction without evidence, grand mean 5.938, CV 3.6% and R² 0.969; the hybrid × rate interaction plot with one line per rate; and the Compare the means of this design button"></div>
+    <figcaption><b>Figure 4.7.</b> The top part of a result: title, level of detail, <span class="ui">In a nutshell</span>, conclusion, chart and the next step.</figcaption>
+  </figure>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-resultado-cuadros.png" alt="The tables of the same result: the analysis of variance with source of variation, df, SS, MS, F and p, its note, How to read this table collapsed and the Copy table and Download as CSV buttons; and the trial summary with grand mean, observations, CV, R² and relative efficiency"></div>
+    <figcaption><b>Figure 4.8.</b> The first two tables of the same analysis: the ANOVA, with <span class="ui">How to read this table</span> collapsed below it, and the trial summary. The marginal means of each factor and of their combinations follow.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Part</th><th>What it is</th></tr></thead>
+    <tbody>
+      <tr><td><b>Title</b></td><td>The analysis, with the computing time, <span class="ui">ⓘ What is this analysis?</span>, which opens its fact sheet in Fundamentals (chapter 9), <span class="ui">Present</span>, which shows it as slides (below), and <span class="ui">Add to report</span>.</td></tr>
+      <tr><td><b>Level of detail</b></td><td>Below the title, <span class="ui">Basic</span>, <span class="ui">Standard</span> and <span class="ui">Expert</span>: how much of the result is shown (below, “Three levels of detail”).</td></tr>
+      <tr><td><b>In a nutshell</b></td><td>A box with the result without statistical symbols, in up to four sentences (below, “In a nutshell”).</td></tr>
+      <tr><td><b>Conclusion</b></td><td>One sentence per effect or per key result, with its statistic and its <i>p</i> value: “hibrido: there are differences (F = 60.635, p &lt; 0.001).” At the end, the fit indicators (grand mean, CV, R²).</td></tr>
+      <tr><td><b>Assumption traffic light</b></td><td>In the tests that depend on assumptions (t tests, regression, ANCOVA, generalized models…), one line per assumption in green, amber or red, with its icon and the test that decides it (section 4.7); if any of them fails, <span class="ui">Try the alternative</span> offers the analysis that addresses it. In the designs, the analysis of variance has no traffic light: its assumptions are checked with <span class="ui">Check the model assumptions</span> (section 4.7); in the report, those of completely randomized and randomized complete blocks designs are checked automatically.</td></tr>
+      <tr><td><b>Charts</b></td><td>The ones that correspond to the analysis: the interaction of two factors, the means with their standard error, the regression line with its bands, the residual diagnostics, the survival curves… At the top, the <span class="ui">Chart theme</span> selector changes the style of all of them at once (the six themes are in table 6.1). Each chart has its legend and the ✎ button of the figure editor (chapter 6).</td></tr>
+      <tr><td><b>Next step</b></td><td>Buttons that lead to the analysis that usually follows: <span class="ui">Compare the means of this design</span> in the designs, <span class="ui">Analyze the chosen model</span> after a variable selection, the CSV for other apps in the multivariate analyses.</td></tr>
+      <tr><td><b>Tables</b></td><td>Numbered, each with <span class="ui">Copy table</span> and <span class="ui">Download as CSV</span> (with the full numbers, without the on-screen rounding): the analysis of variance, the trial summary, the means, the comparisons… A table wider than the screen scrolls sideways; with the keyboard, Tab focuses it and the arrow keys scroll it.</td></tr>
+      <tr><td><b>How to read this table</b></td><td>Collapsed below each table that includes a statistic with a reading guide: one gauge per statistic with its interpretation card and the reference curve of each test (figures 4.9 and 4.10, below).</td></tr>
+      <tr><td><span class="ui">How to report it (APA)</span></td><td>Collapsed after the tables: the methods and results paragraphs in APA 7 style, in Spanish and in English, ready to copy (below).</td></tr>
+      <tr><td><b>Equivalent R code</b></td><td>Collapsed at the end, with <span class="ui">Copy the code</span>.</td></tr>
+      <tr><td><b>Continue in the LABG suite</b></td><td>At the foot of some analyses, a strip with the suite app that continues the work: AgriDesign after an experimental design, CorrelationPro and PCAPro after a correlation or a regression, PCAPro and ClusteringPro after the multivariate or multi-environment analyses. Each card says why it is worthwhile and can be hidden (chapter 10).</td></tr>
+    </tbody>
+  </table>
+  <h3>How to read this table</h3>
+  <p>Below each table that includes a statistic with a published reading guide there is a closed drop-down, <span class="ui">How to read this table</span>. It is drawn when you open it, so it does not slow down the result. It contains two things:</p>
+  <ul>
+    <li><b>One gauge per statistic.</b> A scale divided into the zones of its guide, with a triangle at the value of each row of the table (with more than twelve values, dots and the count per zone). Below are the value with its zone and the guide that defines it, with a note when the guide has nuances. The magnitude zones (the <i>p</i>, the effect sizes, the R²) are in golds, from light to dark; the quality zones (the CV, the collinearity, the residuals), in green, amber and red, like the assumption traffic light. Table 4.1 brings the guides together.</li>
+    <li><b>The interpretation card of each gauge.</b> A few sentences that translate the value with the numbers of the case: what part of the variation the R² explains, what the error standard deviation amounts to according to the CV and the grand mean, how many times the number of replicates the relative efficiency stands for, how many standard deviations separate two means, how often a result like this would occur if there were no effect (the <i>p</i>)… With several values, it says which ones fall in each zone: the terms with <i>p</i> &lt; α, the residuals beyond ±2 and ±3, the observations beyond 4/<i>n</i> in Cook’s distance. Collapsed, <span class="ui">What it is</span> gives the definition of the statistic, and <span class="ui">In the glossary</span> opens its entry in the glossary, with “See it in action” (section I.6).</li>
+    <li><b>The reference curve of each test.</b> For each F, t, z or χ² in the table (up to eight), the density with the degrees of freedom of that test: the dashed line is the critical value at the analysis α, the colored line is the observed value and the shaded area is the <i>p</i>. If the value lies beyond the chart, an arrow announces it (“60.6 →”). In designs with several errors (split plots, strip plots), each F is drawn with the degrees of freedom of its own error. If the table gives an adjusted or exact <i>p</i>, a note says so: the curve shows the one from the reference distribution. Below each curve, a sentence says whether the value passes the critical value (“Before the critical value 2.39: <i>p</i> = 0.220 ≥ α = 0.05.”).</li>
+  </ul>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-lectura-resumen.png" alt="How to read this table below the trial summary: the coefficient of variation, 3.57%, in the low (high precision) zone of a scale from 0 to 50 in green, light green, amber and red, with its card: the error standard deviation, 0.212, is 3.57% of the grand mean, 5.94, and the link to set the guide; the R², 0.969, in the large zone, with its card: the model explains 96.9% of the variation; and the relative efficiency vs. completely randomized, 160%, in the precision gained zone, with its card: with a completely randomized design, 1.60 times the number of replications would have been needed"></div>
+    <figcaption><b>Figure 4.9.</b> <span class="ui">How to read this table</span> open below the maize trial summary: the CV, the R² and the relative efficiency, each with its scale, its card and its guide. According to the CV card, the error standard deviation, 0.212, is 3.57% of the grand mean, 5.94.</figcaption>
+  </figure>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-lectura.png" alt="How to read this table, open below the maize analysis of variance: the p-value gauge, a logarithmic scale from 0.0001 to 1 with the zones very strong, strong, sufficient and insufficient and the α line at 0.05, with the list bloque, hibrido and dosis below 0.001, very strong, and hibrido × dosis 0.220, insufficient; and four F curves, one per term, with the dashed critical value: bloque, hibrido and dosis with arrows to 10.4, 60.6 and 292, outside the chart, and hibrido × dosis with F = 1.47 and the area of the p, 0.220, shaded; the p card says that 3 of 4 terms have p below α and each curve says whether the value passes the critical value"></div>
+    <figcaption><b>Figure 4.10.</b> The same drop-down below the ANOVA: the <i>p</i> gauge for the four terms with its card (3 of 4 with <i>p</i> &lt; α) and the F curve of each one with its sentence. Only the interaction (F = 1.47) falls before the critical value, 2.39.</figcaption>
+  </figure>
+  <p>At the foot, <span class="ui">Sources of the guides</span> gives the full references (they are also in appendix D). The guides are conventions that orient the reading, not rules: the crop, the variable and the trial weigh more. A CV of 25% can be good in a pest count and bad in grain yield; that is why the CV guide can be changed (below). Some gauges depend on the context: the CV gauge does not appear in the descriptives of Explore (there the CV is that of the data, not that of the error of a trial), the gauge for Cramér’s <i>V</i> adjusts its limits to the size of the table and the gauge for Cook’s distance uses 4/<i>n</i> with the number of observations in the analysis.</p>
+  <table class="compacta">
+    <caption><b>Table 4.1.</b> The guides of the gauges. Each limit is the start of the next zone.</caption>
+    <thead><tr><th style="width:1.6in">Statistic</th><th>Zones</th><th style="width:1.55in">Guide</th></tr></thead>
+    <tbody>
+      <tr><td><i>p</i> value (also the adjusted one)</td><td>very strong &lt;&nbsp;0.001; strong &lt;&nbsp;0.01; sufficient &lt;&nbsp;α; insufficient from&nbsp;α. A line marks the analysis α.</td><td>Wasserstein and Lazar (2016)</td></tr>
+      <tr><td>Cohen’s <i>d</i> and <i>h</i>, Hedges’ <i>g</i> (absolute value)</td><td>small from&nbsp;0.2; medium from&nbsp;0.5; large from&nbsp;0.8</td><td>Cohen (1988)</td></tr>
+      <tr><td>Cohen’s <i>f</i></td><td>small from&nbsp;0.10; medium from&nbsp;0.25; large from&nbsp;0.40</td><td>Cohen (1988)</td></tr>
+      <tr><td>Pearson’s <i>r</i>, Spearman’s ρ, φ (absolute value)</td><td>small from&nbsp;0.1; medium from&nbsp;0.3; large from&nbsp;0.5</td><td>Cohen (1988)</td></tr>
+      <tr><td>Cramér’s <i>V</i></td><td>those of φ divided by √(min(rows, columns) − 1)</td><td>Cohen (1988)</td></tr>
+      <tr><td>R² and adjusted R²</td><td>small from&nbsp;0.02; medium from&nbsp;0.13; large from&nbsp;0.26</td><td>Cohen (1988)</td></tr>
+      <tr><td>Power</td><td>adequate from&nbsp;0.80</td><td>Cohen (1988)</td></tr>
+      <tr><td>η² of <i>H</i> (Kruskal-Wallis)</td><td>small from&nbsp;0.01; medium from&nbsp;0.06; large from&nbsp;0.14</td><td>Tomczak and Tomczak (2014)</td></tr>
+      <tr><td>Kendall’s <i>W</i></td><td>small from&nbsp;0.1; medium from&nbsp;0.3; large from&nbsp;0.5</td><td>Tomczak and Tomczak (2014)</td></tr>
+      <tr><td>Odds ratio</td><td>small from&nbsp;1.68; medium from&nbsp;3.47; large from&nbsp;6.71. A ratio below 1 is read by its inverse.</td><td>Chen, Cohen and Chen (2010)</td></tr>
+      <tr><td>Cohen’s κ</td><td>worse than chance &lt;&nbsp;0; slight up to&nbsp;0.20; fair up to&nbsp;0.40; moderate up to&nbsp;0.60; substantial up to&nbsp;0.80; almost perfect</td><td>Landis and Koch (1977)</td></tr>
+      <tr><td>Coefficient of variation of the trial (general guide)</td><td>low &lt;&nbsp;10%; medium &lt;&nbsp;20%; high &lt;&nbsp;30%; very high from&nbsp;30%</td><td>Pimentel-Gomes (2009)</td></tr>
+      <tr><td>Relative efficiency, %</td><td>precision gained from&nbsp;100%</td><td>Gomez and Gomez (1984)</td></tr>
+      <tr><td>Heritability</td><td>low &lt;&nbsp;0.3; medium &lt;&nbsp;0.6; high from&nbsp;0.6</td><td>Johnson, Robinson and Comstock (1955)</td></tr>
+      <tr><td>Variance inflation factor</td><td>no worrying collinearity &lt;&nbsp;5; moderate &lt;&nbsp;10; severe from&nbsp;10</td><td>James et al. (2013)</td></tr>
+      <tr><td>Condition index</td><td>weak &lt;&nbsp;10; moderate &lt;&nbsp;30; strong from&nbsp;30</td><td>Belsley, Kuh and Welsch (1980)</td></tr>
+      <tr><td>Durbin-Watson</td><td>no apparent autocorrelation from&nbsp;1.5 to&nbsp;2.5; possible from&nbsp;1 to&nbsp;1.5 and from&nbsp;2.5 to&nbsp;3; strong outside&nbsp;1 to&nbsp;3</td><td>Durbin and Watson (1950)</td></tr>
+      <tr><td>Studentized residual (absolute value)</td><td>common &lt;&nbsp;2; uncommon &lt;&nbsp;3; possible outlier from&nbsp;3</td><td>Montgomery, Peck and Vining (2012)</td></tr>
+      <tr><td>Cook’s distance</td><td>check from&nbsp;4/<i>n</i>; influential from&nbsp;1</td><td>Bollen and Jackman (1990); Cook and Weisberg (1982)</td></tr>
+      <tr><td>Skewness (absolute value)</td><td>approximately symmetric &lt;&nbsp;0.5; moderate &lt;&nbsp;1; marked from&nbsp;1</td><td>Bulmer (1979)</td></tr>
+      <tr><td>AIC difference</td><td>substantial support &lt;&nbsp;2; considerably less support &lt;&nbsp;7; very little support &lt;&nbsp;10; essentially no support from&nbsp;10</td><td>Burnham and Anderson (2002)</td></tr>
+    </tbody>
+  </table>
+  <h3>The CV guide for your crop and variable</h3>
+  <p>Below the CV gauge, <span class="ui">Set the CV guide for your crop and variable</span> changes the guide used to read the CV in all open tables, in Analysis and in the report; the choice is remembered in the browser. There are three options under <span class="ui">Guide</span>:</p>
+  <ul>
+    <li><span class="ui">Field trials in general</span>: that of Pimentel-Gomes (2009), the one the app comes with (table 4.1).</li>
+    <li><b>Maize</b>: seven variables with the limits of Fritsche-Neto et al. (2012), derived from the CVs of the trials published in Brazil from 2005 to 2010 (table 4.2). Two rows of the original table (lodging and days to flowering) do not agree with the mean and the standard deviation that the same article publishes and were left out.</li>
+    <li><span class="ui">Own limits</span>: the crop, the variable and the three limits (<span class="ui">Low up to</span>, <span class="ui">Medium up to</span>, <span class="ui">High up to</span>), typed by hand or computed with <span class="ui">Compute them from the CVs of similar trials (Garcia, 1989)</span>: low up to the mean of those CVs minus one standard deviation, medium up to the mean plus one, high up to the mean plus two and very high beyond (figure 4.11). They are applied with <span class="ui">Apply my limits</span>.</li>
+  </ul>
+  <table class="compacta">
+    <caption><b>Table 4.2.</b> CV limits for maize (Fritsche-Neto et al., 2012), in %. Each limit is included in its zone; anything beyond the last one is very high.</caption>
+    <thead><tr><th>Variable</th><th style="width:1.1in">Low up to</th><th style="width:1.1in">Medium up to</th><th style="width:1.1in">High up to</th></tr></thead>
+    <tbody>
+      <tr><td>Grain yield</td><td>8.24</td><td>15.49</td><td>19.11</td></tr>
+      <tr><td>Plant height</td><td>3.55</td><td>8.25</td><td>10.60</td></tr>
+      <tr><td>Ear height</td><td>4.58</td><td>10.76</td><td>13.85</td></tr>
+      <tr><td>Ear diameter</td><td>3.82</td><td>13.78</td><td>18.75</td></tr>
+      <tr><td>Ears per plant</td><td>6.13</td><td>19.26</td><td>25.81</td></tr>
+      <tr><td>Weight of commercial ears</td><td>10.46</td><td>17.37</td><td>20.82</td></tr>
+      <tr><td>Weight of 100 grains</td><td>4.81</td><td>20.04</td><td>27.66</td></tr>
+    </tbody>
+  </table>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-cv-guia.png" alt="The Set the CV guide for your crop and variable form, open below the CV gauge of the maize example: the guide Own limits, the crop Maíz de temporal, the variable Rendimiento de grano, the limits 8.63, 13.62 and 16.12 computed from eight CVs typed in the box, and the message: with 8 CVs, mean 11.13%, SD 2.50%"></div>
+    <figcaption><b>Figure 4.11.</b> The form below the CV gauge: own limits computed by Garcia’s method from eight CVs typed as an example: mean 11.13% and standard deviation 2.50%; low up to 8.63%, medium up to 13.62% and high up to 16.12%. With <span class="ui">Apply my limits</span>, the gauge and its card are read with them.</figcaption>
+  </figure>
+
+  <h3>Three levels of detail</h3>
+  <p>Below the title of each result, and in the report header, three buttons choose how much is shown. The level applies to the whole app (Analysis, Explore and the report) and is remembered in the browser. It does not change any number or what is exported.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.1in">Level</th><th>What is shown</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Basic</span></td><td><span class="ui">In a nutshell</span> instead of the conclusion with the statistics (if the analysis has no such box, the conclusion), the charts, the traffic light, <span class="ui">How to report it (APA)</span> and, open below the name of each table (“Reading · Table 1. …”), its reading: gauges, cards and curves (figure 4.12). The tables with their notes and buttons, the R code and the technical details are hidden; a table without a reading guide does not appear. In Explore the table is the summary itself and is always shown.</td></tr>
+      <tr><td><span class="ui">Standard</span></td><td>The whole result, as described in this section. It is the level the app opens with.</td></tr>
+      <tr><td><span class="ui">Expert</span></td><td>Everything in Standard plus the <span class="ui">Technical notes</span>: method, inputs, options, data, rows used, software and computing time, with the model and its hypotheses taken from the fact sheet in Fundamentals (chapter 9). The notes, <span class="ui">How to report it (APA)</span> and the R code appear open (figure 4.13).</td></tr>
+    </tbody>
+  </table>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-detalle-basico.png" alt="The maize analysis at the Basic level: the title with the Basic, Standard and Expert buttons, Basic selected; the In a nutshell box, without the conclusion with the statistics; the notice that in Basic the tables are not shown; the Compare the means of this design button; and, open, Reading · Table 1. Analysis of variance: Randomized complete blocks, which starts with the p-value gauge"></div>
+    <figcaption><b>Figure 4.12.</b> The Basic level: instead of the ANOVA table, its reading, open (it continues as in figure 4.10). The interaction plot, which in the app sits between the conclusion and the reading, was removed from the screenshot.</figcaption>
+  </figure>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-detalle-experto.png" alt="The technical notes of the Expert level: method Randomized complete blocks (dbca), inputs, options, data with 48 rows, rows used 48, software SigmaPro validated against R and computing time; the model y equals mu plus tau i plus beta j plus epsilon ij with the meaning of each term; and the hypotheses H0, all tau equal to 0, and H1, some tau different from 0"></div>
+    <figcaption><b>Figure 4.13.</b> The Expert level adds the technical notes, with the model of the block design and its hypotheses from the fact sheet in Fundamentals.</figcaption>
+  </figure>
+
+  <h3>In a nutshell</h3>
+  <p>Above the conclusion, a box states the result without statistical symbols, in up to four sentences, for those who do not read an analysis of variance table (figure 4.7). It computes nothing new: it reads what the analysis already gave.</p>
+  <ul>
+    <li><b>In experimental designs</b> it is built from the ANOVA table and the means of each factor: which factor changes the response, with its highest and lowest levels and their means; whether there is an interaction; and the precision of the trial, with the CV and its guide. A factor with no effect at the analysis α is stated like this: “With these data, … does not appear to change…”; with two levels, which one is higher. If there is an interaction, the box advises comparing the means of one factor within each level of the other.</li>
+    <li><b>In the other analyses</b> they are the sentences of the conclusion without the parentheses or the parts with statistics (F, t, p, degrees of freedom, intervals). Sentences that would say nothing without the statistics are dropped, as are technical ones, such as the one about letters in common. With <span class="ui">Within each level of</span> (section 4.11), each sentence starts with its level: “‘hibrido’ H-40: 3 groups of means…”.</li>
+  </ul>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">✎</span>The t test of the poisons (section 4.8)</div>
+    <p><b>Conclusion:</b> The mean of “A” (0.314) differs from that of “B” (0.677): difference −0.362 (95% CI: −0.572 to −0.153); t = −3.729, df = 13.21, p = 0.002. Effect size: large (Hedges’ g = −1.470; 95% CI: −2.342 to −0.572).</p>
+    <p><b>In a nutshell:</b> The mean of “A” (0.314) differs from that of “B” (0.677). Effect size: large.</p>
+  </div>
+  <p>At the Basic level the box is shown and the technical conclusion is hidden; at Standard and Expert, both are shown. The box appears in Analysis and in the report; in Explore it is not needed, because there the conclusion is already in words.</p>
+
+  <h3>How to report it (APA)</h3>
+  <p>After the tables, the <span class="ui">How to report it (APA)</span> drop-down gives the <b>Methods</b> paragraph and the <b>Results</b> paragraph of the analysis, the same ones as in the report (section 5.4), with the conventions of APA 7 style (figure 4.14):</p>
+  <ul>
+    <li>statistical symbols in italics (<i>F</i>, <i>t</i>, <i>p</i>, <i>r</i>, <i>n</i>, <i>M</i>…); Greek letters, not;</li>
+    <li>the <i>p</i> and the statistics that cannot exceed 1 (<i>r</i>, <i>R</i>², η², Cramér’s <i>V</i>, κ, Kendall’s <i>W</i>) without the leading zero: <i>F</i>(2, 33) = 60.63, <i>p</i> &lt; .001; <i>R</i>² = .969;</li>
+    <li>commas between the statistics within the same parentheses, confidence intervals in square brackets (in the t test of the poisons, 95% CI [−0.5722, −0.1528]) and the mean as <i>M</i>;</li>
+    <li>in English, the percent sign attached to the number (3.6%); in Spanish, separated from it (3.6 %).</li>
+  </ul>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-reportar.png" alt="How to report it (APA) open below the maize analysis, on the English tab: Methods, with the analysis of variance for a randomized complete block design with a 3 × 4 hibrido by dosis factorial arrangement, the citation of Gomez and Gomez (1984) and type III sums of squares; Results, with F in italics and its degrees of freedom, p without a leading zero, as p less than .001 and p equal to .220, the grand mean 5.938, the coefficient of variation 3.6% and R² equal to .969; a Copy button below each paragraph and the note on APA 7 style"></div>
+    <figcaption><b>Figure 4.14.</b> <span class="ui">How to report it (APA)</span> for the maize example on the <span class="ui">English</span> tab: the same analysis, written in English with the APA 7 conventions, without changing the app language.</figcaption>
+  </figure>
+  <p>The <span class="ui">Español</span> and <span class="ui">English</span> tabs change the language of the text, not that of the app: the paragraph is built with the same figures and with the names of the methods, the designs and the citations in that language (when the app is in Spanish, the first time English is requested the app loads it in an instant). <span class="ui">Copy</span>, below each paragraph, copies it with its italics, which a word processor keeps when you paste it. As in the report, it is a starting point: review the wording, replace the column names with full names and add the agronomic interpretation.</p>
+  <p>The drop-down is in Analysis, in the assumption check (section 4.7), in Explore and in each analysis of the report. It is built when you open it, so it does not slow down the result; at the Expert level it appears open.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The report brings it all together</div>
+    <p>In the Analysis block the result is explored: options are changed, models are tried. When you add it to the report (chapter 5), SigmaPro adds what a document requires: the paragraphs of all the analyses in a single text, with the citation of each test and that of SigmaPro, the technical details and the numbering of tables and figures across the whole report.</p>
+  </div>
+
+  <h3>Presenting the result</h3>
+  <p>The <span class="ui">Present</span> button, in the title of the result, shows it as full-screen <b>slides</b> with large type, for projecting it in a class or a meeting without putting together a separate presentation. Each part of the result is a slide, in the order in which it appears: the title, <span class="ui">In a nutshell</span>, the conclusion, each chart and each table with its notes (figure 4.15). What is presented is what is shown at the chosen level of detail: at Basic there are no tables, and whatever is collapsed is left out.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-presentar.png" alt="Presentation mode for the maize analysis in randomized complete blocks: at the top, the bar with Randomized complete blocks, 4 of 10, the previous and next arrows and Exit (Esc); in the center, across the width of the screen, the hybrid × rate interaction plot with one line per rate and its legend"></div>
+    <figcaption><b>Figure 4.15.</b> The fourth slide of the maize example: the interaction plot, across the width of the screen. At the top, the analysis, the slide count and the buttons.</figcaption>
+  </figure>
+  <p>The ← and → arrow keys (or Page Up, Page Down and the spacebar) change slides; Home and End go to the first and the last one; Esc exits and leaves the focus on <span class="ui">Present</span>. The slides are copies without buttons: they do not change the result. The same button is in Explore (section 3.2) and in the report header, where it presents all the analyses one after another, with the name of each one in the bar (section 5.2).</p>
+
+  <h3>When it cannot be computed</h3>
+  <p>If an analysis cannot be computed with the chosen data and options, instead of the result a box appears with <b>what happened</b>, in words, and <span class="ui">What to do:</span>, the fix (figure 4.16). It is the same in Analysis, in Explore and in the report.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b4-error.png" alt="The box It cannot be calculated this way: At least two observations are needed. What to do: Check the missing values and the filter in Data: perhaps fewer data were left than you expected"></div>
+    <figcaption><b>Figure 4.16.</b> A t test on a column with a single value: what happened and what to do.</figcaption>
+  </figure>
+  <ul>
+    <li><b>A data problem</b> (a column that should be numeric, one that no longer exists, one in two roles, too few data, a factor left with a single level) comes with its fix. It is almost always in Data: the column type, the missing values or the filter.</li>
+    <li><b>An R engine error</b> (section 4.6) is explained in words when it is one of the known mixed-model errors: a random effect with a single level or with as many levels as observations, a response with the same value in every row, a model that does not converge or that is too complex for the data. The original R text remains below, in <span class="ui">Technical detail</span>, collapsed and with <span class="ui">Copy the detail</span>.</li>
+    <li><b>A program error</b> is stated as such: it is not a data problem. The box suggests changing some option or reloading the page and, if it happens again, reporting it with the <span class="ui">Report a problem</span> icon in the header (number 6 in figure I.1), pasting the technical detail.</li>
+  </ul>
+
+  <!-- 4.6 -->
+  <h2 id="s4-6"><span class="num">4.6</span>The R engine inside the browser</h2>
+  <p>Almost all SigmaPro analyses are programmed in the app’s own core, in JavaScript, and validated against R. A few, those that require the fitting machinery of mixed models, run in a <b>full R that works inside the browser</b> (webR, R compiled to WebAssembly): linear mixed models and their designs (section 4.15), repeated measures and generalized linear mixed models (section 4.17). The data do not leave the computer here either: R runs in the same tab.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-motor.png" alt="The notice This analysis uses the R engine inside your browser: the first time, R and its packages are downloaded, about 25 MB, internet required; after that they stay in the browser cache; your data never leave your computer; Load the R engine and compute button"></div>
+    <figcaption><b>Figure 4.17.</b> The first time an R engine analysis is used, the app asks for permission before downloading it.</figcaption>
+  </figure>
+  <ol class="pasos">
+    <li>The first time, the notice in figure 4.17 appears instead of the result. <span class="ui">Load the R engine and compute</span> downloads R and its packages (about 25 MB) and computes.</li>
+    <li>Meanwhile, above the result you can read each step (“Downloading the R engine (the first time takes longer)…”, “Installing lme4 in the R engine (first time only)…”, “Computing in the R engine…”) and a <span class="ui">Cancel</span> button. The first load takes from a few seconds to a couple of minutes, depending on the connection; a computation, a few seconds.</li>
+    <li>Afterwards, the engine stays in the browser cache: internet is no longer needed and it does not ask again.</li>
+  </ol>
+  <p>When SigmaPro is used published on a web page (not by double-clicking), it brings its own R engine repository and works offline from the first visit (section I.7).</p>
+</section>
+
+</body>
+</html>

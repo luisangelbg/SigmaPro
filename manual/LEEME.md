@@ -1,7 +1,7 @@
 # Manual de usuario de SigmaPro
 
 El manual se escribe por partes, en HTML, con el mismo formato que los manuales de las demás apps LABG (PhenologyPro,
-EconomicsPro, CladisticsPro…). Primero en español. Cuando todas las partes están listas se unen en un solo documento y
+EconomicsPro, CladisticsPro…), en español (`es/`) y en inglés (`en/`, desde la 1.0.0). Cuando todas las partes están listas se unen en un solo documento y
 se imprime a PDF **una sola vez**, al final.
 
 ```
@@ -80,10 +80,16 @@ capítulo 4 es largo y va en siete archivos, pero es un solo capítulo con secci
 1. Cada parte se abre con doble clic y se ve ya paginada. Se revisa con
    `node manual/herramientas/hojas.mjs es/NN-….html` (hueco al pie de cada hoja, imágenes, elementos demasiado altos)
    y, para mirarlas, `--png 1-4 --salida <carpeta>`.
-2. Las capturas: `node manual/herramientas/captura.mjs <receta> [<receta> …]` desde la carpeta de la app.
+2. Las capturas: `node manual/herramientas/captura.mjs <receta> [<receta> …]` desde la carpeta de la app; con
+   `--idioma en`, la app abre con la interfaz en inglés (`?lang=en`) y la captura va a `img/en/` (las recetas sirven a
+   los dos idiomas: `ejemplo()` busca el nombre traducido y `SP.IDIOMA` elige los textos que escribe la receta).
 3. El capítulo 4 va en siete archivos que corren seguidos: su paginación se revisa junta con
    `node manual/herramientas/unir.mjs es --partes 04 --salida _cap4.html` y `hojas.mjs es/_cap4.html` (los `_*` no se
-   guardan en git). Las capturas (`img/`) tampoco: se regeneran con sus recetas.
+   guardan en git). Las capturas (`img/`, `img/en/`) sí: las usa el manual en HTML publicado; se regeneran con sus recetas.
 4. El índice general: `node manual/herramientas/indice.mjs es` lo reescribe con los títulos de las partes.
 5. Al terminar todas las partes, una sola vez: `node manual/herramientas/unir.mjs es --pdf SigmaPro_Manual_de_usuario_ES.pdf`,
    que une las partes en `es/manual-completo.html` y lo imprime a PDF.
+6. La edición inglesa: las mismas partes en `en/` (mismos nombres, mismas clases e id; `<html lang="en">`; las imágenes en
+   `../img/en/`), con los textos de botones y menús tal como los muestra la interfaz inglesa (catálogo `js/i18n/en.js`).
+   El paginador y la portada toman el idioma de la página. `node manual/herramientas/indice.mjs en` escribe su índice y
+   `node manual/herramientas/unir.mjs en --pdf "en/SigmaPro User's Manual (English).pdf"` la une y la imprime.

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 4 (7 of 7)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+  .dos.angosta { grid-template-columns: 0.85fr 1fr; }
+  figure.estrecha .marco { width: 72%; margin: 0 auto; }
+  figure.estrecha figcaption { margin-left: 14%; margin-right: 14%; }
+</style>
+</head>
+<body>
+
+<section data-pestana="B4" data-orden="4" style="--acento: var(--b4)">
+
+  <!-- 4.21 -->
+  <h2 id="s4-21"><span class="num">4.21</span>Multivariate analysis</h2>
+  <p class="lead">When several variables are measured at once on each unit (the length, width, weight and wall of a fruit), analyzing them one by one repeats tests and wastes the relationship among them. MANOVA tests the treatments on the set as a whole, and discriminant analysis looks for the combination of variables that best separates the groups. Both run in the browser, validated against R’s <code>manova</code> and <code>summary.manova</code> and against <code>lda</code> from the MASS package.</p>
+  <h3>MANOVA</h3>
+  <p>Choose the <span class="ui">Response variables (2 to 10)</span>, the <span class="ui">Treatment factors (up to 3, crossed)</span>, the <span class="ui">Blocks (optional)</span>, the <span class="ui">Main test</span> and the <span class="ui">Significance level</span>. The main test is the one the conclusion uses: Pillai, the most robust and the default; Wilks; Hotelling-Lawley; or Roy, which gives an upper bound for <i>F</i> and an optimistic <i>p</i>. The <span class="ui">MANOVA: the four tests</span> table includes all four. The sums of squares are sequential (type I), as in <code>summary.manova</code>: the block enters first and then the factors, in the order of their columns in the table (not in the order in which you check them); with unbalanced data, that order changes the test of each term.</p>
+  <p>With four chili pepper varieties in three blocks, five fruits per plot, the variety changes the set of four measurements (Pillai = 2.668, <i>F</i>(12, 159) = 106.40, <i>p</i> &lt; 0.001). The block is borderline: Pillai gives <i>p</i> = 0.063, and Roy, with its optimistic <i>p</i>, 0.005; that is why you should decide with the main test and not with the most favorable one. The traffic light checks that there are enough error degrees of freedom for the number of responses (green with at least three times as many; here, 54 for 4) and the equality of the covariance matrices with <b>Box’s M test</b> among the treatment combinations, without the blocks (χ²(30) = 30.13, <i>p</i> = 0.459). The other tables give the ANOVA of each response separately, Box’s M test group by group and the means of each factor; the plot shows the profile of the standardized means (with 12 levels or fewer).</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>The fruits of a plot are not replicates</div>
+    <p>The example has the five fruits of each plot in separate rows, and the MANOVA takes each fruit as a replicate: the error ends up with 54 degrees of freedom when the experiment has only 12 plots. This is the pseudoreplication that the method’s fact sheet warns about (chapter 9), and it makes the tests too optimistic. To test the varieties with the correct error, average the fruits of each plot in your spreadsheet and import the table of means (SigmaPro has no tool for averaging rows). The table below compares the two analyses.</p>
+  </div>
+  <table class="compacta salida">
+    <caption><b>Table 4.18.</b> The chili pepper MANOVA with each fruit as a replicate and with the plot means (Pillai test).</caption>
+    <thead><tr><th style="width:1.5in"></th><th>Each fruit as a replicate (60 rows)</th><th>Plot means (12 rows)</th></tr></thead>
+    <tbody>
+      <tr><td>Error</td><td>54 df</td><td>6 df</td></tr>
+      <tr><td>Variety</td><td>Pillai = 2.668, <i>F</i>(12, 159) = 106.40, <i>p</i> &lt; 0.001</td><td>Pillai = 2.969, <i>F</i>(12, 15) = 120.26, <i>p</i> &lt; 0.001</td></tr>
+      <tr><td>Block</td><td>Pillai = 0.258, <i>F</i>(8, 104) = 1.93, <i>p</i> = 0.063</td><td>Pillai = 1.106, <i>F</i>(8, 8) = 1.24, <i>p</i> = 0.386</td></tr>
+      <tr><td>Traffic light: degrees of freedom</td><td>Green: 54 df for 4 responses</td><td>Amber: 6 df for 4 responses</td></tr>
+      <tr><td>Traffic light: Box’s M</td><td>Green: χ²(30) = 30.13, <i>p</i> = 0.459</td><td>Gray: with 3 plots per variety and 4 responses, no group has more units than variables, and the test is not calculated (its table does not appear either)</td></tr>
+    </tbody>
+  </table>
+  <p>The varieties differ anyway, but with the means the block is no longer borderline, and the traffic light calls for caution: with 6 error degrees of freedom, four responses are too many. With few plots, it is better to analyze fewer responses, the most important or the least redundant ones.</p>
+  <p>Below the plot, two buttons, <span class="ui">CSV for PCAPro (principal components)</span> and <span class="ui">CSV for ClusteringPro (clustering)</span>, download only the variables of the analysis with their group (in the MANOVA, with the block and the factors), ready to open in those suite apps from their data block. At the foot of the result, the <span class="ui">Continue in the LABG suite</span> strip suggests the same two apps (section 10.2); its <span class="ui">Send data to …</span> button, in contrast, downloads the full table of the Data block (section 10.4).</p>
+
+  <h3>Linear discriminant analysis</h3>
+  <p>Choose the <span class="ui">Groups to separate</span> and the <span class="ui">Variables that describe them (2 to 15)</span>. The result gives the discriminant functions with the proportion of the separation that each one explains, their coefficients, the group centroids and the <b>cross-validated classification</b>: each unit is classified with the function fitted without it, which gives an honest success rate (the one that uses the same data as the fit is optimistic). The traffic light checks that the smallest group has more units than variables, and the equality of the covariances among the groups (Box’s M), which also comes with its table.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-discriminante.png" alt="The chili pepper fruits on the first two discriminant functions, LD1 with 66.8% and LD2 with 28.9%: the four varieties, Ancho, Guajillo, Jalapeño and Serrano, form four separate clouds in the four corners"></div>
+      <figcaption><b>Figure 4.52.</b> The 60 fruits on the first two discriminant functions: four clouds with no overlap.</figcaption>
+    </figure>
+    <div>
+      <p>With the chili peppers there are three functions; the first explains 66.8% of the separation and the second 28.9%. With cross-validation, all 60 fruits are assigned to their own variety (100%). Here each fruit is indeed a unit: what you want is to classify fruits.</p>
+      <p>The coefficients are not standardized: compare them only among variables on similar scales. The app warns about this when it names the variables with the most weight in the first function.</p>
+      <p>The suite strip proposes ClusteringPro, to look first for the natural groups in the data, and PCAPro; the two CSV buttons are the same as in the MANOVA.</p>
+    </div>
+  </div>
+
+  <!-- 4.22 -->
+  <h2 id="s4-22"><span class="num">4.22</span>Power, replicates and sampling</h2>
+  <p class="lead">Before the trial: how many replicates, how many plants or how many seeds you need to detect a difference that matters or to estimate with an acceptable error. Six of the eight methods of the <span class="ui">Sample size, power and sampling</span> family need no data. When data are loaded, they are in the catalog like any other method, with the <span class="ui">No data needed</span> mark; with an empty worksheet, the <span class="ui">Calculate a sample size or power</span> button of the Explore block enables them, and the catalog of the Analysis block then shows only this family.</p>
+  <p>The power calculations ask <span class="ui">What do you want to calculate?</span>: the sample size, the power of a given size or the effect that can be detected (the difference between means, the variation among the ANOVA means or the correlation; for two proportions, only the size or the power). They use the same formulas as R (<code>power.t.test</code>, <code>power.anova.test</code>, <code>power.prop.test</code> and <code>pwr.r.test</code> from the pwr package) and plot power against sample size. The <span class="ui">Alternative hypothesis</span> can be two-sided or one-sided; with a one-sided one, the app tests the positive direction, so the difference or the correlation must be written as positive numbers (with a negative number, the power comes out as 0% and the sample size makes no sense).</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-potencia.png" alt="The sample size calculation for a t test without data: the form with Sample size, Two independent groups, the difference of 0.5, the standard deviation of 0.4, the two-sided hypothesis, the power of 0.8 and the significance level of 0.05; the header of the result with What is this analysis? and Add to report; the conclusion, 12 units per group (exact n 11.09); the Chart theme selector; the curve of power by sample size, with the dashed lines at 0.8 and at 11.09; and below, the beginning of the parameters table"></div>
+    <figcaption><b>Figure 4.53.</b> To detect a difference of 0.5 with a standard deviation of 0.4, you need 12 units per group.</figcaption>
+  </figure>
+  <table class="compacta salida">
+    <caption><b>Table 4.19.</b> The six calculations without data, with an example of each.</caption>
+    <thead><tr><th style="width:1.75in">Method</th><th>With</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>Means (t test)</td><td>Difference 0.5, SD 0.4, power 0.8</td><td>12 units per group (11.09)</td></tr>
+      <tr><td>ANOVA of several treatments</td><td>Means 4.2, 4.8, 5.1 and 5.6; error SD 0.6</td><td>5 replicates per treatment (4.915)</td></tr>
+      <tr><td>Two proportions</td><td>65% versus 80%</td><td>138 units per group (137.9)</td></tr>
+      <tr><td>Correlation</td><td>40 pairs, power 0.8</td><td>A correlation of 0.4265 can be detected</td></tr>
+      <tr><td>Replicates for an experiment</td><td>CV 12%, difference of 15% of the mean, 6 treatments in blocks</td><td>11 replicates</td></tr>
+      <tr><td>Sample size to estimate</td><td>Proportion 0.3 with error ± 0.05, population of 900</td><td>238 units (323 without the finite population)</td></tr>
+    </tbody>
+  </table>
+  <p>In the <b>ANOVA</b>, the <span class="ui">Expected treatment means (optional)</span>, separated by commas, replace the number of treatments and the variance of the means. To solve for <span class="ui">Detectable variation among means</span>, leave the means empty and enter the <span class="ui">Treatments</span>: in that mode the means are not used. With 4 treatments, 5 replicates, an error SD of 0.6 and a power of 0.8, a variance among means of 0.3349 can be detected (Cohen’s <i>f</i> = 0.8352); the R code leaves as <code>NULL</code> whatever is being solved for.</p>
+  <p>The <b>replicates for an experiment</b> use the formula of Cochran and Cox (1957) with the <span class="ui">Expected coefficient of variation (%)</span> from previous trials, the <span class="ui">Difference to detect (% of the mean)</span>, the <span class="ui">Treatments</span> and the <span class="ui">Design</span> (randomized complete blocks or completely randomized). The error degrees of freedom depend on the replicates, so the app searches for them until the formula holds: the <span class="ui">Search for the number of replicates</span> table shows each step, and the plot compares the required replicates with the ones plugged in. In the ANOVA and in the replicates, the <span class="ui">Continue in the LABG suite</span> strip proposes AgriDesign to randomize the trial and draw its field layout.</p>
+  <p>The <b>sample size to estimate</b> asks <span class="ui">What do you want to estimate?</span> (a mean or a proportion), the expected variation, the acceptable error and the <span class="ui">Population size (0 if very large)</span>. It uses Cochran’s (1977) formulas: n₀ = (<i>z</i>·<i>S</i>/<i>e</i>)² for the mean and n₀ = <i>z</i>²·<i>p</i>(1 − <i>p</i>)/<i>e</i>² for the proportion. With a finite population, the mean is corrected with n = n₀/(1 + n₀/<i>N</i>) and the proportion with n = n₀/[1 + (n₀ − 1)/<i>N</i>], because the variance of a proportion carries the factor (<i>N</i> − <i>n</i>)/(<i>N</i> − 1). In the example of the table, n₀ = 322.7 and n = 237.7, which is rounded up to 238. The plot shows how many units are needed for each error: halving the error quadruples the sample when the population is large.</p>
+
+  <h3>Estimating from a sample</h3>
+  <p>The other two methods analyze a sample already taken, in the <span class="ui">Variable measured in the sample</span>. <b>Simple random sampling</b> estimates the mean or the proportion (<span class="ui">Estimate</span>: automatic, which gives the proportion if the column is 0/1) and, with the <span class="ui">Population size (0 if very large or unknown)</span>, the total, with the finite population correction; its plot shows how the interval narrows as the sample grows. <b>Stratified sampling</b> also asks for the <span class="ui">Strata (orchards, fields, regions, soil types)</span> and the <span class="ui">Population size of each stratum (N_h)</span>, one field per stratum with all the units in it, not only those sampled. With <span class="ui">Allocate a new sample of (optional)</span>, it proposes how to allocate it among the strata: proportional and Neyman allocation.</p>
+  <p>With the avocado from three orchards (1,580 trees), the simple estimate gives a mean of 51.89 kg per tree (SE = 1.975) and the stratified one 54.32 (95% CI: 52.00 to 56.65), with a considerably smaller standard error (1.142) and 32.29 effective degrees of freedom (Satterthwaite). The difference has an explanation: the sample took 16 trees from Planicie, which has 57% of the trees and the most productive ones, and 20 from the other two orchards, which have 43%; the simple estimate weighs them equally and is pulled down, while the stratified one weighs each orchard by its size. That is why this example serves to compare the two methods, but the correct estimate for these data is the stratified one.</p>
+  <figure class="estrecha">
+    <div class="marco"><img src="../img/en/b4-estratificado.png" alt="The result of the stratified sampling of the avocado: the conclusion with the stratified mean of 54.32 kg per tree (95% CI: 52.00 to 56.65; SE = 1.142, 32.29 effective df), the estimated total of 85832 kg in the 1580 trees (CI: 82157 to 89507) and the Neyman allocation for a sample of 60, 17 in Ladera, 29 in Planicie and 16 in Vega, which add up to 62 when rounded up; the Chart theme selector; and the Mean of each stratum plot, with Ladera at 46.17 (CI 41.53 to 50.81), Planicie at 62.01 (59.00 to 65.03) and Vega at 40.88 (32.61 to 49.15), and the dashed line of the stratified mean"></div>
+    <figcaption><b>Figure 4.54.</b> The avocado by orchard: the stratified mean weighs each orchard by its size, and the Neyman allocation warns when rounding exceeds the requested total.</figcaption>
+  </figure>
+  <p>For a new sample of 60, Neyman takes 17 in Ladera, 29 in Planicie and 16 in Vega: more in the large strata and in the variable ones. Each stratum is rounded up, so the sum can exceed the total; when it does, the conclusion says so (“Rounded up, they add up to 62”). The <span class="ui">How to allocate a sample of 60</span> table gives the unrounded values of the two allocations (proportional: 15.95, 34.18 and 9.87; Neyman: 16.14, 28.22 and 15.63) so you can adjust them by hand. If all the strata were measured completely (each <i>N</i><sub>h</sub> equal to the number sampled), it is a census: there is no sampling error, the SE is 0, the interval reduces to the estimated value, and the conclusion explains this.</p>
+
+  <!-- 4.23 -->
+  <h2 id="s4-23"><span class="num">4.23</span>Survival analysis</h2>
+  <p class="lead">When the response is the time until something happens (germinating, flowering, dying) and in some units it did not happen before the end of the trial, those units are <b>censored</b>: you know that their time is longer than the one observed, but not by how much. Averaging the days without them, or with them as if they had germinated on the last day, biases the result; survival analysis uses them correctly. Both methods were validated against R’s <code>survival</code> package.</p>
+  <p>Both ask for the <span class="ui">Time to event (or to censoring)</span> and the <span class="ui">Event (1 = occurred, 0 = censored)</span>: 0 if the unit finished the trial without the event or was lost. The <span class="ui">Strata (optional)</span> (lots, sites, sowing dates) give each stratum its own baseline hazard, and the groups are compared within them. The <span class="ui">Confidence level</span> changes the intervals; the conclusions and the traffic light always decide with α = 0.05.</p>
+  <h3>Kaplan-Meier curves</h3>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-km.png" alt="The Kaplan-Meier curves of the proportion of bean seeds not yet germinated against days, for Testigo (control), Remojo (soaking) and Escarificada (scarified): the scarified seed curve falls first and reaches zero on day 19; soaking ends at 0.125, and the control falls slowly and ends at 0.30 at 21 days"></div>
+      <figcaption><b>Figure 4.55.</b> The proportion of seeds not yet germinated over time: scarification speeds up germination.</figcaption>
+    </figure>
+    <div>
+      <p>With 120 bean seeds in three treatments, checked every day until day 21, the median number of days to germination is 17 in the control, 5.5 with soaking and 4 with scarification, and the curves differ (log-rank χ²(2) = 37.89, <i>p</i> &lt; 0.001). In all, 17 seeds (14.2%) did not germinate: they are censored, and the traffic light reports it (it turns amber if they are more than half).</p>
+      <p>The dashed line marks 0.5: where each curve crosses it lies its median. The marks at the end of the curves are the censored units.</p>
+    </div>
+  </div>
+  <p>The <span class="ui">Groups to compare (optional)</span> can be up to 12; without them, a single curve comes out, with its band. The options are the <span class="ui">Curve interval</span> (log, the one in <code>survival</code>; log-log; or linear) and, with groups, the <span class="ui">Test to compare the curves</span>: log-rank, with the same weight for all times, or Peto-Peto, which gives more weight to early times (with the bean, χ²(2) = 31.47); the strata come into play when you choose groups (stratified by lot, χ²(2) = 32.81). The tables give the median of each group with its interval and the 25% and 75% quartiles (a “—” when the curve does not go down that far, like the 75% of the control, which stays at 0.30), the table of the test (observed against expected events) and the survival table at each time with events.</p>
+  <h3>Cox model</h3>
+  <p>Cox’s proportional hazards model measures the effect of the <span class="ui">Factors (treatments, varieties)</span> and of the <span class="ui">Numeric covariates</span> on the instantaneous hazard of the event, as a <b>hazard ratio</b> (HR): when it is greater than 1, the event comes sooner. In the factors, each level is compared with the first. <span class="ui">Tied times</span> are handled with Efron (the one in <code>survival</code>, better with whole days) or with Breslow.</p>
+  <p>With the bean, the treatment and the seed weight, stratified by lot: scarification multiplies the hazard of germinating by 4.459 (95% CI: 2.628 to 7.568) and soaking by 2.096, relative to the control. The HR of the weight is 0.02058 <b>per gram</b>; since the seeds weigh about 0.4 g, it is better to read it per tenth of a gram: 0.02058<sup>0.1</sup> = 0.678, a third less hazard for each additional 0.1 g. The traffic light checks the <b>proportionality of the hazards</b> (like <code>cox.zph</code>: <i>p</i> = 0.753, no evidence that the effects change over time), that there are at least 10 events per coefficient (here, 103 events for 3 coefficients: 34.33) and that the fit converged. The tables include the three global tests and Harrell’s concordance C (0.690); the plot shows each HR with its interval on a logarithmic scale, with the line at HR = 1.</p>
+
+  <!-- 4.24 -->
+  <h2 id="s4-24"><span class="num">4.24</span>Time series</h2>
+  <p class="lead">A time series is a variable measured at equal intervals (every month, every week, every year), where nearby values resemble each other. The four methods ask for the <span class="ui">Variable measured over time</span> and the <span class="ui">Time column (to order the series)</span>, and they were validated against R (<code>acf</code>, <code>pacf</code>, <code>Box.test</code>, <code>decompose</code>, <code>arima</code> and the <code>trend</code> package). The example is a weather station with the rainfall and temperature of each month from 2017 to 2024.</p>
+  <p>The time column is numeric (1, 2, 3…, or a period number) or of date type, and each time must appear only once; if the rows are already in order, <span class="ui">— rows are already in order —</span> is enough. The column only orders the series: the calculations assume equal intervals, so with dates there must be one per period (for example, one per month). Be careful with a years × months table converted to long format with <span class="ui">Wide ⇄ long…</span> (section 2.11): it ends up sorted by month and then by year, so “rows are already in order” would analyze a scrambled series. First create a continuous time column and use it as the time column; since the year usually ends up as a factor, the expression converts it to a number: <code>(as.numeric(anio) - 2017) * 12 + mes</code> gives 1 in January 2017 and 96 in December 2024. Autocorrelation and decomposition need the complete series, with no missing values; Mann-Kendall omits them and ARIMA keeps them in their place.</p>
+  <ul>
+    <li><b>Autocorrelation</b>: the ACF and the PACF with their band, and the Ljung-Box and Box-Pierce tests. With monthly data, it is best to set the <span class="ui">Lags for the Ljung-Box and Box-Pierce tests (0 = 10)</span> to 12 or 24; with 12, monthly rainfall is strongly autocorrelated (Ljung-Box <i>Q</i>(12) = 427.37, <i>p</i> &lt; 0.001), with the annual cycle in plain view: positive at 1 month, negative at 6. The conclusion names only the first eight lags outside the band; lag 12 (0.76), that of the annual cycle, is in the table and in the plot. To check the residuals of an ARMA model, the <span class="ui">Previously fitted parameters (fitdf)</span> discount their degrees of freedom.</li>
+    <li><b>Decomposition</b>: it separates the trend (moving average over one cycle), the seasonal component and the residual, additive or multiplicative (<span class="ui">Type</span>), with the <span class="ui">Observations per cycle (frequency)</span>: 12 for months. In temperature, seasonality explains 96.01% of the variation without the trend. The plots show the series with its trend, the seasonal component and the residual.</li>
+    <li><b>Monotonic trend</b>: the Mann-Kendall test (it does not assume normality) and Sen’s slope, resistant to extreme values, with the <span class="ui">Slope confidence level</span>. Temperature shows no trend over the eight years (τ = 0.058, <i>p</i> = 0.403; Sen’s slope of 0.008333 per month, 95% CI: −0.01364 to 0.02881).</li>
+  </ul>
+  <p>As in survival analysis, the autocorrelation conclusions decide with α = 0.05; the chosen level changes the band.</p>
+  <h3>ARIMA and forecasting</h3>
+  <p>The ARIMA model describes the series with its past values (autoregressive, <i>p</i>), its past errors (moving averages, <i>q</i>) and the differences that make it stable (<i>d</i>), with its seasonal version (<i>P</i>, <i>D</i>, <i>Q</i> and the <span class="ui">Seasonal period (1 = no seasonal part)</span>). In <span class="ui">Model order</span>, you choose <span class="ui">Set it manually</span> and enter <i>p</i> and <i>q</i>, or ask to <span class="ui">Search for the lowest AIC (p, q = 0…2; P, Q = 0…1)</span>, which uses the <i>d</i> and <i>D</i> you set and, with a period, tries 36 models in a few seconds. Without differences, the <span class="ui">Series mean</span> is estimated or omitted. Last come the <span class="ui">Steps to forecast</span> (up to 120) and the <span class="ui">Forecast interval level</span>.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-arima.png" alt="Eight years of monthly rainfall as a solid line and the forecast for the next twelve months as a dashed gold line with its 95% band, which repeats the peak of the summer rains"></div>
+      <figcaption><b>Figure 4.56.</b> Monthly rainfall and its twelve-month forecast with ARIMA(1, 0, 0)(0, 1, 1)<sub>12</sub>.</figcaption>
+    </figure>
+    <div>
+      <p>With the rainfall, ARIMA(1, 0, 0)(0, 1, 1)<sub>12</sub> leaves residuals without autocorrelation (Ljung-Box <i>Q</i>(22) = 15.46, <i>p</i> = 0.842): the traffic light is green. It is also the model the AIC search chooses with <i>d</i> = 0 and <i>D</i> = 1 (AIC = 739.14, the lowest of the 36). The forecast repeats the summer peak, close to 157 mm.</p>
+      <p>The lower limits of some dry months are negative (−10.33 mm in the first): the model does not know that rainfall cannot go below zero. To respect that, it is better to model a transformation of the variable (section 2.9).</p>
+    </div>
+  </div>
+  <p>The tables give the coefficients with their SE, the fit (σ², log-likelihood, AIC, BIC and the Ljung-Box test of the residuals, with 2 periods of lags if there is a seasonal part and 10 if not), the step-by-step forecast with its interval and, if the order was searched, the models compared by AIC. A second plot shows the autocorrelation of the residuals: if the model captured the structure, its bars stay inside the band.</p>
+</section>
+
+</body>
+</html>

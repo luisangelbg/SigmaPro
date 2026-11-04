@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Front matter and introduction</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<!-- splits the content into letter-size pages, with running headers, page numbers and table of contents -->
+<script src="../paginar.js"></script>
+<style>
+  .toc > li { margin-bottom: 0.02in; }
+  .toc .toc-cap { padding: 0.02in 0; }
+  .toc .toc-cap a { font-size: 13pt; }
+  .toc ul { margin-top: 0.02in; }
+  .toc ul li { font-size: 8.9pt; line-height: 1.22; margin-bottom: 0; }
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+  /* marcas más chicas sobre la pantalla completa: los botones de arriba están muy juntos */
+  .marcas-chicas .marca { width: 16px; height: 16px; margin: -8px 0 0 -8px; font-size: 7pt; border-width: 1.5px; }
+</style>
+</head>
+<body>
+
+<!-- ====================================================================== CREDITS -->
+<section class="preliminares creditos" id="creditos">
+  <div class="cred-titulo">SigmaPro</div>
+  <div class="cred-sub">User’s Manual · Statistics for agronomic and biological research</div>
+
+  <dl>
+    <dt>Author</dt><dd><b>Luis Ángel Barrera-Guzmán</b><br><span class="small">ORCID 0000-0001-8057-2583</span></dd>
+    <dt>Software</dt><dd>SigmaPro, version 1.0.0 (November 2026)</dd>
+    <dt>Manual</dt><dd>First English edition, 2026. It describes version 1.0 of the program.</dd>
+    <dt>Software license</dt><dd>GNU General Public License, version 3 or later (GPL-3.0-or-later).</dd>
+    <dt>Manual copyright</dt><dd>© 2026 Luis Ángel Barrera-Guzmán. All rights reserved.</dd>
+    <dt>Interface language</dt><dd>Spanish and English; the <span class="ui">ES</span> · <span class="ui">EN</span> selector on the top bar switches the language. This manual describes the English interface and writes the names of buttons, fields and menus as they appear on screen, for example <span class="ui">Add to report</span>.</dd>
+  </dl>
+
+  <h4>How to cite the software</h4>
+  <div class="cita">Barrera-Guzmán, L. Á. (2026). <i>SigmaPro: Statistics for agronomic and biological research</i> (Version 1.0.0) [Computer software]. LABG Suite.</div>
+  <h4>How to cite this manual</h4>
+  <div class="cita">Barrera-Guzmán, L. Á. (2026). <i>SigmaPro. User’s manual</i> (1st ed.). Distributed with SigmaPro, version 1.0.</div>
+  <p class="small">The methods paragraph that the report builds (section 5.4) cites the program with the version you have open, together with R, and the reference list of the exported report includes the reference of each method you used.</p>
+
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Privacy</div>
+    <p>SigmaPro runs entirely inside your browser. The data you open, the analyses and the reports are computed on your computer and <b>are never sent to any server</b>, not even for the models that run in the R engine, which also works inside the browser. You can analyze the unpublished data of a thesis or a trial without them ever leaving your machine.</p>
+  </div>
+
+  <p class="small" style="margin-top:0.35in;color:var(--gris)">The screenshots, figures and numbers in this manual come from the program itself, with the 27 example trials it includes: six are published data, cited where they are used; the rest are <b>fictitious</b>, built so that each analysis has a clear case, and must not be cited as data.</p>
+</section>
+
+<!-- ====================================================================== CONTENTS -->
+<section class="preliminares indice" id="indice" data-nueva-hoja>
+  <h1>Contents</h1>
+  <div class="indice-sub">Overall contents of the manual</div>
+
+  <!-- indice:inicio -->
+  <ol class="toc">
+    <li>
+      <div class="toc-cap"><span class="chip k0">P</span><a href="#como-leer">How to read this manual</a><a class="pag" href="#como-leer"></a></div>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k0">In</span><a href="#cap-intro">Introduction to SigmaPro</a><a class="pag" href="#cap-intro"></a></div>
+      <ul>
+        <li><span class="n">I.1</span><a href="#si-1"><span class="t">What is SigmaPro?</span></a></li>
+        <li><span class="n">I.2</span><a href="#si-2"><span class="t">Questions it answers</span></a></li>
+        <li><span class="n">I.3</span><a href="#si-3"><span class="t">Five ideas behind the manual</span></a></li>
+        <li><span class="n">I.4</span><a href="#si-4"><span class="t">Data it accepts and what it delivers</span></a></li>
+        <li><span class="n">I.5</span><a href="#si-5"><span class="t">What you need and how to open it</span></a></li>
+        <li><span class="n">I.6</span><a href="#si-6"><span class="t">A tour of the interface</span></a></li>
+        <li><span class="n">I.7</span><a href="#si-7"><span class="t">The R engine inside the browser</span></a></li>
+        <li><span class="n">I.8</span><a href="#si-8"><span class="t">How to work through a study</span></a></li>
+        <li><span class="n">I.9</span><a href="#si-9"><span class="t">The examples</span></a></li>
+        <li><span class="n">I.10</span><a href="#si-10"><span class="t">What the program does not do</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k1">1</span><a href="#cap-b1">Home: what SigmaPro promises and where it stands</a><a class="pag" href="#cap-b1"></a></div>
+      <ul>
+        <li><span class="n">1.1</span><a href="#s1-1"><span class="t">What you see when you open the app</span></a></li>
+        <li><span class="n">1.2</span><a href="#s1-2"><span class="t">The three commitments</span></a></li>
+        <li><span class="n">1.3</span><a href="#s1-3"><span class="t">Development status</span></a></li>
+        <li><span class="n">1.4</span><a href="#s1-4"><span class="t">If there is saved work</span></a></li>
+        <li><span class="n">1.5</span><a href="#s1-5"><span class="t">What you can analyze</span></a></li>
+        <li><span class="n">1.6</span><a href="#s1-6"><span class="t">About SigmaPro and the opening screen</span></a></li>
+        <li><span class="n">1.7</span><a href="#s1-7"><span class="t">Explore the LABG suite</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k2">2</span><a href="#cap-b2">Data: the trial table</a><a class="pag" href="#cap-b2"></a></div>
+      <ul>
+        <li><span class="n">2.1</span><a href="#s2-1"><span class="t">Four ways to begin</span></a></li>
+        <li><span class="n">2.2</span><a href="#s2-2"><span class="t">What the table should look like</span></a></li>
+        <li><span class="n">2.3</span><a href="#s2-3"><span class="t">Importing a file</span></a></li>
+        <li><span class="n">2.4</span><a href="#s2-4"><span class="t">Pasting a table and the empty sheet</span></a></li>
+        <li><span class="n">2.5</span><a href="#s2-5"><span class="t">The 27 examples</span></a></li>
+        <li><span class="n">2.6</span><a href="#s2-6"><span class="t">The worksheet</span></a></li>
+        <li><span class="n">2.7</span><a href="#s2-7"><span class="t">The five variable types</span></a></li>
+        <li><span class="n">2.8</span><a href="#s2-8"><span class="t">Computed variables</span></a></li>
+        <li><span class="n">2.9</span><a href="#s2-9"><span class="t">Transforming a variable</span></a></li>
+        <li><span class="n">2.10</span><a href="#s2-10"><span class="t">Filtering rows</span></a></li>
+        <li><span class="n">2.11</span><a href="#s2-11"><span class="t">Wide and long tables</span></a></li>
+        <li><span class="n">2.12</span><a href="#s2-12"><span class="t">Undo, redo and go back</span></a></li>
+        <li><span class="n">2.13</span><a href="#s2-13"><span class="t">What SigmaPro sees in your trial</span></a></li>
+        <li><span class="n">2.14</span><a href="#s2-14"><span class="t">Continue in the LABG suite</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k3">3</span><a href="#cap-b3">Explore: look at the data before analyzing them</a><a class="pag" href="#cap-b3"></a></div>
+      <ul>
+        <li><span class="n">3.1</span><a href="#s3-1"><span class="t">The four summaries</span></a></li>
+        <li><span class="n">3.2</span><a href="#s3-2"><span class="t">How to read a result</span></a></li>
+        <li><span class="n">3.3</span><a href="#s3-3"><span class="t">Descriptive statistics</span></a></li>
+        <li><span class="n">3.4</span><a href="#s3-4"><span class="t">Frequency tables</span></a></li>
+        <li><span class="n">3.5</span><a href="#s3-5"><span class="t">Proportions and intervals</span></a></li>
+        <li><span class="n">3.6</span><a href="#s3-6"><span class="t">Goodness of fit</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k4">4</span><a href="#cap-b4">Analysis: from the design to the conclusion</a><a class="pag" href="#cap-b4"></a></div>
+      <ul>
+        <li><span class="n">4.1</span><a href="#s4-1"><span class="t">Three ways to choose an analysis</span></a></li>
+        <li><span class="n">4.2</span><a href="#s4-2"><span class="t">The assistant</span></a></li>
+        <li><span class="n">4.3</span><a href="#s4-3"><span class="t">The catalog</span></a></li>
+        <li><span class="n">4.4</span><a href="#s4-4"><span class="t">The model builder</span></a></li>
+        <li><span class="n">4.5</span><a href="#s4-5"><span class="t">How to read a result</span></a></li>
+        <li><span class="n">4.6</span><a href="#s4-6"><span class="t">The R engine inside the browser</span></a></li>
+        <li><span class="n">4.7</span><a href="#s4-7"><span class="t">Model assumptions</span></a></li>
+        <li><span class="n">4.8</span><a href="#s4-8"><span class="t">t tests</span></a></li>
+        <li><span class="n">4.9</span><a href="#s4-9"><span class="t">Nonparametric tests</span></a></li>
+        <li><span class="n">4.10</span><a href="#s4-10"><span class="t">Experimental designs</span></a></li>
+        <li><span class="n">4.11</span><a href="#s4-11"><span class="t">Mean comparisons and contrasts</span></a></li>
+        <li><span class="n">4.12</span><a href="#s4-12"><span class="t">Analysis of covariance and regression</span></a></li>
+        <li><span class="n">4.13</span><a href="#s4-13"><span class="t">Correlation</span></a></li>
+        <li><span class="n">4.14</span><a href="#s4-14"><span class="t">Contingency tables</span></a></li>
+        <li><span class="n">4.15</span><a href="#s4-15"><span class="t">Linear mixed models</span></a></li>
+        <li><span class="n">4.16</span><a href="#s4-16"><span class="t">Variance components, heritability and repeatability</span></a></li>
+        <li><span class="n">4.17</span><a href="#s4-17"><span class="t">Generalized linear models</span></a></li>
+        <li><span class="n">4.18</span><a href="#s4-18"><span class="t">Nonlinear models</span></a></li>
+        <li><span class="n">4.19</span><a href="#s4-19"><span class="t">Response surfaces</span></a></li>
+        <li><span class="n">4.20</span><a href="#s4-20"><span class="t">Multi-environment trials</span></a></li>
+        <li><span class="n">4.21</span><a href="#s4-21"><span class="t">Multivariate analysis</span></a></li>
+        <li><span class="n">4.22</span><a href="#s4-22"><span class="t">Power, replicates and sampling</span></a></li>
+        <li><span class="n">4.23</span><a href="#s4-23"><span class="t">Survival analysis</span></a></li>
+        <li><span class="n">4.24</span><a href="#s4-24"><span class="t">Time series</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k5">5</span><a href="#cap-b5">Results: the LABG Report</a><a class="pag" href="#cap-b5"></a></div>
+      <ul>
+        <li><span class="n">5.1</span><a href="#s5-1"><span class="t">Adding to the report</span></a></li>
+        <li><span class="n">5.2</span><a href="#s5-2"><span class="t">The header and the index</span></a></li>
+        <li><span class="n">5.3</span><a href="#s5-3"><span class="t">Each analysis in the report</span></a></li>
+        <li><span class="n">5.4</span><a href="#s5-4"><span class="t">The paragraph for your thesis or paper</span></a></li>
+        <li><span class="n">5.5</span><a href="#s5-5"><span class="t">Technical details and R code</span></a></li>
+        <li><span class="n">5.6</span><a href="#s5-6"><span class="t">A living report</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k6">6</span><a href="#cap-b6">Figures: ready to publish</a><a class="pag" href="#cap-b6"></a></div>
+      <ul>
+        <li><span class="n">6.1</span><a href="#s6-1"><span class="t">The figures in the report</span></a></li>
+        <li><span class="n">6.2</span><a href="#s6-2"><span class="t">Error bars, theme and width</span></a></li>
+        <li><span class="n">6.3</span><a href="#s6-3"><span class="t">The downloads</span></a></li>
+        <li><span class="n">6.4</span><a href="#s6-4"><span class="t">The ✎ editor</span></a></li>
+        <li><span class="n">6.5</span><a href="#s6-5"><span class="t">The Figure Studio</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k7">7</span><a href="#cap-b7">Exporting and saving your work</a><a class="pag" href="#cap-b7"></a></div>
+      <ul>
+        <li><span class="n">7.1</span><a href="#s7-1"><span class="t">The Export block</span></a></li>
+        <li><span class="n">7.2</span><a href="#s7-2"><span class="t">The full report</span></a></li>
+        <li><span class="n">7.3</span><a href="#s7-3"><span class="t">The class worksheet</span></a></li>
+        <li><span class="n">7.4</span><a href="#s7-4"><span class="t">The tables</span></a></li>
+        <li><span class="n">7.5</span><a href="#s7-5"><span class="t">The figures</span></a></li>
+        <li><span class="n">7.6</span><a href="#s7-6"><span class="t">The .labg project</span></a></li>
+        <li><span class="n">7.7</span><a href="#s7-7"><span class="t">Autosave</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k8">8</span><a href="#cap-b8">Validation: every number, against R</a><a class="pag" href="#cap-b8"></a></div>
+      <ul>
+        <li><span class="n">8.1</span><a href="#s8-1"><span class="t">The criterion</span></a></li>
+        <li><span class="n">8.2</span><a href="#s8-2"><span class="t">The Validation block</span></a></li>
+        <li><span class="n">8.3</span><a href="#s8-3"><span class="t">Five classes of results</span></a></li>
+        <li><span class="n">8.4</span><a href="#s8-4"><span class="t">Beyond the numbers</span></a></li>
+        <li><span class="n">8.5</span><a href="#s8-5"><span class="t">The release rule</span></a></li>
+        <li><span class="n">8.6</span><a href="#s8-6"><span class="t">How to repeat the validation</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k9">9</span><a href="#cap-b9">Fundamentals: what each analysis does and what data it needs</a><a class="pag" href="#cap-b9"></a></div>
+      <ul>
+        <li><span class="n">9.1</span><a href="#s9-1"><span class="t">Three ways to reach a fact sheet</span></a></li>
+        <li><span class="n">9.2</span><a href="#s9-2"><span class="t">The catalog and its filters</span></a></li>
+        <li><span class="n">9.3</span><a href="#s9-3"><span class="t">The method map and the decision tree</span></a></li>
+        <li><span class="n">9.4</span><a href="#s9-4"><span class="t">A fact sheet, section by section</span></a></li>
+        <li><span class="n">9.5</span><a href="#s9-5"><span class="t">Data needed and the templates</span></a></li>
+        <li><span class="n">9.6</span><a href="#s9-6"><span class="t">Formulas, language and offline use</span></a></li>
+        <li><span class="n">9.7</span><a href="#s9-7"><span class="t">How the fact sheets were reviewed</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip k10">10</span><a href="#cap-b10">LABG Suite: where the work continues</a><a class="pag" href="#cap-b10"></a></div>
+      <ul>
+        <li><span class="n">10.1</span><a href="#s10-1"><span class="t">The LABG Suite block</span></a></li>
+        <li><span class="n">10.2</span><a href="#s10-2"><span class="t">Suggestions within your work</span></a></li>
+        <li><span class="n">10.3</span><a href="#s10-3"><span class="t">Where each app appears</span></a></li>
+        <li><span class="n">10.4</span><a href="#s10-4"><span class="t">Sending the data to another app</span></a></li>
+        <li><span class="n">10.5</span><a href="#s10-5"><span class="t">Hiding a suggestion</span></a></li>
+        <li><span class="n">10.6</span><a href="#s10-6"><span class="t">How to cite the apps</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <div class="toc-cap"><span class="chip kx">Ap</span><a href="#cap-ap">Appendices</a><a class="pag" href="#cap-ap"></a></div>
+      <ul>
+        <li><span class="n">A</span><a href="#ap-a"><span class="t">The files the app reads and writes</span></a></li>
+        <li><span class="n">B</span><a href="#ap-b"><span class="t">When something goes wrong</span></a></li>
+        <li><span class="n">C</span><a href="#ap-c"><span class="t">Glossary</span></a></li>
+        <li><span class="n">D</span><a href="#ap-d"><span class="t">References</span></a></li>
+        <li><span class="n">E</span><a href="#ap-e"><span class="t">The license and how to cite SigmaPro</span></a></li>
+      </ul>
+    </li>
+  </ol>
+  <!-- indice:fin -->
+</section>
+
+<!-- ====================================================================== HOW TO READ -->
+<section class="preliminares" id="como-leer" data-nueva-hoja style="--acento: var(--b0)">
+  <h2 style="margin-top:0.2in">How to read this manual</h2>
+  <p class="lead">The manual follows the order of the app: ten numbered blocks, walked from top to bottom in the sidebar. Each chapter explains one block and carries its number: chapter 4 is Block 4, and its sections, figures and tables are numbered 4.1, 4.2… The introduction, before the blocks, is numbered I.1, I.2…</p>
+
+  <h3>One color for each block</h3>
+  <p>The color of a block appears on the opening page of its chapter, in the number of each section, on the tab at the edge of the page and in the table of contents.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:0.6in">Block</th><th style="width:1.2in">Name in the app</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip k1">1</span></td><td><span class="ui">Home</span></td><td>The front page: what the app is for, the path of an analysis, the list of what you can analyze, how to cite it, the opening screen and the notice for recovering saved work</td></tr>
+      <tr><td><span class="chip k2">2</span></td><td><span class="ui">Data</span></td><td>Importing, pasting or opening an example; the worksheet, the variable types, computed variables, transformations, filters, wide ⇄ long and what SigmaPro sees in the trial</td></tr>
+      <tr><td><span class="chip k3">3</span></td><td><span class="ui">Explore</span></td><td>Descriptive statistics, frequencies, proportions and goodness of fit, with their intervals</td></tr>
+      <tr><td><span class="chip k4">4</span></td><td><span class="ui">Analysis</span></td><td>The assistant, the catalog and the model builder; its 74 analyses (the other 4 are in Explore), from experimental designs and mean comparisons to mixed models, generalized models and the rest of the families</td></tr>
+      <tr><td><span class="chip k5">5</span></td><td><span class="ui">Results</span></td><td>The LABG Report: the saved analyses, with their tables, figures and assumptions, the paragraph for the thesis and the R code</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td><span class="ui">Figures</span></td><td>The report figures, their themes, their downloads, the ✎ editor and the Figure Studio</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><span class="ui">Export</span></td><td>The report in .docx, PDF or HTML, the tables, the figures, the .labg project and autosave</td></tr>
+      <tr><td><span class="chip k8">8</span></td><td><span class="ui">Validation</span></td><td>The comparison of each result against R, case by case</td></tr>
+      <tr><td><span class="chip k9">9</span></td><td><span class="ui">Fundamentals</span></td><td>One fact sheet per analysis: what it is for, the model, the assumptions, the data it needs, how to read it and its references, with example data and templates</td></tr>
+      <tr><td><span class="chip k10">10</span></td><td><span class="ui">LABG Suite</span></td><td>The sister apps that continue the work, the suggestions within the analysis and how to take the data from one app to another</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Types of boxes</h3>
+  <div class="dos">
+    <div class="caja nota" style="margin:0"><div class="caja-t"><span class="ico">i</span>Note</div><p>Clarifications and practical tips that save time.</p></div>
+    <div class="caja importante" style="margin:0"><div class="caja-t"><span class="ico">!</span>Important</div><p>What can change your conclusions if it is overlooked.</p></div>
+    <div class="caja teoria" style="margin:0"><div class="caja-t"><span class="ico">Σ</span>Theory in brief</div><p>The idea behind a calculation, without unnecessary formulas.</p></div>
+    <div class="caja ejemplo" style="margin:0"><div class="caja-t"><span class="ico">✎</span>Example</div><p>A text or a result exactly as the app produces it.</p></div>
+  </div>
+
+  <h3>Writing conventions</h3>
+  <table class="compacta">
+    <thead><tr><th style="width:38%">Written like this</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Add to report</span></td><td>A button, check box, field or menu of the app, with its text exactly as it appears on screen.</td></tr>
+      <tr><td><code>rend</code>, <code>hibrido * dosis + (1 | bloque)</code></td><td>A column name, a formula or a value that you type exactly as shown.</td></tr>
+      <tr><td>“rend”, “Germinó”</td><td>The names of the variables and of their levels, in quotation marks, as the app writes them in its conclusions. The example datasets keep their original Spanish column and level names (for example, “rend” is yield).</td></tr>
+      <tr><td>5.938 · <i>F</i> = 60.63 · <i>p</i> &lt; 0.001</td><td>Numbers with a decimal point, as in the app; the letters of the statistics, in italics.</td></tr>
+      <tr><td>Figure 4.28 · Table 4.3</td><td>The figures and tables of the manual. The tables that the app numbers within a result (“Table 1. Analysis of covariance”) are referred to by their title.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>The numbers in this manual</div>
+    <p>All the numbers in the text are the ones the app gives with its examples (Data block → <span class="ui">Examples ▾</span>) and the default values, unless stated otherwise. The main example is <b>“Maize: hybrids × nitrogen”</b>, a factorial of 3 hybrids by 4 nitrogen rates in 4 blocks; when a chapter uses another example, it names it before giving its results. With the same example you will see the same numbers.</p>
+  </div>
+</section>
+
+<!-- ====================================================================== INTRODUCTION -->
+<section class="capitulo" id="cap-intro" data-pestana="In" data-orden="0" style="--acento: var(--b0)">
+  <div class="cap-apertura">
+    <div class="cap-num">In</div>
+    <div class="cap-etiqueta">Introduction · Before the blocks</div>
+    <h1 data-corto="Introduction">Introduction to SigmaPro</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">What the program is, which questions about a trial it answers, what data it accepts and what it delivers, how to open it and work through it, which language it works in and what it does not do yet.</p>
+    <div class="cap-franja"><span class="k1"></span><span class="k2"></span><span class="k3"></span><span class="k4"></span><span class="k5"></span><span class="k6"></span><span class="k7"></span><span class="k8"></span><span class="k9"></span><span class="k10"></span></div>
+    <ul class="cap-contenido">
+      <li><b>I.1</b>What is SigmaPro?</li>
+      <li><b>I.2</b>Questions it answers</li>
+      <li><b>I.3</b>Five ideas behind the manual</li>
+      <li><b>I.4</b>Data it accepts and what it delivers</li>
+      <li><b>I.5</b>What you need and how to open it</li>
+      <li><b>I.6</b>A tour of the interface</li>
+      <li><b>I.7</b>The R engine inside the browser</li>
+      <li><b>I.8</b>How to work through a study</li>
+      <li><b>I.9</b>The examples</li>
+      <li><b>I.10</b>What the program does not do</li>
+    </ul>
+  </div>
+
+  <!-- I.1 -->
+  <h2 id="si-1"><span class="num">I.1</span>What is SigmaPro?</h2>
+  <p class="lead">SigmaPro is a statistics program for agronomic and biological research that runs inside the browser, with nothing to install and no internet connection. It takes the data of a trial along a single path, from the field file to the published table and figure.</p>
+  <p>That path is the path of the blocks: load the data, explore them, choose the analysis that matches the design, read the conclusion, check the assumptions and export the report. It is made for people who analyze their own experiments—undergraduate and graduate students, teachers, field and greenhouse researchers—and want correct results without writing code. That is why each result begins with a conclusion in words, checks its assumptions, cites its methods and gives the R code that repeats the calculation. Its 78 analyses, in 18 families, range from the analysis of variance of an experimental design to mixed models, heritability, multi-environment trials, survival and time series. Each one has its <b>Fundamentals fact sheet</b>, which explains what it does, what it assumes, what data it needs and how to read it (chapter 9).</p>
+  <p>And every number is checked against R: the program’s computing core is its own, but R is the judge. The comparison, case by case, comes inside the app (chapter 8). SigmaPro is part of the LABG Suite, a set of free apps that also run in the browser; chapter 10 explains which of them continue the work of an analysis.</p>
+
+  <!-- I.2 -->
+  <h2 id="si-2"><span class="num">I.2</span>Questions it answers</h2>
+  <table class="compacta">
+    <thead><tr><th style="width:3.1in">The question</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td>What are my data like? Are there odd values, missing values, groups with few observations?</td><td>Explore (chapter 3) and what SigmaPro sees in the trial (section 2.13)</td></tr>
+      <tr><td>Do my treatments differ? Which ones?</td><td>Experimental designs and mean comparisons (sections 4.10 and 4.11)</td></tr>
+      <tr><td>Are the assumptions of the analysis met? If not, what do I do?</td><td>The traffic light of each result and the model assumptions (section 4.7)</td></tr>
+      <tr><td>What is the optimum rate? How does the crop respond to a quantitative factor?</td><td>Polynomials, regression, nonlinear models and response surfaces (sections 4.11, 4.12, 4.18 and 4.19)</td></tr>
+      <tr><td>How closely are two variables related? Which variables explain yield?</td><td>Correlation and multiple regression (sections 4.12 and 4.13)</td></tr>
+      <tr><td>Are the blocks, locations or years random? How do I analyze missing plots or repeated measures?</td><td>Linear mixed models (section 4.15)</td></tr>
+      <tr><td>How much of the variation is genetic? Which genotypes should I select?</td><td>Heritability, BLUP and multi-environment trials (sections 4.16 and 4.20)</td></tr>
+      <tr><td>How do I analyze counts, proportions or times to an event?</td><td>Generalized models and survival (sections 4.17 and 4.23)</td></tr>
+      <tr><td>How many replications or how many plants do I need?</td><td>Power, replications and sampling (section 4.22)</td></tr>
+      <tr><td>How do I present it in the thesis or in the paper?</td><td>The report, the figures and the exports (chapters 5 to 7)</td></tr>
+      <tr><td>What does an analysis do, what does it assume and how must my data be arranged to use it?</td><td>Its fact sheet in Fundamentals (chapter 9)</td></tr>
+      <tr><td>Which other tool continues the work: randomizing the design, exploring many variables, forming groups?</td><td>LABG Suite (chapter 10)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- I.3 -->
+  <h2 id="si-3"><span class="num">I.3</span>Five ideas behind the manual</h2>
+  <h3>1. The design comes first</h3>
+  <p>The analysis of an experiment depends on how it was carried out: whether there were blocks, whether a factor was applied to large plots, whether the measurements were repeated on the same plant. SigmaPro reads the structure of the trial from the data (section 2.13), and the assistant asks about what cannot be read, so that it proposes the analysis that matches the design, not the best-known one.</p>
+  <h3>2. The conclusion first, in words</h3>
+  <p>Each result begins by saying what it found (“hibrido: there are differences (F = 60.635, p &lt; 0.001)”) and then gives the tables. The numbers are there for anyone who wants to check them; the conclusion is there so that nobody misreads them.</p>
+  <h3>3. Assumptions are not taken for granted</h3>
+  <p>The analyses check their own assumptions: most of them show the check with a traffic light in the result, and the experimental designs check them with <span class="ui">Check the model assumptions</span> (section 4.7). If something fails, the app says what to do: transform, change the test or use a model that does not make that assumption.</p>
+  <h3>4. Every number is validated against R</h3>
+  <p>A method does not appear in the app until all its validation cases agree with R to six digits (chapter 8).</p>
+  <h3>5. Everything can be reproduced</h3>
+  <p>Each result comes with its R code, the report cites the methods with their versions, and the .labg project saves the data and the analyses with their fingerprints, so that another person arrives at the same numbers.</p>
+
+  <!-- I.4 -->
+  <h2 id="si-4"><span class="num">I.4</span>Data it accepts and what it delivers</h2>
+  <p>SigmaPro reads tables in delimited text (CSV, TSV), spreadsheet workbooks (.xlsx, .ods) and pasted tables, with one row per experimental unit and one column per variable (section 2.2). It recognizes factors, numeric variables, dates and identifiers, and lets you correct any of them. It works comfortably with about 100,000 rows.</p>
+  <p>It delivers the complete report in .docx, PDF or HTML; each table in CSV, and all of them together in a spreadsheet or in LaTeX; the figures in SVG, vector PDF, PNG or TIFF at 600 dpi; and the .labg project with the data, the analyses and the R code. In addition, each Fundamentals fact sheet gives a template in CSV or XLSX for preparing your data (section 9.5). Appendix A describes each file in detail.</p>
+
+  <!-- I.5 -->
+  <h2 id="si-5"><span class="num">I.5</span>What you need and how to open it</h2>
+  <ul>
+    <li><b>A recent browser</b>, from the last two or three years, on a computer; it also works on a tablet or a phone, with the screen rearranged (section I.6).</li>
+    <li><b>Nothing to install.</b> SigmaPro opens with a double-click on its <code>index.html</code> file, from the program folder, or from its web page. The first time the web page is opened, the browser stores the app so that it can be used offline afterward.</li>
+    <li><b>Internet only for the R engine</b>, the first time you use an analysis that needs it (section I.7). Nothing else uses the internet.</li>
+  </ul>
+  <h3>The opening screen</h3>
+  <p>When you open SigmaPro, its opening screen appears: on a black background, the logo and the name are drawn in about six seconds, and the scene stays still until you press <span class="ui">Start</span> (or Enter). <span class="ui">Skip</span> or Esc dismisses it at any time.</p>
+  <ul>
+    <li>The first time, it is shown in full; on later visits, a short version of a second and a half, also with <span class="ui">Start</span>. Reloading the same tab does not show it again.</li>
+    <li>If the system asks for reduced motion, the scene appears still.</li>
+    <li>It can be turned off, replayed or projected in a loop from Home → <span class="ui">About SigmaPro</span> (chapter 1).</li>
+  </ul>
+  <h3>Spanish or English</h3>
+  <p>The <span class="ui">ES</span> · <span class="ui">EN</span> selector on the top bar changes the language of the whole app: the menus, the conclusions, the tables, the report, the methods paragraph and the Fundamentals fact sheets. When you change it, the app saves the work and reloads in the other language, with the same data and the same analyses; the chosen language is remembered the next time. The comments in the equivalent R code stay in Spanish. This manual describes the English interface.</p>
+
+  <!-- I.6 -->
+  <h2 id="si-6"><span class="num">I.6</span>A tour of the interface</h2>
+  <figure>
+    <div class="marco marcas-chicas" style="position:relative"><img src="../img/en/i-pantalla.png" alt="The SigmaPro screen in the Data block with the maize example, with fifteen numbered marks: the program name, the link to the suite, the language selector, the theme, the glossary, the problem report, the help, the block bar and the button that collapses it, the breadcrumb, the Document and Focused modes, the search, the block’s table of contents, the buttons at the bottom of the bar and the block title"><span class="marca" style="left:32.3%;top:3.1%">1</span><span class="marca" style="left:76.5%;top:7.8%">2</span><span class="marca" style="left:83.8%;top:7.8%">3</span><span class="marca" style="left:88.4%;top:7.9%">4</span><span class="marca" style="left:91.4%;top:7.9%">5</span><span class="marca" style="left:94.4%;top:7.9%">6</span><span class="marca" style="left:97.4%;top:7.9%">7</span><span class="marca" style="left:7.8%;top:9.2%">8</span><span class="marca" style="left:15.7%;top:9.2%">9</span><span class="marca" style="left:36.4%;top:10.7%">10</span><span class="marca" style="left:57.1%;top:10.7%">11</span><span class="marca" style="left:77.8%;top:15.3%">12</span><span class="marca" style="left:80.7%;top:10.7%">13</span><span class="marca" style="left:13.1%;top:88.7%">14</span><span class="marca" style="left:25.9%;top:17.2%">15</span></div>
+    <figcaption><b>Figure I.1.</b> The SigmaPro screen, here in the Data block with the maize example. The marked parts are common to all blocks.</figcaption>
+  </figure>
+  <ol class="leyenda-marcas">
+    <li><span class="n">1</span>The logo and the name of the program.</li>
+    <li><span class="n">2</span><span class="ui">LABG Suite</span>: the other apps of the suite.</li>
+    <li><span class="n">3</span><span class="ui">ES</span> · <span class="ui">EN</span>: the language of the app.</li>
+    <li><span class="n">4</span>The light or dark theme.</li>
+    <li><span class="n">5</span>The glossary (Ctrl G), described below.</li>
+    <li><span class="n">6</span>Report a problem or suggest something.</li>
+    <li><span class="n">7</span>Help and keyboard shortcuts.</li>
+    <li><span class="n">8</span>The bar of the ten blocks, with the active one highlighted.</li>
+    <li><span class="n">9</span>Collapse the bar to gain space.</li>
+    <li><span class="n">10</span>The breadcrumb: where you are within the block.</li>
+    <li><span class="n">11</span><span class="ui">Document</span> or <span class="ui">Focused</span>: the whole block or one section at a time.</li>
+    <li><span class="n">12</span>The search (Ctrl K).</li>
+    <li><span class="n">13</span><span class="ui">In this block</span>: the list of its sections.</li>
+    <li><span class="n">14</span><span class="ui">Search</span>, <span class="ui">Focused mode</span> and <span class="ui">Help</span>.</li>
+    <li><span class="n">15</span>The title and the explanation of the block, with the <span class="ui">Tour</span> button on the right (described below).</li>
+  </ol>
+  <p>The <b>block bar</b> takes you to any block at any time; a block that needs something that does not exist yet (data, an analysis in the report) says so and offers the button to go and get it. <span class="ui">Alt</span> + <span class="ui">←</span> and <span class="ui">→</span> move to the previous or the next block.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/i-buscar.png" alt="The search open with some text typed and the list of matching blocks, sections, buttons and fields"></div>
+      <figcaption><b>Figure I.2.</b> The search (Ctrl K) finds blocks, sections, buttons and fields by name and takes you to them.</figcaption>
+    </figure>
+    <figure>
+      <div class="marco"><img src="../img/en/i-atajos.png" alt="The keyboard shortcuts dialog: where you are, the navigation between blocks with Alt and the arrows, and the keys of the model builder"></div>
+      <figcaption><b>Figure I.3.</b> The ? key shows where you are and the keyboard shortcuts, including those of the model builder.</figcaption>
+    </figure>
+  </div>
+  <p>The sun button switches to the <b>dark theme</b>, more comfortable at night or on a projector; figures are always downloaded with the colors of the light theme (and with the chart theme you choose, chapter 6). On a narrow screen (a phone, a tablet held upright), the block bar moves to the bottom of the screen, as a row of tabs that slides sideways, and the buttons of the top bar drop to a second line.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/i-oscuro.png" alt="A result of the Analysis block in the dark theme"></div>
+      <figcaption><b>Figure I.4.</b> The dark theme.</figcaption>
+    </figure>
+    <figure>
+      <div class="marco"><img src="../img/en/i-movil.png" alt="SigmaPro on a phone: the Data block with the maize example; the buttons of the top bar on a second line and the block bar at the bottom of the screen"></div>
+      <figcaption><b>Figure I.5.</b> SigmaPro on a phone.</figcaption>
+    </figure>
+  </div>
+
+  <h3>The glossary</h3>
+  <p>The book button, or Ctrl G from any block, opens the <b>glossary</b>: 146 terms, namely the 121 statistics that appear in the app’s tables (<i>F</i>, <i>p</i>, R², CV, BLUP…) and 25 concepts of design and analysis (block, interaction, error stratum, REML, overdispersion…). Ctrl G again, or Esc, closes it.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/i-glosario.png" alt="The glossary open: the search box, the All terms selector and the count, 146 terms; on the left the list, with the name, the symbol and the group of each term, and Interaction selected; on the right its entry: Design and analysis concepts, what it is, the box with the See it in action button and what it does, Appears in Randomized complete blocks and the related terms Factor and level and Treatment"></div>
+    <figcaption><b>Figure I.6.</b> The glossary at the term “Interaction”: what it is, “See it in action”, where it appears and its related terms.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Search.</b> The search box ignores accents and capitalization and recognizes symbols, abbreviations and alternative names: “R²”, “chi”, “odds ratio”, “marginal mean”. The selector on the right shows a single group (the concepts, the test statistics, the effect sizes, quantitative genetics…). ↓ moves to the list and Enter opens the first term; if nothing matches, a button searches for the same text in Fundamentals (chapter 9).</li>
+    <li><b>The entry.</b> It says what the term is, in which analyses it appears (each name opens its fact sheet in Fundamentals) and which terms are related to it.</li>
+    <li><b>See it in action.</b> It loads the example data of the analysis where the term appears, runs it and points out the table, the column or the row in the result with a gold frame (figure I.7). With <i>F</i> it points out the F column of the maize analysis of variance; with “Interaction”, the hibrido × dosis row. Some terms offer other analyses under <span class="ui">Also in</span>.</li>
+  </ul>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/i-glosario-accion.png" alt="The randomized complete block analysis of variance table of the maize example with the hibrido × dosis row, 6 degrees of freedom, F equal to 1.47 and p equal to 0.220, framed in gold"></div>
+    <figcaption><b>Figure I.7.</b> “See it in action” for “Interaction”: the maize analysis of variance with the interaction row pointed out.</figcaption>
+  </figure>
+  <p>The example data take the place of the loaded table, which is not lost: <span class="ui">Back to the previous table</span>, in Data, brings it back (section 2.12). At the Basic level, which hides the tables, “See it in action” switches to Standard (section 4.5).</p>
+
+  <h3>Tours and help</h3>
+  <p>Each block has the <span class="ui">Tour</span> button next to its title: it takes you step by step through the parts of the block, highlighting each one (the rest of the screen is dimmed) with two lines that say what it is for (figure I.8). <span class="ui">Previous</span> and <span class="ui">Next</span>, or the ← and → arrows, change the step; <span class="ui">Finish</span> or Esc closes the tour. In Home, <span class="ui">First time? SigmaPro tour</span> takes you around the app: the paths, the block bar, the search, the glossary, the shortcuts and the language. The tours of Data, Explore and Analysis offer to load the maize example if there are no data.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/i-recorrido.png" alt="The Analysis block with the maize result, dimmed except for the In a nutshell box, framed in gold; below it, the tour window: Analysis tour, 5 of 7, In a nutshell, The result without statistical symbols; below, the conclusion with its figures, and the Finish, Previous and Next buttons"></div>
+    <figcaption><b>Figure I.8.</b> A step of the Analysis tour: “In a nutshell”, highlighted over the maize result.</figcaption>
+  </figure>
+  <p><b>Tooltips</b> appear when you rest the pointer on a control for a moment, or when you reach it with the keyboard, and they close with Esc. The table headers say what their statistic is (figure I.9), and the fields for the significance level, the sums of squares and the <i>p</i>-value adjustment carry their definition from the glossary.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/i-ayuda.png" alt="The maize analysis of variance with the help for the F header: Fisher’s F, ratio of a term’s mean square to the error mean square; near 1, the term explains no more variation than chance; the larger it is, the more evidence that it has an effect; and the note Ctrl+G: glossary"></div>
+    <figcaption><b>Figure I.9.</b> The help for the <i>F</i> header of the analysis of variance.</figcaption>
+  </figure>
+
+  <!-- I.7 -->
+  <h2 id="si-7"><span class="num">I.7</span>The R engine inside the browser</h2>
+  <p>Almost all of SigmaPro runs on its own computing core, written for the program. Some methods—linear mixed models, repeated measures and generalized linear mixed models—need algorithms that R handles better than anything else, and for them SigmaPro includes an <b>R engine</b>: R compiled to run inside the browser (webR), with the packages <code>lme4</code>, <code>lmerTest</code>, <code>emmeans</code>, <code>nlme</code> and <code>car</code>.</p>
+  <ul>
+    <li>The first time you use one of those methods, the app tells you and downloads the engine (about 25 MB). After that, it stays stored in the browser and works without internet.</li>
+    <li>The data <b>do not leave your machine</b>: the engine runs on your own computer, like the rest of the app.</li>
+    <li>When the app is published with its <code>motor-r/</code> folder and opened from a server, the engine is loaded from that same folder, and no internet is needed, not even the first time.</li>
+  </ul>
+  <p>Section 4.6 explains the notice and which methods use the engine.</p>
+
+  <!-- I.8 -->
+  <h2 id="si-8"><span class="num">I.8</span>How to work through a study</h2>
+  <p>The order of the blocks is the order in which a trial is analyzed. You do not have to go through all of them: whatever a block needs from another, it takes on its own.</p>
+  <ol class="pasos">
+    <li><b>Block 2.</b> Load the data and check the type of each variable; read what SigmaPro sees in the trial: the design, the missing values, the empty cells.</li>
+    <li><b>Block 3.</b> Explore: means, spread and odd values by treatment, before testing anything.</li>
+    <li><b>Block 4.</b> Choose the analysis with the assistant (or in the catalog, or build the model in the model builder); read the conclusion and the traffic light; compare the means; add to the report what you want to keep.</li>
+    <li><b>Block 5.</b> Review the report: the order, the titles, the notes and the paragraph for the thesis.</li>
+    <li><b>Block 6.</b> Adjust the figures: the error bars, the width and, if needed, the ✎ editor or the Figure Studio.</li>
+    <li><b>Block 7.</b> Export the report, the tables and the figures, and save the .labg project.</li>
+  </ol>
+  <p>At any step, the <span class="ui">ⓘ What is this analysis?</span> button opens the analysis’s fact sheet in Fundamentals (Block 9), with what it assumes and the data it needs, and at the foot of some results the <span class="ui">Continue in the LABG suite</span> strip suggests the app that continues the work (Block 10).</p>
+
+  <!-- I.9 -->
+  <h2 id="si-9"><span class="num">I.9</span>The examples</h2>
+  <p>The Data block includes <b>27 example trials</b> (table 2.2), one or more for each family of analyses, embedded in the program so that they work with a double-click. Six are published data—Mendel’s segregation, the poisons of Box and Cox (1964), the oats in split plots of Yates (1935), an alpha-lattice and an oat trial in 14 environments from Olivoto and Lúcio (2020), and the elongation of a yarn made from three polymers, from Cornell (2002)—and the rest are fictitious, built so that each analysis has a clear case. The main example of the manual is “Maize: hybrids × nitrogen”: 3 hybrids with 4 nitrogen rates in 4 randomized complete blocks, 48 plots.</p>
+
+  <!-- I.10 -->
+  <h2 id="si-10"><span class="num">I.10</span>What the program does not do</h2>
+  <p class="lead">SigmaPro does what it does well, and it says what it does not do yet. These are its known limits.</p>
+  <ul>
+    <li>The manual and the interface are available only in Spanish and English.</li>
+    <li>The PDF of the report comes from the browser’s print dialog; in the .docx, the figures are embedded as PNG images at 300 dpi. The LaTeX is written ready to compile, but the app does not compile it.</li>
+    <li>The Data block does not average or sort rows: if you need the mean of each plot or the dates in order, prepare them in your spreadsheet before importing.</li>
+    <li>With two SigmaPro tabs open at the same time, autosave keeps the work of the last one that changed; the worksheet’s undo history is not saved.</li>
+    <li>With many rows, each scatter plot draws at most 2,500 points (the calculations use all of them).</li>
+    <li>Sampling: only simple random and stratified sampling (not cluster or systematic sampling).</li>
+    <li>Generalized linear mixed models: they use the Laplace approximation; Gauss-Hermite quadrature only with a single random intercept, in binomial or Poisson models.</li>
+    <li>Heritability: it does not handle fixed controls within a trial of random genotypes, or relationship matrices.</li>
+    <li>Multivariate: it includes MANOVA and discriminant analysis; principal components and cluster analysis are done in PCAPro and ClusteringPro, from the same suite (chapter 10).</li>
+  </ul>
+</section>
+
+</body>
+</html>

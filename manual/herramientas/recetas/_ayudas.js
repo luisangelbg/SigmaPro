@@ -20,7 +20,9 @@ var caja = (nodos, p = 8) => {
 var limpio = () => { document.querySelectorAll('.toast-stack .toast').forEach(t => t.remove()); document.querySelectorAll('.lnav-fbtn').forEach(b => { b.style.visibility = 'hidden'; }); if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); };
 var ejemplo = async texto => {
   $('#datEjemplos').click(); await W(200);
-  const b = $$('.sp-menu-item').find(x => x.textContent.includes(texto));
+  /* el texto es del nombre en español; con la interfaz en inglés el menú lo muestra traducido */
+  const ej = (window.SP_EJEMPLOS || []).find(e => String(e.nombre).includes(texto)), nombre = ej ? SP.T(ej.nombre) : texto;
+  const b = $$('.sp-menu-item').find(x => x.textContent.includes(nombre) || x.textContent.includes(texto));
   if (!b) throw new Error('No hay un ejemplo «' + texto + '»');
   b.click(); await W(600); limpio();
 };

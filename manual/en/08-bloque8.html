@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 8</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b8" data-pestana="B8" data-orden="8" style="--acento: var(--b8)">
+  <div class="cap-apertura">
+    <div class="cap-num">8</div>
+    <div class="cap-etiqueta">Block 8 · Validation</div>
+    <h1>Validation: every number, against R</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">SigmaPro does not ask you to take it on trust: every result of the program is compared against R, with published or classic data, and the report of that comparison comes inside the app. This chapter explains the criterion, how to read the block, what else is checked besides the numbers, and how to repeat the whole validation on another computer.</p>
+    <ul class="cap-contenido">
+      <li><b>8.1</b>The criterion</li>
+      <li><b>8.2</b>The Validation block</li>
+      <li><b>8.3</b>Five classes of results</li>
+      <li><b>8.4</b>Beyond the numbers</li>
+      <li><b>8.5</b>The release rule</li>
+      <li><b>8.6</b>How to repeat the validation</li>
+    </ul>
+  </div>
+
+  <!-- 8.1 -->
+  <h2 id="s8-1"><span class="num">8.1</span>The criterion</h2>
+  <p class="lead">A validation <b>case</b> is a dataset (from a book, a paper or an R package), a SigmaPro computation and R’s answer to the same computation. The case passes if <b>every number</b> in R’s answer matches SigmaPro’s:</p>
+  <p class="formula">|SigmaPro − R| ≤ 10<sup>−6</sup> · max(1, |R|)</p>
+  <p>That is, six digits: absolute for numbers smaller than 1 and relative for larger ones. A few rules refine it: a tiny <i>p</i> value (smaller than 10<sup>−6</sup>) must also match in its relative digits, so that a <i>p</i> of 10<sup>−20</sup> does not pass just for being “almost zero”; R’s missing values and infinities are expected as missing values and infinities; and text is compared exactly. Every key in R’s answer is compared, and every one of them must exist in SigmaPro’s result.</p>
+  <p>R’s answers are computed by R scripts kept alongside the app (<code>tests/r/</code>), with R 4.4.2 and the reference packages for each method (<code>car</code>, <code>emmeans</code>, <code>lme4</code>, <code>survival</code>, <code>agricolae</code> and others). SigmaPro does not use R to compute, except in the R engine methods (section 4.6): its core is its own, and R is the judge.</p>
+
+  <!-- 8.2 -->
+  <h2 id="s8-2"><span class="num">8.2</span>The Validation block</h2>
+  <p class="lead">The block shows the latest validation report, the same one that is generated when the tests are run, with its date at the top right. So that the app opens quickly, the full report is loaded the first time you open the block: the summary appears immediately and, for a moment, the table says “Loading the cases…”.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b8-bloque.png" alt="The Validation block: the four summary tiles, cases passed, values compared, largest difference and the R version; the All, Passed and With failures filters and the search box; and the beginning of the table of cases, grouped by function or method, with the data source, the class, the values, the largest difference and the result, one of them with its details open"></div>
+    <figcaption><b>Figure 8.1.</b> The Validation block: the summary, the filters and the first cases, with the details of one of them open.</figcaption>
+  </figure>
+  <ul>
+    <li>The <b>summary</b>: how many cases passed out of how many there are, how many numbers were compared, the largest scaled difference and the R version of the references, with how many functions and methods the cases cover. If the largest difference exceeds 10<sup>−6</sup>, the tile says how many cases have their own documented tolerance (section 8.3).</li>
+    <li>The <b>filters</b> <span class="ui">All</span>, <span class="ui">Passed</span> and <span class="ui">With failures</span>, and a search box by function, method or data source.</li>
+    <li>The <b>table of cases</b>, grouped by the function or method they test. Each case says what it tests, where its data come from, its class (section 8.3), how many numbers it compares, the largest difference and whether it passed. The table shows the first 120 cases and brings in the next ones as you scroll down through it, or with <span class="ui">Show more cases</span>, which says how many are shown out of how many; the filters and the search box see all the cases, including those not shown yet.</li>
+    <li><span class="ui">Details</span> opens what lies behind each case: the R function and the versions of its packages, the comparison rule (with its tolerance; if the case has its own tolerances on some paths, it says so), the value that differed the most, and the R code that computed the reference, so you can repeat it.</li>
+  </ul>
+  <p>Below the table, a card summarizes the <b>other checks</b> (section 8.4), each with its date, its result and its detail.</p>
+
+  <!-- 8.3 -->
+  <h2 id="s8-3"><span class="num">8.3</span>Five classes of results</h2>
+  <p class="lead">Not all numbers can be compared in the same way. Each case carries a class that says what kind of computation it is and how it is validated.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:0.45in" class="c">Class</th><th style="width:1.9in">What it is</th><th>How it is validated</th></tr></thead>
+    <tbody>
+      <tr><td class="c"><b>A</b></td><td>Closed formula or exact algorithm: sums of squares, F, t, estimators, their <i>p</i> values.</td><td>Against R, with 10<sup>−6</sup>.</td></tr>
+      <tr><td class="c"><b>B</b></td><td>R uses a published approximation: the Shapiro-Wilk <i>p</i>, the quantiles of the studentized range.</td><td>The same published algorithm is programmed. If R itself is less precise by design, the reference is computed in R with more precision and the finding is documented.</td></tr>
+      <tr><td class="c"><b>C</b></td><td>R uses randomness: Dunnett by default, the simulated Fisher test.</td><td>A reference without randomness, by high-precision numerical integration; R’s default value, separately, with the tolerance of its own error.</td></tr>
+      <tr><td class="c"><b>D</b></td><td>Iterative optimization: Box-Cox, REML, generalized models, nonlinear models, ARIMA.</td><td>Both programs with tightened convergence criteria; 10<sup>−6</sup> on the converged result, or the documented tolerance of the path when R itself gives no more digits.</td></tr>
+      <tr><td class="c"><b>E</b></td><td>Tables from books and papers, printed with 2 to 4 decimals.</td><td>Half a unit of the last printed digit. The book or paper is cited, not the program it was computed with.</td></tr>
+    </tbody>
+  </table>
+  <p>When the tolerance of a path is not 10<sup>−6</sup>, the reason is written in the case and appears in the published validation report; a tolerance is never loosened without saying why. The class B findings (R functions that, by design or by rounding, give fewer digits than requested) are described one by one in the validation document that comes with the app.</p>
+
+  <!-- 8.4 -->
+  <h2 id="s8-4"><span class="num">8.4</span>Beyond the numbers</h2>
+  <p class="lead">Besides the cases against R, the test battery checks fifteen other things, each with its own independent program. Each one leaves its result, with its date, in the other checks card of the Validation block.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Check</th><th>What is checked</th></tr></thead>
+    <tbody>
+      <tr><td><b>The equivalent R code</b></td><td>The code the app shows (section 4.5) is run in R, scenario by scenario, and must give the same numbers as the app.</td></tr>
+      <tr><td><b>The exports</b></td><td>The spreadsheet is read with R, cell by cell; the .docx, with an XML reader; the PDFs, PNGs and TIFFs, with image readers; the project, with its hashes, its R code run in full and reopened with the same tables; and autosave, recovered in a new page.</td></tr>
+      <tr><td><b>Performance</b></td><td>With about 100,000 rows, each common analysis within its time target.</td></tr>
+      <tr><td><b>Privacy and offline use</b></td><td>With data, analyses and exports, no data leave the browser; with no network, the app opens, computes and exports.</td></tr>
+      <tr><td><b>Accessibility</b></td><td>Every block and the analyses of every family, at desktop and phone widths, in light and dark mode: AA contrast of the text, names and labels for screen readers, no horizontal overflow, and keyboard use. In addition, an independent automated checker applies the WCAG 2.1 rules, levels A and AA, to each scenario; it is used only in the tests and is not part of the app.</td></tr>
+      <tr><td><b>The English interface</b></td><td>Every text of the interface, the results and the examples has its translation; each validation case gives the same numbers in Spanish and in English; and no result built in English leaves untranslated text.</td></tr>
+      <tr><td><b>Regression of results and reports</b></td><td>The fingerprint of each result (all its numbers) and of its report (tables, conclusions, traffic light and notes) is compared with the stored one: a number or a text that changes unintentionally is caught before a version is released.</td></tr>
+      <tr><td><b>Opening sequence</b></td><td>The opening screen (section 1.6) appears before the interface, ends on <span class="ui">Start</span>, is dismissed with Esc, respects the reduced-motion preference, fits on a phone and runs smoothly.</td></tr>
+      <tr><td><b>Fundamentals of each analysis</b></td><td>Each analysis has its fact sheet (chapter 9) with its nine sections in Spanish and in English; its related analyses, its example dataset and its columns exist in the app; the example runs with the method; and every formula is converted for display.</td></tr>
+      <tr><td><b>Glossary and “See it in action”</b></td><td>Each glossary term (section I.6) opens its example, and the highlighted number exists in the table it names, in Spanish and in English.</td></tr>
+      <tr><td><b>What guides you</b></td><td>The three paths of Home, the history, the empty states, the decision tree, the help, the tours of the ten blocks, presentation mode, the errors in plain words, and Validation opened from a direct link.</td></tr>
+      <tr><td><b>Quality of what you read</b></td><td>Each reading scale (section 4.5) is tested at each of its boundaries: just below, at the limit and just above. And every number in the conclusions, in <span class="ui">In a nutshell</span> and in the paragraphs of all the cases must be in the result or its tables, at the rounding with which it is written, or follow from them by a calculation the text states; a control with altered numbers measures whether the comparison detects them.</td></tr>
+      <tr><td><b>Links and icons of the app</b></td><td>Every file the page names exists; every link to a block, a fact sheet, a glossary term or an analysis in the tree leads to something that exists, including those the app builds on the fly; the icons measure what they declare; and the external addresses the app shows respond (this part needs internet).</td></tr>
+      <tr><td><b>Speed and best practices</b></td><td>A web page auditor measures the loading of Home, Fundamentals, the Suite and Validation on a phone with a slow network and on desktop, serving the app as on its published page: performance, accessibility, best practices and search engine visibility, with 90 or more out of 100 in each. It is not part of the app either.</td></tr>
+      <tr><td><b>Links and logos of the LABG Suite</b></td><td>Each app of the suite (chapter 10) has its logo and its data, or a declared “PENDIENTE” (pending); the suggestion rules name apps that exist; and the page, the repository and the manual of each published app respond. It needs internet: it checks the pages of the other apps, something the app never does.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 8.5 -->
+  <h2 id="s8-5"><span class="num">8.5</span>The release rule</h2>
+  <p>A method <b>does not appear in the app</b> until it has validation cases and all of them pass. The app checks this on its own when it opens, with the validation report it carries: if a case of a method failed, the method would disappear from the catalog and, if the assistant suggested it, the app would say that its validation has not passed yet instead of computing it. That is why everything this manual describes is validated.</p>
+
+  <!-- 8.6 -->
+  <h2 id="s8-6"><span class="num">8.6</span>How to repeat the validation</h2>
+  <p class="lead">The validation does not depend on whoever did it: with R and node installed, anyone can regenerate the references with their own R and compare again.</p>
+  <p>You need R (4.4 or later) with the packages each case requires, and node (20 or later; nothing needs to be installed with npm). From the SigmaPro folder:</p>
+  <pre class="codigo">Rscript tests/r/generar-todo.R      # regenerates the references with your R
+node tests/motor-r.mjs              # the R engine methods, in the browser
+node tests/correr.mjs               # compares and writes the reports
+node tests/navegador.mjs            # the same in the browser, via file://
+node tests/codigo-r.mjs             # the app's R code gives the same in R
+node tests/exportar.mjs             # the exports, with independent readers</pre>
+  <p><code>motor-r.mjs</code> opens the app in the browser and downloads the R engine, so it needs internet; it runs before <code>correr.mjs</code>, which merges its cases into the report. <code>correr.mjs</code> writes the report that the Validation block shows and a version for publishing, in HTML and in CSV. The other checks of section 8.4 have their own programs in <code>tests/</code>: <code>idioma.mjs</code>, <code>regresion.mjs</code>, <code>calidad.mjs</code>, <code>intro.mjs</code>, <code>fundamentos.mjs</code>, <code>glosario.mjs</code>, <code>orientacion.mjs</code>, <code>enlaces.mjs</code>, <code>suite-enlaces.mjs</code>, <code>sin-conexion.mjs</code>, <code>rendimiento/medir.mjs</code>, <code>rendimiento/lighthouse.mjs</code> and <code>accesibilidad/auditar.mjs</code>; the two link checks need internet. The two external tools, the accessibility checker and the speed auditor, are installed separately, and an environment variable tells the tests where to find them: without the checker, the accessibility audit runs everything else and warns that that part was not done; without the auditor, the speed measurement does not run.</p>
+  <p>On Windows, <code>tests/pruebas.ps1</code> finds R, node and the browser and runs the comparison against R, the equivalent R code, the English interface, the regression, the fact sheets, the quality of what you read, the browser test, the glossary, what guides you and the opening sequence. With <code>-R</code>, it first regenerates the references; with <code>-Completo</code> it adds the exports, privacy, performance and accessibility (about 15 minutes) and, if the speed auditor is installed, its measurement (about as long again); and with <code>-Red</code>, the checks that need internet: the R engine and the links of the app and of the suite.</p>
+</section>
+
+</body>
+</html>

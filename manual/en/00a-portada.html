@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Cover</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../manual.css">
+</head>
+<body>
+
+<section class="page cover" aria-label="Cover">
+  <svg id="cover" viewBox="0 0 850 1100" xmlns="http://www.w3.org/2000/svg" role="img"
+       aria-label="SigmaPro cover on a white background with faint Greek letters and gold dust: at the top, LABG Suite · Open science in the browser; in the center, the logo, a gold lowercase sigma on its black square; below, SigmaPro in large gold letters, User’s Manual and Statistics for agronomic and biological research; at the foot, Luis Ángel Barrera-Guzmán, version 1.0, 2026."></svg>
+</section>
+
+<script>
+/* La portada de SigmaPro: la escena de la pantalla de apertura de la app (js/intro.js), quieta y sobre fondo blanco,
+   como las portadas de los demás manuales de la suite. El logo conserva su cuadro negro (el de iconos/sigmapro.svg). Se
+   dibuja en gráficos vectoriales y siempre igual: el azar tiene semilla. Sirve a las dos ediciones: los textos salen
+   del idioma de la página (<html lang="es|en">). */
+(function () {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.getElementById('cover');
+  const EN = /^en/i.test(document.documentElement.lang || '');
+  const TX = EN
+    ? { suite: 'LABG SUITE · OPEN SCIENCE IN THE BROWSER', manual: 'User’s Manual', lema: 'Statistics for agronomic and biological research', version: 'VERSION 1.0 · 2026' }
+    : { suite: 'LABG SUITE · CIENCIA ABIERTA EN EL NAVEGADOR', manual: 'Manual de usuario', lema: 'Estadística para la investigación agronómica y biológica', version: 'VERSIÓN 1.0 · 2026' };
+  const el = (tag, attrs, parent, text) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) if (attrs[k] != null) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    (parent || svg).appendChild(n);
+    return n;
+  };
+  const W = 850, H = 1100, CX = W / 2;
+  /* el papel y la tinta; el oro de la app (#C9A227) y sus tonos oscuros, que se leen sobre blanco */
+  const PAPEL = '#FFFFFF', TINTA = '#1A1712', GRIS = '#5E574A';
+  const ORO = '#C9A227', ORO_CLARO = '#E6C65C', ORO_SOMBRA = '#8C6D1A', ORO_TINTA = '#6B5212', BLANCO = '#F5F0E6';
+  const SERIF = "Georgia, 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif";
+  const SANS = "'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif";
+  /* azar con semilla: la portada sale igual cada vez */
+  let semilla = 20261005;
+  const azar = () => { semilla = (semilla * 1103515245 + 12345) % 2147483648; return semilla / 2147483648; };
+
+  /* ---------------------------------------------------------------- degradados */
+  const defs = el('defs');
+  const radial = (id, paradas, attrs) => {
+    const g = el('radialGradient', Object.assign({ id }, attrs || {}), defs);
+    paradas.forEach(([o, c, a]) => el('stop', { offset: o, 'stop-color': c, 'stop-opacity': a }, g));
+  };
+  const lineal = (id, paradas, attrs) => {
+    const g = el('linearGradient', Object.assign({ id }, attrs || {}), defs);
+    paradas.forEach(([o, c, a]) => el('stop', { offset: o, 'stop-color': c, 'stop-opacity': a == null ? 1 : a }, g));
+  };
+  radial('fondo', [[0, '#FBF6E9', 1], [0.5, '#FFFDF8', 1], [1, PAPEL, 1]], { cx: 0.5, cy: 0.36, r: 0.75 });
+  radial('aura', [[0, ORO, 0.22], [0.4, ORO, 0.08], [1, ORO, 0]]);
+  radial('chispa', [[0, BLANCO, 1], [0.45, ORO_CLARO, 0.9], [1, ORO, 0]]);
+  lineal('metal', [[0, ORO_SOMBRA], [0.45, ORO], [0.72, ORO_CLARO], [1, ORO]], { x1: 0, y1: 1, x2: 1, y2: 0 });
+  /* el nombre: oro oscuro en las orillas y oro al centro, con contraste sobre el blanco */
+  lineal('titulo', [[0, ORO_TINTA], [0.3, ORO_SOMBRA], [0.55, '#A8841E'], [0.8, ORO_SOMBRA], [1, ORO_TINTA]], { x1: 0, y1: 0, x2: 1, y2: 0 });
+  lineal('regla', [[0, ORO_SOMBRA, 0], [0.5, ORO_SOMBRA, 1], [1, ORO_SOMBRA, 0]], { x1: 0, y1: 0, x2: 1, y2: 0 });
+  lineal('cuadro', [[0, '#1a1814'], [1, '#0d0c0a']], { x1: 0, y1: 0, x2: 0, y2: 1 });
+
+  el('rect', { x: 0, y: 0, width: W, height: H, fill: PAPEL });
+  el('rect', { x: 0, y: 0, width: W, height: H, fill: 'url(#fondo)' });
+
+  /* ---------------------------------------------------------------- la constelación de letras griegas */
+  const LETRAS = ['α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'κ', 'λ', 'μ', 'ν', 'ξ', 'π', 'ρ', 'τ', 'φ', 'χ', 'ψ', 'ω',
+    'Γ', 'Δ', 'Θ', 'Λ', 'Ξ', 'Π', 'Σ', 'Φ', 'Ψ', 'Ω', 'χ²', 'σ²'];
+  const BRILLAN = ['σ', 'μ', 'Σ', 'χ²'];
+  /* zonas libres: la línea de la suite, el logo, el nombre y las leyendas, y el pie con el autor */
+  const libres = [[120, 70, 730, 120], [255, 205, 595, 545], [80, 575, 770, 850], [190, 930, 660, 1040]];
+  const ocupa = (x, y, r) => libres.some(([x0, y0, x1, y1]) => x + r > x0 && x - r < x1 && y + r > y0 && y - r < y1);
+  const puestas = [];
+  let intentos = 0;
+  while (puestas.length < 44 && intentos++ < 4000) {
+    const t = 14 + Math.pow(azar(), 2.2) * 96, x = 40 + azar() * (W - 80), y = 50 + azar() * (H - 100), r = t * 0.55;
+    if (ocupa(x, y, r) || puestas.some(p => Math.hypot(p.x - x, p.y - y) < (p.r + r) * 1.15)) continue;
+    puestas.push({ x, y, r, t });
+  }
+  const capa = el('g', { 'font-family': SERIF, 'text-anchor': 'middle' });
+  puestas.forEach((p, i) => {
+    const oro = i % 9 === 4, letra = oro ? BRILLAN[(i / 9 | 0) % BRILLAN.length] : LETRAS[Math.floor(azar() * LETRAS.length)];
+    const op = oro ? 0.22 + azar() * 0.14 : 0.05 + (p.t / 110) * 0.06 + azar() * 0.03;
+    el('text', { x: p.x.toFixed(1), y: (p.y + p.t * 0.35).toFixed(1), 'font-size': p.t.toFixed(1), fill: oro ? ORO_SOMBRA : GRIS, 'fill-opacity': op.toFixed(3),
+      transform: `rotate(${((azar() - 0.5) * 16).toFixed(1)} ${p.x.toFixed(1)} ${p.y.toFixed(1)})` }, capa, letra);
+  });
+
+  /* ---------------------------------------------------------------- polvo dorado */
+  const polvo = el('g', { fill: ORO });
+  for (let k = 0; k < 150; k++) {
+    const x = 20 + azar() * (W - 40), y = 20 + azar() * (H - 40), r = 0.45 + Math.pow(azar(), 3) * 1.5;
+    el('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: r.toFixed(2), 'fill-opacity': (0.15 + azar() * 0.4).toFixed(2) }, polvo);
+  }
+
+  /* ---------------------------------------------------------------- el marco: dos filetes de oro */
+  el('rect', { x: 26, y: 26, width: W - 52, height: H - 52, fill: 'none', stroke: ORO_SOMBRA, 'stroke-opacity': 0.55, 'stroke-width': 1.2 });
+  el('rect', { x: 33, y: 33, width: W - 66, height: H - 66, fill: 'none', stroke: ORO, 'stroke-opacity': 0.35, 'stroke-width': 0.6 });
+  [[26, 26], [W - 26, 26], [26, H - 26], [W - 26, H - 26]].forEach(([x, y]) =>
+    el('path', { d: `M${x} ${y - 5} L${x + 5} ${y} L${x} ${y + 5} L${x - 5} ${y} Z`, fill: ORO_SOMBRA, 'fill-opacity': 0.8 }));
+
+  /* ---------------------------------------------------------------- la línea de la suite */
+  el('text', { x: CX, y: 100, 'text-anchor': 'middle', 'font-family': SANS, 'font-size': 14, 'font-weight': 600, 'letter-spacing': 4.2, fill: ORO_SOMBRA }, null, TX.suite);
+
+  /* ---------------------------------------------------------------- el logo: la σ dorada sobre el cuadro negro */
+  const L = 236, LX = CX - L / 2, LY = 256, s = L / 512;
+  el('circle', { cx: CX, cy: LY + L / 2, r: L * 1.05, fill: 'url(#aura)' });
+  /* la sombra del cuadro sobre el papel */
+  el('rect', { x: LX + 4, y: LY + 10, width: L, height: L, rx: 112 * s, fill: '#000', 'fill-opacity': 0.12 });
+  const logo = el('g', { transform: `translate(${LX} ${LY}) scale(${s})` });
+  el('rect', { width: 512, height: 512, rx: 112, fill: 'url(#cuadro)' }, logo);
+  el('rect', { x: 3, y: 3, width: 506, height: 506, rx: 110, fill: 'none', stroke: ORO, 'stroke-opacity': 0.35, 'stroke-width': 4 }, logo);
+  el('text', { x: 256, y: 372, 'font-family': "Georgia, 'Times New Roman', serif", 'font-size': 560, 'text-anchor': 'middle', fill: 'url(#metal)' }, logo, 'σ');
+  /* destellos de cuatro puntas sobre la σ (los de la intro, en las coordenadas del logo de 512) */
+  const chispa = r => { const k = (r * 0.14).toFixed(1); return `M0 ${-r}C${k} ${-k} ${k} ${-k} ${r} 0C${k} ${k} ${k} ${k} 0 ${r}C${-k} ${k} ${-k} ${k} ${-r} 0C${-k} ${-k} ${-k} ${-k} 0 ${-r}Z`; };
+  [[404, 116, 46], [124, 236, 34], [262, 384, 22]].forEach(([x, y, r]) => el('path', { d: chispa(r), fill: 'url(#chispa)', transform: `translate(${x} ${y})` }, logo));
+
+  /* ---------------------------------------------------------------- el nombre, el manual y la leyenda */
+  el('text', { x: CX, y: 668, 'text-anchor': 'middle', 'font-family': SERIF, 'font-size': 108, style: 'font-variant: small-caps',
+    'letter-spacing': 6, textLength: 600, lengthAdjust: 'spacing', fill: 'url(#titulo)' }, null, 'SigmaPro');
+  /* filete con un rombo al centro */
+  el('rect', { x: CX - 210, y: 700, width: 180, height: 1.2, fill: 'url(#regla)' });
+  el('rect', { x: CX + 30, y: 700, width: 180, height: 1.2, fill: 'url(#regla)' });
+  el('path', { d: `M${CX} ${694} L${CX + 6} ${700.5} L${CX} ${707} L${CX - 6} ${700.5} Z`, fill: ORO_SOMBRA });
+  el('text', { x: CX, y: 760, 'text-anchor': 'middle', 'font-family': SERIF, 'font-size': 38, 'font-style': 'italic', fill: ORO_TINTA }, null, TX.manual);
+  el('text', { x: CX, y: 806, 'text-anchor': 'middle', 'font-family': SANS, 'font-size': 19, 'letter-spacing': 0.6, fill: TINTA, 'fill-opacity': 0.85 }, null, TX.lema);
+
+  /* ---------------------------------------------------------------- el autor y la versión */
+  el('rect', { x: CX - 36, y: 944, width: 72, height: 1.2, fill: 'url(#regla)' });
+  el('text', { x: CX, y: 984, 'text-anchor': 'middle', 'font-family': SERIF, 'font-size': 22, 'letter-spacing': 2.4, fill: TINTA }, null, 'Luis Ángel Barrera-Guzmán');
+  el('text', { x: CX, y: 1016, 'text-anchor': 'middle', 'font-family': SANS, 'font-size': 13, 'font-weight': 600, 'letter-spacing': 3, fill: ORO_SOMBRA }, null, TX.version);
+})();
+</script>
+</body>
+</html>

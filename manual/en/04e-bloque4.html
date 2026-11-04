@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 4 (5 of 7)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+  figure.estrecha .marco { width: 72%; margin: 0 auto; }
+  figure.estrecha figcaption { margin-left: 14%; margin-right: 14%; }
+  .dos.mas-angosta { grid-template-columns: 0.72fr 1fr; }
+</style>
+</head>
+<body>
+
+<section data-pestana="B4" data-orden="4" style="--acento: var(--b4)">
+
+  <!-- 4.15 -->
+  <h2 id="s4-15"><span class="num">4.15</span>Linear mixed models</h2>
+  <p class="lead">A mixed model separates the <b>fixed</b> effects, those chosen on purpose and about which you want to draw conclusions (the hybrids, the rates), from the <b>random</b> effects, which represent a sample of many possible ones (blocks, locations, years, plants measured several times). With it, each source of variation carries its own error, missing plots do not break the analysis, and the information between blocks is not lost.</p>
+  <p>The six methods of the family run in the <b>R engine</b> inside the browser (section 4.6), with the packages <code>lme4</code>, <code>lmerTest</code> and <code>emmeans</code>; repeated measures use <code>nlme</code>. The engine is downloaded the first time; after that it works offline.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.05in">Method</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><b>Linear mixed model (formula)</b></td><td>Any combination of fixed and random effects, written as a formula.</td></tr>
+      <tr><td><b>Randomized blocks with random blocks</b></td><td>One to three factors in complete blocks; with missing plots it recovers the inter-block information.</td></tr>
+      <tr><td><b>Split plot (mixed model)</b></td><td>Main plots, subplots and, if requested, sub-subplots, with their errors as random effects.</td></tr>
+      <tr><td><b>Lattice and alpha-lattice (inter-block recovery)</b></td><td>Random incomplete blocks within replicates: the means recover the inter-block information.</td></tr>
+      <tr><td><b>Trials at several locations</b></td><td>Fixed genotypes at locations with replicates; the location and the genotype × location interaction, random.</td></tr>
+      <tr><td><b>Repeated measures over time</b></td><td>The same unit measured on several dates: choose the covariance structure between dates.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>The model written as a formula</h3>
+  <div class="dos mas-angosta flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-mixto-form.png" alt="The linear mixed model form: the response variable rend, the terms hibrido * dosis + (1 | bloque) with their help, and the list of what the app understood: hibrido, dosis, the interaction hibrido × dosis and (1 | bloque), a random intercept for each block"></div>
+      <figcaption><b>Figure 4.38.</b> The mixed model formula and what the app understood from it, term by term.</figcaption>
+    </figure>
+    <div>
+      <p>The <span class="ui">Model terms (what goes after “~”)</span> field takes the right-hand side of the formula. Fixed effects are written as in the general linear model (section 4.10); each random effect goes in parentheses with its grouping:</p>
+      <ul>
+        <li><code>(1 | bloque)</code>: a level of its own for each block (random intercept).</li>
+        <li><code>(1 | bloque/parcela)</code>: plots within blocks.</li>
+        <li><code>(dias | planta)</code>: a slope of its own for each plant, correlated with its intercept; with <code>(dias || planta)</code>, without that correlation.</li>
+      </ul>
+      <p>Below the field, the app explains each term it read, so you can confirm that the model is the one you intended. Numeric columns that are treatments (a rate) are checked in <span class="ui">Numeric columns that are treatments (factor)</span>.</p>
+    </div>
+  </div>
+  <p>Next come <span class="ui">Compare the means of</span> (checkboxes with the fixed factors that enter as main effects; by default, the first three), <span class="ui">Within each level of</span> (with two or more factors, to compare one separately at each level of another when they interact), the <span class="ui">Comparison adjustment</span> (Tukey, Bonferroni, Holm, Šidák or <span class="ui">No adjustment (LSD)</span>), the <span class="ui">Sums of squares</span> (type III, II or I), the <span class="ui">Degrees of freedom for the tests</span> (Satterthwaite, or Kenward-Roger, more exact with few groups and slower) and the <span class="ui">Estimation</span>: REML, which gives unbiased variance components, or maximum likelihood, to compare models with different fixed effects. Kenward-Roger only works with REML. At the end come the <span class="ui">Confidence level</span> and the <span class="ui">Significance level</span>.</p>
+  <p>With the maize and random blocks (<code>hibrido * dosis + (1 | bloque)</code>), the tests of the hybrids, the rates and their interaction give the same <i>F</i> values as the block ANOVA (60.63, 292.15 and 1.47), because the data are balanced. What changes is the standard error of the means: it includes the block variance (43.9% of the random variation), so the hybrid means carry an SE of 0.1079 with 4.25 degrees of freedom, while their differences, in which the blocks cancel out, keep the 33 degrees of freedom of the error.</p>
+  <p>With the two maize factors, the result brings ten tables: the tests of the fixed effects, the <b>variance components</b> with their percentage, the <b>test of the random effects</b> (likelihood ratio, like <code>lmerTest::ranova</code>; its <i>p</i> is conservative, because a variance cannot be negative, and the true one is usually half of it), the marginal means of each factor with their letters and their pairwise comparisons, the coefficients, the predictions of the random effects (<b>BLUP</b>) and the model fit. When a factor has more than 45 pairs, its table of pairs is not shown, though the letters are; with more than 50 levels, only the means. If the BLUPs exceed 120 rows, their table does not appear either: a note below the coefficients says so, and the equivalent R code gives them with <code>ranef()</code>.</p>
+  <p>The plots are the marginal means of the first compared factor, with their interval and their letters (with <span class="ui">Within each level of</span>, one line for each level of the other factor), the residuals against the fitted values and their Q-Q plot. The traffic light checks the normality of the residuals (Shapiro-Wilk), the normality of the random effects (the BLUPs of the first grouping, if it has 5 levels or more), the equality of variances (Levene with the median, among the levels of the first fixed factor) and the optimizer warnings; a singular fit shows in amber.</p>
+
+  <h3>Designs as mixed models</h3>
+  <p>The other four methods ask for the roles of the design, build the formula themselves and show it below the form (“Model: …”). Numeric columns that act as treatments are taken as factors, and the tests use type III sums of squares; the other options are those of the formula model. In randomized blocks with two or three factors and in split plots, the form also offers <span class="ui">Within each level of</span>.</p>
+  <p><b>Split plots</b> ask for the <span class="ui">Main-plot factor</span>, the <span class="ui">Subplot factor</span>, if needed the <span class="ui">Sub-subplot factor (optional)</span>, and the <span class="ui">Blocks (random)</span>; they include the blocks and the main plots (and, with a third factor, the subplots) as random effects. If the main plots were randomized without blocks, leave <span class="ui">— no blocks —</span> and choose the <span class="ui">Replicate (identifies each main plot)</span>. With Yates’s oats (1935), the tests are those of the stratum analysis of section 4.10, but the mixed model remains exact with missing plots, when the stratum analysis no longer is. To see nitrogen separately within each variety, choose the variety in <span class="ui">Within each level of</span>: the means table gives the nitrogen letters within each variety, and the plot draws one line per variety.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-mixto-divididas.png" alt="Split plots as a mixed model with the oats: variety without effect (F(2, 10.0) = 1.49, p = 0.272), nitrogen with an effect (F(3, 45.0) = 37.69) and the interaction without effect; the random variation divided among bloque:variedad (21.3%), bloque (43.1%) and residual (35.6%); the traffic light with its four rows in green"></div>
+    <figcaption><b>Figure 4.39.</b> The oats in split plots as a mixed model: varieties are tested with 10 degrees of freedom (those of the main plots) and nitrogen with 45.</figcaption>
+  </figure>
+  <table class="compacta salida" style="width:74%">
+    <caption><b>Table 4.9.</b> Variance components (REML) of the oats in split plots.</caption>
+    <thead><tr><th>Group</th><th class="n">Variance</th><th class="n">SD</th><th class="n">% of total</th></tr></thead>
+    <tbody>
+      <tr><td>bloque:variedad (the main plots)</td><td class="n">106.1</td><td class="n">10.30</td><td class="n">21.31</td></tr>
+      <tr><td>bloque</td><td class="n">214.5</td><td class="n">14.65</td><td class="n">43.10</td></tr>
+      <tr><td>Residual</td><td class="n">177.1</td><td class="n">13.31</td><td class="n">35.59</td></tr>
+    </tbody>
+  </table>
+  <p>In the <b>lattice and alpha-lattice</b>, choose the <span class="ui">Treatments (genotypes, varieties)</span>, the <span class="ui">Replicate</span> and the <span class="ui">Incomplete block (within replicate)</span>. The incomplete blocks are random, and the genotype means <b>recover the inter-block information</b> that the intra-block analysis (section 4.10) wastes; the <span class="ui">Replicates also random</span> checkbox changes the model when the replicates are also a sample. With the alpha-lattice of 24 genotypes, the genotypes differ (<i>F</i>(23, 34.7) = 5.45, <i>p</i> &lt; 0.001) and the blocks within replicates account for 42.1% of the random variation.</p>
+  <p><b>Trials at several locations</b> ask for the <span class="ui">Genotypes (fixed)</span>, the <span class="ui">Location or environment</span> and the <span class="ui">Replicate (within each location)</span>; they set the location, the replicate within each location and the genotype × location interaction as random. The <span class="ui">Fixed locations (only these locations are of interest)</span> checkbox makes them a fixed effect. In the oats with 14 environments, the genotypes differ (<i>F</i>(9, 117) = 5.41) and the environment accounts for 79.7% of the variation, against 6.5% for the interaction. There the BLUPs add up to 196 rows (14 environments, 42 replicates and 140 genotype × environment combinations), so their table is not shown and the note below the coefficients says so. To study the interaction itself (stability, AMMI, GGE) there is the multi-environment family (section 4.20).</p>
+  <p>At the foot of randomized blocks, split plots and lattice as mixed models, the “Continue in the LABG suite” strip suggests AgriDesign, which generates the randomization, the field map and the field sheet of the design (chapter 10).</p>
+
+  <h3>Repeated measures over time</h3>
+  <p>When the same plant, plot or animal is measured on several dates, the measurements of one unit resemble each other, and all the more the closer the dates are. The method asks for the <span class="ui">Time (measurement date)</span> (numeric or factor), the <span class="ui">Unit measured at each date (plant, plot, animal)</span> (its number may repeat in each treatment: the unit is the combination of unit, treatment and block), the <span class="ui">Treatment factors (up to 2; optional)</span> and the <span class="ui">Blocks</span>. The <span class="ui">Covariance structure between dates</span> can be set or left at <span class="ui">The best by the criterion (all are compared)</span>, which fits the candidates and chooses the one with the lowest value according to the <span class="ui">Criterion to choose it</span> (AIC or BIC). Continuous AR(1) enters only with numeric time, and the unstructured one with 8 dates or fewer (unless requested); one that cannot be fitted is marked “could not be fitted”.</p>
+  <table class="compacta salida" style="width:80%">
+    <caption><b>Table 4.10.</b> The seven covariance structures compared with maize height on five dates (REML, the same fixed effects).</caption>
+    <thead><tr><th>Structure</th><th class="n">Parameters</th><th class="n">AIC</th><th class="n">BIC</th><th></th></tr></thead>
+    <tbody>
+      <tr><td>Independent</td><td class="n">24</td><td class="n">486.6</td><td class="n">535.6</td><td></td></tr>
+      <tr><td>Compound symmetry</td><td class="n">25</td><td class="n">474.3</td><td class="n">525.4</td><td></td></tr>
+      <tr><td>Heterogeneous compound symmetry</td><td class="n">29</td><td class="n">431.4</td><td class="n">490.6</td><td></td></tr>
+      <tr><td>AR(1)</td><td class="n">25</td><td class="n">451.8</td><td class="n">502.8</td><td></td></tr>
+      <tr><td>Heterogeneous AR(1)</td><td class="n">29</td><td class="n">420.1</td><td class="n">479.4</td><td>selected</td></tr>
+      <tr><td>Continuous AR(1)</td><td class="n">25</td><td class="n">451.8</td><td class="n">502.8</td><td></td></tr>
+      <tr><td>Unstructured</td><td class="n">38</td><td class="n">427.6</td><td class="n">505.3</td><td></td></tr>
+    </tbody>
+  </table>
+  <p>The conclusion says which structure won and tests the treatments, time and their interaction. AR(1) assumes that the correlation decreases with the distance between dates (φ, φ², φ³…); the heterogeneous version also allows a variance of its own for each date, which is needed when the plant grows and so does its variation. Continuous AR(1) uses the actual distance between unequally spaced dates. In the maize, heterogeneous AR(1) wins, with φ = 0.778 between neighboring dates.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-repetidas.png" alt="The profile of maize height on the five dates, from 15 to 75 days, with one line per nitrogen rate: N0 below from 30 days on and the other three together"></div>
+      <figcaption><b>Figure 4.40.</b> Maize height on five dates: the rates separate over time.</figcaption>
+    </figure>
+    <div>
+      <p>Treatment alone has no effect (<i>F</i>(3, 57) = 1.39, <i>p</i> = 0.256), but its interaction with time does (<i>F</i>(12, 57) = 4.29, <i>p</i> &lt; 0.001): at 15 days the four rates measure the same, and from 30 days on the control without nitrogen falls behind. That is why the app proposes comparing the treatments <span class="ui">Within each level of</span> the date, and its means table gives the letters for each date separately. Another table gives the estimated matrix of covariances and correlations between dates.</p>
+      <p>The tests use the error degrees of freedom, <i>N</i> − <i>p</i>, for all terms, like <code>nlme</code>. The traffic light checks the normality of the normalized residuals (Shapiro-Wilk) and the equality of their variances between dates (Levene); if either fails, it proposes a heterogeneous structure or a transformation, and with a positive response <span class="ui">Try the alternative</span> runs the logarithm (section 4.7).</p>
+    </div>
+  </div>
+
+  <!-- 4.16 -->
+  <h2 id="s4-16"><span class="num">4.16</span>Variance components, heritability and repeatability</h2>
+  <p class="lead">Three methods for quantitative genetics and breeding, which run in the browser without the R engine: they estimate the variance components by REML (with the average information algorithm) and were validated against <code>lme4</code>.</p>
+  <h3>Variance components</h3>
+  <p>They tell how much variation each random factor contributes. Choose the <span class="ui">Random factors (up to 4)</span>, <span class="ui">How they are related</span> (<span class="ui">Crossed</span>; <span class="ui">Nested (each within the previous ones)</span>, in table order; or <span class="ui">Crossed, with their two-way interactions</span>) and, if needed, the <span class="ui">Fixed factors (optional, up to 3)</span>, which enter as main effects and are not tested: for their <i>F</i> tests there is the linear mixed model. In the alpha-lattice, with the genotypes fixed and the blocks nested in the replicates, the replicate contributes 43.6% of the variance (σ² = 0.1139), the blocks within the replicate 23.7% and the error 32.6%. Each component carries its SE and its likelihood ratio test, with the <i>p</i> of the mixture ½χ²<sub>0</sub> + ½χ²<sub>1</sub>, because a variance cannot be negative: the replicate gives χ² = 6.41 (<i>p</i> = 0.006) and the blocks, χ² = 5.01 (<i>p</i> = 0.013). With only three replicates, the replicate variance is very imprecise: its SE, 0.128, is larger than the estimate. The plot shows the percentage of the total variance that each component contributes.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Two <i>p</i> values for the same variance</div>
+    <p>For a random intercept, the test of the mixed models of section 4.15 (<code>ranova</code>) gives the <i>p</i> of χ² with 1 degree of freedom, which is conservative; these three methods give that of the mixture ½χ²<sub>0</sub> + ½χ²<sub>1</sub>, which is half as large. With the same model (and REML), the variance and the χ² agree: only the way the <i>p</i> is calculated changes.</p>
+  </div>
+
+  <h3>Heritability and genotype BLUPs</h3>
+  <p>With the genotypes as random, the method estimates the genetic variance, the heritability and the genotypic value of each one. Choose the <span class="ui">Genotypes (random)</span>, the <span class="ui">Replicate or complete block (fixed)</span>, the <span class="ui">Incomplete block within replicate (random)</span>, for the alpha-lattice and other designs with incomplete blocks, and the <span class="ui">Environment or location (fixed)</span>; with several environments, the genotype × environment interaction enters as random and the conclusion compares its variance with the genetic variance. Below the roles, the app shows the model it built (“Model: …”), and the title of the result states the design it understood. For the selection gain, choose the <span class="ui">Selected proportion</span> (from 5% to 50%) and, in <span class="ui">Select the values that are</span>, the highest (yield, weight, content) or the lowest (days to flowering, height, damage).</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Specify all the columns of the design</div>
+    <p>If the replicate or the incomplete block is missing, its variation goes into the error, without warning, and the heritability usually drops: with the alpha-lattice, the mean-basis H² is 0.840 with the replicates and the blocks, 0.780 with the replicates only and 0.580 with neither (the title then says “completely randomized”). The app stops only when there is a single plot per genotype and environment, because then the genotype × environment interaction is confounded with the error.</p>
+  </div>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-heredabilidad.png" alt="The two heritability plots of the alpha-lattice: the BLUPs of the 24 genotypes from highest to lowest, with their interval and the two selected ones hollow, and the BLUPs against the BLUEs, with G01 and G05 labeled"></div>
+    <figcaption><b>Figure 4.41.</b> The BLUPs of the 24 genotypes of the alpha-lattice, from highest to lowest (hollow, the two selected), and their relation to the adjusted means (BLUE).</figcaption>
+  </figure>
+  <p>The conclusion begins with the genetic variance (σ²<sub>g</sub> = 0.1429, χ² = 23.62, <i>p</i> &lt; 0.001). The mean-basis heritability is 0.840 ± 0.063: 84% of the variation among the genotype means is genetic. Since the trial has incomplete blocks, the heritability table also gives the <b>Cullis</b> (0.809) and <b>Piepho and Möhring</b> (0.803) heritabilities, the most accurate with unbalanced data or incomplete blocks (Schmidt et al., 2019), and the plot-level heritability (0.636). The genetic parameters include the genetic (8.44%) and error (6.38%) coefficients of variation; their ratio, 1.323, greater than 1, indicates favorable conditions for selection.</p>
+  <p>The <b>expected gain</b> from selecting 2 of the 24 genotypes (10% of 24, rounded; the table note gives the actual 8.3% and the selection intensity, <i>i</i> = 1.840) is calculated in three ways: with the mean of the selected BLUPs (0.4881, 10.90% of the mean), with the breeder’s equation <i>i</i>·H²·σ<sub>F</sub> (0.6374) and with the selection differential of the BLUEs times H² (0.4981). The last table ranks the genotypes with their BLUP, their SE, their <b>reliability</b> and their adjusted mean (BLUE), and marks the selected ones (G01 and G05). The BLUPs shrink toward the overall mean in proportion to how little is known about each genotype; that is why, in the plot, the cloud of BLUPs against BLUEs is flatter than the diagonal.</p>
+  <p>The traffic light of the three methods checks the normality of the residuals and that of the random effects of the first term (Shapiro-Wilk of their BLUPs, with 5 levels or more), outlying observations (residuals of more than 3.5 standard deviations) and the REML fit: whether it converged and whether any component ended at zero, on the boundary and without an SE. With the alpha-lattice, the normality of the residuals shows in amber (<i>p</i> = 0.011 in the heritability): it is a warning, not an error, and it is worth checking for unusual plots.</p>
+
+  <h3>Repeatability</h3>
+  <p>When the same individual is measured several times (the harvests of a tree, the lactations of an animal), repeatability is the correlation between two measurements of the same individual. Choose the <span class="ui">Individual measured several times (tree, plant, animal)</span> and, if needed, the <span class="ui">Fixed factors (optional: harvest, year, rater)</span>. With 20 guava trees over four harvests (harvest as a fixed factor), <i>r</i> = 0.532 ± 0.116: 53% of the variation between measurements is due to permanent differences between trees. With 3.69 measurements per tree (the harmonic mean), the determination of the permanent value is R² = 0.807, and the conclusion adds that a determination of 90% would require 8 measurements per tree.</p>
+  <table class="compacta salida" style="width:62%">
+    <caption><b>Table 4.11.</b> Measurements needed per guava tree for each desired determination (Cruz, Regazzi and Carneiro, 2012).</caption>
+    <thead><tr><th class="n">Desired R²</th><th class="n">Measurements (η)</th><th class="n">Rounded</th></tr></thead>
+    <tbody>
+      <tr><td class="n">0.80</td><td class="n">3.53</td><td class="n">4</td></tr>
+      <tr><td class="n">0.85</td><td class="n">4.99</td><td class="n">5</td></tr>
+      <tr><td class="n">0.90</td><td class="n">7.93</td><td class="n">8</td></tr>
+      <tr><td class="n">0.95</td><td class="n">16.74</td><td class="n">17</td></tr>
+      <tr><td class="n">0.99</td><td class="n">87.25</td><td class="n">88</td></tr>
+    </tbody>
+  </table>
+  <p>The last table gives the predicted <b>permanent value</b> of each tree (the overall mean plus its BLUP), with its SE and its reliability. The plots are that value for each tree, from highest to lowest with its interval, and the determination according to the number of measurements, from 1 to 10, which shows how much is gained with each additional harvest.</p>
+
+  <!-- 4.17 -->
+  <h2 id="s4-17"><span class="num">4.17</span>Generalized linear models</h2>
+  <p class="lead">Counts (insects per shoot, lesions per leaf), proportions (seeds germinated out of those sown) and times or concentrations do not have the constant variance or the normal distribution that ANOVA requires. Instead of transforming them, a generalized linear model uses the distribution that suits them and a <b>link</b> that connects the mean with the treatments, and it presents the results on the original scale: rates, probabilities and means.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.35in">Method</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><b>Counts (Poisson and negative binomial)</b></td><td>Poisson, quasi-Poisson or negative binomial, chosen by the overdispersion; treatments in blocks, covariates and exposure.</td></tr>
+      <tr><td><b>Proportions (binomial)</b></td><td>Binomial or quasibinomial: successes out of <i>n</i> trials or 0/1 responses; logit, probit or complementary log-log link; Firth correction for separation.</td></tr>
+      <tr><td><b>Skewed positive responses (gamma)</b></td><td>Gamma or inverse Gaussian, for times, concentrations or weights whose variance grows with the mean.</td></tr>
+      <tr><td><b>Generalized linear model (formula)</b></td><td>Any of the seven families from a written formula.</td></tr>
+      <tr><td><b>Counts or proportions in random blocks (mixed)</b></td><td>Generalized mixed model with random blocks and, if needed, an observation-level effect.</td></tr>
+      <tr><td><b>Generalized linear mixed model (formula)</b></td><td>Binomial, Poisson, negative binomial or gamma with random effects written as in <code>lme4</code>.</td></tr>
+    </tbody>
+  </table>
+  <p>The first four run in the browser (iteratively reweighted least squares, validated against R’s <code>glm</code> and <code>glm.nb</code>); the two mixed ones, in the R engine.</p>
+
+  <h3>Counts</h3>
+  <p>Choose <span class="ui">Response: the count</span>, the <span class="ui">Treatment factors (up to 3, crossed)</span>, the <span class="ui">Blocks</span>, the <span class="ui">Covariates (optional, up to 2)</span> and the <span class="ui">Exposure (optional: area or time sampled)</span>, when the units were not sampled equally: with it, the means are rates per unit. The default <span class="ui">Family</span> is <span class="ui">Automatic (based on overdispersion)</span>: the Poisson is fitted and, if Pearson’s test finds <b>overdispersion</b> (more variation than the Poisson allows: <i>p</i> &lt; 0.05 and χ²/df greater than 1.1), the analysis switches to the negative binomial. You can also set the Poisson, the quasi-Poisson or the negative binomial.</p>
+  <p>The <span class="ui">Link</span> is the log; the Poisson and the quasi-Poisson also allow the identity, the square root and the power (μ<sup>λ</sup>, with its <span class="ui">Link exponent λ (μ^λ)</span>), and the negative binomial, the identity and the square root. With the automatic family, the list offers only the links that the negative binomial also has (log, identity and square root), because the analysis switches to it if there is overdispersion. Next come the <span class="ui">Analysis of deviance</span> (type II by default, type III with sum-to-zero contrasts or sequential type I), the <span class="ui">Coefficient intervals</span> (see below) and, as in the mixed models, <span class="ui">Compare the means of</span>, <span class="ui">Within each level of</span> and the <span class="ui">Comparison adjustment</span>.</p>
+  <div class="dos mas-angosta flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-glm-conteos.png" alt="The rate of thrips per shoot for each avocado treatment with its confidence interval and its letters: control, azadirachtin and potassium soap a, spinosad b and Beauveria ab"></div>
+      <figcaption><b>Figure 4.42.</b> Avocado thrips per shoot with the negative binomial: rates, intervals and Tukey letters.</figcaption>
+    </figure>
+    <div>
+      <p>With the avocado thrips, the Poisson had overdispersion (χ²/df&nbsp;=&nbsp;2.23, <i>p</i>&nbsp;=&nbsp;0.002) and the app switched to the negative binomial (θ&nbsp;=&nbsp;8.390). The block has no effect (<i>p</i>&nbsp;=&nbsp;0.468) and the treatment does (χ²&nbsp;=&nbsp;21.34, 4&nbsp;df, <i>p</i>&nbsp;&lt;&nbsp;0.001): spinosad leaves 1.483 thrips per shoot, against 7.761 in the control.</p>
+    </div>
+  </div>
+  <p>The rates are compared on their own scale, with asymmetric intervals (calculated on the link scale and transformed back) and Tukey letters. The tables are the analysis of deviance, the coefficients on the link scale, the rate of each treatment, their pairwise comparisons (as rate ratios) and the model fit. Besides the plot of the rates, the result includes the plot of the Pearson residuals against the fitted values. The traffic light checks overdispersion, Pearson residuals greater than 3 and convergence.</p>
+
+  <h3>Proportions and skewed responses</h3>
+  <p>For <b>proportions</b>, the <span class="ui">Response: successes (germinated, diseased) or 0/1</span> holds the successes, and you choose the column of <span class="ui">Trials in each row (seeds sown, plants assessed)</span>, or <span class="ui">— the response is 0/1 —</span>. The automatic family starts with the binomial and switches to the quasibinomial if there is overdispersion (with 0/1 it stays with the binomial); the link is logit, probit or complementary log-log. With the beans, the binomial is enough (Pearson χ²/df = 1.18, <i>p</i> = 0.281): the treatment changes germination (χ² = 241.95, 4 df), from 0.2800 in the control to 0.9450 with scarification.</p>
+  <p><b>Skewed positive responses</b> are analyzed with the <b>gamma</b>, for times and concentrations whose variance grows with the square of the mean, or with the <b>inverse Gaussian</b>, more skewed, whose variance grows with the cube. The method uses the log by default; the gamma also allows the inverse, the identity and the power, and the inverse Gaussian, 1/μ² (its canonical link), the inverse, the identity and the power. With Box and Cox’s (1964) poisons and the gamma, poison (<i>F</i> = 48.92) and treatment (<i>F</i> = 23.68) have an effect and their interaction does not (<i>p</i> = 0.192), without transforming the survival time as in section 2.9. With the free-dispersion families (gamma, inverse Gaussian, quasi-Poisson and quasibinomial), the dispersion is estimated by Pearson and the tests are <i>F</i> tests; the mean comparisons use <i>t</i> in the gamma and <i>z</i> in the others, like <code>emmeans</code>.</p>
+
+  <h3>Profile intervals and Firth correction</h3>
+  <p>With the log and logit links, each coefficient carries its ratio (rate ratio, odds ratio or ratio of means) with its interval. In <span class="ui">Coefficient intervals</span>, choose <span class="ui">Wald (estimate ± z·SE)</span>, symmetric on the link scale, or <span class="ui">Profile likelihood</span>, like R’s <code>confint()</code> but with the exact root of the profile: it can be asymmetric and is more exact with few data or probabilities near 0 or 1. With the thrips, the rate ratio of spinosad against the control is 0.191; its 95% interval goes from 0.085 to 0.430 with Wald and from 0.080 to 0.418 with the profile. With other links, the profile interval is given on the link scale. In the free-dispersion families the profile uses the Pearson dispersion, and in the negative binomial it keeps θ fixed; if the likelihood does not drop enough toward one side, that limit is shown as “—” and a warning says so.</p>
+  <p>With 0/1 responses or few trials, <b>separation</b> can occur: a group with 0% or 100% successes. Maximum likelihood drives its coefficient to infinity, and its SE is no longer useful. The <span class="ui">Firth correction (for separation: groups with 0% or 100%)</span> checkbox, which appears with the binomial family (or the automatic one) and the logit link, penalizes the likelihood: it gives finite coefficients, tests each coefficient and each term with the penalized likelihood ratio and gives the intervals from the penalized profile, like the <code>logistf</code> package; there is no AIC. When the ordinary fit has separation, its warning ends with “Use Firth’s correction.” and the fit row of the traffic light shows in red.</p>
+  <p>With the example “Bean: days to germination” (120 seeds from three treatments and three lots), the response <code>germino</code> (0/1) and the formula <code>lote + tratamiento + peso_semilla</code>, all 40 scarified seeds germinated. The table below compares the two fits: without Firth, the scarification coefficient blows up and the Tukey letters do not separate any treatment; with Firth, the treatment has an effect (χ² = 15.15, 2 df, <i>p</i> &lt; 0.001), with no effect of the lot (<i>p</i> = 0.373) or of seed weight (<i>p</i> = 0.317).</p>
+  <table class="compacta salida" style="width:94%">
+    <caption><b>Table 4.12.</b> Scarification against the control in the beans, with the ordinary fit and with the Firth correction.</caption>
+    <thead><tr><th>Fit</th><th class="n">Coefficient (SE)</th><th>Test of the coefficient</th><th class="n">Probability of germinating</th><th>Letters (control, soaked, scarified)</th></tr></thead>
+    <tbody>
+      <tr><td>Ordinary</td><td class="n">30.69 (1.06 × 10<sup>7</sup>)</td><td><i>z</i> = 0.00, <i>p</i> = 1.000</td><td class="n">1.0000</td><td>a, a, a</td></tr>
+      <tr><td>Firth</td><td class="n">3.505 (1.413)</td><td>χ² = 15.07, <i>p</i> &lt; 0.001</td><td class="n">0.9876</td><td>b, ab, a</td></tr>
+    </tbody>
+  </table>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-glm-firth.png" alt="The result of the logistic regression with the Firth correction for the beans: the title Generalized linear model: binomial, logit link (Firth); the conclusion, which says that the ordinary fit had separation (40 probabilities at 0 or 1) and that the penalized likelihood gives finite estimates, the lot without effect (χ² = 1.97, 2 df, p = 0.373), the treatment with an effect (χ² = 15.15, 2 df, p &lt; 0.001), seed weight without effect (χ² = 1.00, 1 df, p = 0.317), and the highest probability with Escarificada (0.9876) and the lowest with Testigo (0.7057); below, the traffic light in green with outlying observations and the Firth fit"></div>
+    <figcaption><b>Figure 4.43.</b> Bean germination with the Firth correction: the conclusion warns of the separation in the ordinary fit and tests each term with the penalized likelihood.</figcaption>
+  </figure>
+
+  <h3>With a formula and with random effects</h3>
+  <p>The <b>generalized linear model with a formula</b> accepts in <span class="ui">Model terms (what goes after “~”)</span> the same terms as the general linear model, with the <span class="ui">Numeric columns that are factors (rate, numbered block)</span> checkboxes, and the seven families: binomial, quasibinomial, Poisson, quasi-Poisson, negative binomial, gamma and inverse Gaussian. With the binomial or the quasibinomial, indicate the trials column (or the response is 0/1); with the count families, the exposure if needed.</p>
+  <p><b>Generalized mixed models</b> run in the R engine (<code>lme4</code>, <code>car</code> and <code>emmeans</code>). <span class="ui">Counts or proportions in random blocks (mixed)</span> asks for the <span class="ui">Treatment factors (up to 3, crossed)</span> and the <span class="ui">Blocks (random)</span>; <span class="ui">Generalized linear mixed model (formula)</span> asks for the <span class="ui">Model terms including the random effects (what goes after “~”)</span>, such as <code>tratamiento + (1 | bloque)</code> or <code>(1 | localidad/bloque)</code>. Both accept the trials column (with the binomial) and the exposure (with the Poisson or the negative binomial). The families are Poisson, binomial, negative binomial and gamma; the gamma allows only random intercepts, such as <code>(1 | bloque)</code>, and estimates its dispersion. The model builder (section 4.4) sends a count response (Poisson) or a positive skewed response (gamma) with random effects to the formula model.</p>
+  <div class="dos mas-angosta flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-glmm-form.png" alt="Part of the form of the generalized mixed model in random blocks with the avocado thrips: Family Poisson; Link log; Likelihood approximation set to Laplace (1 node), with the help saying that with a single random effect quadrature is more exact; the Test each random effect (likelihood ratio) checkbox checked; Observation-level effect (overdispersion) set to Automatic: if the Pearson test calls for it, with its help; and Fixed-effect tests set to Type II Wald χ²"></div>
+      <figcaption><b>Figure 4.44.</b> The options of the generalized mixed model: the likelihood approximation, the test of the random effects and the observation-level effect.</figcaption>
+    </figure>
+    <div>
+      <ul>
+        <li><span class="ui">Likelihood approximation</span>: <span class="ui">Laplace (1 node)</span>, by default, or adaptive Gauss-Hermite quadrature with 5, 10 or 25 nodes, more exact, especially with proportions from few trials. It appears with the binomial or the Poisson and a single random effect, an intercept per group (in the random-blocks method, always). The observation-level effect is a second random effect: with <span class="ui">Yes, always</span>, the app asks you to use Laplace; if the automatic mode adds it, the app returns to Laplace on its own and says so.</li>
+        <li><span class="ui">Test each random effect (likelihood ratio)</span>, checked by default: compares the model with the one without that effect (with a model without random effects if none is left); its <i>p</i> is conservative. With the gamma it is not offered, because its Laplace likelihood cannot be compared with that of the model without random effects.</li>
+        <li><span class="ui">Observation-level effect (overdispersion)</span>, with the Poisson or the binomial with trials: <span class="ui">Automatic: if the Pearson test calls for it</span> (<i>p</i> &lt; 0.05 and χ²/df greater than 1.1), <span class="ui">Yes, always</span> or <span class="ui">No</span>. It adds a random effect per row that absorbs the extra variation (Harrison, 2014).</li>
+        <li><span class="ui">Fixed-effect tests</span>: <span class="ui">Type II Wald χ²</span> or <span class="ui">Type III Wald χ² (sum-to-zero)</span>.</li>
+      </ul>
+    </div>
+  </div>
+  <p>The result includes the Wald tests (their note states the approximation used), the coefficients (with the log and logit links, also their ratios with Wald intervals), the variances of the random effects on the link scale, the test of each random effect, the means on the response scale (with the random effects at zero), their pairwise comparisons and the fit, with the θ of the negative binomial or the dispersion of the gamma. The traffic light checks overdispersion (or dispersion), Pearson residuals greater than 3 and the optimizer warnings.</p>
+  <table class="compacta salida" style="width:94%">
+    <caption><b>Table 4.13.</b> The avocado thrips with three models: the conclusion is the same, with different strength.</caption>
+    <thead><tr><th>Model</th><th>Blocks</th><th>Test of the treatment</th><th class="n">Control</th><th class="n">Spinosad</th></tr></thead>
+    <tbody>
+      <tr><td>Negative binomial (automatic)</td><td>fixed</td><td>χ² = 21.34, 4 df, <i>p</i> &lt; 0.001</td><td class="n">7.761</td><td class="n">1.483</td></tr>
+      <tr><td>Quasi-Poisson (formula, type I)</td><td>fixed</td><td><i>F</i> = 3.69, <i>p</i> = 0.023</td><td class="n">7.584</td><td class="n">1.452</td></tr>
+      <tr><td>Mixed Poisson with observation-level effect</td><td>random</td><td>Wald χ² = 16.07, 4 df, <i>p</i> = 0.003</td><td class="n">7.283</td><td class="n">1.385</td></tr>
+    </tbody>
+  </table>
+  <p>In the mixed model, the block variance ends up at zero and the app says so in the traffic light (“Singular fit: some variance component is zero”): in this trial the blocks contributed nothing, as their test in the fixed-effects model already indicated (<i>p</i> = 0.468).</p>
+</section>
+
+</body>
+</html>

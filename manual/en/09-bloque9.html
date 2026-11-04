@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 9</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 58%; }
+  figure.chica figcaption { margin-left: 21%; margin-right: 21%; }
+  figure.mapa .marco { width: 88%; }
+  figure.mapa figcaption { margin-left: 6%; margin-right: 6%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b9" data-pestana="B9" data-orden="9" style="--acento: var(--b9)">
+  <div class="cap-apertura">
+    <div class="cap-num">9</div>
+    <div class="cap-etiqueta">Block 9 · Fundamentals</div>
+    <h1>Fundamentals: what each analysis does and what data it needs</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Each of SigmaPro’s 78 analyses has a fact sheet: what it is for, the model and its hypotheses, the assumptions and how to check them in the app, the data it needs, how to read the result, its limits and where it comes from. This chapter explains how to reach the fact sheets, how to search them and what each one contains.</p>
+    <ul class="cap-contenido">
+      <li><b>9.1</b>Three ways to reach a fact sheet</li>
+      <li><b>9.2</b>The catalog and its filters</li>
+      <li><b>9.3</b>The method map and the decision tree</li>
+      <li><b>9.4</b>A fact sheet, section by section</li>
+      <li><b>9.5</b>Data needed and the templates</li>
+      <li><b>9.6</b>Formulas, language and offline use</li>
+      <li><b>9.7</b>How the fact sheets were reviewed</li>
+    </ul>
+  </div>
+
+  <!-- 9.1 -->
+  <h2 id="s9-1"><span class="num">9.1</span>Three ways to reach a fact sheet</h2>
+  <p class="lead">The fact sheets live in block 9, but they are one click away from where you need them: when you choose what to analyze, when you have a result in front of you and when you are getting started.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">From</th><th>How</th></tr></thead>
+    <tbody>
+      <tr><td>The block bar</td><td><span class="ui">Fundamentals</span> opens the catalog of the 78 fact sheets, with its search box and its filters (9.2).</td></tr>
+      <tr><td>An analysis</td><td>In the catalog of the Analysis block, each analysis carries the <span class="ui">ⓘ</span> icon (<i>What is this analysis?</i>); with an analysis open, the <span class="ui">ⓘ What is this analysis?</span> button is in the header of its result, also in the four summaries of the Explore block. Both open its fact sheet.</td></tr>
+      <tr><td>The Home block</td><td>The <span class="ui">What you can analyze</span> card lists the 78 analyses by family; each name opens its fact sheet.</td></tr>
+    </tbody>
+  </table>
+  <p>From the fact sheet you go back to work with <span class="ui">Open this analysis</span>, which opens the method in the Analysis block (or, for descriptives, frequencies, proportions and goodness of fit, in the Explore block), and with <span class="ui">Load the example data</span>, which also loads the fact sheet’s example dataset and fills in the form with its columns. That way, every fact sheet can be checked with one click.</p>
+
+  <!-- 9.2 -->
+  <h2 id="s9-2"><span class="num">9.2</span>The catalog and its filters</h2>
+  <p class="lead">The catalog groups the fact sheets by family, like the catalog of the Analysis block. Each card says what the analysis is for and carries two tags: the type of response it measures and how its groups or factors are organized.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.5in">Control</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Search</span></td><td>Searches the name, the summary, the family, the “what it is for” and the other names of each analysis (for example, “RCBD”, “Tukey”, “heritability”). If you type several words, all of them must appear; it ignores accents and capitalization.</td></tr>
+      <tr><td><span class="ui">Family</span></td><td>The 18 families: the 17 of the Analysis block and <i>Descriptives and intervals</i>, the family of the four summaries in Explore.</td></tr>
+      <tr><td><span class="ui">Response type</span></td><td>Continuous measurement, counts, yes / no (0/1), proportions, categories (tables), time to an event, time series, several responses or no data (planning).</td></tr>
+      <tr><td><span class="ui">Groups and factors</span></td><td>One sample, two groups, three or more groups, crossed factors, blocks, split plot, continuous predictors, random effects, several environments or no factors.</td></tr>
+      <tr><td><span class="ui">Design</span></td><td>The experimental design in which it is used: completely randomized, randomized complete blocks, Latin square, split plots and strips, lattice, incomplete blocks, repeated measures, several environments, sampling, response surfaces or no experimental design.</td></tr>
+      <tr><td><span class="ui">Glossary</span></td><td>Opens the glossary (also with Ctrl G): the statistics and concepts the fact sheets use, each with its definition and “See it in action” (section I.6).</td></tr>
+    </tbody>
+  </table>
+  <p>The filters combine, and the count at the top says how many analyses remain; if none qualifies, <span class="ui">Clear the filters</span> resets them to <span class="ui">All</span>. At the foot of some families, the <span class="ui">Related tools</span> strip shows the LABG suite apps that continue that work (chapter 10). Fundamentals is also shown in full in the bar’s <span class="ui">Focused</span> mode (section I.6): the catalog, the map, the tree and each fact sheet have their own guide.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b9-catalogo.png" alt="The Fundamentals catalog: the search box, the Family, Response type, Groups and factors and Design filters, the Catalog or Method map selector, the count of 78 analyses and the first cards of the “Descriptives and intervals” and “Model assumptions” families."></div>
+    <figcaption><b>Figure 9.1.</b> The Fundamentals catalog: the search box, the four filters and the first families.</figcaption>
+  </figure>
+
+  <!-- 9.3 -->
+  <h2 id="s9-3"><span class="num">9.3</span>The method map and the decision tree</h2>
+  <p class="lead"><span class="ui">Method map</span> shows the same analyses in a table: the type of response in the rows and the structure of the groups and factors in the columns. It helps you find the analysis starting from the question: “I measure counts in blocks”, “I compare two groups with a yes / no response”.</p>
+  <figure class="mapa">
+    <div class="marco"><img src="../img/en/b9-mapa.png" alt="The method map: rows Continuous measurement, Counts, Yes / no, Proportions, Categories, Time to an event, Time series, Several responses and No data; columns One sample, Two groups, Three or more groups, Crossed factors, Blocks and Split plot; in each cell, the names of the analyses as buttons."></div>
+    <figcaption><b>Figure 9.2.</b> The method map (the columns on the right, such as continuous predictors and random effects, come into view when you scroll the table sideways).</figcaption>
+  </figure>
+  <p>Each name is a link to its fact sheet: it opens with a click or with the keyboard (Tab and Enter). The catalog filters also apply to the map, and the map remembers the chosen view while the tab stays open. On narrow screens, the table scrolls sideways inside its frame.</p>
+
+  <h3>The decision tree</h3>
+  <p><span class="ui">Decision tree</span> takes you from the research question to the analysis through a few questions in field language, without data (figure 9.3). The first column asks what you want to do with the data: describe them, compare treatments, relate numeric variables, associate categories, compare genotypes across several environments, estimate genetic variances, analyze the time to an event, a time series or several responses at once, estimate from a sample or plan a trial. Each answer opens the next question on the right (what did you measure?, how was the trial laid out?, what shape does the relationship have?), and a gold line joins each answer to its question.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b9-arbol.png" alt="The decision tree: the explanation, the view selector with Decision tree selected and the Glossary button; Your path: Compare treatments or groups, A continuous measurement, In complete blocks, and Start over; four columns joined by gold lines, with their first answers: What do you want to do with your data?, What did you measure? and How was the trial laid out?, with the chosen answer in gold; and The analyses for “In complete blocks”: Randomized complete blocks and Randomized blocks with random blocks, from the R engine, each with when to use it, what it is for and the Fact sheet, Open this analysis and Try with the example buttons"></div>
+    <figcaption><b>Figure 9.3.</b> The decision tree along the path of a trial in complete blocks; the question columns continue further down. The leaf shows the two analyses that fit.</figcaption>
+  </figure>
+  <p>The last column shows the analyses that fit, each with when to use it and what it is for, and three buttons: <span class="ui">Fact sheet</span>, <span class="ui">Open this analysis</span> and, if its fact sheet has an example, <span class="ui">Try with the example</span>, which loads the example data and computes it. Every one of the 78 analyses is in some leaf; the sample size and power analyses open without data. <span class="ui">Start over</span> goes back to the first question, and the path is remembered while the tab stays open. The tree has no search box or filters; on a narrow screen, the columns are stacked one below the other.</p>
+  <p>You can also reach the tree from the third path of Home (section 1.1) and from the assistant’s recommendation: <span class="ui">See it in the decision tree</span> opens it on the path of that analysis, with the analysis highlighted (section 4.2).</p>
+
+  <!-- 9.4 -->
+  <h2 id="s9-4"><span class="num">9.4</span>A fact sheet, section by section</h2>
+  <p class="lead">All fact sheets have the same nine sections, in the same order, and an index on the left to jump between them, which marks the one you are reading. Each section folds or unfolds with a click on its title.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b9-ficha.png" alt="The randomized complete blocks fact sheet: the family, the name and the other names of the analysis; the Open this analysis and Load the example data buttons; the In this fact sheet index with the nine sections; What it is for and Typical questions."></div>
+    <figcaption><b>Figure 9.4.</b> The randomized complete blocks fact sheet: the header, the index and the first two sections.</figcaption>
+  </figure>
+  <table class="compacta">
+    <caption><b>Table 9.1.</b> The nine sections of a fact sheet.</caption>
+    <thead><tr><th style="width:0.3in" class="c">#</th><th style="width:1.75in">Section</th><th>What it contains</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td>What it is for</td><td>In one sentence, what question it answers; the other names it is known by and its family.</td></tr>
+      <tr><td class="c">2</td><td>Typical questions</td><td>Two or three agronomic or biological questions that the analysis answers.</td></tr>
+      <tr><td class="c">3</td><td>Theoretical basis</td><td>The idea of the method in 150 to 300 words, the model with its terms explained, the hypotheses H₀ and H₁ and the statistic that tests them.</td></tr>
+      <tr><td class="c">4</td><td>Assumptions</td><td>Each assumption, how it is checked in SigmaPro (the traffic light, <span class="ui">Check the model assumptions</span>, a plot) and what to do if it does not hold, with buttons that open the check or the alternative.</td></tr>
+      <tr><td class="c">5</td><td>Data needed</td><td>The gold box of section 9.5.</td></tr>
+      <tr><td class="c">6</td><td>How to interpret it</td><td>What to look at in the result and in what order, a sample write-up for the thesis or the paper, and the guides for reading each statistic.</td></tr>
+      <tr><td class="c">7</td><td>Limitations and related methods</td><td>When not to use it and which SigmaPro analysis to use instead, with links to their fact sheets.</td></tr>
+      <tr><td class="c">8</td><td>References</td><td>3 to 5 references in APA format: the original paper or book and the reference texts.</td></tr>
+      <tr><td class="c">9</td><td>Continue in the LABG suite</td><td>The suite apps that carry on the work of that analysis, with the reason (chapter 10). If none applies, it says so.</td></tr>
+    </tbody>
+  </table>
+  <p>The theoretical basis ends with the model, each of its terms and the hypotheses being tested, with the statistic that decides them (figure 9.5).</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b9-modelo.png" alt="The randomized complete blocks model, y sub ij equals mu plus tau sub i plus beta sub j plus epsilon sub ij, with epsilon normal with mean zero and variance sigma squared; the explanation of each term; H0: all tau equal to zero; H1: some tau different from zero; and the note that it is tested with F equal to the treatment MS divided by the error MS."></div>
+    <figcaption><b>Figure 9.5.</b> The model, its terms and the hypotheses in the randomized complete blocks fact sheet.</figcaption>
+  </figure>
+  <div class="caja ejemplo"><div class="caja-t"><span class="ico">✎</span>Example</div><p>The sample write-ups in each fact sheet use the figures the app gives with its example dataset; when the fact sheet has none, the figures are presented as illustrative. Before copying them, replace the figures with those of your own result.</p></div>
+
+  <!-- 9.5 -->
+  <h2 id="s9-5"><span class="num">9.5</span>Data needed and the templates</h2>
+  <p class="lead">Section 5 sits in a gold box because it answers the question that most often holds up an analysis: how should my data be laid out? It has six parts (figure 9.6).</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b9-datos.png" alt="The Data needed box of the randomized complete blocks fact sheet: the table of columns with their type and role; the minimum size; missing data and imbalance; the long format; a seven-row example from the maize data; the common mistakes and the Load this example data, CSV template and XLSX template buttons."></div>
+    <figcaption><b>Figure 9.6.</b> “Data needed” in the randomized complete blocks fact sheet.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Columns it needs:</b> each column with its type (continuous numeric, factor with k levels, count, 0/1, date) and its role in the analysis (response, treatments, block…). The names are those of the example dataset.</li>
+    <li><b>Minimum size:</b> what the method needs to run and what is advisable for the test to make sense.</li>
+    <li><b>Missing data and imbalance:</b> what SigmaPro does if a value is missing or the groups are not the same size.</li>
+    <li><b>Format:</b> almost always long (one row per plot, plant or date). When the wide format is a common source of confusion, the fact sheet shows the same data in wide format, marked “not like this”; the Data block converts them to long with <span class="ui">Wide ⇄ long</span> (section 2.11).</li>
+    <li><b>Example:</b> the first actual rows of the example dataset, up to 8.</li>
+    <li><b>Common mistakes when preparing the data:</b> those that make the analysis run but answer a different question (averages instead of plots, numeric doses treated as if they were continuous, the fruits of one plot as replicates).</li>
+  </ul>
+  <p><span class="ui">CSV template</span> and <span class="ui">XLSX template</span> download the fact sheet’s example table (<code>plantilla-&lt;análisis&gt;.csv</code> or <code>.xlsx</code>) so that you can fill it in with your own data and then import it in the Data block. <span class="ui">Load this example data</span> loads the complete dataset and opens the analysis with its columns already chosen. The planning fact sheets (power, number of replicates, sample size and response-surface design) use no data: instead, their table of columns lists the values the form asks for.</p>
+
+  <!-- 9.6 -->
+  <h2 id="s9-6"><span class="num">9.6</span>Formulas, language and offline use</h2>
+  <p class="lead">The formulas in the fact sheets are mathematical text, not images: they can be read by a screen reader, enlarged without losing sharpness and copied.</p>
+  <p>SigmaPro writes them with its own converter to MathML, the formula language that browsers understand, without downloading any library. Each fact sheet is in Spanish and in English, with the same figures in both; you switch with the <span class="ui">ES · EN</span> selector like the rest of the app, and in English the notation follows the convention of that language (SE, SS and MS instead of EE, SC and CM).</p>
+  <p>The 78 fact sheets are app files (<code>data/fundamentos/</code>) that are loaded when they are opened. They work when you double-click <code>index.html</code>, in the published version and offline: the installed app stores them along with everything else. They also make up the methodological appendix of the exported report (section 7.2).</p>
+
+  <!-- 9.7 -->
+  <h2 id="s9-7"><span class="num">9.7</span>How the fact sheets were reviewed</h2>
+  <p class="lead">A fact sheet that describes something the app does not do is worse than no fact sheet at all. That is why each one was checked against the code and against the running app, in six independent reviews of 13 fact sheets each.</p>
+  <p>Each review checked the model, the hypotheses, the assumptions (and that the check and the alternative it proposes exist), the data and the example table, that the example runs and gives the figures in the write-up, the interpretation and the references (author, year, title, journal, pages and DOI). Of the 78 fact sheets, 49 changed in the review. Along the way, 18 errors in the app itself also turned up, from a calculation (weighted kappa when a rater does not use some category) to labels and messages; they were fixed, and the calculation errors have their new test case against R. The details are in <code>docs/revision-fundamentos.md</code>, and the list of analyses with the status of their fact sheet, in <code>docs/inventario-analisis.md</code>.</p>
+  <p>In addition, an automated test (<code>node tests/fundamentos.mjs</code>, part of the release battery of chapter 8) checks in every version that each analysis has its fact sheet with the nine sections in both languages, that the examples run, that the formulas convert and that no fact sheet names an option or a column that does not exist.</p>
+</section>
+
+</body>
+</html>

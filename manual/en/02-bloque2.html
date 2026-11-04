@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 78%; }
+  figure.media figcaption { margin-left: 11%; margin-right: 11%; }
+  figure.chica .marco { width: 56%; }
+  figure.chica figcaption { margin-left: 22%; margin-right: 22%; }
+  figure.angosta .marco { width: 40%; }
+  figure.angosta figcaption { margin-left: 30%; margin-right: 30%; }
+  table.ejemplos td:first-child { white-space: nowrap; }
+  table.ejemplos td { padding-top: 0.015in; padding-bottom: 0.015in; }
+  figure.casi .marco { width: 88%; margin: 0 auto; }
+  figure.casi figcaption { margin-left: 6%; margin-right: 6%; }
+  figure.mitad .marco { width: 50%; margin: 0 auto; }
+  figure.mitad figcaption { margin-left: 25%; margin-right: 25%; }
+  figure.estrecha .marco { width: 70%; margin: 0 auto; }
+  figure.estrecha figcaption { margin-left: 15%; margin-right: 15%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b2" data-pestana="B2" data-orden="2" style="--acento: var(--b2)">
+  <div class="cap-apertura">
+    <div class="cap-num">2</div>
+    <div class="cap-etiqueta">Block 2 · Data</div>
+    <h1>Data: the trial table</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Every analysis starts with a well-built table. In this block you import a file, paste a table or open an example; check the type of each variable, which decides how it is analyzed; create computed and transformed variables; filter rows without deleting them; change the shape of the table; and read what SigmaPro recognizes in the design of the trial. At the bottom, depending on what the table contains, the block suggests the suite app that can continue the work. None of this touches the original file.</p>
+    <ul class="cap-contenido">
+      <li><b>2.1</b>Four ways to begin</li>
+      <li><b>2.2</b>What the table should look like</li>
+      <li><b>2.3</b>Importing a file</li>
+      <li><b>2.4</b>Pasting a table and the empty sheet</li>
+      <li><b>2.5</b>The 27 examples</li>
+      <li><b>2.6</b>The worksheet</li>
+      <li><b>2.7</b>The five variable types</li>
+      <li><b>2.8</b>Computed variables</li>
+      <li><b>2.9</b>Transforming a variable</li>
+      <li><b>2.10</b>Filtering rows</li>
+      <li><b>2.11</b>Wide and long tables</li>
+      <li><b>2.12</b>Undo, redo and go back</li>
+      <li><b>2.13</b>What SigmaPro sees in your trial</li>
+      <li><b>2.14</b>Continue in the LABG suite</li>
+    </ul>
+  </div>
+
+  <!-- 2.1 -->
+  <h2 id="s2-1"><span class="num">2.1</span>Four ways to begin</h2>
+  <p class="lead">While there are no data, the block shows its toolbar and, below it, a box with the three most common ways to begin. The toolbar buttons do the same and stay in view once a table is loaded.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b2-inicio.png" alt="The toolbar of the Data block, with Import file, Paste table, Examples and Empty sheet active and the other tools grayed out, and the Start with your data box with three options: import a file, paste from a spreadsheet and try an example"></div>
+    <figcaption><b>Figure 2.1.</b> The Data block without data. The tools in the second row become active when a table is loaded.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.6in">Button</th><th>What it does</th><th style="width:0.6in">Section</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Import file…</span></td><td>Opens a text file (CSV, TSV, TXT) or a spreadsheet workbook (.xlsx, .xlsm, .ods). The file is read on your computer; it is not uploaded anywhere.</td><td>2.3</td></tr>
+      <tr><td><span class="ui">Paste table…</span></td><td>Takes a range copied from a spreadsheet, with its row of names.</td><td>2.4</td></tr>
+      <tr><td><span class="ui">Examples ▾</span></td><td>Opens one of the 27 example trials, each one designed for a type of analysis.</td><td>2.5</td></tr>
+      <tr><td><span class="ui">Empty sheet…</span></td><td>Creates a blank table with the column names and the number of rows you ask for, for entering data by hand.</td><td>2.4</td></tr>
+    </tbody>
+  </table>
+  <p>Loading new data replaces the previous table. If the previous one had changes, the report and the open analyses are recomputed with the new data; that is why it is a good idea to save the project (chapter 7) before switching to another trial.</p>
+
+  <!-- 2.2 -->
+  <h2 id="s2-2"><span class="num">2.2</span>What the table should look like</h2>
+  <p>SigmaPro reads the table layout that almost all statistics programs require: <b>one row per experimental unit</b> (the plot, the pot, the plant, the animal) and <b>one column per variable</b>. The columns are of two kinds: those that describe the design (block, treatment, variety, rate, date) and those that were measured (yield, height, number of fruits).</p>
+  <table class="compacta salida" style="width:60%">
+    <caption><b>Table 2.1.</b> The first rows of the maize example: one plot per row.</caption>
+    <thead><tr><th>bloque</th><th>hibrido</th><th class="n">dosis</th><th class="n">rend</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>H-40</td><td class="n">0</td><td class="n">4.61</td></tr>
+      <tr><td>1</td><td>H-40</td><td class="n">60</td><td class="n">5.71</td></tr>
+      <tr><td>1</td><td>H-40</td><td class="n">120</td><td class="n">6.41</td></tr>
+      <tr><td>1</td><td>H-40</td><td class="n">180</td><td class="n">6.56</td></tr>
+      <tr><td>1</td><td>H-52</td><td class="n">0</td><td class="n">4.80</td></tr>
+    </tbody>
+  </table>
+  <div class="caja regla">
+    <div class="caja-t"><span class="ico">✓</span>Good practices for the table</div>
+    <table class="compacta">
+      <tbody>
+        <tr><td style="width:2.1in"><b>One row of names, at the top</b></td><td>Short names, with no repeats: <code>rend</code>, <code>altura_30dds</code>, <code>peso_seco</code>. Spaces and accents are allowed, but simple names read better in formulas and in R code.</td></tr>
+        <tr><td><b>Nothing else on the sheet</b></td><td>No titles above the table, no totals below it, no merged cells and no notes at the side.</td></tr>
+        <tr><td><b>Missing values, left empty</b></td><td>An empty cell is a missing value. <code>NA</code>, <code>.</code> and <code>-</code> are also accepted, or the codes you specify when importing. Never a zero in place of a lost value.</td></tr>
+        <tr><td><b>One type per column</b></td><td>A yield column with numbers only; if there is a stray text (“s/d”, “lost”), it is taken as missing and the app tells you so.</td></tr>
+        <tr><td><b>Clear group codes</b></td><td>If the block or the treatment was written with numbers (1, 2, 3), check that the app has taken it as a factor (section 2.7).</td></tr>
+        <tr><td><b>Long format</b></td><td>If the same variable was measured several times (dates, years, harvests), one row per measurement. If the table comes in wide format (one column per date), the block converts it (section 2.11).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2.3 -->
+  <h2 id="s2-3"><span class="num">2.3</span>Importing a file</h2>
+  <p><span class="ui">Import file…</span> opens the system’s file picker. SigmaPro accepts:</p>
+  <ul>
+    <li><b>Delimited text</b> (.csv, .tsv, .txt): separated by commas, semicolons, tabs or vertical bars. The app detects on its own the column separator, the decimal separator and the text encoding (UTF-8, UTF-16 or the one used by Windows in Spanish, Windows-1252), so accents and the ñ come through correctly even if the file comes from an old spreadsheet.</li>
+    <li><b>Spreadsheet workbooks</b> (.xlsx, .xlsm and .ods): if the workbook has several sheets, you choose which one to import. Workbooks in the old format (.xls) cannot be opened; save them first as .xlsx or .csv.</li>
+  </ul>
+  <p>Before anything is loaded, the <b>Import data</b> window shows how the table will look:</p>
+  <figure>
+    <div class="marco"><img src="../img/en/b2-importar.png" alt="The Import data window with a CSV separated by semicolons and with a decimal comma: the column separator and decimal separator selectors, the missing-value codes, the checkbox for a first row with names, the summary of 12 rows and 7 columns, and the preview with the chosen type and the reason for each column: parcela identifier, bloque factor, variedad factor, fecha_siembra date, plantas numeric with a text s/d taken as missing, rend numeric, observaciones text"></div>
+    <figcaption><b>Figure 2.2.</b> The import window with a file separated by semicolons and with a decimal comma. Each column shows the type the app proposes and the reason; the “s/d” cell in <i>plantas</i> is highlighted because it will become missing.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Option</th><th>What it is for</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Column separator</span></td><td>Comma, semicolon, tab or vertical bar (text files only). If the preview shows everything in a single column, the separator is not the right one.</td></tr>
+      <tr><td><span class="ui">Sheet</span></td><td>In a workbook, the sheet to import.</td></tr>
+      <tr><td><span class="ui">Decimal separator</span></td><td>Point (4.25) or comma (4,25). In Mexico the point is the usual one; files from other countries, or from spreadsheets set to Spanish (Spain), use a comma.</td></tr>
+      <tr><td><span class="ui">Missing-value codes</span></td><td>The texts that mean “no data”, separated by commas (by default <code>NA, ., -</code>). An empty cell is always missing.</td></tr>
+      <tr><td><span class="ui">The first row contains the names</span></td><td>If you uncheck it, the columns are named V1, V2… and the first row is taken as data.</td></tr>
+      <tr><td><b>Type of each column</b></td><td>The selector above each column. What you choose here prevails; the app only proposes (section 2.7).</td></tr>
+    </tbody>
+  </table>
+  <p>The preview shows the first eight rows <b>as they will be</b>: numbers with the chosen decimal separator, dates in the form YYYY-MM-DD and, in another color, each cell that cannot be converted and will become missing (<i>s/d → missing</i>). When you press <span class="ui">Import</span>, the table is loaded and the block moves to the worksheet. If any numeric column had stray texts, a notice says so, and the explanation of that variable tells how many there were.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The original file does not change</div>
+    <p>SigmaPro works with a copy in memory. No change made in the block (types, new columns, filters, edited cells) is written to the file that was imported. To save the table with its changes, use the .labg project (section 7.6), which also includes the data as CSV.</p>
+  </div>
+
+  <!-- 2.4 -->
+  <h2 id="s2-4"><span class="num">2.4</span>Pasting a table and the empty sheet</h2>
+  <p><span class="ui">Paste table…</span> opens a text box where you paste, with Ctrl+V, a range copied from a spreadsheet (with its row of names). When you press <span class="ui">Continue</span>, the same import window from the previous section appears, with tab as the separator. It is the quickest way to bring in some data without saving a file first. You can also paste directly onto the empty grid: the app recognizes it as a new table and opens the same window.</p>
+  <p><span class="ui">Empty sheet…</span> asks for the <b>column names</b>, separated by commas (by default <code>bloque, tratamiento, rend</code>), and the <b>number of rows</b> (up to 100,000). Columns whose name suggests a design factor (bloque, tratamiento, variedad, repetición, lote…) start as factors; the rest, as numeric. Then you type in the grid as in any spreadsheet (section 2.6).</p>
+
+  <!-- 2.5 -->
+  <h2 id="s2-5"><span class="num">2.5</span>The 27 examples</h2>
+  <p><span class="ui">Examples ▾</span> drops down the list of example trials, with a line that says what each one is for. Six are published data (Mendel, Box and Cox, Yates, Cornell and two from an R package for multi-environment trials); the rest are fictitious, built so that each analysis has a clear case. All the results in this manual come from them, so any number can be reproduced with a click.</p>
+  <table class="compacta ejemplos">
+    <caption><b>Table 2.2.</b> The SigmaPro examples and what each one is for.</caption>
+    <thead><tr><th>Example</th><th class="c">Rows</th><th>Design and variables</th><th>For</th></tr></thead>
+    <tbody>
+      <tr><td>Maize: hybrids × nitrogen</td><td class="c">48</td><td>3 × 4 factorial in 4 blocks; yield (t/ha)</td><td>ANOVA, comparisons, polynomials, figures</td></tr>
+      <tr><td>Bean: germination (%)</td><td class="c">20</td><td>5 treatments, 4 boxes of 50 seeds</td><td>Arcsine, binomial model</td></tr>
+      <tr><td>Wheat: 5 × 5 Latin square</td><td class="c">25</td><td>5 varieties, rows and columns</td><td>Latin square</td></tr>
+      <tr><td>Tomato: height in the greenhouse</td><td class="c">18</td><td>3 substrates; height at 15, 30, 45 and 60 days, in wide format</td><td>Wide → long, dates, missing values</td></tr>
+      <tr><td>Avocado: thrips per shoot</td><td class="c">30</td><td>5 treatments in 6 blocks; counts with zeros</td><td>√(x + 0.5), count models</td></tr>
+      <tr><td>Poisons × treatments</td><td class="c">48</td><td>Box and Cox (1964): 3 poisons × 4 treatments</td><td>Box-Cox transformation</td></tr>
+      <tr><td>Pea: Mendel’s segregation</td><td class="c">4</td><td>Mendel (1866): 556 seeds already counted</td><td>9:3:3:1 goodness of fit</td></tr>
+      <tr><td>Oats in a split plot</td><td class="c">72</td><td>Yates (1935): 3 varieties × 4 N rates, 6 blocks</td><td>Split plots</td></tr>
+      <tr><td>Sorghum: varieties and plants</td><td class="c">24</td><td>6 varieties in 4 blocks; harvested plants</td><td>ANCOVA</td></tr>
+      <tr><td>Coffee: yield and site</td><td class="c">40</td><td>40 farms with 7 site variables</td><td>Multiple regression, variable selection</td></tr>
+      <tr><td>Bean: treated seed in four lots</td><td class="c">16</td><td>Germination by lot and treatment, already counted</td><td>Contingency, Cochran-Mantel-Haenszel</td></tr>
+      <tr><td>Rust: two raters</td><td class="c">80</td><td>Severity 0 to 3 scored by two technicians</td><td>Kappa, Bowker</td></tr>
+      <tr><td>Alpha-lattice: 24 genotypes</td><td class="c">72</td><td>Olivoto and Lúcio (2020): 3 replicates, blocks of 4</td><td>Mixed lattice, heritability</td></tr>
+      <tr><td>Oats in 14 environments</td><td class="c">420</td><td>Olivoto and Lúcio (2020): 10 genotypes, 3 replicates</td><td>Multi-environment, stability, AMMI, GGE</td></tr>
+      <tr><td>Maize: height on five dates</td><td class="c">80</td><td>4 rates in 4 blocks; the same plant on 5 dates</td><td>Repeated measures</td></tr>
+      <tr><td>Guava: 20 trees, four harvests</td><td class="c">80</td><td>Kilograms per tree and harvest, with 5 missing</td><td>Repeatability</td></tr>
+      <tr><td>Herbicides: dry weight by dose</td><td class="c">56</td><td>7 doses of 2 herbicides, 4 replicates</td><td>Dose-response (ED50)</td></tr>
+      <tr><td>Tomato: nitrogen × potassium</td><td class="c">13</td><td>Rotatable central composite with 5 center points</td><td>Response surface</td></tr>
+      <tr><td>Avocado: sampling in three orchards</td><td class="c">38</td><td>Random trees from 3 orchards; weight and thrips (0/1)</td><td>Stratified sampling</td></tr>
+      <tr><td>Bean: days to germination</td><td class="c">120</td><td>3 treatments; days until germination, with censoring</td><td>Kaplan-Meier, log-rank, Cox</td></tr>
+      <tr><td>Weather station: rainfall and temperature</td><td class="c">96</td><td>Monthly values from 2017 to 2024</td><td>Time series, ARIMA</td></tr>
+      <tr><td>Chili pepper: fruit measurements</td><td class="c">60</td><td>4 varieties in 3 blocks, 5 fruits per plot</td><td>MANOVA, discriminant analysis</td></tr>
+      <tr><td>Yarn: elongation of three polymers</td><td class="c">15</td><td>Cornell (2002): {3, 2} simplex-lattice with replicates</td><td>Mixtures (Scheffé models)</td></tr>
+      <tr><td>Fruit: yield, cost and pH</td><td class="c">13</td><td>Rotatable central composite: nitrogen × irrigation, three responses</td><td>Surfaces, desirability</td></tr>
+      <tr><td>Wheat: irrigation × variety</td><td class="c">48</td><td>3 irrigation depths (main plots) × 4 varieties, 4 blocks</td><td>Split plots, the assistant</td></tr>
+      <tr><td>Rice: irrigation × variety × nitrogen</td><td class="c">36</td><td>Split-split plots in 3 blocks</td><td>Split-split plots</td></tr>
+      <tr><td>Sorghum: seven lines in incomplete blocks</td><td class="c">21</td><td>7 blocks of 3 plots; each pair of lines occurs together once (λ = 1)</td><td>Balanced incomplete blocks</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 2.6 -->
+  <h2 id="s2-6"><span class="num">2.6</span>The worksheet</h2>
+  <p>With a table loaded, the block is divided into three parts: the list of variables on the left, the grid with the data in the center and, below the list, the details of the selected variable. Figure 2.3 points them out.</p>
+  <figure class="casi">
+    <div class="marco"><img src="../img/en/b2-hoja.png" alt="The worksheet with the maize example: the toolbar, the list of variables (bloque, hibrido, dosis, rend with their types), the details of bloque with the reason for its type, the type selector and its four levels with 12 observations each, the grid with the first 19 rows and the status line with 48 rows, 4 columns, no missing values"><span class="marca" style="left:51.5%;top:4.4%">1</span><span class="marca" style="left:31.1%;top:14.6%">2</span><span class="marca" style="left:82.2%;top:9.1%">3</span><span class="marca" style="left:23.6%;top:27.5%">4</span><span class="marca" style="left:25.9%;top:69.8%">5</span><span class="marca" style="left:84.2%;top:17.6%">6</span><span class="marca" style="left:85.3%;top:91.2%">7</span></div>
+    <figcaption><b>Figure 2.3.</b> The worksheet with the maize example.</figcaption>
+  </figure>
+  <ul class="leyenda-marcas">
+    <li><span class="n">1</span><b>Load</b>: import, paste, examples and empty sheet (2.1).</li>
+    <li><span class="n">2</span><b>Prepare</b>: computed variable, transform, filter and wide ⇄ long (2.8–2.11).</li>
+    <li><span class="n">3</span><b>Undo and redo</b> (2.12).</li>
+    <li><span class="n">4</span><b>Variables</b>: each column with its type, its levels and its missing values. A click selects it.</li>
+    <li><span class="n">5</span><b>Details</b> of the selected variable: why it has that type, the selector to change it, and its summary.</li>
+    <li><span class="n">6</span><b>The grid</b>: the data, with the type under each name and the ⋮ menu of each column.</li>
+    <li><span class="n">7</span><b>Status</b>: rows, columns, missing cells and where the data come from.</li>
+  </ul>
+  <h3>The list of variables and the details</h3>
+  <p>Each variable in the list shows its type in color (<i>factor · 4</i> means a factor with four levels), its missing cells if there are any (<i>2 miss.</i>) and a mark if it is computed (ƒ) or transformed (↻). When you select one, the <b>details</b> show:</p>
+  <ul>
+    <li>the <b>reason</b> for the type, in one sentence (“These are integer codes with 4 repeated values and the name ‘bloque’ suggests a factor”), and, if it is computed or transformed, where it came from (<i>ƒ = rend / 1000</i>);</li>
+    <li>the <span class="ui">Type</span> selector, which changes the type just like the ⋮ menu;</li>
+    <li>for a numeric variable, n, missing values, mean, standard deviation, minimum and maximum, and the <span class="ui">Transform…</span> button; for a factor, its levels in order with how many rows each one has, and the <span class="ui">Order levels…</span> button; for a date, the range of dates.</li>
+  </ul>
+  <p>If a filter is active (section 2.10), these summaries are computed only with the rows that pass the filter.</p>
+  <h3>The grid</h3>
+  <p>The grid works like a spreadsheet and is operated with the keyboard. It draws only the visible rows, so a table of 100,000 rows scrolls just as fast as one of 100.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.2in">Keys</th><th>What they do</th></tr></thead>
+    <tbody>
+      <tr><td>Arrows, Home, End, Page Up, Page Down</td><td>Move around the table; Ctrl+Home and Ctrl+End go to the first and to the last cell. With Shift, you select a range.</td></tr>
+      <tr><td>Double-click, Enter, F2 or start typing</td><td>Edit the cell. Enter saves; Esc cancels.</td></tr>
+      <tr><td>Tab and Shift+Tab</td><td>Next and previous cell.</td></tr>
+      <tr><td>Delete or Backspace</td><td>Clear the selected cells (they become missing).</td></tr>
+      <tr><td>Ctrl+C and Ctrl+V</td><td>Copy and paste ranges to and from a spreadsheet, separated by tabs.</td></tr>
+      <tr><td>Ctrl+Z and Ctrl+Y</td><td>Undo and redo.</td></tr>
+      <tr><td>Ctrl+A</td><td>Select the whole table.</td></tr>
+    </tbody>
+  </table>
+  <p>What you type in a cell is interpreted according to the type of the column: in a numeric column, a text that is not a number is not accepted and the app explains why (for a lost value, leave the cell empty); in a date column, YYYY-MM-DD and DD/MM/YYYY are accepted. When you paste a range, the cells that do not match the type of their column are left as they were and a notice says how many there were. When the table has unsaved changes, the browser asks before closing the tab.</p>
+
+  <!-- 2.7 -->
+  <h2 id="s2-7"><span class="num">2.7</span>The five variable types</h2>
+  <p class="lead">The type of a column decides how it enters the analyses. It is the most important decision in the block: a block written with numbers (1, 2, 3, 4) and taken as numeric turns a block analysis into a meaningless regression.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.1in">Type</th><th style="width:2.3in">What it is</th><th>How it enters the analyses</th></tr></thead>
+    <tbody>
+      <tr><td><b>numeric</b></td><td>A measurement: yield, height, weight, count, percentage. Also a rate that you want to study as a curve.</td><td>As a response or as a covariate. A numeric rate with few repeated values can also be used as a design factor (the analysis offers this).</td></tr>
+      <tr><td><b>factor</b></td><td>A group: block, treatment, variety, lot, site, year of the trial.</td><td>As a design factor; its levels have an order that decides the order of the means in tables and figures.</td></tr>
+      <tr><td><b>date</b></td><td>A date (sowing, transplanting, harvest), in YYYY-MM-DD or DD/MM/YYYY.</td><td>To order time series and to compute days between dates; never as a design factor.</td></tr>
+      <tr><td><b>text</b></td><td>Free notes, with no repeated values.</td><td>It does not enter, unless it is used explicitly; then it counts as a factor.</td></tr>
+      <tr><td><b>identifier</b></td><td>The key of each unit: plot number, record number, plant.</td><td>It does not enter the analyses. It serves to recognize each row and, in the long table, as the subject of the repeated measures.</td></tr>
+    </tbody>
+  </table>
+  <h3>How the app proposes the type</h3>
+  <p>When importing, SigmaPro proposes a type for each column and <b>always explains why</b>. The rules, in order:</p>
+  <ol>
+    <li>If all the values are numbers, the column is <b>numeric</b>, except in two cases: if they are integers, each row has a different one and the name suggests a key (parcela, id, folio, número, planta…), it is an <b>identifier</b>; if they are integers with up to 30 values that repeat and the name suggests a design factor (bloque, rep, tratamiento, variedad, lote, sitio, año…), it is a <b>factor</b>.</li>
+    <li>If at least eight out of ten values are numbers and the rest are stray texts (“s/d”, “lost”), it is <b>numeric</b> and those texts become missing, with a warning.</li>
+    <li>If all of them are dates, it is a <b>date</b>.</li>
+    <li>If they are texts that repeat, it is a <b>factor</b>. If each row has a different one, it is an <b>identifier</b> when they look like codes (P01, P02…), when the name suggests a key or when there are more than 30 rows; otherwise, it is <b>text</b>.</li>
+  </ol>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Always check numeric codes</div>
+    <p>If a column of integers with few values does not have a recognizable name (for example <code>T</code> or <code>grupo2</code>), the app leaves it as numeric and warns you: “These are numbers, but there are only 4 distinct repeated values: if they are group codes, change it to a factor”. It is worth reading the reason for each variable once, when you load the data.</p>
+  </div>
+  <h3>The ⋮ menu of each column</h3>
+  <div class="dos flota">
+    <figure class="estrecha">
+      <div class="marco"><img src="../img/en/b2-menu.png" alt="The menu of the dosis column: Rename, Transform, Variable type with numeric checked, factor, date, text, identifier, and Delete the column"></div>
+      <figcaption><b>Figure 2.4.</b> The ⋮ menu of a numeric column.</figcaption>
+    </figure>
+    <div>
+      <p>The ⋮ button next to the name of each column opens its menu:</p>
+      <ul>
+        <li><span class="ui">Rename…</span> changes the name (it cannot repeat an existing one).</li>
+        <li><span class="ui">Transform…</span> (for numeric columns) opens the window of section 2.9.</li>
+        <li><span class="ui">Order levels…</span> (for factors) changes the order of the levels.</li>
+        <li><span class="ui">Variable type</span>: the five types, with the current one checked.</li>
+        <li><span class="ui">Delete the column</span>. Ctrl+Z brings it back.</li>
+      </ul>
+      <p>When you change a column to numeric or to date, the values that cannot be converted become missing and a notice says how many; the change can be undone.</p>
+    </div>
+  </div>
+  <h3>The order of the levels</h3>
+  <div class="dos flota">
+    <div>
+      <p>The order of the levels decides the order of the means in tables and figures, and which one is the <b>reference level</b>: the first one, against which the others are compared in a Dunnett test, in Cox hazard ratios or in the coefficients of a model. That is why it is a good idea to put the control first.</p>
+      <p>The <span class="ui">Numeric</span>, <span class="ui">Alphabetical</span> and <span class="ui">As they appear</span> buttons sort them all at once; the ↑ and ↓ arrows move one level. <span class="ui">Apply</span> saves the order (and it can be undone).</p>
+    </div>
+    <figure class="estrecha" style="margin-top:0">
+      <div class="marco"><img src="../img/en/b2-niveles.png" alt="The Order of the levels of tratamiento window: the Numeric, Alphabetical and As they appear buttons, and the list of levels with arrows to move each one up and down"></div>
+      <figcaption><b>Figure 2.5.</b> The order of the levels of a factor. The first one is the reference level.</figcaption>
+    </figure>
+  </div>
+
+  <!-- 2.8 -->
+  <h2 id="s2-8"><span class="num">2.8</span>Computed variables</h2>
+  <p><span class="ui">ƒ Computed variable…</span> creates a new column from the existing ones, with an expression written in the same notation as R. As you type, the window shows whether the expression is valid, what type of column it will give and its first values; a click on the name of a column or of a function inserts it at the cursor.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b2-calculada.png" alt="The Computed variable window with the name nivel_N and the expression ifelse(dosis >= 120, alta, baja); the column and function buttons; and the preview: text that will be stored as a factor, with the first values baja, baja, alta, alta"></div>
+    <figcaption><b>Figure 2.6.</b> A computed variable with a condition: a rate of 120 kg/ha or more, “alta” (high); less, “baja” (low).</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">You write</th><th>It means</th></tr></thead>
+    <tbody>
+      <tr><td><code>+ - * / ^</code> and <code>%%</code></td><td>Addition, subtraction, multiplication, division, power and remainder of the division.</td></tr>
+      <tr><td><code>== != &lt; &lt;= &gt; &gt;=</code></td><td>Comparisons (they give true or false).</td></tr>
+      <tr><td><code>&amp;  |  !</code></td><td>And, or, not.</td></tr>
+      <tr><td><code>x %in% c("a", "b")</code></td><td>Membership in a list.</td></tr>
+      <tr><td><code>`peso seco`</code></td><td>A name with spaces, between backticks.</td></tr>
+      <tr><td><code>log(x)</code>, <code>log(x, 10)</code>, <code>log10</code>, <code>log2</code>, <code>log1p</code>, <code>exp</code>, <code>sqrt</code>, <code>abs</code></td><td>Logarithms (natural by default), exponential, square root and absolute value.</td></tr>
+      <tr><td><code>round(x, 2)</code>, <code>floor</code>, <code>ceiling</code>, <code>trunc</code>, <code>sign</code></td><td>Rounding and sign.</td></tr>
+      <tr><td><code>sin</code>, <code>cos</code>, <code>tan</code>, <code>asin</code>, <code>acos</code>, <code>atan</code></td><td>Trigonometric functions (in radians).</td></tr>
+      <tr><td><code>pmin(a, b)</code>, <code>pmax(a, b)</code></td><td>The smaller or the larger, row by row.</td></tr>
+      <tr><td><code>ifelse(cond, yes, no)</code></td><td>One value if the condition holds and another if it does not.</td></tr>
+      <tr><td><code>is.na(x)</code>, <code>as.numeric(x)</code></td><td>Is the value missing? · Convert to a number.</td></tr>
+      <tr><td><code>paste(a, b, sep = "-")</code>, <code>paste0</code></td><td>Join texts (for example, to combine two factors).</td></tr>
+      <tr><td><code>mean</code>, <code>sd</code>, <code>var</code>, <code>median</code>, <code>min</code>, <code>max</code>, <code>sum</code>, <code>length</code></td><td>Summaries of the whole column: they give a single number, which is repeated in every row.</td></tr>
+    </tbody>
+  </table>
+  <p>Some functions also have a Spanish name: <code>raiz</code>, <code>si</code> (= ifelse), <code>media</code>, <code>de</code> (= sd), <code>mediana</code>, <code>minimo</code>, <code>maximo</code>, <code>suma</code>, <code>varianza</code>, <code>redondear</code>, <code>exponencial</code>, <code>absoluto</code> and <code>faltante</code> (= is.na).</p>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">✎</span>Examples</div>
+    <table class="compacta">
+      <tbody>
+        <tr><td style="width:2.9in"><code>rend * 1000 / 10.5</code></td><td>Kilograms per hectare from a plot of 10.5 m² (if <i>rend</i> were in kg/plot).</td></tr>
+        <tr><td><code>(rend - mean(rend)) / sd(rend)</code></td><td>Standardized yield.</td></tr>
+        <tr><td><code>germinadas / sembradas * 100</code></td><td>Germination percentage.</td></tr>
+        <tr><td><code>ifelse(trips == 0, "sin", "con")</code></td><td>Presence or absence (stored as a factor).</td></tr>
+        <tr><td><code>paste(hibrido, dosis, sep = "_")</code></td><td>A factor with the 12 combinations of hybrid and rate.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The result is stored according to what the expression gives: a number, as a <b>numeric</b> column; a text, as a <b>factor</b>; a true or false, as a factor with the levels VERDADERO and FALSO (Spanish for TRUE and FALSE). Missing values follow R’s rules: any operation with a missing value gives a missing value, and <code>NA &amp; FALSE</code> is FALSE. One difference from R: summaries (<code>mean</code>, <code>sd</code>…) <b>ignore</b> missing values unless you write <code>na.rm = FALSE</code>, because that is almost always what you want.</p>
+
+  <!-- 2.9 -->
+  <h2 id="s2-9"><span class="num">2.9</span>Transforming a variable</h2>
+  <p>When the residuals of an analysis do not have constant variance or are not normal (chapter 4, the assumptions), a transformation of the response often solves the problem. <span class="ui">↻ Transform…</span> creates a <b>new column</b> with the transformed variable; the original does not change, so the two analyses can be compared.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.2in">Transformation</th><th>When it helps</th></tr></thead>
+    <tbody>
+      <tr><td><b>ln(x)</b></td><td>Positive data whose standard deviation grows in proportion to the mean (weights, biomass, pathogen loads).</td></tr>
+      <tr><td><b>log₁₀(x)</b></td><td>The same, in base 10 (easier to read in orders of magnitude).</td></tr>
+      <tr><td><b>ln(x + c)</b></td><td>When there are zeros. You choose the constant <i>c</i> (1 by default).</td></tr>
+      <tr><td><b>√x</b></td><td>Counts whose variance is proportional to the mean (Poisson distribution).</td></tr>
+      <tr><td><b>√(x + 0.5)</b></td><td>Counts with zeros or with small values (insects, weeds, lesions).</td></tr>
+      <tr><td><b>asin(√p)</b></td><td>Proportions and percentages (germination, incidence, mortality). The window detects whether the data are in percent (0 to 100) and lets you choose the result in degrees or in radians.</td></tr>
+      <tr><td><b>1/x</b></td><td>Times (days to flowering, to germination) whose variance grows strongly with the mean.</td></tr>
+      <tr><td><b>Box-Cox</b></td><td>When you do not know which one to use: it estimates the power that best stabilizes the variance and normalizes the residuals.</td></tr>
+      <tr><td><b>(x − media)/DE</b></td><td>Convert to standard deviation units (to compare variables on different scales).</td></tr>
+    </tbody>
+  </table>
+  <h3>Box-Cox</h3>
+  <p>The Box and Cox (1964) transformation is a family of powers, <span class="formula" style="display:inline">x<sup>λ</sup></span>, that includes the previous ones as special cases: λ = 1 leaves the data as they are, λ = 0.5 is the square root, λ = 0 the logarithm and λ = −1 the reciprocal. The value of λ is estimated by maximum likelihood from the <b>residuals of the experiment’s model</b>, not from the raw data: what must be stabilized is the variation within treatments, not the difference between them.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b2-boxcox.png" alt="The Transform a variable window with tiempo selected and Box-Cox checked: the factors veneno and tratamiento checked, the Estimated button, λ equal to −1, the result λ̂ = −0.8157 with an interval from −1.294 to −0.3412, n = 48 and the model tiempo ~ veneno * tratamiento, the suggestion of the reciprocal, the likelihood curve with its maximum and its interval, the name bc_tiempo and the first values"></div>
+    <figcaption><b>Figure 2.7.</b> Box-Cox for the survival time in the poisons example. The maximum is at <span class="m"><span class="m">λ̂</span></span> = −0.82; the 95% interval includes −1, so the app proposes the reciprocal.</figcaption>
+  </figure>
+  <ol class="pasos">
+    <li>Choose the variable and select <b>Box-Cox</b>.</li>
+    <li>Check the factors (and the block) that will be used in the analysis. The app builds the model: blocks, rows and columns are added; treatments are crossed. In the example, <code>tiempo ~ veneno * tratamiento</code>.</li>
+    <li><span class="ui">Estimate λ</span> computes <span class="m"><span class="m">λ̂</span></span>, its 95% confidence interval (the values of λ with 2[L(<span class="m">λ̂</span>) − L(λ)] ≤ χ²<sub>0.95; 1</sub> = 3.84) and the likelihood curve, with the maximum and the interval marked.</li>
+    <li>The app <b>suggests a simple power</b> (none, square root, logarithm, reciprocal square root, reciprocal or square) if it falls within the interval, because it is easier to interpret than <span class="m"><span class="m">λ̂</span></span> and almost as good. The value to be used goes in the <b>λ</b> box, which you can change by hand.</li>
+    <li><span class="ui">Create the column</span> stores <i>(x<sup>λ</sup> − 1)/λ</i> (or ln <i>x</i> if λ = 0) under the name you choose; the details of the variable record the λ used.</li>
+  </ol>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The means of a transformed variable</div>
+    <p>The means and their differences are on the transformed scale. To present them in the original units, apply the inverse transformation to the means (for example, square the means of √x), bearing in mind that the result is a median, not a mean. An alternative that avoids the problem is generalized linear models (section 4.17), which model counts and proportions on their own scale.</p>
+  </div>
+
+  <!-- 2.10 -->
+  <h2 id="s2-10"><span class="num">2.10</span>Filtering rows</h2>
+  <p><span class="ui">Filter rows…</span> leaves out of the analyses the rows that do not meet a condition, <b>without deleting them</b>. It is useful for analyzing a single site of a multi-site trial, removing a damaged block or excluding plots with a recorded problem. The condition is written in the notation of section 2.8, and the window tells you instantly how many rows pass.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b2-filtrar.png" alt="The Filter rows window with the condition bloque != 4 and dosis > 0, the column and operator buttons, and the result: 27 of 48 rows pass"></div>
+    <figcaption><b>Figure 2.8.</b> A filter that removes block 4 and the control without nitrogen: 27 of the 48 rows pass.</figcaption>
+  </figure>
+  <div class="dos flota">
+    <div>
+      <p>With the filter active, a notice above the grid reminds you of it, with the condition and how many rows pass, and the <span class="ui">Remove the filter</span> button. The rows that do not pass remain in the grid, hatched and with their number struck through; you can still see and correct them.</p>
+      <p>Everything that comes afterward uses only the rows that pass: the summaries in the details, the diagnosis in section 2.13, Explore, Analysis and the report. The .labg project saves the filter condition.</p>
+      <p>Some useful conditions:</p>
+      <ul>
+        <li><code>sitio == "Norte"</code></li>
+        <li><code>bloque != "4"</code></li>
+        <li><code>!is.na(rend)</code></li>
+        <li><code>hibrido %in% c("H-52", "H-66")</code></li>
+        <li><code>dosis &gt; 0 &amp; dosis &lt; 180</code></li>
+      </ul>
+      <p>A row whose result is missing (for example, <code>rend &gt; 5</code> with <i>rend</i> empty) does not pass. A filter that leaves no rows is not applied.</p>
+    </div>
+    <figure>
+      <div class="marco"><img src="../img/en/b2-filtro-activo.png" alt="The Filter active notice with the condition and 27 of 48 rows pass, the Remove the filter button, and the grid with the rows that do not pass hatched and their number struck through"></div>
+      <figcaption><b>Figure 2.9.</b> The active filter: the rows that do not pass are hatched.</figcaption>
+    </figure>
+  </div>
+
+  <!-- 2.11 -->
+  <h2 id="s2-11"><span class="num">2.11</span>Wide and long tables</h2>
+  <p>A variable measured several times on the same unit is often entered in <b>wide format</b>: one row per plant and one column per date (<code>altura_15dds</code>, <code>altura_30dds</code>…). The analyses require the <b>long format</b>: one row per measurement, with one column that gives the date and another with the value. <span class="ui">Wide ⇄ long…</span> makes the change in both directions.</p>
+  <ol class="pasos">
+    <li>In <b>Wide → long</b>, check the <b>columns that identify each unit</b> (those that will be repeated in each new row: here sustrato and planta) and the <b>columns to stack</b> (the measurements).</li>
+    <li>Name the new column that will hold the names of the stacked columns (here <code>dds</code>, days after transplanting) and the values column (<code>altura</code>).</li>
+    <li>If each stacked column has a number in its name, the <b>Keep the number in each name</b> checkbox keeps only that number (altura_15dds → 15), and the new column comes out <b>numeric</b>, ready for a curve over time; without the checkbox, it keeps the full name as a factor.</li>
+    <li><span class="ui">Reshape</span> loads the new table. The identifiers keep their type; a column that was an identifier (one plant per row) becomes a factor, because in the long table each plant is repeated: it is the subject of the repeated measures.</li>
+  </ol>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b2-reformar.png" alt="The Reshape the table window in Wide → long: sustrato and planta checked as identifiers; altura_15dds, altura_30dds, altura_45dds and altura_60dds checked to be stacked; dds as the name of the new column and altura as the values column; the Keep the number in each name checkbox checked"></div>
+    <figcaption><b>Figure 2.10.</b> The tomato heights, from wide to long: each plant will now have four rows, one per date.</figcaption>
+  </figure>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b2-larga.png" alt="The tomato table in long format: 72 rows with sustrato, planta as a factor with 18 levels, dds numeric with 15, and altura numeric with 2 missing values; the Back to the previous table button in the toolbar"></div>
+    <figcaption><b>Figure 2.11.</b> The result: 72 rows (18 plants × 4 dates). The <span class="ui">Back to the previous table</span> button brings back the wide table.</figcaption>
+  </figure>
+  <p>In <b>Long → wide</b>, choose the columns that identify each unit, the column whose values will name the new columns, and the column with the values. If a combination of identifiers is repeated, the app stops and explains why: the wide table would not know which value to use, and another column is needed to tell those rows apart.</p>
+
+  <!-- 2.12 -->
+  <h2 id="s2-12"><span class="num">2.12</span>Undo, redo and go back</h2>
+  <p>Every change to the sheet (a cell, a paste, a type, a new or deleted column, an order of levels) can be undone with <span class="ui">↶ Undo</span> or Ctrl+Z, and redone with <span class="ui">↷ Redo</span> or Ctrl+Y. Hovering the pointer over the buttons shows what is about to be undone (“Undo: Change ‘dosis’ to factor”).</p>
+  <p>Reshaping the table creates a new table, and so does loading the example data with “See it in action” from the glossary (section I.6). To return to the previous table there is the <span class="ui">Back to the previous table</span> button, which appears in the toolbar for as long as you can go back.</p>
+
+  <!-- 2.13 -->
+  <h2 id="s2-13"><span class="num">2.13</span>What SigmaPro sees in your trial</h2>
+  <p>At the end of the block, the <b>What SigmaPro sees in your trial</b> card summarizes the structure that the app recognizes in the table. It is the same reading that the assistant and the model builder (chapter 4) use to propose the analysis, and it is worth checking before you analyze: if something does not match the actual design, now is the time to correct a type or a column.</p>
+  <figure>
+    <div class="marco"><img src="../img/en/b2-estructura.png" alt="The What SigmaPro sees in your trial card for the maize example: dosis numeric, taken as a design factor; balanced 3 × 4 factorial with 4 observations per combination; 4 complete blocks; equally spaced levels of dosis for orthogonal polynomials; no field row and field column variables"></div>
+    <figcaption><b>Figure 2.12.</b> What SigmaPro sees in the maize trial: a balanced 3 × 4 factorial in four randomized complete blocks.</figcaption>
+  </figure>
+  <p>Each line carries a symbol: <span class="ui">✓</span> for what is fine, <span class="ui">!</span> for what deserves attention and <span class="ui">i</span> for a note. What is checked:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2in">Check</th><th>What it may say</th></tr></thead>
+    <tbody>
+      <tr><td>The response</td><td>Which column was taken as the response and whether it has missing values (the analysis will use the complete observations).</td></tr>
+      <tr><td>Columns that are not factors</td><td>An identifier (a different value in each row), subsamples (the number of the fruit or plant within each plot, 1, 2, …, which is not a treatment) or a numeric column with few repeated values taken as a design factor (a rate).</td></tr>
+      <tr><td>Combinations and balance</td><td>Whether it is a factorial and whether each combination has the same number of observations. If not, it warns that type I, II and III sums of squares will give different results (section 4.10); if there are empty combinations, that type III is not defined.</td></tr>
+      <tr><td>Blocks</td><td>Whether each block has all the treatments (randomized complete blocks), how many blocks are incomplete and whether a treatment appears more than once in a block.</td></tr>
+      <tr><td>Latin square</td><td>With row and column variables, whether each treatment appears once in each row and in each column.</td></tr>
+      <tr><td>Rates</td><td>If the levels of a numeric factor are equally spaced, that the trend can be studied with orthogonal polynomials (section 4.11).</td></tr>
+      <tr><td>The field</td><td>Without field row and field column variables, it is not possible to check whether a gradient remained in the field.</td></tr>
+    </tbody>
+  </table>
+  <figure>
+    <div class="marco"><img src="../img/en/b2-estructura-avena.png" alt="The card for the oats trial: nitrogeno numeric, taken as a factor; balanced 3 × 4 factorial with 6 observations per combination; 6 complete blocks; equally spaced levels of nitrogeno; no row and column variables"></div>
+    <figcaption><b>Figure 2.13.</b> Yates’s oats trial: the card reads it as a factorial in complete blocks. That the varieties are on main plots cannot be seen in these data; you have to specify it (or add the plot column, see below).</figcaption>
+  </figure>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>What the data do not say</div>
+    <p>The card reads the table, not the field layout. A <b>split-plot</b> trial has the same columns as a factorial in blocks (figure 2.13): the difference lies in how it was randomized, and that is not recorded in the data. The same happens with repeated measures when there is no column that says which unit was measured. In those cases, you specify the design in the assistant, in the catalog or in the model builder (chapter 4); analyzing a split plot as a factorial in blocks would give wrong F tests for the main-plot factor.</p>
+  </div>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>A column that numbers the plots</div>
+    <p>If the table has a column that numbers the main plots (or the strips), with a name such as <code>parcela</code>, <code>parcela_grande</code>, <code>pg</code>, <code>subparcela</code> or <code>franja</code>, SigmaPro does not take it as a treatment and the <b>assistant</b> uses it to recognize split plots, split-split plots or strip plots on its own: if a factor does not change within each plot, it is the main-plot factor (section 4.2). The “Wheat: irrigation × variety” example comes this way. The card in this section does not say so; the assistant does, when it proposes the analysis.</p>
+  </div>
+
+  <!-- 2.14 -->
+  <h2 id="s2-14"><span class="num">2.14</span>Continue in the LABG suite</h2>
+  <p>Below the trial card, the <span class="ui">Continue in the LABG suite</span> strip may appear, with the sister app that makes use of the structure of the table. Each card says what it saw in the data and why that app is useful.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b2-suite.png" alt="The Continue in the LABG suite strip of the Data block with the maize example: the AgriDesign card, which says that the table has treatments and blocks or replicates and that the app generates the randomization, the field map and the field book of the design, with the Send data to AgriDesign button and the button to hide it"></div>
+    <figcaption><b>Figure 2.14.</b> With the maize example, which has treatments and blocks, Data suggests AgriDesign.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:2.4in">If the table has…</th><th>It suggests</th></tr></thead>
+    <tbody>
+      <tr><td>treatments and blocks or replicates</td><td>AgriDesign: the randomization, the field map and the field book of the design.</td></tr>
+      <tr><td>8 or more numeric variables</td><td>PCAPro, CorrelationPro and ClusteringPro: reduce dimensions, see the relationships among many variables or form groups.</td></tr>
+      <tr><td>latitude and longitude columns</td><td>BioModellingPro: map the sites, extract climate and soil variables and model the distribution of a species.</td></tr>
+      <tr><td>dates</td><td>PhenologyPro: with dates and daily weather, degree days, evapotranspiration, phenological stages and frost risk.</td></tr>
+    </tbody>
+  </table>
+  <p><span class="ui">Send data to …</span> saves the table in a CSV file (with the active filter, if there is one) and opens the app in a new tab; the data do not travel over the internet. The ✕ button hides that suggestion in this place. Chapter 10 explains all this in detail.</p>
+</section>
+
+</body>
+</html>

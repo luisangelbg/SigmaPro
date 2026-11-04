@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Appendices</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  .refs { list-style: none; padding: 0; margin: 0.06in 0 0; }
+  .refs li { margin: 0 0 0.045in 0.24in; text-indent: -0.24in; font-size: 9.1pt; line-height: 1.32; }
+  table.ficheros code { white-space: nowrap; }
+  dl.glosario { display: grid; grid-template-columns: 1.55in 1fr; gap: 0.05in 0.18in; font-size: 9.6pt; margin: 0.08in 0 0.16in; }
+  dl.glosario dt { font-weight: 600; color: var(--negro); }
+  dl.glosario dd { margin: 0; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-ap" data-pestana="Ap" data-orden="11" style="--acento: var(--bx)">
+  <div class="cap-apertura">
+    <div class="cap-num">A</div>
+    <div class="cap-etiqueta">Appendices</div>
+    <h1>Appendices</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">What is worth having at hand and did not fit in any chapter: which files the app reads and writes, what to do when something does not turn out as expected, a glossary of the terms the manual uses, the references for the methods and the data, and the program’s license, with how to cite it.</p>
+    <ul class="cap-contenido">
+      <li><b>A</b>The files the app reads and writes</li>
+      <li><b>B</b>When something goes wrong</li>
+      <li><b>C</b>Glossary</li>
+      <li><b>D</b>References</li>
+      <li><b>E</b>The license and how to cite SigmaPro</li>
+    </ul>
+  </div>
+
+  <!-- A -->
+  <h2 id="ap-a"><span class="num">A</span>The files the app reads and writes</h2>
+  <p class="lead">SigmaPro runs in the browser and sends nothing to any server: files come in from your computer and go out to the downloads folder. Work in progress is saved only in the browser’s own storage (section 7.7).</p>
+  <h3>A.1 · What the app reads</h3>
+  <table class="compacta ficheros">
+    <thead><tr><th style="width:1.35in">Format</th><th style="width:1.35in">Extension</th><th>What it takes</th></tr></thead>
+    <tbody>
+      <tr><td><b>Delimited text</b></td><td><code>.csv</code>, <code>.tsv</code>, <code>.txt</code></td><td>Separated by commas, semicolons or tabs, with a decimal point or decimal comma and the missing-value codes you specify (section 2.3).</td></tr>
+      <tr><td><b>Spreadsheet workbook</b></td><td><code>.xlsx</code>, <code>.xlsm</code>, <code>.ods</code></td><td>One sheet at a time. Workbooks in the old format (<code>.xls</code>) do not open: save them first as <code>.xlsx</code> or <code>.csv</code>.</td></tr>
+      <tr><td><b>Pasted table</b></td><td>—</td><td>What you copied from a spreadsheet or a document (section 2.4).</td></tr>
+      <tr><td><b>Project</b></td><td><code>.labg</code></td><td>The data, the report and the figure settings, with verification of their hashes (section 7.6).</td></tr>
+    </tbody>
+  </table>
+  <h3>A.2 · What the app writes</h3>
+  <table class="compacta ficheros">
+    <thead><tr><th style="width:0.55in">Block</th><th style="width:2.1in">File</th><th>What it contains</th></tr></thead>
+    <tbody>
+      <tr><td><span class="chip k2">2</span> <span class="chip k4">4</span> <span class="chip k9">9</span></td><td><code>.csv</code></td><td><span class="ui">Send data to …</span> in the suite strip: the table in use, with the active filter, as <code>sigmapro-para-pcapro.csv</code> (or the corresponding app), to open it in another suite app (section 10.4).</td></tr>
+      <tr><td><span class="chip k3">3</span> <span class="chip k4">4</span></td><td><code>.csv</code></td><td><span class="ui">Download as CSV</span>: a table from a result, with unrounded values (sections 3.2 and 4.5).</td></tr>
+      <tr><td><span class="chip k4">4</span></td><td><code>.csv</code></td><td>From MANOVA and discriminant analysis, the variables with their group, to open them in PCAPro or ClusteringPro (section 4.21).</td></tr>
+      <tr><td><span class="chip k6">6</span></td><td><code>.svg</code> · <code>.pdf</code> · <code>.png</code> · <code>.tif</code></td><td>A figure, at the chosen width; PNG and TIFF at 600 dpi (section 6.3).</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><code>.docx</code> · <code>.html</code> · PDF</td><td>The complete report; the PDF is saved from the browser’s print dialog (section 7.2).</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><code>.zip</code> (Markdown)</td><td>The report in <code>reporte.md</code>, with its figures and reading panels in PNG (section 7.2).</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><code>.docx</code> · PDF</td><td>The class worksheet, with its answer key if requested (section 7.3).</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><code>.xlsx</code> · <code>.tex</code></td><td>The report tables with all their digits, or in LaTeX with booktabs (section 7.4).</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><code>.zip</code></td><td>All the figures in SVG, PDF and PNG (and TIFF, if requested), with an index (section 7.5).</td></tr>
+      <tr><td><span class="chip k7">7</span></td><td><code>.labg</code></td><td>The project: data, report, figure settings and the R code that reproduces everything (section 7.6).</td></tr>
+    </tbody>
+  </table>
+
+  <!-- B -->
+  <h2 id="ap-b"><span class="num">B</span>When something goes wrong</h2>
+  <p class="lead">The app’s messages say what happened and, almost always, how to fix it. These are the most common cases.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">What happens</th><th>What to do</th></tr></thead>
+    <tbody>
+      <tr><td>The numbers were read as text, or many missing values appeared on import</td><td>Check the <span class="ui">Decimal separator</span> (comma or point) and the column separator. If the column contains stray text (“ND”, “s/d”), add it to <span class="ui">Missing-value codes</span>; the app says how many values it could not convert (section 2.3).</td></tr>
+      <tr><td>A column of block numbers or doses is not taken as a factor</td><td>Change its type to <i>factor</i> in the list of variables or in its ⋮ menu (section 2.7). In the analyses, numeric columns with few values appear as “(numeric)” and can be used as a factor.</td></tr>
+      <tr><td>The measurements from several dates are in separate columns</td><td>Convert the table to long form with <span class="ui">Wide ⇄ long…</span> (section 2.11).</td></tr>
+      <tr><td>“Column ‘…’ does not exist” when writing a formula</td><td>Check how the name is written (capitals, accents); names with spaces go between backticks: <code>`peso seco`</code>.</td></tr>
+      <tr><td>“The R engine could not be loaded” or “The R package ‘…’ could not be installed”</td><td>When the app is opened with a double-click, the R engine is downloaded from the internet the first time (about 25 MB): check the connection and try again. After that it stays stored in the browser (section 4.6).</td></tr>
+      <tr><td>A mixed model says “Singular fit”</td><td>Some variance component ended up at zero: the data are not enough to estimate it. Remove that random effect or simplify the model (sections 4.15 and 4.17).</td></tr>
+      <tr><td>“This analysis does not yet have an approved validation against R”</td><td>The method did not pass its validation and the app does not compute it (section 8.5). It should never appear in a published version.</td></tr>
+      <tr><td>An analysis in the report says it could not be computed</td><td>A column it used was deleted or renamed, or the filter left too few rows. Bring the column back or adjust the filter, and the analysis returns (section 5.6).</td></tr>
+      <tr><td>When opening a project, “Some files changed after being saved”</td><td>Someone edited the .labg file outside the app. Open it anyway only if you know what was changed (section 7.6).</td></tr>
+      <tr><td>The autosave card says the browser does not allow saving</td><td>It is a private window, or storage is blocked or full: save the .labg project so you do not lose your work (section 7.7).</td></tr>
+      <tr><td>“The Figure studio is still loading”</td><td>Wait a moment and press <span class="ui">Open in the studio</span> again.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- C -->
+  <h2 id="ap-c"><span class="num">C</span>Glossary</h2>
+  <dl class="glosario">
+    <dt>Block</dt><dd>A group of experimental units that are similar to one another (a stretch of the field, a greenhouse, a working day) and that receives all the treatments; the variation between blocks is removed from the error.</dd>
+    <dt>BLUE</dt><dd>Best linear unbiased estimator: the adjusted mean of a genotype taken as a fixed effect.</dd>
+    <dt>BLUP</dt><dd>Best linear unbiased predictor: the predicted value of a random effect (a genotype, a block), shrunk toward the mean in proportion to how little is known about it.</dd>
+    <dt>Censoring</dt><dd>In survival analysis, a unit that reached the end of the trial without the event: its time is known to be longer than the one observed.</dd>
+    <dt>Coefficient of variation (CV)</dt><dd>The error standard deviation as a percentage of the mean; it measures the precision of a trial. In the Explore descriptives, it is the standard deviation of the variable as a percentage of its mean.</dd>
+    <dt>Comparison letters</dt><dd>In mean comparisons, two means that share a letter do not differ at the chosen α level; the letter a goes with the highest mean.</dd>
+    <dt>Confidence interval (CI)</dt><dd>The range of values for a parameter that are compatible with the data, at the chosen level (for example, 95%).</dd>
+    <dt>Covariate</dt><dd>A numeric variable that is not a treatment but explains part of the response (the number of plants, the altitude).</dd>
+    <dt>Degrees of freedom (df)</dt><dd>The number of independent pieces of information with which something is estimated; Satterthwaite and Kenward-Roger approximate them in mixed models.</dd>
+    <dt>ED50</dt><dd>In a dose-response curve, the dose that gives half of the effect between the limits of the curve; in the log-logistic model it is the parameter e. ED10 and ED90 give 10% and 90%.</dd>
+    <dt>Error stratum</dt><dd>Each unit size in a design with plots of several sizes (main plots, subplots), with its own error.</dd>
+    <dt>Factor and level</dt><dd>A classification variable (the hybrid, the dose as a treatment) and each of its values.</dd>
+    <dt>Fixed and random effect</dt><dd>Fixed: the levels were chosen on purpose and you want to draw conclusions about them. Random: the levels are a sample of many possible ones (blocks, locations, years).</dd>
+    <dt>Heritability</dt><dd>The proportion of the variation (among genotype means or among plots) that is genetic.</dd>
+    <dt>Interaction</dt><dd>When the effect of one factor depends on the level of another (one hybrid responds more to nitrogen than another). If it is significant, it is advisable to compare one factor within each level of the other.</dd>
+    <dt>Lack of fit</dt><dd>The part of the variation of the means of the replicated points that the model does not explain; if it is significant, the model does not have the right shape.</dd>
+    <dt>Marginal mean</dt><dd>The mean the model predicts for a level, with equal weights over the other factors; with covariates or unbalanced data, it is the one that gets published (adjusted mean).</dd>
+    <dt>Mega-environment</dt><dd>A group of environments in which the same genotype wins, repeatedly across years. With data from a single season, the sectors of the GGE biplot are possible mega-environments.</dd>
+  </dl>
+  <dl class="glosario">
+    <dt>Odds ratio and hazard ratio</dt><dd>How many times more (or less) favorable an outcome is in one group than in another (odds), or how many times greater the instantaneous risk of an event is (hazards, in the Cox model).</dd>
+    <dt>Overdispersion</dt><dd>More variation than the assumed distribution allows (Poisson, binomial).</dd>
+    <dt>Power</dt><dd>The probability of detecting a difference that exists; it is set before the trial (usually 80%).</dd>
+    <dt><i>p</i>-value</dt><dd>The probability of obtaining a result as extreme as the one observed, or more so, if there were no effect.</dd>
+    <dt>Relative risk</dt><dd>The ratio of the proportions of an outcome in two groups (for example, the germination of the treated seed divided by that of the untreated seed).</dd>
+    <dt>REML</dt><dd>Restricted maximum likelihood: it estimates the variance components after discounting the degrees of freedom spent on the fixed effects, and so corrects the downward bias of maximum likelihood.</dd>
+    <dt>Residual</dt><dd>What is left of each observation after subtracting what the model predicts.</dd>
+    <dt>Standard error (SE)</dt><dd>The standard deviation of an estimator: how much it would vary if the trial were repeated.</dd>
+    <dt>Traffic light</dt><dd>The box that says whether the assumptions of an analysis hold: green, fine; amber, check; red, problem; gray, not applicable or not enough data to check it. Not every analysis has one (section 4.5).</dd>
+    <dt>Type I, II and III sums of squares</dt><dd>Three ways of testing each term with unbalanced data: in sequence, adjusted for the terms that do not contain it, or adjusted for all the others (section 4.10).</dd>
+    <dt>Variance component</dt><dd>The part of the total variation contributed by a random factor.</dd>
+  </dl>
+
+  <!-- D -->
+  <h2 id="ap-d"><span class="num">D</span>References</h2>
+  <p class="lead">The works for the methods the manual explains, for the R packages SigmaPro was validated against and for the published data of the examples. The exported report has, in its own list, the works cited by its analyses.</p>
+  <h3>Experimental designs and mean comparisons</h3>
+  <ol class="refs">
+    <li>Benjamini, Y. and Hochberg, Y. (1995). Controlling the false discovery rate: a practical and powerful approach to multiple testing. Journal of the Royal Statistical Society B, 57(1), 289–300.</li>
+    <li>Cochran, W. G. and Cox, G. M. (1957). Experimental designs (2nd ed.). Wiley.</li>
+    <li>Duncan, D. B. (1955). Multiple range and multiple F tests. Biometrics, 11(1), 1–42.</li>
+    <li>Dunnett, C. W. (1955). A multiple comparison procedure for comparing several treatments with a control. Journal of the American Statistical Association, 50(272), 1096–1121.</li>
+    <li>Gomez, K. A. and Gomez, A. A. (1984). Statistical procedures for agricultural research (2nd ed.). John Wiley &amp; Sons.</li>
+    <li>Holm, S. (1979). A simple sequentially rejective multiple test procedure. Scandinavian Journal of Statistics, 6(2), 65–70.</li>
+    <li>Kenward, M. G. and Roger, J. H. (1997). Small sample inference for fixed effects from restricted maximum likelihood. Biometrics, 53(3), 983–997.</li>
+    <li>Patterson, H. D. and Williams, E. R. (1976). A new class of resolvable incomplete block designs. Biometrika, 63(1), 83–92.</li>
+    <li>Satterthwaite, F. E. (1946). An approximate distribution of estimates of variance components. Biometrics Bulletin, 2(6), 110–114.</li>
+    <li>Scheffé, H. (1953). A method for judging all contrasts in the analysis of variance. Biometrika, 40(1/2), 87–110.</li>
+    <li>Searle, S. R., Speed, F. M. and Milliken, G. A. (1980). Population marginal means in the linear model: an alternative to least squares means. The American Statistician, 34(4), 216–221.</li>
+    <li>Tukey, J. W. (1949). Comparing individual means in the analysis of variance. Biometrics, 5(2), 99–114.</li>
+    <li>Yates, F. (1936). A new method of arranging variety trials involving a large number of varieties. Journal of Agricultural Science, 26(3), 424–455.</li>
+  </ol>
+  <h3>Assumptions, descriptives and tests</h3>
+  <ol class="refs">
+    <li>Agresti, A. and Coull, B. A. (1998). Approximate is better than "exact" for interval estimation of binomial proportions. The American Statistician, 52(2), 119–126.</li>
+    <li>Brown, L. D., Cai, T. T. and DasGupta, A. (2001). Interval estimation for a binomial proportion. Statistical Science, 16(2), 101–133.</li>
+    <li>Brown, M. B. and Forsythe, A. B. (1974). Robust tests for the equality of variances. Journal of the American Statistical Association, 69(346), 364–367.</li>
+    <li>Dunn, O. J. (1964). Multiple comparisons using rank sums. Technometrics, 6(3), 241–252.</li>
+    <li>Friedman, M. (1937). The use of ranks to avoid the assumption of normality implicit in the analysis of variance. Journal of the American Statistical Association, 32(200), 675–701.</li>
+    <li>Hyndman, R. J. and Fan, Y. (1996). Sample quantiles in statistical packages. The American Statistician, 50(4), 361–365.</li>
+    <li>Joanes, D. N. and Gill, C. A. (1998). Comparing measures of sample skewness and kurtosis. Journal of the Royal Statistical Society D, 47(1), 183–189.</li>
+    <li>Kruskal, W. H. and Wallis, W. A. (1952). Use of ranks in one-criterion variance analysis. Journal of the American Statistical Association, 47(260), 583–621.</li>
+    <li>Levene, H. (1960). Robust tests for equality of variances. In I. Olkin (Ed.), Contributions to probability and statistics (pp. 278–292). Stanford University Press.</li>
+    <li>Shapiro, S. S. and Wilk, M. B. (1965). An analysis of variance test for normality (complete samples). Biometrika, 52(3/4), 591–611.</li>
+    <li>Steiger, J. H. and Fouladi, R. T. (1997). Noncentrality interval estimation and the evaluation of statistical models. In L. L. Harlow, S. A. Mulaik and J. H. Steiger (Eds.), What if there were no significance tests? (pp. 221–257). Lawrence Erlbaum.</li>
+    <li>Welch, B. L. (1947). The generalization of "Student's" problem when several different population variances are involved. Biometrika, 34(1/2), 28–35.</li>
+    <li>Wilcoxon, F. (1945). Individual comparisons by ranking methods. Biometrics Bulletin, 1(6), 80–83.</li>
+    <li>Wilson, E. B. (1927). Probable inference, the law of succession, and statistical inference. Journal of the American Statistical Association, 22(158), 209–212.</li>
+  </ol>
+  <h3>Regression, correlation and contingency</h3>
+  <ol class="refs">
+    <li>Agresti, A. (2002). Categorical data analysis (2nd ed.). Wiley.</li>
+    <li>Akaike, H. (1974). A new look at the statistical model identification. IEEE Transactions on Automatic Control, 19(6), 716–723.</li>
+    <li>Belsley, D. A., Kuh, E. and Welsch, R. E. (1980). Regression diagnostics: identifying influential data and sources of collinearity. Wiley.</li>
+    <li>Bowker, A. H. (1948). A test for symmetry in contingency tables. Journal of the American Statistical Association, 43(244), 572–574.</li>
+    <li>Breslow, N. E. and Day, N. E. (1980). Statistical methods in cancer research. Volume I: The analysis of case-control studies. International Agency for Research on Cancer.</li>
+    <li>Cohen, J. (1960). A coefficient of agreement for nominal scales. Educational and Psychological Measurement, 20(1), 37–46.</li>
+    <li>Cohen, J. (1968). Weighted kappa: Nominal scale agreement provision for scaled disagreement or partial credit. Psychological Bulletin, 70(4), 213–220.</li>
+    <li>Cook, R. D. (1977). Detection of influential observation in linear regression. Technometrics, 19(1), 15–18.</li>
+    <li>Durbin, J. and Watson, G. S. (1950). Testing for serial correlation in least squares regression. I. Biometrika, 37(3/4), 409–428.</li>
+    <li>Fleiss, J. L., Cohen, J. and Everitt, B. S. (1969). Large sample standard errors of kappa and weighted kappa. Psychological Bulletin, 72(5), 323–327.</li>
+    <li>Kendall, M. G. (1938). A new measure of rank correlation. Biometrika, 30(1/2), 81–93.</li>
+    <li>Koenker, R. (1981). A note on studentizing a test for heteroscedasticity. Journal of Econometrics, 17(1), 107–112.</li>
+    <li>Landis, J. R. and Koch, G. G. (1977). The measurement of observer agreement for categorical data. Biometrics, 33(1), 159–174.</li>
+    <li>Mallows, C. L. (1973). Some comments on CP. Technometrics, 15(4), 661–675.</li>
+    <li>Mantel, N. and Haenszel, W. (1959). Statistical aspects of the analysis of data from retrospective studies of disease. Journal of the National Cancer Institute, 22(4), 719–748.</li>
+    <li>McNemar, Q. (1947). Note on the sampling error of the difference between correlated proportions or percentages. Psychometrika, 12(2), 153–157.</li>
+    <li>Ramsey, J. B. (1969). Tests for specification errors in classical linear least-squares regression analysis. Journal of the Royal Statistical Society B, 31(2), 350–371.</li>
+    <li>Schwarz, G. (1978). Estimating the dimension of a model. The Annals of Statistics, 6(2), 461–464.</li>
+    <li>Spearman, C. (1904). The proof and measurement of association between two things. The American Journal of Psychology, 15(1), 72–101.</li>
+    <li>Tarone, R. E. (1985). On heterogeneity tests based on efficient scores. Biometrika, 72(1), 91–95.</li>
+  </ol>
+  <h3>Guides for the gauges (tables 4.1 and 4.2)</h3>
+  <ol class="refs">
+    <li>Bollen, K. A. and Jackman, R. W. (1990). Regression diagnostics: an expository treatment of outliers and influential cases. In J. Fox and J. S. Long (Eds.), Modern methods of data analysis (pp. 257–291). Sage.</li>
+    <li>Bulmer, M. G. (1979). Principles of statistics. Dover.</li>
+    <li>Burnham, K. P. and Anderson, D. R. (2002). Model selection and multimodel inference: a practical information-theoretic approach (2nd ed.). Springer.</li>
+    <li>Chen, H., Cohen, P. and Chen, S. (2010). How big is a big odds ratio? Interpreting the magnitudes of odds ratios in epidemiological studies. Communications in Statistics—Simulation and Computation, 39(4), 860–864.</li>
+    <li>Cook, R. D. and Weisberg, S. (1982). Residuals and influence in regression. Chapman and Hall.</li>
+    <li>Fritsche-Neto, R., Vieira, R. A., Scapim, C. A., Miranda, G. V. and Rezende, L. M. (2012). Updating the ranking of the coefficients of variation from maize experiments. Acta Scientiarum. Agronomy, 34(1), 99–101.</li>
+    <li>Garcia, C. H. (1989). Tabelas para classificação do coeficiente de variação (Circular Técnica 171). Instituto de Pesquisas e Estudos Florestais.</li>
+    <li>James, G., Witten, D., Hastie, T. and Tibshirani, R. (2013). An introduction to statistical learning. Springer.</li>
+    <li>Johnson, H. W., Robinson, H. F. and Comstock, R. E. (1955). Estimates of genetic and environmental variability in soybeans. Agronomy Journal, 47(7), 314–318.</li>
+    <li>Montgomery, D. C., Peck, E. A. and Vining, G. G. (2012). Introduction to linear regression analysis (5th ed.). Wiley.</li>
+    <li>Pimentel-Gomes, F. (2009). Curso de estatística experimental (15th ed.). FEALQ.</li>
+    <li>Tomczak, M. and Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 1(21), 19–25.</li>
+    <li>Wasserstein, R. L. and Lazar, N. A. (2016). The ASA statement on p-values: context, process, and purpose. The American Statistician, 70(2), 129–133.</li>
+  </ol>
+  <h3>Mixed models, quantitative genetics and generalized models</h3>
+  <ol class="refs">
+    <li>Bates, D., Mächler, M., Bolker, B. and Walker, S. (2015). Fitting linear mixed-effects models using lme4. Journal of Statistical Software, 67(1), 1–48.</li>
+    <li>Cruz, C. D., Regazzi, A. J. and Carneiro, P. C. S. (2012). Modelos biométricos aplicados ao melhoramento genético (4th ed., Vol. 1). Editora UFV.</li>
+    <li>Cullis, B. R., Smith, A. B. and Coombes, N. E. (2006). On the design of early generation variety trials with correlated data. Journal of Agricultural, Biological, and Environmental Statistics, 11(4), 381–393.</li>
+    <li>Falconer, D. S. and Mackay, T. F. C. (1996). Introduction to quantitative genetics (4th ed.). Longman.</li>
+    <li>Firth, D. (1993). Bias reduction of maximum likelihood estimates. Biometrika, 80(1), 27–38.</li>
+    <li>Harrison, X. A. (2014). Using observation-level random effects to model overdispersion in count data in ecology and evolution. PeerJ, 2, e616.</li>
+    <li>Holland, J. B., Nyquist, W. E. and Cervantes-Martínez, C. T. (2003). Estimating and interpreting heritability for plant breeding: an update. Plant Breeding Reviews, 22, 9–112.</li>
+    <li>Kuznetsova, A., Brockhoff, P. B. and Christensen, R. H. B. (2017). lmerTest package: tests in linear mixed effects models. Journal of Statistical Software, 82(13), 1–26.</li>
+    <li>Lenth, R. V. (2016). Least-squares means: the R package lsmeans. Journal of Statistical Software, 69(1), 1–33.</li>
+    <li>Nelder, J. A. and Wedderburn, R. W. M. (1972). Generalized linear models. Journal of the Royal Statistical Society A, 135(3), 370–384.</li>
+    <li>Piepho, H.-P. and Möhring, J. (2007). Computing heritability and selection response from unbalanced plant breeding trials. Genetics, 177(3), 1881–1888.</li>
+    <li>Pinheiro, J. C. and Bates, D. M. (2000). Mixed-effects models in S and S-PLUS. Springer.</li>
+    <li>Schmidt, P., Hartung, J., Rath, J. and Piepho, H.-P. (2019). Estimating broad-sense heritability with unbalanced data from agricultural cultivar trials. Crop Science, 59(2), 525–536.</li>
+    <li>Wolfinger, R. D. (1993). Covariance structure selection in general mixed models. Communications in Statistics – Simulation and Computation, 22(4), 1079–1106.</li>
+  </ol>
+  <h3>Nonlinear models, response surfaces and multi-environment trials</h3>
+  <ol class="refs">
+    <li>Annicchiarico, P. (1992). Cultivar adaptation and recommendation from alfalfa trials in Northern Italy. Journal of Genetics and Breeding, 46, 269–278.</li>
+    <li>Box, G. E. P. and Behnken, D. W. (1960). Some new three level designs for the study of quantitative variables. Technometrics, 2(4), 455–475.</li>
+    <li>Box, G. E. P. and Wilson, K. B. (1951). On the experimental attainment of optimum conditions. Journal of the Royal Statistical Society B, 13(1), 1–45.</li>
+    <li>Brain, P. and Cousens, R. (1989). An equation to describe dose responses where there is stimulation of growth at low doses. Weed Research, 29(2), 93–96.</li>
+    <li>Cerrato, M. E. and Blackmer, A. M. (1990). Comparison of models for describing corn yield response to nitrogen fertilizer. Agronomy Journal, 82(1), 138–143.</li>
+    <li>Cornelius, P. L., Seyedsadr, M. and Crossa, J. (1992). Using the shifted multiplicative model to search for “separability” in crop cultivar trials. Theoretical and Applied Genetics, 84(1–2), 161–172.</li>
+    <li>Cornell, J. A. (2002). Experiments with mixtures: designs, models, and the analysis of mixture data (3rd ed.). Wiley.</li>
+    <li>Derringer, G. and Suich, R. (1980). Simultaneous optimization of several response variables. Journal of Quality Technology, 12(4), 214–219.</li>
+    <li>Eberhart, S. A. and Russell, W. A. (1966). Stability parameters for comparing varieties. Crop Science, 6(1), 36–40.</li>
+    <li>Finlay, K. W. and Wilkinson, G. N. (1963). The analysis of adaptation in a plant-breeding programme. Australian Journal of Agricultural Research, 14(6), 742–754.</li>
+    <li>Gauch, H. G. (1988). Model selection and validation for yield trials with interaction. Biometrics, 44(3), 705–715.</li>
+    <li>Gauch, H. G. and Zobel, R. W. (1990). Imputing missing yield trial data. Theoretical and Applied Genetics, 79(6), 753–761.</li>
+    <li>Gollob, H. F. (1968). A statistical model which combines features of factor analytic and analysis of variance techniques. Psychometrika, 33(1), 73–115.</li>
+    <li>Huehn, M. (1990). Nonparametric measures of phenotypic stability. Part 1: Theory. Euphytica, 47(3), 189–194.</li>
+    <li>Kang, M. S. (1993). Simultaneous selection for yield and stability in crop performance trials: consequences for growers. Agronomy Journal, 85(3), 754–757.</li>
+    <li>Lin, C. S. and Binns, M. R. (1988). A superiority measure of cultivar performance for cultivar × location data. Canadian Journal of Plant Science, 68(1), 193–198.</li>
+    <li>Myers, R. H., Montgomery, D. C. and Anderson-Cook, C. M. (2016). Response surface methodology: process and product optimization using designed experiments (4th ed.). Wiley.</li>
+    <li>Nassar, R. and Huehn, M. (1987). Studies on estimation of phenotypic stability: tests of significance for nonparametric measures of phenotypic stability. Biometrics, 43(1), 45–53.</li>
+    <li>Olivoto, T., Lúcio, A. D. C., da Silva, J. A. G., Marchioro, V. S., de Souza, V. Q. and Jost, E. (2019). Mean performance and stability in multi-environment trials I: combining features of AMMI and BLUP techniques. Agronomy Journal, 111(6), 2949–2960.</li>
+    <li>Piepho, H.-P., Möhring, J., Schulz-Streeck, T. and Ogutu, J. O. (2012). A stage-wise approach for the analysis of multi-environment trials. Biometrical Journal, 54(6), 844–860.</li>
+    <li>Purchase, J. L., Hatting, H. and van Deventer, C. S. (2000). Genotype × environment interaction of winter wheat (Triticum aestivum L.) in South Africa: II. Stability analysis of yield performance. South African Journal of Plant and Soil, 17(3), 101–107.</li>
+    <li>Scheffé, H. (1958). Experiments with mixtures. Journal of the Royal Statistical Society B, 20(2), 344–360.</li>
+    <li>Seefeldt, S. S., Jensen, J. E. and Fuerst, E. P. (1995). Log-logistic analysis of herbicide dose-response relationships. Weed Technology, 9(2), 218–227.</li>
+    <li>Shukla, G. K. (1972). Some statistical aspects of partitioning genotype-environmental components of variability. Heredity, 29(2), 237–245.</li>
+    <li>Smith, A., Cullis, B. and Gilmour, A. (2001). The analysis of crop variety evaluation data in Australia. Australian and New Zealand Journal of Statistics, 43(2), 129–145.</li>
+    <li>Wricke, G. (1962). Über eine Methode zur Erfassung der ökologischen Streubreite in Feldversuchen. Zeitschrift für Pflanzenzüchtung, 47, 92–96.</li>
+    <li>Yan, W. and Kang, M. S. (2003). GGE biplot analysis: a graphical tool for breeders, geneticists, and agronomists. CRC Press.</li>
+    <li>Yan, W. and Tinker, N. A. (2006). Biplot analysis of multi-environment trial data: principles and applications. Canadian Journal of Plant Science, 86(3), 623–645.</li>
+    <li>Yan, W., Hunt, L. A., Sheng, Q. and Szlavnics, Z. (2000). Cultivar evaluation and mega-environment investigation based on the GGE biplot. Crop Science, 40(3), 597–605.</li>
+  </ol>
+  <h3>Multivariate analysis, power, sampling, survival and time series</h3>
+  <ol class="refs">
+    <li>Box, G. E. P. (1949). A general distribution theory for a class of likelihood criteria. Biometrika, 36(3–4), 317–346.</li>
+    <li>Box, G. E. P. and Jenkins, G. M. (1976). Time series analysis: forecasting and control (Rev. ed.). Holden-Day.</li>
+    <li>Champely, S. (2020). pwr: basic functions for power analysis (Version 1.3-0) [R package].</li>
+    <li>Cochran, W. G. (1977). Sampling techniques (3rd ed.). Wiley.</li>
+    <li>Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum.</li>
+    <li>Cox, D. R. (1972). Regression models and life-tables. Journal of the Royal Statistical Society B, 34(2), 187–220.</li>
+    <li>Fisher, R. A. (1936). The use of multiple measurements in taxonomic problems. Annals of Eugenics, 7(2), 179–188.</li>
+    <li>Grambsch, P. M. and Therneau, T. M. (1994). Proportional hazards tests and diagnostics based on weighted residuals. Biometrika, 81(3), 515–526.</li>
+    <li>Harrell, F. E., Califf, R. M., Pryor, D. B., Lee, K. L. and Rosati, R. A. (1982). Evaluating the yield of medical tests. JAMA, 247(18), 2543–2546.</li>
+    <li>Kaplan, E. L. and Meier, P. (1958). Nonparametric estimation from incomplete observations. Journal of the American Statistical Association, 53(282), 457–481.</li>
+    <li>Ljung, G. M. and Box, G. E. P. (1978). On a measure of lack of fit in time series models. Biometrika, 65(2), 297–303.</li>
+    <li>Mann, H. B. (1945). Nonparametric tests against trend. Econometrica, 13(3), 245–259.</li>
+    <li>Pillai, K. C. S. (1955). Some new test criteria in multivariate analysis. The Annals of Mathematical Statistics, 26(1), 117–121.</li>
+    <li>Pohlert, T. (2023). trend: non-parametric trend tests and change-point detection (Version 1.1.8) [R package].</li>
+    <li>Sen, P. K. (1968). Estimates of the regression coefficient based on Kendall's tau. Journal of the American Statistical Association, 63(324), 1379–1389.</li>
+    <li>Therneau, T. M. (2024). A package for survival analysis in R (Version 3.7-0) [R package].</li>
+  </ol>
+  <h3>Software and data of the examples</h3>
+  <ol class="refs">
+    <li>Box, G. E. P. and Cox, D. R. (1964). An analysis of transformations. Journal of the Royal Statistical Society B, 26(2), 211–252.</li>
+    <li>Mendel, G. (1866). Versuche über Pflanzen-Hybriden. Verhandlungen des naturforschenden Vereines in Brünn, 4, 3–47.</li>
+    <li>Olivoto, T. and Lúcio, A. D. (2020). metan: an R package for multi-environment trial analysis. Methods in Ecology and Evolution, 11(6), 783–789.</li>
+    <li>R Core Team (2024). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/</li>
+    <li>Yates, F. (1935). Complex experiments. Supplement to the Journal of the Royal Statistical Society, 2(2), 181–247.</li>
+  </ol>
+
+  <!-- E -->
+  <h2 id="ap-e"><span class="num">E</span>The license and how to cite SigmaPro</h2>
+  <h3>E.1 · What is inside the app</h3>
+  <p>SigmaPro is written in HTML, CSS and JavaScript. Its computing core is its own: reading files, the algebra of the models, the distributions, the methods, the plots, the exports (.docx, .xlsx, PDF, ZIP) and the validation. So that its numbers match those of R, some algorithms were translated from R’s public source code, which is free software; each one is declared, with its publication and its license, in the <code>LICENSES-TERCEROS.md</code> file in the program folder. The icons of the suite’s shared modules are from Lucide (ISC license).</p>
+  <p>The R engine methods use webR (R compiled for the browser) and R packages, which are downloaded the first time or served from the <code>motor-r/</code> folder, each with its own free license; they are not bundled inside the program.</p>
+  <h3>E.2 · License</h3>
+  <p>The program is distributed under the <b>GNU General Public License, version 3 or later</b> (GPL-3.0-or-later): it can be freely used, copied, studied and modified, on the condition that modified versions are distributed under the same license and keep the attribution. The full text is in the <code>LICENSE</code> file. This manual is © 2026 Luis Ángel Barrera-Guzmán, all rights reserved.</p>
+  <h3>E.3 · How to cite it</h3>
+  <div class="cita">Barrera-Guzmán, L. Á. (2026). <i>SigmaPro: Statistics for agronomic and biological research</i> (Version 1.0.0) [Computer software]. LABG Suite.</div>
+  <div class="cita">Barrera-Guzmán, L. Á. (2026). <i>SigmaPro. User’s manual</i> (1st ed.). Distributed with SigmaPro, version 1.0.</div>
+</section>
+
+</body>
+</html>

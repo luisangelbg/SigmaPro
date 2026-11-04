@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 6</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b6" data-pestana="B6" data-orden="6" style="--acento: var(--b6)">
+  <div class="cap-apertura">
+    <div class="cap-num">6</div>
+    <div class="cap-etiqueta">Block 6 · Figures</div>
+    <h1>Figures: ready to publish</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">The charts of the analyses in the report come together in this block, numbered and with their captions, in the order of the report. Here you choose the error bars, the chart theme and the width, download them as SVG, vector PDF, PNG or TIFF at 600 dpi, touch them up with the ✎ editor and, for the exact size a journal asks for, open them in the Figure Studio.</p>
+    <ul class="cap-contenido">
+      <li><b>6.1</b>The figures in the report</li>
+      <li><b>6.2</b>Error bars, theme and width</li>
+      <li><b>6.3</b>The downloads</li>
+      <li><b>6.4</b>The ✎ editor</li>
+      <li><b>6.5</b>The Figure Studio</li>
+    </ul>
+  </div>
+
+  <!-- 6.1 -->
+  <h2 id="s6-1"><span class="num">6.1</span>The figures in the report</h2>
+  <p class="lead">The block shows all the figures of the analyses in the report that have charts (designs, comparisons, regression, correlation, contingency and almost all the others), in a gallery of cards. If the report has none, the block says so and offers to take you to Results.</p>
+  <figure>
+    <div class="marco"><img src="../img/en/b6-galeria.png" alt="The Figures block with the maize report: at the top, the error bar selector, ± 1 SE or 95% CI, the chart theme and the width in the document, 16 cm; the summary 3 figures from 3 analyses; and the first two cards: the hibrido × dosis interaction from analysis 1 and the hybrid means with their letters from analysis 2, each with its numbered caption and the Open in the studio, SVG, PDF, PNG 600 dpi and TIFF 600 dpi buttons"></div>
+    <figcaption><b>Figure 6.1.</b> The figures of the maize report. Each card says which analysis it comes from and has its numbered caption and its downloads.</figcaption>
+  </figure>
+  <p>Each card says which analysis it comes from (“From analysis 2: Mean comparison: Tukey · rend”) and shows the figure with its <b>caption</b>: the number (the same one it has in the report and in the exported document), the title and a description of what it shows, which is also the figure’s alternative text for screen readers. In mean plots, the caption states the error bars (“with ± one standard error”), as journals require.</p>
+
+  <!-- 6.2 -->
+  <h2 id="s6-2"><span class="num">6.2</span>Error bars, theme and width</h2>
+  <p class="lead">Above the gallery, three settings apply to every figure in the report: on screen, in the exported document and in the downloads. The app remembers them in the browser.</p>
+  <ul>
+    <li><b>Error bars</b>: <span class="ui">± 1 SE</span> (the standard error of each mean, the default) or <span class="ui">95% CI</span> (the confidence interval). When you change them, the mean plots are redrawn and their captions change.</li>
+    <li><span class="ui">Chart theme</span>: the look of the figures, among the six in table 6.1. The theme applies to every chart in the app: the same selector appears above the charts of each analysis in Analysis and in Results (also in <span class="ui">Check the model assumptions</span>), and changing any one of them changes them all.</li>
+    <li><span class="ui">Width in the document and in the downloads</span>: 8.5 cm (one column), 12 cm, 16 cm (page width, the default) or 17.5 cm (two columns). The height follows from each figure’s proportions.</li>
+  </ul>
+  <table class="compacta">
+    <caption><b>Table 6.1.</b> The chart themes.</caption>
+    <thead><tr><th style="width:1.9in">Theme</th><th>How the figures look</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">SigmaPro (gold and black)</span></td><td>The default: text and lines in black (in white with the app in dark mode), gold accents and a faint grid.</td></tr>
+      <tr><td><span class="ui">Minimal (grays, no grid)</span></td><td>Grays only, no grid and thin axes.</td></tr>
+      <tr><td><span class="ui">Grid (gray panel)</span></td><td>The plot area in gray with the grid in white and no axis lines; accents in blue.</td></tr>
+      <tr><td><span class="ui">Journal (black and white, serif)</span></td><td>Black and white, a serif typeface (Times New Roman), no grid and black axes: the style many print journals ask for.</td></tr>
+      <tr><td><span class="ui">Color-blind safe (Okabe-Ito palette)</span></td><td>The series in the Okabe and Ito palette (blue, orange, green, pink and sky blue), whose colors can be told apart with any type of color blindness.</td></tr>
+      <tr><td><span class="ui">Presentation (large text)</span></td><td>Larger text and thicker lines, for projecting in a room.</td></tr>
+    </tbody>
+  </table>
+  <p>The theme changes the colors, the text and the lines, not the numbers: each figure shows the same data with any of the six. Whatever you touched up with the ✎ editor (section 6.4) is kept when you change the theme.</p>
+
+  <!-- 6.3 -->
+  <h2 id="s6-3"><span class="num">6.3</span>The downloads</h2>
+  <p class="lead">Each card downloads its figure at the chosen width in four formats. All of them come out with the chosen chart theme, in its light version even if the app is in dark mode, and with whatever you changed with the ✎ editor or the studio.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.2in">Format</th><th>What it is and what it is for</th></tr></thead>
+    <tbody>
+      <tr><td><b>SVG</b></td><td>Vector, with the size in millimeters. It opens and can be edited in any vector drawing program, and it scales up without losing sharpness.</td></tr>
+      <tr><td><b>PDF</b></td><td>Vector, with lines and text in one of the standard PDF fonts (Helvetica; Times with the Journal theme): it is small, it scales up without losing sharpness and its text is searchable. It is the format many journals prefer.</td></tr>
+      <tr><td><b>PNG 600 dpi</b></td><td>An image at 600 dots per inch, with the resolution written inside the file: it goes into a word processor at its correct size.</td></tr>
+      <tr><td><b>TIFF 600 dpi</b></td><td>The same image in TIFF, the format some journals and publishers require.</td></tr>
+    </tbody>
+  </table>
+  <p>To download all the figures at once, in a ZIP with the four formats, use the Export block (chapter 7).</p>
+
+  <!-- 6.4 -->
+  <h2 id="s6-4"><span class="num">6.4</span>The ✎ editor</h2>
+  <p class="lead">Every SigmaPro figure, here, in Analysis and in Results, has a <span class="ui">✎</span> button in its corner that opens a floating panel to touch up <b>that</b> figure, as in a charting program.</p>
+  <figure>
+    <div class="marco"><img src="../img/en/b6-editor.png" alt="The ✎ editor open on the figure of the hybrid means: the Edit this figure panel with its six tabs, General, Axes &amp; grid, Series, Legend, Texts and Annotations; in General, the title, the subtitle and the footnote inside the figure, the font family, the text size, the color, the line weight, the point size, the background and the frame, and the Undo everything on this figure and Copy the style to every figure buttons; on the right, the figure marked with a dashed border"></div>
+    <figcaption><b>Figure 6.2.</b> The ✎ editor with the figure of the hybrid means: the figure being edited is marked with a dashed border.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.3in">Tab</th><th>What you change</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">General</span></td><td>A title, a subtitle and a footnote inside the figure; the font family, the size and the color of all the text; the line weight and the point size; the background and a frame.</td></tr>
+      <tr><td><span class="ui">Axes &amp; grid</span></td><td>The axis titles, the tick labels, the color and weight of the axes, the grid and the box around the plot area.</td></tr>
+      <tr><td><span class="ui">Series</span></td><td>Each color the figure uses, with the name of its legend entry: color, weight, stroke, opacity, or hiding it.</td></tr>
+      <tr><td><span class="ui">Legend</span></td><td>Show or hide it, eight positions, as it is, in a row or in a column, its size and its box; you can also drag it on the figure.</td></tr>
+      <tr><td><span class="ui">Texts</span></td><td>Each text in the figure, one by one: its wording, size, bold, italics, color, or hiding it.</td></tr>
+      <tr><td><span class="ui">Annotations</span></td><td>Notes, arrows, reference lines at a value of any of the axes, shaded bands and the panel letter (A, B…); notes and arrows can be dragged.</td></tr>
+    </tbody>
+  </table>
+  <p>The changes are written into the figure itself, so what you see is what gets exported. The browser remembers them for each figure and reapplies them every time the figure is redrawn (when the data, the error bars or the theme change). <span class="ui">Undo everything on this figure</span> returns it to how SigmaPro drew it, and <span class="ui">Copy the style to every figure</span> carries the general settings to the others: the font, the sizes, the text color, the background, the frame and the style of the axes and the grid.</p>
+
+  <!-- 6.5 -->
+  <h2 id="s6-5"><span class="num">6.5</span>The Figure Studio</h2>
+  <p class="lead">To give a figure the exact size a journal asks for, <span class="ui">Open in the studio</span> takes it to the LABG Figure Studio, the same one in every app of the suite: a split screen with the figure on the left, to scale and with the outline of its output size, and the inspector on the right.</p>
+  <figure>
+    <div class="marco"><img src="../img/en/b6-estudio.png" alt="The Figure Studio with the figure of the hybrid means: at the top, the bar with undo, redo, compare, zoom, ruler, Presets, Export and Close studio; on the left, the figure inside the 1.5-column outline, with its output size in millimeters, inches, dpi and pixels; on the right, the inspector with the control search, the SigmaPro figure settings (error bars, width and chart theme) and the fine editing of the ✎ editor"></div>
+    <figcaption><b>Figure 6.3.</b> The Figure Studio: the figure at output scale on the left and the inspector on the right, with the settings the figure has in SigmaPro and the ✎ editor docked.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Journal sizes</b>: one, one and a half or two columns, in millimeters or inches, with text size and line weight designed for the output size. Below the figure, the final size and the number of pixels it will have.</li>
+    <li><b>Scientific palettes</b>, with a simulation of how a person with color blindness would see the figure.</li>
+    <li><b>The legend</b> inside the chart (eight places), outside on the right, below in a row or hidden, and you can drag it on the figure.</li>
+    <li><b>SigmaPro’s settings, inside</b>: the error bars, the width and the chart theme from the Figures block appear in the inspector, under <span class="ui">Figure settings</span> (each change is made in the app), and the ✎ editor is docked as “Fine editing of this figure”.</li>
+    <li><b>Comfortable work</b>: undo and redo, before-and-after comparison with a curtain (B key), zoom, double-click on a text to change it, a control search, one-click presets (and your own, saved as JSON) and the ? key to see the shortcuts.</li>
+    <li><b>Export</b>: PNG, SVG, PDF and TIFF, at 300, 600 or 1200 dpi, with a transparent background if you want one. For the PDF, the studio asks SigmaPro for the vector figure instead of an image.</li>
+  </ul>
+  <p>The studio remembers its settings in the browser and changes nothing in the app: when you close it, the figure goes back to its place with whatever was done to it. If for some reason it cannot open, the app keeps working as usual, with the ✎ editor and the block’s downloads.</p>
+</section>
+
+</body>
+</html>

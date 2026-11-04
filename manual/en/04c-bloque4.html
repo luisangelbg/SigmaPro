@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 4 (3 of 7)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+  figure.estrecha .marco { width: 72%; margin: 0 auto; }
+  figure.estrecha figcaption { margin-left: 14%; margin-right: 14%; }
+</style>
+</head>
+<body>
+
+<section data-pestana="B4" data-orden="4" style="--acento: var(--b4)">
+
+  <!-- 4.10 -->
+  <h2 id="s4-10"><span class="num">4.10</span>Experimental designs</h2>
+  <p class="lead">The analysis of variance of an experimental design splits the variation in the response into the part due to the treatments, the part due to the way the trial was laid out (blocks, rows, columns, main plots) and the part left unexplained (the error). Each design has its own model and, in some, more than one error. SigmaPro includes the eight designs most used in agricultural research and, for whatever does not fit them, the general linear model.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Design</th><th style="width:2.05in">Model</th><th>When</th></tr></thead>
+    <tbody>
+      <tr><td><b>Completely randomized</b></td><td><code>y ~ A * B * C</code></td><td>Homogeneous units (pots in a growth chamber, germination boxes); up to three crossed factors.</td></tr>
+      <tr><td><b>Randomized complete blocks</b></td><td><code>y ~ bloque + A * B * C</code></td><td>The most common in the field: each block contains all the treatments and groups similar plots.</td></tr>
+      <tr><td><b>Latin square</b></td><td><code>y ~ fila + columna + A * B</code></td><td>Variation in two directions (slope and fertility); each treatment once in each row and in each column.</td></tr>
+      <tr><td><b>Split plots</b></td><td><code>Error(bloque/A)</code></td><td>One factor that can only be applied to large plots (irrigation, tillage, sowing date) and another within them.</td></tr>
+      <tr><td><b>Split-split plots</b></td><td><code>Error(bloque/A/B)</code></td><td>Three factors, each one on plots smaller than the previous one.</td></tr>
+      <tr><td><b>Strip plots</b></td><td><code>Error(bloque/(A + B))</code></td><td>Two factors applied in strips that cross each other (tillage in one direction, irrigation in the other).</td></tr>
+      <tr><td><b>Balanced incomplete blocks</b></td><td><code>y ~ bloque + trat</code></td><td>More treatments than plots per block, with each pair of treatments together the same number of times.</td></tr>
+      <tr><td><b>Lattice and alpha-lattice</b></td><td><code>y ~ rep + rep:bloque + trat</code></td><td>Many genotypes (plant breeding): incomplete blocks within complete replicates.</td></tr>
+      <tr><td><b>General linear model</b></td><td>The formula you write</td><td>Whatever does not fit the designs above: nested factors, covariates with interactions, extra factors.</td></tr>
+    </tbody>
+  </table>
+  <h3>The form</h3>
+  <p>They all ask for the <span class="ui">Response variable</span> and the roles of the design. Each field is named as on screen:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Design</th><th>Roles</th></tr></thead>
+    <tbody>
+      <tr><td>Completely randomized, blocks</td><td><span class="ui">Treatment factors (up to 3, crossed)</span>; in blocks, also <span class="ui">Blocks</span>.</td></tr>
+      <tr><td>Latin square</td><td><span class="ui">Treatment factors (up to 2)</span>, <span class="ui">Rows</span> and <span class="ui">Columns</span>.</td></tr>
+      <tr><td>Split plots</td><td><span class="ui">Main plots are arranged in</span> (<span class="ui">randomized complete blocks</span>, <span class="ui">a completely randomized design</span> or <span class="ui">a Latin square</span>), <span class="ui">Main-plot factor</span>, <span class="ui">Subplot factor</span> and, depending on how the main plots are arranged, <span class="ui">Blocks</span>, the <span class="ui">Main-plot replicate</span> (the number of each main plot within its treatment) or <span class="ui">Rows</span> and <span class="ui">Columns</span>.</td></tr>
+      <tr><td>Split-split plots</td><td><span class="ui">Main-plot factor</span>, <span class="ui">Subplot factor</span>, <span class="ui">Sub-subplot factor</span> and <span class="ui">Blocks</span>.</td></tr>
+      <tr><td>Strip plots</td><td><span class="ui">Horizontal strip factor</span>, <span class="ui">Vertical strip factor</span> and <span class="ui">Blocks</span>.</td></tr>
+      <tr><td>Balanced incomplete blocks</td><td><span class="ui">Treatments</span> (one factor) and <span class="ui">Blocks</span>.</td></tr>
+      <tr><td>Lattice and alpha-lattice</td><td><span class="ui">Treatments</span> (one factor), <span class="ui">Replicates</span> and <span class="ui">Incomplete blocks (within each replicate)</span>.</td></tr>
+    </tbody>
+  </table>
+  <p>A numeric column with few values (a rate) appears marked “(numeric)” and is used as a factor. The completely randomized, block and Latin square designs also offer the <span class="ui">Sums of squares</span> (<span class="ui">Type III (marginal means)</span>, <span class="ui">Type II (marginality)</span> or <span class="ui">Type I (sequential)</span>); incomplete blocks always use the sequential ones (see below), and all of them ask for the <span class="ui">Significance level</span>. When a column identifies the plots, the assistant (section 4.2) recognizes split plots, split-split plots and strip plots in the data and proposes them.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">Σ</span>The three types of sums of squares</div>
+    <p>With <b>balanced</b> data (the same number of observations in each combination), the three types give the same result, and the table note says so. With unbalanced data (missing plots, treatments with different numbers of replicates), each type tests a different hypothesis:</p>
+    <ul>
+      <li><b>Type I</b> (sequential): each term adjusted for those that come before it; the order matters.</li>
+      <li><b>Type II</b> (marginality): each term adjusted for the other terms that do not contain it; it is the most powerful if there is no interaction.</li>
+      <li><b>Type III</b> (marginal means, the default option): each term adjusted for all the others, with sum-to-zero contrasts; it tests the marginal means with equal weights, which is almost always what you want in an experiment.</li>
+    </ul>
+  </div>
+  <h3>What the result includes</h3>
+  <ul>
+    <li>The <b>conclusion</b> for each effect (“hibrido: there are differences (F = 60.635, p &lt; 0.001)”) and the trial indicators: grand mean, coefficient of variation (one per error in designs with strata: CV(a), CV(b)…) and, with a single error, R².</li>
+    <li>The <b>chart</b>: with one factor, boxes with the points of each treatment and its mean; with two or more, the interaction plot of the first two, one line per level of the second (figure 4.7). Above it is the <span class="ui">Chart theme</span> selector (section 4.5).</li>
+    <li>The <span class="ui">Compare the means of this design</span> button, which opens the mean comparison (section 4.11) with the same design and the same variables.</li>
+    <li>The <b>tables</b>: the analysis of variance; the trial summary (grand mean, observations, CV, R² and the relative efficiency, where it applies); the <b>means</b> of each factor and of the combinations of the first two; and, with two or more factors in a single-error design, the <b>simple effects</b>: the <i>F</i> test of each factor within each level of the other. With a single error the means are the estimated marginal means, with their standard error (a mean that cannot be estimated appears as “—”); in designs with strata they are the averages of each level, with their number of values.</li>
+    <li>At the bottom of the eight designs (not of the general linear model), the <b>Continue in the LABG suite</b> band suggests AgriDesign, which generates the randomization, the field layout and the field sheet of the design before sowing; with data loaded, its <span class="ui">Send data to AgriDesign</span> button downloads the table and opens the app (chapter 10).</li>
+  </ul>
+  <p>With two or more factors, if the interaction is significant the conclusion warns about it. In single-error designs it refers you to the simple effects and to the means of the combinations; in designs with strata, which do not have the simple-effects table, it says to compare one factor within each level of the other in <span class="ui">Mean comparisons</span>, with <span class="ui">Within each level of</span> (section 4.11).</p>
+  <h3>Relative efficiency</h3>
+  <p>The trial summary says how much the trial gained by blocking (Gomez and Gomez, 1984), as a percentage and with the degrees-of-freedom adjustment factor when the error has fewer than 20:</p>
+  <ul>
+    <li>In <b>randomized complete blocks</b>, relative to completely randomized. In the maize it is 160%: a completely randomized design would have needed 60% more replicates for the same precision. It is not computed with missing plots or with generalized blocks.</li>
+    <li>In the <b>Latin square</b>, three: relative to completely randomized, relative to blocks with the rows as blocks and relative to blocks with the columns as blocks. With the rows as blocks, the variation among columns would go into the error: that is why that efficiency depends on the mean square of the columns (and the other one, on that of the rows). In the wheat, with “hilera” (the planting rows) as the rows: 128.4% relative to completely randomized, 111.1% with the rows as blocks and 123.7% with the columns as blocks; blocking by columns alone would have lost more. It is computed with the complete square (<i>t</i>² plots).</li>
+  </ul>
+  <p>Some situations are recognized automatically and explained in a notice: more than one plot per treatment in each block (generalized blocks: the block × treatment interaction is estimated), missing block and treatment combinations (the means are adjusted), empty cells (the type III sum of squares does not exist and type II is used) or a term confounded with another.</p>
+  <h3>Split plots, split-split plots and strip plots</h3>
+  <p>In these designs each factor was applied to units of different sizes, so each one has its own error: the main-plot factor is tested against <b>error a</b>, and the subplot factor and the interaction against <b>error b</b> (the variation within main plots). Error a is block × main plot when the main plots are in blocks, main plot × replicate if they are completely randomized, and row × column if they are in a Latin square. The table note says which error each term is tested against, and the blocks are not tested because their stratum has no error of its own. Analyzing these trials as an ordinary factorial would use a single error and give false <i>F</i> tests, almost always in favor of the main-plot factor.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-divididas.png" alt="The split-plot analysis of Yates’s oats: conclusion with variedad showing no evidence of differences (F = 1.485, p = 0.272), nitrogeno with differences (F = 37.686) and the interaction with no evidence, overall mean 103.972, CV(a) 23.6% and CV(b) 12.8%; the theme selector, the interaction plot, the button to compare the means and the analysis of variance table with bloque, variedad, error a, nitrogeno, variedad × nitrogeno, error b and total"></div>
+    <figcaption><b>Figure 4.23.</b> Yates’s (1935) oats in split plots: nitrogen, in the subplots, has a clear effect; the varieties, in the main plots, are tested against error a, with only 10 degrees of freedom.</figcaption>
+  </figure>
+  <p><b>Split-split plots</b> add a third stratum (<code>Error(bloque/A/B)</code>, with errors a, b and c), and <b>strip plots</b> have three errors: a for the horizontal strip factor (block × A), b for the vertical one (block × B) and c for their interaction. With the maize laid out in strips, for example, errors a, b and c have 6, 9 and 18 degrees of freedom. In split-split plots, the table of means of the combinations and the interaction plot show only the first two factors (A × B); the other interactions are studied in <span class="ui">Mean comparisons</span>.</p>
+  <p>The example <span class="ui">Rice: irrigation × variety × nitrogen (split-split plot)</span>, fictitious and for practice, shows this (figure below): irrigation, in the main plots, is tested with only 2 degrees of freedom of error a (<i>F</i> = 95.839, <i>p</i> = 0.010); the irrigation × nitrogen interaction is significant (<i>F</i> = 23.273, <i>p</i> &lt; 0.001), and the conclusion asks you to compare one factor within each level of the other; the chart and the table of combinations, on the other hand, show irrigation × variety. The coefficients of variation decrease from error a to error c: 8.5, 3.1 and 2.2%. For split plots there is another practice example, <span class="ui">Wheat: irrigation × variety (split plot)</span>.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-subdivididas.png" alt="The split-split plots of the rice: the conclusion with riego (F = 95.839, p = 0.010), variedad (F = 36.254, p less than 0.001), riego × variedad with no evidence (p = 0.060), nitrogeno (F = 459.841), riego × nitrogeno with differences (F = 23.273, p less than 0.001) and the other two interactions with no evidence; the warning that the riego × nitrogeno interaction is significant and that one factor should be compared within each level of the other with Within each level of; overall mean 5.938 and CV(a) 8.5%, CV(b) 3.1%, CV(c) 2.2%; the button to compare the means (the riego × variedad interaction plot, which goes between the conclusion and the table, is not shown); and the analysis of variance with bloque, riego, error a (2 df), variedad, riego × variedad, error b (8 df), nitrogeno, its interactions, error c (12 df) and total"></div>
+    <figcaption><b>Figure 4.24.</b> The split-split plots of the rice (fictitious data): one error per stratum. The irrigation × nitrogen interaction is significant and the conclusion directs you to compare them within each level. The interaction plot, which the app shows between the conclusion and the table, is omitted here.</figcaption>
+  </figure>
+  <p>With unbalanced data (missing or extra plots), the <i>F</i> tests of the strata are no longer exact and the app warns about it; in that case the mixed model of section 4.15, which handles the imbalance, is the better choice. If an error term is confounded with another, a notice says that the error model is singular.</p>
+  <h3>Incomplete blocks: BIB, lattice and alpha-lattice</h3>
+  <p>When there are more treatments than plots fit in a homogeneous block, each block receives only some of them. The <b>intra-block</b> analysis compares the treatments within the blocks: their sum of squares is sequential (type I), with the treatments last, <b>adjusted for the blocks</b>, and their means are adjusted means. The table note recalls this. The <i>F</i> of the blocks, on the other hand, is not adjusted for the treatments and is only an indication.</p>
+  <p>In balanced incomplete blocks, the trial summary also includes the <b>efficiency factor</b> <i>E</i> = λ<i>t</i>/(<i>rk</i>) and λ, the number of times each pair of treatments occurs together in a block. With the example <span class="ui">Sorghum: seven lines in incomplete blocks (BIB)</span>, fictitious and for practice (7 lines in 7 blocks of 3), the lines differ (<i>F</i> = 8.604, <i>p</i> = 0.004), with <i>E</i> = 0.778 and λ = 1. If the design is not an exact BIB (blocks of different sizes or pairs that do not occur together the same number of times), the app says so and does not compute the efficiency; the intra-block analysis remains valid.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-latice.png" alt="The alpha-lattice of 24 genotypes: genotipo with differences (F = 5.242, p less than 0.001), overall mean 4.480, CV 6.4%, R² 0.902; the box plot by genotype; and the intra-block analysis of variance with repeticion, repeticion × bloque, genotipo, error and total"></div>
+    <figcaption><b>Figure 4.25.</b> The alpha-lattice of 24 genotypes (Olivoto and Lúcio, 2020). Genotype goes last in the table, adjusted for the incomplete blocks.</figcaption>
+  </figure>
+  <p>In these two designs, the box plot shows the raw data of each treatment, not adjusted for the blocks; the means you should publish are the adjusted ones in the table, with their standard error. The intra-block analysis wastes the information there is between blocks. To recover it, with blocks as a random effect, there is <span class="ui">Lattice and alpha-lattice (inter-block recovery)</span>, among the mixed models (section 4.15); for the heritability of the genotypes, see section 4.16.</p>
+  <h3>The general linear model</h3>
+  <p>For models that are not a design in the catalog, <span class="ui">General linear model (formula)</span> asks for the <span class="ui">Response variable</span> and the <span class="ui">Model terms (what goes after “~”)</span>, with the notation of section 4.4; below, the app explains how it read each term. It also asks for the <span class="ui">Numeric columns that are treatments (factor)</span>, the <span class="ui">Sums of squares</span>, the <span class="ui">Confidence level</span> and the <span class="ui">Significance level</span>. It does not accept error strata (<code>Error(…)</code>: that is what the split-plot designs are for) or functions inside the formula (the transformation is done in the Data block); without an intercept, it uses type I sums of squares.</p>
+  <p>It delivers the analysis of variance, the <b>coefficients</b> (with treatment contrasts: each level compared with the first), a chart of the marginal means (of the first interaction between two factors or, if there is none, of the factor with the largest <i>F</i>; with no factors, observed vs. fitted values) and the means of each factor with their confidence interval. It does not include the trial summary, the efficiency or the suite band. It is also what the model builder uses when the formula is written by hand.</p>
+
+  <!-- 4.11 -->
+  <h2 id="s4-11"><span class="num">4.11</span>Mean comparisons and contrasts</h2>
+  <p>An analysis of variance tells you whether the treatments differ, not which ones. That is what the four methods of this family are for; they work on the model of any of the eight designs in the previous section: the form starts with the <span class="ui">Experimental design</span> and its roles, and then asks what to compare.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Method</th><th>What for</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Mean comparisons</span></td><td>All the treatments with one another (or against a control), with the group letters.</td></tr>
+      <tr><td><span class="ui">Contrasts</span></td><td>Comparisons planned in advance (the control against the rest, one group against another).</td></tr>
+      <tr><td><span class="ui">Orthogonal polynomials</span></td><td>The shape of the response to a quantitative factor (a rate): linear, quadratic, cubic, and the optimum rate.</td></tr>
+      <tr><td><span class="ui">Adjusted means</span></td><td>The estimated marginal means with their confidence interval, without comparing them.</td></tr>
+    </tbody>
+  </table>
+  <p>Two fields are common to all of them. The first is what is compared: in mean comparisons and adjusted means, <span class="ui">Means of</span>, with one checkbox per factor (one or two at a time; with two, their combinations are compared, such as “H-66 : 180”); in contrasts, <span class="ui">Factor</span>, and in polynomials, <span class="ui">Quantitative factor (rate)</span>. The second is <span class="ui">Within each level of</span>, which by default says <span class="ui">— all together —</span> and accepts a single factor. If the interaction is significant, comparing the means of one factor averaged over the other can be misleading; you then compare one factor <b>within each level</b> of the other (the rates within each hybrid), and the result includes a conclusion, its tables and a chart for each level (up to six charts).</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-dentro.png" alt="Tukey’s comparison of the nitrogen rates within each maize hybrid: the header with the title Mean comparison: Tukey; the In a nutshell box with one sentence per hybrid; three conclusions, one per hybrid: with H-40 and with H-52, a: 120, 180; b: 60; c: 0, and with H-66, a: 180, 120; b: 60; c: 0; the chart theme selector and three charts of means with their standard error and their letters, titled hibrido = H-40, hibrido = H-52 and hibrido = H-66"></div>
+    <figcaption><b>Figure 4.26.</b> “Within each level of”: the maize rates compared within each hybrid. In all three, 120 and 180 kg/ha do not differ from each other and outperform 60 and 0.</figcaption>
+  </figure>
+  <h3>Mean comparisons</h3>
+  <figure>
+    <div class="marco"><img src="../img/en/b4-tukey.png" alt="Tukey’s mean comparison of the maize hybrids: the form with the randomized complete block design, the response, the factors, the block, means of hibrido, within each level of: all together, Tukey test and significance level; the conclusion: 3 groups of means, a H-66, b H-52, c H-40; the chart of means with their standard error and their letters; the table of means with their group and the table of pairwise comparisons"></div>
+    <figcaption><b>Figure 4.27.</b> Tukey with the maize hybrids: all three differ from one another. The letters appear on the chart and in the table; means that share a letter do not differ.</figcaption>
+  </figure>
+  <p>The <span class="ui">Test</span> chooses how the error of making many comparisons at once is controlled:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Test</th><th>How it works</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Tukey</span></td><td>All pairs, with the error of the whole family of comparisons controlled (Tukey-Kramer if the number of replicates differs). The default option and the most recommended for comparing everything against everything.</td></tr>
+      <tr><td><span class="ui">Fisher's LSD</span> and <span class="ui">Protected LSD</span></td><td>The least significant difference, without adjustment for multiplicity (it finds more differences, including false ones). The protected version only separates means if the <i>F</i> of that term was significant; if not, all the means get the same letter and a note says so. That <i>F</i> comes from the analysis with sequential (type I) sums of squares, which in an unbalanced factorial may not be the type III one shown by the design.</td></tr>
+      <tr><td><span class="ui">Duncan</span> and <span class="ui">Student-Newman-Keuls</span></td><td>Stepwise tests, traditional in agronomy; they control the error less well than Tukey. They use a common standard error (with the harmonic mean of the replicates) and the <i>q</i> statistic.</td></tr>
+      <tr><td><span class="ui">Scheffé</span></td><td>Tests the pairs with Scheffé’s criterion (<i>F</i> with <i>k</i> − 1 df), which protects any contrast; that is why it is very conservative.</td></tr>
+      <tr><td><span class="ui">Bonferroni</span>, <span class="ui">Šidák</span> and <span class="ui">Holm</span></td><td>General adjustments of the LSD <i>p</i>-value; Holm is the most powerful of the three.</td></tr>
+      <tr><td><span class="ui">Dunnett (vs. a control)</span></td><td>Each treatment against a <b>control</b>, chosen in <span class="ui">Control</span>; the <span class="ui">Hypothesis</span> can be <span class="ui">Different from control</span>, <span class="ui">Greater than control</span> or <span class="ui">Less than control</span>. More powerful than Tukey for that question.</td></tr>
+      <tr><td><span class="ui">Games-Howell (unequal variances)</span></td><td>All pairs without assuming equal variances: each pair with its own error and its own degrees of freedom. Only with one factor in a completely randomized design.</td></tr>
+    </tbody>
+  </table>
+  <p>The result includes the conclusion with the groups (“a: H-66; b: H-52; c: H-40”), the chart of the means with their standard error and their letters, the table of means sorted from largest to smallest with their <b>group</b>, and the table of <b>pairwise comparisons</b> (difference, SE, df, the <i>t</i> statistic —or <i>q</i> in Duncan, SNK and Games-Howell—, adjusted <i>p</i> and whether they differ). The means are the estimated marginal means of the design’s model and the error is that of the design: in a split plot, each comparison uses the error that corresponds to it and Satterthwaite degrees of freedom, and the table note says so. In designs with strata, the table of means does not include their standard error and the chart has no bars.</p>
+  <p>With the rice of the previous section, for example, <span class="ui">Means of</span> nitrogen (“nitrogeno”) <span class="ui">Within each level of</span> irrigation (“riego”) shows the interaction: the N80 rate outperforms N0 by 0.731 under “Temporal” (rainfed) and by 1.156 under “Riego” (irrigated) (both with <i>p</i> &lt; 0.001, with the 12 df of error c).</p>
+  <h3>Dunnett</h3>
+  <p>Dunnett’s <i>p</i>-values are exact and single-step: they come from the multivariate <i>t</i> distribution of the comparisons against the control and are computed in a few seconds, also in balanced incomplete blocks. With the avocado thrips (complete blocks with two missing plots), the hypothesis <span class="ui">Less than control</span> finds that only Spinosad reduces thrips relative to the control, “Testigo” (−6.333 thrips per shoot, <i>p</i> = 0.016).</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>When a test does not run</div>
+    <ul>
+      <li><b>Dunnett</b> needs a single error. In split plots, split-split plots or strip plots, the app stops and explains that Bonferroni and Holm, which adjust all pairs, can be used instead, although against the control they are conservative. It also stops when the comparisons against the control do not have the correlation structure that the exact calculation requires, as in the alpha-lattice of 24 genotypes or with certain missing plots: the message proposes the same.</li>
+      <li><b>Duncan</b> and <b>Student-Newman-Keuls</b> also need a single error; in split plots, the app proposes Tukey, LSD or Bonferroni.</li>
+      <li><b>Games-Howell</b> is only for one factor in a completely randomized design, without <span class="ui">Within each level of</span>; in other designs, the app proposes Tukey or Bonferroni.</li>
+      <li><b>Adjusted means</b> needs a single error; in split plots, split-split plots or strip plots, the means are compared with <span class="ui">Mean comparisons</span>.</li>
+    </ul>
+  </div>
+  <h3>Contrasts</h3>
+  <p>A contrast compares groups of treatments with coefficients that add up to zero. They are written in the <span class="ui">Contrasts (one per line)</span> field, in the form <code>nombre: coeficientes</code> (name: coefficients), in the order of the levels that the help shows below it (the coefficients are separated by spaces, commas or semicolons; a line without a name is called “Contrast 1”, “Contrast 2”…). With the field empty, the app shows the first level against the rest as an example:</p>
+  <pre class="codigo">I y II vs III: 1 1 -2
+I vs II: 1 -1 0</pre>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-contrastes.png" alt="The table of contrasts of veneno: I y II vs III with coefficients 1 1 −2, estimate 0.609, t 6.672, p less than 0.001 and its sum of squares 0.990; I vs II with 1 −1 0, estimate 0.073, p 0.174"></div>
+    <figcaption><b>Figure 4.28.</b> Two orthogonal contrasts among the poisons: III differs from the average of I and II; I and II do not differ.</figcaption>
+  </figure>
+  <p>Each contrast includes its estimate, SE, df, <i>t</i>, <i>p</i> and, in single-error designs, its sum of squares. If the contrasts are <b>orthogonal</b> to each other (with the same number of replicates per level, their coefficients multiplied term by term add up to zero; the app checks this with the actual replicates of each level), their sums of squares partition that of the treatments without overlapping, and the note says so; if not, it warns that they overlap. A line that does not add up to zero is also computed, with the note that it is a linear combination and not a contrast. Contrasts are planned before looking at the data; chosen afterwards, they have the problem of multiple comparisons.</p>
+  <h3>Orthogonal polynomials</h3>
+  <p>With a quantitative factor (nitrogen rates, plant densities, temperatures), what matters is not the differences between rates but the <b>shape of the response</b>. Orthogonal polynomials split the variation among rates into a linear component, a quadratic one, a cubic one… (as many as the number of rates minus one), each with its own test. You choose the <span class="ui">Quantitative factor (rate)</span>, whose levels must be numbers (at least three), and the <span class="ui">Curve degree</span> (<span class="ui">Straight line</span>, <span class="ui">Quadratic (with the optimum rate)</span> or <span class="ui">Cubic</span>), which decides the fitted curve; the table always includes all the components.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b4-polinomios.png" alt="The orthogonal polynomials of the maize rate: significant linear and quadratic components; the quadratic curve with its maximum at rate 147.747 and response 6.769; the chart of the means by rate with the fitted curve; and the table with the linear, quadratic and cubic components"></div>
+    <figcaption><b>Figure 4.29.</b> The response of the maize to nitrogen is quadratic; the maximum is at 147.7 kg/ha, with an estimated 6.77 t/ha.</figcaption>
+  </figure>
+  <p>The orthogonal coefficients are computed on the actual levels of the rate, even if they are not equally spaced. With the quadratic curve, the app fits the equation to the means (<i>y</i> = 4.454 + 0.03133·<i>x</i> − 1.060·10<sup>−4</sup>·<i>x</i>² in the maize, with R² = 0.998) and gives the rate at the maximum or minimum; if it falls outside the rates tested, it warns about it, because extrapolating is not advisable. With <span class="ui">Within each level of</span> there is one curve per level: in the maize, the maximum of each hybrid is at 147.5 (H-40), 139.5 (H-52) and 157.7 kg/ha (H-66). For a response that levels off at a plateau, the linear-plateau model (section 4.18) is the better choice.</p>
+  <h3>Adjusted means</h3>
+  <p>The <b>estimated marginal means</b> are the averages that the model predicts for each level, with equal weights over the other factors. With balanced data they are the usual means; with missing plots, incomplete blocks or covariates, they are the ones you should publish. For the chosen factor (and within each level of another, if requested), the method gives the mean, its SE, the degrees of freedom and its confidence interval at the chosen <span class="ui">Confidence level</span>, with a chart of the means and their intervals. In the alpha-lattice, for example, the 24 adjusted means have standard errors from 0.194 to 0.195, with 31 df.</p>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 3</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 58%; }
+  figure.chica figcaption { margin-left: 21%; margin-right: 21%; }
+  figure.angosta .marco { width: 50%; }
+  figure.angosta figcaption { margin-left: 25%; margin-right: 25%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b3" data-pestana="B3" data-orden="3" style="--acento: var(--b3)">
+  <div class="cap-apertura">
+    <div class="cap-num">3</div>
+    <div class="cap-etiqueta">Block 3 · Explore</div>
+    <h1>Explore: look at the data before analyzing them</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Before testing hypotheses, it pays to get to know the data: where the center is, how much they vary, whether there are odd values, how many observations each group has. Explore offers four summaries (descriptives, frequencies, proportions and goodness of fit), each with its confidence interval, its conclusion in words, the R code that gives the same result and its fact sheet in Fundamentals. Everything computed here can also go to the report.</p>
+    <ul class="cap-contenido">
+      <li><b>3.1</b>The four summaries</li>
+      <li><b>3.2</b>How to read a result</li>
+      <li><b>3.3</b>Descriptive statistics</li>
+      <li><b>3.4</b>Frequency tables</li>
+      <li><b>3.5</b>Proportions and intervals</li>
+      <li><b>3.6</b>Goodness of fit</li>
+    </ul>
+  </div>
+
+  <!-- 3.1 -->
+  <h2 id="s3-1"><span class="num">3.1</span>The four summaries</h2>
+  <p class="lead">At the top of the block, four buttons choose the summary. Its options are on the left and the result on the right, and the result is recomputed whenever you change any option.</p>
+  <figure>
+    <div class="marco"><img src="../img/en/b3-desc.png" alt="The Explore block with Descriptives chosen: on the left, the options (variables, group by, confidence, trimmed mean, quartile definition, skewness and kurtosis, additional percentiles); on the right, the title Descriptive statistics of rend by hibrido, the conclusion in words and the table with n, mean, SD, SE, CV, interval of the mean, minimum, quartiles, median and maximum of each hybrid"></div>
+    <figcaption><b>Figure 3.1.</b> Descriptives of maize yield by hybrid. When data are loaded, the block proposes the first numeric response grouped by the first treatment factor.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.4in">Summary</th><th>What it is for</th><th style="width:0.6in">Section</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Descriptives</span></td><td>Center, spread and shape of numeric variables, overall or by group, with the interval of the mean, of the median and of the variance.</td><td>3.3</td></tr>
+      <tr><td><span class="ui">Frequencies</span></td><td>How many observations there are at each level of a factor, or at each combination of two (a cross-tabulation), as counts or percentages.</td><td>3.4</td></tr>
+      <tr><td><span class="ui">Proportions</span></td><td>A proportion (germination, incidence, mortality) with its confidence interval, by group, with six interval methods.</td><td>3.5</td></tr>
+      <tr><td><span class="ui">Goodness of fit</span></td><td>Whether some observed frequencies follow an expected ratio (for example, the 9:3:3:1 segregation).</td><td>3.6</td></tr>
+    </tbody>
+  </table>
+  <p>If a filter is active in the Data block, a note above the options reminds you of it: “With the filter from the Data block: 27 of 48 rows are used.” With no data loaded, the block offers to load them right there (<span class="ui">Import a file</span>, <span class="ui">Paste a table</span> or <span class="ui">Try an example</span>, and the summary appears as soon as they arrive) or to go to Data and, for those planning a trial, the <span class="ui">Calculate a sample size or power</span> button, which needs no data (section 4.22).</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Explore describes; Analysis decides</div>
+    <p>The summaries in this block say what the data look like, not whether the differences between groups are real. That hybrid H-66 has the highest mean is a description; whether it is significantly higher than H-52 is shown by an analysis of variance with its mean comparison, in the Analysis block (chapter 4). That is why, when there are groups, the conclusions in Explore end with “Whether the differences are real is tested in the Analysis block.”</p>
+  </div>
+
+  <!-- 3.2 -->
+  <h2 id="s3-2"><span class="num">3.2</span>How to read a result</h2>
+  <p>Every SigmaPro result, here and in Analysis, has the same parts in the same order. It is worth getting to know them once:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Part</th><th>What it is</th></tr></thead>
+    <tbody>
+      <tr><td><b>Title</b></td><td>What was computed and on which variables. Next to it, the computing time in milliseconds.</td></tr>
+      <tr><td><span class="ui">Change the options ↓</span></td><td>Takes you to the summary’s options; useful on a narrow screen, where they sit below the result.</td></tr>
+      <tr><td><span class="ui">ⓘ What is this analysis?</span></td><td>Opens the summary’s fact sheet in Fundamentals: what it is for, what it assumes, what data it needs and how to read it (chapter 9).</td></tr>
+      <tr><td><span class="ui">Add to report</span></td><td>Sends the result to the Results block (chapter 5). The button changes to <span class="ui">In the report ✓</span>; the report stores the analysis, not the numbers, and recomputes it if the data change.</td></tr>
+      <tr><td><span class="ui">Present</span></td><td>Shows the result as full-screen slides, for projecting it; ← and → move through them and Esc exits (section 4.5).</td></tr>
+      <tr><td><span class="ui">Basic</span> · <span class="ui">Standard</span> · <span class="ui">Expert</span></td><td>The level of detail for the whole app (section 4.5). In Explore the table is shown at all three levels; Basic hides the R code and Expert adds the technical notes.</td></tr>
+      <tr><td><b>Conclusion</b></td><td>The result in words, with the figures that support it. It is the first thing to read.</td></tr>
+      <tr><td><b>Table</b></td><td>Numbered and with its footnotes, in journal format: rules only at the top, at the bottom and below the headers; aligned figures; decimals according to the precision of the data. If it is wider than the screen, it scrolls sideways; with the keyboard, Tab focuses it and the arrow keys scroll it.</td></tr>
+      <tr><td>View buttons</td><td>When a result has several tables, some buttons choose which one is shown (for example, frequencies or percentages).</td></tr>
+      <tr><td><span class="ui">Copy table</span></td><td>Copies the table with all its figures, ready to paste into a spreadsheet or a word processor.</td></tr>
+      <tr><td><span class="ui">Download as CSV</span></td><td>Saves the table as a CSV file, with unrounded values, to open in another program. The file is UTF-8, so accented characters reach a spreadsheet intact.</td></tr>
+      <tr><td><span class="ui">More statistics in the table</span></td><td>(In descriptives.) Checkboxes that add columns to the table.</td></tr>
+      <tr><td><span class="ui">How to read this table</span></td><td>Collapsed below the table when it includes a statistic with a reading guide: a scale with the zones of the guide, a mark at each value and a card that interprets it with the numbers of the case. In Explore it appears below the descriptives, for the skewness, and below the goodness of fit, for the standardized residuals; in Analysis, below almost every table (section 4.5).</td></tr>
+      <tr><td><span class="ui">How to report it (APA)</span></td><td>Collapsed: the methods paragraph and the results paragraph of the summary in APA 7 style, in Spanish and in English, each with <span class="ui">Copy</span> (section 4.5).</td></tr>
+      <tr><td><span class="ui">Equivalent R code</span></td><td>The code that gives the same numbers in R, with the <span class="ui">Copy the code</span> button. It starts with a comment on how to read in the data and which packages it requires.</td></tr>
+    </tbody>
+  </table>
+  <figure class="chica angosta">
+    <div class="marco"><img src="../img/en/b3-extras.png" alt="A complete descriptives result: the title with the computing time, What is this analysis?, Present and the Add to report button, the conclusion in words, Table 1 with its footnotes, the Copy table button, the open section More statistics in the table with checkboxes, and the open section Equivalent R code with the code and the Copy the code button"></div>
+    <figcaption><b>Figure 3.2.</b> A result with its two collapsible sections open: more statistics and the R code.</figcaption>
+  </figure>
+
+  <!-- 3.3 -->
+  <h2 id="s3-3"><span class="num">3.3</span>Descriptive statistics</h2>
+  <p>They describe one or more numeric variables, overall or by group. The options:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Option</th><th>What it decides</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Variables</span></td><td>The numeric columns to describe; one row of the table per variable and group.</td></tr>
+      <tr><td><span class="ui">Group by (up to 3)</span></td><td>The factors that form the groups. A numeric column with a few repeated values (a rate) is grouped by each value. With two or three factors, the groups are their combinations present in the data.</td></tr>
+      <tr><td><span class="ui">Confidence</span></td><td>The level of the intervals (90, 95 or 99%).</td></tr>
+      <tr><td><span class="ui">Trimmed mean</span></td><td>The fraction removed from each end for the trimmed mean (5, 10, 20 or 25%).</td></tr>
+      <tr><td><span class="ui">Quartile definition</span></td><td>The nine definitions of Hyndman and Fan (1996). Type 7 (linear interpolation) is the one used by R and by spreadsheets; type 6 is the one in many textbooks. With large samples they agree; with few observations they may differ slightly.</td></tr>
+      <tr><td><span class="ui">Skewness and kurtosis</span></td><td>Three definitions (Joanes and Gill, 1998): G₁ and G₂, unbiased under normality and the ones in common use; g₁ and g₂, moment-based; b₁ and b₂, corrected by (<i>n</i> − 1)/<i>n</i>.</td></tr>
+      <tr><td><span class="ui">Additional percentiles</span></td><td>Other percentiles added to the table, in percent and separated by commas (for example <code>5, 95</code>).</td></tr>
+    </tbody>
+  </table>
+  <h3>What the table includes</h3>
+  <p>The main table gives, for each variable and group: <b>n</b>, <b>mean</b>, <b>standard deviation</b> (SD), <b>standard error of the mean</b> (SE), <b>coefficient of variation</b> (CV, in %), the <b>confidence interval of the mean</b>, the <b>minimum</b>, the <b>quartiles</b> Q1 and Q3, the <b>median</b> and the <b>maximum</b>. In <span class="ui">More statistics in the table</span> you can add: missing values, mode (and how many modes there are and their frequency), variance, range, interquartile range (IQR), trimmed mean, geometric mean, harmonic mean, skewness and kurtosis with their standard errors, the interval of the median with its actual confidence, and the intervals of the variance and of the SD.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">Σ</span>The formulas</div>
+    <p>With <i>n</i> observations of mean <i>x̄</i> and standard deviation <i>s</i>:</p>
+    <p class="formula">SE = <i>s</i> / √<i>n</i>  ·  CV = 100 <i>s</i> / <i>x̄</i>  ·  CI of the mean: <i>x̄</i> ± <i>t</i><sub>1−α/2; n−1</sub> · SE</p>
+    <p>The interval of the <b>median</b> is formed by two ordered observations, <i>x</i><sub>(k)</sub> and <i>x</i><sub>(n−k+1)</sub>, with <i>k</i> taken from the binomial distribution (<i>n</i>, ½); that is why its actual confidence (“Actual confidence (%)”) is the first one that reaches or exceeds the requested level, not exactly that level. The interval of the <b>variance</b> comes from the chi-square, (<i>n</i> − 1)<i>s</i>² / χ²; it assumes normality, and the interval of the SD is its square root.</p>
+  </div>
+  <h3>The conclusions</h3>
+  <p>Without groups, the conclusion summarizes the variable: “‘rend’ (n = 48): mean 5.938 (95% CI: 5.644 to 6.232), standard deviation 1.013 and coefficient of variation 17.1%.” With groups, it says which one has the highest mean and which the lowest. It also warns in two cases: when, in a group of eight or more observations, the <b>skewness is greater than twice its standard error</b> (a sign of outliers or that a transformation would help, section 2.9), and when some rows were left out because they have no level in a grouping factor.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The CV in agricultural experiments</div>
+    <p>The CV of a group describes the variation of the raw data; it mixes the variation among blocks with the error variation. The CV published for a trial is a different one: that of the analysis of variance, computed with the error mean square (in the maize example, 3.6% against the 16% of the raw data by hybrid). That one is given by the analysis of the design in the Analysis block.</p>
+  </div>
+
+  <!-- 3.4 -->
+  <h2 id="s3-4"><span class="num">3.4</span>Frequency tables</h2>
+  <p>They count how many observations there are at each level of a factor (<span class="ui">Variable</span>) or, with <span class="ui">Cross with</span>, at each combination of two. The <span class="ui">Count missing values as a category</span> checkbox adds a row and a column for the empty cells. Numeric columns with few values appear in the lists marked “(numeric)”.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b3-frec.png" alt="The frequency table of evaluador_A by evaluador_B in the rust example: the conclusion with 80 observations in 4 by 4 cells and 7 empty cells, the buttons Frequencies, % by row, % by column and % of total, and the table with the scores from 0 sana (healthy) to 3 severa (severe) of each rater and their totals"></div>
+    <figcaption><b>Figure 3.3.</b> The rust scores of the two raters, cross-tabulated. The cells on the diagonal are the leaves on which they agreed.</figcaption>
+  </figure>
+  <p>A cross-tabulation has four views, chosen with its buttons: <span class="ui">Frequencies</span>, <span class="ui">% by row</span> (each row adds up to 100), <span class="ui">% by column</span> and <span class="ui">% of total</span>. The conclusion gives the size of the table and how many cells have no observations at all. A one-factor table gives, besides the count, the percentage and the cumulative values.</p>
+  <p>The frequency table describes; to <b>test</b> whether two factors are associated (for example, whether germination depends on the treatment), or whether two raters agree, there are the contingency table, the McNemar and Bowker test and Cohen’s kappa, in the Analysis block (section 4.14).</p>
+
+  <!-- 3.5 -->
+  <h2 id="s3-5"><span class="num">3.5</span>Proportions and intervals</h2>
+  <p>A proportion can be requested in two ways, chosen with the buttons above the options:</p>
+  <ul>
+    <li><span class="ui">Categories of a factor</span>: the proportion of each level of a categorical variable (for example, what fraction of the leaves has each rust score).</li>
+    <li><span class="ui">Successes out of trials</span>: two numeric columns, one with the successes (germinated seeds, dead plants, damaged fruits) and one with the trials (seeds sown, plants observed). The rows are summed within each group.</li>
+  </ul>
+  <p><span class="ui">By group</span> computes one proportion per level of a factor, and <span class="ui">Confidence</span> sets the level of the intervals. Under <span class="ui">Intervals</span> you check the methods you want to see, one column each.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b3-prop.png" alt="Bean germination proportions by treatment, in Successes out of trials mode with germinadas and sembradas: the conclusion with the percentage of each treatment and its Wilson interval, and the table with successes, n, proportion and the Wilson and Clopper-Pearson intervals for Testigo, Remojo 24 h, GA3 100 ppm, GA3 250 ppm and Escarificación"></div>
+    <figcaption><b>Figure 3.4.</b> The germination of five treatments (200 seeds each), with the Wilson and Clopper-Pearson intervals.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Interval</th><th>What it is like</th></tr></thead>
+    <tbody>
+      <tr><td><b>Wilson</b></td><td>Inverts the score test (Wilson, 1927). Its actual coverage stays very close to the requested level even with few trials or extreme proportions. <b>Recommended.</b></td></tr>
+      <tr><td><b>Wilson with continuity correction</b></td><td>Wilson’s interval with a continuity correction: wider and conservative.</td></tr>
+      <tr><td><b>Clopper-Pearson (exact)</b></td><td>Based on the beta distribution. It guarantees at least the requested confidence, at the price of being wider than necessary.</td></tr>
+      <tr><td><b>Agresti-Coull</b></td><td>The Wald interval with two successes and two failures added (Agresti and Coull, 1998); easy to compute by hand.</td></tr>
+      <tr><td><b>Jeffreys</b></td><td>The Bayesian interval with the beta(½, ½) prior. <b>Recommended</b>, with properties similar to those of Wilson’s.</td></tr>
+      <tr><td><b>Wald</b></td><td>The textbook normal approximation, <i>p̂</i> ± <i>z</i>√(<i>p̂</i>(1 − <i>p̂</i>)/<i>n</i>). For reference only: with fewer than 30 trials or proportions close to 0 or 1 it fails, and the app warns about it.</td></tr>
+    </tbody>
+  </table>
+  <p>The recommendation of Wilson and Jeffreys comes from the review by Brown, Cai and DasGupta (2001), who compared the actual coverage of these intervals. The conclusion shows the first four proportions in words, with the Wilson interval (if Wilson was unchecked, with that of the first checked method), and says how many more there are in the table.</p>
+
+  <!-- 3.6 -->
+  <h2 id="s3-6"><span class="num">3.6</span>Goodness of fit</h2>
+  <p>The chi-square goodness-of-fit test tells whether some observed frequencies are consistent with an expected ratio. The classic case in agronomy is Mendelian segregation: in the F<sub>2</sub> of a dihybrid, the phenotypes are expected in a 9:3:3:1 ratio.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b3-bondad.png" alt="Goodness of fit with Mendel’s data: categories fenotipo, counts semillas, expected proportion 9:3:3:1; the conclusion: the observed frequencies are consistent with the ratio 9:3:3:1 (chi-square 0.470, 3 degrees of freedom, p 0.925); the table with observed, expected proportion, expected, standardized residual and contribution to the chi-square for redonda amarilla, redonda verde, rugosa amarilla and rugosa verde"></div>
+    <figcaption><b>Figure 3.5.</b> Mendel’s (1866) 556 seeds against the 9:3:3:1 ratio: χ² = 0.470 with 3 degrees of freedom, <i>p</i> = 0.925.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Option</th><th>What it decides</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Categories</span></td><td>The variable with the categories (the phenotypes).</td></tr>
+      <tr><td><span class="ui">Counts</span></td><td>If each row already gives how many observations its category has (as in Mendel’s example, with four rows), the column with the counts. If each row is one observation, leave it at “one row per observation”.</td></tr>
+      <tr><td><span class="ui">Expected proportion</span></td><td>One proportion per category, in the order of the levels shown in the help text below, separated by colons: <code>9:3:3:1</code>, <code>3:1</code>, <code>1:2:1</code>. Decimals are also accepted (<code>0.5625:0.1875:0.1875:0.0625</code>). If left empty, equal proportions are tested.</td></tr>
+      <tr><td><span class="ui">Significance level</span></td><td>The α the conclusion uses to decide (0.05, 0.01 or 0.10).</td></tr>
+    </tbody>
+  </table>
+  <p>The table gives, for each category, the <b>observed</b> count, the <b>expected proportion</b>, the <b>expected</b> count (<i>n</i> × proportion), the <b>standardized residual</b> and the <b>contribution to χ²</b>:</p>
+  <p class="formula">χ² = Σ (O − E)² / E,   df = k − 1,   residual = (O − E) / √(n p (1 − p))</p>
+  <p>A residual greater than 2 in absolute value flags the category that deviates most from what was expected; when the test rejects, the conclusion names it. If any category expects fewer than five observations, the chi-square approximation may not be good, and the app warns about it: it is better to merge categories or to use an exact test.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>“Consistent” is not “proven”</div>
+    <p>A high <i>p</i> value says that the data do not contradict the expected ratio, not that they prove it. With few observations, the test has no power to reject almost anything. Mendel’s 556 seeds are enough to tell 9:3:3:1 apart from very different ratios, not from similar ones.</p>
+  </div>
+</section>
+
+</body>
+</html>

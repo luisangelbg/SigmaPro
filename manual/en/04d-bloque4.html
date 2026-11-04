@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 4 (4 of 7)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+  figure.estrecha .marco { width: 72%; margin: 0 auto; }
+  figure.estrecha figcaption { margin-left: 14%; margin-right: 14%; }
+</style>
+</head>
+<body>
+
+<section data-pestana="B4" data-orden="4" style="--acento: var(--b4)">
+
+  <!-- 4.12 -->
+  <h2 id="s4-12"><span class="num">4.12</span>Analysis of covariance and regression</h2>
+  <p class="lead">When the response depends on a numeric variable measured on each plot (the number of plants, the altitude of the site, the rate), the question changes: it is no longer enough to know whether the treatments differ; you want to know how much the response changes per unit of that variable. In the catalog, the <span class="ui">ANCOVA and regression</span> family has five methods.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Method</th><th>What for</th></tr></thead>
+    <tbody>
+      <tr><td><b>Analysis of covariance (ANCOVA)</b></td><td>Compare treatments after discounting one or two covariates that the treatments do not control (plants harvested, initial weight, the previous year’s yield).</td></tr>
+      <tr><td><b>Simple and multiple linear regression</b></td><td>Explain or predict the response with one or several numeric predictors, with full diagnostics.</td></tr>
+      <tr><td><b>Polynomial regression</b></td><td>A curve of degree 2 to 4 on a single variable (the response to the rate), with its maximum or minimum.</td></tr>
+      <tr><td><b>Stepwise selection</b></td><td>Keep the predictors that matter among many candidates, by AIC or by <i>p</i>-value.</td></tr>
+      <tr><td><b>Best subsets</b></td><td>Review every combination of predictors and compare the best models of each size.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Analysis of covariance</h3>
+  <p>The form asks for the <span class="ui">Response variable</span>, the <span class="ui">Treatment factors (up to 2, crossed)</span>, the <span class="ui">Blocks</span> (with <span class="ui">— no blocks (completely randomized) —</span> if the trial has none) and the <span class="ui">Covariates (up to 2)</span>. The options are the <span class="ui">Sums of squares</span> (<span class="ui">Type III (marginal means)</span> by default, <span class="ui">Type II (marginality)</span> or <span class="ui">Type I (treatments adjusted for the covariate)</span>), the <span class="ui">Comparison of adjusted means</span> (Tukey, Fisher’s LSD, Bonferroni, Šidák, Holm, Scheffé or <span class="ui">None</span>), the <span class="ui">Confidence level</span> and the <span class="ui">Significance level</span>. With empty cells, the type III sum of squares does not exist: type II is used, and the note under the table says so.</p>
+  <p>The sorghum example compares six varieties (five lines and a control) in four blocks; the harvested plants were counted in each plot, and the count was not the same in all of them. A plot with more plants yields more, regardless of the variety: the covariate separates the two things.</p>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">Σ</span>The two assumptions of covariance analysis</div>
+    <p>The traffic light of the result checks the two assumptions specific to ANCOVA:</p>
+    <ul>
+      <li><b>Equal slopes.</b> The covariate must weigh the same in all treatments: the model with a common slope is compared against one with a slope per treatment (in the sorghum, <i>F</i> = 0.649 with 5 and 9 df, <i>p</i> = 0.670). If the slopes differ, the effect of the variety depends on the number of plants, and a single adjusted mean does not summarize it.</li>
+      <li><b>The covariate does not depend on the treatments.</b> The covariate is analyzed with the same design (<i>F</i> = 1.391 with 5 and 15 df, <i>p</i> = 0.283). If the treatments changed it (a variety that emerges poorly), adjusting for it would take away part of the variety’s real effect.</li>
+    </ul>
+    <p>The traffic light does not test the normality or the constant variance of the residuals, and <span class="ui">Check the model assumptions</span> (section 4.7) does not accept covariates. As an approximation, check the residuals of the same design without the covariate there, and look at the plot to see that the points of each treatment follow their line with an even spread; if the relationship with the covariate is curved, transform the covariate in the Data block (section 2.9).</p>
+  </div>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-ancova.png" alt="The analysis of covariance of the sorghum: the title with the ⓘ What is this analysis? button; the conclusion with the slope of 0.027 per plant, the adjusted effect of variety (F = 30.195) and the relative efficiency of 601.0%; the traffic light with both assumptions in green; the Chart theme selector; the plot of yield against plants with one line per variety and the plot of the adjusted means with their letters"></div>
+    <figcaption><b>Figure 4.30.</b> The sorghum covariance analysis: each additional plant adds 0.027 to yield; adjusted for plants, the varieties differ (F = 30.195, <i>p</i> &lt; 0.001).</figcaption>
+  </figure>
+  <p>The <b>adjusted means</b> are the values each treatment would have if all its plots had the same number of plants (the overall mean of the covariate). They are the ones you publish, and they can change the order of the unadjusted means:</p>
+  <table class="compacta salida" style="width:96%">
+    <caption><b>Table 4.3.</b> Sorghum means, unadjusted and adjusted for the number of plants, with Tukey letters (α = 0.05), as SigmaPro gives them (table 4 of the result).</caption>
+    <thead><tr><th>variedad</th><th class="n">Unadjusted mean</th><th class="n">Mean of plantas</th><th class="n">Adjusted mean</th><th class="n">SE</th><th class="n">95% CI</th><th class="c">Group</th></tr></thead>
+    <tbody>
+      <tr><td>Línea 1</td><td class="n">4.125</td><td class="n">122.3</td><td class="n">4.127</td><td class="n">0.06143</td><td class="n">3.995 – 4.259</td><td class="c">a</td></tr>
+      <tr><td>Línea 2</td><td class="n">3.442</td><td class="n">110.0</td><td class="n">3.770</td><td class="n">0.07099</td><td class="n">3.617 – 3.922</td><td class="c">bc</td></tr>
+      <tr><td>Línea 3</td><td class="n">3.520</td><td class="n">126.8</td><td class="n">3.403</td><td class="n">0.06274</td><td class="n">3.268 – 3.537</td><td class="c">de</td></tr>
+      <tr><td>Línea 4</td><td class="n">3.833</td><td class="n">122.5</td><td class="n">3.828</td><td class="n">0.06143</td><td class="n">3.696 – 3.960</td><td class="c">b</td></tr>
+      <tr><td>Línea 5</td><td class="n">3.593</td><td class="n">124.3</td><td class="n">3.542</td><td class="n">0.06168</td><td class="n">3.409 – 3.674</td><td class="c">cd</td></tr>
+      <tr><td>Testigo</td><td class="n">3.280</td><td class="n">128.3</td><td class="n">3.123</td><td class="n">0.06376</td><td class="n">2.986 – 3.260</td><td class="c">e</td></tr>
+    </tbody>
+  </table>
+  <p>Línea 2 had fewer plants (110 on average): unadjusted, it looked like one of the worst (3.442); adjusted, it falls in the second group (3.770). Línea 3, with more plants than average, drops from 3.520 to 3.403.</p>
+  <p>There are five tables. The first is the <b>analysis of covariance</b>, with the treatment effect already adjusted (variety, <i>F</i> = 30.19 with 5 and 14 df). The second, the <b>common slope of each covariate</b> (0.02652 per plant, <i>t</i> = 9.19, 95% CI: 0.02033 to 0.03270). The third, the <b>covariance assumptions</b>, with the two tests of the traffic light. The fourth, the adjusted means (table 4.3). The last, the <b>trial summary</b>: overall mean, CV, R² and the two error mean squares that give the <b>relative efficiency</b> of the covariance adjustment. In the sorghum, the error mean square drops from 0.0991 without the covariate to 0.0151 with it, and the ANCOVA is equivalent to having 6.01 times the replicates of the ANOVA without the covariate (Cochran and Cox, 1957). The efficiency is calculated only with one covariate; with two, the summary does not include it.</p>
+  <p>The two plots show the response against the covariate (the first one, if there are two), with one line per variety, all with the same slope, and the adjusted means with their letters. With two treatment factors, the analysis of covariance includes their interaction and, if it is significant, an additional table compares the first factor within each level of the second, with the adjusted means.</p>
+
+  <h3>Simple and multiple linear regression</h3>
+  <p>Choose the <span class="ui">Response variable (y)</span> and the <span class="ui">Predictors (up to 15)</span>; with one predictor it is simple regression, and with more, multiple regression. The predictors enter the model in the order in which they appear in the list, which is the order of the columns in the table, not the order in which you checked them. The <span class="ui">Predict at (optional)</span> field takes one line per point, with the values of the predictors in that same order, separated by spaces; the help under the field names them in order. The <span class="ui">Confidence level</span> and the <span class="ui">Significance level</span> complete the form. In the coffee example, the yield of 40 farms is explained by their altitude, the soil organic matter and the percentage of shade.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-regresion.png" alt="The multiple regression of the coffee: the title with the ⓘ What is this analysis? button, the conclusion (F = 46.801 with 3 and 36 df; R² = 0.796) and the six-row traffic light, with normality, constant variance, independence and collinearity in green, and model form and influential observations in amber"></div>
+    <figcaption><b>Figure 4.31.</b> The coffee regression explains 79.6% of the variation in yield; the traffic light asks you to check the model form and two observations.</figcaption>
+  </figure>
+  <p>The conclusion says whether the model is significant as a whole, which predictors have an effect of their own (adjusted for the others) and how much it explains (R² and adjusted R²). In simple regression, it says instead how much the response rises or falls per unit of the predictor, with its interval. The regression <b>traffic light</b> has six rows (if one fails, <span class="ui">Try the alternative</span> offers the corresponding remedy: section 4.7):</p>
+  <ul>
+    <li><b>Normality of residuals</b>: Shapiro-Wilk.</li>
+    <li><b>Constant variance</b>: studentized Breusch-Pagan (Koenker).</li>
+    <li><b>Model form</b>: the RESET test (with ŷ² and ŷ³), and lack of fit when the predictors have repeated values. In the coffee, RESET gives <i>F</i> = 3.576 and <i>p</i> = 0.039: perhaps a curve or an interaction is missing.</li>
+  </ul>
+  <ul>
+    <li><b>Independence</b>: Durbin-Watson, with an exact <i>p</i> if there are fewer than 100 observations. It measures autocorrelation <i>in the order of the rows</i>, so it only matters if that is the order of measurement or the position in the field; that is why this row never goes beyond amber.</li>
+    <li><b>Influential observations</b>: R’s criteria (leverage, DFFITS, DFBETAS, COVRATIO and Cook’s distance). The row turns red if any observation has a large Cook’s distance, and amber if only the other criteria flag it. In the coffee, two farms, 17 and 6, are flagged by COVRATIO and none by Cook’s distance.</li>
+    <li><b>Collinearity</b>, with two or more predictors: the VIF of each predictor and the condition number; the row turns amber with a VIF greater than 5 and red with one greater than 10 (maximum VIF 1.10 and condition number 15.1 in the coffee: no problem).</li>
+  </ul>
+  <figure>
+    <div class="marco"><img src="../img/en/b4-reg-graficas.png" alt="The four diagnostic plots of the coffee regression: observed against fitted with the diagonal, standardized residuals against fitted with the ±2 bands, the normal Q-Q plot of the residuals and the studentized residuals against leverage; the two flagged farms, in gold"></div>
+    <figcaption><b>Figure 4.32.</b> The four diagnostic plots. The two flagged farms appear in gold: 17, for its studentized residual of 2.55, and 6, with an almost null residual (0.10) but a leverage of 0.16; both are flagged by COVRATIO and neither by Cook’s distance.</figcaption>
+  </figure>
+  <p>With a single predictor, the first plot is not observed against fitted but the <b>fitted line</b> over the data, with the confidence band of the mean (shaded) and the prediction band (dashed border); the other three are the same.</p>
+  <p>There are seven tables: the <b>coefficients</b>, with their interval, the standardized coefficient (β) and the VIF; the <b>analysis of variance</b> of the regression; the <b>goodness of fit</b> (R², adjusted R², standard error of the estimate, CV, AIC, BIC and the number of observations); the <b>contribution of each predictor</b>, with the sequential sum of squares (type I, in model order) and the partial one (type II); the <b>assumption tests</b>; the <b>influential observations</b>, with the criterion that flagged them (only if there are any); and the <b>condition indices</b> with the variance proportions of Belsley, Kuh and Welsch (1980), with two or more predictors. With values in <span class="ui">Predict at (optional)</span>, the <b>predictions</b> table is added, with the confidence interval of the mean and the prediction interval of a new observation.</p>
+  <table class="compacta salida" style="width:92%">
+    <caption><b>Table 4.4.</b> The coefficients of the coffee regression (table 1 of the result).</caption>
+    <thead><tr><th>Term</th><th class="n">Estimate</th><th class="n">SE</th><th class="n">t</th><th class="n">p</th><th class="n">95% CI</th><th class="n">β</th><th class="n">VIF</th></tr></thead>
+    <tbody>
+      <tr><td>(Intercept)</td><td class="n">−7.324</td><td class="n">2.164</td><td class="n">−3.38</td><td class="n">0.002</td><td class="n">−11.71 – −2.934</td><td class="n">—</td><td class="n">—</td></tr>
+      <tr><td>altitud</td><td class="n">0.01118</td><td class="n">0.001467</td><td class="n">7.62</td><td class="n">&lt; 0.001</td><td class="n">0.008209 – 0.01416</td><td class="n">0.59</td><td class="n">1.07</td></tr>
+      <tr><td>materia_organica</td><td class="n">1.841</td><td class="n">0.2157</td><td class="n">8.53</td><td class="n">&lt; 0.001</td><td class="n">1.403 – 2.278</td><td class="n">0.65</td><td class="n">1.02</td></tr>
+      <tr><td>sombra</td><td class="n">−0.04835</td><td class="n">0.02369</td><td class="n">−2.04</td><td class="n">0.049</td><td class="n">−0.09640 – −0.0003028</td><td class="n">−0.16</td><td class="n">1.10</td></tr>
+    </tbody>
+  </table>
+  <p>Each coefficient is the change in yield (in quintals of green coffee per hectare) per unit of the predictor, with the others held fixed: 1.841 per unit of organic matter, 0.01118 per meter of altitude and −0.04835 per unit of shade. The β values let you compare predictors measured on different scales: organic matter (0.65) and altitude (0.59) weigh much more than shade (−0.16).</p>
+
+  <h3>Polynomial regression</h3>
+  <p>It fits a curve to a single <span class="ui">x variable</span>, with the <span class="ui">Polynomial degree</span> you choose (<span class="ui">2 (quadratic)</span>, <span class="ui">3 (cubic)</span> or <span class="ui">4 (quartic)</span>), and tests each degree: the last one that enters must be significant for the curve to need it. With the data of each maize plot, the quadratic curve of yield against rate explains 81.7% of the variation (<i>F</i> = 100.377 with 2 and 45 df) and has its maximum at 147.747 kg/ha, with an estimated 6.769 t/ha: the same maximum given by the orthogonal polynomials on the means (section 4.11), because the data are balanced. With degree 3, the conclusion says that the cubic term is not significant (<i>p</i> = 0.529) and that one degree less is enough. The maximum or minimum is sought in curves of degree 2 and 3 when their last term is significant; if it falls outside the range of the data, the conclusion says so and asks you not to extrapolate it.</p>
+  <p>Because the rate is repeated (four rates, twelve plots each), the app splits the error into <b>lack of fit</b> and <b>pure error</b>: the lack of fit is not significant (<i>F</i> = 0.402, <i>p</i> = 0.529), so the parabola describes the means of the four rates well. The first plot shows the curve with its confidence band and its prediction band, and the <span class="ui">Predict at (optional)</span> field takes x values separated by spaces. Everything else is as in linear regression: the traffic light (without the collinearity row), the other three diagnostic plots and the same tables, except for the β values, the VIF and the condition indices, which make no sense among the powers of a single variable.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>When Durbin-Watson lights up for no reason</div>
+    <p>In the maize, the traffic light of the polynomial regression marks independence in amber (Durbin-Watson = 0.982, <i>p</i> &lt; 0.001). It is not a flaw of the trial: the rows of the example are sorted by block, hybrid and rate, and the residuals of the same block and hybrid resemble each other because the model does not include the hybrid. The test only makes sense if the order of the rows is the order of measurement or the position in the field; that is why the app warns about it in the row itself.</p>
+  </div>
+
+  <h3>Stepwise selection</h3>
+  <p>With many <span class="ui">Candidate predictors (2 to 15)</span>, stepwise selection adds or removes one per step until no change improves the model. The <span class="ui">Criterion</span> can be <span class="ui">AIC (like R's step)</span>, the default, which at each step makes the change that lowers the AIC the most, or <span class="ui">Partial F p-value</span>, with a <span class="ui">Level to enter</span> (0.05 by default) and a <span class="ui">Level to remove</span> (0.10). The options of the <span class="ui">Direction</span> change with the criterion:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:0.8in">Criterion</th><th style="width:2.35in">Direction</th><th>How it proceeds</th></tr></thead>
+    <tbody>
+      <tr><td>AIC</td><td><span class="ui">Both directions, from the full model</span> (the default)</td><td>Starts from all the candidates; at each step it can remove one or bring back one that has already left.</td></tr>
+      <tr><td>AIC</td><td><span class="ui">Backward</span></td><td>Starts from all the candidates and only removes.</td></tr>
+      <tr><td>AIC</td><td><span class="ui">Forward</span></td><td>Starts from the model with only the mean and only adds.</td></tr>
+      <tr><td><i>p</i>-value</td><td><span class="ui">Stepwise (enter and remove)</span> (the default)</td><td>Starts from the mean alone: the candidate with the smallest <i>p</i> enters if it is below the level to enter and, after each entry, the one with the largest <i>p</i> leaves if it exceeds the level to remove. The level to enter cannot be greater than the level to remove.</td></tr>
+      <tr><td><i>p</i>-value</td><td><span class="ui">Forward</span></td><td>Starts from the mean alone and adds while the smallest <i>p</i> stays below the level to enter.</td></tr>
+      <tr><td><i>p</i>-value</td><td><span class="ui">Backward</span></td><td>Starts from all the candidates and removes while the largest <i>p</i> exceeds the level to remove.</td></tr>
+    </tbody>
+  </table>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b4-pasos.png" alt="The stepwise selection of the coffee with the seven predictors: the title with the ⓘ What is this analysis? button, the conclusion (it keeps 6 of 7, adjusted R² 0.853, AIC 52.735), the Chart theme selector, the plot of the AIC at steps 0 and 1, the Analyze the chosen model button and the table of steps, where temperature leaves at step 1"></div>
+    <figcaption><b>Figure 4.33.</b> With the seven coffee predictors, selection by AIC removes temperature in one step and stops.</figcaption>
+  </figure>
+  <p>In the coffee, temperature leaves first: it is almost determined by altitude (<i>r</i> = −0.967, section 4.13) and, with altitude in the model, it adds nothing. The table of steps says what changed at each one, with the error degrees of freedom and sum of squares, the AIC, the adjusted R² and the predictors that remain (with the <i>p</i>-value criterion, also the <i>F</i> and the <i>p</i> of each change); the second table gives the coefficients of the final model. The <span class="ui">Analyze the chosen model</span> button opens linear regression with those predictors, so you can check its diagnostics.</p>
+  <p>The path matters. With the same data, going forward by AIC, organic matter enters first and then temperature, not altitude, and the selection ends with five predictors (materia_organica, temperatura, edad, ph and lluvia; adjusted R² 0.843); by <i>p</i>-value, entering and removing, it ends with four (adjusted R² 0.831). That is why it is worth comparing it with best subsets, which review every combination.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The AIC of the selection is not that of the regression</div>
+    <p>The selection uses the AIC of R’s <code>step</code> function, <i>n</i>·ln(SSE/<i>n</i>) + 2<i>k</i>; the goodness-of-fit table of linear regression gives the one derived from the log-likelihood, like R’s <code>AIC()</code>. They differ by a constant that depends only on <i>n</i>: the six-predictor model chosen by the selection has AIC = 52.735 there and 168.250 in linear regression. Compare AIC values only within the same analysis.</p>
+  </div>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Automatic selection is exploratory</div>
+    <p>The <i>p</i>-values of the chosen model are optimistic, because the same data served both to choose and to test. The conclusion says so: the model is confirmed with knowledge of the crop, and you should check its diagnostics before using it. The selection does not check the assumptions: the traffic light is in the linear regression of the chosen model.</p>
+  </div>
+
+  <h3>Best subsets</h3>
+  <p>Instead of moving one predictor at a time, it reviews <b>all</b> combinations of the <span class="ui">Candidate predictors (2 to 15)</span> (like <code>leaps::regsubsets</code>) and gives the best models of each size: one, two or three per size, according to <span class="ui">Models by size</span> (with more than one, the table adds the rank column). Each model comes with its R², the adjusted R² (higher is better), Mallows’ (1973) <i>C<sub>p</sub></i> and the BIC (lower is better).</p>
+  <table class="compacta salida" style="width:96%">
+    <caption><b>Table 4.5.</b> The best model of each size with the seven coffee predictors (table 1 of the result).</caption>
+    <thead><tr><th class="c">Predictors</th><th>Variables</th><th class="n">R²</th><th class="n">Adjusted R²</th><th class="n">C<sub>p</sub></th><th class="n">BIC</th><th>Chosen by</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td>materia_organica</td><td class="n">0.47</td><td class="n">0.45</td><td class="n">102.94</td><td class="n">−17.76</td><td></td></tr>
+      <tr><td class="c">2</td><td>temperatura, materia_organica</td><td class="n">0.78</td><td class="n">0.77</td><td class="n">23.89</td><td class="n">−49.10</td><td></td></tr>
+      <tr><td class="c">3</td><td>temperatura, materia_organica, edad</td><td class="n">0.82</td><td class="n">0.80</td><td class="n">15.02</td><td class="n">−53.73</td><td></td></tr>
+      <tr><td class="c">4</td><td>altitud, materia_organica, sombra, edad</td><td class="n">0.85</td><td class="n">0.83</td><td class="n">9.08</td><td class="n">−57.43</td><td></td></tr>
+      <tr><td class="c">5</td><td>altitud, materia_organica, ph, sombra, edad</td><td class="n">0.87</td><td class="n">0.85</td><td class="n">6.95</td><td class="n">−58.21</td><td>BIC</td></tr>
+      <tr><td class="c">6</td><td>altitud, lluvia, materia_organica, ph, sombra, edad</td><td class="n">0.88</td><td class="n">0.85</td><td class="n">6.44</td><td class="n">−57.51</td><td>Cp, Adj. R²</td></tr>
+      <tr><td class="c">7</td><td>altitud, temperatura, lluvia, materia_organica, ph, sombra, edad</td><td class="n">0.88</td><td class="n">0.85</td><td class="n">8.00</td><td class="n">−54.36</td><td></td></tr>
+    </tbody>
+  </table>
+  <p>The <b>Chosen by</b> column marks the size that wins with each criterion: the highest adjusted R², the lowest <i>C<sub>p</sub></i> and the lowest BIC. BIC penalizes predictors more and keeps five; <i>C<sub>p</sub></i> and adjusted R² keep six (the same ones chosen by stepwise selection). When they do not agree, the BIC model is the simplest.</p>
+  <figure>
+    <div class="marco"><img src="../img/en/b4-subconjuntos.png" alt="The two best-subsets plots of the coffee and the buttons below them. On the left, the BIC of the best model with each number of predictors, from 1 to 7: it falls from −17.76 to −58.21 at five predictors, the highlighted point, and rises again to −57.51 and −54.36. On the right, Mallows’ Cp against the number of coefficients, from 2 to 8, with the line Cp = p: the first point lies far above (102.94) and the one with 7 coefficients, highlighted, lies below the line (6.44); the full model falls on it (8.00). Below, the buttons Analyze the model chosen by BIC (5 predictors) and Analyze the model chosen by Cp (6 predictors)"></div>
+    <figcaption><b>Figure 4.34.</b> The best subsets of the coffee: BIC reaches its minimum with five predictors; in the <i>C<sub>p</sub></i> plot, the six-predictor model lies below the line <i>C<sub>p</sub></i> = <i>p</i>. The buttons take each model to linear regression.</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">Σ</span>How to read <i>C<sub>p</sub></i></div>
+    <p><i>C<sub>p</sub></i> compares the error of each model with that of the full model, which is taken as the true variance. An unbiased model has a <i>C<sub>p</sub></i> close to its number of coefficients <i>p</i> (the predictors plus the intercept), and the full model always has <i>C<sub>p</sub></i> = <i>p</i> (8.00 with the seven coffee predictors). SigmaPro marks the lowest <i>C<sub>p</sub></i>; the classic rule, a <i>C<sub>p</sub></i> close to <i>p</i> or below it, is read in the plot on the right. In the coffee, the six-predictor model (<i>p</i> = 7) lies below the line, with 6.44, and the five-predictor one (<i>p</i> = 6) just above it, with 6.95.</p>
+  </div>
+  <p>The buttons, <span class="ui">Analyze the model chosen by BIC (5 predictors)</span> and <span class="ui">Analyze the model chosen by Cp (6 predictors)</span> in the coffee, open linear regression with those predictors and their full diagnostics. When adjusted R² chooses a size different from the other two, a third button appears for its model.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Continue in the LABG suite</div>
+    <p>At the foot of linear regression, stepwise selection and best subsets, the <span class="ui">Continue in the LABG suite</span> strip suggests CorrelationPro, to explore and visualize the relationships among many variables at once (marked <span class="ui">Coming soon</span> while it is not yet published), and PCAPro, which summarizes highly correlated predictors (high VIF) into independent principal components. Analysis of covariance and polynomial regression have no strip (chapter 10).</p>
+  </div>
+
+  <!-- 4.13 -->
+  <h2 id="s4-13"><span class="num">4.13</span>Correlation</h2>
+  <p class="lead">Correlation measures how much two variables move together, without saying which depends on which. The family includes the correlation between two variables, the correlation matrix of many variables and partial correlation, which discounts the effect of others.</p>
+  <h3>Correlation between two variables</h3>
+  <p>Choose the <span class="ui">x variable</span>, the <span class="ui">y variable</span>, the <span class="ui">Coefficient</span> (<span class="ui">Pearson (linear relationship)</span>, the default; <span class="ui">Spearman (ranks)</span> or <span class="ui">Kendall (ranks)</span>, for a relationship that only rises or only falls) and the <span class="ui">Alternative hypothesis</span> (<span class="ui">Correlation different from zero</span>, <span class="ui">Positive correlation</span> or <span class="ui">Negative correlation</span>). With Pearson, you also choose the <span class="ui">Confidence level</span> of the interval; with Spearman or Kendall, the <span class="ui">p-value</span> (<span class="ui">Exact if possible</span> or <span class="ui">Approximate</span>) and the <span class="ui">Continuity correction (in the approximate p)</span> checkbox.</p>
+  <p>In the coffee, altitude and yield have a Pearson correlation <i>r</i> = 0.565 (95% CI: 0.307 to 0.745; <i>t</i> = 4.217 with 38 df, <i>p</i> &lt; 0.001): they share 31.9% of their variation (<i>r</i>² = 0.319). The conclusion rates it as <i>strong</i> using Cohen’s (1988) cutoffs: less than 0.1, negligible; up to 0.3, weak; up to 0.5, moderate; beyond that, strong.</p>
+  <p>The result includes the scatter plot with the least-squares line and two tables: the test (the coefficient, its interval with Pearson, the statistic, the <i>p</i>-value, how the <i>p</i> was calculated and the number of pairs) and <b>the three coefficients</b> at once (Pearson 0.565, Spearman 0.574 and Kendall 0.406 in the coffee). If Pearson and Spearman differ a lot, the relationship is not linear or some values weigh too much. Without ties, the <i>p</i>-values of Spearman (up to 1,290 observations) and Kendall (fewer than 50) are exact, as in R. With ties, as in the coffee, the <i>p</i> is approximate and the conclusion says so: Spearman calculates it with Student’s <i>t</i>, and Kendall with the normal approximation corrected for ties (<i>z</i> = 3.683).</p>
+  <p>This analysis has no traffic light: the shape of the relationship and the extreme values can be seen in the plot, and linear regression gives its full diagnostics.</p>
+
+  <h3>Correlation matrix</h3>
+  <p>With the <span class="ui">Variables (2 to 30)</span> you check, it gives all the pairwise correlations with the <span class="ui">Coefficient</span> you choose (Pearson, Spearman or Kendall). Because there are many tests at once, the <i>p</i>-values are adjusted (<span class="ui">p-value adjustment</span>: Holm, the default, Bonferroni, <span class="ui">Benjamini-Hochberg (FDR)</span> or <span class="ui">No adjustment</span>). In <span class="ui">Rows with missing values</span>, you choose between <span class="ui">Only rows complete in all variables</span> (the default) and <span class="ui">Each pair with its complete rows</span>.</p>
+
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-matriz.png" alt="The heat map of the correlations of five coffee variables, gold for positive and gray for negative, with the value and the stars in each cell and the color bar from −1 to 1"></div>
+      <figcaption><b>Figure 4.35.</b> The heat map of the coffee correlations: gold, positive; gray, negative; the stars come from the Holm-adjusted <i>p</i>.</figcaption>
+    </figure>
+    <div>
+      <p>The conclusion says how many pairs have a significant correlation (in the coffee, 4 of 10) and which one is the strongest.</p>
+      <p>The first table is the matrix, with stars according to the adjusted <i>p</i> (* <i>p</i> &lt; 0.05; ** <i>p</i> &lt; 0.01; *** <i>p</i> &lt; 0.001); the second gives each pair with its <i>p</i>, its adjusted <i>p</i> and its number of pairs, and with Pearson also its confidence interval. The tests are two-sided. In the coffee, altitude and temperature lie almost on a straight line (<i>r</i> = −0.967): that is why stepwise selection does not want both.</p>
+    </div>
+  </div>
+  <h3>Partial and semipartial correlation</h3>
+  <p>Choose the <span class="ui">x variable</span>, the <span class="ui">y variable</span>, the <span class="ui">Control variables (1 to 10)</span> and the <span class="ui">Coefficient</span> (Pearson or Spearman; with Spearman, everything is calculated on the ranks). The <b>partial correlation</b> is that of x with y after removing from both what the controls explain; the <b>semipartial</b> removes the controls from only one of them, and its square is the part of the variation in y that x explains on its own. The tests use <i>n</i>&nbsp;−&nbsp;2&nbsp;−&nbsp;<i>k</i> degrees of freedom (<i>k</i> controls), like R’s <code>ppcor</code> package.</p>
+  <table class="compacta salida" style="width:88%">
+    <caption><b>Table 4.6.</b> Temperature and coffee yield, controlling for altitude and shade.</caption>
+    <thead><tr><th>Correlation</th><th class="n">Value</th><th class="n">t</th><th class="n">df</th><th class="n">p</th></tr></thead>
+    <tbody>
+      <tr><td>Simple</td><td class="n">−0.512</td><td class="n">−3.68</td><td class="n">38</td><td class="n">&lt; 0.001</td></tr>
+      <tr><td>Partial (controls removed from both)</td><td class="n">0.279</td><td class="n">1.74</td><td class="n">36</td><td class="n">0.090</td></tr>
+      <tr><td>Semipartial: “rendimiento” with “temperatura” without the controls</td><td class="n">0.219</td><td class="n">1.35</td><td class="n">36</td><td class="n">0.186</td></tr>
+      <tr><td>Semipartial: “temperatura” with “rendimiento” without the controls</td><td class="n">0.068</td><td class="n">0.41</td><td class="n">36</td><td class="n">0.686</td></tr>
+    </tbody>
+  </table>
+  <p>Temperature seemed to lower yield (−0.512), but after discounting altitude and shade, the two are no longer correlated (partial 0.279, <i>p</i> = 0.090): the cooler farms yield more because they are higher up, not because of the temperature itself. The conclusion adds the squared semipartial (0.048): the part of the variation in yield that temperature explains on its own, beyond altitude and shade. The added-variable plot shows the residuals of the two variables without the controls; their correlation is the partial correlation.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Continue in the LABG suite</div>
+    <p>At the foot of the three correlation analyses, the <span class="ui">Continue in the LABG suite</span> strip suggests CorrelationPro, to explore and visualize the relationships among many variables at once (marked <span class="ui">Coming soon</span> while it is not yet published), and PCAPro, to reduce the dimensions of the variables and examine their relationships in biplots (chapter 10).</p>
+  </div>
+
+  <!-- 4.14 -->
+  <h2 id="s4-14"><span class="num">4.14</span>Contingency tables</h2>
+  <p class="lead">When both variables are categories (germinated or not, healthy or diseased, treated or control), the data are summarized in a table of counts. The four methods of the family accept two forms of data: <b>one row per case</b> (each seed, each leaf), with <span class="ui">— each row is one case —</span> in <span class="ui">Frequencies</span>, or the table <b>already counted</b>, with a column of counts chosen in that same field.</p>
+  <p>The <span class="ui">Frequencies</span> field only offers numeric columns of non-negative integers, and it proposes on its own the one named like a count (n, frecuencia, conteo, casos, semillas…). The categorical variables must have 2 to 50 categories. Contingency tables have neither a traffic light nor a suite strip.</p>
+  <h3>Contingency table</h3>
+  <p>It tests whether two variables are independent. Choose the <span class="ui">Row variable</span>, the <span class="ui">Column variable</span>, the <span class="ui">Frequencies</span>, the <span class="ui">Yates correction (2 × 2 tables)</span> checkbox (checked by default, as in R), the <span class="ui">Confidence level</span> and the <span class="ui">Significance level</span>. The treated-seed example counts how many seeds germinated with and without fungicide in four lots; here, the lots are pooled.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-contingencia.png" alt="The mosaic of seed treatment against germination: the width of each bar is the treatment total and the height of each part, the proportion that germinated; the shade, the adjusted residual (gold, more cases than expected; gray, fewer)"></div>
+      <figcaption><b>Figure 4.36.</b> The mosaic of the treated seed: gold marks the cells with more cases than expected under independence.</figcaption>
+    </figure>
+    <div>
+      <p>Treated seed germinates more (χ²&nbsp;=&nbsp;31.326, <i>p</i>&nbsp;&lt;&nbsp;0.001). The conclusion says whether there is an association, how strong it is (<b>Cramér’s V</b>: 0.201, weak) and which cell departs most from independence, by its <b>adjusted residual</b> (beyond ±1.96, the cell departs at α = 0.05; here, fungicide with germinated, 5.678). In 2 × 2 tables, it adds the <b>odds ratio</b> (2.589, 95% CI: 1.854 to 3.615: treated seeds have 2.6 times the odds of germinating) and the <b>relative risk</b> of the first column (1.266, 95% CI: 1.165 to 1.376).</p>
+    </div>
+  </div>
+  <p>The five tables are the observed frequencies; the expected ones with their adjusted residual; the independence tests (Pearson’s chi-square, the likelihood ratio G² and Fisher’s exact test, with its conditional odds ratio in 2 × 2 tables); the measures of association (φ, Cramér’s V, the contingency coefficient, Goodman and Kruskal’s λ and the uncertainty coefficient); and the measures for ordered categories (γ, Kendall’s τ-b, Stuart’s τ-c and Somers’ <i>d</i>). SigmaPro calculates the latter in any table, but they are only meaningful if both variables have a natural order (doses, damage grades).</p>
+  <p>Fisher’s exact test is always calculated in 2 × 2 tables; in larger ones, only with up to 5,000 cases and if some expected frequency is less than 5 or there are 300 cases or fewer (if it would require examining too many tables, the note says so and recommends merging categories). When some expected frequency is less than 5, the note warns that the chi-square is approximate, and the conclusion decides with Fisher’s exact test.</p>
+
+  <h3>McNemar and Bowker: paired data</h3>
+  <div class="dos">
+    <div>
+      <p>When each case is classified twice (before and after a treatment, or with two methods), the two classifications are not independent and the chi-square does not apply. Choose the <span class="ui">First classification (before)</span> and the <span class="ui">Second classification (after)</span>, with the same categories, the <span class="ui">Frequencies</span> and the <span class="ui">Continuity correction</span> checkbox (checked by default). With two categories, it is the <b>McNemar</b> test, with its exact binomial version; with more, <b>Bowker’s symmetry</b> test, which asks whether changes in one direction are as frequent as in the other.</p>
+    </div>
+    <table class="compacta salida">
+      <caption><b>Table 4.7.</b> Rust severity on 80 leaves, scored by technicians A (rows) and B (columns): 0 healthy, 1 mild, 2 moderate, 3 severe.</caption>
+      <thead><tr><th>A \ B</th><th class="n">0</th><th class="n">1</th><th class="n">2</th><th class="n">3</th><th class="n">Total</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td class="n">25</td><td class="n">6</td><td class="n">0</td><td class="n">0</td><td class="n">31</td></tr>
+        <tr><td>1</td><td class="n">0</td><td class="n">21</td><td class="n">3</td><td class="n">0</td><td class="n">24</td></tr>
+        <tr><td>2</td><td class="n">0</td><td class="n">2</td><td class="n">10</td><td class="n">1</td><td class="n">13</td></tr>
+        <tr><td>3</td><td class="n">0</td><td class="n">0</td><td class="n">2</td><td class="n">10</td><td class="n">12</td></tr>
+        <tr><td>Total</td><td class="n">25</td><td class="n">29</td><td class="n">15</td><td class="n">11</td><td class="n">80</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>In 2 × 2 tables, the test table gives McNemar’s chi-square (with the correction, if it is checked and the two types of change are not equal) and the exact binomial test, which uses only the cases that changed; the conclusion decides with the exact binomial test, whether or not the correction is checked.</p>
+  <p>With the rust, Bowker gives χ²&nbsp;=&nbsp;6.533 with 3 df and <i>p</i>&nbsp;=&nbsp;0.088: there is no evidence that one technician systematically scores higher than the other. The pairs of categories with no change at all (healthy–moderate, healthy–severe, mild–severe) do not enter the test; R would give NaN, while SigmaPro lowers the degrees of freedom to 3 and says so in the note. The third table gives the proportion of each category in each classification: technician A scored 0.3875 of the leaves as healthy and B, 0.3125, because B saw as mild six of the leaves that A saw as healthy. The plot is a heat map of the table, with the diagonal of the cases that did not change.</p>
+
+  <h3>Cochran-Mantel-Haenszel: association by strata</h3>
+  <p>When the data come from several lots, sites or years, pooling them can create or hide an association. Choose the <span class="ui">Row variable</span>, the <span class="ui">Column variable</span>, the <span class="ui">Strata (lots, sites, years)</span> and the <span class="ui">Frequencies</span>, with the <span class="ui">Continuity correction</span> checkbox (checked by default) and the <span class="ui">Confidence level</span>. The <b>Cochran-Mantel-Haenszel</b> test measures the association within each stratum and combines it, with the <b>common odds ratio</b>. The <b>Breslow-Day</b> test says whether the odds ratio is similar in all strata; the table gives it without and with Tarone’s correction, and the conclusion uses the corrected one. With tables larger than 2 × 2 in each stratum, the test is the generalized one, with (<i>I</i>&nbsp;−&nbsp;1)(<i>J</i>&nbsp;−&nbsp;1) df, without a common odds ratio, without Breslow-Day and without a plot.</p>
+
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-mantel.png" alt="The odds ratio of each lot (L1 to L4) and the common one, with their intervals, on a logarithmic scale and with a dashed line at 1"></div>
+      <figcaption><b>Figure 4.37.</b> The odds ratio of each lot and the common one (2.621), with their intervals, on a logarithmic scale.</figcaption>
+    </figure>
+    <div>
+      <p>Controlling for lot, treatment and germination remain associated (CMH χ²&nbsp;=&nbsp;31.600, <i>p</i>&nbsp;&lt;&nbsp;0.001), with a common odds ratio of 2.621 (95% CI: 1.871 to 3.671). Lot 4 has the highest ratio (6.093), but Breslow-Day finds no differences between lots (<i>p</i>&nbsp;=&nbsp;0.186), so the common ratio summarizes them well.</p>
+      <p>The table for each stratum gives its table (a b / c d), its odds ratio and its interval; the dashed line in the plot marks 1, where there would be no association.</p>
+    </div>
+  </div>
+
+  <h3>Inter-rater agreement: kappa</h3>
+  <p>It measures how much two raters (or two methods) agree beyond what they would agree by chance. Choose <span class="ui">Rater 1</span>, <span class="ui">Rater 2</span>, the <span class="ui">Frequencies</span>, the <span class="ui">Weighted kappa weights</span> (<span class="ui">Quadratic</span>, the default, or <span class="ui">Linear</span>), the <span class="ui">Confidence level</span> and the <span class="ui">Significance level</span>. The weights count a disagreement between neighboring categories as less serious than one between extreme categories: with quadratic weights, a disagreement of two grades weighs four times as much as one of a single grade; with linear weights, twice as much. The weighted kappa appears when there are more than two categories.</p>
+  <p>With the rust (table 4.7), the technicians agree on 82.5% of the leaves, when by chance they would agree on 28.1%. Cohen’s kappa is 0.757 (95% CI: 0.642 to 0.871), a <i>substantial</i> agreement according to Landis and Koch (1977). The weighted kappa rises to 0.920 with quadratic weights and to 0.846 with linear weights, because almost all the disagreements are between neighboring categories. The agreement table gives each kappa with its standard error (Fleiss, Cohen and Everitt, 1969), its interval and its <i>z</i> test, which uses the standard error of chance agreement. The plot is the heat map of the table, with the agreements on the diagonal.</p>
+  <table class="compacta salida" style="width:88%">
+    <caption><b>Table 4.8.</b> The agreement of the two technicians on rust, with the default quadratic weights (table 2 of the result).</caption>
+    <thead><tr><th>Measure</th><th class="n">Value</th><th class="n">SE</th><th class="n">95% CI</th><th class="n">z</th><th class="n">p</th></tr></thead>
+    <tbody>
+      <tr><td>Cohen’s kappa</td><td class="n">0.757</td><td class="n">0.059</td><td class="n">0.6419 – 0.8713</td><td class="n">11.27</td><td class="n">&lt; 0.001</td></tr>
+      <tr><td>Weighted kappa (quadratic)</td><td class="n">0.920</td><td class="n">0.022</td><td class="n">0.8763 – 0.9630</td><td class="n">8.26</td><td class="n">&lt; 0.001</td></tr>
+    </tbody>
+  </table>
+  <p>The weighted kappa depends on the order of the categories. SigmaPro builds a square table with the categories of both raters in the order of those of rater 1, which is the order of the column in Data (the order of appearance, or the one set with <span class="ui">Order levels…</span>, section 2.7). A category used only by rater 2 is inserted right after the one that precedes it in that rater’s column, and if all the categories are numbers, they are sorted from smallest to largest. Thus, if rater 1 scored only “mild”, “medium” and “high” and rater 2 also “healthy”, the table becomes healthy, mild, medium, high. Before reading the weighted kappa, check that order in the first table of the result.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Weighted kappas from earlier versions</div>
+    <p>In SigmaPro versions earlier than 0.5.0, a category used only by rater 2 was placed at the end of the table, and the weighted kappa was calculated with a false order. Since 0.5.0, the category goes in its proper place. If you calculated a weighted kappa with an earlier version and one rater did not use some category, run it again. The simple kappa and the McNemar and Bowker tests do not depend on the order.</p>
+  </div>
+</section>
+
+</body>
+</html>

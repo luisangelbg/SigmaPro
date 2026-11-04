@@ -1,7 +1,7 @@
 // SigmaPro — manual: capturas de pantalla de la app.
 // Copyright (C) 2026  Luis Ángel Barrera-Guzmán · GPL-3.0-or-later (ver LICENSE).
 //
-// Uso (desde la carpeta de la app):  node manual/herramientas/captura.mjs <receta> [<receta> …] [--ancho 1400] [--alto 900]
+// Uso (desde la carpeta de la app):  node manual/herramientas/captura.mjs <receta> [<receta> …] [--ancho 1400] [--alto 900] [--idioma en]
 // Abre index.html por file:// (como con doble clic) en un navegador sin ventana, tema claro, sin trabajo guardado,
 // ejecuta la receta (manual/herramientas/recetas/<receta>.js) y guarda manual/img/<receta>.png al doble de resolución.
 // La receta puede dejar en window.__recorte el rectángulo «x,y,ancho,alto» (píxeles de la vista, como los da
@@ -9,7 +9,7 @@
 // en la figura. Si la primera línea de la receta dice «vista: 390x844 movil» (o «vista: 1400x1900»), la app se abre
 // con ese tamaño de pantalla; si dice «motor», la app se sirve por http desde su carpeta y el motor R sale de
 // motor-r/ (sin internet).
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { abrir, servir } from './navegador.mjs';
@@ -17,7 +17,9 @@ import { abrir, servir } from './navegador.mjs';
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const MANUAL = join(AQUI, '..'), APP = join(MANUAL, '..');
 const args = process.argv.slice(2), opc = {}, recetas = [];
-for (let i = 0; i < args.length; i++) { if (args[i].startsWith('--')) opc[args[i].slice(2)] = +args[++i]; else recetas.push(args[i]); }
+for (let i = 0; i < args.length; i++) { if (args[i] === '--idioma') opc.idioma = args[++i]; else if (args[i].startsWith('--')) opc[args[i].slice(2)] = +args[++i]; else recetas.push(args[i]); }
+/* --idioma en: la app con la interfaz en inglés (?lang=en) y la captura en img/en/, para la edición inglesa */
+const EN = opc.idioma === 'en', IMG = EN ? join('img', 'en') : 'img', LANG = EN ? '?lang=en' : '?lang=es';
 if (!recetas.length) { console.error('Uso: node manual/herramientas/captura.mjs <receta> [--ancho 1400] [--alto 900]'); process.exit(2); }
 const ancho = opc.ancho || 1400, alto = opc.alto || 900;
 let URL_APP = pathToFileURL(join(APP, 'index.html')).href;
@@ -28,6 +30,7 @@ const n = await abrir({ ancho, alto, escala: 2 });
 const http = recetas.some(r => existsSync(join(AQUI, 'recetas', r + '.js')) && /motor/.test(readFileSync(join(AQUI, 'recetas', r + '.js'), 'utf8').split('\n')[0])) ? await servir(APP) : null;
 let codigo = 0;
 if (http) URL_APP = http.origen + '/index.html';
+URL_APP += LANG;
 try {
   for (const r of recetas) {
     const archivo = join(AQUI, 'recetas', r + '.js');
@@ -51,10 +54,11 @@ try {
     const sigue = await n.evaluar('(window.SP && SP.app) ? location.href : ""');
     if (!String(sigue || '').startsWith(URL_APP)) throw new Error('La página dejó de ser la app antes de la captura de ' + r + ' (' + (sigue || 'otra página') + ').');
     const png = await n.png(rec, rec && rec.fuera);
-    writeFileSync(join(MANUAL, 'img', r + '.png'), png);
+    mkdirSync(join(MANUAL, IMG), { recursive: true });
+    writeFileSync(join(MANUAL, IMG, r + '.png'), png);
     const errores = n.consola.slice(consola0).filter(c => !/motor R|webR/i.test(c));
     const marcas = await n.evaluar('window.__marcas');
-    console.log('img/' + r + '.png' + (rec ? ' (' + rec.ancho + ' × ' + rec.alto + ')' : ' (vista completa)') + (errores.length ? ' · consola: ' + errores.join(' | ') : ''));
+    console.log(IMG.replace(/\\/g, '/') + '/' + r + '.png' + (rec ? ' (' + rec.ancho + ' × ' + rec.alto + ')' : ' (vista completa)') + (errores.length ? ' · consola: ' + errores.join(' | ') : ''));
     if (marcas && marcas.length) console.log('  ' + marcas.map(m => `<span class="marca" style="left:${m.x}%;top:${m.y}%">${m.n}</span>`).join(''));
   }
 } catch (e) { console.error(e); codigo = 1; } finally { await n.cerrar(); if (http) await http.cerrar(); process.exit(codigo); }

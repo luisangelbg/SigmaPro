@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 7</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b7" data-pestana="B7" data-orden="7" style="--acento: var(--b7)">
+  <div class="cap-apertura">
+    <div class="cap-num">7</div>
+    <div class="cap-etiqueta">Block 7 · Export</div>
+    <h1>Exporting and saving your work</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">The report leaves SigmaPro as a document to edit or print, also in Markdown and as a class worksheet; its tables as a spreadsheet or LaTeX; and its figures in a single compressed file. The .labg project stores all your work so you can reopen it, share it or repeat it in R, and autosave protects it while you work. Everything is built in the browser: nothing leaves your computer.</p>
+    <ul class="cap-contenido">
+      <li><b>7.1</b>The Export block</li>
+      <li><b>7.2</b>The full report</li>
+      <li><b>7.3</b>The class worksheet</li>
+      <li><b>7.4</b>The tables</li>
+      <li><b>7.5</b>The figures</li>
+      <li><b>7.6</b>The .labg project</li>
+      <li><b>7.7</b>Autosave</li>
+    </ul>
+  </div>
+
+  <!-- 7.1 -->
+  <h2 id="s7-1"><span class="num">7.1</span>The Export block</h2>
+  <p class="lead">A notice says how many analyses the report has; below it there are six cards. Each button builds its file in the browser and downloads it; if analyses in the R engine are still computing, it waits for them.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b7-bloque.png" alt="The Export block with the maize report: the notice Analyses in the report: 3 and six cards: Full report, with the page size, the Summary in a nutshell, Reading of the indicators with gauges, Methods appendix, R code in an appendix and Technical details in an appendix checkboxes and the .docx document, PDF (print), HTML page and Markdown (.zip) buttons; Class worksheet, with the Include the data and Answer key at the end checkboxes and the Worksheet .docx and Worksheet PDF (print) buttons; Tables, with .xlsx spreadsheet and LaTeX .tex; Figures, with the Also as TIFF checkbox and All figures (.zip); .labg project, with Save project and Open a project; and Autosave, with its checkbox, the time of the last save and Delete saved work"></div>
+    <figcaption><b>Figure 7.1.</b> The Export block with the maize report.</figcaption>
+  </figure>
+
+  <!-- 7.2 -->
+  <h2 id="s7-2"><span class="num">7.2</span>The full report</h2>
+  <p class="lead">The report comes out in four formats with the same content: <span class="ui">.docx document</span>, to edit it in a word processor; <span class="ui">PDF (print)</span>, which opens the browser’s print dialog with the report paginated (there you choose “Save as PDF”); <span class="ui">HTML page</span>, a single file that opens in any browser, with vector figures; and <span class="ui">Markdown (.zip)</span>, formatted text (see below).</p>
+  <p>You choose the <span class="ui">Page size</span> (letter or A4) and which parts it includes: the <span class="ui">Summary in a nutshell</span>, the <span class="ui">Reading of the indicators with gauges</span> and, in appendices, the <span class="ui">Methods appendix</span>, the <span class="ui">R code</span> and the <span class="ui">Technical details</span> of each analysis. The five checkboxes come checked, and the app remembers them. The document has:</p>
+  <ol>
+    <li>A <b>cover</b> with the title, the author and the date, and an information box: the data (with their number of rows), the contents (how many analyses, tables and figures) and the SigmaPro version.</li>
+    <li>The <b>table of contents</b>, on a page of its own: the sections and, under Results, each analysis. In the HTML page and in the PDF each line is a link to its section; in the .docx it is a word-processor table of contents, which picks up the page numbers when its fields are updated (Word offers to do this when you open the document).</li>
+    <li>The <b>Summary of the results</b>: the <span class="ui">In a nutshell</span> box of each analysis (section 4.5), with its number and its title, for readers who want the essentials before the detail.</li>
+    <li><b>Methods</b>: the methods paragraph of each analysis, with its citations, and the sentence that cites SigmaPro and R (section 5.4).</li>
+    <li><b>Results</b>: each analysis with its number and its title, the conclusion, the results paragraph, the <b>reading of its indicators</b> (figure 7.3), its tables and its figures numbered consecutively and, if it has them, its assumptions with the traffic light.</li>
+    <li><b>References</b>: the works cited by the methods, in full.</li>
+    <li><b>Appendices</b>: the methods appendix (figure 7.4), the technical details and the R code of each analysis. They take the letters A, B and C in that order; if you leave one out, the others move up.</li>
+  </ol>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b7-documento.png" alt="The beginning of the report exported as an HTML page: the cover with the title Maize trial: hybrids and nitrogen rates, SigmaPro LABG report with a gold line below it, the author and the date; the information box with the data, Example: Maize: hybrids × nitrogen (48 rows), the contents, 3 analyses, 9 tables and 3 figures, and the software, SigmaPro with every calculation validated against R; and the table of contents: Summary of the results, Methods, Results with the three analyses, References and the three appendices"></div>
+    <figcaption><b>Figure 7.2.</b> The beginning of the maize report exported as an HTML page: the cover with its information box and the table of contents. On screen, a dotted line marks where each page begins when printed.</figcaption>
+  </figure>
+  <p>The <b>reading of the indicators</b> is the document version of <span class="ui">How to read this table</span> (section 4.5): one gauge per key statistic of the analysis, up to eight, in the order of its tables (the <i>p</i> of each effect, the CV, the R², the effect sizes…), each with its value and its zone, and at the foot the sources of the guides. The values of the pairwise comparisons and that of the intercept stay in their tables. In the .docx the panel goes in as a 300 dpi image with its alternative text; in the HTML page and in the PDF, as vector graphics.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b7-lectura.png" alt="The Reading the indicators panel of the maize block analysis in the exported page: seven rows, each with the name of the statistic, a scale with zones and a marker, and the value with its zone: the p-value of bloque, hibrido and dosis, less than 0.001, very strong; that of the interaction, 0.220, insufficient; the coefficient of variation, 3.57, low (high precision); the R², 0.969, large; and the relative efficiency, 160, precision gained; at the foot, the guides: Wasserstein and Lazar (2016), Pimentel-Gomes (2009), Cohen (1988) and Gomez and Gomez (1984)"></div>
+    <figcaption><b>Figure 7.3.</b> The reading of the indicators of the maize block analysis, in the exported HTML page.</figcaption>
+  </figure>
+  <p>The <b>methods appendix</b> gives, for each method in the report, the essentials of its fact sheet in Fundamentals (chapter 9): what it is for, its model with the meaning of each term, the hypotheses it tests, its assumptions and further reading. Each method appears once, even if the report uses it in several analyses. The formulas are in MathML in the page and in the PDF, and in the .docx they are <b>word-processor equations</b>, which you edit with its equation editor.</p>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b7-apendice.png" alt="Appendix A, Methods appendix, in the exported page: a sentence introducing it and the Randomized complete blocks method with What it is for, the model y equals mu plus tau i plus beta j plus epsilon ij with normal error, the list of its terms, the null hypothesis that all the taus are zero against the alternative that some tau is not, with its explanation, and the assumptions: normality of residuals, equal variances among treatments, block by treatment additivity and independence"></div>
+    <figcaption><b>Figure 7.4.</b> The methods appendix of the maize report: the randomized complete blocks method, with its model and its hypotheses written as formulas.</figcaption>
+  </figure>
+  <p><span class="ui">Markdown (.zip)</span> downloads a ZIP with <code>reporte.md</code> and the <code>figuras</code> folder. It is the same document as formatted text: each table as a table, with its numeric columns right-aligned and its notes; the table of contents with links to each section; the R code in code blocks; and the appendix formulas in TeX, between dollar signs. The figures and the reading panels go as 300 dpi PNG images in <code>figuras</code>. It is useful for taking the report to a code repository, a notebook or a document converter.</p>
+  <p>The tables in the .docx are word-processor tables, with the horizontal rules journals use, and you can edit them; the figures go in as 300 dpi images at the width chosen in Figures, with the current chart theme (table 6.1). The test battery opens each .docx with an independent reader and checks that its parts are valid and that the text of each table is exactly the app’s, and it reads the Markdown with an independent CommonMark parser to check the same in its tables (chapter 8).</p>
+  <p>The document comes out in the language of the interface: with the selector set to ES (section I.5), the cover, the headings, the conclusions, the tables and the paragraphs come out in Spanish, with the same numbers; the comments in the R code are in Spanish in either language.</p>
+
+  <!-- 7.3 -->
+  <h2 id="s7-3"><span class="num">7.3</span>The class worksheet</h2>
+  <p class="lead">For teaching with the analyses in the report: <span class="ui">Worksheet .docx</span> and <span class="ui">Worksheet PDF (print)</span> build an exercise sheet with the same data and, at the end, the answer key for the instructor.</p>
+  <p>The worksheet begins with lines for the name, the group and the date, some instructions and, with <span class="ui">Include the data</span>, the data table (up to 60 rows, with the Data filter if there is one). Each analysis in the report is an <b>exercise</b> with its statement, the report’s methods paragraph (section 5.4), and numbered questions with lines to answer them (figure 7.5):</p>
+  <ul>
+    <li><b>Complete the table</b>: in an analysis of variance, the mean squares and the F values are left blank; the sums of squares, the degrees of freedom and the <i>p</i> values are shown. In analyses without that table, the main table is given in full, to answer from it.</li>
+    <li><b>Decide</b>, with the <i>p</i> values and the analysis’s α, which effects are significant.</li>
+    <li><b>Interpret</b> up to two indicators of the result, the single-valued ones: the CV, the R², an effect size.</li>
+    <li>State which <b>assumptions</b> the method relies on, according to its fact sheet in Fundamentals (chapter 9).</li>
+    <li>Write the <b>conclusion</b> in two or three sentences, without statistical symbols.</li>
+  </ul>
+  <figure class="chica">
+    <div class="marco"><img src="../img/en/b7-hoja.png" alt="Exercise 1 of the maize worksheet: the statement of the analysis of variance in randomized complete blocks; question 1, complete the table by computing the mean squares and the F values; table 2, the analysis of variance to complete, with the MS and F columns blank and the SS, the df and the p values shown; question 2, which effects are significant, with the p values and alpha equal to 0.05; and question 3, what the coefficient of variation of 3.57 says; each with three lines to answer"></div>
+    <figcaption><b>Figure 7.5.</b> The first exercise of the maize worksheet, in the print page: the ANOVA table to complete and the first questions.</figcaption>
+  </figure>
+  <p>With <span class="ui">Answer key at the end</span>, a separate page has the complete table, with the same number, and the answer to each question with the numbers of the case: the conclusion of the analysis, the interpretation of each indicator with its guide, the assumptions from the fact sheet and the <span class="ui">In a nutshell</span> box. To hand out the worksheet without the key, uncheck that box; you can edit the .docx to change or add questions.</p>
+
+  <!-- 7.4 -->
+  <h2 id="s7-4"><span class="num">7.4</span>The tables</h2>
+  <ul>
+    <li><span class="ui">.xlsx spreadsheet</span>: each table of the report on its own sheet, with <b>all its digits</b>, without the on-screen rounding, and a first sheet with the index. It is useful for further calculations, or for rebuilding a table in another format without retyping a single number. To download a single table as CSV, without building the spreadsheet, use the <span class="ui">Download as CSV</span> button of the result in Analysis or Explore (section 4.5).</li>
+    <li><span class="ui">LaTeX .tex</span>: the tables as LaTeX tables with the three journal rules of the <code>booktabs</code> package, one per <code>table</code> environment, with its title and its notes, ready to paste into a thesis or paper written in LaTeX.</li>
+  </ul>
+
+  <!-- 7.5 -->
+  <h2 id="s7-5"><span class="num">7.5</span>The figures</h2>
+  <p><span class="ui">All figures (.zip)</span> downloads a compressed file with each figure of the report in SVG, vector PDF and PNG at 600 dpi, at the width chosen in the Figures block and with the changes made with the ✎ editor, plus an index with the number and the caption of each one. With <span class="ui">Also as 600 dpi TIFF</span>, it adds the TIFF. The figures come out with the current chart theme. A single figure is downloaded from its card in the Figures block (section 6.3).</p>
+
+  <!-- 7.6 -->
+  <h2 id="s7-6"><span class="num">7.6</span>The .labg project</h2>
+  <p class="lead">The project stores <b>all your work</b> in a single file: the data, the report and the figure settings. Use it to continue another day, to take your work to another computer, to send it to an advisor or a reviewer, or to repeat all the analyses in R.</p>
+  <p><span class="ui">Save project</span> downloads a file with the .labg extension, which is a ZIP with these files:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">File</th><th>What it stores</th></tr></thead>
+    <tbody>
+      <tr><td><code>manifiesto.json</code></td><td>The format, the SigmaPro version and the SHA-256 hash of each file.</td></tr>
+      <tr><td><code>datos/hoja.json</code></td><td>The complete worksheet: the column types, the factor levels, the computed columns and the filter.</td></tr>
+      <tr><td><code>datos/datos.csv</code></td><td>The rows the analyses use, as text, for R or any other program.</td></tr>
+      <tr><td><code>analisis.json</code></td><td>The report: each analysis with its inputs, its options, its title and its note.</td></tr>
+      <tr><td><code>estilos.json</code></td><td>The figure settings.</td></tr>
+      <tr><td><code>codigo/analisis.R</code></td><td>The R code that repeats everything: unzip the project and run <code>source("codigo/analisis.R")</code> from its folder.</td></tr>
+      <tr><td><code>LEAME.txt</code></td><td>What the file is and how to open it.</td></tr>
+    </tbody>
+  </table>
+  <p><b>Results are not stored</b>: they are recalculated when the project is opened, so they come out exactly the same (the test battery checks this, table by table) and a project never carries outdated numbers.</p>
+  <h3>Opening a project</h3>
+  <p>You open a project with <span class="ui">Open a project</span> in Export, or with <span class="ui">Open a .labg project</span> in Results when the report is empty. The app checks the SHA-256 hash of each file against the manifest. If they match and there is no other work in the app, it opens the project directly; if data or analyses are loaded, it asks first, because opening the project replaces them.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b7-abrir.png" alt="The Open the project “Maize trial: hybrids and nitrogen rates” dialog: the SHA-256 hashes of the 6 files match the manifest; the date and the version it was saved with, 48 rows, 4 columns and 3 analyses; the notice that opening it replaces the current data and report; and the Cancel and Open buttons"></div>
+      <figcaption><b>Figure 7.6.</b> Opening a project with other work in the app: the hashes match and the app asks you to confirm.</figcaption>
+    </figure>
+    <div>
+      <p>If any file changed after it was saved (someone edited the CSV or the report by hand), its hash does not match: the dialog says so, with the name of each changed file, and the button changes to <span class="ui">Open anyway</span>. A file that is not a SigmaPro project, or that comes from another app of the suite or from a newer version of SigmaPro, does not open, and a notice says why. Once the project is open, the app goes to Results with the report already recalculated.</p>
+    </div>
+  </div>
+
+  <!-- 7.7 -->
+  <h2 id="s7-7"><span class="num">7.7</span>Autosave</h2>
+  <p class="lead">While you work, the data (with their types, their computed columns and their filter), the analyses in the report and the figure settings are saved in the browser’s own storage, two seconds after the last change and whenever you switch tabs or close the tab. Nothing leaves your computer. Section 1.4 explains how to recover your work when you open SigmaPro again.</p>
+  <p>The <span class="ui">Autosave</span> card of the Export block says when the work was last saved and what was saved (“Saved at 12:28 PM: …, 48 rows and 4 columns, 3 analyses in the report”). It has two controls:</p>
+  <ul>
+    <li><span class="ui">Save the work in this browser</span>: checked by default. Unchecking it <b>deletes</b> what was saved and stops saving; checking it again saves right away.</li>
+    <li><span class="ui">Delete saved work</span>: deletes it now; the work is saved again at the next change.</li>
+  </ul>
+  <p>If the browser does not allow saving (a private window, blocked or full storage), the app keeps working the same and the card says so: in that case, save the .labg project. If SigmaPro is open in two tabs, the card warns you when the storage is in use by the other one.</p>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>On a shared computer</div>
+    <p>The saved work stays in that browser, and the next person who opens SigmaPro will see the notice offering to recover it. On a lab computer or in a computer center, uncheck autosave or use <span class="ui">Delete saved work</span> when you finish, and take your work with you in the .labg project.</p>
+  </div>
+</section>
+
+</body>
+</html>

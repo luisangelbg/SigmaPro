@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 4 (6 of 7)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+  .dos.angosta { grid-template-columns: 0.85fr 1fr; }
+  .dos.mas-angosta { grid-template-columns: 0.72fr 1fr; }
+</style>
+</head>
+<body>
+
+<section data-pestana="B4" data-orden="4" style="--acento: var(--b4)">
+
+  <!-- 4.18 -->
+  <h2 id="s4-18"><span class="num">4.18</span>Nonlinear models</h2>
+  <p class="lead">Growth that slows down as it approaches its final size, a herbicide response that falls in an S shape, or a yield that stops rising with more fertilizer are neither straight lines nor parabolas: they have parameters with biological meaning (the asymptote, the dose for 50% effect, the optimum rate) that only a nonlinear model estimates directly. The family includes three methods.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">Method</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><b>Growth curve</b></td><td>Logistic, Gompertz or Weibull over time: the asymptote (the final size) and the inflection point.</td></tr>
+      <tr><td><b>Dose-response (log-logistic)</b></td><td>4- or 3-parameter log-logistic, with the ED10, ED50 and ED90, and 5- or 4-parameter Brain-Cousens for hormesis (a stimulus at low doses).</td></tr>
+      <tr><td><b>Plateau response to rate</b></td><td>Linear-plateau, quadratic-plateau, Mitscherlich and Michaelis-Menten (with and without a response at zero rate): the optimum rate, the maximum yield and, with the prices, the economic rate.</td></tr>
+    </tbody>
+  </table>
+  <p>The three share the form: the <span class="ui">Response variable</span>, the <span class="ui">Time (days, weeks)</span> or the <span class="ui">Dose</span>, the <span class="ui">Groups to compare (optional)</span> (varieties, products), the <span class="ui">Model</span>, whose equation appears below it, and the confidence and significance levels. They run in the browser, by nonlinear least squares with an analytic gradient, validated against R’s <code>nls</code>. With groups, one curve is fitted per group, and the extra-sum-of-squares <i>F</i> tests whether a common curve is enough and whether each parameter can be common. The result includes the fitted curve over the data, the residuals against the fitted values and a two-row traffic light: whether the fit reached the optimum and whether any residual exceeds 3σ. The other options of the form are these:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">Option</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Lowest AIC (fits all and compares)</span>, in <span class="ui">Model</span></td><td>Fits all the models of the method to the same data (with the same groups and weights) and keeps the one with the lowest AIC among those that converge. The <b>Model comparison by AIC</b> table gives, for each one, its parameters, the AIC, the difference from the best (ΔAIC), the Akaike weight, σ and R².</td></tr>
+      <tr><td><span class="ui">Weights (optional)</span></td><td>A column with the weight of each row, for example the number of plants in a mean: the row with more weight counts more, like <code>weights</code> in <code>nls</code>. Rows with zero weight are left out; a negative weight stops the calculation.</td></tr>
+      <tr><td><span class="ui">Parameter intervals</span></td><td><span class="ui">Wald (estimate ± t·SE)</span>, symmetric, or <span class="ui">Profile likelihood</span>, which refits the other parameters at each value: they can be asymmetric and are more exact when the curve is strongly nonlinear, but they take longer. If the data do not bound a parameter on one side, that limit is shown as “—”. The linear-plateau stays with Wald: its breakpoint does not allow profiling.</td></tr>
+      <tr><td><span class="ui">Dose on a logarithmic scale in the plot</span></td><td>In dose-response and in the plateau response. The dose is drawn on a log scale, and the zero dose goes one decade below the lowest dose, with the mark “0”. It does not change the fit.</td></tr>
+      <tr><td><span class="ui">Product price (per unit of response)</span> and <span class="ui">Input price (per unit of rate)</span></td><td>Only in the plateau response, optional: with both, the economic optimum rate (below).</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Growth curves</h3>
+  <p>Three models: the <b>logistic</b> (symmetric around its inflection point), the <b>Gompertz</b> (which slows down more gradually) and the <b>Weibull</b> (the most flexible). With maize height on five dates and one logistic curve per nitrogen rate, the model explains 99.1% of the variation and the curves differ (<i>F</i> = 12.40 with 9 and 68 df). With <span class="ui">Lowest AIC (fits all and compares)</span> the logistic also wins: the Weibull, with one more parameter per curve, is at ΔAIC = 3.73, and the Gompertz, at 41.22.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-crecimiento.png" alt="The logistic curves of maize height against days after sowing, one per nitrogen rate, with the data of each plant: N0 stays below from 40 days on"></div>
+      <figcaption><b>Figure 4.45.</b> One logistic curve per rate: nitrogen changes the final height, not the timing of growth.</figcaption>
+    </figure>
+    <div>
+      <p>The comparison by parameter tells what changed: the <b>asymptote</b> (the final height) differs between rates (<i>F</i> = 9.46, <i>p</i> &lt; 0.001), from 229.3 without nitrogen (N0) to 268.0 with N180; the <b>inflection point</b> (around 39 days in all four) and the <b>scale</b> do not differ (<i>p</i> = 0.414 and 0.895).</p>
+      <p>The parameter table gives each estimate with its SE, its interval and its meaning, and the residual plot completes the diagnosis.</p>
+    </div>
+  </div>
+
+  <h3>Dose-response</h3>
+  <p>The 4-parameter <b>log-logistic</b> model (upper limit <i>d</i> and lower limit <i>c</i>, slope <i>b</i> and the <b>ED50</b> <i>e</i>) is the standard for herbicides, fungicides and toxicants (Seefeldt et al., 1995); the 3-parameter model fixes the lower limit at zero. The derived values are the doses for 10, 50 and 90% effect, with their SE by the delta method.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-dosis.png" alt="The log-logistic curves of weed dry weight against the dose of two herbicides, glyphosate and glufosinate: the glyphosate curve drops first"></div>
+      <figcaption><b>Figure 4.46.</b> Weed dry weight with two herbicides: glyphosate reaches half the effect with less product.</figcaption>
+    </figure>
+    <div>
+      <p>The ED50 of glyphosate is 75.13 (95% CI: 63.32 to 86.94) and that of glufosinate 174.2 (121.6 to 226.7): it takes 2.3 times more glufosinate for the same effect. The curves differ (<i>F</i> = 52.14), but only in the ED50 (<i>F</i> = 29.45); the slope and the two limits can be common (<i>p</i> = 0.732, 0.508 and 0.178).</p>
+      <p>The ED90 of glufosinate (752.1) falls outside the doses tested, and its interval is very wide (237.9 to 1266): extrapolating the curve costs precision.</p>
+    </div>
+  </div>
+  <p>The <b>Brain-Cousens</b> models (the 5-parameter one, and the 4-parameter one with the lower limit at zero) add a parameter <i>f</i> for <b>hormesis</b>: a stimulus at low doses before the decline, frequent with herbicides at sublethal doses. With <i>f</i> &gt; 0 and <i>b</i> &gt; 1, the derived values are the <b>dose of maximum response</b>, the maximum response and the ED50, which here is the dose, after the maximum, at which the response falls halfway between <i>d</i> and <i>c</i>; their SEs come from the implicit derivative, like <code>ED</code> and <code>MAX</code> in <code>drc</code>. In these models the parameter <i>e</i> is no longer the ED50, and the meaning column says so. If there is no stimulus, the conclusion points it out: in the herbicides, <i>f</i> comes out negative (−0.027 for glyphosate and −0.017 for glufosinate), there is no dose of maximum response, and a log-logistic is enough.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The simplest model and the most honest interval</div>
+    <p>With <span class="ui">Lowest AIC (fits all and compares)</span>, in the herbicides the 3-parameter log-logistic wins (AIC = 22.56): the 4-parameter one is at ΔAIC = 2.85, because its lower limits do not depart from zero (<i>p</i> = 0.318 and 0.748 in the parameter table). With it, the ED50s are 79.41 (95% CI: 70.51 to 88.32) and 166.6 (150.4 to 182.8).</p>
+    <p>With <span class="ui">Profile likelihood</span>, the interval of the parameter <i>e</i> for glufosinate (its ED50 in the log-logistic) goes from 121.6 to 226.7 (Wald) to 137.2 to 294.2: asymmetric, longer toward the high doses, where there is less information. The table of derived values keeps Wald intervals by the delta method, which are symmetric and, with poorly bounded curves, can reach negative values.</p>
+  </div>
+
+  <h3>Plateau response to rate</h3>
+  <p>For fertilization and irrigation, five models that stop at a maximum: the <b>linear-plateau</b> (rises in a straight line up to the rate <i>x</i><sub>0</sub> and then stays flat), the <b>quadratic-plateau</b> (a parabola up to its maximum and flat afterward), and the <b>Mitscherlich</b> and the <b>Michaelis-Menten</b>, which approach their asymptote without reaching it; the Michaelis-Menten starts from zero at zero rate, and the variant <span class="ui">Michaelis-Menten with response at zero rate</span> also estimates that response. With the maize and one curve per hybrid, the linear-plateau explains 93.7% of the variation and the curves differ (<i>F</i> = 12.38 with 6 and 39 df).</p>
+  <table class="compacta salida" style="width:74%">
+    <caption><b>Table 4.14.</b> The optimum rate (start of the plateau) and the plateau yield of each hybrid, linear-plateau model.</caption>
+    <thead><tr><th>Hybrid</th><th class="n">Optimum rate <i>x</i><sub>0</sub></th><th class="n">95% CI</th><th class="n">Plateau (t/ha)</th><th class="n">95% CI</th></tr></thead>
+    <tbody>
+      <tr><td>H-40</td><td class="n">102.1</td><td class="n">74.15 – 130.1</td><td class="n">6.250</td><td class="n">6.051 – 6.449</td></tr>
+      <tr><td>H-52</td><td class="n">84.39</td><td class="n">66.81 – 102.0</td><td class="n">6.631</td><td class="n">6.432 – 6.831</td></tr>
+      <tr><td>H-66</td><td class="n">95.83</td><td class="n">75.25 – 116.4</td><td class="n">7.191</td><td class="n">6.992 – 7.391</td></tr>
+    </tbody>
+  </table>
+  <p>The comparison by parameter pinpoints the difference: between hybrids, the yield without nitrogen, <i>a</i>, changes (<i>F</i> = 3.93, <i>p</i> = 0.028); the slope and the optimum rate can be common (<i>p</i> = 0.357 and 0.498). With <span class="ui">Lowest AIC (fits all and compares)</span> the linear-plateau wins (Akaike weight 0.75), followed by the quadratic-plateau (ΔAIC = 2.28, weight 0.24), the Mitscherlich (9.13) and the Michaelis-Menten with response at zero rate (12.23). The Michaelis-Menten without it comes last, with a negative R²: it passes through zero at zero rate, and the maize yields more than 4 t/ha without nitrogen.</p>
+  <p>The rate that gives the most yield is not always the most profitable one: each kilogram of nitrogen has a cost. With the two prices, the app calculates the <b>economic optimum rate</b>, where the slope of the curve equals the price ratio (the input price divided by the product price): there, the last unit of input still pays for itself with what it adds. With grain at 5000 per ton and nitrogen at 25 per kilogram, in the same currency, the ratio is 0.005: each additional kilogram must give at least 0.005 t (5 kg) of grain. It is calculated by the quadratic-plateau, the linear-plateau, the Mitscherlich and the two Michaelis-Menten models, with its SE by the delta method and the response at that rate.</p>
+  <table class="compacta salida" style="width:86%">
+    <caption><b>Table 4.15.</b> The optimum rate and the economic rate of each hybrid, quadratic-plateau model, with grain at 5000 per ton and nitrogen at 25 per kilogram.</caption>
+    <thead><tr><th>Hybrid</th><th class="n">Optimum rate</th><th class="n">Plateau (t/ha)</th><th class="n">Economic rate</th><th class="n">95% CI</th><th class="n">Response (t/ha)</th></tr></thead>
+    <tbody>
+      <tr><td>H-40</td><td class="n">147.1</td><td class="n">6.246</td><td class="n">120.8</td><td class="n">85.74 – 155.9</td><td class="n">6.180</td></tr>
+      <tr><td>H-52</td><td class="n">127.2</td><td class="n">6.628</td><td class="n">108.8</td><td class="n">78.88 – 138.7</td><td class="n">6.582</td></tr>
+      <tr><td>H-66</td><td class="n">154.0</td><td class="n">7.241</td><td class="n">130.1</td><td class="n">98.17 – 162.1</td><td class="n">7.181</td></tr>
+    </tbody>
+  </table>
+  <p>With the quadratic-plateau, the economic rate is 18 to 26 kg/ha below the optimum and sacrifices less than 0.07 t/ha of grain. In the linear-plateau the slope is constant: as long as the input pays (here, from 0.020 to 0.026 t per kilogram, much more than 0.005), the economic rate is the start of the plateau, the same <i>x</i><sub>0</sub> as in table 4.14. If the curve starts flatter than the price ratio, the economic rate is 0 and the conclusion says that at those prices the first unit of input no longer pays for itself.</p>
+  <p>With the parabola (section 4.11), the optimum came out at 147.7 kg/ha; with the plateau, between 84 and 102. The difference is well known: the parabola forces the curve to drop after the maximum and pushes the maximum toward higher rates. When the data level off, as here between 120 and 180 kg, the plateau model usually recommends less fertilizer; the AIC comparison and the residual plot help decide which shape best describes the data.</p>
+
+  <!-- 4.19 -->
+  <h2 id="s4-19"><span class="num">4.19</span>Response surfaces</h2>
+  <p class="lead">When two or more quantitative factors act together (nitrogen and potassium, temperature and time), response surface methodology looks for the combination that gives the best response. The factors (numeric, from 2 to 6) are <b>coded</b> (center at 0 and a step of 1) so that the coefficients are comparable, and the app converts everything back to the original units. The family includes five methods.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">Method</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><b>Generate a response surface or mixture design</b></td><td>Without data: the runs of a central composite, a Box-Behnken, a 2<sup><i>k</i></sup> factorial with center points or a simplex for mixtures, in random order and ready to open in Data.</td></tr>
+      <tr><td><b>Response surface (second order)</b></td><td>Central composite or Box-Behnken: lack of fit, stationary point, canonical analysis and ridge.</td></tr>
+      <tr><td><b>First order and steepest ascent</b></td><td>Factorial with center points: the curvature and the path toward the best response.</td></tr>
+      <tr><td><b>Mixtures (Scheffé models)</b></td><td>Components that add up to the same total (substrates, rations, formulations): the best mixture.</td></tr>
+      <tr><td><b>Desirability of several responses</b></td><td>Several responses at once (high yield, low cost, a quality at a certain value): the most desirable combination.</td></tr>
+    </tbody>
+  </table>
+  <p>All of them run in the browser; the models are validated against R’s <code>lm</code> and <code>eigen</code>, and the designs, against their construction in R.</p>
+
+  <h3>Generating the design</h3>
+  <p>The generator needs no data. Choose the <span class="ui">Design</span> (<span class="ui">Central composite</span>, <span class="ui">Box-Behnken</span>, <span class="ui">2^k factorial with center points</span>, <span class="ui">Simplex-lattice (mixtures)</span> or <span class="ui">Simplex-centroid (mixtures)</span>), the number of <span class="ui">Factors</span> or <span class="ui">Components</span> (from 2 to 6; from 3 to 5 in the Box-Behnken) and the <span class="ui">Center points</span> or the <span class="ui">Centroid replicates</span> (empty: the design’s defaults). In the central composite, <span class="ui">α</span> sets the distance of the axial points: <span class="ui">Rotatable (α = F^¼)</span>, with the same precision at the same distance from the center; <span class="ui">Orthogonal</span>; <span class="ui">Face-centered (α = 1)</span>, with only three levels per factor; or <span class="ui">Two orthogonal blocks</span>, with the factorial and axial parts on different days or batches. From five factors on, it uses the half fraction of the factorial. In the simplex-lattice you also choose the <span class="ui">Lattice degree</span> (2, 3 or 4).</p>
+  <table class="compacta salida" style="width:86%">
+    <caption><b>Table 4.16.</b> The size of each design with three factors or components and the default center points.</caption>
+    <thead><tr><th>Design</th><th class="n">Runs</th><th>How they are formed</th></tr></thead>
+    <tbody>
+      <tr><td>Rotatable central composite</td><td class="n">20</td><td>8 factorial, 6 axial with α = 1.6818 and 6 center points</td></tr>
+      <tr><td>Orthogonal central composite</td><td class="n">20</td><td>The same, with α = 1.5246</td></tr>
+      <tr><td>Face-centered central composite</td><td class="n">20</td><td>The same, with α = 1</td></tr>
+      <tr><td>Central composite in two orthogonal blocks</td><td class="n">20</td><td>The same, with α = 1.8091 and in two blocks</td></tr>
+      <tr><td>Box-Behnken</td><td class="n">15</td><td>3 at the center; each factor at −1, 0 and +1</td></tr>
+      <tr><td>2<sup>3</sup> factorial with center points</td><td class="n">12</td><td>8 factorial and 4 center points: for the first order and the curvature</td></tr>
+      <tr><td>Simplex-lattice of degree 2</td><td class="n">6</td><td>The vertices and the midpoints of the edges</td></tr>
+      <tr><td>Simplex-lattice of degree 3</td><td class="n">10</td><td>The mixtures in thirds, one of them at the centroid</td></tr>
+      <tr><td>Simplex-centroid</td><td class="n">7</td><td>The vertices, the midpoints of the edges and the centroid</td></tr>
+    </tbody>
+  </table>
+  <p>The conclusion says how many coefficients the second-order model has (or the Scheffé quadratic, in mixtures) and how many degrees of freedom remain for the error; if none remain, it asks you to add center points in surface designs and to replicate some mixtures (for example the centroid) in mixture designs, such as the simplex-lattice of degree 2 with three components: 6 mixtures for 6 coefficients.</p>
+  <p>With the <span class="ui">Factor names (optional)</span>, the <span class="ui">Low level (−1) of each factor (optional)</span> and the <span class="ui">High level (+1) of each factor (optional)</span>, separated by commas, the <b>Design runs</b> table gives each run coded and in original units; if an axial point falls at a negative level, the conclusion warns about it. In mixtures, the <span class="ui">Mixture total</span> (1 for proportions, 100 for percentages, or the total mass) converts the proportions into amounts. With a <span class="ui">Seed for the random order (optional)</span>, the Run column gives the random field order, within each block, and the Standard column, the design order; the same seed always gives the same order. For example, a rotatable central composite with two factors, with the names “N, K”, the low levels “120, 100” and the high levels “240, 200”, has 13 runs (4 factorial, 4 axial with α = 1.4142 and 5 center points), with the axial points at N = 95.15 and 264.85 and at K = 79.29 and 220.71: the design of the tomato example.</p>
+  <p>The <span class="ui">Open the design in Data (with a column for the response)</span> button takes the runs to a new worksheet (chapter 2) with the columns “corrida” and “estandar”, the block (if there are two), the factors (in original units if the levels or the total were given; otherwise, coded) and an empty “respuesta” column to record the result of each run. The plot shows the runs on the first two coded factors or, in a three-component mixture, in the triangle.</p>
+
+  <h3>Second-order surface</h3>
+  <p>For central composite or Box-Behnken designs. Choose the response, the <span class="ui">Design factors (numeric, 2 to 6)</span>, the <span class="ui">Blocks (optional)</span>, the <span class="ui">Model</span> (<span class="ui">Second order (with quadratic terms)</span> or <span class="ui">First order with interactions</span>) and, in <span class="ui">Find</span>, <span class="ui">Maximum response</span> or <span class="ui">Minimum response</span>. With the tomato in a central composite of nitrogen and potassium, the model explains 97.5% of the variation and there is no lack of fit (<i>F</i> = 0.04 with 3 and 4 df, <i>p</i> = 0.989).</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-superficie.png" alt="The contours of tomato yield in the nitrogen by potassium plane, with the design points, the maximum marked with a diamond and the ridge of maximum response as a dashed line from the center"></div>
+      <figcaption><b>Figure 4.47.</b> The contours of tomato yield: the maximum (diamond) and the ridge (dashed line) that starts at the center of the design.</figcaption>
+    </figure>
+    <div>
+      <p>The <b>stationary point</b> is a maximum at N = 210.8 and K = 166.0, with an estimated yield of 63.75 (95% CI: 62.61 to 64.89). It lies within the experimental region: 0.61 coded units from the center, while the data reach 1.42.</p>
+      <p>The <b>canonical analysis</b> confirms it: the two eigenvalues are negative (−2.360 and −4.086); with different signs it would be a saddle point, and one near zero would indicate a ridge, a line of almost equally good combinations.</p>
+    </div>
+  </div>
+  <p>The tables are the ANOVA by groups of terms (with the lack of fit and the pure error), the coefficients coded and in original units, the coding, the stationary point, the canonical analysis and the <b>ridge</b>: the best combination at each distance from the center, useful if the optimum falls outside the region or is a saddle point. The plots are the contour plots of each pair of factors (up to six pairs), the <b>3D surface</b> of the first two factors, the response along the ridge with its confidence band, and the residuals. The <span class="ui">Rotate the 3D surface:</span> buttons (⟲, ⟳, ↑ and ↓) turn it sideways and show it from higher up or lower down. With more than two factors, those that are not in a plot are held at the stationary point if it is inside the region or, if not, at the center.</p>
+  <p>The <span class="ui">Factor coding</span> is, by default, <span class="ui">From the design (center and step of its levels)</span>: with five symmetric levels (central composite), the step goes from the center to the factorial point and the axial points lie at ±α. With <span class="ui">Manual: the −1 and +1 levels of each factor</span>, two fields per factor appear (<span class="ui">N: level −1</span>, <span class="ui">N: level +1</span>…) to use another coding, for example that of the trial protocol. The predictions, the stationary point and the ridge in original units do not change; the coded coefficients and the distances do. In the tomato, with N from 100 (−1) to 260 (+1), the coefficient of N goes from 4.243 to 5.657 and the stationary point lies 0.50 units from the center instead of 0.61, but it remains at N = 210.8 and K = 166.0, with 63.75.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>The traffic light and what you are looking for</div>
+    <p>The traffic light has three rows: the lack of fit (gray if there are no replicated points), the residuals beyond 3σ and the stationary point, in amber if it is a saddle point or falls outside the region. That last row does not compare the type of point with what you are looking for: with <span class="ui">Minimum response</span>, the tomato maximum leaves it green. What matters then is in the conclusion, which searches along the ridge: the lowest estimated response is 45.66, with N = 102.1 and K = 112.4.</p>
+  </div>
+
+  <h3>First order and steepest ascent</h3>
+  <p>Far from the optimum, a factorial with center points and a first-order model are enough: the <b>path of steepest ascent</b> tells you which way to move. With the tomato, the flat model has lack of fit (<i>F</i> = 11.32, <i>p</i> = 0.017): the response curves, and the app advises moving to the second order. The path rises 51.53 kg of N and 25.62 of K per coded unit; its table gives the combinations and the predicted response.</p>
+
+  <h3>Mixtures</h3>
+  <p>In a mixture, the proportions matter, not the amounts: if one component goes up, another goes down. <b>Scheffé</b> models have no intercept and are fitted on the proportions: each row is divided by its sum, so proportions, percentages or amounts all work, as long as every row adds up to the same total (if not, the app warns about it). Choose the response, the <span class="ui">Mixture components (2 to 6; each row sums to the same total)</span>, the <span class="ui">Scheffé model</span> (<span class="ui">Linear (each component alone)</span>, <span class="ui">Quadratic (with binary blends)</span> or <span class="ui">Special cubic (with ternary blends)</span>) and, in <span class="ui">Find</span>, <span class="ui">Mixture with the highest response</span> or <span class="ui">Mixture with the lowest response</span>.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-mezclas.png" alt="The mixture triangle for the yarn, with polyethylene at the lower left, polystyrene at the lower right and polypropylene at the top, shaded by the elongation estimated by the quadratic model (darker, greater; lighter toward polystyrene), with the six mixtures of the trial as points and a gold circle labeled “maximum” on the polyethylene–polypropylene side, at 29.4% polyethylene and 70.6% polypropylene"></div>
+      <figcaption><b>Figure 4.48.</b> Yarn elongation in the mixture triangle: the best mixture (circle) combines polyethylene and polypropylene, without polystyrene.</figcaption>
+    </figure>
+    <div>
+      <p>With Cornell’s (2002) yarn elongation, a simplex-lattice of polyethylene, polystyrene and polypropylene with replicates, the quadratic model explains 95.1% of the variation. The coefficient of each component is the response of the pure component (11.7, 9.4 and 16.4), and that of each pair, how far the blend departs from the sum of its parts: polyethylene with polystyrene (β = 19.0, <i>p</i> &lt; 0.001) and with polypropylene (β = 11.4, <i>p</i> = 0.002) are <b>synergies</b>; polystyrene with polypropylene, an <b>antagonism</b> (β = −9.6, <i>p</i> = 0.005).</p>
+      <p>The best mixture of the model, searched over the whole triangle, has 29.4% polyethylene and 70.6% polypropylene, without polystyrene: an estimated elongation of 17.38 (95% CI: 16.36 to 18.41), more than any pure component.</p>
+    </div>
+  </div>
+  <p>The ANOVA tests the model against the mean (the proportions add up to 1, so the mean is already in the model) and the <b>lack of fit</b> against the pure error of the replicated mixtures. In the yarn, the quadratic has as many coefficients as distinct mixtures (6), and that row of the traffic light stays gray: there is nothing to test it with. The linear model does show lack of fit (<i>F</i> = 32.32 with 3 and 9 df, <i>p</i> &lt; 0.001) and explains only 42.7%. The special cubic cannot be estimated with this design: the app says “The mixtures do not allow the special cubic model to be estimated” and explains that it needs the centroid of each three-component face. Besides the triangle (with three components), the <b>Cox trace</b> moves each component from 0 to 1 starting at the centroid and divides the rest equally among the others: the slope of each line tells how much weight that component carries. The method has no residual plot.</p>
+
+  <h3>Desirability of several responses</h3>
+  <p>A single response is rarely all that matters: you want high yield, low cost and a quality at a certain value. Derringer and Suich’s <b>desirability</b> fits each response with its own second-order model (with the same design and the same coding), converts each prediction into a <i>d</i> between 0 (unacceptable) and 1 (what is sought) and combines them into an <b>overall desirability</b> <i>D</i>, their geometric mean: a single response outside its limits is enough for <i>D</i> to be 0. The combination with the highest <i>D</i> is sought with the Nelder-Mead method from each design point and from the center.</p>
+  <p>Choose the <span class="ui">Design factors (numeric, 2 to 6)</span> and the <span class="ui">Responses to combine (1 to 6)</span>. Each response has its own box: <span class="ui">Find</span> (<span class="ui">Highest</span>, <span class="ui">Lowest</span> or <span class="ui">A target value</span>), the <span class="ui">Lower limit</span> and the <span class="ui">Upper limit</span> (with the <span class="ui">Target value</span> between them, if you look for a value), the <span class="ui">Exponent</span> (1: linear; greater than 1 requires getting closer to the target; with a target value, the <span class="ui">Exponent (above the target)</span> governs the other side) and the <span class="ui">Importance</span>, which weights the response in the geometric mean. When you select a response, it looks for the highest value, with the limits at its minimum and maximum: you have to adjust them to what you require of each one. The <span class="ui">Search region</span> is <span class="ui">The cube of the design levels</span> or <span class="ui">The design sphere (rotatable central composite)</span>.</p>
+  <div class="dos mas-angosta flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-deseabilidad.png" alt="The contour lines of the overall desirability D in the plane of nitrogen (N, from 123 to 237) by irrigation depth (from 17.9 to 32.1), with the gold diamond of the most desirable combination, labeled “D = 0.79”, at N = 175.9 and riego = 25.89; D drops to zero toward the edges"></div>
+      <figcaption><b>Figure 4.49.</b> The overall desirability for the fruit: the diamond marks the combination of nitrogen and irrigation that best balances yield, cost and pH.</figcaption>
+    </figure>
+    <div>
+      <p>In the fruit example (a central composite of nitrogen and irrigation depth), with the highest yield between 70 and 86, the lowest cost between 11 and 15 and a pH target of 6.5 between 6 and 7, the most desirable combination is N = 175.9 and riego = 25.89, with <i>D</i> = 0.786. There the estimated yield is 79.50 (<i>d</i> = 0.593), the cost 11.72 (<i>d</i> = 0.819) and the pH 6.500 (<i>d</i> = 1.000). With the sphere, the same point comes out, because it lies close to the center.</p>
+      <p>The tables give the combination (coded and original), each response at that point with its <i>d</i> and the R² of its model (0.995, 0.992 and 0.976), and the <i>D</i> of each run, with the predicted responses: the eight runs on the edge get <i>D</i> = 0, because some response falls outside its limits, and the five at the center, 0.743.</p>
+    </div>
+  </div>
+  <p>The method has no traffic light: if the model of any response has an R² below 0.7, the conclusion warns that its prediction, and with it the desirability, is not very reliable.</p>
+
+  <!-- 4.20 -->
+  <h2 id="s4-20"><span class="num">4.20</span>Multi-environment trials</h2>
+  <p class="lead">The same genotypes evaluated at several locations or in several years respond differently to each environment: this is the genotype × environment interaction (G × E). The five methods of the family measure it, describe it and help choose genotypes that are stable or adapted to each region.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.1in">Method</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><b>Combined analysis of several environments</b></td><td>The combined ANOVA with the G × E interaction, the analysis of each environment and the homogeneity of their errors.</td></tr>
+      <tr><td><b>Two-stage analysis (one variance per environment)</b></td><td>The adjusted means of each environment and the weighted combined analysis: for errors that differ between environments or genotypes that are missing.</td></tr>
+      <tr><td><b>Stability</b></td><td>The regression on the environmental index and six more measures: Wricke, Shukla, Lin and Binns, Huehn, Kang and Annicchiarico.</td></tr>
+      <tr><td><b>AMMI</b></td><td>The interaction axes with their tests, the ASV, the WAAS and the AMMI1 and AMMI2 biplots.</td></tr>
+      <tr><td><b>GGE biplot</b></td><td>Which won where, mean vs. stability, the ideal genotype and environment and the comparison of two genotypes.</td></tr>
+    </tbody>
+  </table>
+  <p>All of them ask for the <span class="ui">Response variable</span>, the <span class="ui">Genotypes (varieties, hybrids, lines)</span>, the <span class="ui">Environments (locations, years, dates)</span> and, if there are any, the <span class="ui">Replicates or blocks (optional)</span>; without them (<span class="ui">— one mean per cell —</span>), each row is the mean of one genotype in one environment. They also ask whether <span class="ui">Best is</span> <span class="ui">The highest response</span> or <span class="ui">The lowest response</span>, and the significance level. At least 3 genotypes and 3 environments are needed (2 in the GGE). They run in the browser and were validated against R’s <code>lm</code> and <code>svd</code>. At the foot of the combined analysis and the stability, the “Continue in the LABG suite” strip suggests ClusteringPro, to group genotypes or environments; at the foot of the AMMI and the GGE, PCAPro as well (chapter 10).</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>When a genotype is missing in an environment</div>
+    <p>Except for the two-stage analysis, the methods need the complete genotype × environment table. The <span class="ui">Impute empty genotype × environment cells (EM-AMMI)</span> checkbox, checked by default, fills each empty cell with the additive model plus the interaction axes requested in <span class="ui">Imputation axes</span> (from 0, additive effects only, to 3; 1 by default) and repeats until the value stops changing. If G2 were missing in E5 and G7 in E12 in the oats, 4.173 and 1.660 would be imputed in 31 iterations: the conclusion and the <b>Cells imputed by EM-AMMI</b> table list them, the interaction loses one degree of freedom per cell (115 instead of 117), and the traffic light marks it in amber (in red if more than 10% of the cells are imputed). Without the checkbox, the app stops and says which combinations are missing.</p>
+  </div>
+
+  <h3>Combined analysis</h3>
+  <p>With the oats of Olivoto and Lúcio (2020), 10 genotypes in 14 environments with three replicates, the combined ANOVA finds the interaction (<i>F</i> = 2.76, <i>p</i> &lt; 0.001): the ranking of the genotypes changes between environments. The genotypes are tested in two ways: against the error (<i>F</i> = 14.93) and against the interaction, as is appropriate if the environments are a sample of many possible ones (<i>F</i> = 5.41, the same as in the mixed model of section 4.15). G8 has the highest overall mean (3.004).</p>
+  <p>The method also analyzes each environment separately (mean, MSE, CV and the genotype <i>F</i>) and checks the <b>homogeneity of the errors</b>: in the oats, the largest MSE is 6.71 times the smallest (Bartlett <i>p</i> &lt; 0.001), so the tests of the combined analysis are approximate, and the traffic light says so. With 12 genotypes or fewer, the <b>Each genotype across environments</b> plot joins the means of each genotype in the environments ordered from the lowest to the highest mean: the lines that cross are the interaction.</p>
+
+  <h3>Two-stage analysis</h3>
+  <p>When the errors of the environments differ as much as in the oats, or genotypes are missing in some environments, the two-stage analysis is the better choice. In the first stage, each environment is analyzed on its own and gives the adjusted mean of each genotype with its variance; in the second, those means are combined by generalized least squares, each weighted according to its precision, and the interaction variance is estimated by REML. It does not impute: it uses the means that exist. Each environment needs its own error, so replicates or several plots per genotype are required.</p>
+  <p>In the oats, the genotypes differ (Wald: <i>F</i> = 5.99 with 9 and 117 df, <i>p</i> &lt; 0.001), G8 has the highest adjusted mean (3.016 ± 0.07732), and the interaction variance, now without the error of each environment, is 0.05407. The traffic light row for the errors shows in amber (maximum/minimum ratio of 6.71): this is exactly the case the method is meant for. The tables are the first stage (mean, MSE, CV and genotypes of each environment), the adjusted means next to the simple mean, and the test of the genotypes; the plot gives each adjusted mean with its 95% interval. When there are replicates, the assistant (section 4.2) includes it among the next steps of any analysis in this family.</p>
+
+  <h3>Stability</h3>
+  <p>There are several ways to measure it. The <b>regression on the environmental index</b> (Finlay and Wilkinson; Eberhart and Russell) gives each genotype a slope <i>b</i> (1: it responds like the average; greater: it takes advantage of good environments; smaller: it is adapted to poor ones) and a variance of the deviations S²<sub>d</sub> (0: its response is predictable). <b>Wricke’s ecovalence</b> and <b>Shukla’s variance</b> tell how much each genotype contributes to the interaction, and <b>Lin and Binns’ superiority</b> (Pi) how far it is from the best genotype in each environment. <b>Huehn’s nonparametric statistics</b> work with ranks: S1 and S2 measure how much each genotype changes place between environments (with their <i>Z</i> test), and S3 and S6 combine response and stability. <b>Kang’s YS</b> gives each genotype points for its yield rank, subtracts points for its Shukla variance and selects those above the average; it needs replicates. <b>Annicchiarico’s reliability index</b> (Wi) expresses the response as a % of the mean of each environment and penalizes instability (Wi = mean − <i>z</i>·SD), across all environments, in the favorable ones and in the unfavorable ones; it is calculated only when the best is the highest response.</p>
+  <p>The options are the <span class="ui">Standard error of b</span>, <span class="ui">From each genotype's regression</span> or <span class="ui">From the pooled error of the environments</span>, and the <span class="ui">Risk level of the Annicchiarico index</span> (0.25, 0.10 or 0.05): a lower risk penalizes instability more.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-estabilidad.png" alt="The mean of each oat genotype against its slope b, with reference lines at the overall mean and at b = 1: G3 and G8 on the right, close to b = 1; G9 and G10 at the upper left"></div>
+      <figcaption><b>Figure 4.50.</b> Mean against slope: on the right and close to the <i>b</i> = 1 line are the genotypes that do well everywhere.</figcaption>
+    </figure>
+    <div>
+      <table class="compacta salida">
+        <caption><b>Table 4.17.</b> Three oat genotypes according to each stability measure.</caption>
+        <thead><tr><th></th><th class="n">G8</th><th class="n">G3</th><th class="n">G10</th></tr></thead>
+        <tbody>
+          <tr><td>Mean</td><td class="n">3.004</td><td class="n">2.955</td><td class="n">2.471</td></tr>
+          <tr><td><i>b</i></td><td class="n">1.034</td><td class="n">1.031</td><td class="n">1.122</td></tr>
+          <tr><td><i>p</i> of S²<sub>d</sub> = 0</td><td class="n">0.013</td><td class="n">0.840</td><td class="n">&lt; 0.001</td></tr>
+          <tr><td>Wricke (% of G × E)</td><td class="n">8.23</td><td class="n">2.32</td><td class="n">25.48</td></tr>
+          <tr><td>Lin and Binns Pi</td><td class="n">0.04117</td><td class="n">0.04099</td><td class="n">0.3437</td></tr>
+          <tr><td>Huehn S1</td><td class="n">2.97</td><td class="n">2.70</td><td class="n">4.57</td></tr>
+          <tr><td>Kang YS</td><td class="n">5</td><td class="n">12</td><td class="n">−9</td></tr>
+          <tr><td>Annicchiarico Wi (%)</td><td class="n">107.41</td><td class="n">107.98</td><td class="n">77.54</td></tr>
+          <tr><td>ASV (AMMI)</td><td class="n">0.574</td><td class="n">0.113</td><td class="n">1.225</td></tr>
+          <tr><td>WAAS (AMMI)</td><td class="n">0.327</td><td class="n">0.106</td><td class="n">0.652</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p>G8 has the highest mean but significant deviations (S²<sub>d</sub> &gt; 0): it yields a lot, though not always what is expected. G3, almost as productive, meets <i>b</i> = 1 and S²<sub>d</sub> = 0, is the most stable by Wricke and the best by Lin and Binns: the ideal genotype of Eberhart and Russell. The other measures agree: G3 is the one that changes place least between environments (Huehn), the one with the highest Kang YS and the one with the highest Annicchiarico Wi, just above G8. Kang selects seven genotypes (G1 to G6 and G8). G10, the one with the lowest mean, is also the one that contributes most to the interaction. This result does not repeat the combined ANOVA: whether there is interaction is seen in the combined analysis.</p>
+
+  <h3>GGE biplot</h3>
+  <p>The GGE biplot combines the genotype effect and its interaction (G + G × E), which is what matters for choosing. Choose the <span class="ui">Table</span> (<span class="ui">Environment-centered</span> or <span class="ui">Centered and divided by the standard deviation of each environment</span>) and the <span class="ui">Singular value partitioning</span>: <span class="ui">Symmetric</span>, <span class="ui">Genotype-focused (to compare genotypes)</span> or <span class="ui">Environment-focused (to compare environments)</span>. In the oats, the first two axes explain 64.34% of G + G × E.</p>
+  <div class="dos flota">
+    <figure>
+      <div class="marco"><img src="../img/en/b4-gge.png" alt="The which-won-where GGE biplot of the oats: the polygon with vertices at G10, G4, G7, G8 and G9, the rays from the origin that divide the plane into sectors, and the environments as gold diamonds, most of them in the sector of G8"></div>
+      <figcaption><b>Figure 4.51.</b> Which won where: the genotype at the vertex of each sector is the best in the environments that fall in it.</figcaption>
+    </figure>
+    <div>
+      <p>In <b>which won where</b>, the polygon joins the genotypes farthest from the origin, and the rays divide the plane into sectors. In the oats there are 4 sectors, which the conclusion calls “possible mega-environments”: G8 wins in nine environments, G9 in E3 and E4, G7 in E7 and E14, and G4 in E9. With data from a single season they are no more than that: to declare them mega-environments, the pattern has to repeat across years (Yan et al., 2000).</p>
+      <p>The second plot, <b>mean vs. stability</b>, orders the genotypes along the average-environment axis: G8 has the best performance and, among the top three, G3 is the most stable.</p>
+    </div>
+  </div>
+  <p>Two more plots place an <b>ideal genotype</b> (high and stable) and an <b>ideal environment</b> (one that discriminates strongly among genotypes and represents the others) on the average-environment axis, with distance rings, and their tables rank genotypes and environments by their distance to them. In the oats, the genotype closest to the ideal is G8 and the environment, E13, with any of the three partitionings (the table notes recommend the genotype-focused partitioning for the first and the environment-focused one for the second). With <span class="ui">Compare two genotypes (optional)</span> and <span class="ui">… with</span>, a plot draws the line that joins them and the perpendicular that divides the environments, and a table compares, in each environment, the difference predicted by the biplot with the observed one: G8 outperforms G3 in 13 of the 14 environments according to the biplot (all but E9), but in only 9 according to the means. The biplot summarizes two axes; fine decisions are made with the data.</p>
+
+  <h3>AMMI</h3>
+  <p>The additive main effects and multiplicative interaction model decomposes the interaction into <b>axes</b> (principal components of the table of interactions). The app tests each axis with Gollob’s <i>F</i> and, with Cornelius’s <i>F</i><sub>R</sub>, the interaction that remains after <i>n</i> axes, which is more reliable: in the oats, Cornelius retains 3 axes and Gollob 4; the first two explain 66.22% of the interaction. The tables give the genotype and environment scores and Purchase’s <b>ASV</b> (lower, more stable: G3, with 0.11), and the plots are the AMMI1 (mean against axis 1) and AMMI2 (axis 1 against axis 2) biplots.</p>
+  <p>The <b>WAAS</b> averages the absolute scores of each genotype over several axes, weighted by the % of the interaction of each axis (lower, more stable), and the <b>WAASY</b> combines it with the response, both rescaled from 0 (the worst) to 100 (the best). The options are the <span class="ui">WAAS axes</span> (<span class="ui">The significant ones (Gollob's F)</span>, or from 1 to 5) and the <span class="ui">Response weight in the WAASY (%)</span> (0: stability only; 100: response only; 50 by default). In the oats, with the 4 significant axes, G3 is the most stable (WAAS = 0.106) and the best by WAASY (95.46), followed by G8 (79.81). The <b>Response vs. stability (WAAS)</b> plot crosses the overall mean with the mean WAAS: the lower right quadrant brings together high response and stability.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Two ways of counting the axes</div>
+    <p>The AMMI conclusion counts the axes that are significant by Gollob consecutively from the first one; the WAAS counts all the axes with a <i>p</i> below the significance level and uses that number of axes, starting from the first (without replicates there is no error to test them, and it uses all of them). If a non-significant axis fell between two significant ones, the two numbers would differ; in the oats they agree (4). To set another number, choose the axes in <span class="ui">WAAS axes</span>.</p>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b5" data-pestana="B5" data-orden="5" style="--acento: var(--b5)">
+  <div class="cap-apertura">
+    <div class="cap-num">5</div>
+    <div class="cap-etiqueta">Block 5 · Results</div>
+    <h1>Results: the LABG Report</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">Every analysis worth keeping goes to the report, where it joins the others in order, with tables and figures numbered consecutively, its assumptions, a paragraph for your thesis or paper, the technical details and the R code. The report does not store fixed results: it stores the requests, and it is recalculated with whatever data are there, so correcting a value corrects the whole report.</p>
+    <ul class="cap-contenido">
+      <li><b>5.1</b>Adding to the report</li>
+      <li><b>5.2</b>The header and the index</li>
+      <li><b>5.3</b>Each analysis in the report</li>
+      <li><b>5.4</b>The paragraph for your thesis or paper</li>
+      <li><b>5.5</b>Technical details and R code</li>
+      <li><b>5.6</b>A living report</li>
+    </ul>
+  </div>
+
+  <!-- 5.1 -->
+  <h2 id="s5-1"><span class="num">5.1</span>Adding to the report</h2>
+  <p class="lead">In Explore and in Analysis, every result has in its header, to the right of <span class="ui">ⓘ What is this analysis?</span>, the <span class="ui">Add to report</span> button. When you click it, a notice confirms how many analyses the report holds (“Added to the report (3 in total). See it in the Results block.”) and the button changes to <span class="ui">In the report ✓</span>; if you click it again, it takes you to the Results block instead of adding the analysis twice.</p>
+  <p>What gets added is the <b>request</b>: the method, the variables with their roles, and the options. If you then change an option (another comparison test, another confidence level), that is a different request: the button says <span class="ui">Add to report</span> again and, if you click it, both stay in the report.</p>
+  <p>When the report is empty, the block offers to take you to Analysis or Explore, or to <span class="ui">Open a .labg project</span>: a saved project brings the data and the complete report (section 7.6).</p>
+
+  <!-- 5.2 -->
+  <h2 id="s5-2"><span class="num">5.2</span>The header and the index</h2>
+  <figure>
+    <div class="marco"><img src="../img/en/b5-cabeza.png" alt="The header of the maize report: the title Maize trial: hybrids and nitrogen rates, the author, the summary 3 analyses, 9 tables, 3 figures and the example data, the Copy all paragraphs, See the figures, Present and Export buttons, the Basic, Standard and Expert level-of-detail buttons, the index with the three analyses, and the bar of the first one with the arrows, Open in Analysis and Remove"></div>
+    <figcaption><b>Figure 5.1.</b> The header of a report with three maize analyses, its index and the beginning of the first analysis.</figcaption>
+  </figure>
+  <ul>
+    <li><span class="ui">Report title</span> and <span class="ui">Author or authors</span>: they go on the cover of the exported document. The browser remembers the author for your next report.</li>
+    <li>The <b>summary</b>: how many analyses, tables and figures the report has and which data they come from (and how many analyses could not be computed, if there are any).</li>
+    <li><span class="ui">Copy all paragraphs</span> (section 5.4), <span class="ui">See the figures</span> (chapter 6), <span class="ui">Present</span> and <span class="ui">Export</span> (chapter 7). <span class="ui">Present</span> shows the whole report as full-screen slides, one analysis after another, with its name in the top bar, so you can present it at a meeting or at a thesis defense (section 4.5).</li>
+    <li>The <b>level of detail</b> (section 4.5): in <span class="ui">Basic</span>, each analysis shows the reading of its tables instead of the tables and hides the technical details and the R code; in <span class="ui">Expert</span>, it opens them. The exported document is the same at all three levels.</li>
+    <li>The <b>index</b>: a link to each analysis, with its number.</li>
+  </ul>
+
+  <!-- 5.3 -->
+  <h2 id="s5-3"><span class="num">5.3</span>Each analysis in the report</h2>
+  <p class="lead">Each analysis takes up a card with its number and its title (the method and the response: “Randomized complete blocks · rend”). The bar on the right has four buttons:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.5in">Action</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">↑</span> and <span class="ui">↓</span></td><td>Move the analysis up or down in the report; the tables and figures are renumbered.</td></tr>
+      <tr><td><span class="ui">Open in Analysis</span></td><td>For analyses that come from the Analysis block: takes the request to that block with its variables and its options and computes it again, so you can review or change it. Anything you change there is a new request: you add it to the report and remove the earlier one if it is no longer useful.</td></tr>
+      <tr><td><span class="ui">Open in Explore</span></td><td>For summaries that come from Explore, the same button takes you to that block, but it does not put the variables back: a notice reminds you that the summary is adjusted there and added again.</td></tr>
+      <tr><td><span class="ui">Remove</span></td><td>Takes it out of the report. Ctrl+Z does not bring it back: you add it again from its block.</td></tr>
+    </tbody>
+  </table>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b5-item.png" alt="The first analysis of the maize report: the bar with the arrows, Open in Analysis and Remove; Title and note open, with the title in the report and the note; the In a nutshell box with its four sentences; the conclusion with the F and the p of each effect; and table 1, the analysis of variance for randomized complete blocks"></div>
+    <figcaption><b>Figure 5.2.</b> An analysis in the report with its title and its note expanded, <span class="ui">In a nutshell</span>, the conclusion and the first table. The report’s tables are numbered consecutively, from the first analysis to the last.</figcaption>
+  </figure>
+  <p>Below the bar, <span class="ui">Title and note</span> expands so you can change the <b>title</b> under which the analysis appears in the report (the suggested one stays as a guide, in gray) and write a <b>note</b>, which goes in the technical details: where the data came from, what was removed, what was decided and why.</p>
+  <p>Then comes the same content as in the source block, in this order:</p>
+  <ul>
+    <li><span class="ui">In a nutshell</span> (in analyses from the Analysis block) and the <b>conclusion</b> (section 4.5).</li>
+    <li>The <b>tables</b>, each with its <span class="ui">Copy table</span> button carrying its number (<span class="ui">Copy table 1</span>, <span class="ui">Copy table 2</span>…), which copies it tab-separated so you can paste it into a spreadsheet or into a table in a word processor. <span class="ui">Download as CSV</span> is not in the report: that button is in the result in Analysis or Explore (section 4.5), and the spreadsheet of chapter 7 contains every table with all its digits. Below each table, collapsed, is <span class="ui">How to read this table</span> (section 4.5): it is an on-screen aid; in its place, the exported document has a panel with gauges for the key statistics of each analysis (section 7.2).</li>
+    <li>The <b>figures</b>, also numbered consecutively, with the <span class="ui">Chart theme</span> selector above them. It is the same one as in Analysis: it changes the theme of every chart in the app.</li>
+    <li>The <b>Assumptions</b>: the analysis’s traffic light, if it has one (section 4.5), with the <span class="ui">What to do</span> box and its recommendation. Completely randomized and randomized complete block designs have no traffic light in Analysis; in the report, SigmaPro checks the assumptions of the same model on its own (normality of residuals, equal variances among treatments, block × treatment additivity in block designs, independence of residuals, and outliers) and adds its traffic light. With the maize data, all five lights are green and <span class="ui">What to do</span> says: “The assumptions are reasonably met: the analysis of variance and the mean comparisons will be reliable.”</li>
+    <li><span class="ui">For your thesis or paper</span>, with <span class="ui">How to report it (APA)</span> collapsed at the end (section 5.4), and, collapsed, the <span class="ui">Technical details</span> and the <span class="ui">Equivalent R code</span> (section 5.5).</li>
+  </ul>
+
+  <!-- 5.4 -->
+  <h2 id="s5-4"><span class="num">5.4</span>The paragraph for your thesis or paper</h2>
+  <p class="lead">In the <span class="ui">For your thesis or paper</span> section, each analysis has a <b>Methods</b> paragraph and a <b>Results</b> paragraph, written with its numbers and with the citation for the method when there is one. They are a starting point: the app says so next to the button, and you should review the wording and add the agronomic interpretation.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b5-parrafo.png" alt="The thesis paragraph for the maize analysis of variance: Methods, with the design, the 3 × 4 factorial arrangement, the citation of Gomez and Gomez (1984) and the type III sums of squares; Results, with the F, the degrees of freedom and the p of each effect, the grand mean, the CV and the R²; the Copy the paragraph button; How to report it (APA), collapsed; and the technical details expanded"></div>
+    <figcaption><b>Figure 5.3.</b> The Methods and Results paragraph of the maize analysis of variance, with <span class="ui">How to report it (APA)</span> collapsed and, below, its technical details.</figcaption>
+  </figure>
+  <p><span class="ui">Copy the paragraph</span> copies the two paragraphs of one analysis. <span class="ui">Copy all paragraphs</span>, in the header, gathers those of the whole report into one text with two sections: <b>Methods</b>, with the paragraph of each analysis and, at the end, a sentence that cites SigmaPro and R with their versions and the number of validation cases (if any analysis ran in the R engine, another sentence says so, with the version of R used inside the browser); and <b>Results</b>, with the paragraph of each analysis, numbered. With the maize data, the results of the first two analyses read as follows:</p>
+  <div class="caja ejemplo">
+    <div class="caja-t"><span class="ico">✎</span>Results (text copied from SigmaPro)</div>
+    <p>1. The effect of bloque was significant (F(3, 33) = 10.40; p &lt; 0.001); the effect of hibrido was significant (F(2, 33) = 60.63; p &lt; 0.001); the effect of dosis was significant (F(3, 33) = 292.15; p &lt; 0.001); the hibrido × dosis interaction was not significant (F(6, 33) = 1.47; p = 0.220). The grand mean was 5.938, with a coefficient of variation of 3.6 % and R² = 0.969.</p>
+    <p>2. The means, from highest to lowest, were H-66 (6.359 a), H-52 (5.922 b) and H-40 (5.533 c); means sharing a letter do not differ.</p>
+  </div>
+  <p>The paragraphs use the column names exactly as they are in the table (“rend”, “hibrido”): replace them with the full names when you paste them, or give the columns clear names in the Data block (section 2.7). The references cited in the paragraphs appear in full in the exported report.</p>
+  <p>The paragraphs, like the tables, come out in the language of the interface: with the selector set to ES (section I.5) they are written and copied in Spanish, with the same numbers.</p>
+  <p>Below the button, <span class="ui">How to report it (APA)</span> gives the same two paragraphs with APA 7 conventions (italics, <i>p</i> without a leading zero, intervals in square brackets) and in both languages, without changing the app’s language (section 4.5). In APA style, the first maize result begins: “The effect of bloque was significant (<i>F</i>(3, 33) = 10.40, <i>p</i> &lt; .001)”.</p>
+
+  <!-- 5.5 -->
+  <h2 id="s5-5"><span class="num">5.5</span>Technical details and R code</h2>
+  <p class="lead">At the end of each analysis, two collapsed sections hold what another person needs to repeat it.</p>
+  <p>The <b>Technical details</b> (figure 5.3) give the method with its internal name; the inputs (which column played each role); all the options, including those left as they came; the data (their source, the number of rows and the filter, if there was one); the rows that actually entered the computation; the software: the SigmaPro version, how many validation cases against R the app has and how many of them belong to that method (if it ran in the R engine, the versions of webR, R and its packages); the computation time; and the note, if one was written.</p>
+  <p>The <b>Equivalent R code</b> is the same as in section 4.5: a script that, with the exported data, gives the same numbers in R. <span class="ui">Copy the code</span> copies it. The .labg project (section 7.6) gathers the code of the whole report into a single script, together with the data.</p>
+
+  <!-- 5.6 -->
+  <h2 id="s5-6"><span class="num">5.6</span>A living report</h2>
+  <p class="lead">Because the report stores requests and not results, each analysis is computed with the current data every time it is displayed or exported.</p>
+  <ul>
+    <li>If you correct a value in the worksheet, add a row or turn on a <b>filter</b> (section 2.10), every analysis in the report is recalculated, and the technical details state the filter it was computed with.</li>
+    <li>If an analysis can no longer be computed (a column it used was deleted or renamed), its card says so with the box from section 4.5: what happened and what to do. The summary in the header counts it, and the others are unaffected. When the column comes back, so does the analysis.</li>
+    <li>Analyses in the R engine show “Computing in the R engine…” while they run; the export waits for them.</li>
+  </ul>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Closing does not lose the report</div>
+    <p>The report, with the data, is saved automatically in the browser while you work (section 7.7), and you can save it in a .labg project to take it to another computer or share it (section 7.6).</p>
+  </div>
+</section>
+
+</body>
+</html>

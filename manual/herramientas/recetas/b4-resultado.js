@@ -5,6 +5,6 @@
   await ejemplo('Maíz: híbridos');
   await usar('dbca', { respuesta: 'rend', tratamientos: ['hibrido', 'dosis'], bloque: 'bloque' }, {});
   const r = $('#anaResultado'); irA(r, 110); await W(300); limpio();
-  const b = [...r.querySelectorAll('button')].find(x => /Comparar las medias/.test(x.textContent));
+  const b = [...r.querySelectorAll('button')].find(x => /Comparar las medias|Compare the means/.test(x.textContent));
   return caja([r.querySelector('.exp-cabeza'), b], 8);
 })()

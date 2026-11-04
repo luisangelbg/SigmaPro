@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 4 (2 of 7)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.chica .marco { width: 62%; }
+  figure.chica figcaption { margin-left: 19%; margin-right: 19%; }
+</style>
+</head>
+<body>
+
+<section data-pestana="B4" data-orden="4" style="--acento: var(--b4)">
+
+  <!-- 4.7 -->
+  <h2 id="s4-7"><span class="num">4.7</span>Model assumptions</h2>
+  <p class="lead">Analysis of variance, mean comparisons and regression rest on assumptions about the <b>residuals</b> (what the model does not explain): that they follow a normal distribution, that they have the same variance in all treatments, that they are independent of each other and that none of them is extreme. <span class="ui">Check the model assumptions</span>, the first method in the catalog, tests them all at once and tells you what to do if any of them fails.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Option</th><th>What it decides</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Response variable</span></td><td>The response of the model.</td></tr>
+      <tr><td><span class="ui">Treatments (up to 3, crossed)</span></td><td>The factors; the variances are compared among their combinations.</td></tr>
+      <tr><td><span class="ui">Blocks</span></td><td>The block, if there is one (<span class="ui">— no blocks —</span> if not). With blocks, block × treatment additivity is also checked.</td></tr>
+      <tr><td><span class="ui">Order for the independence check</span></td><td>The order in which similar neighboring residuals are looked for: <span class="ui">— row order —</span> or the order of a numeric or date column (the position in the field, the measurement date).</td></tr>
+      <tr><td><span class="ui">Significance level</span></td><td>The α of the tests (0.05, 0.01 or 0.10), which also sets the cutoffs of the traffic-light colors.</td></tr>
+    </tbody>
+  </table>
+  <p>The check fits the model <code>respuesta ~ bloque + A * B * C</code> with your choices; the header of the result writes it out, with the number of residuals (<i>n</i>), and a line warns how many rows with a missing value are left out.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-sup-verde.png" alt="The assumption check for the maize: the header with the model rend ~ bloque + hibrido * dosis, n = 48, and the What is this analysis? and Add to report buttons; the traffic light in green with normality (Shapiro-Wilk p = 0.366), equal variances (Brown-Forsythe p = 0.538), additivity (Tukey p = 0.671), independence (Durbin-Watson = 1.981, p = 0.331) and outliers at OK; what to do; and the three charts: normal Q-Q of the residuals with its band, residuals vs. fitted values and residuals in row order"></div>
+    <figcaption><b>Figure 4.18.</b> The assumptions of the maize trial are met: all five rows of the traffic light are green.</figcaption>
+  </figure>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Which models it checks</div>
+    <p>The check accepts treatments and a single blocking factor: it properly checks completely randomized designs, block designs and their factorials. In a Latin square (put one of the two directions in <span class="ui">Blocks</span>), a lattice or a split plot the check is approximate, because it does not separate the other blocking factors or the main-plot error; it does not accept covariates either. When you add a completely randomized or randomized complete block design to the report (chapter 5), the report adds the traffic light of this check on its own, with the same model. The fact sheet of each analysis in Fundamentals (chapter 9) says, assumption by assumption, how to check it here and which alternative to use if it fails.</p>
+  </div>
+  <h3>The traffic light</h3>
+  <p>At the top of the result there is one row per assumption, each with its color, its icon (✓ OK, ! check, ✕ problem, – N/A), its status and a sentence with the test that decides it. The icon and the word say the same as the color, so you do not need to tell the colors apart. The overall color is that of the worst row: <b>The assumptions are met</b>, <b>Some assumptions need checking</b> or <b>Some assumptions are not met</b>.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.85in">Assumption</th><th style="width:1.9in">Deciding test</th><th>Also computed</th></tr></thead>
+    <tbody>
+      <tr><td>Normality of residuals</td><td>Shapiro-Wilk (from 3 to 5,000 residuals; with more, Anderson-Darling)</td><td>Lilliefors, Anderson-Darling; the skewness <i>G</i>₁ and the kurtosis <i>G</i>₂</td></tr>
+      <tr><td>Equal variances among treatments</td><td>Brown-Forsythe (Levene with the median)</td><td>Levene, Bartlett (sensitive to non-normality), Fligner-Killeen (rank-based); the ratio of the largest variance to the smallest</td></tr>
+      <tr><td>Block × treatment additivity</td><td>Tukey’s non-additivity (with blocks)</td><td>—</td></tr>
+      <tr><td>Independence of residuals</td><td>Durbin-Watson, against positive autocorrelation; exact <i>p</i> with fewer than 100 residuals</td><td>Runs above and below the median (exact <i>p</i> with fewer than 30 residuals)</td></tr>
+      <tr><td>Outliers</td><td>The largest studentized residual, with a Bonferroni <i>p</i></td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p>The colors follow the <i>p</i>-value of the main test and the chosen α: <b>green</b> if <i>p</i> ≥ α (OK), <b>amber</b> if it falls between α/5 and α (CHECK) and <b>red</b> if <i>p</i> &lt; α/5 (PROBLEM). With α = 0.05, the cutoffs are 0.05 and 0.01. A gray row says N/A (additivity without blocks; variances without treatments or with a treatment that has a single observation) or that there are too few observations for the test.</p>
+  <p>Normality has one exception: with 50 residuals or more and a nearly normal shape (|<i>G</i>₁| &lt; 0.5 and |<i>G</i>₂| &lt; 1), the row goes no further than amber even if the test rejects, and its sentence says that the departure is small. With so many data any departure turns out significant, and analysis of variance tolerates it.</p>
+  <h3>What to do</h3>
+  <p>Below the traffic light, the <b>What to do</b> box turns the result into concrete actions. Each recommendation appears only when its condition holds:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:2.2in">When</th><th>What it proposes</th></tr></thead>
+    <tbody>
+      <tr><td>Everything green</td><td>That the analysis of variance and the mean comparisons will be reliable.</td></tr>
+      <tr><td>Normality or variances fail and the response is positive</td><td>The Box-Cox transformation estimated with the same model (λ with its 95% interval) and the simple transformation that corresponds to it (square root, logarithm, reciprocal square root, reciprocal…), to be done in the Data block (section 2.9) before checking again.</td></tr>
+      <tr><td>Normality or variances fail and the response is counts (non-negative integers)</td><td>√(<i>x</i> + 0.5), or a Poisson or negative binomial model (section 4.17).</td></tr>
+      <tr><td>Normality or variances fail and the response is a percentage (the column name says so and the values range from 0 to 100)</td><td>The arcsine square root, or a binomial model with the total of each row (section 4.17).</td></tr>
+      <tr><td>Unequal variances with a single factor and no blocks</td><td>Compare the means with Games-Howell (section 4.11) or use Kruskal-Wallis (section 4.9): neither assumes equal variances.</td></tr>
+      <tr><td>Unequal variances with several factors or blocks, with no Box-Cox possible</td><td>Transform the response; a model with a different variance for each treatment is not yet in SigmaPro.</td></tr>
+      <tr><td>Only normality fails</td><td>With 30 residuals or more, that analysis of variance is robust to that lack of normality; with fewer, compare with Kruskal-Wallis or, with blocks, Friedman (section 4.9).</td></tr>
+      <tr><td>Additivity fails</td><td>The logarithm (it makes a multiplicative effect additive) or, with replicates within each block, including the interaction in the model.</td></tr>
+      <tr><td>Independence fails</td><td>Check the order of the rows; smaller blocks (spatial analysis is not yet in SigmaPro).</td></tr>
+      <tr><td>There is an outlier</td><td>Check that row: first, that it is not a data-entry error; if the value is real, analyze with and without it and report it.</td></tr>
+    </tbody>
+  </table>
+  <p>With Box and Cox’s poisons, for example, normality and variances fail and there is an outlying residual (figure 4.19): the app estimates the Box-Cox transformation with that same model (λ = −0.816, interval from −1.294 to −0.341), suggests the reciprocal and reminds you that the original column does not change; for row 24, it proposes checking first that it is not a data-entry error. If you check the poison alone, without the treatment, the model becomes one-way and the variances come out amber (Brown-Forsythe, <i>p</i> = 0.021): the box then adds Games-Howell and Kruskal-Wallis.</p>
+  <h3>Trying the alternative</h3>
+  <p>When a row of the traffic light fails, the <span class="ui">Try the alternative</span> box appears below it (in this check, below <b>What to do</b>), with one button per remedy. Each button runs the analysis that addresses the assumption, with the same variables; the numbers of the previous result do not change, and you go back to it by choosing it in the catalog. The buttons depend on the analysis:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.7in">Analysis</th><th style="width:2.1in">When</th><th>What the button runs</th></tr></thead>
+    <tbody>
+      <tr><td>Assumption check</td><td>Normality or variances fail and Box-Cox proposes a transformation</td><td>Creates the transformed column in Data (<code>ln_</code>, <code>raiz_</code>, <code>inv_</code> or <code>bc_</code> plus the name of the response) and checks again with it.</td></tr>
+      <tr><td></td><td>… and the response is counts</td><td>The count models, with the family chosen according to the overdispersion (section 4.17).</td></tr>
+      <tr><td></td><td>With a single factor: unequal variances, or normality with fewer than 30 residuals</td><td>Kruskal-Wallis, or Friedman if there are blocks (section 4.9); with unequal variances and no blocks, also Games-Howell (section 4.11).</td></tr>
+      <tr><td>t test</td><td>Unequal variances with Student’s t</td><td>Welch’s t.</td></tr>
+      <tr><td></td><td>Normality fails</td><td>Wilcoxon: Mann-Whitney with two groups, signed-rank with one sample or paired data (section 4.9).</td></tr>
+      <tr><td>Linear and polynomial regression</td><td>Normality or constant variance fails</td><td>With a positive response, its logarithm in a new column and the fit again; with counts, the count model with the predictors as covariates (up to two).</td></tr>
+      <tr><td></td><td>The shape fails, with one predictor</td><td>Polynomial regression of degree 2.</td></tr>
+      <tr><td></td><td>Collinearity, with three or more predictors</td><td>Best subsets (section 4.12).</td></tr>
+      <tr><td>Generalized models</td><td>Overdispersion with the Poisson or the binomial</td><td>The negative binomial or the quasibinomial.</td></tr>
+      <tr><td>Mixed models and repeated measures</td><td>Normality or variances fail and the response is positive</td><td>Its logarithm in a new column and the fit again.</td></tr>
+    </tbody>
+  </table>
+  <p>The transformed column is created only once: if it already exists with the same transformation, that one is used. A notice gives its name, and the original column does not change (section 2.9). With the poisons, <span class="ui">Transform with the reciprocal and check again</span> creates <code>inv_tiempo</code>, and the check with it comes out with all rows green, except additivity, which does not apply without blocks. Outliers, additivity and independence have no button: they call for checking the data or the design.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-sup-rojo.png" alt="The assumptions for the poisons: Some assumptions are not met; normality PROBLEM (Shapiro-Wilk p = 0.002); variances PROBLEM (Brown-Forsythe p less than 0.001, the largest 678.6 times the smallest); additivity N/A; independence OK; outliers CHECK (row 24, Bonferroni p = 0.021); and What to do: transform with Box-Cox, λ = −0.816, the reciprocal, and check row 24; below, Try the alternative with the button Transform with the reciprocal and check again"></div>
+    <figcaption><b>Figure 4.19.</b> The opposite case: the survival times of the poisons do not meet the assumptions; the app proposes the reciprocal and offers it in <span class="ui">Try the alternative</span>.</figcaption>
+  </figure>
+  <h3>The charts and the table</h3>
+  <ul>
+    <li><b>Normal Q-Q of the standardized residuals</b>: if the residuals are normal, the points follow the diagonal. The shaded band is the confidence region; points that fall outside it are marked and the farthest ones carry their row number.</li>
+    <li><b>Residuals vs. fitted values</b>: you should see a shapeless cloud. A funnel (more scatter at larger values) reveals unequal variances; the lines at ±2 flag the large residuals.</li>
+    <li><b>Residuals in the order</b> of the rows or of the chosen column: long runs of the same sign reveal dependence (similar neighboring plots).</li>
+  </ul>
+  <p>Above the three charts is the <span class="ui">Chart theme</span> selector, the same as in the other results (table 6.1). This result does not carry the LABG Suite band at the bottom: no app in the suite continues the assumption check.</p>
+  <p>Table 1 lists all the tests, each with its statistic, value, degrees of freedom, <i>p</i> and what it checks; the main test of each assumption is marked “(main)”, and the note recalls the traffic-light cutoffs. <span class="ui">Residual variance by treatment</span> (collapsed) holds the variance of each combination, so you can see which one stands apart.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-sup-cuadro.png" alt="The table of assumption tests for the poisons: Shapiro-Wilk, Lilliefors, Anderson-Darling, Brown-Forsythe, Levene, Bartlett, Fligner-Killeen, Durbin-Watson, runs and the studentized residual with Bonferroni (row 24), each with statistic, value, df, p and what it checks"></div>
+    <figcaption><b>Figure 4.20.</b> The table of tests, with the main test of each assumption marked.</figcaption>
+  </figure>
+  <div class="caja teoria">
+    <div class="caja-t"><span class="ico">Σ</span>Why Brown-Forsythe and not Bartlett</div>
+    <p>Bartlett’s test is very sensitive to non-normality: with heavy-tailed residuals it rejects equality of variances even when the variances are equal. The Brown-Forsythe test (Levene’s test with the median instead of the mean) is robust to this, which is why it decides the row; Bartlett stays in the table as a reference. For a similar reason, with very large data sets you should look at the charts as well as the <i>p</i>-values: with thousands of residuals, tiny departures from normality already turn out significant (hence the normality exception with 50 residuals or more).</p>
+  </div>
+
+  <!-- 4.8 -->
+  <h2 id="s4-8"><span class="num">4.8</span>t tests</h2>
+  <p>The <span class="ui">t test</span> compares means in three situations, chosen in <span class="ui">Comparison type</span>:</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Type</th><th>What it asks for</th><th style="width:1.6in">Example</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Two independent groups</span></td><td>The <span class="ui">Response variable</span>, the <span class="ui">Group column</span> and, if that column has more than two levels, the ones compared in <span class="ui">Group 1</span> and <span class="ui">Group 2</span>.</td><td>Survival time with treatments A and B.</td></tr>
+      <tr><td><span class="ui">Paired measurements</span></td><td>The <span class="ui">First measurement</span> and the <span class="ui">Second measurement</span>, two columns measured on the same units (each row, one unit); first − second is compared.</td><td>Height of the same plant at 15 and at 30 days.</td></tr>
+      <tr><td><span class="ui">One sample vs. a value</span></td><td>The <span class="ui">Variable</span> and the <span class="ui">Reference value (μ₀)</span>.</td><td>Does mean germination differ from 50%?</td></tr>
+    </tbody>
+  </table>
+  <p>The other options: the <span class="ui">Difference under H₀</span> (for two groups and paired data; usually 0), the <span class="ui">Alternative hypothesis</span> (<span class="ui">Two-sided (≠)</span>, <span class="ui">Less (&lt;)</span> or <span class="ui">Greater (&gt;)</span>), the <span class="ui">Confidence level</span> of the interval (95, 99 or 90%), the <span class="ui">Significance level</span> and, with two groups, the <span class="ui">Assume equal variances (Student's t)</span> checkbox. Left unchecked, <b>Welch’s t</b> is used, which does not assume equal variances and is the recommended one: with equal variances it gives almost the same as Student’s, and with unequal variances it remains valid.</p>
+  <figure>
+    <div class="marco"><img src="../img/en/b4-t.png" alt="Welch’s t test with the poisons, treatments A and B: the form with comparison type, response variable tiempo, group column, groups A and B, difference under H0, two-sided hypothesis, 95% confidence and the equal-variances checkbox unchecked; the result: the mean of A (0.314) differs from that of B (0.677), difference −0.362, t = −3.729, df = 13.21, p = 0.002; large effect size, Hedges’ g −1.470; the traffic light for normality and variances; the chart theme selector and the box plot of the two groups with their points and their mean"></div>
+    <figcaption><b>Figure 4.21.</b> Welch’s t: treatment B prolongs survival compared with A. The chart shows each value, the quartile box and the mean (diamond).</figcaption>
+  </figure>
+  <p>The result includes:</p>
+  <ul>
+    <li>the <b>conclusion</b> with the two means, the difference and its interval, and <i>t</i>, df and <i>p</i>;</li>
+    <li>the <b>effect size</b> in words, based on Hedges’ <i>g</i> and Cohen’s guide: very small (below 0.2), small (from 0.2), medium (from 0.5) or large (from 0.8). For paired data it is computed on the differences (<i>d<sub>z</sub></i>) and for one sample, against the reference value;</li>
+  </ul>
+  <ul>
+    <li>the <b>traffic light</b>: the normality of each group (or of the differences, for paired data) by Shapiro-Wilk and, with two groups, the comparison of the variances with the <i>F</i> test. With Welch’s t, that row (<span class="ui">Variances (Welch's t)</span>) stays green even if the variances differ, because Welch does not assume them equal; with Student’s (<span class="ui">Equal variances</span>) it is colored according to the <i>F</i> and, if they differ, <span class="ui">Try the alternative</span> runs Welch’s (if normality fails, Wilcoxon);</li>
+    <li>the <b>chart</b> of the values of each group (for paired data, of the differences), with the quartile box and the mean; for paired data and one sample, a dashed line marks the reference value;</li>
+    <li>the <b>tables</b>: the chosen test (with two groups, the other t below as a reference), the means and standard deviations, and the effect size: Cohen’s <i>d</i> and Hedges’ <i>g</i> (<i>d</i> corrected for small-sample bias), with intervals based on the noncentral t (Steiger and Fouladi, 1997).</li>
+  </ul>
+  <p>With treatments A and B of the poisons, the variances differ greatly (<i>F</i> = 0.102, <i>p</i> &lt; 0.001). With Welch, the test uses 13.21 df (<i>p</i> = 0.002) and the variances row says that it remains valid; if you check the Student box, the test uses 22 df (<i>p</i> = 0.001) and the same row comes out red with “Welch's t, which does not assume them equal, is preferable”.</p>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>A t test is not for more than two treatments</div>
+    <p>With three or more treatments, comparing them two at a time with t tests inflates the probability of finding differences that do not exist. The way to go is the analysis of variance of the design (section 4.10) followed by a mean comparison that controls that error (section 4.11).</p>
+  </div>
+
+  <!-- 4.9 -->
+  <h2 id="s4-9"><span class="num">4.9</span>Nonparametric tests</h2>
+  <p>When the data do not meet normality and a transformation does not achieve it, or when the response is an ordered scale (damage from 1 to 5, a score), rank tests compare groups without assuming a distribution. They sort all the values and work with their position. SigmaPro computes their <b>exact distributions</b> when the size allows it, as R does. None of the three has a traffic light.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.75in">Test</th><th style="width:1.7in">Equivalent to</th><th>When</th></tr></thead>
+    <tbody>
+      <tr><td><b>Wilcoxon and Mann-Whitney</b></td><td>The t test</td><td>Two independent groups (rank sum, Mann-Whitney), two paired measurements or one sample against a value (signed ranks).</td></tr>
+      <tr><td><b>Kruskal-Wallis</b></td><td>The completely randomized ANOVA</td><td>Three or more treatments without blocks.</td></tr>
+      <tr><td><b>Friedman</b></td><td>The block ANOVA</td><td>Three or more treatments with one value of each in each block (plot, judge, date).</td></tr>
+    </tbody>
+  </table>
+  <h3>Wilcoxon and Mann-Whitney</h3>
+  <p>The form is that of the t test (without the variances checkbox), with two more options: <span class="ui">p-value</span> (<span class="ui">Exact if possible</span>, <span class="ui">Exact</span> or <span class="ui">Normal approximation</span>) and <span class="ui">Continuity correction</span>, checked by default, for the normal approximation. With <span class="ui">Exact if possible</span>, the exact <i>p</i> is used with fewer than 50 values per group and no ties (nor differences equal to the reference value, in the signed ranks), as in R; with ties the app uses the normal approximation even if the exact one is requested, and the table note says which was used.</p>
+  <p>The result gives the statistic (<i>W</i> for two groups, <i>V</i> for paired data and one sample), the <i>p</i> and, as the effect measure, the <b>Hodges-Lehmann estimator</b> of the shift between the groups (the median of all the differences between one value from each group; for paired data and one sample, the pseudomedian) with its interval, plus a table of medians and quartiles and a box plot. If, with so few data, the interval cannot reach the requested confidence, a note says which one it reaches. With treatments A and B of the poisons, which have ties: <i>W</i> = 20.5, <i>p</i> = 0.003, and a shift of −0.360 (95% CI: −0.610 to −0.090), with the normal approximation corrected for continuity and for ties.</p>
+  <h3>Kruskal-Wallis</h3>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b4-kruskal.png" alt="Kruskal-Wallis with the poisons: at least one treatment differs (H = 25.584, df = 2, p less than 0.001); η² from H = 0.524; Dunn comparisons with Holm: 2 of 3 pairs differ; the chart of tiempo by poison with the letters a, a and b; and the table of treatments sorted by mean rank with median, quartiles and group"></div>
+    <figcaption><b>Figure 4.22.</b> Kruskal-Wallis with the three poisons: poison III shortens survival compared with I and II (different letters).</figcaption>
+  </figure>
+  <p>You choose the <span class="ui">Response variable</span>, the <span class="ui">Treatments</span>, the <span class="ui">Pairwise comparisons</span> method (Dunn, Conover-Iman or Nemenyi) and the <span class="ui">p-value adjustment</span> for multiple comparisons: <span class="ui">Holm</span> (the default), <span class="ui">Bonferroni</span>, <span class="ui">Benjamini-Hochberg (FDR)</span> or <span class="ui">No adjustment</span>; with Conover-Iman, also <span class="ui">Tukey (single-step)</span>. Nemenyi needs no adjustment: its <i>p</i> already comes from the studentized range. The result gives <i>H</i> with its degrees of freedom and its <i>p</i> (corrected for ties), the effect size η² from <i>H</i>, and the comparisons: the <span class="ui">Treatments sorted by mean rank</span> table, with the median, the quartiles and their <b>letters</b> (treatments that share a letter do not differ), which also appear on the chart, and the table for each pair, with the difference in mean ranks, the statistic, the unadjusted <i>p</i> and the adjusted one.</p>
+  <h3>Friedman</h3>
+  <p>It also asks for the <span class="ui">Blocks</span> column, with one value per treatment in each block. The pairwise comparisons can be Conover, Nemenyi or paired Wilcoxon, with the same adjustments; <span class="ui">Tukey (single-step)</span> only with Conover. Besides χ² and its <i>p</i>, it gives <b>Kendall’s W</b>, the agreement among blocks (from 0, none, to 1, all blocks rank the treatments the same way), and the table of treatments sorted by their rank sum, with their letters.</p>
+  <p>The data must form a complete table of blocks by treatments:</p>
+  <ul>
+    <li>A block with an empty response in some treatment is left out, as in R, and a note says how many. With the avocado thrips, two of the six blocks have a plot with no value: the test uses the other four (χ² = 8.308, df = 4, <i>p</i> = 0.081; <i>W</i> = 0.519) and the chart shows only those blocks.</li>
+    <li>If the row of some block and treatment combination is missing, the app stops: “Friedman needs the same treatments in all blocks, and some combinations are missing”.</li>
+    <li>If a treatment has more than one value in a block (replicates, or a factorial in blocks), it also stops, and proposes averaging the replicates of each treatment in each block in the spreadsheet, importing that table of means and trying again. That is what happens with the maize if you ask for the hybrids in blocks: each block has four plots of each hybrid, one per rate.</li>
+  </ul>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>What you lose with ranks</div>
+    <p>Rank tests say whether one group tends to have higher values than another, not how much their means differ, and with normal data they have somewhat less power than ANOVA. Before turning to them, it is worth trying the transformation suggested by the assumption check (section 4.7), or a generalized linear model if the response is a count or a proportion (section 4.17).</p>
+  </div>
+</section>
+
+</body>
+</html>

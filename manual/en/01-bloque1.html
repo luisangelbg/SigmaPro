@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SigmaPro · User’s Manual · Chapter 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../interior.css">
+<script src="../paginar.js"></script>
+<style>
+  figure.media .marco { width: 80%; }
+  figure.media figcaption { margin-left: 10%; margin-right: 10%; }
+  figure.alta .marco { width: 58%; }
+  figure.alta figcaption { margin-left: 21%; margin-right: 21%; }
+</style>
+</head>
+<body>
+
+<section class="capitulo" id="cap-b1" data-pestana="B1" data-orden="1" style="--acento: var(--b1)">
+  <div class="cap-apertura">
+    <div class="cap-num">1</div>
+    <div class="cap-etiqueta">Block 1 · Home</div>
+    <h1>Home: what SigmaPro promises and where it stands</h1>
+    <div class="cap-regla"></div>
+    <p class="cap-resumen">The first block is the front door of the app. It says in one sentence what the app is for, offers three ways to begin (your data, an example, or finding out which analysis to use), remembers what was analyzed last, sums up its three commitments (accuracy verified against R, reproducible code and complete privacy) and shows where its development stands. Further down it lists everything that can be analyzed, with a link to the fact sheet of each analysis, shows the program’s details and the opening-screen settings, and introduces the sister apps of the suite. If the tab was closed last time with work in progress, the notice to recover it appears here.</p>
+    <ul class="cap-contenido">
+      <li><b>1.1</b>What you see when you open the app</li>
+      <li><b>1.2</b>The three commitments</li>
+      <li><b>1.3</b>Development status</li>
+      <li><b>1.4</b>If there is saved work</li>
+      <li><b>1.5</b>What you can analyze</li>
+      <li><b>1.6</b>About SigmaPro and the opening screen</li>
+      <li><b>1.7</b>Explore the LABG suite</li>
+    </ul>
+  </div>
+
+  <!-- 1.1 -->
+  <h2 id="s1-1"><span class="num">1.1</span>What you see when you open the app</h2>
+  <p class="lead">SigmaPro always opens in this block, after the opening screen (section 1.6): when you press <span class="ui">Start</span>, the logo and the name travel to their place in the top bar and Home appears. The title sums up the idea of the whole app: <b>from experiment to conclusion, with numbers you can verify</b>. Below it, a sentence says what it does: experimental designs, mean comparisons, regression and mixed models, with an assistant that understands your trial, publication-ready reports and the R code for every analysis.</p>
+  <p>The illustration on the right is a miniature summary of a typical result: treatment means joined by a curve, each with the letter that shows which means differ from each other, and below them the formula of the analysis that produced them (<code>rend ~ bloque + híbrido × N</code>), with the σ of the logo in the background. It is decorative; the real numbers appear when data are loaded.</p>
+  <figure>
+    <div class="marco"><img src="../img/en/b1-inicio.png" alt="The Home block: on the left, the bar with the ten blocks; in the center, the title “From experiment to conclusion, with numbers you can verify”, the text that sums up the app and the privacy note; on the right, a chart of means with letters and the formula of an analysis; below, the beginning of Where do you start? with cards 1, 2 and 3"></div>
+    <figcaption><b>Figure 1.1.</b> The Home block, as it appears when you open SigmaPro. The bar on the left leads to the ten blocks; the content of the block fills the center.</figcaption>
+  </figure>
+  <p>The note <i>Your data never leave this browser</i> is a reminder that everything is computed on the computer of whoever is using the app (section 1.2).</p>
+
+  <h3>Where do you start?</h3>
+  <p>Below the title, three numbered cards offer the three ways to begin (figure 1.2):</p>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Path</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><b>1 · I have my data</b></td><td><span class="ui">Import a file</span> and <span class="ui">Paste a table</span> open the same windows as in the Data block (sections 2.3 and 2.4); once the table is loaded, the app moves to Data, which says what it sees in the trial (section 2.13).</td></tr>
+      <tr><td><b>2 · I want to try an example</b></td><td><span class="ui">Choose an example</span> opens the list of the 27 examples (section 2.5); when you choose one, the app loads it and moves to Data.</td></tr>
+      <tr><td><b>3 · I want to know which analysis to use</b></td><td><span class="ui">Decision tree</span> leads you to the analysis through a few questions about your research, without data (section 9.3); <span class="ui">See the analyses</span> opens the Fundamentals catalog, with the fact sheet of each analysis (chapter 9), and <span class="ui">Open the glossary</span>, the app’s glossary (section I.6).</td></tr>
+    </tbody>
+  </table>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b1-caminos.png" alt="Where do you start?: card 1, I have my data, with Import a file and Paste a table; card 2, I want to try an example, with Choose an example; and card 3, I want to know which analysis to use, with Decision tree, See the analyses and Open the glossary; below, What you analyzed last, with Clear the history and three analyses of the maize example, each with its variables, its data and how long ago it was computed"></div>
+    <figcaption><b>Figure 1.2.</b> The three paths and, below them, what was analyzed last with the maize example.</figcaption>
+  </figure>
+
+  <h3>What you analyzed last</h3>
+  <p>SigmaPro remembers every analysis computed in Explore or in Analysis: the method, the variables and options, the data it was run on, and when; the same analysis with the same data takes up a single row, that of the latest computation. The <b>What you analyzed last</b> card shows the five most recent ones, and a click on one opens it again with its variables and options. If the loaded table does not have its columns and the data came from an example, the app loads that example again (the previous table remains available under <span class="ui">Back to the previous table</span>, section 2.12); if they came from a file, a notice says which columns are missing. The same history, with up to fifteen analyses, is under the <span class="ui">History</span> button of the Analysis block (section 4.1).</p>
+  <p>The history is kept only in that browser and contains no data values: only the names of the columns and of the data. <span class="ui">Clear the history</span> empties it.</p>
+  <p>At the end of each block there are two buttons, <span class="ui">← Previous</span> and <span class="ui">Next →</span>, with the name of the block they lead to; in Home only the second one appears, and in LABG Suite, the last block, only the first. The natural route follows the bar: from the data to the analysis, to the report, to the figures and to the export. But any block can be opened at any time.</p>
+
+  <!-- 1.2 -->
+  <h2 id="s1-2"><span class="num">1.2</span>The three commitments</h2>
+  <figure>
+    <div class="marco"><img src="../img/en/b1-valores.png" alt="Three cards: 1 × 10⁻⁶, Verified accuracy; R, Reproducible; 0 bytes, Private"></div>
+    <figcaption><b>Figure 1.3.</b> The three cards of Home. Each one is a promise that the app keeps in a way you can check.</figcaption>
+  </figure>
+  <p>Below the paths, three cards sum up what sets SigmaPro apart. They are not slogans: each one can be checked; in the first, <span class="ui">See the validation</span> leads to Block 8 (chapter 8).</p>
+  <div class="caja dato">
+    <div class="dato-cifra">10⁻⁶</div>
+    <div class="dato-txt"><div class="caja-t">Verified accuracy</div>Each method is compared against R, with data from the literature and with cases built on purpose, before it is offered in the catalog. The rule is that <b>no number may differ from R’s by more than one millionth</b> (relative to its size). A method whose cases have not all passed does not appear in the app. Block 8 shows the outcome of those comparisons.</div>
+  </div>
+  <div class="dos">
+    <div class="caja nota">
+      <div class="caja-t"><span class="ico">R</span>Reproducible</div>
+      <p>Every result comes with the <b>R code</b> that gives the same result, with the data, the model and the options that were used. It lets a reviewer, a thesis advisor or you yourself, years later, repeat the analysis without SigmaPro. The <code>.labg</code> project also stores a script that repeats all the analyses in the report (chapter 7).</p>
+    </div>
+    <div class="caja nota">
+      <div class="caja-t"><span class="ico">0</span>Private</div>
+      <p>Everything is computed <b>in the browser</b>: the data are not sent to any server, not even for the models that run in the R engine, which also works inside the browser (section I.7). Opened with a double-click, the app makes no request outside the computer, except for the first download of the R engine.</p>
+    </div>
+  </div>
+
+  <p>A difference of one millionth means that, in practice, SigmaPro’s figures and R’s are the same in every decimal place that gets published. An F of 60.635 in SigmaPro is an F of 60.635 in R; a <i>p</i> value of 0.0034 is 0.0034. When a method cannot reach that accuracy because R itself introduces larger numerical noise (for example, in certain iterative fits), the case carries its own tolerance with its reason written down, and that is how it appears in the validation (chapter 8).</p>
+  <!-- 1.3 -->
+  <h2 id="s1-3"><span class="num">1.3</span>Development status</h2>
+  <p>Further down, the <b>Development status</b> card explains how SigmaPro is built: in <b>milestones</b>, and each milestone is closed only when all its comparisons against R and all its automated tests pass. The list marks finished milestones with <span class="ui">✓</span>, the one in progress with <span class="ui">●</span> and pending ones with <span class="ui">○</span>; the number of each milestone tells which phase it belongs to. All of them are finished, up to the last one on the list: the release of version 1.0.0.</p>
+  <table class="compacta">
+    <thead><tr><th style="width:0.9in">Phase</th><th style="width:0.9in">Milestones</th><th>What it brought</th></tr></thead>
+    <tbody>
+      <tr><td><b>Phase 1</b></td><td>1.0 to 1.12</td><td>The foundations and what is used most in the field: the worksheet, descriptive statistics, assumptions with a traffic light, t tests and nonparametric tests, the analysis of variance of experimental designs, mean comparisons, ANCOVA, regression, correlation, contingency tables, the assistant, the model builder, the report, the figures and the exports.</td></tr>
+      <tr><td><b>Phase 2</b></td><td>2.0 to 2.10</td><td>The models that demand more computation: mixed models (in the R engine inside the browser), repeated measures, variance components and heritability, generalized linear models and their mixed versions, nonlinear regression and dose-response, response surfaces and multi-environment trials with their stability.</td></tr>
+      <tr><td><b>Phase 3</b></td><td>3.0 to 3.9</td><td>Sample size and power, sampling, survival, time series, multivariate analysis (MANOVA and discriminant analysis) and, as an extension, strata in survival, Box’s M test, ARIMA models, Cox and MANOVA in the model builder, and autosave of the work.</td></tr>
+      <tr><td><b>Phase 4</b></td><td>4.0 to 4.5</td><td>The complete calculations: nonlinear regression with hormesis, Michaelis-Menten and the economic optimum rate; multi-environment analysis with cell imputation, WAAS and two-stage analysis; the response surface design generator, mixtures, desirability and the 3D surface; generalized models with profile likelihood intervals and Firth’s correction; the assistant that recognizes split plots in the data; and the English interface.</td></tr>
+      <tr><td><b>Phase 5</b></td><td>5.0 to 5.11</td><td>The app that explains what it computes: the Fundamentals fact sheets of the 78 analyses, the LABG Suite block with suggestions from the sister apps, the opening screen, the catalog illustrations and the chart themes; fast loading; “How to read this table”, with gauges, curves and interpretation cards; the Basic, Standard and Expert levels; the traffic light with icons and “Try the alternative”; “In a nutshell” and “How to report it”; the glossary; what guides you (the Home paths, the history, the decision tree, the tours, the help, presentation mode and errors in plain words); the redesigned report, with its methodological appendix, Markdown and the class worksheet; and the quality tests of the wording, the links, accessibility and speed.</td></tr>
+    </tbody>
+  </table>
+  <p>The number at the foot of every page of the app (<i>SigmaPro v1.0.0</i>) is the version. This manual describes version 1.0.0.</p>
+
+  <!-- 1.4 -->
+  <h2 id="s1-4"><span class="num">1.4</span>If there is saved work</h2>
+  <p>While you work, SigmaPro saves on its own, in the browser itself, the data, the analyses in the report and the figure settings (<b>autosave</b>, section 7.7). If the tab was closed without saving the project, or the computer shut down, this notice appears at the top of Home and of Data when you open the app again:</p>
+  <figure>
+    <div class="marco"><img src="../img/en/b1-recuperar.png" alt="Notice: There is saved work in this browser, with the date and time, the name of the data, 48 rows and 4 columns, 2 analyses in the report; the Recover the work and Discard buttons"></div>
+    <figcaption><b>Figure 1.4.</b> The autosave notice: when it was saved, which data, how many rows and columns, and how many analyses the report had.</figcaption>
+  </figure>
+  <ol class="pasos">
+    <li><span class="ui">Recover the work</span> reloads the data exactly as they were (with their types, their computed columns and their filter), the analyses in the report and the figure settings. The results are recomputed with those data, so they are exactly the same as before. The app opens in Results, or in Data if the report was empty.</li>
+    <li><span class="ui">Discard</span> deletes what was saved and leaves the app empty.</li>
+    <li>If you choose neither and start other work, the earlier work is not lost: the notice stays in view and the work can be recovered while the tab is open. Recovering it when other data are already loaded asks for confirmation, because it replaces them.</li>
+  </ol>
+  <div class="caja importante">
+    <div class="caja-t"><span class="ico">!</span>Autosave does not replace the project</div>
+    <p>What is saved lives in <b>that browser on that computer</b>. It does not travel to another machine, it is lost if the browser data are cleared and, in a private window, it is deleted when the window is closed. To keep your work, share it or take it to another computer, save the <b>.labg project</b> in the Export block (section 7.6).</p>
+  </div>
+
+  <!-- 1.5 -->
+  <h2 id="s1-5"><span class="num">1.5</span>What you can analyze</h2>
+  <p class="lead">The <b>What you can analyze</b> card lists the 78 analyses in SigmaPro, grouped into their 18 families, from descriptive statistics to survival and time series. It lets you see at a glance what the program does before loading any data.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b1-analisis.png" alt="The What you can analyze card: the title, the note saying that each name opens its fact sheet in Fundamentals, and the list of analyses in columns, grouped by family (Descriptives and intervals, Model assumptions, t tests, Nonparametric tests, Experimental designs…)"></div>
+    <figcaption><b>Figure 1.5.</b> The beginning of the What you can analyze card. Each name is a link to the fact sheet of that analysis.</figcaption>
+  </figure>
+  <p>Each name opens the <b>fact sheet of the analysis</b> in Block 9, Fundamentals: what it is for, the model and its assumptions, the data it needs, how to read the result, and its references (chapter 9). From the fact sheet, <span class="ui">Open this analysis</span> takes you to the analysis and <span class="ui">Load the example data</span> opens it with its example already loaded, so this list is also a shortcut for trying out any method.</p>
+
+  <!-- 1.6 -->
+  <h2 id="s1-6"><span class="num">1.6</span>About SigmaPro and the opening screen</h2>
+  <p class="lead">The <b>About SigmaPro</b> card says who made the program and under which license, and brings together the controls of the opening screen.</p>
+  <figure class="media">
+    <div class="marco"><img src="../img/en/b1-acerca.png" alt="The About SigmaPro card: Luis Ángel Barrera-Guzmán, GPL-3.0 license, part of the LABG Suite; the Watch the intro and Presentation screen buttons and the Show the intro on opening checkbox"></div>
+    <figcaption><b>Figure 1.6.</b> The About SigmaPro card.</figcaption>
+  </figure>
+  <table class="compacta">
+    <thead><tr><th style="width:1.9in">Control</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ui">Watch the intro</span></td><td>Shows the full opening screen again, up to <span class="ui">Start</span>.</td></tr>
+      <tr><td><span class="ui">Presentation screen</span></td><td>The opening scene in a loop, without a button, to project in a class or at a booth. Any key or a click exits it.</td></tr>
+      <tr><td><span class="ui">Show the intro on opening</span></td><td>When checked (the default), the opening appears when the app is opened: in full the first time and in a short version (a second and a half) after that. When unchecked, SigmaPro opens directly in Home. The choice is remembered in the browser.</td></tr>
+    </tbody>
+  </table>
+  <div class="caja nota">
+    <div class="caja-t"><span class="ico">i</span>Note</div>
+    <p>The opening never gets in the way of your work: <span class="ui">Skip</span> or Esc dismisses it at any time, it does not repeat when the same tab is reloaded and, if the system asks for reduced motion, it appears without animation. While it is showing, the app finishes loading behind it.</p>
+  </div>
+
+  <!-- 1.7 -->
+  <h2 id="s1-7"><span class="num">1.7</span>Explore the LABG suite</h2>
+  <p>At the end of Home, the black and gold box <b>Explore the LABG suite</b> introduces four sister apps of SigmaPro, the ones that most often continue an agronomic analysis: PCAPro (principal components), ClusteringPro (cluster analysis), AgriDesign (design and randomization of experiments) and CorrelationPro (correlation). Each card shows its logo, its version, its features and the <span class="ui">Open app</span>, <span class="ui">Manual</span> and <span class="ui">Cite</span> buttons; an app that does not yet have a public release appears with <span class="ui">Coming soon</span> instead of the buttons. It is the same box as in Block 10; chapter 10 explains it in full (figure 10.1).</p>
+</section>
+
+</body>
+</html>
