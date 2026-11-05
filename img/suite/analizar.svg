@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" role="img" aria-label="StatsPro">
+  <!-- Logo de StatsPro (repositorio AnalizaR): el repositorio no publica ícono; distribución con su media, en el estilo de la suite. -->
+  <rect x="2" y="2" width="36" height="36" rx="9" fill="#1f5e8c"/>
+  <g fill="#ffffff">
+    <rect x="9" y="22" width="4" height="9" rx="1" opacity=".6"/>
+    <rect x="14.5" y="15" width="4" height="16" rx="1" opacity=".8"/>
+    <rect x="20" y="11" width="4" height="20" rx="1"/>
+    <rect x="25.5" y="18" width="4" height="13" rx="1" opacity=".7"/>
+  </g>
+  <path d="M8 26 C 14 8, 24 6, 32 24" fill="none" stroke="#f2c14e" stroke-width="2" stroke-linecap="round"/>
+</svg>

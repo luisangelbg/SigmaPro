@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" role="img" aria-label="LeafPro">
+  <!-- Logo de LeafPro: el ícono publicado en su repositorio (https://github.com/luisangelbg/LeafPro). -->
+  <rect x="2" y="2" width="36" height="36" rx="9" fill="#F5F0E6"/>
+  <svg x="8" y="8" width="24" height="24" viewBox="-16 -18 32 36"><path d='M0,16 C -13,6 -12,-8 0,-16 C 12,-8 13,6 0,16 Z' fill='#4a8d3c'/><path d='M0,14 L0,-13 M0,6 L-6,0 M0,6 L6,0 M0,-2 L-5,-7 M0,-2 L5,-7' stroke='#e8f4dd' stroke-width='1.6' fill='none'/></svg>
+</svg>

@@ -116,6 +116,9 @@
 .sx-lead { margin: 0 0 var(--sp-4); color: rgba(245, 240, 230, .78); max-width: 60ch; }
 .sx-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 @media (max-width: 760px) { .sx-grid { grid-template-columns: 1fr; } }
+.sx-cat + .sx-cat { margin-top: var(--sp-5, 24px); }
+.sx-cat-tit { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; padding-bottom: 6px; font-size: 1.05rem; color: var(--sx-oro-claro); border-bottom: 1px solid rgba(201, 162, 39, .25); }
+.sx-cat-n { font-size: var(--fs-2xs); font-weight: 700; padding: 1px 8px; border-radius: 999px; color: #050505; background: var(--sx-oro); }
 .sx-app { display: flex; flex-direction: column; gap: 10px; padding: 18px; border-radius: var(--r-md); background: rgba(245, 240, 230, .03); border: 1px solid rgba(201, 162, 39, .28); }
 .sx-app-cab { display: flex; gap: 14px; align-items: center; }
 .sx-logo { flex: none; display: block; width: 64px; height: 64px; border-radius: 14px; transition: transform .3s cubic-bezier(.16, 1, .3, 1), filter .3s; }

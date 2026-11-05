@@ -73,15 +73,15 @@ window.SP_COMPROBACIONES = {
  "sin-conexion": {
   "titulo": "Privacidad y uso sin conexión",
   "ok": true,
-  "resumen": "Con datos, 7 análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, 472 peticiones GET sin datos, todas a la propia app; con doble clic, fuera del equipo solo se pide el código del motor R para el modelo mixto (43 descargas de webR y sus paquetes); servida por http con su repositorio propio, ni eso: el motor sale del mismo origen, todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo y el modelo mixto en el motor R guardado, exporta y verifica las huellas del proyecto.",
+  "resumen": "Con datos, 7 análisis, reporte y seis exportaciones, ningún dato salió del navegador: servida por http, 506 peticiones GET sin datos, todas a la propia app; con doble clic, fuera del equipo solo se pide el código del motor R para el modelo mixto (43 descargas de webR y sus paquetes); servida por http con su repositorio propio, ni eso: el motor sale del mismo origen, todo con GET sin datos ni parámetros, también desde el hilo del motor. Sin red y con el servidor apagado, la app abre, calcula los análisis del núcleo y el modelo mixto en el motor R guardado, exporta y verifica las huellas del proyecto.",
   "renglones": [
-   "Doble clic: 230 peticiones; fuera del equipo, solo 43 descargas del motor R (webR y paquetes).",
-   "Servida por http: 472 peticiones GET a 268 archivos de la app, sin parámetros ni cuerpo.",
-   "Servicio sin conexión activo con 267 archivos guardados.",
+   "Doble clic: 248 peticiones; fuera del equipo, solo 43 descargas del motor R (webR y paquetes).",
+   "Servida por http: 506 peticiones GET a 284 archivos de la app, sin parámetros ni cuerpo.",
+   "Servicio sin conexión activo con 283 archivos guardados.",
    "Sin red: 7 análisis, reporte, 6 exportaciones y huellas del proyecto verificadas."
   ],
-  "fecha": "2026-11-04T03:42:23.316Z",
-  "motor": "node v24.19.0"
+  "fecha": "2026-11-05T20:46:18.597Z",
+  "motor": "node v22.21.1"
  },
  "exportar": {
   "titulo": "Las exportaciones, leídas con lectores independientes",
@@ -111,9 +111,9 @@ window.SP_COMPROBACIONES = {
  "idioma": {
   "titulo": "La interfaz en inglés",
   "ok": true,
-  "resumen": "6984 textos traducidos; 810 casos con los mismos números en los dos idiomas (71,773 valores); 272 resultados armados en inglés sin textos pendientes",
-  "fecha": "2026-11-04T03:38:52.224Z",
-  "motor": "node v24.19.0"
+  "resumen": "6988 textos traducidos; 810 casos con los mismos números en los dos idiomas (71,773 valores); 272 resultados armados en inglés sin textos pendientes",
+  "fecha": "2026-11-05T20:45:06.655Z",
+  "motor": "node v22.21.1"
  },
  "regresion": {
   "titulo": "Regresión de resultados y reportes",
@@ -141,10 +141,10 @@ window.SP_COMPROBACIONES = {
  "suite": {
   "titulo": "Enlaces y logos de la suite LABG",
   "ok": true,
-  "resumen": "CorrelationPro: PENDIENTE (sin repositorio público; logo marcador); 14 de 14 enlaces responden 200",
+  "resumen": "64 de 64 enlaces responden 200",
   "renglones": [],
-  "fecha": "2026-11-04T03:42:43.068Z",
-  "motor": "node v24.19.0"
+  "fecha": "2026-11-05T20:44:08.290Z",
+  "motor": "node v22.21.1"
  },
  "glosario": {
   "titulo": "Glosario y «Ver en acción»",
@@ -159,24 +159,24 @@ window.SP_COMPROBACIONES = {
   "ok": true,
   "resumen": "Inicio: tres caminos; el ejemplo lleva a Datos; historial: anota, vuelve a abrir con su ejemplo y se lista en Análisis; estados vacíos: Explorar carga el ejemplo ahí mismo; Exportar lleva a Análisis; árbol: del Inicio a los bloques con sus líneas, el ejemplo calculado y la recomendación del asistente señalada; ayudas: con el teclado, Esc sin mover el foco y el estadístico de un encabezado; recorridos: Análisis con el ejemplo (7 pasos); pasos por bloque {\"1\":7,\"2\":6,\"3\":3,\"4\":7,\"5\":1,\"6\":1,\"7\":3,\"8\":4,\"9\":3,\"10\":1}; presentación: 10 diapositivas del resultado de bloques, → Inicio Fin y Esc con el foco de vuelta; el reporte, con su sección; errores: «Hacen falta al menos dos observaciones.» con «Qué hacer: Revisa los faltantes y el fil…»; Validación por enlace directo: esqueleto desde el principio, 120 de 849 casos y «Mostrar más», el detalle al abrirlo; desplazamiento acumulado en la carga 0.002; la ficha de Fundamentos en el modo enfocado: sus 9 apartados a la vista y el índice lleva a cada uno",
   "renglones": [],
-  "fecha": "2026-11-04T03:40:35.084Z",
-  "motor": "node v24.19.0"
+  "fecha": "2026-11-05T20:46:55.755Z",
+  "motor": "node v22.21.1"
  },
  "calidad": {
   "titulo": "Escalas en sus bordes y coherencia entre textos y números",
   "ok": true,
   "resumen": "39 escalas (con sus contextos), 108 bordes probados antes, en y después del límite, 147 tarjetas, una por zona; 272 casos del núcleo JS: 7,363 números en sus textos, 56 de ellos calculados por el texto (con su dirección); 2,765 tarjetas con los valores reales de los cuadros; control: de 2,698 números alterados, la comparación habría aceptado el 6.1 % de los alterados un 7 % y el 3.9 % de los alterados un 37 %",
   "renglones": [],
-  "fecha": "2026-11-04T03:39:01.478Z",
-  "motor": "node v24.19.0"
+  "fecha": "2026-11-05T20:46:25.552Z",
+  "motor": "node v22.21.1"
  },
  "enlaces": {
   "titulo": "Los enlaces y los íconos de la app",
   "ok": true,
   "resumen": "132 archivos que nombra index.html, todos presentes; 3 anclas de la página, 12 data-ir, 0 términos del glosario y 1 fichas nombradas en la página y en la interfaz; en la página viva: 4 términos del glosario, 82 fichas, 1 análisis del árbol, 9 bloques y 3 anclas enlazados, todos existen; 5 íconos (manifiesto y pestaña) que existen y miden lo que declaran; 10 de 10 direcciones externas responden",
   "renglones": [],
-  "fecha": "2026-11-04T03:42:41.587Z",
-  "motor": "node v24.19.0"
+  "fecha": "2026-11-05T20:46:39.852Z",
+  "motor": "node v22.21.1"
  },
  "lighthouse": {
   "titulo": "Lighthouse (teléfono y escritorio)",

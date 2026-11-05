@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" role="img" aria-label="FloralPro">
+  <!-- Logo de FloralPro: el ícono publicado en su repositorio (https://github.com/luisangelbg/FloralPro). -->
+  <rect x="2" y="2" width="36" height="36" rx="9" fill="#F5F0E6"/>
+  <svg x="8" y="8" width="24" height="24" viewBox="-16 -16 32 32"><g fill='#d6457a'><ellipse cx='0' cy='-8' rx='5' ry='7.5'/><ellipse cx='0' cy='-8' rx='5' ry='7.5' transform='rotate(72)'/><ellipse cx='0' cy='-8' rx='5' ry='7.5' transform='rotate(144)'/><ellipse cx='0' cy='-8' rx='5' ry='7.5' transform='rotate(216)'/><ellipse cx='0' cy='-8' rx='5' ry='7.5' transform='rotate(288)'/></g><circle r='4.6' fill='#e7b21f'/></svg>
+</svg>

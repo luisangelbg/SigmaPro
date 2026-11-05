@@ -30,12 +30,14 @@ for (const a of S.apps) {
   for (const k of ['url', 'repo', 'version', 'fecha', 'doi', 'titulo']) {
     const v = a[k];
     if (v === 'PENDIENTE') { if (!pend) fallas.push(a.id + ': ' + k + ' PENDIENTE en una app publicada'); }
+    else if (v === null && !pend && (k === 'version' || k === 'doi')) continue;  /* null declarado: la app no publica versión o aún no tiene DOI */
     else if (!v) fallas.push(a.id + ': falta ' + k);
   }
+  if (!pend && !(S.categorias || []).some(c => c.id === a.categoria)) fallas.push(a.id + ': categoría desconocida ' + a.categoria);
   if (pend) notas.push(a.id + ': PENDIENTE (sin repositorio público; logo marcador)');
   for (const L of ['es', 'en']) {
     if (!a[L] || !a[L].eslogan || !a[L].descripcion) fallas.push(a.id + ': faltan eslogan o descripción en ' + L);
-    if (!pend && a.destacada !== false && (!a[L].caracteristicas || a[L].caracteristicas.length < 4 || a[L].caracteristicas.length > 6)) fallas.push(a.id + ': 4–6 características en ' + L);
+    if (!pend && (!a[L].caracteristicas || a[L].caracteristicas.length < 4 || a[L].caracteristicas.length > 6)) fallas.push(a.id + ': 4–6 características en ' + L);
   }
   if (!pend && /universidad|university|chapingo/i.test(JSON.stringify(a))) fallas.push(a.id + ': menciona una institución');
 }

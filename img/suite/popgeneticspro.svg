@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" role="img" aria-label="PopGeneticsPro">
+  <!-- Logo de PopGeneticsPro: el repositorio no publica ícono; tres poblaciones con sus frecuencias alélicas, en el estilo de la suite. -->
+  <rect x="2" y="2" width="36" height="36" rx="9" fill="#2e6b4f"/>
+  <g stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity=".7"><path d="M14 15 L26 15 M14 15 L20 27 M26 15 L20 27"/></g>
+  <circle cx="14" cy="15" r="5" fill="#f2c14e"/><path d="M14 10 A5 5 0 0 1 19 15 L14 15 Z" fill="#c0392b"/>
+  <circle cx="26" cy="15" r="5" fill="#f2c14e"/><path d="M26 10 A5 5 0 1 1 21 15 L26 15 Z" fill="#c0392b"/>
+  <circle cx="20" cy="27" r="5" fill="#c0392b"/><path d="M20 22 A5 5 0 0 1 25 27 L20 27 Z" fill="#f2c14e"/>
+</svg>

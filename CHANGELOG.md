@@ -1,5 +1,17 @@
 # Cambios
 
+## Sin publicar
+
+- **El bloque 10 «Suite LABG» muestra toda la suite**: las 22 apps publicadas en el portal (antes, 6), agrupadas por
+  área como en el portal (estadística, agronomía, genética, biogeografía, botánica y herramientas para la ciencia), cada
+  una con su versión, eslogan, características, manual y cita en los dos idiomas. CorrelationPro deja de decir
+  «Versión: PENDIENTE»: 1.0.0, con su DOI y su logo. PhenologyPro pasa a la 1.2.0. Las tarjetas de Inicio siguen siendo
+  las cuatro destacadas. Fuentes: el catálogo publicado del portal y el `CITATION.cff` de cada repositorio
+  (`data/suite.js`); los logos son el ícono publicado de cada app (`img/suite/`), salvo StatsPro y PopGeneticsPro, que
+  no publican ícono.
+- Las apps sin DOI o sin número de versión se citan sin ellos; `tests/suite-enlaces.mjs` lo acepta y exige categoría y
+  características en todas.
+
 ## 1.0.0 · Primera versión publicada (3 nov 2026)
 
 SigmaPro se publica: repositorio en GitHub, la app en GitHub Pages, registro en Zenodo con DOI y ficha en el portal de

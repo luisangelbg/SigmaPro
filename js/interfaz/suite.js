@@ -89,27 +89,28 @@
 
   /* ---------------- «Explora la suite LABG» ---------------- */
   const destacadas = () => S().apps.filter(a => a.destacada !== false);
+  const conDoi = a => !!(a.doi && a.doi !== 'PENDIENTE');
   function cita(a, formato) {
     const au = S().autor || {}, anio = /^\d{4}/.test(a.fecha || '') ? a.fecha.slice(0, 4) : 's. f.';
-    const doi = a.doi && a.doi !== 'PENDIENTE' ? 'https://doi.org/' + a.doi : a.url;
+    const doi = conDoi(a) ? 'https://doi.org/' + a.doi : a.url;
     if (formato === 'bibtex') {
       const clave = (au.familia || 'autor').normalize('NFD').replace(/[^A-Za-z]/g, '').toLowerCase() + anio + a.id.toLowerCase();
-      return `@software{${clave},\n  author    = {${au.familia}, ${au.dado}},\n  title     = {${a.titulo}},\n  version   = {${a.version}},\n  year      = {${anio}},\n` +
-        (a.doi && a.doi !== 'PENDIENTE' ? `  doi       = {${a.doi}},\n` : '') + `  url       = {${a.repo && a.repo !== 'PENDIENTE' ? a.repo : a.url}}\n}`;
+      return `@software{${clave},\n  author    = {${au.familia}, ${au.dado}},\n  title     = {${a.titulo}},\n` + (a.version ? `  version   = {${a.version}},\n` : '') + `  year      = {${anio}},\n` +
+        (conDoi(a) ? `  doi       = {${a.doi}},\n` : '') + `  url       = {${a.repo && a.repo !== 'PENDIENTE' ? a.repo : a.url}}\n}`;
     }
-    return `${au.familia}, ${(au.dado || '').split(/\s+/).map(p => p[0] + '.').join(' ')} (${anio}). ${a.titulo} (${lengua() === 'en' ? 'Version' : 'Versión'} ${a.version}) [${lengua() === 'en' ? 'Computer software' : 'Software'}]. ${a.doi && a.doi !== 'PENDIENTE' ? 'Zenodo. ' : ''}${doi}`;
+    return `${au.familia}, ${(au.dado || '').split(/\s+/).map(p => p[0] + '.').join(' ')} (${anio}). ${a.titulo}${a.version ? ` (${lengua() === 'en' ? 'Version' : 'Versión'} ${a.version})` : ''} [${lengua() === 'en' ? 'Computer software' : 'Software'}]. ${conDoi(a) ? 'Zenodo. ' : ''}${doi}`;
   }
+  /* opc.todas: el bloque 10 muestra todas las apps, agrupadas por la categoría del portal; sin ella (Inicio), las destacadas. */
   function tarjetasSuite(opc) {
-    const lista = destacadas();
+    const todas = !!(opc && opc.todas);
     const x = a => a[lengua()] || a.es;
     const pend = a => a.estado === 'pendiente';
     const id = opc && opc.id ? opc.id : 'suite', h = opc && opc.nivel === 3 ? 'h3' : 'h2', h2 = h === 'h3' ? 'h4' : 'h3';
-    return `<div class="sx" id="${esc(id)}"><div class="sx-cab"><p class="sx-eyebrow">LABG Suite</p><${h} class="sx-tit">${esc(T('Explora la suite LABG'))}</${h}>` +
-      `<p class="sx-lead">${esc(T('Otras herramientas de la misma suite para continuar tu análisis: cada una abre en tu navegador, sin instalación, y tus datos no salen del equipo.'))}</p></div>` +
-      `<div class="sx-grid">` + lista.map(a => `<article class="sx-app${pend(a) ? ' sx-pendiente' : ''}" aria-labelledby="${esc(id)}-${esc(a.id)}">` +
+    const hApp = todas ? (h2 === 'h4' ? 'h5' : 'h4') : h2;
+    const tarjeta = a => `<article class="sx-app${pend(a) ? ' sx-pendiente' : ''}" aria-labelledby="${esc(id)}-${esc(a.id)}">` +
         `<div class="sx-app-cab">` + (pend(a) ? `<span class="sx-logo" aria-hidden="true"><img src="${esc(a.logo)}" alt="" width="64" height="64"></span>`
           : `<a class="sx-logo" href="${esc(a.url)}" target="_blank" rel="noopener" aria-label="${esc(T('Abrir {a} (en una pestaña nueva)', { a: nombre(a) }))}"><img src="${esc(a.logo)}" alt="" width="64" height="64"></a>`) +
-        `<div><${h2} class="sx-nombre" id="${esc(id)}-${esc(a.id)}">${esc(nombre(a))}</${h2}><p class="sx-version">${pend(a) ? esc(T('Versión: PENDIENTE')) : esc(T('Versión {v}', { v: a.version }))}</p></div></div>` +
+        `<div><${hApp} class="sx-nombre" id="${esc(id)}-${esc(a.id)}">${esc(nombre(a))}</${hApp}><p class="sx-version">${pend(a) ? esc(T('Versión: PENDIENTE')) : a.version ? esc(T('Versión {v}', { v: a.version })) : esc(T('En línea'))}</p></div></div>` +
         `<p class="sx-eslogan">${esc(x(a).eslogan)}</p>` +
         (x(a).caracteristicas && x(a).caracteristicas.length ? `<ul class="sx-car">${x(a).caracteristicas.map(c => `<li>${esc(c)}</li>`).join('')}</ul>` : `<p class="small sx-pend">${esc(x(a).descripcion)}</p>`) +
         `<div class="sx-acc">` + (pend(a) ? `<span class="btn btn-secondary btn-sm" aria-disabled="true">${esc(T('Próximamente'))}</span>` :
@@ -118,14 +119,27 @@
           `<details class="sx-citar"><summary class="btn btn-ghost btn-sm">${esc(T('Citar'))}<span class="sr-only"> ${esc(nombre(a))}</span></summary><div class="sx-cita">` +
           `<p class="sx-cita-t">APA</p><p class="sx-cita-apa">${esc(cita(a, 'apa'))}</p><p class="sx-cita-t">BibTeX</p><pre class="sx-cita-bib">${esc(cita(a, 'bibtex'))}</pre>` +
           `<div class="btn-row"><button type="button" class="btn btn-ghost btn-sm" data-sx-copiar="apa" data-sx-app="${esc(a.id)}">${esc(T('Copiar APA'))}</button><button type="button" class="btn btn-ghost btn-sm" data-sx-copiar="bibtex" data-sx-app="${esc(a.id)}">${esc(T('Copiar BibTeX'))}</button></div></div></details>`) +
-        `</div></article>`).join('') + `</div>` +
+        `</div></article>`;
+    const grid = lista => `<div class="sx-grid">${lista.map(tarjeta).join('')}</div>`;
+    let cuerpo;
+    if (todas) {
+      const cats = S().categorias || [], usadas = new Set(cats.map(c => c.id));
+      const grupos = cats.map(c => ({ c, apps: S().apps.filter(a => a.categoria === c.id) }))
+        .concat([{ c: null, apps: S().apps.filter(a => !usadas.has(a.categoria)) }]).filter(g => g.apps.length);
+      cuerpo = grupos.map((g, i) => `<section class="sx-cat" aria-labelledby="${esc(id)}-cat-${i}"><${h2} class="sx-cat-tit" id="${esc(id)}-cat-${i}">${esc(g.c ? g.c[lengua()] || g.c.es : T('Otras'))}` +
+        ` <span class="sx-cat-n">${g.apps.length}</span></${h2}>${grid(g.apps)}</section>`).join('');
+    } else cuerpo = grid(destacadas());
+    const lead = todas ? T('Las {n} aplicaciones de la suite, además de SigmaPro: cada una abre en tu navegador, sin instalación, y tus datos no salen del equipo.', { n: S().apps.length })
+      : T('Otras herramientas de la misma suite para continuar tu análisis: cada una abre en tu navegador, sin instalación, y tus datos no salen del equipo.');
+    return `<div class="sx" id="${esc(id)}"><div class="sx-cab"><p class="sx-eyebrow">LABG Suite</p><${h} class="sx-tit">${esc(T('Explora la suite LABG'))}</${h}>` +
+      `<p class="sx-lead">${esc(lead)}</p></div>` + cuerpo +
       `<footer class="sx-pie"><span class="sx-iso">${window.LABG && LABG.isotipo ? LABG.isotipo('sx-iso-svg') : ''}</span><p class="sx-lema">${esc(T('Del dato a la decisión.'))}</p>` +
-      `<a class="sx-portal" href="${esc(S().portal)}" target="_blank" rel="noopener">${esc(T('Ver las 15+ aplicaciones de la suite'))} →</a></footer></div>`;
+      `<a class="sx-portal" href="${esc(S().portal)}" target="_blank" rel="noopener">${esc(todas ? T('Abrir el portal de la suite LABG') : T('Ver las {n} aplicaciones de la suite', { n: S().apps.length + 1 }))} →</a></footer></div>`;
   }
   function pintarSuite() {
     const a = $('#suiteInicio'), b = $('#suiteBloque');
     if (a) a.innerHTML = tarjetasSuite({ id: 'sxInicio' });
-    if (b) b.innerHTML = tarjetasSuite({ id: 'sxBloque', nivel: 3 }) + `<p class="small muted sx-reset"><button type="button" class="btn btn-ghost btn-sm" data-sx-reset>${esc(T('Volver a mostrar las sugerencias que ocultaste'))}</button></p>`;
+    if (b) b.innerHTML = tarjetasSuite({ id: 'sxBloque', nivel: 3, todas: true }) +`<p class="small muted sx-reset"><button type="button" class="btn btn-ghost btn-sm" data-sx-reset>${esc(T('Volver a mostrar las sugerencias que ocultaste'))}</button></p>`;
   }
 
   function iniciar() {
